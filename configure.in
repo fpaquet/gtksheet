@@ -1,0 +1,205 @@
+# Process this file with autoconf to produce a configure script.
+AC_INIT(gtkextra)
+
+# Save this value here, since automake will set cflags later
+cflags_set=${CFLAGS+set}
+
+AC_DIVERT_PUSH(NOTICE)dnl
+# Making releases:
+#   GTK_EXTRA_MICRO_VERSION += 1;
+#   GTK_EXTRA_INTERFACE_AGE += 1;
+#   GTK_EXTRA_BINARY_AGE += 1;
+# if any functions have been added, set GTK_EXTRA_INTERFACE_AGE to 0.
+# if backwards compatibility has been broken,
+# set GTK_BINARY_AGE and GTK_EXTRA_INTERFACE_AGE to 0.
+
+GTK_EXTRA_MAJOR_VERSION=3
+GTK_EXTRA_MINOR_VERSION=0
+GTK_EXTRA_MICRO_VERSION=0
+GTK_EXTRA_INTERFACE_AGE=0
+GTK_EXTRA_BINARY_AGE=0
+GTK_EXTRA_VERSION=$GTK_EXTRA_MAJOR_VERSION.$GTK_EXTRA_MINOR_VERSION.$GTK_EXTRA_MICRO_VERSION
+dnl
+AC_DIVERT_POP()dnl
+
+AC_SUBST(GTK_EXTRA_MAJOR_VERSION)
+AC_SUBST(GTK_EXTRA_MINOR_VERSION)
+AC_SUBST(GTK_EXTRA_MICRO_VERSION)
+AC_SUBST(GTK_EXTRA_INTERFACE_AGE)
+AC_SUBST(GTK_EXTRA_BINARY_AGE)
+AC_SUBST(GTK_EXTRA_VERSION)
+
+# libtool versioning
+LT_CURRENT=`expr $GTK_EXTRA_MICRO_VERSION - $GTK_EXTRA_INTERFACE_AGE`
+LT_REVISION=$GTK_EXTRA_INTERFACE_AGE
+LT_AGE=`expr $GTK_EXTRA_BINARY_AGE - $GTK_EXTRA_INTERFACE_AGE`
+LIBGTKEXTRA_SO_VERSION=$LT_CURRENT:$LT_REVISION:$LT_AGE
+AC_SUBST(LIBGTKEXTRA_SO_VERSION)
+
+# For automake
+VERSION=$GTK_EXTRA_VERSION
+PACKAGE=gtk+extra
+
+# Initialize automake stuff
+AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
+
+# Specify a configuration file
+AM_CONFIG_HEADER(config.h)
+AC_CONFIG_MACRO_DIR(m4)
+AC_DEFINE([ENABLE_NLS],1,undef)
+AC_DEFINE([HAVE_GETTEXT],1,undef)
+
+# Build time sanity check...
+AM_SANITY_CHECK
+
+# Checks for programs.
+AC_PROG_CC
+AC_ISC_POSIX
+AM_PROG_CC_STDC
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+
+# Initialize libtool
+AC_LIBTOOL_WIN32_DLL
+AM_PROG_LIBTOOL
+
+AM_MAINTAINER_MODE
+
+AC_MSG_CHECKING([for some Win32 platform])
+case "$host" in
+  *-*-mingw*|*-*-cygwin*)
+    platform_win32=yes
+    ;;
+  *)
+    platform_win32=no
+    ;;
+esac
+AC_MSG_RESULT([$platform_win32])
+AM_CONDITIONAL(PLATFORM_WIN32, test "$platform_win32" = "yes")
+
+AC_MSG_CHECKING([for native Win32])
+case "$host" in
+  *-*-mingw*)
+    os_win32=yes
+    ;;
+  *)
+    os_win32=no
+    ;;
+esac
+AC_MSG_RESULT([$os_win32])
+AM_CONDITIONAL(OS_WIN32, test "$os_win32" = "yes")
+
+if test "$os_win32" = "yes"; then
+  AC_CHECK_PROG(ms_librarian, lib.exe, yes, no)
+fi
+AM_CONDITIONAL(MS_LIB_AVAILABLE, test x$ms_librarian = xyes)
+
+if test "$platform_win32" = "yes"; then
+  gdktarget=win32
+else
+  gdktarget=x11
+fi
+
+AC_ARG_WITH(gdktarget, [  --with-gdktarget=[[x11/linux-fb/win32]] select GDK target [default depends on host system]],
+        gdktarget=$with_gdktarget)
+
+AC_SUBST(gdktarget)
+case $gdktarget in
+  x11|linux-fb|win32) ;;
+  *) AC_MSG_ERROR([Invalid target for GDK: use x11, linux-fb or win32.]);;
+esac
+
+gtkextratargetlib=libgtkextra-$gdktarget-2.0.la
+
+AC_SUBST(gtkextratargetlib)
+
+if test "x$gdktarget" = "xwin32"; then
+  # We start off with the libraries from Pango
+
+  ## be sure we also have Pango built with win32 support
+  PANGO_PACKAGES="pangowin32"
+
+  if test x$have_wintab = xyes; then
+    GDK_WIN32_EXTRA_CFLAGS="-I $with_wintab/include"
+    AC_SUBST(GDK_WIN32_EXTRA_CFLAGS)
+  fi
+
+  GDK_EXTRA_LIBS="$GDK_EXTRA_LIBS"
+  AM_CONDITIONAL(USE_WIN32, true)
+else
+  AM_CONDITIONAL(USE_WIN32, false)
+fi
+
+
+changequote(,)dnl
+if test "x$GCC" = "xyes"; then
+  case " $CFLAGS " in
+  *[\ \	]-Wall[\ \	]*) ;;
+  *) CFLAGS="$CFLAGS -Wall" ;;
+  esac
+fi
+changequote([,])dnl
+
+# Honor aclocal flags
+ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
+
+# Checks for header files.
+AC_HEADER_STDC
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+
+dnl header file checks
+AC_CHECK_HEADERS(unistd.h, AC_DEFINE(HAVE_UNISTD_H))
+AC_CHECK_HEADERS(dirent.h, AC_DEFINE(HAVE_DIRENT_H))
+dnl Don't attempt to use fnmatch under win32 due to problems with creating DLLs.
+if test "$platform_win32" = "no"; then
+  AC_CHECK_HEADERS(fnmatch.h, AC_DEFINE(HAVE_FNMATCH_H))
+fi
+
+dnl NeXTStep cc seems to need this
+AC_MSG_CHECKING([for extra flags for POSIX compliance])
+AC_TRY_COMPILE([#include <dirent.h>], [DIR *dir;],
+  AC_MSG_RESULT(none needed),
+  gtk_save_CFLAGS=$CFLAGS
+  CFLAGS="$CFLAGS -posix"
+  AC_TRY_COMPILE([#include <dirent.h>], [DIR *dir;],
+    AC_MSG_RESULT(-posix),
+    AC_MSG_RESULT()
+    CFLAGS=$gtk_save_CFLAGS
+    AC_MSG_WARN([Could not determine POSIX flag. (-posix didn't work.)])))
+
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_C_INLINE
+
+# check for gtk-doc
+GTK_DOC_CHECK(1.4)
+
+dnl
+dnl Start of pkg-config checks
+dnl
+
+# Find the GTK+ include and library directories.
+
+## Initial sanity check, done here so that users get told they
+## have the wrong dependencies as early in the process as possible.
+## Later on we actually use the cflags/libs from separate pkg-config
+## calls. Oh, also the later pkg-config calls don't include
+## the version requirements since those make the module lists
+## annoying to construct
+
+# Find the GTK+ include and library directories.
+
+PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.12.0 fontconfig])
+
+AC_OUTPUT(
+Makefile
+gtkextra/Makefile
+gtkextra/gtkextrafeatures.h
+docs/Makefile
+docs/reference/Makefile
+gtkextra-3.0.spec
+gtkextra-3.0.pc
+)

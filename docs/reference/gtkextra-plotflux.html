@@ -1,0 +1,976 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-plotflux</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3> Gtkplotflux - 3d scientific plots widget for gtk+ </h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>GtkType</pre></td>
+      <td width="16%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_flux_get_type">gtk_plot_flux_get_type</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(void); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>GtkWidget*</pre></td>
+      <td width="16%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_flux_new">gtk_plot_flux_new</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(void);</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_flux_set_arrow">gtk_plot_flux_set_arrow</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkPlotFlux *flux,
+gint arrow_length,
+gint arrow_width,
+GtkPlotSymbolStyle style); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_flux_get_arrow">gtk_plot_flux_get_arrow</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkPlotFlux *flux,
+ gint *arrow_length,
+gint *arrow_width,
+GtkPlotSymbolStyle *style); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td bgcolor="D6E8FF"> <pre><a href="#gtk_plot_flux_center">gtk_plot_flux_center</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotFlux *flux,
+gboolean center); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td bgcolor="D6E8FF"> <pre>gboolean</pre></td>
+      <td bgcolor="D6E8FF"> <pre><a href="#gtk_plot_flux_is_centered">gtk_plot_flux_is_centered</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotFlux *flux); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+>
+        <pre>&nbsp;</pre>
+      </TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> <pre>No signals</pre></TD
+>
+</TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+>&nbsp;</h4
+>
+  <h2
+><br>
+    Details</h2
+>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top" bgcolor="#FFFFCC"> 
+      <td width="19%"> <pre><a href="#GtkPlotFlux">struct GtkPlotFlux</a> </pre></td>
+    </tr>
+  </table>
+  <h2
+><br>
+    Screenshot<br>
+  </h2
+>
+  <h2
+>&nbsp;</h2
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_dt_get_type" id="gtk_plot_dt_get_type"></a> gtk_plot_dt_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>GtkType gtk_plot_dt_get_type (void); 
+</pre></TD
+>
+      </TR
+></TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+> </P
+>
+    </DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_flux_get_type" id="gtk_plot_flux_get_type"
+></A
+>gtk_plot_flux_get_type ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_plot_flux_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> <br>
+    </DIV
+>
+  </DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_flux_new" id="gtk_plot_flux_new"
+></A
+>gtk_plot_flux_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>GtkWidget* gtk_plot_flux_new (void); </pre></TD
+>
+      </TR
+></TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <TBODY
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_plot_flux_set_arrow" id="gtk_plot_flux_set_arrow"
+></a
+>gtk_plot_flux_set_arrow ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_flux_set_arrow (GtkPlotFlux *flux,
+                              gint arrow_length,
+                              gint arrow_width,
+                              GtkPlotSymbolStyle style);</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>flux</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>arrow_length</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>arrow_width</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+>
+          <td
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tbody
+>
+        </tbody
+>
+      </table
+>
+    </div
+>
+    <DIV
+CLASS="REFSECT2"
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+        <P
+></P
+>
+      </DIV
+>
+    </DIV
+>
+    <HR>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <h3><a
+name="gtk_plot_flux_get_arrow" id="gtk_plot_flux_get_arrow"
+></a
+>gtk_plot_flux_get_arrow ()</h3>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> <pre>void gtk_plot_flux_get_arrow (GtkPlotFlux *flux,
+                              gint *arrow_length,
+                              gint *arrow_width,
+                              GtkPlotSymbolStyle *style); </pre></td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp;</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tr bordercolor="#000033"
+>
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>flux</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+>
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>arrow_length</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+>
+            <td
+align="RIGHT"
+valign="TOP"
+>arrow_width</td
+>
+            <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+>
+            <td
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+            <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tbody
+>
+          </tbody
+>
+        </table
+>
+      </div
+>
+    </DIV
+>
+    <DIV
+CLASS="REFSECT2"
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+        <P
+></P
+>
+      </DIV
+>
+    </DIV
+>
+    <HR>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <h3><a
+name="gtk_plot_flux_center" id="gtk_plot_flux_center"
+></a
+>gtk_plot_flux_center ()</h3>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> <pre>void gtk_plot_flux_center (GtkPlotFlux *flux,
+                           gboolean center); </pre></td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp;</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>flux</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>center</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tbody
+>
+          </tbody
+>
+        </table
+>
+      </div
+>
+    </DIV
+>
+    <DIV
+CLASS="REFSECT2"
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+        <P
+></P
+>
+      </DIV
+>
+    </DIV
+>
+    <HR>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <h3><a
+name="gtk_plot_flux_is_centered" id="gtk_plot_flux_is_centered"
+></a
+>gtk_plot_flux_is_centered ()</h3>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> <pre>gboolean gtk_plot_flux_is_centered (GtkPlotFlux *flux);</pre></td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp;</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>flux</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tbody
+>
+          </tbody
+>
+        </table
+>
+      </div
+>
+    </DIV
+>
+    <DIV
+CLASS="REFSECT2"
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+        <P
+></P
+>
+      </DIV
+>
+    </DIV
+>
+    <DIV
+CLASS="REFSECT2"
+></DIV
+>
+    <div
+class="REFSECT1"
+> 
+      <h2
+><br>
+      </h2
+>
+    </div
+>
+    <h2>DETAILS<br>
+    </h2>
+    </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="INFORMALTABLE"
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+>
+            <table width="100%" border="1" cellpadding="0" cellspacing="0" bgcolor="#CAF7E0">
+              <tr bordercolor="#000000"> 
+                <td width="18%" align="left" valign="top"> <pre><a name="GtkPlotFlux" id="GtkPlotFlux"></a>struct _GtkPlotFlux</pre></td>
+                <td width="82%" align="left" valign="top"> <pre>{<br>  GtkPlotData data;<br>  gboolean centered;<br>  gint arrow_length;<br>  gint arrow_width;<br>  GtkPlotSymbolStyle arrow_style;<br>};<br> </pre></td>
+              </tr>
+            </table>
+<br>
+          </div
+>
+        </div
+>
+        <BR
+CLEAR="all">
+        <BR>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+></div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+>
+</BODY
+></HTML
+>

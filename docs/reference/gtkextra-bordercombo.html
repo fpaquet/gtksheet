@@ -1,0 +1,573 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-BorderCombo</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<H1
+><b>GtkBorderCombo</b></H1
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <p><b>GtkBorderCombo</b> - border combo widget for gtk+ </p>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td bgcolor="D6E8FF"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF"><pre><a href="#gtk_border_combo_get_type">gtk_border_combo_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>GtkWidget *</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_border_combo_new">gtk_border_combo_new</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre> (void); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+> GtkObject<br>   +----GtkWidget<br>         +----GtkContainer<br>               +----GtkBox<br>                     +----GtkHBox<br>                           +----GtkCombo<br>                                 +-----GtkBorderCombo</PRE
+>
+      </TD
+></TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <pre>void (*changed) (GtkBorderCombo *border_combo, gint selection);
+</pre>
+      </TD
+>
+    </TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description<br>
+  </H2
+>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td><font face="Arial, Helvetica, sans-serif" size="4">It is a GtkComboBox 
+        subclass with a variety of border styles in the popdown window arranged 
+        in a table of togglebuttons. </font></td>
+    </tr>
+  </table>
+  <H2
+>Details </H2
+>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#FFFFCC"> 
+      <td width="19%"> 
+        <pre>struct _GtkBorderCombo {
+         GtkComboBox border_combo;
+         gint nrows;
+         gint ncols;
+         gint row;
+         gint column;
+         GtkWidget ***button;
+         GtkWidget *table;
+         };
+       </pre>
+      </td>
+      <td width="24%">&nbsp;</td>
+      <td width="30%">&nbsp;</td>
+      <td width="27%">&nbsp;</td>
+    </tr>
+  </table>
+  <h4
+>You should access only the entry and list fields directly </h4
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_border_combo_get_type" id="gtk_border_combo_get_type"></a>gtk_border_combo_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_border_combo_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>Creates a new border combo.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+  <p
+>&nbsp;</p
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<DIV
+CLASS="REFSECT2"
+></DIV
+>
+  <HR>
+  <br>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_border_combo_new"></a>gtk_border_combo_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>GtkWidget *gtk_border_combo_new (void); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Creates a new border combo.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new bordercombo widget</TD
+>
+        </TR
+></TBODY
+></TABLE
+><P
+></P
+>
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+></div
+>
+      </div
+>
+      
+    </DIV
+>
+  </DIV
+>
+  <img src="pics/gtk_border_combo.jpg" width="207" height="174"><br>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<H2
+>Args</H2
+>
+  <P
+></P
+>
+  <DIV
+CLASS="VARIABLELIST"
+>
+    <DL
+>
+      <DT
+>&nbsp;</DT
+>
+    </DL
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<H2
+>Signals</H2
+><DIV
+CLASS="REFSECT2"
+>
+    <H3
+>The &quot;changed&quot; signal</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <PRE
+CLASS="PROGRAMLISTING"
+>void (*changed) (GtkBorderCombo *border_combo, gint selection);</PRE
+>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Should be connected if you wish to perform an action whenever the <A
+HREF="#STRUCT"
+>GtkBorderCombo</A
+>'s state is changed.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000000"
+>
+        <TBODY
+> 
+        <TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>border_combo</I
+></TT
+>&nbsp;:</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the object which received the signal.&#13;</TD
+></TR
+><TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>selection</I
+></TT
+></TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+        </TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+>
+<H2
+>See Also</H2
+><P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+>
+    <DL
+> 
+      <DT
+>GtkCombo</DT
+>
+      <DD
+> 
+        <P
+>a text entry field with a dropdown list.</P
+>
+      </DD
+>
+      <DT
+><BR
+CLEAR="all">
+        <BR>
+      </DT
+>
+    </DL
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

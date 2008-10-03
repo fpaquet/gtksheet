@@ -1,0 +1,1484 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-plotdt</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3> Gtkplotbar - delaunay triangulization algorithm for gtk+ </h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr align="left" valign="top"> 
+      <td width="8%" bgcolor="D6E8FF"> 
+<pre>GtkType</pre></td>
+      <td width="22%" bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_dt_get_type">gtk_plot_dt_get_type</a>
+      </pre></td>
+      <td width="70%" bgcolor="D6E8FF"> 
+        <pre>(void); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+<td width="8%" bgcolor="D6E8FF"> 
+<pre>GtkObject*</pre></td>
+      <td width="22%" bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_dt_new">gtk_plot_dt_new</a></pre></td>
+      <td width="70%" bgcolor="D6E8FF"> 
+        <pre>(gint num); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+<td width="8%" bgcolor="D6E8FF"> 
+<pre>void</pre></td>
+      <td width="22%" bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_dt_set_quadtrilateral">gtk_plot_dt_set_quadtrilateral</a></pre></td>
+      <td width="70%" bgcolor="D6E8FF"> 
+        <pre>(GtkPlotDT *data, 
+gboolean set); 
+</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+<td width="8%" bgcolor="D6E8FF"> 
+<pre>gdouble</pre></td>
+      <td width="22%" bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_dt_set_subsampling">gtk_plot_dt_set_subsampling</a></pre></td>
+      <td width="70%" bgcolor="D6E8FF"> 
+        <pre>(GtkPlotDT *data, 
+gboolean set); 
+</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+<td bgcolor="D6E8FF"> 
+<pre>gboolean</pre></td>
+      <td bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_dt_add_node">gtk_plot_dt_add_node</a></pre></td>
+      <td bgcolor="D6E8FF"> 
+        <pre>(GtkPlotDT *data, 
+GtkPlotDTnode node); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+<td bgcolor="D6E8FF"> 
+<pre>GtkPlotDTnode *</pre></td>
+      <td bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_dt_get_node">gtk_plot_dt_get_node</a></pre></td>
+      <td bgcolor="D6E8FF"> 
+        <pre>(GtkPlotDT *data, 
+gint idx); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+<td bgcolor="D6E8FF"> 
+<pre>gboolean</pre></td>
+      <td bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_dt_triangulate">gtk_plot_dt_triangulate</a></pre></td>
+      <td bgcolor="D6E8FF"> 
+        <pre>(GtkPlotDT *data); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+<td bgcolor="D6E8FF"> 
+<pre>void</pre></td>
+      <td bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_dt_clear">gtk_plot_dt_clear</a></pre></td>
+      <td bgcolor="D6E8FF"> 
+        <pre>(GtkPlotDT *data); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+>
+        <pre>&nbsp;</pre>
+      </TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> <pre><a href="#add_node">gboolean (* add_node) (GtkPlotDT *data, GtkPlotDTnode node);</a> <br><a href="#get_node">GtkPlotDTnode*(* get_node) (GtkPlotDT *data,gint idx);</a> <br><a href="#triangulate">gboolean (* triangulate) (GtkPlotDT *data);</a>
+<a href="#clear">void (* clear) (GtkPlotDT *data);</a></pre></TD
+>
+</TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+>Delaunay triangulization algorithm for gtk+ </h4
+>
+  <h2
+><br>
+    Details</h2
+>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top" bgcolor="#FFFFCC"> 
+      <td width="19%"> <pre><a href="#GtkPlotDTnode"> struct GtkPlotDTnode;</a><br><a href="#GtkPlotDTtriangle"> struct GtkPlotDTtriangle;</a><br><a href="#GtkPlotDT"> struct GtkPlotDT;</a> <br><a href="#GtkPlotDTprogressbarFunc"> typedef gint (*GtkPlotDTprogressbarFunc) (double progress); </a>      </pre></td>
+    </tr>
+  </table>
+  <h2
+><br>
+    Screenshot<br>
+  </h2
+>
+  <h2
+>&nbsp;</h2
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_dt_get_type" id="gtk_plot_dt_get_type"></a> gtk_plot_dt_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>GtkType gtk_plot_dt_get_type (void); 
+</pre></TD
+>
+      </TR
+></TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+> </P
+>
+    </DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_dt_new" id="gtk_plot_dt_new"
+></A
+>gtk_plot_dt_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkObject* gtk_plot_dt_new (gint num); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+      
+    <DIV
+CLASS="INFORMALTABLE"
+> <br>
+    </DIV
+>
+  </DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_dt_set_quadtrilateral" id="gtk_plot_dt_set_quadtrilateral"
+></A
+>gtk_plot_dt_set_quadtrilateral ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>void gtk_plot_dt_set_quadtrilateral (GtkPlotDT *data, 
+                                     gboolean set); 
+</pre></TD
+>
+      </TR
+></TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <TBODY
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_plot_dt_set_subsampling" id="gtk_plot_dt_set_subsampling"
+></a
+>gtk_plot_dt_set_subsampling ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_dt_set_subsampling (GtkPlotDT *data, 
+                                  gboolean set); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tbody
+>
+        </tbody
+>
+      </table
+>
+    </div
+>
+    <DIV
+CLASS="REFSECT2"
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+        <P
+></P
+>
+      </DIV
+>
+    </DIV
+>
+    <HR>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <h3><a
+name="gtk_plot_dt_add_node" id="gtk_plot_dt_add_node"
+></a
+>gtk_plot_dt_add_node ()</h3>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> <pre>gboolean gtk_plot_dt_add_node (GtkPlotDT *data, 
+                               GtkPlotDTnode node); </pre></td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp;</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+>
+            <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tbody
+>
+          </tbody
+>
+        </table
+>
+      </div
+>
+    </DIV
+>
+    <DIV
+CLASS="REFSECT2"
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+        <P
+></P
+>
+      </DIV
+>
+    </DIV
+>
+    <HR>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <h3><a
+name="gtk_plot_dt_get_node" id="gtk_plot_dt_get_node"
+></a
+>gtk_plot_dt_get_node ()</h3>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> <pre>GtkPlotDTnode * gtk_plot_dt_get_node (GtkPlotDT *data, 
+                                      gint idx); </pre></td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp;</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+>
+            <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tbody
+>
+          </tbody
+>
+        </table
+>
+      </div
+>
+    </DIV
+>
+    <DIV
+CLASS="REFSECT2"
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+        <P
+></P
+>
+      </DIV
+>
+    </DIV
+>
+    <HR>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <h3><a
+name="gtk_plot_dt_triangulate" id="gtk_plot_dt_triangulate"
+></a
+>gtk_plot_dt_triangulate ()</h3>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> <pre>gboolean gtk_plot_dt_triangulate (GtkPlotDT *data); </pre></td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp;</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tbody
+>
+          </tbody
+>
+        </table
+>
+      </div
+>
+    </DIV
+>
+    <DIV
+CLASS="REFSECT2"
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+        <P
+></P
+>
+      </DIV
+>
+    </DIV
+>
+    <HR>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <h3><a
+name="gtk_plot_dt_clear" id="gtk_plot_dt_clear"
+></a
+>gtk_plot_dt_clear ()</h3>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> <pre>void gtk_plot_dt_clear (GtkPlotDT *data); </pre></td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp;</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tbody
+>
+          </tbody
+>
+        </table
+>
+      </div
+>
+    </DIV
+>
+    <div
+class="REFSECT1"
+> 
+      <h2
+><br>
+        Signals<br>
+      </h2
+>
+      <hr>
+      <h2
+><a name="add_node" id="add_node"></a>The &quot;add_node&quot; signal</h2
+>
+    </div
+>
+    <div
+class="REFSECT1"
+> 
+      <div
+class="REFSECT2"
+> 
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>gboolean (* add_node) (GtkPlotDT *data,
+                       GtkPlotDTnode node); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#FFFFFF"
+>
+            <tbody
+>
+              <tr bordercolor="#000000"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000000"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>node</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000000"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+      </div
+>
+    </div
+>
+    <div
+class="REFSECT1"
+> <br>
+      <hr>
+      <h2
+><a name="get_node" id="get_node"></a>The &quot;get_node&quot; signal</h2
+>
+    </div
+>
+    <div
+class="REFSECT1"
+> 
+      <div
+class="REFSECT2"
+> 
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>GtkPlotDTnode*(* get_node) (GtkPlotDT *data,
+                            gint idx); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#FFFFFF"
+>
+            <tbody
+>
+              <tr bordercolor="#000000"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000000"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>idx</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000000"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+      </div
+>
+    </div
+>
+    <div
+class="REFSECT1"
+> <br>
+      <hr>
+      <h2
+><a name="triangulate" id="triangulate"></a>The &quot;triangulate&quot; signal</h2
+>
+    </div
+>
+    <div
+class="REFSECT1"
+> 
+      <div
+class="REFSECT2"
+> 
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>gboolean (* triangulate) (GtkPlotDT *data); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#FFFFFF"
+>
+            <tbody
+>
+              <tr bordercolor="#000000"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000000"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+      </div
+>
+    </div
+>
+    <div
+class="REFSECT1"
+> <br>
+      <hr>
+      <h2
+><a name="clear" id="clear"></a>The &quot;clear&quot; signal</h2
+>
+    </div
+>
+    <div
+class="REFSECT1"
+> 
+      <div
+class="REFSECT2"
+> 
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* clear) (GtkPlotDT *data); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#FFFFFF"
+>
+            <tbody
+>
+              <tr bordercolor="#000000"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+      </div
+>
+    </div
+>
+    <p>&nbsp;</p>
+    <h2>DETAILS<br>
+    </h2>
+    </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="INFORMALTABLE"
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+>
+            <table width="100%" border="1" cellpadding="0" cellspacing="0" bgcolor="#CAF7E0">
+              <tr bordercolor="#000000"> 
+                <td width="18%" align="left" valign="top"> <pre><a name="GtkPlotDTnode" id="GtkPlotDTnode"></a>struct _GtkPlotDTnode</pre></td>
+                <td width="82%" align="left" valign="top"> <pre>/* A 2D-node for the delaunay triangulation */<br>{<br>  gdouble x, y, z;    /* actual coordinates */<br>  gdouble px, py, pz; /* pixel coordinates */<br>  gint id;            /* some kind of 'meta-data' for external use */<br>  gint a,b,c,d;       /* neighbour node indices in quadrilateral mode */<br>}; </pre></td>
+              </tr>
+              <tr bordercolor="#000000"> 
+                <td align="left" valign="top"> <pre><a name="GtkPlotDTtriangle" id="GtkPlotDTtriangle"></a>struct _GtkPlotDTtriangle</pre></td>
+                <td align="left" valign="top"> <pre>{<br>  gint a,b,c;<br>  GtkPlotDTnode *na,*nb,*nc;<br>  double radius;         /* radius-square */<br>  GtkPlotDTnode ccenter; /* center of circle */<br>  double area;           /* twice the triangle's area */<br>  GtkPlotDTnode min,max; /* the bounding box */<br>}; </pre></td>
+              </tr>
+              <tr bordercolor="#000000"> 
+                <td align="left" valign="top"> <pre><a name="GtkPlotDT" id="GtkPlotDT"></a>struct _GtkPlotDT</pre></td>
+                <td align="left" valign="top"> <pre>/* data needed for a delaunay triangulation <br> *<br> * the nodes are held in an expanding array (use gtk_plot_dt_expand()!)<br> *<br> */<br>{<br>  GtkObject object;<br>  gboolean quadrilateral;<br>  gboolean subsampling;<br>  gint node_0;               /* lowest node-index (may be negative!) */<br>  gint node_cnt;             /* number of nodes */<br>  gint node_max;             /* maximum number of nodes */<br>  GtkPlotDTnode *nodes;     /* them nodes themselves */<br>  GtkPlotDTnode *tmp_nodes; /* index&lt;0: tmpnodes[-1-index] */<br>  GList *triangles;<br>  GCompareFunc compare_func;<br>  GtkPlotDTprogressbarFunc pbar;<br>}; </pre></td>
+              </tr>
+              <tr bordercolor="#000000"> 
+                <td align="left" valign="top"><pre><a name="GtkPlotDTprogressbarFunc"></a></pre></td>
+                <td align="left" valign="top"><pre>/* a progress indicator function with optional 'cancel' functionality<br> * <br> * returns '0' for normal operation<br> * or any arbitrary code to request immediate abortion<br> */<br>typedef gint (*GtkPlotDTprogressbarFunc) (double progress);<br> </pre></td>
+              </tr>
+            </table>
+<br>
+          </div
+>
+        </div
+>
+        <BR
+CLEAR="all">
+        <BR>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+></div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+>
+</BODY
+></HTML
+>

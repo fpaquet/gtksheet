@@ -1,0 +1,721 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-plotbar</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3> Gtkplotbar - 3d scientific plots widget for gtk+ </h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_bar_get_type">gtk_plot_bar_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget* </pre></td>
+      <td width="22%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_bar_new">gtk_plot_bar_new</a></pre></td>
+      <td width="70%" bgcolor="D6E8FF"> <pre>(GtkOrientation orientation); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="22%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_bar_construct">gtk_plot_bar_construct</a></pre></td>
+      <td width="70%" bgcolor="D6E8FF"> <pre>(GtkPlotBar *bar, 
+GtkOrientation orientation); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="22%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_bar_set_width">gtk_plot_bar_set_width</a></pre></td>
+      <td width="70%" bgcolor="D6E8FF"> <pre>(GtkPlotBar *bar, gdouble width); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble</pre></td>
+      <td width="22%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_bar_get_width">gtk_plot_bar_get_width</a></pre></td>
+      <td width="70%" bgcolor="D6E8FF"> <pre>(GtkPlotBar *bar); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+>
+        <pre>&nbsp;</pre>
+      </TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+>No signals</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+>This is a Gtk Plot bar widget. ;-)</h4
+>
+  <h2
+><br>
+    Details</h2
+>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top" bgcolor="#FFFFCC"> 
+      <td width="19%"> 
+        <pre>struct _GtkPlotBar<br>{<br>  GtkPlotData data;<br>  GtkOrientation orientation;<br>  gdouble width;<br>}; <br></pre>
+      </td>
+    </tr>
+  </table>
+  <h2
+><br>
+    Screenshot<br>
+  </h2
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_bar_get_type" id="gtk_plot_bar_get_type"></a> gtk_plot_bar_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_plot_bar_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+><br>
+    </P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+  <h2
+>&nbsp;</h2
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_bar_new"></a> gtk_plot_bar_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>GtkWidget* gtk_plot_bar_new (GtkOrientation orientation); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Create a new GtkPlotBar widget<br>
+    </P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>orientation</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>GTK_ORIENTATION_HORIZONTAL,<br>
+            GTK_ORIENTATION_VERTICAL</TD
+>
+        </TR
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a GtkPlotBar widget</TD
+>
+        </TR
+>
+        </TBODY
+> 
+      </TABLE
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <P
+> </P
+>
+    </DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_bar_construct"
+></A
+>gtk_plot_bar_construct ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> 
+          <pre>void gtk_plot_bar_construct (GtkPlotBar *bar, 
+                             GtkOrientation orientation); </pre>
+        </TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>Initialize a GtkPlotBar structure</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>bar</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotBar widget</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>orientation</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_ORIENTATION_HORIZONTAL,<br>
+          GTK_ORIENTATION_VERTICAL</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <P
+></P
+></DIV
+></DIV
+>
+  <br>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_bar_set_width"
+></A
+>gtk_plot_bar_set_width ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>void gtk_plot_bar_set_width (GtkPlotBar *bar, gdouble width); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Set the width of a GtkPlotBar widget.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>bar</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotBar widget</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the width of the widget</td
+>
+        </tr
+>
+        <TBODY
+> </TBODY
+> 
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_plot_bar_get_width"
+></a
+>gtk_plot_bar_get_width ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>gdouble gtk_plot_bar_get_width (GtkPlotBar *bar); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Get the width of a GtkPlotBar widget.</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>bar</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotBar widget</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the width of the widget</td
+>
+        </tr
+>
+        <tbody
+> </tbody
+> 
+      </table
+>
+    </div
+>
+    <br>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="INFORMALTABLE"
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <BR
+CLEAR="all">
+        <BR>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+></div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

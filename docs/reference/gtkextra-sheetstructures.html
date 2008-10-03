@@ -1,0 +1,344 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-Sheet Structures</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<h2
+>GtkSheet Structures</h2
+>
+<p>Why are these useful?<br>
+  Because the gtk-sheet functions do not cover everything and sometimes you need 
+  to modify <br>
+  structure elements by yourself.<br>
+  <br>
+  <br>
+</p>
+<table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#CAF7E0">
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> <pre><a name="_GtkSheetChild"></a>struct _GtkSheetChild</pre> 
+    </td>
+    <td width="85%" align="left" valign="top"> <pre>{
+  GtkWidget *widget;
+  GdkWindow *window;
+  gint x,y ;
+  gboolean attached_to_cell;
+  gint row, col;
+  gfloat x_align, y_align;
+};
+     </pre> </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> <pre><a name="_GtkSheetButton"></a>struct _GtkSheetButton<br>
+</pre> 
+    </td>
+    <td width="85%" align="left" valign="top"> <pre>{<br>  GtkStateType state;<br>  gchar *label;<br>  gboolean label_visible;
+  GtkSheetChild *child;<br>  GtkJustification justification;
+};</pre> </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> <pre><a name="_GtkSheetCellBorder"></a>struct _GtkSheetCellBorder<br></pre> 
+    </td>
+    <td width="85%" align="left" valign="top"> <pre>{<br>  gint8 mask;<br>  guint width;<br>  GdkLineStyle line_style;<br>  GdkCapStyle cap_style;<br>  GdkJoinStyle join_style;<br>  GdkColor color;<br>};<br></pre> 
+    </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> <pre><a name="_GtkSheetCellAttr"></a>struct _GtkSheetCellAttr</pre> 
+    </td>
+    <td width="85%" align="left" valign="top"> <pre>{<br>  GtkJustification justification;<br>  GdkFont *font;<br>  GdkColor foreground;<br>  GdkColor background;<br>  GtkSheetCellBorder border;<br>  gboolean is_editable;<br>  gboolean is_visible;<br>};<br></pre> 
+    </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> <pre><a name="_GtkSheetCell"></a>struct _GtkSheetCell<br></pre> 
+    </td>
+    <td width="85%" align="left" valign="top"> <pre>{<br>  GdkRectangle area;<br>  gint row;<br>  gint col;</pre> <pre>  GtkSheetCellAttr *attributes;</pre> 
+      <pre>  gchar *text;
+         gpointer link;
+         };</pre> <pre>  struct _GtkSheetRange
+         {
+         gint row0,col0; /* upper-left cell */
+         gint rowi,coli; /* lower-right cell */
+         };
+       </pre> </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> <pre><a name="_GtkSheetRow"></a>struct _GtkSheetRow<br></pre> 
+    </td>
+    <td width="85%" align="left" valign="top"> <pre>{<br> gchar *name;<br> gint height;<br> gint top_ypixel;</pre> <pre> GtkSheetButton button;
+         gboolean is_sensitive;
+         gboolean is_visible;
+         };</pre> 
+      <pre> struct _GtkSheetColumn
+         {
+         gchar *name;
+         gint width;
+         gint left_xpixel;</pre> <pre> GtkSheetButton button;</pre> <pre> gint left_text_column; /* min left column displaying text on this column          */
+         gint right_text_column; /* max right column displaying text on this column          */</pre> <pre> GtkJustification justification;
+         gboolean is_sensitive;
+         gboolean is_visible;
+         };
+       </pre> </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"><a name="_GtkSheetRange"></a>struct 
+      _GtkSheetRange<br> </td>
+    <td width="85%" align="left" valign="top"> <pre>{
+       gint row0,col0; /* upper-left cell */
+       gint rowi,coli; /* lower-right cell */
+       };
+     </pre> </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"><a name="_GtkSheetRow"></a>struct 
+      _GtkSheetRow<br> </td>
+    <td width="85%" align="left" valign="top"> <pre>{
+   gchar *name;
+   gint height;
+   gint top_ypixel;        </pre> <pre>   GtkSheetButton button;
+   gboolean is_sensitive;
+   gboolean is_visible;
+};
+       </pre> </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"><a name="_GtkSheetColumn"></a>struct 
+      _GtkSheetColumn<br> </td>
+    <td width="85%" align="left" valign="top"> <pre>{
+   gchar *name;
+   gint width;
+   gint left_xpixel;        </pre> <pre>   GtkSheetButton button;</pre> <pre>   gint left_text_column; /* min left column displaying text on this column          */
+   gint right_text_column; /* max right column displaying text on this column          */</pre> 
+      <pre>   GtkJustification justification;
+   gboolean is_sensitive;
+   gboolean is_visible;
+};
+       </pre> </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> <pre><a name="_GtkSheet"></a>struct _GtkSheet<br></pre> 
+    </td>
+    <td width="85%" align="left" valign="top"> <pre>GtkContainer container;</pre> <pre> guint16 flags;</pre> <pre> GtkSelectionMode selection_mode;</pre> 
+      <pre> guint freeze_count;</pre> <pre> /* Background colors */
+         GdkColor bg_color;
+         GdkColor grid_color;
+         gboolean show_grid;</pre> <pre> /* sheet children */
+         GList *children;</pre> <pre> /* allocation rectangle after the container_border_width
+         and the width of the shadow border */
+         GdkRectangle internal_allocation;</pre> <pre> gchar *name;</pre> <pre> GtkSheetRow *row;
+         GtkSheetColumn *column;</pre> 
+      <pre> /* max number of diplayed cells */
+         gint maxrow;
+         gint maxcol;</pre> <pre> /* Displayed range */</pre> <pre> GtkSheetRange view; </pre> <pre> /* sheet data: dynamically allocated array of cell pointers */
+         GtkSheetCell ***data;</pre> <pre> /* max number of allocated cells */
+         gint maxallocrow;
+         gint maxalloccol;</pre> <pre> /* active cell */
+         GtkSheetCell active_cell;
+         GtkWidget *sheet_entry;
+         GdkWindow *sheet_entry_window; /* for NO_WINDOW entry widgets(ala GtkLayout)          */</pre> 
+      <pre> GtkType entry_type;</pre> <pre> /* expanding selection */
+         GtkSheetCell selection_cell;</pre> <pre> /* timer for automatic scroll during selection */ 
+         gint32 timer;
+         /* timer for flashing clipped range */
+         gint32 clip_timer;
+         gint interval;</pre> <pre> /* global selection button */
+         GtkWidget *button;</pre> <pre> /* sheet state */
+         gint state;</pre> <pre> /* selected range */
+         GtkSheetRange range;</pre> 
+      <pre> /*the scrolling window and it's height and width to
+         * make things a little speedier */
+         GdkWindow *sheet_window;
+         guint sheet_window_width;
+         guint sheet_window_height;</pre> <pre> /* sheet backing pixmap */ 
+         GdkWindow *pixmap; </pre> <pre> /* offsets for scrolling */
+         gint hoffset;
+         gint voffset;
+         gfloat old_hadjustment;
+         gfloat old_vadjustment;
+         
+         /* border shadow style */
+         GtkShadowType shadow_type;
+         
+         /* Column Titles */
+         GdkRectangle column_title_area;
+         GdkWindow *column_title_window;</pre> <pre> /* Row Titles */
+         GdkRectangle row_title_area;
+         GdkWindow *row_title_window;</pre> <pre> /*scrollbars*/
+         GtkAdjustment *hadjustment;
+         GtkAdjustment *vadjustment;</pre> <pre> /* xor GC for the verticle drag line */
+         GdkGC *xor_gc;</pre> 
+      <pre> /* gc for drawing unselected cells */
+         GdkGC *fg_gc;
+         GdkGC *bg_gc;</pre> <pre> /* cursor used to indicate dragging */
+         GdkCursor *cursor_drag;</pre> <pre> /* the current x-pixel location of the xor-drag vline */
+         gint x_drag;</pre> <pre> /* the current y-pixel location of the xor-drag hline */
+         gint y_drag;</pre> <pre> /* current cell being dragged */
+         GtkSheetCell drag_cell;
+         /* current range being dragged */
+         GtkSheetRange drag_range;</pre> <pre> /* clipped range */
+         GtkSheetRange clip_range;
+         };
+       </pre> 
+    </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> <pre>/* sheet-&gt;state */<br></pre> </td>
+    <td width="85%" align="left" valign="top"> <pre>enum {GTK_SHEET_NORMAL,<br>      GTK_SHEET_ROW_SELECTED,<br>      GTK_SHEET_COLUMN_SELECTED,<br>      GTK_SHEET_RANGE_SELECTED};</pre> </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> <pre>&nbsp;</pre> </td>
+    <td width="85%" align="left" valign="top"> <pre>enum<br>{<br>  GTK_SHEET_LEFT_BORDER     = 1 &lt;&lt; 0, <br>  GTK_SHEET_RIGHT_BORDER    = 1 &lt;&lt; 1, <br>  GTK_SHEET_TOP_BORDER      = 1 &lt;&lt; 2, <br>  GTK_SHEET_BOTTOM_BORDER   = 1 &lt;&lt; 3 <br>}; <br></pre> 
+    </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> <pre>GtkSheetAttrType</pre> </td>
+    <td width="85%" align="left" valign="top"> <pre>enum{ GTK_SHEET_FOREGROUND,
+       GTK_SHEET_BACKGROUND,
+       GTK_SHEET_FONT,
+       GTK_SHEET_JUSTIFICATION,
+       GTK_SHEET_BORDER,
+       GTK_SHEET_BORDER_COLOR,
+       GTK_SHEET_IS_EDITABLE,
+       GTK_SHEET_IS_VISIBLE<br>} </pre></td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top">/* sheet flags */<br> </td>
+    <td width="85%" align="left" valign="top"> <pre>enum 
+       {
+       GTK_SHEET_IS_LOCKED = 1 &lt;&lt; 0,
+       GTK_SHEET_IS_FROZEN = 1 &lt;&lt; 1, 
+       GTK_SHEET_IN_XDRAG = 1 &lt;&lt; 2, 
+       GTK_SHEET_IN_YDRAG = 1 &lt;&lt; 3, 
+       GTK_SHEET_IN_DRAG = 1 &lt;&lt; 4, 
+       GTK_SHEET_IN_SELECTION = 1 &lt;&lt; 5,
+       GTK_SHEET_IN_RESIZE = 1 &lt;&lt; 6,
+       GTK_SHEET_IN_CLIP = 1 &lt;&lt; 7,
+       GTK_SHEET_ROW_FROZEN = 1 &lt;&lt; 8, /* set rows to be resizeable */
+       GTK_SHEET_COLUMN_FROZEN = 1 &lt;&lt; 9, /* set cols to be resizeable */
+       GTK_SHEET_AUTORESIZE = 1 &lt;&lt; 10, /* resize column if text width is  great than column width */
+       GTK_SHEET_CLIP_TEXT = 1 &lt;&lt; 11, /* clip text to cell */
+       GTK_SHEET_ROW_TITLES_VISIBLE = 1 &lt;&lt; 12,
+       GTK_SHEET_COL_TITLES_VISIBLE = 1 &lt;&lt; 13,
+       GTK_SHEET_AUTO_SCROLL = 1 &lt;&lt; 14,
+       GTK_SHEET_JUSTIFY_ENTRY = 1 &lt;&lt; 15
+       }; 
+     </pre> 
+    </td>
+  </tr>
+</table>
+<p> <br>
+</p>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+>
+    <DL
+>
+      <DT
+><BR
+CLEAR="all">
+        <BR>
+      </DT
+>
+    </DL
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

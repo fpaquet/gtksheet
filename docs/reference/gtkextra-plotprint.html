@@ -1,0 +1,889 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-plotprint</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3> Gtkplotprint - gtkplot printing functions </h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top"> 
+      <td width="6%" bgcolor="D6E8FF"> 
+<pre>gboolean</pre></td>
+      <td width="21%" bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_export_ps">gtk_plot_export_ps</a></pre></td>
+      <td width="73%" bgcolor="D6E8FF"> 
+        <pre>(GtkPlot *plot,
+char *file_name,
+gint orient,
+gint epsflag,
+gint page_size); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="6%" bgcolor="D6E8FF"> 
+<pre>gboolean</pre></td>
+      <td width="21%" bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_export_ps_with_size">gtk_plot_export_ps_with_size</a></pre></td>
+      <td width="73%" bgcolor="D6E8FF"> 
+        <pre>(GtkPlot *plot,
+char *file_name,
+gint orient,
+gint epsflag,
+gint units,
+gint width,
+gint height); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="6%" bgcolor="D6E8FF"> 
+<pre>gboolean</pre></td>
+      <td width="21%" bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_canvas_export_ps">gtk_plot_canvas_export_ps</a></pre></td>
+      <td width="73%" bgcolor="D6E8FF"> 
+        <pre>(GtkPlotCanvas *canvas,
+char *file_name,
+gint orient,
+gint epsflag,
+gint page_size);
+</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="6%" bgcolor="D6E8FF"> 
+<pre>void</pre></td>
+      <td width="21%" bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_canvas_export_ps_with_size">gtk_plot_canvas_export_ps_with_size</a></pre></td>
+      <td width="73%" bgcolor="D6E8FF"> 
+        <pre>(GtkPlotCanvas *canvas,
+char *file_name,
+gint orient,
+gint epsflag,
+gint units,
+gint width,
+gint height); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD height="48"
+> 
+<pre>&nbsp;</pre>
+      </TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> <pre>No signals</pre></TD
+>
+</TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+>&nbsp;</h4
+>
+  <h2
+><br>
+    Details</h2
+>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top" bgcolor="#FFFFCC"> 
+      <td width="19%"> <pre>&nbsp;</pre></td>
+    </tr>
+  </table>
+  <h2
+><br>
+    Screenshot<br>
+  </h2
+>
+  <h2
+>&nbsp;</h2
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_export_ps" id="gtk_plot_export_ps"></a> gtk_plot_export_ps 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>gboolean  gtk_plot_export_ps (GtkPlot *plot,
+                              char *file_name, 
+                              gint orient,
+                              gint epsflag,
+                              gint page_size); </pre></TD
+>
+      </TR
+></TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>plot</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+          <TR
+> 
+            <TD
+ALIGN="RIGHT"
+VALIGN="TOP"
+>file_name</TD
+>
+            <TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+          <TR
+> 
+            <TD
+ALIGN="RIGHT"
+VALIGN="TOP"
+>orient</TD
+>
+            <TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+          <TR
+> 
+            <TD
+ALIGN="RIGHT"
+VALIGN="TOP"
+>epsflag</TD
+>
+            <TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+          <TR
+>
+            <TD
+ALIGN="RIGHT"
+VALIGN="TOP"
+>page_size</TD
+>
+            <TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+> </P
+>
+    </DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_export_ps_with_size" id="gtk_plot_export_ps_with_size"
+></A
+>gtk_plot_export_ps_with_size ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>gboolean   gtk_plot_export_ps_with_size (GtkPlot *plot,
+                                         char *file_name,
+                                         gint orient,
+                                         gint epsflag,
+                                         gint units,
+                                         gint width,
+                                         gint height); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>file_name</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>orient</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>epsflag</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>units</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+align="RIGHT"
+valign="TOP"
+>height</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> <br>
+    </DIV
+>
+  </DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_canvas_export_ps" id="gtk_plot_canvas_export_ps"
+></A
+>gtk_plot_canvas_export_ps ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>gboolean   gtk_plot_canvas_export_ps (GtkPlotCanvas *canvas,
+                                      char *file_name,
+                                      gint orient,
+                                      gint epsflag,
+                                      gint page_size); </pre></TD
+>
+      </TR
+></TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>file_name</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>orient</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>epsflag</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>page_size</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <TBODY
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_plot_canvas_export_ps_with_size" id="gtk_plot_canvas_export_ps_with_size"
+></a
+>gtk_plot_canvas_export_ps_with_size ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>gboolean   gtk_plot_canvas_export_ps_with_size (GtkPlotCanvas *canvas,
+                                                char *file_name,
+                                                gint orient,
+                                                gint epsflag,
+                                                gint units,
+                                                gint width,
+                                                gint height); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>file_name</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>orient</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>epsflag</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>units</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+>
+          <td
+align="RIGHT"
+valign="TOP"
+>height</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tbody
+>
+        </tbody
+>
+      </table
+>
+    </div
+>
+    <DIV
+CLASS="REFSECT2"
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+        <P
+></P
+>
+      </DIV
+>
+    </DIV
+>
+    
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+></DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+></div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+>
+</BODY
+></HTML
+>

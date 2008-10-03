@@ -1,0 +1,782 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-fontcombo</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<H1
+>Gtkfontcombo</H1
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <p>Gtkfontcombo - font combo widget for gtk+ </p>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top"> 
+      <td bgcolor="D6E8FF"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF"><pre><a href="#gtk_font_combo_get_type">gtk_font_combo_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>GtkWidget *</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_font_combo_new">gtk_font_combo_new</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(void); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_font_combo_select">gtk_font_combo_select</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkFontCombo *font_combo,
+const gchar *family,
+gboolean bold,
+gboolean italic,
+gint height); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_font_combo_select_nth">gtk_font_combo_select_nth</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkFontCombo *font_combo,
+gint n,
+gboolean bold,
+gboolean italic,
+gint height); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+>  GtkObject<br>   +----GtkWidget<br>         +----GtkContainer<br>               +----GtkToolbar<br>                    +----Gtkfontcombo</PRE
+>
+      </TD
+></TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <pre>void (* <a href="#changed">changed</a>) (GtkFontCombo *font_combo); </pre>
+      </TD
+>
+    </TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description<br>
+  </H2
+>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td><font face="Arial, Helvetica, sans-serif" size="4">It is a GtkToolBar 
+        subclass with two combos to select among the 35 standard Adobe PostScript 
+        fonts with different sizes. <br>
+        It has also two buttons to select bold and italics.<br>
+        When you select a new font, it returns the name of the corresponding Postscript 
+        font and the equivalent Xfont. <br>
+        This is what we all expect to have on the top of a GUI for a spreadsheet 
+        or word processor</font></td>
+    </tr>
+  </table>
+  <H2
+><br>
+    Details </H2
+>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" bordercolor="#FFFFCC">
+    <tr bgcolor="#FFFFCC"> 
+      <td width="19%"> 
+        <pre>struct _GtkFontCombo {<br>	GtkToolbar toolbar;<br>	GtkWidget *name_combo;<br>	GtkWidget *size_combo;<br>   GtkWidget *bold_button;<br>	GtkWidget *italic_button;<br>   GtkPSFont *psfont;<br>   GdkFont *font;<br>   gint height;<br>   gboolean italic;<br>   gboolean bold;<br>}; <br> </pre>
+      </td>
+      <td width="24%">&nbsp;</td>
+      <td width="30%">&nbsp;</td>
+      <td width="27%">&nbsp;</td>
+    </tr>
+  </table>
+  <h4
+>You should access only the entry and list fields directly</h4
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_font_combo_get_type" id="gtk_font_combo_get_type"></a>gtk_font_combo_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_font_combo_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+>
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+  <p
+>&nbsp;</p
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<DIV
+CLASS="REFSECT2"
+></DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_font_combo_new"></a>gtk_font_combo_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>GtkWidget *gtk_font_combo_new (void); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Create a new font combo widget</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new font combo widget</TD
+>
+        </TR
+></TBODY
+></TABLE
+>
+      <div
+class="REFSECT2"
+><br>
+      </div
+>
+      <hr>
+      <div
+class="REFSECT2"
+> 
+        <h3
+><a name="gtk_font_combo_select"></a>gtk_font_combo_select ()</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> 
+              <pre>void gtk_font_combo_select (GtkFontCombo *font_combo,
+                            const gchar *family,
+                            gboolean bold,
+                            gboolean italic,
+                            gint height); </pre>
+            </td
+>
+          </tr
+>
+        </table
+>
+        <p
+>Select a font from the combo which satisfies the arguments</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><i
+class="EMPHASIS"
+>font_combo</i
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>font combo widget</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>family</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>font family</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>bold</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>italic</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+            </tr
+>
+            <tr
+>
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>height</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>height of the font</td
+>
+            </tr
+>
+            <tbody
+> </tbody
+> 
+          </table
+>
+        </div
+>
+      </div
+>
+      <div
+class="REFSECT2"
+><br>
+      </div
+>
+      <hr>
+      <div
+class="REFSECT2"
+> 
+        <h3
+><a name="gtk_font_combo_select_nth"></a>gtk_font_combo_select_nth ()</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> 
+              <pre>void gtk_font_combo_select_nth (GtkFontCombo *font_combo,
+                                gint n,
+                                gboolean bold,
+                                gboolean italic,
+                                gint height);  </pre>
+            </td
+>
+          </tr
+>
+        </table
+>
+        <p
+>Select the nth font from the combo which satisfies the arguments</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><i
+class="EMPHASIS"
+>font_combo</i
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>font combo widget</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>n</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the nth font from font combo</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>bold</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>italic</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>height</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>height of the font</td
+>
+            </tr
+>
+            <tbody
+> </tbody
+> 
+          </table
+>
+        </div
+>
+      </div
+>
+      <p>&nbsp;</p>
+      <h2
+>Signals<br>
+      </h2
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <hr>
+      </div
+>
+      <div
+class="REFSECT2"
+> 
+        <h3
+><a name="changed"></a>The &quot;changed&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> 
+              <pre>void (* changed) (GtkFontCombo *font_combo); </pre>
+            </td
+>
+          </tr
+>
+        </table
+>
+        <p
+>Should be connected if you wish to perform an action whenever a different font 
+          is choosed.</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tr bordercolor="#000033"
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><i
+class="EMPHASIS"
+>font_combo</i
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>font combo widget</td
+>
+            </tr
+>
+            <tbody
+> </tbody
+> 
+          </table
+>
+        </div
+>
+      </div
+>
+      <p><br>
+        <BR>
+      </p>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

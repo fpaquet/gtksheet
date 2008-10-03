@@ -1,0 +1,187 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-General</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TH width="100%"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="7"
+>GTK-EXTRA- Reference Manual</FONT
+></TH
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+>
+<H1
+>General</H1
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  General&nbsp;--&nbsp;Introduction (from www,etc)</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<H2
+>Description</H2
+>
+  <P
+>GtkExtra is a useful set of widgets for creating GUI's for the Xwindows system 
+    using GTK+. <br>
+    You can use it complementary to GTK+ and it is written in C. It is also Free 
+    Software and released under the LGPL license. <br>
+    <br>
+    <br>
+    The library includes the following widgets: <br>
+    <br>
+    <strong><font size="4"> GtkSheet </font></strong><br>
+  </P
+>
+  <p>GtkSheet is a matrix widget for GTK+. It consists of an scrollable grid of 
+    cells where you can allocate text.<br>
+    Cell contents can be edited interactively through a specially designed entry, 
+    GtkItemEntry.<br>
+    It is also a container subclass, allowing you to display buttons, curves, 
+    pixmaps and any other widget in it. <br>
+    You can also set many attributes as: border, foreground and background color, 
+    text justification, and more. The testgtksheet program shows how easy is to 
+    create a spreadsheet-like GUI using this widget set. <br>
+    <br>
+    <strong><font size="4">GtkPlot</font></strong> <br>
+    <br>
+    GtkPlot is a widget for GTK+. It allows to draw high quality scientific plots 
+    in two dimensions with a look and feel very similar to Microcal Origin for 
+    Windows.<br>
+    The distribution includes GtkPlotCanvas subclass, and a demo program showing 
+    two layered plots with different kind of curves. <br>
+    You can choose between a number of symbol types, lines, connectors -straight 
+    lines, steps, splines-, and change their attributes -color, size, width-. 
+    <br>
+    You can also plot functions, add error bars, edit legends, rotate and move 
+    axis titles, change axis properties, etc. </p>
+  <p>The package also includes GtkPlot3D and GtkPlotPolar. </p>
+  <p>GtkPlotCanvas is a GtkFixed subclass and allows to DnD plots, points, and 
+    child objects (text, axis titles). You can move them or resize your plots 
+    dragging with the mouse! </p>
+  <p>The distribution includes also a PostScript driver. </p>
+  <p>All the features are demonstrated in testgtkplot and testrealtime. </p>
+  <p> <br>
+    <strong><font size="4">GtkIconList</font></strong> <br>
+    <br>
+    GtkIconList is a GtkFixed subclass that allows you to display a table of xpm 
+    icons with editable labels. It's completely designed from scratch with some 
+    ideas borrowed from gnome-icon-list. It contains almost all of its features 
+    and more. It can be used for file browsers and as a replacement of gnome-icon-list 
+    (without the need of using gnome libraries). Like GtkSheet, it uses the widget 
+    GtkItemEntry to edit the text fields. </p>
+  <p> <br>
+    <strong><font size="4">GtkDirTree</font></strong> <br>
+    <br>
+    It is a GtkCTree subclass that allows you to navigate the file-system. <br>
+    <br>
+    <strong><font size="4">GtkFileList</font></strong> <br>
+    <br>
+    It is a GtkIconList subclass that displays the contents of a given directory 
+    using fancy icons for different types of files. <br>
+    <br>
+    <font size="4"><strong>GtkIconFileSelection</strong></font> <br>
+    <br>
+    It is a nice looking file selection dialog using icons. It combines GtkDirTree 
+    and GtkFileList to navigate the file system and select files. It has also 
+    two entries to select the file and filter. </p>
+  <p> <br>
+    <strong><font size="4">GtkItemEntry</font></strong> <br>
+    <br>
+    It is a GtkEntry subclass. It can have fixed size or can be dinamically resized 
+    when the text is entered. You can change text justification to centered, left, 
+    or right, and change the foreground and background colors very easily. It 
+    only displays the text and has no borders. <br>
+    <br>
+    <strong><font size="4">GtkFontCombo</font></strong> <br>
+    <br>
+    It is a GtkToolBar subclass with two combos to select among the 35 standard 
+    Adobe PostScript fonts with different sizes. <br>
+    It has also two buttons to select bold and italics. When you select a new 
+    font, it returns the name of the corresponding Postscript font and the equivalent 
+    Xfont.<br>
+    This is what we all expect to have on the top of a GUI for a spreadsheet or 
+    word processor. <br>
+  </p>
+  <p><strong><font size="4">GtkComboBox</font></strong> <br>
+    <br>
+    It is a composite widget with two buttons, one with an arrow to display a 
+    popdown window where you can pack whatever you want, from a calendar to a 
+    clist. <br>
+    <br>
+    <font size="4"><strong>GtkColorCombo</strong></font> <br>
+    <br>
+    It is a GtkComboBox subclass with a pallette of colors in the popdown window 
+    to pickup the one you like the most. It has a default pallette, but it's completelly 
+    customizable. <br>
+    <br>
+    <font size="4"><strong>GtkBorderCombo</strong></font> <br>
+    <br>
+    It is a GtkComboBox subclass with a variety of border styles in the popdown 
+    window arranged in a table of togglebuttons. <br>
+    <br>
+    <font size="4"><strong>GtkCheckItem</strong></font> <br>
+    <br>
+    It is a GtkCheckButton hack with the look and feel of the Redmond95 theme. 
+  </p>
+  <p></p>
+  <p><br>
+  </p>
+  <P
+> <br>
+  </P
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#FFFFFF"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TH width="100%"
+ALIGN="center"
+><FONT
+COLOR="#000000"
+SIZE="5"
+><a href="index.html">Home</a></FONT
+></TH
+>
+    </TR
+>
+  </TABLE
+>
+  <P
+>&nbsp; </P
+>
+</DIV
+>
+</BODY
+></HTML
+>

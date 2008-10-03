@@ -1,0 +1,4685 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-PlotPc</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3> GtkplotPc( print context) - a renderer for printing functions </h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>GtkType</pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_pc_get_type">gtk_plot_pc_get_type</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(void);</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>GtkObject *</pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_pc_new">gtk_plot_pc_new</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(void);</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>gboolean</pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_pc_init">gtk_plot_pc_init</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_pc_leave">gtk_plot_pc_leave</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_pc_set_viewport">gtk_plot_pc_set_viewport</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+gdouble w, gdouble h); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_gsave">gtk_plot_pc_gsave</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_grestore">gtk_plot_pc_grestore</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_clip">gtk_plot_pc_clip</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+GdkRectangle *area); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_clip_mask">gtk_plot_pc_clip_mask</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+gdouble x, 
+gdouble y, 
+GdkBitmap *mask); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_set_color">gtk_plot_pc_set_color</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+GdkColor *color); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void
+      </pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_set_lineattr">gtk_plot_pc_set_lineattr</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+gfloat line_width,
+GdkLineStyle line_style,
+GdkCapStyle cap_style,
+GdkJoinStyle join_style); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top" height="18"> 
+        <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_set_dash">gtk_plot_pc_set_dash</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+gdouble offset_,
+gdouble *values,
+gint num_values);
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_draw_point">gtk_plot_pc_draw_point</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+gdouble x, gdouble y);
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_draw_line">gtk_plot_pc_draw_line</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+gdouble x1, gdouble y1,
+gdouble x2, gdouble y2); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_draw_lines">gtk_plot_pc_draw_lines</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+GtkPlotPoint *points,
+gint numpoints); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_draw_rectangle">gtk_plot_pc_draw_rectangle</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+gboolean filled,
+gdouble x, gdouble y,
+gdouble width,
+gdouble height); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_draw_polygon">gtk_plot_pc_draw_polygon</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+gint filled,
+GtkPlotPoint *points,
+gint numpoints); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_draw_ellipse">gtk_plot_pc_draw_ellipse</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+gboolean filled,
+gdouble x, gdouble y,
+gdouble width,
+gdouble height); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_draw_circle">gtk_plot_pc_draw_circle</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+gint filled,
+gdouble x, gdouble y,
+gdouble size); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_set_font">gtk_plot_pc_set_font</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+GtkPSFont *psfont,
+gint height); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_draw_string">gtk_plot_pc_draw_string</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+gint x, gint y,
+gint angle,
+const GdkColor *fg,
+const GdkColor *bg,
+gboolean transparent,
+gint border,
+gint border_space,
+gint border_width,
+gint shadow_width,
+const gchar *font,
+gint height,
+GtkJustification just,
+const gchar *text);
+</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_pc_draw_string">gtk_plot_pc_draw_pixmap</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotPC *pc,
+GdkPixmap *pixmap,
+GdkBitmap *mask,
+gint xsrc, gint ysrc,
+gint xdest, gint ydest,
+gint width,
+gint height, 
+gdouble scale_x,
+gdouble scale_y); 
+ </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+>
+        <pre>&nbsp;</pre>
+      </TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+    <TR
+> 
+      <TD height="393"
+>
+<ul>
+          <li> &quot;<a href="#Init">Init</a>&quot; signal</li>
+          <li>&quot;<a href="#leave">leave</a>&quot; signal</li>
+          <li>&quot;<a href="#set_viewport">set_viewport</a>&quot; signal</li>
+          <li>&quot;<a href="#gsave">gsave</a>&quot; signal</li>
+          <li>&quot;<a href="#grestore">grestore</a>&quot; signal</li>
+          <li>&quot;<a href="#clip">clip</a>&quot; signal</li>
+          <li>&quot;<a href="#clip_mask">clip_mask</a>&quot; signal</li>
+          <li>&quot;<a href="#set_color">set_color</a>&quot; signal</li>
+          <li>&quot;<a href="#set_lineattr">set_lineattr</a>&quot; signal</li>
+          <li>&quot;<a href="#set_dash">set_dash</a>&quot; signal</li>
+          <li>&quot;<a href="#draw_point">draw_point</a>&quot; signal</li>
+          <li>&quot;<a href="#draw_line">draw_line</a>&quot; signal</li>
+          <li>&quot;<a href="#draw_lines">draw_lines</a>&quot; signal</li>
+          <li>&quot;<a href="#draw_rectangle">draw_rectangle</a>&quot; signal</li>
+          <li>&quot;<a href="#draw_polygon">draw_polygon</a>&quot; signal</li>
+          <li>&quot;<a href="#draw_circle">draw_circle</a>&quot; signal</li>
+          <li>&quot;<a href="#draw_ellipse">draw_ellipse</a>&quot; signal</li>
+          <li>&quot;<a href="#set_font">set_font</a>&quot; signal</li>
+          <li>&quot;<a href="#draw_string">draw_string</a>&quot; signal</li>
+          <li>&quot;<a href="#draw_pixmap">draw_pixmap</a>&quot; signal</li>
+        </ul></TD
+>
+    </TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+>&nbsp;</h4
+>
+  <h2
+><br>
+    Details</h2
+>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top" bgcolor="#FFFFCC"> 
+      <td width="19%"> <pre> struct <a href="#GtkPlotPoint">GtkPlotPoint</a>;<br> struct <a href="#GtkPlotPC">GtkPlotPC</a>;</pre></td>
+    </tr>
+  </table>
+  <h2
+><br>
+    Screenshot<br>
+  </h2
+>
+  <h2
+>&nbsp;</h2
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_pc_get_type" id="gtk_plot_pc_get_type"></a> gtk_plot_pc_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>GtkType gtk_plot_pc_get_type (void); </pre></TD
+>
+      </TR
+></TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Return</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+></P
+>
+    </DIV
+>
+  </DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_pc_new" id="gtk_plot_pc_new"
+></A
+>gtk_plot_pc_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkObject *gtk_plot_pc_new (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>Create a new printing context.</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a new PlotPC object</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+      
+    <DIV
+CLASS="INFORMALTABLE"
+> </DIV
+>
+  </DIV
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+> <br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_pc_init" id="gtk_plot_pc_init"
+></a
+>gtk_plot_pc_init ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>gboolean gtk_plot_pc_init (GtkPlotPC *pc); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Initalize PlotPC object. (Increment pc-&gt;init_count)</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a PlotPC object</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE if success<br>
+          FALSE if pc-&gt;init_count &lt;1</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_pc_leave" id="gtk_plot_pc_leave"
+></a
+>gtk_plot_pc_leave ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_pc_leave (GtkPlotPC *pc); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Decrement pc-&gt;init_count.</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a PlotPC object</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_pc_set_viewport" id="gtk_plot_pc_set_viewport"
+></a
+>gtk_plot_pc_set_viewport ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_pc_set_viewport (GtkPlotPC *pc,
+                               gdouble w, gdouble h); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Set the viewport (the printing window) of pc.</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a PlotPC object</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>w,h</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>width,height of the window</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_pc_gsave" id="gtk_plot_pc_gsave"
+></a
+>gtk_plot_pc_gsave ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_pc_gsave (GtkPlotPC *pc); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_pc_grestore" id="gtk_plot_pc_grestore"
+></a
+>gtk_plot_pc_grestore ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_pc_grestore (GtkPlotPC *pc); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_pc_clip" id="gtk_plot_pc_clip"
+></a
+>gtk_plot_pc_clip ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_pc_clip (GtkPlotPC *pc,
+                       GdkRectangle *area); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>area</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+    <br>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+> </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_pc_clip_mask" id="gtk_plot_pc_clip_mask"
+></a
+>gtk_plot_pc_clip_mask ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_pc_clip_mask (GtkPlotPC *pc,
+                            gdouble x, 
+                            gdouble y, 
+                            GdkBitmap *mask); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+align="RIGHT"
+valign="TOP"
+>mask</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+    <br>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_pc_set_color" id="gtk_plot_pc_set_color"
+></a
+>gtk_plot_pc_set_color ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_pc_set_color (GtkPlotPC *pc,
+                            GdkColor *color); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="27"
+>color</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="27"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+    <br>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_pc_set_lineattr" id="gtk_plot_pc_set_lineattr"
+></a
+>gtk_plot_pc_set_lineattr ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_pc_set_lineattr (GtkPlotPC *pc,
+                               gfloat line_width,
+                               GdkLineStyle line_style,
+                               GdkCapStyle cap_style,
+                               GdkJoinStyle join_style); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>line_style</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>cap_style</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+align="RIGHT"
+valign="TOP"
+>join_style</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <DIV
+CLASS="REFSECT2"
+></DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="INFORMALTABLE"
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_pc_set_dash" id="gtk_plot_pc_set_dash"
+></a
+>gtk_plot_pc_set_dash ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_pc_set_dash (GtkPlotPC *pc,
+                           gdouble offset_,
+                           gdouble *values,
+                           gint num_values); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>offset</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>values</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+align="RIGHT"
+valign="TOP"
+>num_values</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_pc_draw_point" id="gtk_plot_pc_draw_point"
+></a
+>gtk_plot_pc_draw_point ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_pc_draw_point (GtkPlotPC *pc,
+                             gdouble x, gdouble y);
+ </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_pc_draw_line" id="gtk_plot_pc_draw_line"
+></a
+>gtk_plot_pc_draw_line ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_pc_draw_line (GtkPlotPC *pc,
+                            gdouble x1, gdouble y1,
+                            gdouble x2, gdouble y2); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>x1,y1</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+align="RIGHT"
+valign="TOP"
+>x2,y2</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+> <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_pc_draw_lines" id="gtk_plot_pc_draw_lines"
+></a
+>gtk_plot_pc_draw_lines ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_pc_draw_lines (GtkPlotPC *pc,
+                             GtkPlotPoint *points,
+                             gint numpoints); </pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>points</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+>
+                    <td
+align="RIGHT"
+valign="TOP"
+>numpoints</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_pc_draw_rectangle" id="gtk_plot_pc_draw_rectangle"
+></a
+>gtk_plot_pc_draw_rectangle ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_pc_draw_rectangle (GtkPlotPC *pc,
+                                 gboolean filled,
+                                 gdouble x, gdouble y,
+                                 gdouble width,
+                                 gdouble height); </pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>filled</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>width,height</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_pc_draw_polygon" id="gtk_plot_pc_draw_polygon"
+></a
+>gtk_plot_pc_draw_polygon ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_pc_draw_polygon (GtkPlotPC *pc,
+                               gint filled,
+                               GtkPlotPoint *points,
+                               gint numpoints); </pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>filled</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>points</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+>
+                    <td
+align="RIGHT"
+valign="TOP"
+>numpoints</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_pc_draw_ellipse" id="gtk_plot_pc_draw_ellipse"
+></a
+>gtk_plot_pc_draw_ellipse ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_pc_draw_ellipse (GtkPlotPC *pc,
+                               gboolean filled,
+                               gdouble x, gdouble y,
+                               gdouble width,
+                               gdouble height);
+ </pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>filled</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>width,height</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_pc_draw_circle" id="gtk_plot_pc_draw_circle"
+></a
+>gtk_plot_pc_draw_circle ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_pc_draw_circle (GtkPlotPC *pc,
+                              gint filled,
+                              gdouble x, gdouble y,
+                              gdouble size); </pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>filled</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+>
+                    <td
+align="RIGHT"
+valign="TOP"
+>size</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_pc_set_font" id="gtk_plot_pc_set_font"
+></a
+>gtk_plot_pc_set_font ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_pc_set_font (GtkPlotPC *pc,
+                           GtkPSFont *psfont,
+                           gint height); </pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>psfont</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+>
+                    <td
+align="RIGHT"
+valign="TOP"
+>height</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_pc_draw_string" id="gtk_plot_pc_draw_string"
+></a
+>gtk_plot_pc_draw_string ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_pc_draw_string (GtkPlotPC *pc,
+                              gint x, gint y,
+                              gint angle,
+                              const GdkColor *fg,
+                              const GdkColor *bg,
+                              gboolean transparent,
+                              gint border,
+                              gint border_space,
+                              gint border_width,
+                              gint shadow_width,
+                              const gchar *font,
+                              gint height,
+                              GtkJustification just,
+                              const gchar *text); </pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>angle</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>fg,bg</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>transparent</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>border</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>border_space</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>border_width</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>shadow_width</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>font</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>height</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>just</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+>
+                    <td
+align="RIGHT"
+valign="TOP"
+>text</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+            <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_pc_draw_pixmap" id="gtk_plot_pc_draw_pixmap"
+></a
+>gtk_plot_pc_draw_pixmap ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_pc_draw_pixmap (GtkPlotPC *pc,
+                              GdkPixmap *pixmap,
+                              GdkBitmap *mask,
+                              gint xsrc, gint ysrc,
+                              gint xdest, gint ydest,
+                              gint width,
+                              gint height, 
+                              gdouble scale_x,
+                              gdouble scale_y); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pixmap</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>mask</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>xarc,yarc</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>xdest,ydest</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>width,height</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>scale_x,scale_y</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            
+          </div
+>
+        </div
+>
+        <h2
+>Signals</h2
+>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a name="init" id="init"></a>The &quot;init&quot; signal</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>gboolean (* init) (GtkPlotPC *pc); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tbody
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+              </tbody
+>
+            </table
+>
+          </div
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="leave" id="leave"></a>The &quot;leave&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* leave) (GtkPlotPC *pc); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="set_viewport" id="set_viewport"></a>The &quot;set_viewport&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* set_viewport) (GtkPlotPC *pc,
+                       gdouble w, gdouble h);</pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>w,h</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="gsave" id="gsave"></a>The &quot;gsave&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* gsave) (GtkPlotPC *pc);</pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="grestore" id="grestore"></a>The &quot;grestore&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* grestore) (GtkPlotPC *pc);</pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="clip" id="clip"></a>The &quot;clip&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* clip) (GtkPlotPC *pc,
+               const GdkRectangle *area); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+>
+                <td
+align="RIGHT"
+valign="TOP"
+>area</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="clip_mask" id="clip_mask"></a>The &quot;clip_mask&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* clip_mask) (GtkPlotPC *pc,
+                    gdouble x,
+                    gdouble y,
+                    const GdkBitmap *mask); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+>
+                <td
+align="RIGHT"
+valign="TOP"
+>mask</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="set_color" id="set_color"></a>The &quot;set_color&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* set_color) (GtkPlotPC *pc,
+                    const GdkColor *color);</pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="set_lineattr" id="set_lineattr"></a>The &quot;set_lineattr&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* set_lineattr) (GtkPlotPC *pc,
+                       gfloat line_width,
+                       GdkLineStyle line_style,
+                       GdkCapStyle cap_style,
+                       GdkJoinStyle join_style);</pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>line_width</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>line_style</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>cap_style</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+>
+                <td
+align="RIGHT"
+valign="TOP"
+>join_style</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="set_dash" id="set_dash"></a>The &quot;set_dash&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* set_dash) (GtkPlotPC *pc,
+                   gdouble offset_, 
+                   gdouble *values,
+                   gint num_values);
+</pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>offset</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>values</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>num_values</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="draw_point" id="draw_point"></a>The &quot;draw_point&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* draw_point) (GtkPlotPC *pc,
+                     gdouble x, gdouble y); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="draw_line" id="draw_line"></a>The &quot;draw_line&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* draw_line) (GtkPlotPC *pc,
+                    gdouble x1, gdouble y1,
+                    gdouble x2, gdouble y2);</pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>x1,y1</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+>
+                <td
+align="RIGHT"
+valign="TOP"
+>x2,y2</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="draw_lines" id="draw_lines"></a>The &quot;draw_lines&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* draw_lines) (GtkPlotPC *pc,
+                     GtkPlotPoint *points,
+                     gint numpoints); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>points</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>numpoints</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="draw_rectangle" id="draw_rectangle"></a>The &quot;draw_rectangle&quot; 
+          signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* draw_rectangle) (GtkPlotPC *pc,
+                         gboolean filled,
+                         gdouble x, gdouble y,
+                         gdouble width,
+                         gdouble height);
+ </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>filled</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>width,height</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="draw_polygon" id="draw_polygon"></a>The &quot;draw_polygon&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* draw_polygon) (GtkPlotPC *pc,
+                       gboolean filled,
+                       GtkPlotPoint *points,
+                       gint numpoints);</pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>filled</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>points</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>numpoints</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="draw_circle" id="draw_circle"></a>The &quot;draw_circle&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> <pre>void (* draw_circle) (GtkPlotPC *pc,
+                      gboolean filled,
+                      gdouble x, gdouble y,
+                      gdouble size); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>filled</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>size</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="draw_ellipse" id="draw_ellipse"></a>The &quot;draw_ellipse&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td height="76"
+> <pre>void (* draw_ellipse) (GtkPlotPC *pc,
+                       gboolean filled,
+                       gdouble x, gdouble y,
+                       gdouble width, 
+                       gdouble height); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>filled</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>width,height</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="set_font" id="set_font"></a>The &quot;set_font&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td height="76"
+> <pre>void (* set_font) (GtkPlotPC *pc,
+                   GtkPSFont *psfont,
+                   gint height); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>psfont</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>height</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="draw_string" id="draw_string"></a>The &quot;draw_string&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td height="76"
+> <pre>void (* draw_string) (GtkPlotPC *pc,
+                      gint x, gint y,
+                      gint angle,
+                      const GdkColor *fg,
+                      const GdkColor *bg,
+                      gboolean transparent,
+                      gint border,
+                      gint border_space,
+                      gint border_width,
+                      gint shadow_width,
+                      const gchar *font,
+                      gint height,
+                      GtkJustification just,
+                      const gchar *text); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>angle</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>fg,bg</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>transparent</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>border</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>border_space</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>border_width</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>shadow_width</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>font</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>height</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>just</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+>
+                <td
+align="RIGHT"
+valign="TOP"
+>text</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <h3
+><a name="draw_pixmap" id="draw_pixmap"></a>The &quot;draw_pixmap&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td height="76"
+> <pre>void (* draw_pixmap) (GtkPlotPC *pc,
+                      GdkPixmap *pixmap,
+                      GdkBitmap *mask,
+                      gint xsrc, gint ysrc,
+                      gint xdest, gint ydest,
+                      gint width, 
+                      gint height, 
+                      gdouble scale_x, 
+                      gdouble scale_y); </pre></td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>pixmap</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>mask</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>xsrc,ysrc</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>xdest,ydest</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>width,height</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+align="RIGHT"
+valign="TOP"
+>scale_x,scale_y</td
+>
+                <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <p>&nbsp;</p>
+        <h2>DETAILS</h2>
+        <table width="100%" border="1" cellpadding="0" cellspacing="0" bgcolor="#CAF7E0">
+          <tr bordercolor="#000000"> 
+            <td width="15%" align="left" valign="top"><pre><a name="GtkPlotPoint"></a>struct _GtkPlotPoint</pre></td>
+            <td width="85%" align="left" valign="top"><pre>{<br>  gdouble x, y;<br>}; </pre></td>
+          </tr>
+          <tr bordercolor="#000000"> 
+            <td width="15%" align="left" valign="top"><pre><a name="GtkPlotPC"></a>struct _GtkPlotPC</pre></td>
+            <td width="85%" align="left" valign="top"><pre>{<br>   GtkObject object;<br>   gdouble width, height; /* viewport */<br>   GdkColor color;<br>   gint init_count;<br>}; </pre></td>
+          </tr>
+        </table>
+        <p>&nbsp; </p>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+></div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+>
+</BODY
+></HTML
+>

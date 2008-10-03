@@ -1,0 +1,1112 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-ToggleCombo</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<H1
+><A
+NAME="GTKTOGGLECOMBO"
+>GtkToggleCombo</A
+></H1
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <p><b>GtkToggleCombo</b> - toggle combo widget for gtk+ </p>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top"> 
+      <td bgcolor="D6E8FF"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF"><pre><a href="#gtk_toggle_combo_get_type">gtk_toggle_combo_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void);</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>GtkWidget*</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_toggle_combo_new">gtk_toggle_combo_new</a>        </pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(gint nrows, gint ncols); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_toggle_combo_construct">gtk_toggle_combo_construct</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre><a href="#STRUCT">GtkToggleCombo</a> *combo, gint nrows, gint ncols);</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>gint</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_toggle_combo_get_nrows">gtk_toggle_combo_get_nrows</a> </pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre><a href="#STRUCT">GtkToggleCombo</a> *combo)</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>gint</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_toggle_combo_get_ncols">gtk_toggle_combo_get_ncols</a> </pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre><a href="#STRUCT">GtkToggleCombo</a> *combo)</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_toggle_combo_select">gtk_toggle_combo_select</a> </pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(<a href="#gtk_toggle_combo_get_selection">GtkToggleCombo</a> *combo,gint row, gint col);</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_toggle_combo_get_selection">gtk_toggle_combo_get_selection</a> </pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(<a href="#STRUCT">GtkToggleCombo</a> *combo, gint *row, gint *col)</pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+> GtkObject<br>   +----GtkWidget<br>         +----GtkContainer<br>               +----GtkBox<br>                     +----GtkHBox<br>                           +----GtkCombo<br>                                 +-----GtkToggleCombo</PRE
+>
+      </TD
+></TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&#13;  &quot;default_flag&quot;               gboolean             : Read / Write
+</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+>&quot;changed&quot;   void        user_function      (GtkToggleCombo  *toggle_combo, gint row, gint col,
+                                             gpointer user_data);  </PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+><font face="Arial, Helvetica, sans-serif">A <A
+HREF="#STRUCT"
+>GtkToggleCombo</A
+> is a GtkCombo which will remain 'pressed-in' when clicked. Clicking again will 
+    cause the toggle combo to return to it's normal state.<br>
+    A toggle combo is created by calling either <A
+HREF="#gtk_toggle_combo_new"
+>gtk_toggle_combo_new</A
+>() <br>
+    The number of rows/columns may be find out by calling gtk_toggle_combo_get_nrows() 
+    or gtk_toggle_combo_get_ncols()<br>
+    A combo row may be selected with gtk_toggle_combo_select() .The current selection 
+    is returned by gtk_toggle_combo_get_selection()</font></h4
+>
+  <P
+>&nbsp;</P
+>
+  </DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h2
+>Details<br>
+      <br>
+      <A
+NAME="STRUCT"
+></A
+>struct GtkToggleCombo</h2
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD bgcolor="#FFFFCC"
+> 
+          <pre>struct _GtkToggleCombo {
+           GtkComboBox toggle_combo;
+           gint default_flag:1;
+           gint nrows;
+           gint ncols;
+           gint row;
+           gint column;
+           GtkWidget ***button;
+           GtkWidget *table;
+           GtkWidget *custom_button;
+           }; </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>The <A
+HREF="#STRUCT"
+>GtkToggleCombo</A
+> struct contains private data and should be manipulated using the functions below.<br>
+      You should access only the entry and list fields directly </P
+>
+  </DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_toggle_combo_get_type" id="gtk_toggle_combo_get_type"></a>gtk_toggle_combo_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+>
+        <TD
+> <pre>GtkType gtk_toggle_combo_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+>
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&#13;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+  <p>&nbsp;</p>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+>
+<H3
+><a name="gtk_toggle_combo_new"></a>gtk_toggle_combo_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>GtkWidget* gtk_toggle_combo_new (void);</pre></TD
+>
+</TR
+></TABLE
+>
+    <P
+>Creates a new toggle combo.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new toggle combo. &#13;</TD
+>
+        </TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+>
+    <h3><A
+NAME="gtk_toggle_combo_construct"
+></A
+>gtk_toggle_combo_construct () </h3>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>void gtk_toggle_combo_construct (<a href="#STRUCT">GtkToggleCombo</a> *combo,gint nrows, gint ncols);</pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000000"
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>combo</I
+></TT
+></TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a GtkToggleCombo from gtk_toggle_combo_new()</TD
+>
+        </TR
+>
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>nrows</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>number of rows</TD
+>
+        </TR
+>
+        <TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>ncols</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>number of columns</TD
+>
+        </TR
+>
+        </TBODY
+> 
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+>
+    <h3><A
+NAME="gtk_toggle_combo_get_nrows"
+></A
+>gtk_toggle_combo_get_nrows () </h3>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <PRE
+CLASS="PROGRAMLISTING"
+>gint gtk_toggle_combo_get_nrows(GtkToggleCombo *combo);</PRE
+></TD
+></TR
+></TABLE
+>
+    <P
+>Determines the number of columns from combo.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>combo</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a GtkToggleCombo</TD
+>
+        </TR
+><TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>Returns</I
+></TT
+></TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>numberr of rows in combo</TD
+>
+        </TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_toggle_combo_get_ncols"
+></a
+>gtk_toggle_combo_get_ncols ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre
+class="PROGRAMLISTING"
+>gint gtk_toggle_combo_get_ncols(GtkToggleCombo *combo); </pre
+>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Determines the number of columns from combo.</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tbody
+> 
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>combo</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkToggleCombo</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>Returns</i
+></tt
+></td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>number of columnsin combo</td
+>
+        </tr
+>
+        </tbody
+>
+      </table
+>
+    </div
+>
+    <br>
+  </DIV
+>
+  <HR><DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <h3
+><a
+name="gtk_toggle_combo_select"
+></a
+>gtk_toggle_combo_select ()</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> <pre>void gtk_toggle_combo_select(GtkToggleCombo *combo,gint row, gint col);</pre></td
+>
+        </tr
+>
+      </table
+>
+      <p
+>Selects the cell(row,col) from combo .</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+          <tbody
+> 
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>combo</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkToggleCombo</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>row</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>row number</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>col</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+> olumn number</td
+>
+          </tr
+>
+          </tbody
+> 
+        </table
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+  <br>
+  <HR><DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <h3
+><a
+name="gtk_toggle_combo_get_selection"
+></a
+> gtk_toggle_combo_get_selection()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void gtk_toggle_combo_get_selection (GtkToggleCombo *combo,gint *row, gint *col);</pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Returns the row and column of the selected cell in *row,*col. <br>
+          </p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tbody
+> 
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>combo</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkToggleCombo</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>row</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>gint pointer </td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>col</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+> gint pointer</td
+>
+              </tr
+>
+              </tbody
+> 
+            </table
+>
+          </div
+>
+          <p>&nbsp;</p>
+        </div
+>
+      </div
+>
+      
+    </DIV
+>
+  </DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<H2
+>Args</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+>
+    <DL
+> 
+      <DT
+>&quot;<tt>default_flag</tt>&quot; (gboolean : Read / Write)</DT
+>
+      <DD
+> 
+        <P
+>What does this means?</P
+>
+      </DD
+>
+      <DT
+>&nbsp;</DT
+>
+    </DL
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<H2
+>Signals</H2
+><DIV
+CLASS="REFSECT2"
+>
+    <H3
+>The &quot;changed&quot; signal</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>&quot;changed&quot; void user_function (GtkToggleCombo *toggle_combo, gint row, gint col, gpointer user_data);</pre></TD
+>
+</TR
+></TABLE
+>
+    <P
+>Should be connected if you wish to perform an action whenever the <A
+HREF="#STRUCT"
+>GtkToggleCombo</A
+>'s state is changed.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000000"
+>
+        <TBODY
+> 
+        <TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>toggle_combo</I
+></TT
+>&nbsp;:</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the object which received the signal.&#13;</TD
+></TR
+><TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>user_data</I
+></TT
+>&nbsp;:</TD
+><TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>user data set when the signal handler was connected.</TD
+></TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+>
+<H2
+>See Also</H2
+><P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+>
+    <DL
+> 
+      <DT
+>GtkCombo</DT
+>
+      <DD
+> 
+        <P
+>a text entry field with a dropdown list.</P
+>
+      </DD
+>
+      <DT
+><BR
+CLEAR="all">
+        <BR>
+      </DT
+>
+    </DL
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

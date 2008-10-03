@@ -1,0 +1,647 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-charselection</TITLE
+><DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<H1
+>Gtkcharselection</H1
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <p>Gtkcharselection - character selection dialog for gtk+ </p>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top"> 
+      <td bgcolor="D6E8FF"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF"><pre><a href="#gtk_char_selection_get_type">gtk_char_selection_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>GtkWidget*</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_char_selection_new">gtk_char_selection_new</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(void); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_char_selection_set_selection">gtk_char_selection_set_selection</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkCharSelection *charsel, <br>gint selection);</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>gint</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_char_selection_get_selection">gtk_char_selection_get_selection</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkCharSelection *charsel); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+>No signals</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <p
+><font size="6">Description</font></p
+>
+  <p
+><font face="Arial, Helvetica, sans-serif" size="4">Char selection is a widget 
+    which contains all the characters in a font.<br>
+    Connecting a callback to the ok button of the widget you get the selected 
+    char. <br>
+    </font><br>
+    <font size="6">Screenshot</font><br>
+    <br>
+    <img src="pics/gtk_charsel.png" width="832" height="320"> <br>
+    <br>
+    <br>
+    <font size="6">Details</font><br>
+  </p
+>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td bgcolor="#FFFFCC"> 
+        <pre>struct _GtkCharSelection
+         {
+         GtkWindow window;
+         GtkFontCombo *font_combo;
+         GtkTable *table;
+         GtkToggleButton *button[256];
+         gint selection;
+         GtkWidget *ok_button;
+         GtkWidget *cancel_button;
+         GtkWidget *action_area; 
+         };
+       </pre>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<DIV
+CLASS="REFSECT2"
+></DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_char_selection_get_type" id="gtk_char_selection_get_type"></a>gtk_char_selection_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre
+CLASS="PROGRAMLISTING"
+>GtkType gtk_char_selection_get_type (void); </pre
+> </TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+>
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+  <p>&nbsp;</p>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_char_selection_new"></a>gtk_char_selection_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre
+CLASS="PROGRAMLISTING"
+>GtkWidget* gtk_char_selection_new (void); </pre
+>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Create a new char selection widget</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new char selection widget</TD
+>
+        </TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+>
+  <br>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><A
+NAME="gtk_char_selection_set_selection"
+></A
+>gtk_char_selection_set_selection () </h3>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> 
+          <pre>void gtk_char_selection_set_selection (GtkCharSelection *charsel, gint selection); </pre>
+        </TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>Set selection (choose a character from the list).<br>
+      0 is left,upper corner;<br>
+      256 is right, down corner.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000000"
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>charsel</I
+></TT
+></TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>char selection widget</TD
+>
+        </TR
+>
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>selection</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the selection number<br>
+            &gt;256 =&gt; ignore</TD
+>
+        </TR
+>
+        </TBODY
+> 
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><A
+NAME="gtk_char_selection_get_selection"
+></A
+>gtk_char_selection_get_selection () </h3>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>gint gtk_char_selection_get_selection (GtkCharSelection *charsel); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Get the current selection.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <tr bordercolor="#000000"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>charsel</i
+></tt
+></td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>Returns</I
+></TT
+></TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+        </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td bgcolor="#D8F8D8"> 
+        <pre>#include &lt;gtk/gtk.h&gt;
+#include &lt;gdk/gdk.h&gt;
+#include &lt;glib.h&gt;
+#include &quot;gtkcharsel.h&quot;
+
+GtkWidget *charsel;
+
+void quit ()
+{
+gtk_main_quit();
+}
+void   ok_clicked(GtkWidget *widget, gpointer data)
+{
+     GtkCharSelection *charsel;
+     charsel = GTK_CHAR_SELECTION(data);
+     g_print(&quot;%d\n&quot;,charsel-&gt;selection);
+ }
+
+int main(int argc, char *argv[]) 
+{
+    gtk_init(&amp;argc, &amp;argv);
+    charsel=gtk_char_selection_new(); gtk_signal_connect (GTK_OBJECT (charsel),  &quot;destroy&quot;,    GTK_SIGNAL_FUNC (quit), NULL);
+     
+/*
+    gtk_signal_connect (GTK_OBJECT (GTK_CHAR_SELECTION(charsel)-&gt;ok_button),  &quot;clicked&quot;,
+                                       GTK_SIGNAL_FUNC (ok_clicked), charsel);
+ */
+
+  /*
+    gtk_char_selection_set_selection(GTK_CHAR_SELECTION(charsel), 25);
+  */
+
+     gtk_widget_show(charsel);
+     gtk_main();
+     return(0);
+}
+       </pre>
+      </td>
+    </tr>
+  </table>
+  <BR
+CLEAR="all">
+  <BR>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

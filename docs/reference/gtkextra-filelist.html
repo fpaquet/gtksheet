@@ -1,0 +1,1337 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-filelist</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3>Gtkfilelist - gtkfilelist widget for gtk+ </h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_file_list_get_type">gtk_file_list_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget* </pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_file_list_new">gtk_file_list_new</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>guint icon_width, <br>gint mode,<br>const gchar *path); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_file_list_construct">gtk_file_list_construct</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkFileList *file_list,
+guint icon_width,
+gint mode,
+const gchar *path);</pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_file_list_set_filter">gtk_file_list_set_filter</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkFileList *file_list, <br> const gchar *filter); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top" height="33"> <pre>gboolean</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top" height="33"> 
+        <pre><a href="#gtk_file_list_open_dir">gtk_file_list_open_dir</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF" height="33"> <pre>(GtkFileList *file_list, <br>const gchar *path); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gchar*</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_file_list_get_path">gtk_file_list_get_path</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkFileList *file_list); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gchar*</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_file_list_get_filename">gtk_file_list_get_filename</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>((GtkFileList *file_list); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gint</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_file_list_get_filetype">gtk_file_list_get_filetype</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkFileList *file_list); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gint</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_file_list_add_type">gtk_file_list_add_type</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkFileList *file_list,<br>const gchar **pixmap_data); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_file_list_add_type_filter">gtk_file_list_add_type_filter</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkFileList *file_list,<br>gint type,<br>const gchar *filter); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+>&nbsp;</TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+>No signals</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+><font face="Arial, Helvetica, sans-serif">It is a GtkIconList subclass that displays 
+    the contents of a given directory using fancy icons for different types of 
+    files </font></h4
+>
+  <h2
+><br>
+    Details</h2
+>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top" bgcolor="#FFFFCC"> 
+      <td width="19%"> 
+        <pre
+>struct _GtkFileList
+       {
+       GtkIconList iconlist;
+       gint sort_mode;
+       gchar *filter;
+       gboolean show_folders;
+       gboolean show_hidden;
+       gchar *path;
+       GList *pixmaps;
+       GList *types;
+       gint ntypes;
+       }; </pre
+>
+      </td>
+      <td width="24%"> 
+        <pre>struct _GtkFileListItem
+         {
+         gchar *file_name;
+         gint type;
+         gint is_dir;
+         gint is_link;
+         };
+       </pre>
+      </td>
+      <td width="24%"> 
+        <pre>enum 
+         {
+         GTK_FILE_LIST_FOLDER,
+         GTK_FILE_LIST_FILE,
+         GTK_FILE_LIST_HTML,
+         GTK_FILE_LIST_TEXT,
+         GTK_FILE_LIST_DOC,
+         GTK_FILE_LIST_PS,
+         GTK_FILE_LIST_PDF,
+         GTK_FILE_LIST_C,
+         GTK_FILE_LIST_CPP,
+         GTK_FILE_LIST_H,
+         GTK_FILE_LIST_F,
+         GTK_FILE_LIST_JAVA,
+         GTK_FILE_LIST_EXEC,
+         GTK_FILE_LIST_IMG,
+         GTK_FILE_LIST_ARCH,
+         GTK_FILE_LIST_PKG,
+         GTK_FILE_LIST_DEB,
+         GTK_FILE_LIST_RPM,
+         GTK_FILE_LIST_CAT,
+         GTK_FILE_LIST_SOUND,
+         GTK_FILE_LIST_MOVIE,
+         GTK_FILE_LIST_CORE,
+         }; </pre>
+      </td>
+      <td width="33%"> 
+        <pre>enum
+           {
+           GTK_FILE_LIST_SORT_NAME,
+           GTK_FILE_LIST_SORT_TYPE,
+           }; </pre>
+        <pre>&quot;Mode&quot; argument</pre>
+      </td>
+    </tr>
+  </table>
+  <h2
+>Screenshot</h2
+>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td width="40%"><img src="pics/gtk_filelist_new.jpg" width="578" height="430"></td>
+      <td width="60%"><img src="pics/gtk_filelist_tree.jpg" width="608" height="431"></td>
+    </tr>
+  </table>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_file_list_get_type" id="gtk_file_list_get_type"></a> gtk_file_list_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_file_list_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp; </P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+  <h2
+>&nbsp;</h2
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_file_list_new"></a> gtk_file_list_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>GtkWidget* gtk_file_list_new (guint icon_width, gint mode, const gchar *path); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Create a newfile list widget.<br>
+      Remark for the 2nd open file window you must use: gtk_icon_file_selection_show_tree(GTK_ICON_FILESEL(filesel), 
+      TRUE);<br>
+    </P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>icon width</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the width of the icon</TD
+>
+        </TR
+>
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>mode</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>GTK_FILE_LIST_SORT_NAME,<br>
+            GTK_FILE_LIST_SORT_TYPE</TD
+>
+        </TR
+>
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>path</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the pah to the files that will be open in filelist</TD
+>
+        </TR
+>
+        <TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the filelist widget</TD
+>
+        </TR
+>
+        </TBODY
+> 
+      </TABLE
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <P
+> </P
+>
+    </DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_file_list_construct"
+></A
+>gtk_file_list_construct ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> 
+          <pre>void gtk_file_list_construct (GtkFileList *file_list,
+                              guint icon_width,
+                              gint mode,
+                              const gchar *path); </pre>
+        </TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>file_list</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the file_list widget</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>icon width</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the width of the icon</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>mode</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_FILE_LIST_SORT_NAME,<br>
+          GTK_FILE_LIST_SORT_TYPE</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>path</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the pah to the files that will be open in filelist</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <P
+></P
+></DIV
+></DIV
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_file_list_set_filter"
+></a
+>gtk_file_list_set_filter ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_file_list_set_filter (GtkFileList *file_list, 
+                               const gchar *filter); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Set a filter for the files show in filelist.</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+        <tbody
+> 
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>file_list</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr
+>
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>filter</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        </tbody
+> 
+      </table
+>
+    </div
+>
+  </div
+>
+  <p><img src="pics/gtk_filelist_filter.jpg" width="577" height="429"></p>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_file_list_open_dir"
+></A
+>gtk_file_list_open_dir ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>gboolean gtk_file_list_open_dir (GtkFileList *file_list, 
+                                const gchar *path); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Open directory path in file list</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="27"
+>file_list</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP" height="27"
+>file list widget</td
+>
+        </tr
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>path</I
+></TT
+></TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>path of the files to be shown in filelist</TD
+>
+        </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_file_list_get_path"
+></a
+>gtk_file_list_get_path ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>gchar* gtk_file_list_get_path (GtkFileList *file_list); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Get the path of the files shown in filelist</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>file_list</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>file list widget</td
+>
+        </tr
+>
+        <tbody
+> </tbody
+> 
+      </table
+>
+    </div
+>
+    <br>
+  </DIV
+>
+  <HR><DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <h3
+><a
+name="gtk_file_list_get_filename"
+></a
+>gtk_file_list_get_filename ()</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>gchar* gtk_file_list_get_filename (GtkFileList *file_list); </pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p>Get the name of the selected file in filelist</p>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>file_list</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>file list widget</td
+>
+          </tr
+>
+          <tbody
+> </tbody
+> 
+        </table
+>
+      </div
+>
+      <br>
+    </DIV
+>
+  </DIV
+>
+  <HR><DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <h3
+><a
+name="gtk_file_list_get_filetype"
+></a
+> gtk_file_list_get_filetype()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+>
+                <pre>gint gtk_file_list_get_filetype (GtkFileList *file_list); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Get the file type of the selected file in filelist<br>
+          </p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>file_list</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>file list widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>The file type(gint)<br>
+                  Look at Details(struct _GtkFileList)</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_file_list_add_type"
+></a
+> gtk_file_list_add_type()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>gint gtk_file_list_add_type (GtkFileList *file_list,
+                             const gchar **pixmap_data); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Add a file type to the filelist structure .</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>file_list</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>file list widget</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pixmap_data</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the asociated pixmap for the filetype</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+>
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the number of the filetypes in the filelist structure</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_file_list_add_type_filter"
+></a
+> gtk_file_list_add_type_filter()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_file_list_add_type_filter(GtkFileList *file_list,
+                                   gint type,
+                                   const gchar *filter); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Add a filtered file type to the filelist structure .<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>file_list</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>file list widget</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>type</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>Look at Details(struct _GtkFileList)</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>filter</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the filter applied to the type</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <p><br>
+          </p>
+          <p><br>
+            <BR
+CLEAR="all">
+            <BR>
+          </p>
+        </div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

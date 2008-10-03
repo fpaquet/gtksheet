@@ -1,0 +1,5289 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-PlotCanvas</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3> Gtkplotcanvas -<font face="Courier New, Courier, mono"> gtkplot canvas 
+    widget</font></h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_canvas_get_type">gtk_plot_canvas_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_canvas_child_get_type">gtk_plot_canvas_child_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget* </pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_new">gtk_plot_canvas_new</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(gint width, gint height,
+gdouble magnification); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_construct">gtk_plot_canvas_construct</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+gint width, gint height,
+gdouble magnification); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_set_pc">gtk_plot_canvas_set_pc</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+GtkPlotPC *pc); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_paint">gtk_plot_canvas_paint</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_refresh">gtk_plot_canvas_refresh</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_freeze">gtk_plot_canvas_freeze</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_thaw">gtk_plot_canvas_thaw</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_grid_set_visible">gtk_plot_canvas_grid_set_visible</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+gboolean visible); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_grid_set_step">gtk_plot_canvas_grid_set_step</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+gdouble step); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_grid_set_attributes">gtk_plot_canvas_grid_set_attributes</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+GtkPlotLineStyle style,
+gint width,
+const GdkColor *color); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_add_plot">gtk_plot_canvas_add_plot</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *plot_canvas, 
+GtkPlot *plot, 
+gdouble x, gdouble y); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_set_active_plot">gtk_plot_canvas_set_active_plot</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *plot_canvas,
+GtkPlot *plot); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_cancel_action">gtk_plot_canvas_cancel_action</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *plot_canvas); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_unselect">gtk_plot_canvas_unselect</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *plot_canvas); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkPlot *</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_get_active_plot">gtk_plot_canvas_get_active_plot</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkPlotData *</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_get_active_data">gtk_plot_canvas_get_active_data</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas);</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gint</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_get_active_point">gtk_plot_canvas_get_active_point</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+gdouble *x, gdouble *y); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top" height="18"> 
+        <pre>GtkPlotCanvasChild *</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top" height="18"> 
+        <pre><a href="#gtk_plot_canvas_get_active_item">gtk_plot_canvas_get_active_item</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF" height="18"> <pre>(GtkPlotCanvas *canvas); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_set_size">gtk_plot_canvas_set_size</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+gint width, gint height); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_set_magnification">gtk_plot_canvas_set_magnification</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+gdouble magnification); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_set_background">gtk_plot_canvas_set_background</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+const GdkColor *background); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_get_pixel">gtk_plot_canvas_get_pixel</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *plot_canvas,
+gdouble px, gdouble py,
+gint *x, gint *y); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_get_position">gtk_plot_canvas_get_position</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *plot_canvas,
+gint x, gint y,
+gdouble *px, gdouble *py); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkPlotCanvasChild *</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_put_text">gtk_plot_canvas_put_text</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+gdouble x,
+gdouble y,
+const gchar *font,
+gint height,
+gint angle,
+const GdkColor *fg,
+const GdkColor *bg,
+gboolean transparent,
+GtkJustification justification, const gchar *text); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gboolean</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_remove_child">gtk_plot_canvas_remove_child</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+GtkPlotCanvasChild *child); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkPlotCanvasChild *</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_put_line">gtk_plot_canvas_put_line</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+gdouble x1, gdouble y1,
+gdouble x2, gdouble y2,
+GtkPlotLineStyle style,
+gfloat width,
+const GdkColor *color,
+GtkPlotCanvasArrow arrow_mask); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkPlotCanvasChild * </pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_put_rectangle">gtk_plot_canvas_put_rectangle</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+gdouble x1, gdouble y1,
+gdouble x2, gdouble y2,
+GtkPlotLineStyle style,
+gfloat width,
+const GdkColor *fg,
+const GdkColor *bg,
+GtkPlotBorderStyle border,
+gboolean fill); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkPlotCanvasChild *</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_put_ellipse">gtk_plot_canvas_put_ellipse</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+gdouble x1, gdouble y1,
+gdouble x2, gdouble y2,
+GtkPlotLineStyle style,
+gfloat width,
+const GdkColor *fg,
+const GdkColor *bg,
+gboolean fill); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkPlotCanvasChild *</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_put_pixmap">gtk_plot_canvas_put_pixmap</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+GdkPixmap *pixmap,
+gdouble x1, gdouble y1);
+       </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_line_set_attributes">gtk_plot_canvas_line_set_attributes</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvasChild *child,
+GtkPlotLineStyle style,
+gfloat width,
+const GdkColor *color,
+GtkPlotCanvasArrow mask); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_rectangle_set_attributes">gtk_plot_canvas_rectangle_set_attributes</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvasChild *child,
+GtkPlotLineStyle style,
+gfloat width,
+const GdkColor *fg,
+const GdkColor *bg,
+GtkPlotBorderStyle border,
+gboolean fill); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_ellipse_set_attributes">gtk_plot_canvas_ellipse_set_attributes</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvasChild *child,
+GtkPlotLineStyle style,
+gfloat width,
+const GdkColor *fg,
+const GdkColor *bg,
+gboolean fill); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkPlotCanvasChild *</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_child_new">gtk_plot_canvas_child_new</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvasType type); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_put_child">gtk_plot_canvas_put_child</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+GtkPlotCanvasChild *child,
+gdouble x1, gdouble y1,
+gdouble x2, gdouble y2); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_child_move">gtk_plot_canvas_child_move</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+GtkPlotCanvasChild *child,
+gdouble x1, gdouble y1); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_child_move_resize">gtk_plot_canvas_child_move_resize</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvas *canvas,
+GtkPlotCanvasChild *child,
+gdouble x1, gdouble y1,
+gdouble x2, gdouble y2); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_child_set_selection">gtk_plot_canvas_child_set_selection</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvasChild *child,
+GtkPlotCanvasSelection selection); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_canvas_child_set_selection_mode">gtk_plot_canvas_child_set_selection_mode</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotCanvasChild *child,<br>GtkPlotCanvasSelectionMode mode); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+>
+        <pre>&nbsp;</pre>
+      </TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+><a href="#select_item">&quot;select_item&quot; signal;</a><br><a href="#move_item">&quot;move_item&quot; signal;</a><br><a href="#resize_item">&quot;resize_item&quot; signal;</a><br>&quot;<a href="#delete_item">delete_item</a>&quot; signal;<br>&quot;<a href="#select_region">select_region</a>&quot; signal;<br>&quot;<a href="#changed">changed</a>&quot; signal;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+><font face="Arial, Helvetica, sans-serif" size="3">GtkPlotCanvas is a GtkFixed 
+    subclass and allows to DnD plots, points, and child objects (text, axis titles). 
+    <br>
+    You can move them or resize your plots dragging with the mouse! </font></h4
+>
+  <p></p>
+  <h2
+><br>
+    Details</h2
+>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top" bgcolor="#FFFFCC"> 
+      <td width="19%"> 
+        <pre><a href="#GtkPlotCanvas">struct GtkPlotCanvas;</a>
+<a href="#GtkPlotCanvasChild">struct GtkPlotCanvasChild;</a>
+<a href="#GtkPlotCanvasLine">struct GtkPlotCanvasLine;</a>
+<a href="#GtkPlotCanvasRectangle">struct GtkPlotCanvasRectangle;</a>
+<a href="#GtkPlotCanvasEllipse">struct GtkPlotCanvasEllipse; </a></pre>
+      </td>
+    </tr>
+  </table>
+  <h2
+><br>
+    Screenshot<br>
+  </h2
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_canvas_get_type" id="gtk_plot_canvas_get_type"></a> gtk_plot_canvas_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_plot_canvas_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+><br>
+    </P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+  <br>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_canvas_child_get_type" id="gtk_plot_canvas_child_get_type"></a> 
+      gtk_plot_canvas_child_get_type ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_plot_canvas_child_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+><br>
+    </P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+  <h2
+>&nbsp;</h2
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_canvas_new"></a> gtk_plot_canvas_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>GtkWidget* gtk_plot_canvas_new (gint width, gint height,
+                                gdouble magnification); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Create a new GtkPlotCanvas widget.<br>
+    </P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>width,height</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>width , height of the new canvas</TD
+>
+        </TR
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>magnification</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>magnification of the canvas</TD
+>
+        </TR
+>
+        <TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the canvas widget</TD
+>
+        </TR
+>
+        </TBODY
+> 
+      </TABLE
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <P
+> </P
+>
+    </DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_canvas_construct"
+></A
+>gtk_plot_canvas_construct ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> 
+          <pre>void gtk_plot_canvas_construct (GtkPlotCanvas *canvas,
+                                gint width, gint height,
+                                gdouble magnification); </pre>
+        </TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>Initialize a GtkPlotCanvas structure with the given arguments.</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width,height</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>width,height of the canvas widget</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>magnification</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>magnification of the canvas widget</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+      
+    <DIV
+CLASS="INFORMALTABLE"
+> </DIV
+>
+  </DIV
+>
+  <div
+class="REFSECT2"
+>
+<div
+class="INFORMALTABLE"
+>
+      <p
+></p
+>
+      <p
+></p
+>
+      </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_canvas_set_pc"
+></a
+>gtk_plot_canvas_set_pc ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_plot_canvas_set_pc (GtkPlotCanvas *canvas,
+                            GtkPlotPC *pc); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Set the printing context for the respective canvas widget</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pc</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>printing context</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_canvas_paint"
+></a
+>gtk_plot_canvas_paint ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_plot_canvas_paint (GtkPlotCanvas *canvas); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Paint the canvas(update the changes)</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_canvas_refresh"
+></a
+>gtk_plot_canvas_refresh ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_plot_canvas_refresh (GtkPlotCanvas *canvas); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Refresh the canvas</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_canvas_freeze"
+></a
+>gtk_plot_canvas_freeze ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_plot_canvas_freeze (GtkPlotCanvas *canvas); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Freeze the canvas(no more drawing on it)</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_canvas_thaw"
+></a
+>gtk_plot_canvas_thaw ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_plot_canvas_thaw (GtkPlotCanvas *canvas); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Thaw(unfreeze) the widget</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_canvas_grid_set_visible"
+></a
+>gtk_plot_canvas_grid_set_visible ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_plot_canvas_grid_set_visible(GtkPlotCanvas *canvas,
+                                      gboolean visible); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Set the visibility of the canvas grid,</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>visible</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>  <br>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+> </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_canvas_grid_set_step"
+></a
+>gtk_plot_canvas_grid_set_step ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_plot_canvas_grid_set_step (GtkPlotCanvas *canvas,
+                                    gdouble step); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Set the step of the canvas grid</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>step</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>step of the grid</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+    <br>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_canvas_grid_set_attributes"
+></a
+>gtk_plot_canvas_grid_set_attributes ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_plot_canvas_grid_set_attributes(GtkPlotCanvas *canvas,
+                                         GtkPlotLineStyle style,
+                                         gint width,
+                                         const GdkColor *color); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Set the attributes of the canvas grid</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="27"
+>style</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="27"
+>GTK_PLOT_LINE_NONE ,<br>
+          GTK_PLOT_LINE_SOLID ,<br>
+          GTK_PLOT_LINE_DOTTED ,<br>
+          GTK_PLOT_LINE_DASHED ,<br>
+          GTK_PLOT_LINE_DOT_DASH ,<br>
+          GTK_PLOT_LINE_DOT_DOT_DASH ,<br>
+          GTK_PLOT_LINE_DOT_DASH_DASH </td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>width of the grid line</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>color of the grid line</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+    <br>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_canvas_add_plot"
+></a
+>gtk_plot_canvas_add_plot ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_plot_canvas_add_plot (GtkPlotCanvas *plot_canvas, 
+                               GtkPlot *plot, 
+                               gdouble x, gdouble y); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Add a plot to the canvas</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot_canvas</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>plot to be added</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the coordinates of the plot</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+  </div
+>
+  <DIV
+CLASS="REFSECT2"
+></DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="INFORMALTABLE"
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_set_active_plot"
+></a
+>gtk_plot_canvas_set_active_plot ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_set_active_plot (GtkPlotCanvas *plot_canvas,
+                                      GtkPlot *plot); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Set the active(current) plot.</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot_canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot widget</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_cancel_action"
+></a
+>gtk_plot_canvas_cancel_action ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_cancel_action (GtkPlotCanvas *plot_canvas); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot_canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_unselect"
+></a
+>gtk_plot_canvas_unselect ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_unselect (GtkPlotCanvas *plot_canvas); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Unselect the current plot in the canvas.</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot_canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_get_active_plot"
+></a
+>gtk_plot_canvas_get_active_plot ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>GtkPlot * gtk_plot_canvas_get_active_plot (GtkPlotCanvas *canvas); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Get the active plot in the canvas</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot widget</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_get_active_data"
+></a
+>gtk_plot_canvas_get_active_data ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>GtkPlotData * gtk_plot_canvas_get_active_data (GtkPlotCanvas *canvas); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_get_active_point"
+></a
+>gtk_plot_canvas_get_active_point ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>gint gtk_plot_canvas_get_active_point (GtkPlotCanvas *canvas,
+                                       gdouble *x, gdouble *y); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_get_active_item"
+></a
+>gtk_plot_canvas_get_active_item ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>GtkPlotCanvasChild * gtk_plot_canvas_get_active_item (GtkPlotCanvas *canvas);                    </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_set_size"
+></a
+>gtk_plot_canvas_set_size ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_set_size (GtkPlotCanvas *canvas,
+                               gint width, gint height); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Set the size of the canvas</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width,height</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>width,height of the canvas</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_set_magnification"
+></a
+>gtk_plot_canvas_set_magnification ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_set_magnification (GtkPlotCanvas *canvas,
+                                        gdouble magnification); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Set the magnification factor of the standard.</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>magnification</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>magnification factor</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_set_background"
+></a
+>gtk_plot_canvas_set_background ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_set_background (GtkPlotCanvas *canvas,
+                                     const GdkColor *background); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Set the background color of the canvas</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>background</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>background color of the canvas</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_get_pixel"
+></a
+>gtk_plot_canvas_get_pixel ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_get_pixel (GtkPlotCanvas *plot_canvas,
+                                gdouble px, gdouble py,
+                                gint *x, gint *y); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot_canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>px,py</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_get_position"
+></a
+>gtk_plot_canvas_get_position ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_get_position (GtkPlotCanvas *plot_canvas,
+                                   gint x, gint y,
+                                   gdouble *px, gdouble *py); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot_canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>px,py</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_put_text"
+></a
+>gtk_plot_canvas_put_text ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>GtkPlotCanvasChild *  gtk_plot_canvas_put_text (GtkPlotCanvas *canvas,
+                                                gdouble x,
+                                                gdouble y,
+                                                const gchar *font,
+                                                gint height,
+                                                gint angle,
+                                                const GdkColor *fg,
+                                                const GdkColor *bg,
+                                                gboolean transparent,
+                                                GtkJustification justification, <br>                                                const gchar *text); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Insert text in the canvas</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>coordinates where text is inserted</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>font</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>text font</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>height</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>font height</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>angle</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>font angle</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>fg,bg</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>foregound(text),background color</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>transparent</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE otr FALSE</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="27"
+>justification</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP" height="27"
+>GTK_JUSTIFY_LEFT, RIGHT, CENTER</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>text</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>text string</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+> </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_remove_child"
+></a
+>gtk_plot_canvas_remove_child ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>gboolean gtk_plot_canvas_remove_child (GtkPlotCanvas *canvas,
+                                       GtkPlotCanvasChild *child); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Remove a child widget from canvas</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>child</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas child widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_put_line"
+></a
+>gtk_plot_canvas_put_line ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>GtkPlotCanvasChild * gtk_plot_canvas_put_line (GtkPlotCanvas *canvas,
+                                               gdouble x1, gdouble y1, 
+                                               gdouble x2, gdouble y2,
+                                               GtkPlotLineStyle style,
+                                               gfloat width,
+                                               const GdkColor *color,
+                                               GtkPlotCanvasArrow arrow_mask); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Draw a line in the canvas.</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x1,y1</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>initial point</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x2,y2</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>final point</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_LINE_NONE ,<br>
+                    GTK_PLOT_LINE_SOLID ,<br>
+                    GTK_PLOT_LINE_DOTTED ,<br>
+                    GTK_PLOT_LINE_DASHED ,<br>
+                    GTK_PLOT_LINE_DOT_DASH ,<br>
+                    GTK_PLOT_LINE_DOT_DOT_DASH ,<br>
+                    GTK_PLOT_LINE_DOT_DASH_DASH </td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>width of the line</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>color of the line</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>arrow_mask</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_ARROW_NONE <br>
+                    GTK_PLOT_ARROW_ORIGIN<br>
+                    GTK_PLOT_ARROW_END </td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_put_rectangle"
+></a
+>gtk_plot_canvas_put_rectangle ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>GtkPlotCanvasChild * gtk_plot_canvas_put_rectangle (GtkPlotCanvas *canvas,
+                                                    gdouble x1, gdouble y1,
+                                                    gdouble x2, gdouble y2,
+                                                    GtkPlotLineStyle style,
+                                                    gfloat width,
+                                                    const GdkColor *fg,
+                                                    const GdkColor *bg,
+                                                    GtkPlotBorderStyle border,
+                                                    gboolean fill); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Insert a rectangle in canvas</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x1,y1</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>up-left point</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x2,y2</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>right-bottom point</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_LINE_NONE ,<br>
+                    GTK_PLOT_LINE_SOLID ,<br>
+                    GTK_PLOT_LINE_DOTTED ,<br>
+                    GTK_PLOT_LINE_DASHED ,<br>
+                    GTK_PLOT_LINE_DOT_DASH ,<br>
+                    GTK_PLOT_LINE_DOT_DOT_DASH ,<br>
+                    GTK_PLOT_LINE_DOT_DASH_DASH </td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>width of the rectangle line</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>border</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_BORDER_NONE ,<br>
+                    GTK_PLOT_BORDER_LINE ,<br>
+                    GTK_PLOT_BORDER_SHADOW , </td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>fill</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>fg,bg</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>foreground,backfround color of the rectangle</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_put_ellipse"
+></a
+>gtk_plot_canvas_put_ellipse ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>GtkPlotCanvasChild * gtk_plot_canvas_put_ellipse (GtkPlotCanvas *canvas,
+                                                  gdouble x1, gdouble y1,
+                                                  gdouble x2, gdouble y2,
+                                                  GtkPlotLineStyle style,
+                                                  gfloat width,
+                                                  const GdkColor *fg,
+                                                  const GdkColor *bg,
+                                                  gboolean fill); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Insert an ellipse in the canvas</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x1,y1</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>Initial point </td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x2,y2</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>final point</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_LINE_NONE ,<br>
+                    GTK_PLOT_LINE_SOLID ,<br>
+                    GTK_PLOT_LINE_DOTTED ,<br>
+                    GTK_PLOT_LINE_DASHED ,<br>
+                    GTK_PLOT_LINE_DOT_DASH ,<br>
+                    GTK_PLOT_LINE_DOT_DOT_DASH ,<br>
+                    GTK_PLOT_LINE_DOT_DASH_DASH </td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>width of the ellipse line</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>fg,bg</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>foreground,background color of the ellipse</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>fill</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_put_pixmap"
+></a
+>gtk_plot_canvas_put_pixmap ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>GtkPlotCanvasChild * gtk_plot_canvas_put_pixmap (GtkPlotCanvas *canvas,
+                                                 GdkPixmap *pixmap,
+                                                 gdouble x1, gdouble y1);
+                   </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Insert a pixmap in the canvas</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pixmap</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>pixmap widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x1,y1</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>corrdinates of insertion</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_line_set_attributes"
+></a
+>gtk_plot_canvas_line_set_attributes ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_line_set_attributes (GtkPlotCanvasChild *child,
+                                          GtkPlotLineStyle style,
+                                          gfloat width,
+                                          const GdkColor *color,
+                                          GtkPlotCanvasArrow mask); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Set the attributes of the lines inserted in the canvas</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvasChild widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_LINE_NONE ,<br>
+                    GTK_PLOT_LINE_SOLID ,<br>
+                    GTK_PLOT_LINE_DOTTED ,<br>
+                    GTK_PLOT_LINE_DASHED ,<br>
+                    GTK_PLOT_LINE_DOT_DASH ,<br>
+                    GTK_PLOT_LINE_DOT_DOT_DASH ,<br>
+                    GTK_PLOT_LINE_DOT_DASH_DASH </td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>line width</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>line color</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>mask</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_ARROW_NONE <br>
+                    GTK_PLOT_ARROW_ORIGIN<br>
+                    GTK_PLOT_ARROW_END </td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_rectangle_set_attributes"
+></a
+>gtk_plot_canvas_rectangle_set_attributes ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_rectangle_set_attributes (GtkPlotCanvasChild *child,
+                                               GtkPlotLineStyle style,
+                                               gfloat width,
+                                               const GdkColor *fg,
+                                               const GdkColor *bg,
+                                               GtkPlotBorderStyle border,
+                                               gboolean fill); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Set the attributes of the rectangles inserted in the canvas</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>child</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvasChild widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_LINE_NONE ,<br>
+                    GTK_PLOT_LINE_SOLID ,<br>
+                    GTK_PLOT_LINE_DOTTED ,<br>
+                    GTK_PLOT_LINE_DASHED ,<br>
+                    GTK_PLOT_LINE_DOT_DASH ,<br>
+                    GTK_PLOT_LINE_DOT_DOT_DASH ,<br>
+                    GTK_PLOT_LINE_DOT_DASH_DASH </td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>rectangle line width</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>fg,bg</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>foreground,background color of the rectangle</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>border</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_BORDER_NONE ,<br>
+                    GTK_PLOT_BORDER_LINE ,<br>
+                    GTK_PLOT_BORDER_SHADOW , </td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>fill</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_ellipse_set_attributes"
+></a
+>gtk_plot_canvas_ellipse_set_attributes ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_ellipse_set_attributes (GtkPlotCanvasChild *child,
+                                             GtkPlotLineStyle style,
+                                             gfloat width,
+                                             const GdkColor *fg,
+                                             const GdkColor *bg,
+                                             gboolean fill); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Set the attributes of the ellipses inserted in the canvas</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>child</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvasChild widget</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_LINE_NONE ,<br>
+                    GTK_PLOT_LINE_SOLID ,<br>
+                    GTK_PLOT_LINE_DOTTED ,<br>
+                    GTK_PLOT_LINE_DASHED ,<br>
+                    GTK_PLOT_LINE_DOT_DASH ,<br>
+                    GTK_PLOT_LINE_DOT_DOT_DASH ,<br>
+                    GTK_PLOT_LINE_DOT_DASH_DASH </td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>ellipse &quot;line&quot; width</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>fg,bg</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>foreground,background color of the ellipse</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>fill</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_child_new"
+></a
+>gtk_plot_canvas_child_new ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>GtkPlotCanvasChild * gtk_plot_canvas_child_new (GtkPlotCanvasType type); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>type</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_put_child"
+></a
+>gtk_plot_canvas_put_child ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_put_child (GtkPlotCanvas *canvas,
+                                GtkPlotCanvasChild *child,
+                                gdouble x1, gdouble y1,
+                                gdouble x2, gdouble y2); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>child</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x1,y1</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x2,y2</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_child_move"
+></a
+>gtk_plot_canvas_child_move ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_child_move (GtkPlotCanvas *canvas,
+                                 GtkPlotCanvasChild *child,
+                                 gdouble x1, gdouble y1); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>child</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x1,y1</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_child_move_resize"
+></a
+>gtk_plot_canvas_child_move_resize ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_child_move_resize (GtkPlotCanvas *canvas,
+                                        GtkPlotCanvasChild *child,
+                                        gdouble x1, gdouble y1,
+                                        gdouble x2, gdouble y2); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>child</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x1,y1</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x2,y2</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_child_set_selection"
+></a
+>gtk_plot_canvas_child_set_selection ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_child_set_selection (GtkPlotCanvasChild  *child,
+                                          GtkPlotCanvasSelection selection); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>child</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>selection</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_child_set_selection_mode"
+></a
+>gtk_plot_canvas_child_set_selection_mode ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_child_set_selection_mode (GtkPlotCanvasChild *child,
+                                               GtkPlotCanvasSelectionMode mode); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>child</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>mode</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+            </div
+>
+            <br>
+          </div
+>
+        </div
+>
+        <p>&nbsp;</p>
+        <h2
+>Signals</h2
+>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a name="select_item"></a>The &quot;select_item&quot; signal</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> 
+                <pre>gboolean (*select_item) (GtkPlotCanvas *canvas,
+                         GdkEventButton *event,
+                         GtkPlotCanvasChild *item); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tbody
+> 
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>canvas</i
+></tt
+></td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>event</i
+></tt
+></td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <h3
+><br>
+          <a name="move_item"></a>The &quot;move_item&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> 
+              <pre>gboolean (*move_item) (GtkPlotCanvas *canvas,
+                       GtkPlotCanvasChild *item,
+                       gdouble new_x, gdouble new_y); </pre>
+            </td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+> 
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>canvas</i
+></tt
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>item</i
+></tt
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>new_x,new_y</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            </tbody
+> 
+          </table
+>
+        </div
+>
+        <h3
+><br>
+          <a name="resize_item"></a>The &quot;resize_item&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> 
+              <pre>gboolean (*resize_item) (GtkPlotCanvas *canvas,
+                         GtkPlotCanvasChild *item,
+                         gdouble new_width, gdouble new_height); </pre>
+            </td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+> 
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>canvas</i
+></tt
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>item</i
+></tt
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>new_width,new_height</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            </tbody
+> 
+          </table
+>
+        </div
+>
+        <h3
+><br>
+          <a name="delete_item"></a>The &quot;delete_item&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> 
+              <pre>gboolean (*delete_item) (GtkPlotCanvas *canvas,
+                        GtkPlotCanvasChild *item);</pre>
+            </td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+> 
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>canvas</i
+></tt
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>item</i
+></tt
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            </tbody
+> 
+          </table
+>
+        </div
+>
+        <h3
+><br>
+          <a name="select_region"></a>The &quot;select_region&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> 
+              <pre>void (*select_region) (GtkPlotCanvas *canvas,
+                       gdouble xmin, gdouble ymin, 
+                       gdouble xmax, gdouble ymax); </pre>
+            </td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+> 
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>canvas</i
+></tt
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>xmin,ymin</i
+></tt
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+>
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>xmax,ymax</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            </tbody
+> 
+          </table
+>  <br>
+        </div
+>
+        <h3
+><a name="changed"></a>The &quot;changed&quot; signal</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> 
+              <pre>void (*changed) (GtkPlotCanvas *canvas); </pre>
+            </td
+>
+          </tr
+>
+        </table
+>
+        <p
+>&nbsp;</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+            <tbody
+> 
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>canvas</i
+></tt
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            </tbody
+> 
+          </table
+>
+        </div
+>
+        <p><BR
+CLEAR="all">
+        </p>
+        <h2>DETAILS<BR>
+        </h2>
+        <table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#CAF7E0">
+          <tr bordercolor="#000000"> 
+            <td width="15%" align="left" valign="top"> 
+              <pre><a name="GtkPlotCanvas"></a>struct _GtkPlotCanvas</pre>
+            </td>
+            <td width="85%" align="left" valign="top"> 
+              <pre>{<br>  GtkFixed fixed;<br>  guint16 flags;<br>  guint state;<br>  guint freeze_count;<br>  gint pixmap_width, pixmap_height;<br>  gint width, height;<br>  gdouble magnification;<br>  <br>  gboolean show_grid;<br>  gdouble grid_step;<br>  GtkPlotLine grid;<br>  GtkPlotCanvasAction action;<br>  GdkPixmap *pixmap;<br>  GdkColor background;<br>  GtkPlot *active_plot;<br>  GtkPlotData *active_data;<br>  gint active_point;<br>  gint active_lpoint, active_rpoint;<br>  gdouble active_x, active_y;<br>  GtkPlotCanvasChild active_item;<br>  GtkPlotCanvasPos drag_point;<br>  gint drag_x, drag_y;<br>  gint pointer_x, pointer_y;<br>  GdkRectangle drag_area;<br>  GList *plots;<br>  GList *childs;<br>  gint num_plots;<br>  GdkCursor *cursor;<br>  GtkPlotPC *pc;<br>}</pre>
+            </td>
+          </tr>
+          <tr bordercolor="#000000"> 
+            <td width="15%" align="left" valign="top"> 
+              <pre><a name="GtkPlotCanvasChild"></a>struct _GtkPlotCanvasChild</pre>
+            </td>
+            <td width="85%" align="left" valign="top"> 
+              <pre> {<br>  gdouble rx1, rx2, ry1, ry2;<br>  gint min_width, min_height;<br>  GdkRectangle allocation;<br>  guint state;<br>  GtkPlotCanvasType type;<br>  GtkPlotCanvasFlag flags;<br>  GtkPlotCanvasSelection selection;<br>  GtkPlotCanvasSelectionMode mode;<br>  gpointer data;<br>  void (*draw_child) (GtkPlotCanvas *canvas, GtkPlotCanvasChild *child);<br>}; </pre>
+            </td>
+          </tr>
+          <tr bordercolor="#000000"> 
+            <td width="15%" align="left" valign="top"> 
+              <pre><a name="GtkPlotCanvasLine"></a>struct _GtkPlotCanvasLine</pre>
+            </td>
+            <td width="85%" align="left" valign="top"> 
+              <pre>{
+GtkPlotLine line;
+GtkPlotCanvasArrow arrow_mask;
+gint arrow_length;
+gint arrow_width;
+GtkPlotSymbolStyle arrow_style;
+}; </pre>
+            </td>
+          </tr>
+          <tr bordercolor="#000000"> 
+            <td width="15%" align="left" valign="top"> 
+              <pre><a name="GtkPlotCanvasRectangle"></a>struct _GtkPlotCanvasRectangle</pre>
+            </td>
+            <td width="85%" align="left" valign="top"> 
+              <pre>{
+GtkPlotLine line;
+gboolean filled;
+GtkPlotBorderStyle border;
+gint shadow_width;
+GdkColor bg;
+}; </pre>
+            </td>
+          </tr>
+          <tr bordercolor="#000000"> 
+            <td width="15%" align="left" valign="top"> 
+              <pre><a name="GtkPlotCanvasEllipse"></a>struct _GtkPlotCanvasEllipse</pre>
+            </td>
+            <td width="85%" align="left" valign="top"> 
+              <pre>{
+GtkPlotLine line;
+gboolean filled;
+GdkColor bg;
+};
+             </pre>
+            </td>
+          </tr>
+        </table>
+        <h2>&nbsp; </h2>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+></div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+>
+</BODY
+></HTML
+>

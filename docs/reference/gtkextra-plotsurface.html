@@ -1,0 +1,4045 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-PlotSurface</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3> Gtkplotsurface - 3d scientific plots widget for gtk+ </h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkType</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_type">gtk_plot_surface_get_type</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(void);
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget*</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_new">gtk_plot_surface_new</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(void); 
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget*</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_new_function">gtk_plot_surface_new_function</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotFunc3D function); 
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_construct_function">gtk_plot_surface_construct_function</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>GtkPlotSurface *surface,
+GtkPlotFunc3D function);</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_color">gtk_plot_surface_set_color</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>GtkPlotSurface *data,
+GdkColor *color); 
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_shadow">gtk_plot_surface_set_shadow</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+GdkColor *color); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_grid_foreground">gtk_plot_surface_set_grid_foreground</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+GdkColor *foreground); 
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_grid_background">gtk_plot_surface_set_grid_background</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+GdkColor *background); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_grid_visible">gtk_plot_surface_set_grid_visible</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gboolean visible</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gboolean</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_grid_visible">gtk_plot_surface_get_grid_visible</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data); 
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_mesh_visible">gtk_plot_surface_set_mesh_visible</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gboolean visible); 
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gboolean</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_mesh_visible">gtk_plot_surface_get_mesh_visible</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data); 
+      </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_light">gtk_plot_surface_set_light</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gdouble x, 
+gdouble y, 
+gdouble z); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_ambient">gtk_plot_surface_set_ambient</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gdouble ambient); 
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" height="81" align="left" valign="top" bgcolor="D6E8FF">void</td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_use_height_gradient">gtk_plot_surface_use_height_gradient</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data, 
+gboolean use_gradient); 
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_transparent">gtk_plot_surface_set_transparent</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gboolean transparent); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_points">gtk_plot_surface_set_points</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gdouble *x, 
+gdouble *y,
+gdouble *z,
+gdouble *dx, 
+gdouble *dy,
+gdouble *dz,
+gint nx, gint ny); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top" height="18"> 
+        <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top" height="18"> 
+        <pre><a href="#gtk_plot_surface_get_points">gtk_plot_surface_get_points</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF" height="18"> <pre>(GtkPlotSurface *data,
+gdouble **x, 
+gdouble **y,
+gdouble **z,
+gdouble **dx, 
+gdouble **dy,
+gdouble **dz,
+gint *nx, gint *ny); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_x">gtk_plot_surface_set_x</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gdouble *x); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_y">gtk_plot_surface_set_y</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gdouble *y); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_z">gtk_plot_surface_set_z</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gdouble *z); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_dx">gtk_plot_surface_set_dx</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gdouble *dx); </pre></td>
+    </tr>
+    <tr> 
+      <td height="33" align="left" valign="top" bgcolor="D6E8FF"> 
+<pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_dy">gtk_plot_surface_set_dy</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gdouble *dy); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_dz">gtk_plot_surface_set_dz</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gdouble *dz); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_x">gtk_plot_surface_get_x</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data, 
+gint *nx); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_y">gtk_plot_surface_get_y</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data, 
+gint *ny); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_z">gtk_plot_surface_get_z</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gint *nx, gint *ny);</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_dx">gtk_plot_surface_get_dx</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_dy">gtk_plot_surface_get_dy</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_dz">gtk_plot_surface_get_dz</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_nx">gtk_plot_surface_set_nx</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gint nx); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_ny">gtk_plot_surface_set_ny</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gint ny); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gint</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_nx">gtk_plot_surface_get_nx</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>gint</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_ny">gtk_plot_surface_get_ny</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_xstep">gtk_plot_surface_set_xstep</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gdouble xstep); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_set_ystep">gtk_plot_surface_set_ystep</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data,
+gdouble ystep); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_xstep">gtk_plot_surface_get_xstep</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_surface_get_ystep">gtk_plot_surface_get_ystep</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotSurface *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_surface_build_mesh">gtk_plot_surface_build_mesh</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotSurface *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_surface_recalc_nodes">gtk_plot_surface_recalc_nodes</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotSurface *data); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+>
+        <pre>&nbsp;</pre>
+      </TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+>* &quot;<a href="#draw_triangle">draw_triangle</a>&quot; signal</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+>&nbsp;</h4
+>
+  <h2
+><br>
+    Details</h2
+>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top" bgcolor="#FFFFCC"> 
+      <td width="19%"> <pre>struct _<a href="#GtkPlotSurface">GtkPlotSurface</a> 
+      </pre></td>
+    </tr>
+  </table>
+  <h2
+><br>
+    Screenshot<br>
+  </h2
+>
+  <h2
+>&nbsp;</h2
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_surface_get_type" id="gtk_plot_surface_get_type"></a> gtk_plot_surface_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>GtkType gtk_plot_surface_get_type (void); 
+</pre></TD
+>
+      </TR
+></TABLE
+>
+    <P
+>&nbsp; </P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>width,height</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>width , height of the new canvas</TD
+>
+        </TR
+>
+        <TBODY
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <P
+> </P
+>
+    </DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_surface_new" id="gtk_plot_surface_new"
+></A
+>gtk_plot_surface_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkWidget* gtk_plot_surface_new (void); 
+</pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+      
+    <DIV
+CLASS="INFORMALTABLE"
+> </DIV
+>
+  </DIV
+>
+  <div
+class="REFSECT2"
+>
+<div
+class="INFORMALTABLE"
+>
+      <p
+></p
+>
+      <p
+></p
+>
+      </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_surface_new_function" id="gtk_plot_surface_new_function"
+></a
+>gtk_plot_surface_new_function ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>GtkWidget* gtk_plot_surface_new_function (GtkPlotFunc3D function); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>function</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_surface_construct_function" id="gtk_plot_surface_construct_function"
+></a
+>gtk_plot_surface_construct_function ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_surface_construct_function (GtkPlotSurface *surface,
+                                          GtkPlotFunc3D function); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%" height="29"
+align="RIGHT"
+valign="TOP"
+>surface</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+>
+        <td height="29"
+align="RIGHT"
+valign="TOP"
+>function</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+> </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_surface_set_color" id="gtk_plot_surface_set_color"
+></a
+>gtk_plot_surface_set_color ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_surface_set_color (GtkPlotSurface *data,
+                                 GdkColor *color); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_surface_set_shadow" id="gtk_plot_surface_set_shadow"
+></a
+>gtk_plot_surface_set_shadow ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_surface_set_shadow (GtkPlotSurface *data,
+                                  GdkColor *color); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_surface_set_grid_foreground" id="gtk_plot_surface_set_grid_foreground"
+></a
+>gtk_plot_surface_set_grid_foreground ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_surface_set_grid_foreground (GtkPlotSurface *data,
+                                           GdkColor *foreground); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>foreground</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+    <br>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+> </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_surface_set_grid_background" id="gtk_plot_surface_set_grid_background"
+></a
+>gtk_plot_surface_set_grid_background ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_surface_set_grid_background (GtkPlotSurface *data,
+                                           GdkColor *background); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>background</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+    <br>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_surface_set_grid_visible" id="gtk_plot_surface_set_grid_visible"
+></a
+>gtk_plot_surface_set_grid_visible ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_surface_set_grid_visible (GtkPlotSurface *data,
+                                        gboolean visible); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="27"
+>visible</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="27"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+    <br>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_surface_get_grid_visible" id="gtk_plot_surface_get_grid_visible"
+></a
+>gtk_plot_surface_get_grid_visible ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>gboolean gtk_plot_surface_get_grid_visible (GtkPlotSurface *data); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <DIV
+CLASS="REFSECT2"
+></DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="INFORMALTABLE"
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_set_mesh_visible" id="gtk_plot_surface_set_mesh_visible"
+></a
+>gtk_plot_surface_set_mesh_visible ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_surface_set_mesh_visible (GtkPlotSurface *data,
+                                        gboolean visible); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>visible</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_get_mesh_visible" id="gtk_plot_surface_get_mesh_visible"
+></a
+>gtk_plot_surface_get_mesh_visible ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gboolean gtk_plot_surface_get_mesh_visible (GtkPlotSurface *data); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_set_light" id="gtk_plot_surface_set_light"
+></a
+>gtk_plot_surface_set_light ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_surface_set_light (GtkPlotSurface *data,
+                                 gdouble x, 
+                                 gdouble y, 
+                                 gdouble z); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>x,y,z</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_set_ambient" id="gtk_plot_surface_set_ambient"
+></a
+>gtk_plot_surface_set_ambient ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_surface_set_ambient (GtkPlotSurface *data,
+                                   gdouble ambient); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>ambient</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_use_height_gradient" id="gtk_plot_surface_use_height_gradient"
+></a
+>gtk_plot_surface_use_height_gradient ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_surface_use_height_gradient (GtkPlotSurface *data, 
+                                           gboolean use_gradient); 
+</pre>
+                    </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>use_gradient</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_set_transparent" id="gtk_plot_surface_set_transparent"
+></a
+>gtk_plot_surface_set_transparent ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_surface_set_transparent(GtkPlotSurface *data,
+                                      gboolean transparent);
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>transparent</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_set_points" id="gtk_plot_surface_set_points"
+></a
+>gtk_plot_surface_set_points ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_surface_set_points (GtkPlotSurface *data,
+                                  gdouble *x, 
+                                  gdouble *y,
+                                  gdouble *z,
+                                  gdouble *dx, 
+                                  gdouble *dy,
+                                  gdouble *dz,
+                                  gint nx, gint ny); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y,z</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>dx,dy,dz</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>nx,ny</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_get_points" id="gtk_plot_surface_get_points"
+></a
+>gtk_plot_surface_get_points ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_surface_get_points (GtkPlotSurface *data,
+                                  gdouble **x, 
+                                  gdouble **y,
+                                  gdouble **z,
+                                  gdouble **dx, 
+                                  gdouble **dy,
+                                  gdouble **dz,
+                                  gint *nx, gint *ny); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>x,y,z</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>dx,dy,dz</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>nx,ny</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_set_x" id="gtk_plot_surface_set_x"
+></a
+>gtk_plot_surface_set_x ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_surface_set_x (GtkPlotSurface *data,
+                             gdouble *x); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <div
+class="REFSECT2"
+>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_surface_set_y" id="gtk_plot_surface_set_y"
+></a
+>gtk_plot_surface_set_y ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_surface_set_y (GtkPlotSurface *data,
+                             gdouble *y); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>y</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <div
+class="REFSECT2"
+>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_surface_set_z" id="gtk_plot_surface_set_z"
+></a
+>gtk_plot_surface_set_z ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_surface_set_z (GtkPlotSurface *data,
+                             gdouble *z); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>z</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <div
+class="REFSECT2"
+>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_surface_set_dx" id="gtk_plot_surface_set_dx"
+></a
+>gtk_plot_surface_set_x ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_surface_set_dx (GtkPlotSurface *data,
+                             gdouble *dx); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>dx</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+            <br>
+            </div
+>
+            <div
+class="REFSECT2"
+>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_surface_set_dy" id="gtk_plot_surface_set_dy"
+></a
+>gtk_plot_surface_set_dy ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_surface_set_dy (GtkPlotSurface *data,
+                             gdouble *dy); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>dy</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT2"
+> </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_set_dz" id="gtk_plot_surface_set_dz"
+></a
+>gtk_plot_surface_set_dz ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_surface_set_dz (GtkPlotSurface *data,
+                             gdouble *dz); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>dz</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_get_x" id="gtk_plot_surface_get_x"
+></a
+>gtk_plot_surface_get_x ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gdouble * gtk_plot_surface_get_x (GtkPlotSurface *data, 
+                                  gint *nx); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>nx</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <div
+class="REFSECT2"
+>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_surface_get_y" id="gtk_plot_surface_get_y"
+></a
+>gtk_plot_surface_get_y ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>gdouble * gtk_plot_surface_get_y (GtkPlotSurface *data, 
+                                  gint *ny); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>ny</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+            <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_get_z" id="gtk_plot_surface_get_z"
+></a
+>gtk_plot_surface_get_z ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gdouble * gtk_plot_surface_get_z (GtkPlotSurface *data,
+                                  gint *nx, gint *ny);
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>nx,ny</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_get_dx" id="gtk_plot_surface_get_dx"
+></a
+>gtk_plot_surface_get_dx ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gdouble * gtk_plot_surface_get_dx (GtkPlotSurface *data); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <div
+class="REFSECT2"
+> 
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_surface_get_dy" id="gtk_plot_surface_get_dy"
+></a
+>gtk_plot_surface_get_dy ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>gdouble * gtk_plot_surface_get_dy (GtkPlotSurface *data); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <div
+class="REFSECT2"
+>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_surface_get_dz" id="gtk_plot_surface_get_dz"
+></a
+>gtk_plot_surface_get_dz ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>gdouble * gtk_plot_surface_get_dz (GtkPlotSurface *data); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_set_nx" id="gtk_plot_surface_set_nx"
+></a
+>gtk_plot_surface_set_nx ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_surface_set_nx (GtkPlotSurface *data,
+                              gint nx);</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>nx</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+              <br>
+            </div
+>
+            <div
+class="REFSECT2"
+>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_surface_set_ny" id="gtk_plot_surface_set_ny"
+></a
+>gtk_plot_surface_set_ny ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_surface_set_ny (GtkPlotSurface *data,
+                              gint ny);</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>ny</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_get_nx" id="gtk_plot_surface_get_nx"
+></a
+>gtk_plot_surface_get_nx ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gint gtk_plot_surface_get_nx (GtkPlotSurface *data); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <div
+class="REFSECT2"
+>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_surface_get_ny" id="gtk_plot_surface_get_ny"
+></a
+>gtk_plot_surface_get_ny ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>gint gtk_plot_surface_get_ny (GtkPlotSurface *data); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_set_xstep" id="gtk_plot_surface_set_xstep"
+></a
+>gtk_plot_surface_set_xstep ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_surface_set_xstep (GtkPlotSurface *data,
+                                 gdouble xstep); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>xstep</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_set_ystep" id="gtk_plot_surface_set_ystep"
+></a
+>gtk_plot_surface_set_ystep ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_surface_set_ystep (GtkPlotSurface *data,
+                                 gdouble ystep); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>ystep</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_surface_get_xstep" id="gtk_plot_surface_get_xstep"
+></a
+>gtk_plot_surface_get_xstep ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gdouble gtk_plot_surface_get_xstep (GtkPlotSurface *data); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+          </div
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_surface_get_ystep" id="gtk_plot_surface_get_ystep"
+></a
+>gtk_plot_surface_get_ystep ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>gdouble gtk_plot_surface_get_ystep (GtkPlotSurface *data); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_surface_build_mesh" id="gtk_plot_surface_build_mesh"
+></a
+>gtk_plot_surface_build_mesh ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void gtk_plot_surface_build_mesh (GtkPlotSurface *data); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_surface_recalc_nodes" id="gtk_plot_surface_recalc_nodes"
+></a
+>gtk_plot_surface_recalc_nodes ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void gtk_plot_surface_recalc_nodes (GtkPlotSurface *data);</pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <p>&nbsp;</p>
+        <h2
+>Signals</h2
+>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a name="draw_triangle" id="draw_triangle"></a>The &quot;draw_triangle&quot; 
+            signal</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void (*draw_triangle) (GtkPlotSurface *surface, 
+                       GtkPlotDTtriangle *triangle,
+                        gint sign); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tbody
+> 
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>canvas</i
+></tt
+></td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>event</i
+></tt
+></td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <h3
+>&nbsp; </h3
+>
+        <h2>DETAILS<BR>
+        </h2>
+        <table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#CAF7E0">
+          <tr bordercolor="#000000"> 
+            <td width="15%" align="left" valign="top"> <pre><a name="GtkPlotSurface"></a>struct _GtkPlotSurface</pre></td>
+            <td width="85%" align="left" valign="top"> <pre>{<br>  GtkPlotData data;<br>  GdkColor color;<br>  GdkColor shadow;<br>  GdkColor grid_foreground;<br>  GdkColor grid_background;<br>  gboolean height_gradient;<br>  GtkPlotVector light;<br>  gdouble ambient;<br>  gint nx, ny;<br>  GtkPlotDT *dt;<br>  gboolean recalc_dt;<br>  gboolean show_grid;<br>  gboolean show_mesh;<br>  gboolean transparent;<br>  gdouble xstep, ystep;<br>  GtkPlotLine mesh_line;<br>}; 
+            </pre></td>
+          </tr>
+        </table>
+        <h2>&nbsp; </h2>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+></div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+>
+</BODY
+></HTML
+>

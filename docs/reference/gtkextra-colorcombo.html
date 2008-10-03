@@ -1,0 +1,1161 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-ColorCombo</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<H1
+><A
+>GtkColorCombo</A
+></H1
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <p><a
+name="GtkColorCombo"
+>GtkColorCombo</a
+> - color combo widget for gtk+ </p>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_color_combo_get_type">gtk_color_combo_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget*</pre></td>
+      <td width="19%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_color_combo_new">gtk_color_combo_new</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(void); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" height="40" align="left" valign="top"> <pre>GtkWidget*</pre></td>
+      <td width="19%" bgcolor="D6E8FF" height="40" align="left" valign="top"> 
+        <pre><a href="#gtk_color_combo_new_with_values">gtk_color_combo_new_with_values</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF" height="40"> <pre>(gint nrows, gint ncols,
+gchar **color_names); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" height="17" align="left" valign="top"> <pre>void</pre></td>
+      <td width="19%" bgcolor="D6E8FF" height="17" align="left" valign="top"> 
+        <pre><a href="#gtk_color_combo_construct">gtk_color_combo_construct</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF" height="17"> <pre>(GtkColorCombo *color_combo); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="19%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_color_combo_construct_with_values">gtk_color_combo_construct_with_values</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkColorCombo *color_combo,
+gint nrows, gint ncols,
+gchar **color_names); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gchar *</pre></td>
+      <td width="19%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_color_combo_get_color_at">gtk_color_combo_get_color_at</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkColorCombo *combo,
+gint row, gint col); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="19%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_color_combo_find_color">gtk_color_combo_find_color</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkColorCombo *color_combo,
+GdkColor *color, 
+gint *row, gint *col); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+> GtkObject<br>   +----GtkWidget<br>         +----GtkContainer<br>               +----GtkBox<br>                     +----GtkHBox<br>                           +----GtkCombo<br>                                 +-----GtkColorCombo</PRE
+>
+      </TD
+></TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <pre>void (*changed) (GtkColorCombo *color_combo,  gint selection, gchar *color_name); </pre>
+      </TD
+>
+    </TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td><font face="Arial, Helvetica, sans-serif" size="4">A GtkColorCombo is 
+        a GtkCOmbo which contains all kinds of colors.</font></td>
+    </tr>
+  </table>
+  <h2
+><br>
+    Details</h2
+>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td bgcolor="#FFFFCC"> 
+        <pre>struct _GtkColorCombo {
+         GtkComboBox color_combo;
+         gint default_flag:1;
+         gint nrows;
+         gint ncols;
+         gint row;
+         gint column;
+         GtkWidget ***button;
+         GtkWidget *table;
+         GtkWidget *custom_button;
+         gchar **color_name;
+         }; </pre>
+      </td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+  <p><font size="5">Screenshot</font></p>
+  <P
+><img src="pics/gtk_color_combo.jpg" width="267" height="230"></P
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="REFSECT2"
+></DIV
+>
+  <DIV
+CLASS="REFSECT2"
+></DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_color_combo_get_type" id="gtk_color_combo_get_type"></a>gtk_color_combo_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_color_combo_get_type (void);</pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+>
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+  <p>&nbsp;</p>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_color_combo_new"></a>gtk_color_combo_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> GtkWidget *gtk_color_combo_new (void); </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Creates a new color combo.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new color combo widget</TD
+>
+        </TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><A
+NAME="gtk_color_combo_new_with_values"
+></A
+>gtk_color_combo_new_with_values () </h3>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> 
+          <pre>GtkWidget *gtk_color_combo_new_with_values  (gint nrows, gint ncols,<br>                                             gchar **color_names); </pre>
+        </TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>Creates an user-defined color combo.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000000"
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>nrows</I
+></TT
+></TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>number of rows in color combo</TD
+>
+        </TR
+>
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>ncols</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>number of columns n color combo</TD
+>
+        </TR
+>
+        <TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>color_names</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>list with color names</TD
+>
+        </TR
+>
+        </TBODY
+> 
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><A
+NAME="gtk_color_combo_construct"
+></A
+>gtk_color_combo_construct () </h3>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>void gtk_color_combo_construct (GtkColorCombo *color_combo); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Initialize a color combo structure</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>color_combo</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+        </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_color_combo_construct_with_values"
+></a
+>gtk_color_combo_construct_with_values ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre
+class="PROGRAMLISTING"
+>void 	  gtk_color_combo_construct_with_values (GtkColorCombo *color_combo,<br>                                               gint nrows, gint ncols,<br>                                               gchar **color_names); </pre
+>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Initialize an user-defined color combo.</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tbody
+> 
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color_combo</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a color combo widget</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>nrows</i
+></tt
+></td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>number of rows in color combo</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>ncols</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>number of columns n color combo</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color_names</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>list with color names</td
+>
+        </tr
+>
+        </tbody
+> 
+      </table
+>
+    </div
+>
+    <br>
+  </DIV
+>
+  <HR><DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <h3
+><a
+name="gtk_color_combo_get_color_at"
+></a
+>gtk_color_combo_get_color_at ()</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>gchar *gtk_color_combo_get_color_at (GtkColorCombo *combo, gint row, gint col); </pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p
+>Return the name of the color at row,col in color combo .</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+          <tbody
+> 
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>combo</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a color combo widget</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>row</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>row number</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>col</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+> olumn number</td
+>
+          </tr
+>
+          </tbody
+> 
+        </table
+>
+      </div
+>
+      <br>
+    </DIV
+>
+  </DIV
+>
+  <HR><DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <h3
+><a
+name="gtk_toggle_combo_get_selection"
+></a
+> gtk_toggle_combo_get_selection()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> 
+                <pre>void gtk_color_combo_find_color (GtkColorCombo *color_combo,
+                                 GdkColor *color, 
+                                 gint *row, gint *col); ); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Find a color in color combo and store its combo coordinates in row,col<br>
+          </p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tbody
+> 
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>combo</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a color combo widget</td
+>
+              </tr
+>
+              <tr
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GdkColor to be found</td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>row</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>gint pointer </td
+>
+              </tr
+>
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>col</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+> gint pointer</td
+>
+              </tr
+>
+              </tbody
+> 
+            </table
+>
+          </div
+>
+          <p>&nbsp;</p>
+        </div
+>
+      </div
+>
+      
+    </DIV
+>
+  </DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<H2
+>Args</H2
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+>
+    <DL
+> 
+      <DT
+>&quot;<tt>default_flag</tt>&quot; (gboolean : Read / Write)</DT
+>
+      <DD
+> 
+        <P
+>What does this means?</P
+>
+      </DD
+>
+      <DT
+>&nbsp;</DT
+>
+    </DL
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<H2
+>Signals</H2
+><DIV
+CLASS="REFSECT2"
+>
+    <H3
+>The &quot;changed&quot; signal</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <PRE
+CLASS="PROGRAMLISTING"
+>void (*changed) (GtkColorCombo *color_combo,  gint selection, gchar *color_name); </PRE
+>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Should be connected if you wish to perform an action whenever the <A
+HREF="#STRUCT"
+>GtkColorCombo</A
+>'s state is changed.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000000"
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>color_combo</I
+></TT
+>&nbsp;:</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the object which received the signal.&#13;</TD
+>
+        </TR
+>
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>selection</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+        </TR
+>
+        <TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>color_name</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the name of the color</TD
+>
+        </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+>
+<H2
+>See Also</H2
+><P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+>
+    <DL
+> 
+      <DT
+>GtkCombo</DT
+>
+      <DD
+> 
+        <P
+>a text entry field with a dropdown list.</P
+>
+      </DD
+>
+      <DT
+><BR
+CLEAR="all">
+        <BR>
+      </DT
+>
+    </DL
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

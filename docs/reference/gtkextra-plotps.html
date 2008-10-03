@@ -1,0 +1,1317 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-plotps</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3> Gtkplotps - postscript driver </h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top"> 
+      <td width="7%" bgcolor="D6E8FF"> 
+<pre>GtkType</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_ps_get_type">gtk_plot_ps_get_type</a></pre></td>
+      <td width="74%" bgcolor="D6E8FF"> 
+        <pre> (void); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="7%" bgcolor="D6E8FF"> 
+<pre>GtkObject *</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_ps_new">gtk_plot_ps_new</a></pre></td>
+      <td width="74%" bgcolor="D6E8FF"> 
+        <pre>(const gchar *psname,
+gint orientation,
+gint epsflag,
+gint page_size,
+gdouble scalex,
+gdouble scaley); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="7%" bgcolor="D6E8FF"> 
+<pre>GtkObject * </pre></td>
+      <td width="19%" bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_ps_new_with_size">gtk_plot_ps_new_with_size</a></pre></td>
+      <td width="74%" bgcolor="D6E8FF"> 
+        <pre>(const gchar *psname,
+gint orientation,
+gint epsflag,
+gint units,
+gdouble width,
+gdouble height,
+gdouble scalex,
+gdouble scaley); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="7%" bgcolor="D6E8FF"> 
+<pre>void</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> 
+        <pre><a href="#gtk_plot_ps_construct_with_size">gtk_plot_ps_construct_with_size</a></pre></td>
+      <td width="74%" bgcolor="D6E8FF"> 
+        <pre>(GtkPlotPS *ps,
+const gchar *psname,
+gint orientation,
+gint epsflag,
+gint units,
+gdouble width,
+gdouble height,
+gdouble scalex,
+gdouble scaley); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td bgcolor="D6E8FF"><pre>void</pre></td>
+      <td bgcolor="D6E8FF"><pre><a href="#gtk_plot_ps_set_size">gtk_plot_ps_set_size</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotPS *ps,
+gint units,
+gdouble width,
+gdouble height);</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td bgcolor="D6E8FF"><pre>void</pre></td>
+      <td bgcolor="D6E8FF"><pre><a href="#gtk_plot_ps_set_scale">gtk_plot_ps_set_scale</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotPS *ps,
+gdouble scalex,
+gdouble scaley); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD height="48"
+> 
+<pre>&nbsp;</pre>
+      </TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> <pre>No signals</pre></TD
+>
+</TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+>&nbsp;</h4
+>
+  <h2
+><br>
+    Details</h2
+>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top" bgcolor="#FFFFCC"> 
+      <td width="19%"> <pre> struct  <a href="#GtkPlotPS">GtkPlotPS</a>; </pre></td>
+    </tr>
+  </table>
+  <h2
+><br>
+    Screenshot<br>
+  </h2
+>
+  <h2
+>&nbsp;</h2
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_ps_get_type" id="gtk_plot_ps_get_type"></a> gtk_plot_ps_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>GtkType gtk_plot_ps_get_type (void); </pre></TD
+>
+      </TR
+></TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+> </P
+>
+    </DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_ps_new" id="gtk_plot_ps_new"
+></A
+>gtk_plot_ps_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkObject *gtk_plot_ps_new (const gchar *psname,
+                            gint orientation,
+                            gint epsflag,
+                            gint page_size,
+                            gdouble scalex,
+                            gdouble scaley);</pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> <br>
+    </DIV
+>
+  </DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_ps_new_with_size" id="gtk_plot_ps_new_with_size"
+></A
+>gtk_plot_ps_new_with_size ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>GtkObject *gtk_plot_ps_new_with_size (const gchar *psname,
+                                      gint orientation,
+                                      gint epsflag,
+                                      gint units,
+                                      gdouble width,
+                                      gdouble height,
+                                      gdouble scalex,
+                                      gdouble scaley); </pre></TD
+>
+      </TR
+></TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr
+>
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <TBODY
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_plot_ps_construct" id="gtk_plot_ps_construct"
+></a
+>gtk_plot_ps_construct ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_ps_construct (GtkPlotPS *ps,
+                            const gchar *psname,
+                            gint orientation,
+                            gint epsflag,
+                            gint page_size,
+                            gdouble scalex,
+                            gdouble scaley); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+>
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tbody
+>
+        </tbody
+>
+      </table
+>
+    </div
+>
+    <DIV
+CLASS="REFSECT2"
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+        <P
+></P
+>
+      </DIV
+>
+    </DIV
+>
+    
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+></DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+></div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+> 
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_plot_ps_construct_with_size" id="gtk_plot_ps_construct_with_size"
+></a
+>gtk_plot_ps_construct_with_size ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_ps_construct_with_size (GtkPlotPS *ps,
+                                      const gchar *psname,
+                                      gint orientation,
+                                      gint epsflag,
+                                      gint units,
+                                      gdouble width,
+                                      gdouble height,
+                                      gdouble scalex,
+                                      gdouble scaley); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+          <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+        </tr
+>
+        <tbody
+>
+        </tbody
+>
+      </table
+>
+    </div
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT1"
+>
+    <DIV
+CLASS="REFSECT2"
+>
+      <DIV
+CLASS="REFSECT2"
+>
+        <DIV
+CLASS="INFORMALTABLE"
+>
+          <P
+></P
+>
+        </DIV
+>
+      </DIV
+>
+    </DIV
+>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <DIV
+CLASS="INFORMALTABLE"
+></DIV
+>
+    </DIV
+>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <DIV
+CLASS="INFORMALTABLE"
+> 
+        <div
+class="REFSECT2"
+> 
+          <div
+class="INFORMALTABLE"
+></div
+>
+        </div
+>
+      </DIV
+>
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT1"
+> 
+    <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="NAVFOOTER"
+> 
+    <HR>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <h3><a
+name="gtk_plot_ps_set_size" id="gtk_plot_ps_set_size"
+></a
+>gtk_plot_ps_set_size ()</h3>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> <pre>void gtk_plot_ps_set_size (GtkPlotPS *ps,
+                           gint units,
+                           gdouble width,
+                           gdouble height); </pre></td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp;</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tbody
+>
+          </tbody
+>
+        </table
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT1"
+>
+    <DIV
+CLASS="REFSECT2"
+>
+      <DIV
+CLASS="REFSECT2"
+>
+        <DIV
+CLASS="INFORMALTABLE"
+>
+          <P
+></P
+>
+        </DIV
+>
+      </DIV
+>
+    </DIV
+>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <DIV
+CLASS="INFORMALTABLE"
+></DIV
+>
+    </DIV
+>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <DIV
+CLASS="INFORMALTABLE"
+> 
+        <div
+class="REFSECT2"
+> 
+          <div
+class="INFORMALTABLE"
+></div
+>
+        </div
+>
+      </DIV
+>
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT1"
+> 
+    <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="NAVFOOTER"
+> 
+    <HR>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <h3><a
+name="gtk_plot_ps_set_scale" id="gtk_plot_ps_set_scale"
+></a
+>gtk_plot_ps_set_scale ()</h3>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> <pre>void gtk_plot_ps_set_scale (GtkPlotPS *ps,
+                            gdouble scalex,
+                            gdouble scaley); </pre></td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp;</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr bordercolor="#000033"
+> 
+            <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+            <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tbody
+>
+          </tbody
+>
+        </table
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+  <p>&nbsp;</p>
+  <h2>DETAILS</h2>
+  <table width="100%" border="1" cellpadding="0" cellspacing="0" bgcolor="#CAF7E0">
+    <tr bordercolor="#000000"> 
+      <td width="15%" align="left" valign="top"><pre><a name="GtkPlotPS"></a>struct _GtkPlotPS</pre></td>
+      <td width="85%" align="left" valign="top"><pre>{<br>   GtkPlotPC pc;<br>   FILE *psfile;<br>   gchar *psname;<br> <br>   gint orientation;<br>   gint epsflag;<br>   gint units;<br>   gint page_size;<br>   gint width, height;<br>   gint page_width;<br>   gint page_height;<br>   gdouble scalex, scaley;<br>   gboolean gsaved;<br>}; </pre></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+</BODY
+></HTML
+>

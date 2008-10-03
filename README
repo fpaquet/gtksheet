@@ -1,0 +1,25 @@
+General Information
+===================
+
+This library is GTK+extra vesion 0.99.0. It is a useful widget set 
+complementary to GTK+ for creating graphical interfaces for the X Windows 
+System. It is written in C and requires GTK+ version 1.2.x.
+
+The official web site is:
+  http://magnet.fsu.edu/~feiguin/gtk
+
+Mirrors:
+
+       Argentina:   http://www.ifir.edu.ar/grupos/~gtk
+
+
+Installation
+============
+
+See the file 'INSTALL'
+
+Documentation
+=============
+
+In preparation. Read the header files and test programs in the directory 
+./src for further information and examples.

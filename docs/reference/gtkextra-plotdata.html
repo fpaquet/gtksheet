@@ -1,0 +1,8059 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-PlotData</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3> Gtkplotdata - a GtkPlotData widget</h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top"> 
+      <td bgcolor="D6E8FF"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF"><pre><a href="#gtk_plot_data_get_type">gtk_plot_data_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void);</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>GtkWidget* </pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_data_new">gtk_plot_data_new</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(void);</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>GtkWidget* </pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_data_new_function">gtk_plot_data_new_function</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotFunc function); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_data_construct_function">gtk_plot_data_construct_function</a>
+      </pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+GtkPlotFunc function)</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>GtkWidget* </pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_data_new_iterator">gtk_plot_data_new_iterator</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotIterator iter, 
+gint npoints,
+guint16 iterator_mask); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_data_construct_iterator">gtk_plot_data_construct_iterator</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+GtkPlotIterator iter,
+gint npoints,
+guint16 iterator_mask); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td bgcolor="D6E8FF">&nbsp;</td>
+      <td bgcolor="D6E8FF">&nbsp;</td>
+      <td bgcolor="D6E8FF">&nbsp;</td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td bgcolor="D6E8FF">&nbsp;</td>
+      <td bgcolor="D6E8FF"><h2>Draw last n points</h2></td>
+      <td bgcolor="D6E8FF">&nbsp;</td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td bgcolor="D6E8FF">&nbsp;</td>
+      <td bgcolor="D6E8FF">&nbsp;</td>
+      <td bgcolor="D6E8FF">&nbsp;</td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_data_paint">gtk_plot_data_paint</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_data_update">gtk_plot_data_update</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_data_draw_points">gtk_plot_data_draw_points</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data, gint n); 
+</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_data_draw_symbol">gtk_plot_data_draw_symbol</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data, 
+gdouble x, gdouble y)</pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="10%" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF"> <pre><a href="#gtk_plot_data_set_points">gtk_plot_data_set_points</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gdouble *x, gdouble *y,
+gdouble *dx, gdouble *dy,
+gint num_points); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_points">gtk_plot_data_get_points</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gdouble **x, gdouble **y,
+gdouble **dx, gdouble **dy,
+gint *num_points); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_point">gtk_plot_data_get_point</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gint n,
+gdouble *x, gdouble *y,
+gdouble *z, gdouble *a,
+gdouble *dx, gdouble *dy,
+gdouble *dz, gdouble *da,
+gchar **label,
+gboolean *error); 
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_set_x">gtk_plot_data_set_x</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gdouble *x); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_set_y">gtk_plot_data_set_y</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gdouble *y); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_set_z">gtk_plot_data_set_z</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gdouble *z); 
+      </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_set_a">gtk_plot_data_set_a</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gdouble *z); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void
+      </pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_set_dx">gtk_plot_data_set_dx</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gdouble *dx); 
+      </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top" height="18"> 
+        <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_set_dy">gtk_plot_data_set_dy</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gdouble *dy); 
+      </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_set_dz">gtk_plot_data_set_dz</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gdouble *dz); 
+      </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_set_da">gtk_plot_data_set_da</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gdouble *da); 
+      </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_set_a_scale">gtk_plot_data_set_a_scale</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gdouble a_scale); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_set_labels">gtk_plot_data_set_labels</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gchar **labels); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_x">gtk_plot_data_get_x</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data, 
+gint *num_points); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_y">gtk_plot_data_get_y</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data, 
+gint *num_points); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_z">gtk_plot_data_get_z</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotData *data, 
+gint *num_points); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_a">gtk_plot_data_get_a</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotData *data, 
+gint *num_points); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_dx">gtk_plot_data_get_dx</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotData *data, 
+gint *num_points); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_dy">gtk_plot_data_get_dy</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotData *data, 
+gint *num_points); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_dz">gtk_plot_data_get_dz</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotData *data, 
+gint *num_points); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble *</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_da">gtk_plot_data_get_da</a></pre></td>
+      <td bgcolor="D6E8FF"> <pre>(GtkPlotData *data, 
+gint *num_points); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_a_scale">gtk_plot_data_get_a_scale</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gchar ** </pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_labels">gtk_plot_data_get_labels</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gboolean *show_labels); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_show_labels">gtk_plot_data_show_labels</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gboolean show_labels); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_labels_set_attributes">gtk_plot_data_labels_set_attributes</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+const gchar *font,
+gint height,
+gint angle,
+const GdkColor *foreground,
+const GdkColor *background); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_set_numpoints">gtk_plot_data_set_numpoints</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+gint num_points); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gint</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_numpoints">gtk_plot_data_get_numpoints</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_set_symbol">gtk_plot_data_set_symbol</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+GtkPlotSymbolType type,
+GtkPlotSymbolStyle style,
+gint size,
+gfloat line_width,
+const GdkColor *color,
+const GdkColor *border_color); </pre></td>
+    </tr>
+    <tr> 
+      <td width="10%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="18%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot_data_get_symbol">gtk_plot_data_get_symbol</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkPlotData *data,
+GtkPlotSymbolType *type,
+GtkPlotSymbolStyle *style,
+gint *size,
+gfloat *line_width,
+GdkColor *color,
+GdkColor *border_color); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_connector">gtk_plot_data_set_connector</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+GtkPlotConnector connector); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>gint</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_get_connector">gtk_plot_data_get_connector</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_line_attributes">gtk_plot_data_set_line_attributes</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+GtkPlotLineStyle style,
+gfloat width,
+const GdkColor *color); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_x_attributes">gtk_plot_data_set_x_attributes</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+GtkPlotLineStyle style,
+gfloat width,
+const GdkColor *color); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_x_attributes">gtk_plot_data_set_x_attributes</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+GtkPlotLineStyle style,
+gfloat width,
+const GdkColor *color); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_z_attributes">gtk_plot_data_set_z_attributes</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+GtkPlotLineStyle style,
+gfloat width,
+const GdkColor *color); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_show_xerrbars">gtk_plot_data_show_xerrbars</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_show_yerrbars">gtk_plot_data_show_yerrbars</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_show_zerrbars">gtk_plot_data_show_zerrbars</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_show_zerrbars">gtk_plot_data_show_zerrbars</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data);</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_hide_yerrbars">gtk_plot_data_hide_yerrbars</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data);</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_hide_zerrbars">gtk_plot_data_hide_zerrbars</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data);</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_fill_area">gtk_plot_data_fill_area</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+gboolean fill); -</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>gboolean</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_area_is_filled">gtk_plot_data_area_is_filled</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data);</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_show_legend">gtk_plot_data_show_legend</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data);</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_hide_legend">gtk_plot_data_hide_legend</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data);</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_legend">gtk_plot_data_set_legend</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *dataset,
+const gchar *legend); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_legend_precision">gtk_plot_data_set_legend_precision</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *dataset,
+gint precision); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>gint</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_legend_precision">gtk_plot_data_set_legend_precision</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *dataset); </pre></td>
+    </tr>
+    <tr> 
+      <td height="39" align="left" valign="top" bgcolor="D6E8FF"> <pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_name">gtk_plot_data_set_name</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+const gchar *name); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_gradient_mask">gtk_plot_data_set_gradient_mask</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+gint mask); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>gint</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_get_gradient_mask">gtk_plot_data_get_gradient_mask</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_gradient_set_visible">gtk_plot_data_gradient_set_visible</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+gboolean visible); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>gboolean</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_gradient_visible">gtk_plot_data_gradient_visible</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top">void</td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_draw_gradient">gtk_plot_data_draw_gradient</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+gint x, gint y); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_gradient_autoscale_a">gtk_plot_data_gradient_autoscale_a</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data);</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_gradient_autoscale_da">gtk_plot_data_gradient_autoscale_da</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data);</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_gradient_autoscale_z">gtk_plot_data_gradient_autoscale_z</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data);</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_gradient_colors">gtk_plot_data_set_gradient_colors</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+const GdkColor *min,
+const GdkColor *max); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_get_gradient_colors">gtk_plot_data_get_gradient_colors</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+GdkColor *min,
+GdkColor *max); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_gradient">gtk_plot_data_set_gradient</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+gdouble min,
+gdouble max,
+gint nlevels,
+gint nsublevels); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_get_gradient">gtk_plot_data_get_gradient</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+gdouble *min,
+gdouble *max,
+gint *nlevels,
+gint *nsublevels); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_get_gradient_level">gtk_plot_data_get_gradient_level</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+gdouble level,
+GdkColor *color); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_set_link">gtk_plot_data_set_link</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+gpointer link); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>gpointer</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_get_link">gtk_plot_data_get_link</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_remove_link">gtk_plot_data_remove_link</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>&nbsp;</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>&nbsp;</pre></td>
+      <td bgcolor="D6E8FF"><pre>&nbsp;</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>&nbsp;</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><h2>Markers</h2></td>
+      <td bgcolor="D6E8FF"><pre>&nbsp;</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>&nbsp;</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>&nbsp;</pre></td>
+      <td bgcolor="D6E8FF"><pre>&nbsp;</pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>GtkPlotMarker *</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_add_marker">gtk_plot_data_add_marker</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+guint point); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_remove_marker">gtk_plot_data_remove_marker</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>void</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot_data_show_markers">gtk_plot_data_show_markers</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(GtkPlotData *data,
+gboolean show); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"> gboolean</td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><a href="#gtk_plot_data_markers_visible">gtk_plot_data_markers_visible</a></td>
+      <td bgcolor="D6E8FF">(GtkPlotData *data); </td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+>
+        <pre>&nbsp;</pre>
+      </TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+>No signals
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+>GtkPlotData is a 2d scientific plots widget for gtk+ </h4
+>
+  <h2
+><br>
+    Details</h2
+>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top" bgcolor="#FFFFCC"> 
+      <td width="19%"> 
+        <pre>No details</pre>
+      </td>
+    </tr>
+  </table>
+  <h2
+><br>
+    Screenshot<br>
+  </h2
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_data_get_type" id="gtk_plot_data_get_type"></a> gtk_plot_data_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_plot_data_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Return</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+  <h2
+>&nbsp;</h2
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot_data_new" id="gtk_plot_data_new"></a> gtk_plot_data_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> <pre>GtkWidget* gtk_plot_data_new (void);</pre></TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Create a GtkPlotData widget.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Return</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>A GtkPlotData widget</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+      <P
+></P
+>
+      <P
+></P
+>
+    </DIV
+>
+  </DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot_data_new_function" id="gtk_plot_data_new_function"
+></A
+>gtk_plot_data_new_function ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkWidget* gtk_plot_data_new_function (GtkPlotFunc function); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+      
+    <DIV
+CLASS="INFORMALTABLE"
+> </DIV
+>
+  </DIV
+>
+  <div
+class="REFSECT2"
+>
+<div
+class="INFORMALTABLE"
+>
+      <p
+></p
+>
+      <p
+></p
+>
+      </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_data_construct_function" id="gtk_plot_data_construct_function"
+></a
+>gtk_plot_data_construct_function ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_data_construct_function (GtkPlotData *data,
+                                       GtkPlotFunc function); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Initialize the function for data widget.</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>A GtkPlotData widget</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>function</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the function </td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_data_new_iterator" id="gtk_plot_data_new_iterator"
+></a
+>gtk_plot_data_new_iterator ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>GtkWidget* gtk_plot_data_new_iterator (GtkPlotIterator iter, 
+                                       gint npoints,
+                                       guint16 iterator_mask); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_data_construct_iterator" id="gtk_plot_data_construct_iterator"
+></a
+>gtk_plot_data_construct_iterator ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_data_construct_iterator (GtkPlotData *data,
+                                       GtkPlotIterator iter,
+                                       gint npoints,
+                                       guint16 iterator_mask); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_data_paint" id="gtk_plot_data_paint"
+></a
+>gtk_plot_data_paint ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_data_paint (GtkPlotData *data); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_data_update" id="gtk_plot_data_update"
+></a
+>gtk_plot_data_update ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_data_update (GtkPlotData *data); </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+><br>
+    </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_data_draw_points" id="gtk_plot_data_draw_points"
+></a
+>gtk_plot_data_draw_points ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_data_draw_points (GtkPlotData *data,
+                                gint n); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+    <br>
+  </div
+>
+  <div
+class="REFSECT2"
+>
+    <div
+class="INFORMALTABLE"
+> </div
+>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_canvas_grid_set_step"
+></a
+>gtk_plot_canvas_grid_set_step ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_plot_canvas_grid_set_step (GtkPlotCanvas *canvas,
+                                    gdouble step); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Set the step of the canvas grid</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>canvas</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlotCanvas widget</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>step</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>step of the grid</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+    <br>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_data_draw_symbol" id="gtk_plot_data_draw_symbol"
+></a
+>gtk_plot_data_draw_symbol ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_data_draw_symbol (GtkPlotData *data, 
+                                gdouble x, gdouble y); 
+                                </pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="27"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="27"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+    <br>
+  </div
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_plot_data_set_points" id="gtk_plot_data_set_points"
+></a
+>gtk_plot_data_set_points ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> <pre>void gtk_plot_data_set_points (GtkPlotData *data,
+                               gdouble *x, gdouble *y,
+                               gdouble *dx, gdouble *dy,
+                               gint num_points); 
+</pre></td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+        <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tbody
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+  <DIV
+CLASS="REFSECT2"
+></DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="INFORMALTABLE"
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_get_points" id="gtk_plot_data_get_points"
+></a
+>gtk_plot_data_get_points ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_get_points (GtkPlotData *data,
+                               gdouble **x, gdouble **y,
+                               gdouble **dx, gdouble **dy,
+                               gint *num_points); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_get_point" id="gtk_plot_data_get_point"
+></a
+>gtk_plot_data_get_point ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_get_point (GtkPlotData *data,
+                              gint n,
+                              gdouble *x, gdouble *y,
+                              gdouble *z, gdouble *a,
+                              gdouble *dx, gdouble *dy,
+                              gdouble *dz, gdouble *da,
+                              gchar **label,
+                              gboolean *error); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_set_x" id="gtk_plot_data_set_x"
+></a
+>gtk_plot_data_set_x ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_set_x (GtkPlotData *data,
+                          gdouble *x); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+> <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_set_y" id="gtk_plot_data_set_y"
+></a
+>gtk_plot_data_set_y ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_set_y (GtkPlotData *data,
+                          gdouble *y); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_set_z" id="gtk_plot_data_set_z"
+></a
+>gtk_plot_data_set_z ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_set_z (GtkPlotData *data,
+                          gdouble *z); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_set_a" id="gtk_plot_data_set_a"
+></a
+>gtk_plot_data_set_a ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_set_a (GtkPlotData *data,
+                          gdouble *z); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_set_dx" id="gtk_plot_data_set_dx"
+></a
+>gtk_plot_data_set_dx ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_set_dx (GtkPlotData *data,
+                          gdouble *dx); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_set_dy" id="gtk_plot_data_set_dy"
+></a
+>gtk_plot_data_set_dy ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_set_dy (GtkPlotData *data,
+                          gdouble *dy); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_set_dz" id="gtk_plot_data_set_dz"
+></a
+>gtk_plot_data_set_dz ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_set_dz (GtkPlotData *data,
+                          gdouble *dz); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_set_da" id="gtk_plot_data_set_da"
+></a
+>gtk_plot_data_set_da ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_set_da (GtkPlotData *data,
+                          gdouble *da); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+            <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_set_a_scale" id="gtk_plot_data_set_a_scale"
+></a
+>gtk_plot_data_set_a_scale ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_set_a_scale (GtkPlotData *data,
+                                gdouble a_scale); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_set_labels" id="gtk_plot_data_set_labels"
+></a
+>gtk_plot_data_set_labels ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_set_labels (GtkPlotData *data,
+                               gchar **labels); 
+</pre>
+                    </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_get_x" id="gtk_plot_data_get_x"
+></a
+>gtk_plot_data_get_x ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gdouble * gtk_plot_data_get_x (GtkPlotData *data, 
+                               gint *num_points); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_get_y" id="gtk_plot_data_get_y"
+></a
+>gtk_plot_data_get_y ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>gdouble * gtk_plot_data_get_y (GtkPlotData *data, 
+                               gint *num_points); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_get_z" id="gtk_plot_data_get_z"
+></a
+>gtk_plot_data_get_z ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>gdouble * gtk_plot_data_get_z (GtkPlotData *data, 
+                               gint *num_points); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_get_a" id="gtk_plot_data_get_a"
+></a
+>gtk_plot_data_get_a ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>gdouble * gtk_plot_data_get_a (GtkPlotData *data, 
+                               gint *num_points); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_get_dx" id="gtk_plot_data_get_dx"
+></a
+>gtk_plot_data_get_dx ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>gdouble * gtk_plot_data_get_dx (GtkPlotData *data, 
+                               gint *num_points); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_get_dy" id="gtk_plot_data_get_dy"
+></a
+>gtk_plot_data_get_dy ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>gdouble * gtk_plot_data_get_dy (GtkPlotData *data, 
+                               gint *num_points); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_get_dz" id="gtk_plot_data_get_dz"
+></a
+>gtk_plot_data_get_dz ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>gdouble * gtk_plot_data_get_dz (GtkPlotData *data, 
+                               gint *num_points); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_get_da" id="gtk_plot_data_get_da"
+></a
+>gtk_plot_data_get_da ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>gdouble * gtk_plot_data_get_da (GtkPlotData *data, 
+                               gint *num_points); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_get_a_scale" id="gtk_plot_data_get_a_scale"
+></a
+>gtk_plot_data_get_a_scale ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gdouble gtk_plot_data_get_a_scale (GtkPlotData *data); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_get_labels" id="gtk_plot_data_get_labels"
+></a
+>gtk_plot_data_get_labels ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gchar ** gtk_plot_data_get_labels (GtkPlotData *data,
+                                   gboolean *show_labels); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_show_labels" id="gtk_plot_data_show_labels"
+></a
+>gtk_plot_data_show_labels ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_show_labels (GtkPlotData *data,
+                                gboolean show_labels); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_labels_set_attributes" id="gtk_plot_data_labels_set_attributes"
+></a
+>gtk_plot_data_labels_set_attributes ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_labels_set_attributes (GtkPlotData *data,
+                                          const gchar *font,
+                                          gint height,
+                                          gint angle,
+                                          const GdkColor *foreground,
+                                          const GdkColor *background); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_set_numpoints" id="gtk_plot_data_set_numpoints"
+></a
+>gtk_plot_data_set_numpoints ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_set_numpoints (GtkPlotData *data,
+                                  gint num_points); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_canvas_get_position"
+></a
+>gtk_plot_canvas_get_position ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void gtk_plot_canvas_get_position (GtkPlotCanvas *plot_canvas,
+                                   gint x, gint y,
+                                   gdouble *px, gdouble *py); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot_canvas</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>px,py</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+> </tbody
+> 
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_get_numpoints" id="gtk_plot_data_get_numpoints"
+></a
+>gtk_plot_data_get_numpoints ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gint gtk_plot_data_get_numpoints (GtkPlotData *data); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+> </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_set_symbol" id="gtk_plot_data_set_symbol"
+></a
+>gtk_plot_data_set_symbol ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_set_symbol (GtkPlotData *data,
+                              GtkPlotSymbolType type,
+                              GtkPlotSymbolStyle style,
+                              gint size,
+                              gfloat line_width,
+                              const GdkColor *color,
+                              const GdkColor *border_color); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_get_symbol" id="gtk_plot_data_get_symbol"
+></a
+>gtk_plot_data_get_symbol ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_get_symbol (GtkPlotData *data,
+                               GtkPlotSymbolType *type,
+                               GtkPlotSymbolStyle *style,
+                               gint *size,
+                               gfloat *line_width,
+                               GdkColor *color,
+                               GdkColor *border_color); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_set_connector" id="gtk_plot_data_set_connector"
+></a
+>gtk_plot_data_set_connector ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_set_connector (GtkPlotData *data,
+                                  GtkPlotConnector connector); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_get_connector" id="gtk_plot_data_get_connector"
+></a
+>gtk_plot_data_get_connector ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gint gtk_plot_data_get_connector (GtkPlotData *data); 
+</pre>
+                    </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_set_line_attributes" id="gtk_plot_data_set_line_attributes"
+></a
+>gtk_plot_data_set_line_attributes ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_set_line_attributes (GtkPlotData *data,
+                                       GtkPlotLineStyle style,
+                                       gfloat width,
+                                       const GdkColor *color); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_get_line_attributes" id="gtk_plot_data_get_line_attributes"
+></a
+>gtk_plot_data_get_line_attributes ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_get_line_attributes (GtkPlotData *data,
+                                        GtkPlotLineStyle *style,
+                                        gfloat *width,
+                                        GdkColor *color); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_set_x_attributes" id="gtk_plot_data_set_x_attributes"
+></a
+>gtk_plot_data_set_x_attributes ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_set_x_attributes (GtkPlotData *data,
+                                     GtkPlotLineStyle style,
+                                     gfloat width,
+                                     const GdkColor *color); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+>|<br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_set_y_attributes" id="gtk_plot_data_set_y_attributes"
+></a
+>gtk_plot_data_set_y_attributes ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_set_y_attributes (GtkPlotData *data,
+                                     GtkPlotLineStyle style,
+                                     gfloat width,
+                                     const GdkColor *color); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_set_z_attributes" id="gtk_plot_data_set_z_attributes"
+></a
+>gtk_plot_data_set_z_attributes ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_set_z_attributes (GtkPlotData *data,
+                                     GtkPlotLineStyle style,
+                                     gfloat width,
+                                     const GdkColor *color); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr
+> 
+                    <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+<br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_show_xerrbars" id="gtk_plot_data_show_xerrbars"
+></a
+>gtk_plot_data_show_xerrbars ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_show_xerrbars (GtkPlotData *data); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_show_yerrbars" id="gtk_plot_data_show_yerrbars"
+></a
+>gtk_plot_data_show_yerrbars ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_show_yerrbars (GtkPlotData *data); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_show_zerrbars" id="gtk_plot_data_show_zerrbars"
+></a
+>gtk_plot_data_show_zerrbars ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_show_zerrbars (GtkPlotData *data); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_hide_xerrbars" id="gtk_plot_data_hide_xerrbars"
+></a
+>gtk_plot_data_hide_xerrbars ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_hide_xerrbars (GtkPlotData *data); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_hide_yerrbars" id="gtk_plot_data_hide_yerrbars"
+></a
+>gtk_plot_data_hide_yerrbars ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_hide_yerrbars (GtkPlotData *data); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+              <br>
+              <hr>
+              <div
+class="REFSECT2"
+> 
+                <h3
+><a
+name="gtk_plot_data_hide_zerrbars" id="gtk_plot_data_hide_zerrbars"
+></a
+>gtk_plot_data_hide_zerrbars ()</h3
+>
+                <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                  <tr
+> 
+                    <td
+> <pre>void gtk_plot_data_hide_zerrbars (GtkPlotData *data); 
+</pre></td
+>
+                  </tr
+>
+                </table
+>
+                <p
+>&nbsp;</p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tbody
+>
+                  </tbody
+>
+                </table
+>
+              </div
+>
+            <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_fill_area" id="gtk_plot_data_fill_area"
+></a
+>gtk_plot_data_fill_area ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_fill_area (GtkPlotData *data,
+                              gboolean fill); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_area_is_filled" id="gtk_plot_data_area_is_filled"
+></a
+>gtk_plot_data_area_is_filled ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gboolean gtk_plot_data_area_is_filled (GtkPlotData *data); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%" height="30"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+>
+                  <td height="30"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_show_legend" id="gtk_plot_data_show_legend"
+></a
+>gtk_plot_data_show_legend ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_show_legend (GtkPlotData *data); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_hide_legend" id="gtk_plot_data_hide_legend"
+></a
+>gtk_plot_data_hide_legend ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_hide_legend (GtkPlotData *data); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT2"
+><br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_set_legend" id="gtk_plot_data_set_legend"
+></a
+>gtk_plot_data_set_legend ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_set_legend (GtkPlotData *dataset,
+                               const gchar *legend); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+              <br>
+            </div
+>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_set_legend_precision" id="gtk_plot_data_set_legend_precision"
+></a
+>gtk_plot_data_set_legend_precision ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_set_legend_precision (GtkPlotData *dataset,
+                                         gint precision); 
+</pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_get_legend_precision" id="gtk_plot_data_get_legend_precision"
+></a
+>gtk_plot_data_get_legend_precision ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gint gtk_plot_data_get_legend_precision (GtkPlotData *dataset); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_set_name" id="gtk_plot_data_set_name"
+></a
+>gtk_plot_data_set_name ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_set_name (GtkPlotData *data,
+                             const gchar *name); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_set_gradient_mask" id="gtk_plot_data_set_gradient_mask"
+></a
+>gtk_plot_data_set_gradient_mask ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_set_gradient_mask (GtkPlotData *data,
+                                     gint mask); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_get_gradient_mask" id="gtk_plot_data_get_gradient_mask"
+></a
+>gtk_plot_data_get_gradient_mask ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gint gtk_plot_data_get_gradient_mask (GtkPlotData *data); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_gradient_set_visible" id="gtk_plot_data_gradient_set_visible"
+></a
+>gtk_plot_data_gradient_set_visible ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_gradient_set_visible (GtkPlotData *data,
+                                         gboolean visible); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_gradient_visible" id="gtk_plot_data_gradient_visible"
+></a
+>gtk_plot_data_gradient_visible ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>gboolean gtk_plot_data_gradient_visible (GtkPlotData *data); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_draw_gradient" id="gtk_plot_data_draw_gradient"
+></a
+>gtk_plot_data_draw_gradient ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_draw_gradient (GtkPlotData *data,
+                                  gint x, gint y); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_gradient_autoscale_a" id="gtk_plot_data_gradient_autoscale_a"
+></a
+>gtk_plot_data_gradient_autoscale_a ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_gradient_autoscale_a (GtkPlotData *data); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_gradient_autoscale_da" id="gtk_plot_data_gradient_autoscale_da"
+></a
+>gtk_plot_data_gradient_autoscale_da ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_gradient_autoscale_da (GtkPlotData *data); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+            <br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a
+name="gtk_plot_data_gradient_autoscale_z" id="gtk_plot_data_gradient_autoscale_z"
+></a
+>gtk_plot_data_gradient_autoscale_z ()</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> <pre>void gtk_plot_data_gradient_autoscale_z (GtkPlotData *data); </pre></td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                </tr
+>
+                <tbody
+>
+                </tbody
+>
+              </table
+>
+            </div
+>
+          </div
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_set_gradient_colors" id="gtk_plot_data_set_gradient_colors"
+></a
+>gtk_plot_data_set_gradient_colors ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void gtk_plot_data_set_gradient_colors (GtkPlotData *data,
+                                        const GdkColor *min,
+                                        const GdkColor *max); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+>
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_get_gradient_colors" id="gtk_plot_data_get_gradient_colors"
+></a
+>gtk_plot_data_get_gradient_colors ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void gtk_plot_data_get_gradient_colors (GtkPlotData *data,
+                                        GdkColor *min,
+                                        GdkColor *max); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_set_gradient" id="gtk_plot_data_set_gradient"
+></a
+>gtk_plot_data_set_gradient ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void gtk_plot_data_set_gradient (GtkPlotData *data,
+                                 gdouble min,
+                                 gdouble max,
+                                 gint nlevels,
+                                 gint nsublevels); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+>
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_get_gradient" id="gtk_plot_data_get_gradient"
+></a
+>gtk_plot_data_get_gradient ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void gtk_plot_data_get_gradient (GtkPlotData *data,
+                                 gdouble *min,
+                                 gdouble *max,
+                                 gint *nlevels,
+                                 gint *nsublevels); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_get_gradient_level" id="gtk_plot_data_get_gradient_level"
+></a
+>gtk_plot_data_get_gradient_level ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void gtk_plot_data_get_gradient_level (GtkPlotData *data,
+                                       gdouble level,
+                                       GdkColor *color); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_set_link" id="gtk_plot_data_set_link"
+></a
+>gtk_plot_data_set_link ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void gtk_plot_data_set_link (GtkPlotData *data,
+                             gpointer link); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_get_link" id="gtk_plot_data_get_link"
+></a
+>gtk_plot_data_get_link ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>gpointer gtk_plot_data_get_link (GtkPlotData *data); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_remove_link" id="gtk_plot_data_remove_link"
+></a
+>gtk_plot_data_remove_link ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void gtk_plot_data_remove_link (GtkPlotData *data); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_add_marker" id="gtk_plot_data_add_marker"
+></a
+>gtk_plot_data_add_marker ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>GtkPlotMarker * gtk_plot_data_add_marker (GtkPlotData *data,
+                                         guint point); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_remove_marker" id="gtk_plot_data_remove_marker"
+></a
+>gtk_plot_data_remove_marker ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>gboolean gtk_plot_data_remove_marker (GtkPlotData *data,
+                                      GtkPlotMarker *marker); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+>
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_remove_markers" id="gtk_plot_data_remove_markers"
+></a
+>gtk_plot_data_remove_markers ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void gtk_plot_data_remove_markers (GtkPlotData *data); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_show_markers" id="gtk_plot_data_show_markers"
+></a
+>gtk_plot_data_show_markers ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>void gtk_plot_data_show_markers (GtkPlotData *data,
+                                gboolean show); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+>
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3
+><a
+name="gtk_plot_data_markers_visible" id="gtk_plot_data_markers_visible"
+></a
+>gtk_plot_data_markers_visible ()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> <pre>gboolean gtk_plot_data_markers_visible (GtkPlotData *data); </pre></td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+align="RIGHT"
+valign="TOP"
+>&nbsp;</td
+>
+              <td
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+            </tr
+>
+            <tbody
+>
+            </tbody
+>
+          </table
+>
+        </div
+>
+        <p><BR
+CLEAR="all">
+        </p>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+></div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+>
+</BODY
+></HTML
+>

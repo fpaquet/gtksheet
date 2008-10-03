@@ -1,0 +1,1520 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-psfont</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3>Gtkpsfont - PostScript Fonts handling </h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre>gint</pre>
+      </td>
+      <td width="14%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre><a href="#gtk_psfont_init">gtk_psfont_init</a></pre>
+      </td>
+      <td width="77%" bgcolor="D6E8FF"> 
+        <pre>();</pre>
+      </td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre>void</pre>
+      </td>
+      <td width="14%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre><a href="#gtk_psfont_unref">gtk_psfont_unref</a></pre>
+      </td>
+      <td width="77%" bgcolor="D6E8FF"> 
+        <pre>();</pre>
+      </td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre><a href="#STRUCT">GtkPSFont</a>*</pre>
+      </td>
+      <td width="14%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre><a href="#gtk_psfont_get_font">gtk_psfont_get_font</a></pre>
+      </td>
+      <td width="77%" bgcolor="D6E8FF"> 
+        <pre>(const gchar *name);</pre>
+      </td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre>GdkFont*</pre>
+      </td>
+      <td width="14%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre><a href="#gtk_psfont_get_gdkfont">gtk_psfont_get_gdkfont</a></pre>
+      </td>
+      <td width="77%" bgcolor="D6E8FF"> 
+        <pre>(const gchar *name, gint height);</pre>
+      </td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre>gchar *</pre>
+      </td>
+      <td width="14%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre><a href="#gtk_psfont_get_psfontname">gtk_psfont_get_psfontname</a></pre>
+      </td>
+      <td width="77%" bgcolor="D6E8FF"> 
+        <pre>(const gchar *name);</pre>
+      </td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre>void</pre>
+      </td>
+      <td width="14%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre><a href="#gtk_psfont_add_font">gtk_psfont_add_font</a></pre>
+      </td>
+      <td width="77%" bgcolor="D6E8FF"> 
+        <pre>(const char *fontname,<br> const gchar *psname,<br> const gchar *family,<br> gchar *x_string[],<br> gboolean italic,<br> gboolean bold);</pre>
+      </td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre>void</pre>
+      </td>
+      <td width="14%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre><a href="#gtk_psfont_add_i18n_font">gtk_psfont_add_i18n_font</a></pre>
+      </td>
+      <td width="77%" bgcolor="D6E8FF"> 
+        <pre>(const char *fontname,
+ const gchar *psname,
+ const gchar *family,
+ const gchar *i18n_latinfamily,
+ gchar *x_string[],
+ gboolean italic,
+ gboolean bold,
+ gboolean vertical);
+       </pre>
+      </td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre>GtkPSFont * </pre>
+      </td>
+      <td width="14%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre><a href="#gtk_psfont_find_by_family">gtk_psfont_find_by_family</a></pre>
+      </td>
+      <td width="77%" bgcolor="D6E8FF"> 
+        <pre>(const gchar *name, 
+ gboolean italic, 
+ gboolean bold);</pre>
+      </td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre>void</pre>
+      </td>
+      <td width="14%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre><a href="#gtk_psfont_get_families">gtk_psfont_get_families</a></pre>
+      </td>
+      <td width="77%" bgcolor="D6E8FF"> 
+        <pre>(GList **family, 
+gint *numf);</pre>
+      </td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre>void</pre>
+      </td>
+      <td width="14%" bgcolor="D6E8FF" align="left" valign="top"> 
+        <pre><a href="#gtk_psfont_get_char_size">gtk_psfont_get_char_size</a></pre>
+      </td>
+      <td width="77%" bgcolor="D6E8FF"> 
+        <pre>(GtkPSFont *psfont,
+ GdkFont *font,
+ GdkFont *latin_font,
+ GdkWChar wc,
+ gint *width,
+ gint *ascent,
+ gint *descent);
+       </pre>
+      </td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+>&nbsp;</TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+>No signal</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <P
+>&nbsp;</P
+>
+  <P
+>&nbsp;</P
+>
+  </DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="STRUCT"
+></A
+>struct GtkPSFont </H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>struct _GtkPSFont {<br>  gchar *fontname;<br>  gchar *psname;<br>  gchar *family;<br>  gchar *xfont[2];<br>  gchar *i18n_latinfamily;<br>  gboolean italic;<br>  gboolean bold;<br>  gboolean vertical;<br>};<br></pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>&nbsp;</P
+>
+  </DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_psfont_init"></a> gtk_psfont_init ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <PRE
+CLASS="PROGRAMLISTING"
+>gint	gtk_psfont_init			();</PRE
+>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Initialize GtkPsFont data structure</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>FALSE =&gt;PS fonts already initilized<br>
+            TRUE =&gt; success</TD
+>
+        </TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_psfont_unref"
+></A
+>gtk_psfont_unref ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> 
+          <pre>void gtk_psfont_unref ();</pre>
+        </TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>Unreferentiate(deletes) the fonts allocated list</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <P
+></P
+></DIV
+></DIV
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_psfont_get_font"
+></a
+>gtk_psfont_get_font ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>GtkPSFont* gtk_psfont_get_font (const gchar *name);</pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>&nbsp;</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+        <tbody
+> 
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>name</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>name of the font</td
+>
+        </tr
+>
+        </tbody
+> 
+      </table
+>
+    </div
+>
+  </div
+>
+  <br>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_psfont_get_gdkfont"
+></A
+>gtk_psfont_get_gdkfont ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <PRE
+CLASS="PROGRAMLISTING"
+>GdkFont*	gtk_psfont_get_gdkfont 	(const gchar *name, gint height);</PRE
+>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>name</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>name of the font</TD
+>
+        </TR
+><TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>height</I
+></TT
+></TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>height of the font</TD
+>
+        </TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_psfont_get_psfontname"
+></a
+>gtk_psfont_get_psfontname ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre
+class="PROGRAMLISTING"
+>gchar * gtk_psfont_get_psfontname	(const gchar *name);</pre
+>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Returns the Postscript name (GtkPSFont-&gt;psname) </p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tbody
+> 
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>name</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>fonr name(GtkPSFont-&gt;fontname) </td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>Returns</i
+></tt
+></td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+> (GtkPSFont-&gt;psname) </td
+>
+        </tr
+>
+        </tbody
+>
+      </table
+>
+    </div
+>
+    <p>&nbsp;</p>
+  </DIV
+>
+  <HR><DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <h3
+><a
+name="gtk_psfont_add_font"
+></a
+>gtk_psfont_add_font ()</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>void gtk_psfont_add_font (const char *fontname,
+                          const gchar *psname,
+                          const gchar *family,
+                          gchar *x_string[],
+                          gboolean italic,
+                          gboolean bold);</pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p
+>Appends font to the user font list.</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+          <tbody
+> 
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>fontname</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>name of the font</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>psname</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>PostScript name of the font</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>family</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+> Font family</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x_string[]</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>italic</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>TRUE =&gt;set italic font<br>
+              FALSE =&gt;non-italic</td
+>
+          </tr
+>
+          <tr
+>
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>bold</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE =&gt;set bold font<br>
+              FALSE =&gt;non-bold</td
+>
+          </tr
+>
+          </tbody
+> 
+        </table
+>
+      </div
+>
+      <p>&nbsp;</p>
+      </DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <h3
+><a
+name="gtk_psfont_add_i18n_font"
+></a
+> gtk_psfont_add_i18n_font()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> 
+                <pre>void gtk_psfont_add_i18n_font (const char *fontname,
+                               const gchar *psname,
+                               const gchar *family,
+                               const gchar *i18n_latinfamily,
+                               gchar *x_string[],
+                               gboolean italic,
+                               gboolean bold,
+                               gboolean vertical);
+</pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Add an I18n font(internationalization).See locale<br>
+          </p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>fontname</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>name of the font</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>psname</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>PostScript name of the font</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>family</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+> Font family</td
+>
+              </tr
+>
+              <tbody
+> 
+              <tr
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>i18n_latinfamily</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>I18n(internationalization) latin family.See locale</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x_string[]</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>italic</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>TRUE =&gt;set italic font<br>
+                  FALSE =&gt;non-italic</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>bold</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE =&gt;set bold font<br>
+                  FALSE =&gt;non-bold</td
+>
+              </tr
+>
+              </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_psfont_find_by_family"
+></a
+> gtk_psfont_find_by_family()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>GtkPSFont * 	gtk_psfont_find_by_family  (const gchar *name, <br>                                          gboolean italic, <br>                                          gboolean bold);</pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Return the first font from user_font list which suits the arguments.<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>name</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>name of the font family</td
+>
+                      </tr
+>
+                      <tbody
+> 
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>italic</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>TRUE =&gt;set italic font<br>
+                          FALSE =&gt;non-italic</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>bold</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE =&gt;set bold font<br>
+                          FALSE =&gt;non-bold</td
+>
+                      </tr
+>
+                      </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_psfont_get_families"
+></a
+> gtk_psfont_get_families()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void 	gtk_psfont_get_families	(GList **family, gint *numf);</pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Get a list of double linked lists of family of fonts.<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>family</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a list of double linked lists</td
+>
+                      </tr
+>
+                      <tbody
+> 
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>numf</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>number of families</td
+>
+                      </tr
+>
+                      </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_psfont_get_char_size"
+></a
+> gtk_psfont_get_char_size()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_psfont_get_char_size (GtkPSFont *psfont,
+                               GdkFont *font,
+                               GdkFont *latin_font,
+                               GdkWChar wc,
+                               gint *width,
+                               gint *ascent,
+                               gint *descent);
+</pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Get the width, ascent and descent of a character<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>psfont</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GtkPSFont *psfont</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>font</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>latin_font</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>wc</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>ascent</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+>
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>descent</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <p><br>
+          </p>
+          <p><br>
+            <BR
+CLEAR="all">
+            <BR>
+          </p>
+        </div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

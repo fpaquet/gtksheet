@@ -1,0 +1,73 @@
+What does these mean?
+Please send a mail to kornos@emoka.ro so i can update the manual. Thanks.
+
+gtktogglecombo:
+
+- gtk_toggle_combo_construct ()
+-  default_flag:1
+
+gtksheet:
+
+- object hierarchy 
+- arg
+- gtk_sheet_set_selection_mode - what means GTK_SELECTION_SINGLE && GTK_SELECTION_BROWSE
+- gtk_sheet_button_attach
+- signal set_scroll_adjustments 
+
+Gtkpsfont:
+- a lot of mistery here; see the html file
+
+GtkIconList:
+- gtk_icon_list_set_icon_border
+- gtk_icon_list_put
+- gtk_icon_list_add_from_data
+- what is the difference between select and activate signal?
+
+GtkBorderCombo & GtkColorCombo
+
+ - what is the "selection" argument from the callback?
+
+Gtkiconfileselection
+
+- gtk_icon_file_selection_show_hidden
+
+GtkPlot:
+
+- signals
+- gtk_plot_get_pixel
+- gtk_plot_get_point
+- gtk_plot_text_get_area(parameters x,y)
+- gtk_plot_clip_data
+- gtk_plot_autoscale
+- gtk_plot_*_range
+- gtk_plot_axis_*_ticks
+- gtk_plot_axis_show_labels
+- gtk_plot_axis_set_labels_numbers
+- gtk_plot_x0_set_visible and friends
+- gtk_plot_grids_set_visible
+- gtk_plot_major_vgrid_set_attributes and friends
+- gtk_plot_set_line_attributes
+- gtk_plot_add_function
+
+GtkPlot3d:
+
+- gtk_plot3d_autoscale
+- gtk_plot3d_get_pixel
+- gtk_plot3d_*_range
+- gtk_plot3d_*_factor
+- gtk_plot3d_*corner_*
+- gtk_plot3d_get_axis
+- gtk_plot3d_get_side
+- gtk_plot3d_axis_*_ticks
+- gtk_plot3d_axis_show_labels
+- gtk_plot3d_grids_*
+
+GtkPlotCanvas:
+
+- gtk_plot_canvas_cancel_action
+- gtk_plot_canvas_get_active_*
+- gtk_plot_canvas_get_*
+
+GtkPlotData,GtkPlotDt,GtkPlotPolar,GtkPlotPixmap,GtkPlotPC
+ - All functions 
+

@@ -1,0 +1,50 @@
+
+GtkExtra Reference Manual.
+Author : Kornos aka Mierla Victor
+Mail : kornos@emoka.ro
+See COPYING.
+
+
+UNIX death star mainframe on.
+
+# L0g entry daemon started....
+
+
+StarDate 12934,5 , Sunday afternoon(long time ago).
+Captain's log ,not supplemental
+
+
+I started to learn MYSql.Very cool , only one big disadvantage...there is no decent interace.
+
+No problem I've said , I'll just write one.
+
+But Gtk has no builtin spreadsheet widget so I have only  2 choices : gdda or gtkextra.
+
+Gtkextra looks better so I grabbed it and surprise(unpleasant one)....no manuals.
+
+No problem I've said ( after a few moments during which  i've wished Adrian all the bad things in the world :0)
+I'll write the damn documentation.
+
+
+After some months of playing with gtkextra, now i'm spreading my wisdom  on the net :-)
+
+
+
+So that's it . Gtkextra reference manual. 
+
+Especially written for lamerz by a lamer.  Enjoy it , Mr Lamer!
+
+
+
+# LOg entry daemon killed.
+UNIX death star off.
+
+Rebels can attack now.
+
+
+
+Warning : This documentation may contain errors/inaccuracies , which added to the quite many bugs of the
+          gtkextra library will make your life a living hell. 
+          But where is the fun if everything would go smoothly?
+
+See TODO file if you wanna contribute.

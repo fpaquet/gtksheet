@@ -1,0 +1,6346 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-iconlist</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3>Gtkiconlist - gtkiconlist widget for gtk+ </h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_icon_list_get_type">gtk_icon_list_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void); </pre></td>
+    </tr>
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_icon_list_item_get_type">gtk_icon_list_item_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget* </pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_new">gtk_icon_list_new</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(guint icon_width,<br>guint mode); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_construct">gtk_icon_list_construct</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *icon_list,<br>guint icon_width,<br>guint mode); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_set_mode">gtk_icon_list_set_mode</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,<br>guint mode); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>guint</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_mode">gtk_icon_list_get_mode</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_set_editable">gtk_icon_list_set_editable</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,<br>gboolean editable); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gboolean</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_is_editable">gtk_icon_list_is_editable</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_set_row_spacing">gtk_icon_list_set_row_spacing</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,<br> guint spacing); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>guint</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_row_spacing">gtk_icon_list_get_row_spacing</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_set_col_spacing">gtk_icon_list_set_col_spacing</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,
+guint spacing); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>guint</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_col_spacing">gtk_icon_list_get_col_spacing</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_set_text_space">gtk_icon_list_set_text_space</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,
+guint space); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>guint</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_text_space">gtk_icon_list_get_text_space</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_set_icon_border">gtk_icon_list_set_icon_border</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,
+guint space); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>guint</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_icon_border">gtk_icon_list_get_icon_border</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_set_icon_width">gtk_icon_list_set_icon_width</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,
+guint space); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>guint</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_icon_width">gtk_icon_list_get_icon_width</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_freeze">gtk_icon_list_freeze</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *icon_list); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_thaw">gtk_icon_list_thaw</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *icon_list); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_set_background">gtk_icon_list_set_background</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *icon_list,
+GdkColor *color); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkIconListItem *</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_add_from_pixmap">gtk_icon_list_add_from_pixmap</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *icon_list,
+GdkPixmap *pixmap,
+GdkBitmap *bitmap,
+const gchar *label,
+gpointer link); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkIconListItem  *</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_add_from_data">gtk_icon_list_add_from_data</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *icon_list,
+gchar **data,
+const gchar *label,
+gpointer link); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkIconListItem  *</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_add">gtk_icon_list_add</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *icon_list,
+const gchar *pixmap_file,
+const gchar *label,
+gpointer link); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkIconListItem  *</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_nth">gtk_icon_list_get_nth</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,
+guint n); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gint</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_index">gtk_icon_list_get_index</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,
+GtkIconListItem *item); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_remove">gtk_icon_list_remove</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,
+GtkIconListItem *item); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_set_active_icon">gtk_icon_list_set_active_icon</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,
+GtkIconListItem *icon); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_remove_nth">gtk_icon_list_remove_nth</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,
+guint n); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_update">gtk_icon_list_update</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_clear">gtk_icon_list_clear</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_link">gtk_icon_list_link</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconListItem *item,
+gpointer data); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top" height="20"> <pre>gpointer</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top" height="20"> 
+        <pre><a href="#gtk_icon_list_get_link">gtk_icon_list_get_link</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF" height="20"> <pre>(GtkIconListItem *item); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkIconListItem *</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_icon_from_link">gtk_icon_list_get_icon_from_link</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,
+gpointer data); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkIconListItem *</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_icon_at">gtk_icon_list_get_icon_at</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,
+gint x, gint y); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkIconListItem *</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_active_icon">gtk_icon_list_get_active_icon</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget *</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_entry">gtk_icon_list_get_entry</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconListItem *item); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget *</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_get_pixmap">gtk_icon_list_get_pixmap</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconListItem *item); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_set_pixmap">gtk_icon_list_set_pixmap</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconListItem *item,
+GdkPixmap *pixmap,
+GdkBitmap *bitmap); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_set_label">gtk_icon_list_set_label</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist,
+GtkIconListItem *item, 
+const gchar *label); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_set_selection_mode">gtk_icon_list_set_selection_mode</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist, 
+gint mode); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_select_icon">gtk_icon_list_select_icon</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist, 
+GtkIconListItem *item); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_unselect_icon">gtk_icon_list_unselect_icon</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist, 
+GtkIconListItem *item); </pre></td>
+    </tr>
+    <tr> 
+      <td width="9%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="16%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_icon_list_unselect_all">gtk_icon_list_unselect_all</a></pre></td>
+      <td width="75%" bgcolor="D6E8FF"> <pre>(GtkIconList *iconlist); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+>&nbsp;</TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+><a href="#select_icon">gboolean (*select_icon)</a>	(GtkIconList *iconlist,<br>                         	 GtkIconListItem *icon,<br>                         	 GdkEvent *event);<br><a href="#unselect_icon">void (*unselect_icon)</a>		(GtkIconList *iconlist,<br>                        	 GtkIconListItem *icon,<br>                         	 GdkEvent *event);<br><a href="#text_changed">gboolean (*text_changed)</a>	(GtkIconList *iconlist,<br>                         	 GtkIconListItem *icon,<br>                         	 gchar *new_text);<br><a href="#activate_icon">gboolean (*activate_icon)</a>	(GtkIconList *iconlist,<br>                                 GtkIconListItem *icon);<br><a href="#deactivate_icon">gboolean (*deactivate_icon)</a>	(GtkIconList *iconlist,<br>                                 GtkIconListItem *icon);<br><a href="#click_event">void (*click_event)</a>		(GtkIconList *iconlist,<br>                         	 GdkEvent *event); </PRE
+>
+      </TD
+>
+    </TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+><font face="Arial, Helvetica, sans-serif">GtkIconList is a GtkFixed subclass 
+    that allows you to display a table of xpm icons with editable labels.<br>
+    It's completely designed from scratch with some ideas borrowed from gnome-icon-list.<br>
+    It contains almost all of its features and more. <br>
+    It can be used for file browsers and as a replacement of gnome-icon-list (without 
+    the need of using gnome libraries). <br>
+    Like GtkSheet, it uses the widget GtkItemEntry to edit the text fields. <br>
+    </font><br>
+  </h4
+>
+  <h2
+>Details</h2
+>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#FFFFFF"> 
+      <td width="19%" bgcolor="#FFFFCC"> 
+        <pre>struct _GtkIconList<br>{<br>  GtkFixed fixed;<br>  guint8 flags;<br>  guint mode;<br>  GtkSelectionMode selection_mode;<br>  guint freeze_count;<br>  guint icon_width;<br>  guint text_space;   /* entry width */<br>  guint row_spacing;  /* space between rows */ <br>  guint col_spacing;  /* space between columns */<br>  guint icon_border;  /* space between icon and entry */<br>  <br>  gboolean is_editable;<br>  GtkIconListItem *active_icon;<br>  GdkColor background;<br>  gint num_icons;<br>  GList *icons;<br>  GList *selection;<br>  GCompareFunc compare_func;<br>};<br> </pre>
+      </td>
+      <td width="31%" align="left" valign="top" bgcolor="#FFFFCC"> 
+        <pre>struct _GtkIconListItem<br>{<br>  guint x, y;<br>  gint state;<br>  gchar *entry_label;<br>  gchar *label;<br> <br>  GtkWidget *pixmap;<br>  GtkWidget *entry;<br>  gpointer link;<br>};<br> </pre>
+      </td>
+      <td width="25%" align="left" valign="top" bgcolor="#FFFFCC"> 
+        <pre>num<br>    {<br>    GTK_ICON_LIST_ICON,<br>    GTK_ICON_LIST_TEXT_RIGHT,<br>    GTK_ICON_LIST_TEXT_BELOW,<br>    };<br><br>This are the values of &quot;mode&quot; argument.</pre>
+      </td>
+      <td width="25%" bgcolor="#FFFFCC"> 
+        <pre>&nbsp;</pre>
+      </td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+  <p><font size="6">Screenshot</font></p>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td width="32%"><img src="pics/gtk_conlist_workbench.jpg" width="406" height="424"></td>
+      <td width="68%"><img src="pics/gtk_iconlist_plot.jpg" width="507" height="436"></td>
+    </tr>
+  </table>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_icon_list_get_type" id="gtk_icon_list_get_type"></a> gtk_icon_list_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_icon_list_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+  <br>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_icon_list_item_get_type" id="gtk_icon_list_item_get_type"></a> gtk_icon_list_item_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_icon_list_item_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<DIV
+CLASS="REFSECT2"
+></DIV
+>
+  <br>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_icon_list_new"></a> gtk_icon_list_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>GtkWidget* gtk_icon_list_new (guint icon_width, guint mode); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Create a new iconlist widget.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>icon width</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the width of the icon</TD
+>
+        </TR
+>
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>mode</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>GTK_ICON_LIST_ICON,<br>
+            GTK_ICON_LIST_TEXT_RIGHT,<br>
+            GTK_ICON_LIST_TEXT_BELOW</TD
+>
+        </TR
+>
+        </TBODY
+> 
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_icon_list_construct"
+></A
+>gtk_icon_list_construct ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> 
+          <pre>void gtk_icon_list_construct (GtkIconList *icon_list, guint icon_width,guint mode); </pre>
+        </TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>Initialize iconlist structure.</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+>
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>icon_list</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+      </tr
+>
+      <tbody
+> 
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>icon width</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the width of the icon</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>mode</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_ICON_LIST_ICON,<br>
+          GTK_ICON_LIST_TEXT_RIGHT,<br>
+          GTK_ICON_LIST_TEXT_BELOW</td
+>
+      </tr
+>
+      </tbody
+> 
+    </table
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <P
+></P
+></DIV
+></DIV
+>
+  <hr>
+  <div
+class="REFSECT2"
+> 
+    <h3
+><a
+name="gtk_icon_list_set_mode"
+></a
+>gtk_icon_list_set_mode ()</h3
+>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_icon_list_set_mode (GtkIconList *iconlist, guint mode); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Set the dispaly mode of the icons.</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+        <tbody
+> 
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+        </tr
+>
+        <tr
+>
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>mode</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_ICON_LIST_ICON,<br>
+            GTK_ICON_LIST_TEXT_RIGHT,<br>
+            GTK_ICON_LIST_TEXT_BELOW</td
+>
+        </tr
+>
+        </tbody
+> 
+      </table
+>
+    </div
+>
+  </div
+>
+  <br>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_icon_list_get_mode"
+></A
+>gtk_icon_list_get_mode ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>guint gtk_icon_list_get_mode (GtkIconList *iconlist); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Get the current display mode of the iconlist</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>name</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>name of the font</TD
+>
+        </TR
+><TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><TT
+CLASS="PARAMETER"
+><I
+>height</I
+></TT
+></TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>height of the font</TD
+>
+        </TR
+></TBODY
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_icon_list_set_editable"
+></a
+>gtk_icon_list_set_editable ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_icon_list_set_editable (GtkIconList *iconlist,gboolean editable); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Set if the user can edit the text in the editable widget or not.</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+        </tr
+>
+        <tbody
+> 
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt>editable</tt></td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+        </tr
+>
+        </tbody
+> 
+      </table
+>
+    </div
+>
+    <p>&nbsp;</p>
+  </DIV
+>
+  <HR><DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <h3
+><a
+name="gtk_icon_list_is_editable"
+></a
+>gtk_icon_list_is_editable ()</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>gboolean gtk_icon_list_is_editable (GtkIconList *iconlist); </pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p
+>Determines if the user can edit the text in the editable widget or not.</p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+          </tr
+>
+          <tr bordercolor="#000000"
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt>Returns</tt></td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+          </tr
+>
+          <tbody
+> </tbody
+> 
+        </table
+>
+      </div
+>
+      <p>&nbsp;</p>
+      </DIV
+></DIV
+><HR><DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <h3
+><a
+name="gtk_icon_list_set_row_spacing"
+></a
+> gtk_icon_list_set_row_spacing()</h3
+>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> 
+                <pre>void gtk_icon_list_set_row_spacing (GtkIconList *iconlist,guint spacing); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Set row spacing of the iconlist in pixels.<br>
+          </p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>spacing</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the distance betwwen rows in pizels</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_get_row_spacing"
+></a
+> gtk_icon_list_get_row_spacing()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>guint gtk_icon_list_get_row_spacing (GtkIconList *iconlist); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Determine row spacing of the iconlist in pixels<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tbody
+> 
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>the distance betwwen rows in pizels</td
+>
+                      </tr
+>
+                      </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="INFORMALTABLE"
+><br>
+            <hr>
+            <div
+class="REFSECT2"
+> 
+              <div
+class="INFORMALTABLE"
+> 
+                <div
+class="REFSECT2"
+> 
+                  <div
+class="INFORMALTABLE"
+> 
+                    <h3
+><a
+name="gtk_icon_list_set_col_spacing"
+></a
+> gtk_icon_list_set_col_spacing()</h3
+>
+                    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                      <tr
+> 
+                        <td
+> 
+                          <pre>void gtk_icon_list_set_col_spacing (GtkIconList *iconlist,guint spacing); </pre>
+                        </td
+>
+                      </tr
+>
+                    </table
+>
+                    <p
+>Set col spacing of the iconlist in pixels.<br>
+                    </p
+>
+                    <div
+class="INFORMALTABLE"
+> 
+                      <p
+></p
+>
+                      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                        <tr bordercolor="#000033"
+> 
+                          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                        </tr
+>
+                        <tr bordercolor="#000033"
+> 
+                          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>spacing</td
+>
+                          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the distance betwwen cols in pizels</td
+>
+                        </tr
+>
+                        <tbody
+> </tbody
+> 
+                      </table
+>
+                      <br>
+                    </div
+>
+                    <hr>
+                    <div
+class="REFSECT2"
+> 
+                      <div
+class="INFORMALTABLE"
+> 
+                        <div
+class="REFSECT2"
+> 
+                          <div
+class="INFORMALTABLE"
+> 
+                            <h3
+><a
+name="gtk_icon_list_get_col_spacing"
+></a
+> gtk_icon_list_get_col_spacing()</h3
+>
+                            <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                              <tr
+> 
+                                <td
+> 
+                                  <pre>guint gtk_icon_list_get_col_spacing (GtkIconList *iconlist); </pre>
+                                </td
+>
+                              </tr
+>
+                            </table
+>
+                            <p
+>Determine col spacing of the iconlist in pixels<br>
+                            </p
+>
+                            <div
+class="INFORMALTABLE"
+> 
+                              <p
+></p
+>
+                              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                                <tr bordercolor="#000033"
+> 
+                                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                                </tr
+>
+                                <tbody
+> 
+                                <tr bordercolor="#000033"
+> 
+                                  <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>Returns</td
+>
+                                  <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>the distance betwwen cols in pizels</td
+>
+                                </tr
+>
+                                </tbody
+> 
+                              </table
+>
+                            </div
+>
+                          </div
+>
+                        </div
+>
+                      </div
+>
+                    </div
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+            <p>&nbsp;</p>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_set_text_space"
+></a
+> gtk_icon_list_set_text_space()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_set_text_space (GtkIconList *iconlist, guint space); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Set the text max size in pixels.<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tbody
+> 
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>space</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>distance in pixels</td
+>
+                      </tr
+>
+                      </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_get_text_space"
+></a
+> gtk_icon_list_get_text_space()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>guint gtk_icon_list_get_text_space (GtkIconList *iconlist); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Get the text max size in pixels.<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>the text max size distance in pizels</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_set_icon_border"
+></a
+> gtk_icon_list_set_icon_border()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_set_icon_border (GtkIconList *iconlist, guint space); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Set icon border.<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>space </td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>icon border</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                    <br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="INFORMALTABLE"
+> </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_get_icon_border"
+></a
+> gtk_icon_list_get_icon_border()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>guint gtk_icon_list_get_icon_border (GtkIconList *iconlist); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Get icon border.<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>icon border</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                    <br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_set_icon_width"
+></a
+> gtk_icon_list_set_icon_width()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_set_icon_width (GtkIconList *iconlist,guint space); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Set icon width<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>space </td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>icon width</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_get_icon_width"
+></a
+> gtk_icon_list_get_icon_width()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>guint gtk_icon_list_get_icon_width (GtkIconList *iconlist); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Get icon width<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>icon width</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_freeze"
+></a
+> gtk_icon_list_freeze()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_freeze (GtkIconList *icon_list); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Freeze icon list.<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_thaw"
+></a
+> gtk_icon_list_thaw()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_thaw (GtkIconList *icon_list); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Thaw(unfreeze) icon list.<br>
+                  </p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                    <br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <p></p>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+> </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_set_background"
+></a
+> gtk_icon_list_set_background()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_set_background (GtkIconList *icon_list, GdkColor *color); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Set the iconlist background.</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="50"
+>color</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP" height="50"
+>GdkColor of the background</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <div
+class="INFORMALTABLE"
+></div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+> </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <p></p>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_add_from_pixmap"
+></a
+> gtk_icon_list_add_from_pixmap()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>GtkIconListItem *gtk_icon_list_add_from_pixmap (GtkIconList *icon_list,
+                                                GdkPixmap *pixmap,
+                                                GdkBitmap *bitmap,
+                                                const gchar *label,
+                                                gpointer link); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>&nbsp;</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pixmap</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>bitmap</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>label</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+>
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>link</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_add_from_data"
+></a
+> gtk_icon_list_add_from_data()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>GtkIconListItem *gtk_icon_list_add_from_data (GtkIconList *icon_list,
+                                              gchar **data,
+                                              const gchar *label,
+                                              gpointer link); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>&nbsp;</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>label</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>link</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_add"
+></a
+> gtk_icon_list_add()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>GtkIconListItem *gtk_icon_list_add (GtkIconList *icon_list,
+                                    const gchar *pixmap_file,
+                                    const gchar *label,
+                                    gpointer link); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Add a icon to the icon list.</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pixmap_file</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>from #include &quot;file.xpm&quot;</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>label</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>label of the icon</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>link</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a pointer to a string ,etc..</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_get_nth"
+></a
+> gtk_icon_list_get_nth()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>GtkIconListItem *gtk_icon_list_get_nth (GtkIconList *iconlist,guint n); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Get nth icon from the icon list.</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>n</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the number of the icon</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+>
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>The GtjIconListItem of the icon</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <p></p>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_get_index"
+></a
+> gtk_icon_list_get_index()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>gint gtk_icon_list_get_index (GtkIconList *iconlist,GtkIconListItem *item); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Get the index number of the icon specified by its GtkIconListItem pointer.</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GtkIconListItem pointer</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the index number</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_remove"
+></a
+> gtk_icon_list_remove()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_remove (GtkIconList *iconlist, GtkIconListItem *item); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Remove the icon from the iconlist</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GtkIconListItem pointer</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_set_active_icon"
+></a
+> gtk_icon_list_set_active_icon()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_set_active_icon (GtkIconList *iconlist,GtkIconListItem *icon); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Set an icon active in iconlist.</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GtkIconListItem pointer</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                    <br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_remove_nth"
+></a
+> gtk_icon_list_remove_nth()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_remove_nth (GtkIconList *iconlist,guint n); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Remove the nth icon from the iconlist</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>n</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the index number of the icon</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_update"
+></a
+> gtk_icon_list_update()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_update (GtkIconList *iconlist); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Update the icon list widget.</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_clear"
+></a
+> gtk_icon_list_clear()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_clear (GtkIconList *iconlist); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Clear the icon list widget.</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                    <br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+> </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_link"
+></a
+> gtk_icon_list_link()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_link (GtkIconListItem *item, gpointer data); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Add a link to a icon from the iconlist</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon pointer</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the pointer link</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+> </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_get_link"
+></a
+> gtk_icon_list_get_link()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>gpointer gtk_icon_list_get_link (GtkIconListItem *item); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Get the link attached to a icon from the iconlist</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon pointer</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the pointer link</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_get_icon_from_link"
+></a
+> gtk_icon_list_get_icon_from_link()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>GtkIconListItem *gtk_icon_list_get_icon_from_link(GtkIconList *iconlist,gpointer data); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Gets the icon pointer from the link attached to it.</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+>
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the pointer link</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the icon pointer</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_get_icon_at"
+></a
+> gtk_icon_list_get_icon_at()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>GtkIconListItem *gtk_icon_list_get_icon_at (GtkIconList *iconlist, gint x, gint y); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Get the icon situated at x,y in icon list</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+> coordinates of the icon</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the icon pointer</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                    <br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+> </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_get_active_icon"
+></a
+> gtk_icon_list_get_active_icon()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>GtkIconListItem *gtk_icon_list_get_active_icon  (GtkIconList *iconlist); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Get the active icon in the icon list.</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the icon pointer</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+> </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_get_entry"
+></a
+> gtk_icon_list_get_entry()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>GtkWidget *gtk_icon_list_get_entry (GtkIconListItem *item); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Get the item-&gt;entry :-)</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>item pointer</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>item-&gt;entry</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_get_pixmap"
+></a
+> gtk_icon_list_get_pixmap()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>GtkWidget *gtk_icon_list_get_pixmap (GtkIconListItem *item); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Get the pixnap of the icon.</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>item pointer</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>item-&gt;pixmap</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_set_pixmap"
+></a
+> gtk_icon_list_set_pixmap()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_set_pixmap (GtkIconListItem *item,GdkPixmap *pixmap,GdkBitmap *bitmap); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Set the pixnap of the icon.</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>item pointer</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>pixmap</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GdkPixmap of the icon</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+>
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>bitmap</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GdkBitmap of the icon</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_set_label"
+></a
+> gtk_icon_list_set_label()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_set_label (GtkIconList *iconlist,GtkIconListItem *item, const gchar *label); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Set the label of the icon.</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>item pointer</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>label</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon label</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_set_selection_mode"
+></a
+> gtk_icon_list_set_selection_mode()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_set_selection_mode(GtkIconList *iconlist, gint mode); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Set the selection mode of the iconlist</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>mode</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_ICON_LIST_ICON,<br>
+                          GTK_ICON_LIST_TEXT_RIGHT,<br>
+                          GTK_ICON_LIST_TEXT_BELOW</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                    <br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_select_icon"
+></a
+> gtk_icon_list_select_icon()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_select_icon (GtkIconList *iconlist, GtkIconListItem *item); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Select the icon specified by pointer</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>item pointer</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_unselect_icon"
+></a
+> gtk_icon_list_unselect_icon()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_unselect_icon (GtkIconList *iconlist, GtkIconListItem *item); </pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Unselect the icon specified by pointer</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>item pointer</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+>
+                  <div
+class="INFORMALTABLE"
+><br>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <hr>
+          <div
+class="REFSECT2"
+> 
+            <div
+class="INFORMALTABLE"
+> 
+              <div
+class="REFSECT2"
+> 
+                <div
+class="INFORMALTABLE"
+> 
+                  <h3
+><a
+name="gtk_icon_list_unselect_all"
+></a
+> gtk_icon_list_unselect_all()</h3
+>
+                  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                    <tr
+> 
+                      <td
+> 
+                        <pre>void gtk_icon_list_unselect_all (GtkIconList *iconlist);</pre>
+                      </td
+>
+                    </tr
+>
+                  </table
+>
+                  <p
+>Unselect all the icons from the icon list</p
+>
+                  <div
+class="INFORMALTABLE"
+> 
+                    <p
+></p
+>
+                    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                      <tr bordercolor="#000033"
+> 
+                        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>iconlist</td
+>
+                        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon list widget created with gtk_icon_list_new()</td
+>
+                      </tr
+>
+                      <tbody
+> </tbody
+> 
+                    </table
+>
+                  </div
+>
+                </div
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <p><br>
+          </p>
+          <div
+class="REFSECT1"
+> 
+            <h2
+>Signals<br>
+            </h2
+>
+            <div
+class="INFORMALTABLE"
+>
+              <hr>
+            </div
+>
+            <div
+class="REFSECT2"
+> 
+              <h3
+><a name="select_icon"></a>The &quot;select_icon&quot; signal</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>gboolean (*select_icon) (GtkIconList *iconlist,
+                         GtkIconListItem *icon,
+                         GdkEvent *event); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Should be connected if you wish to perform an action whenever the icon is selected</p
+>
+              <div
+class="INFORMALTABLE"
+> 
+                <p
+></p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>toggle_combo</i
+></tt
+>&nbsp;:</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the object which received the signal.&#13;</td
+>
+                  </tr
+>
+                  <tr bordercolor="#000033"
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon pointer</td
+>
+                  </tr
+>
+                  <tr bordercolor="#000033"
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>event</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>event that produced the selection of icon</td
+>
+                  </tr
+>
+                  <tbody
+> </tbody
+> 
+                </table
+>
+                <br>
+                <hr>
+              </div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT1"
+> 
+            <h3
+><a name="unselect_icon"></a>The &quot;unselect_icon&quot; signal</h3
+>
+            <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+              <tr
+> 
+                <td
+> 
+                  <pre>void (*unselect_icon)		(GtkIconList *iconlist,<br>                        	 GtkIconListItem *icon,<br>                         	 GdkEvent *event); </pre>
+                </td
+>
+              </tr
+>
+            </table
+>
+            <p
+>Should be connected if you wish to perform an action whenever the icon is unselected</p
+>
+            <div
+class="INFORMALTABLE"
+> 
+              <p
+></p
+>
+              <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                <tbody
+> 
+                <tr
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>toggle_combo</i
+></tt
+>&nbsp;:</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the object which received the signal.&#13;</td
+>
+                </tr
+>
+                <tr bordercolor="#000033"
+> 
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon pointer</td
+>
+                </tr
+>
+                <tr bordercolor="#000033"
+>
+                  <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>event</td
+>
+                  <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>event that produced the unselection of icon</td
+>
+                </tr
+>
+                </tbody
+> 
+              </table
+>
+            </div
+>
+            <div
+class="REFSECT1"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+><br>
+                  <hr>
+                </div
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT1"
+> 
+              <h3
+><a name="text_changed"></a>The &quot;text_changed&quot; signal</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>gboolean (*text_changed)	(GtkIconList *iconlist,<br>                         	 GtkIconListItem *icon,<br>                         	 gchar *new_text); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Should be connected if you wish to perform an action whenever text of the icon 
+                is changed</p
+>
+              <div
+class="INFORMALTABLE"
+> 
+                <p
+></p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                  <tbody
+> 
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>toggle_combo</i
+></tt
+>&nbsp;:</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the object which received the signal.&#13;</td
+>
+                  </tr
+>
+                  <tr bordercolor="#000033"
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon pointer</td
+>
+                  </tr
+>
+                  <tr bordercolor="#000033"
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>new_text</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>modified text</td
+>
+                  </tr
+>
+                  </tbody
+> 
+                </table
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT1"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+><br>
+                  <hr>
+                </div
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT1"
+> 
+              <h3
+><a name="activate_icon"></a>The &quot;activate_icon&quot; signal</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>gboolean (*activate_icon)	(GtkIconList *iconlist,<br>                           GtkIconListItem *icon); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Should be connected if you wish to perform an action whenever the icon is activated</p
+>
+              <div
+class="INFORMALTABLE"
+> 
+                <p
+></p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                  <tbody
+> 
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>toggle_combo</i
+></tt
+>&nbsp;:</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the object which received the signal.&#13;</td
+>
+                  </tr
+>
+                  <tr bordercolor="#000033"
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon pointer</td
+>
+                  </tr
+>
+                  </tbody
+> 
+                </table
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT1"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+><br>
+                  <hr>
+                </div
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT1"
+> 
+              <h3
+><a name="deactivate_icon"></a>The &quot;deactivate_icon&quot; signal</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>gboolean (*deactivate_icon)	(GtkIconList *iconlist,<br>                               GtkIconListItem *icon); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Should be connected if you wish to perform an action whenever the icon is deactivated</p
+>
+              <div
+class="INFORMALTABLE"
+> 
+                <p
+></p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                  <tbody
+> 
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>toggle_combo</i
+></tt
+>&nbsp;:</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the object which received the signal.&#13;</td
+>
+                  </tr
+>
+                  <tr bordercolor="#000033"
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>icon pointer</td
+>
+                  </tr
+>
+                  </tbody
+> 
+                </table
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT1"
+>
+              <div
+class="REFSECT2"
+>
+                <div
+class="INFORMALTABLE"
+><br>
+                  <hr>
+                </div
+>
+              </div
+>
+            </div
+>
+            <div
+class="REFSECT1"
+> 
+              <h3
+><a name="click_event"></a>The &quot;click_event&quot; signal</h3
+>
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void (*click_event)		(GtkIconList *iconlist,<br>                         	 GdkEvent *event); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>Should be connected if you wish to perform an action whenever an event occures.</p
+>
+              <div
+class="INFORMALTABLE"
+> 
+                <p
+></p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+                  <tbody
+> 
+                  <tr
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>toggle_combo</i
+></tt
+>&nbsp;:</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the object which received the signal.&#13;</td
+>
+                  </tr
+>
+                  <tr bordercolor="#000033"
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>event</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GdkEvent that occured</td
+>
+                  </tr
+>
+                  </tbody
+> 
+                </table
+>
+              </div
+>
+            </div
+>
+            <h2
+>&nbsp;</h2
+>
+            <h2
+>&nbsp;</h2
+>
+          </div
+>
+          </div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

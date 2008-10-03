@@ -1,0 +1,580 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-dirtree</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<H1
+>Gtkdirtree</H1
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <p>Gtkdirtree - gtkdirtree widget for gtk+ </p>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top"> 
+      <td bgcolor="D6E8FF"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF"><pre><a href="#gtk_dir_tree_get_type">gtk_dir_tree_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>GtkWidget *</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_dir_tree_new">gtk_dir_tree_new</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre> (void); </pre></td>
+    </tr>
+    <tr align="left" valign="top"> 
+      <td width="9%" bgcolor="D6E8FF"> <pre>gint</pre></td>
+      <td width="19%" bgcolor="D6E8FF"> <pre><a href="#gtk_dir_tree_open_dir">gtk_dir_tree_open_dir</a></pre></td>
+      <td width="72%" bgcolor="D6E8FF"> <pre>(GtkDirTree *dir_tree, const gchar *path);        </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+>  GtkObject<br>   +----GtkWidget<br>         +----GtkContainer<br>               +----GtkCList<br>                     +----GtkCTree<br>                          +----GtkDirTree</PRE
+>
+      </TD
+></TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <pre>No signals</pre>
+      </TD
+>
+    </TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description<br>
+  </H2
+>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td><font face="Arial, Helvetica, sans-serif" size="4">It is a GtkCTree 
+        subclass that allows you to navigate the file-system</font>. </td>
+    </tr>
+  </table>
+  <H2
+><br>
+    Details </H2
+>
+  <table width="100%" border="2" cellspacing="0" cellpadding="0" bordercolor="#FFFFCC">
+    <tr bgcolor="#FFFFCC" bordercolor="#000000"> 
+      <td width="19%" align="left" valign="top"> 
+        <pre>struct _GtkDirTree<br>{<br>  GtkCTree ctree;<br>  gchar *local_hostname;<br>  gboolean show_hidden;<br>  GdkPixmap *my_pc;<br>  GdkPixmap *folder;<br>  GdkPixmap *ofolder;<br>  GdkPixmap *dennied;<br>  GdkBitmap *my_pc_mask;<br>  GdkBitmap *folder_mask;<br>  GdkBitmap *ofolder_mask;<br>  GdkBitmap *dennied_mask;<br>}; </pre>
+      </td>
+      <td width="24%" align="left" valign="top"> 
+        <pre>struct _GtkDirTreeNode
+         {
+         gboolean scanned;
+         gchar *path;
+         };
+       </pre>
+      </td>
+      <td width="30%">&nbsp;</td>
+      <td width="27%">&nbsp;</td>
+    </tr>
+  </table>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_dir_tree_get_type" id="gtk_dir_tree_get_type"></a>gtk_dir_tree_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_dir_tree_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>&nbsp;</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+>
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+      <div
+class="REFSECT2"
+></div
+>
+    </DIV
+>
+  </DIV
+>
+  <h4
+>&nbsp;</h4
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<DIV
+CLASS="REFSECT2"
+></DIV
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_dir_tree_new"></a>gtk_dir_tree_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>GtkWidget* gtk_dir_tree_new (void)</pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Creates a new dir tree widget.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+><TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+><I
+CLASS="EMPHASIS"
+>Returns</I
+> :</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new dir tree widget </TD
+>
+        </TR
+></TBODY
+></TABLE
+>
+      <div
+class="REFSECT2"
+><br>
+      </div
+>
+      <hr>
+      <div
+class="REFSECT2"
+> 
+        <h3
+><a name="gtk_dir_tree_open_dir"></a>gtk_dir_tree_open_dir ()</h3
+>
+        <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+          <tr
+> 
+            <td
+> 
+              <pre>gint gtk_dir_tree_open_dir(GtkDirTree *dir_tree, const gchar *path); </pre>
+            </td
+>
+          </tr
+>
+        </table
+>
+        <p
+>Show files from directory path in dir_tree.</p
+>
+        <div
+class="INFORMALTABLE"
+> 
+          <p
+></p
+>
+          <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+            <tbody
+> 
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><i
+class="EMPHASIS"
+>dir_tree</i
+></td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>dir tree widget </td
+>
+            </tr
+>
+            <tr
+> 
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>path</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>directory path</td
+>
+            </tr
+>
+            <tr
+>
+              <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+              <td
+width="80%"
+align="LEFT"
+valign="TOP"
+> 
+                <p>TRUE =&gt; succes<br>
+                  FALSE=&gt; failure</p>
+                </td
+>
+            </tr
+>
+            </tbody
+> 
+          </table
+>
+        </div
+>
+      </div
+>
+  <br>
+      <P
+></P
+>
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+></div
+>
+      </div
+>
+      
+    </DIV
+>
+  </DIV
+>
+  
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="REFSECT1"
+>
+<H2
+>See Also</H2
+><P
+><P
+></P
+>
+  <DIV
+CLASS="VARIABLELIST"
+> 
+    <DL
+> 
+      <DT
+>Gtkctree </DT
+>
+      <DD
+> 
+        <P
+>a text widget displaying a hierarchical tree.</P
+>
+      </DD
+>
+      <DT
+><BR
+CLEAR="all">
+        <BR>
+      </DT
+>
+    </DL
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

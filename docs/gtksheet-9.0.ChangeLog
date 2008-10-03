@@ -1,0 +1,368 @@
+GtkSheet-9.0
+============
+
+- Fixes in row/column deletion and text editing. 
+  Thanks to Matias Mutchinick <mmb@quetzal.innsz.mx> for his patches,
+  Kevin Handy for his examples <kth@srv.net>.
+
+- Fixes in gtk_sheet_range_set_font
+  Thanks Ralf Forsberg for his report and examples <rfg@home.se>.
+
+- Fixes in GtkItemEntry, GtkColorCombo and GtkBorderCombo.
+  Tanks to Andreas Voegele <andreas.voegele@gmx.de>
+
+- Fixes in gtk_sheet_map/realize/destroy/finalize/size_allocate
+  Thanks to Mario Motta <mmotta@guest.net> for his bug report.
+
+- Fixes in delete/insert rows/columns for the attached widgets
+  Thanks to Striker <striker@dread.net> for pointing me out the bug.
+
+- Fixes in gtksheet.h 
+  Thanks to Aaron Lehman
+
+- New feature: gtk_sheet_set_selection_mode
+  Use GTK_SELECTION_SINGLE to select single rows/columns/cells 
+
+
+GtkSheet-8.0
+============
+
+- GtkSheetEntry changed by GtkItemEntry (cast using GTK_IENTRY now)
+
+- Improvements in look and feel, mainly in GtkItemEntry
+
+- "Unlimited" text size.
+
+- Bugfixes.
+
+  Many thanks to Brad Pepers <brad@linuxcanada.com> who read the code 
+  carefully and pointed me out lots of details. 
+  Thanks to Kevin Handy <kth.srv.net>, Ralf Forsberg <rfg@home.se>, 
+  Tom Sobota <tsobota@teleline.es>, and of course, Bob Lissner and the 
+  Quicklist team.
+
+
+GtkSheet-7.10
+=============
+
+- New functions:
+
+  * gtk_sheet_cell_delete
+  * gtk_sheet_range_delete
+   (They remove cell contents and links, while gtk_sheet_cell/range_clear
+    remove only contents)
+
+  * gtk_sheet_remove_link
+
+  * gtk_sheet_row_button_justify
+  * gtk_sheet_column_button_justify
+    (justify row/column button label)
+
+- Some small fixes.
+
+
+GtkSheet-7.9
+============
+
+- Bugfix release.
+
+  * gtk_sheet_get_link patched by Bob Lissner.
+
+
+GtkSheet-7.8
+============
+
+- Bugfix release.
+
+  * GtkSheetEntry was grabbing focus with button presses.
+    Now it doesn't do that with right button to avoid problems with popups.
+    (Thanks to Scott Dattalo <sdattalo@unix.sri.com> and
+     Brad Pepers <brad@linuxcanada.com>) 
+
+
+GtkSheet-7.7
+============
+
+- Bugfix release.
+
+  * Key presses: events propagation
+  * Hiding rows/columns 
+    Both patched by Sam Phillips from the quicklist team.
+    <sam@usaworks.com>
+  * gtk_sheet_link_cell,
+    gtk_sheet_get_link, patched by Bob Lissner from the quicklist team.
+
+  * sheet's entry creation warnings
+    Patched by Heath Martin <martinh@pegasus.cc.ucf.edu>
+
+ 
+GtkSheet-7.6
+============
+
+- This is mainly a bug-fix release. Thanks again to the quicklist team.
+
+  List of fixed bugs:
+  * Ctrl+Key.
+  * row/column deletion.
+  * flashing range scrolling.
+  * child widgets scrolling.
+  * auto scrolling.
+    (If you click on the last cell of a row/column, the sheet scrolls to show the 
+     entire cell.)
+  * selection DnD.
+  * selection highlighting 
+    (patched by Sam Phillips from the quicklist team <sam@usaworks.com>)
+  * hiding titles when the widget is not realized. 
+    (Thanks to Glenn Trigg <ggt@linuxfan.com> -- www.linuxfan.com/~gtk/privtool.html)
+
+
+GtkSheet-7.5
+============
+
+- New field in the GtkSheetCell struct : 
+  gpointer link;
+
+- You can link a cell to an object using:
+  gtk_sheet_link_cell(GtkSheet *sheet, gint row, gint col, gpointer link);
+  gtk_sheet_get_link(GtkSheet *sheet, gint row, gint col);
+
+  The only efect is making cell->link point to the given object.
+
+- New signal "clear cell"
+
+- Bug fix in column shifts when they are deleted
+  Thanks to Nick Slobodsky <pentahd@pentahd.redline.ru> 
+
+
+GtkSheet-7.4
+============
+
+* Rows/Columns insertion/deletion optimized.
+
+* Improvements in scrollbars
+
+* Improvements in dragging and resizing selections
+
+* Features added:
+
+- Multiline button labels. ("this is\na multiline\nlabel")
+
+- Themeable button gadgets.
+
+- gtk_sheet_attach (GtkSheet *sheet, GtkWidget *child,
+		    gint row, gint column,
+		    gfloat x_align, gfloat y_align); 
+
+  Attaches a child widget to the given cell with the given alignments.
+  The child is reallocated each time the column or row changes, keeping
+  attached to the same cell.
+
+- GTK_SHEET_ADJUST_TEXT flag renamed as GTK_SHEET_CLIP_TEXT
+
+Thanks to Jan Fedak <J.Fedak@sh.cvut.cz> for his comments, and to the
+quicklist team for their perseverance (www.quicklist.org).
+
+
+GtkSheet-7.3
+============
+
+Silly but big bug fixed on previous version.
+
+
+GtkSheet-7.2
+============
+
+More silly bugs fixed. Thanks again to Sam and Bob.
+(gtk_sheet_set_column_width/row_height, gtksheet_row/column_set_sensitivity)
+
+Thanks to Erwan Corvellec <eco@club-intener.fr> for his patches and bug reports.
+
+Twitching scrollbars aren't anymore.
+
+Makefile builds libGtkSheet.a
+
+
+GtkSheet-7.1
+============
+
+Maily a bug fix release, and some new features:
+
+* About a dozen of "invisible" bugs fixed thanks to Quicklist team 
+(www.quicklist.com). Special thanks to Bob Lissner <lissnerr@ColdSprings.net>
+and Sam Philips <sam@usaworks.com>. GtkSheet is being used by Quicklist,
+and these guys made a lot of tests for it. 
+
+* Features added:
+
+ - gtk_sheet_set_column_titles_height(GtkSheet *sheet, gint height);
+
+ - gtk_sheet_set_row_titles_width(GtkSheet *sheet, gint width);
+
+ - gtk_sheet_column_set_justification(GtkSheet *sheet, gint column, 
+                                      gint justification);
+
+  If column->justification != GTK_JUSTIFY_FILL (default value) it 
+  will always win over individual cells' justifications.
+
+  - New flag: GTK_SHEET_AUTO_SCROLL. For default this flag is on. If
+  you turn it off, gtksheet won't scroll automatically to keep the 
+  active cell in the viewport. 
+
+
+GtkSheet-7.0
+============
+
+GtkSheet has moved to gtk+-1.2 and new features have been added.
+This version has been tested with gtk+-1.2.0
+
+* GtkSheet is a self scrolling widget a la GtkClist and GtkLayout. 
+You have to add it to a scrolled window to display it propertly.
+Shadow borders will be fixed with the patch added to gtkscrolledwindow.
+
+* Container features implemented. Adding widgets to the sheet is very easy
+with:
+
+gtk_sheet_put (GtkSheet *sheet, GtkWidget *child, gint x, gint y);
+
+* Move it with
+
+gtk_sheet_move_child (GtkSheet *sheet, GtkWidget *widget, gint x, gint y);
+
+* Remove it with
+
+gtk_container_remove(GTK_CONTAINER(sheet), GtkWidget *child);
+
+* Some signals have been renamed:
+
+  "activate_cell" -> "activate"
+  "deactivate_cell" -> "deactivate"
+ 
+* Rejection option for activation/deactivation of the active cell.
+
+* New signals:
+
+  "new_column_width"
+  "new_row_height"
+
+* new function 
+
+gtk_sheet_set_cell_text(GtkSheet *sheet, gint row, gint col, gchar *text);
+(you don't have to set the justification)
+
+* Some minor bugs fixed.
+
+GtkSheet-5.3
+============
+
+The graphic interface is nicer and more friendly. 
+The appeareance is more familiar and I added some new features:
+
+You can make a selection and move it dragging the border.
+
+You can resize the selection dragging the bottom-right corner.
+
+You can store the selection on the clipboard. 
+
+(All this functions emit a signal. You can cutomize your application
+ connecting a signal handler in order to do the desired action) 
+
+NOTE: the selection handler has not been implemented yet.
+
+GtkSheet-5.4
+============
+
+Following Mario Motta's suggestions <mmotta@guest.net> I added a new feature:
+
+You can hide/show row and/or column titles (see Example 2 in the demo program)
+
+and I patched gtksheet.h for C++ compatibility.
+
+I fixed a couple of bugs:
+multiple emission of the "activate_cell" signal;
+problems when selecting a row/column and moving with the cursor keys. 
+ 
+NOTE: All versions of GtkSheet compile fine with gtk+-1.0.6
+
+GtkSheet-5.5
+============
+ 
+Many bugs fixed, mainly reported by Mario Motta.
+ 
+All warnings fixed.
+ 
+Signals: 
+"changed" is emited when typing into the active cell, changing its contents.
+"set_cell" is emited when changing current cell's position.
+"activate_cell" is emited when the new cell is activated.
+ 
+NOTE: gtksheet crashes on Solaris. I couldn't fix this, yet.
+ 
+GtkSheet-5.6
+============
+
+GtkSheet now allows font handling with
+gtk_sheet_range_set_font (GtkSheet *sheet, GtkSheetRange range, GdkFont *font)
+
+Problems with Solaris have been fixed. 
+
+Steven Rostedt <steven.rostedt@lmco.com> fixed a bug when adding 
+rows/columns.
+
+Some little changes in the demo to show the new features and to avoid the
+redraw in the example 1.
+
+Other bugs fixed.
+
+GtkSheet-5.7
+============
+
+Function added by Steven Rostedt:
+
+gint
+gtk_sheet_get_state (GtkSheet *sheet) 
+
+Resizing rows and columns improved.
+
+Bug fixes, including two bugs causing crash when the widget is destroyed 
+(style bug patched in part by Steve)
+
+ANNOUNCE: GtkSheet is moving to Gtk+-1.2 
+
+GtkSheet-6.0
+============
+
+GtkSheet has move to gtk+-1.2 and new features have been added.
+The new distribution includes a set of new widgets.
+
+
+GtkSheetEntry has been updated. Now, it is a GtkEntry subclass. 
+The main diferences with GtkEntry are:
+  - It doesn't draw the border.
+  - It is dinamically resized when the text is typed.
+  - It allows right/left/center text justification.
+(gtk_entry_size_allocate & entry_adjust_scroll)
+
+
+GtkSheet can be created with a custom entry widget. You can use GtkEntry or a 
+GtkEntry subclass (e.g.  GtkSheetEntry, GtkSpinButton) or a box or table 
+containing a GtkEntry subclass (e.g. GtkCombo)
+
+gtk_sheet_new_with_custom_entry (gint nrows, gint ncols, GtkType *entry_type);
+
+Example: 
+sheet = gtk_sheet_new_with_custom_entry(10, 10, gtk_combo_get_type());
+
+The entry can be changed on the fly with:
+
+gtk_sheet_change_entry(GtkSheet *sheet, GtkType *entry_type);
+
+New signals policy:
+ - "activate_cell" is emited when the entry enters to a new cell.
+ - "deactivate_cell" is emited whent the entry is deactivated before moving 
+to another cell or starting a selection.
+ - "traverse" is emited before "deactivate_cell" and allows to veto the
+movement. In such case, the entry will remain in the site, and the other
+signals will not be emited.
+
+GtkSheet-6.0 has been tested with gtk+-1.1.12 without problems.
+

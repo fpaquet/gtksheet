@@ -1,0 +1,1657 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-Plot Structures</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<h2
+>GtkPlot Structures</h2
+>
+<p>Why are these useful?<br>
+  Because the gtk-sheet functions do not cover everything and sometimes you need 
+  to modify <br>
+  structure elements by yourself.<br>
+  <br>
+  <br>
+</p>
+<table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#CAF7E0">
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> 
+      <pre><a name="GtkPlot"></a>struct _GtkPlot</pre>
+    </td>
+    <td width="85%" align="left" valign="top"> 
+      <pre>
+       GtkWidget widget;
+       GdkDrawable *drawable;
+       GdkPixmap *bg_pixmap;
+       gboolean use_pixmap;
+       gboolean transparent;
+       gdouble magnification;
+       gboolean clip_data;
+       GdkColor background;
+       gboolean grids_on_top;
+       gboolean show_x0;
+       gboolean show_y0;
+       /* location and size in percentage of the widget's size */
+       gdouble x, y, width, height;
+       gdouble xmin, xmax;
+       gdouble ymin, ymax;
+       GtkPlotScale xscale, yscale;
+       GtkPlotAxis *bottom; 
+       GtkPlotAxis *top; 
+       GtkPlotAxis *left; 
+       GtkPlotAxis *right; 
+       gfloat bottom_align;
+       gfloat top_align;
+       gfloat left_align;
+       gfloat right_align;
+       GtkPlotLine x0_line;
+       GtkPlotLine y0_line;
+       gdouble legends_x, legends_y; /* position in % */
+       gint legends_width, legends_height; /* absolute size */
+       GtkPlotBorderStyle legends_border;
+       gint legends_line_width; 
+       gint legends_border_width;
+       gint legends_shadow_width;
+       gboolean show_legends;
+       GtkPlotText legends_attr;
+       GtkPlotData *active_data;
+       GList *data_sets;
+       GList *text;
+     </pre>
+    </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> 
+      <pre><a name="GtkPlotAxis"></a>struct _GtkPlotAxis</pre>
+    </td>
+    <td width="85%" align="left" valign="top"> 
+      <pre>  GtkObject object;<br>  gboolean is_visible;<br>  GtkPlotVector origin;<br>  GtkPlotVector direction;<br>  GtkPlotText title;<br>  gboolean title_visible;<br>  GtkPlotTicks ticks;<br>  GtkPlotOrientation orientation;<br>  <br>  GtkPlotScale scale;<br>  GtkPlotLine line;<br>  GtkPlotLine major_grid;<br>  GtkPlotLine minor_grid;<br>  gdouble min;<br>  gdouble max;<br>  gint major_mask;<br>  gint minor_mask;<br>  gint ticks_length;<br>  gfloat ticks_width;<br>  gboolean custom_labels;<br>  gint labels_offset;<br>  gchar *labels_prefix;<br>  gchar *labels_suffix;<br>  gboolean show_major_grid;<br>  gboolean show_minor_grid;<br>  GtkPlotText labels_attr;<br>  gint label_precision;<br>  gint label_style;<br>  gint label_mask;<br></pre>
+    </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> 
+      <pre><a name="GtkPlotText"></a>struct _GtkPlotText</pre>
+    </td>
+    <td width="85%" align="left" valign="top"> 
+      <pre>  gdouble x, y;<br>  gint angle; /* 0, 90, 180, 270 */<br>  GdkColor fg;<br>  GdkColor bg;<br> <br>  gboolean transparent;<br> <br>  GtkPlotBorderStyle border;<br>  gint border_width;<br>  gint shadow_width;<br>  gint border_space;<br>  gchar *font;<br>  gint height;<br>  gchar *text;<br>  GtkJustification justification; </pre>
+    </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> 
+      <pre><a name="GtkPlotLine"></a>struct _GtkPlotLine</pre>
+    </td>
+    <td width="85%" align="left" valign="top"> 
+      <pre> GtkPlotLineStyle line_style;<br> gfloat line_width;<br> GdkColor color; </pre>
+    </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top" height="22"> 
+      <pre><a name="GtkPlotSymbol"></a>struct _GtkPlotSymbol</pre>
+    </td>
+    <td width="85%" align="left" valign="top" height="22"> 
+      <pre>  GtkPlotSymbolType symbol_type;<br>  GtkPlotSymbolStyle symbol_style;<br>  gint size;<br>  GdkColor color;<br>  GtkPlotLine border; </pre>
+    </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> 
+      <pre><a name="GtkPlotTicks"></a>struct _GtkPlotTicks</pre>
+    </td>
+    <td width="85%" align="left" valign="top"> 
+      <pre>  gint nmajorticks;             /* Number of major ticks drawn */<br>  gint nminorticks;             /* Number of minor ticks drawn */<br>  gdouble step;		   /* major ticks step */<br>  gint nminor;		   /* number of minor ticks between major ticks */<br>  gint *major;             /* major ticks points */<br>  gint *minor;             /* minor ticks points */<br>  gdouble *major_values;          /* major ticks values */<br>  gdouble *minor_values;          /* minor ticks values */<br>  gboolean set_limits;<br>  gdouble begin, end;  </pre>
+    </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> 
+      <pre><a name="GtkPlotVector"></a>struct _GtkPlotVector</pre>
+    </td>
+    <td width="85%" align="left" valign="top"> 
+      <pre>  gdouble x, y, z; </pre>
+    </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> 
+      <pre><a name="GtkPlotMarker"></a>struct _GtkPlotMarker</pre>
+    </td>
+    <td width="85%" align="left" valign="top"> 
+      <pre>  GtkPlotData *data;<br>  gint point; </pre>
+    </td>
+  </tr>
+  <tr bordercolor="#000000"> 
+    <td width="15%" align="left" valign="top"> 
+      <pre>&nbsp;</pre>
+    </td>
+    <td width="85%" align="left" valign="top"> 
+      <pre>&nbsp;</pre>
+    </td>
+  </tr>
+</table>
+<h2>&nbsp; </h2>
+<h2>Signals</h2>
+<div
+class="REFSECT2"
+> 
+  <h2
+><br>
+    <a name="GtkPlot_signals"></a>GtkPlot Signals<br>
+    <br>
+    The &quot;add_data&quot; signal</h2
+>
+  <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+    <tr
+> 
+      <td
+> 
+        <pre>gboolean (* add_data) (GtkPlot *plot, GtkPlotData *data); </pre>
+      </td
+>
+    </tr
+>
+  </table
+>
+  <p
+>&nbsp; </p
+>
+  <div
+class="INFORMALTABLE"
+> 
+    <p
+></p
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+      <tbody
+> 
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>plot</i
+></tt
+></td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>data</i
+></tt
+></td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+      </tr
+>
+      </tbody
+>
+    </table
+>
+  </div
+>
+</div
+>
+<h3
+><br>
+  The &quot;update&quot; signal</h3
+>
+<table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+  <tr
+> 
+    <td
+> 
+      <pre>void (* update) (GtkPlot *plot, gboolean new_range); </pre>
+    </td
+>
+  </tr
+>
+</table
+>
+<p
+>&nbsp; </p
+>
+<div
+class="INFORMALTABLE"
+> 
+  <p
+></p
+>
+  <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+    <tbody
+> 
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>plot</i
+></tt
+></td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>new_range</i
+></tt
+></td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    </tbody
+> 
+  </table
+>
+</div
+>
+<h3
+><br>
+  The &quot;changed&quot; signal</h3
+>
+<table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+  <tr
+> 
+    <td
+> 
+      <pre>void (* changed) (GtkPlot *plot); </pre>
+    </td
+>
+  </tr
+>
+</table
+>
+<p
+>&nbsp; </p
+>
+<div
+class="INFORMALTABLE"
+> 
+  <p
+></p
+>
+  <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+    <tbody
+> 
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>plot</i
+></tt
+></td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    </tbody
+> 
+  </table
+>
+</div
+>
+<h3
+><br>
+  The &quot;moved&quot; signal</h3
+>
+<table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+  <tr
+> 
+    <td
+> 
+      <pre>gboolean (* moved) (GtkPlot *plot, 
+                    gdouble x, gdouble y); </pre>
+    </td
+>
+  </tr
+>
+</table
+>
+<p
+>&nbsp; </p
+>
+<div
+class="INFORMALTABLE"
+> 
+  <p
+></p
+>
+  <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+    <tbody
+> 
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>plot</i
+></tt
+></td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    <tr
+>
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    </tbody
+> 
+  </table
+>
+</div
+>
+<h3
+><br>
+  The &quot;resized&quot; signal</h3
+>
+<table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+  <tr
+> 
+    <td
+> 
+      <pre>gboolean (* resized) (GtkPlot *plot,
+                      gdouble width, gdouble height);
+     </pre>
+    </td
+>
+  </tr
+>
+</table
+>
+<p
+>&nbsp; </p
+>
+<div
+class="INFORMALTABLE"
+> 
+  <p
+></p
+>
+  <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+    <tbody
+> 
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>plot</i
+></tt
+></td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width,height</td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    </tbody
+> 
+  </table
+>
+</div
+>
+<h3
+><br>
+  The &quot;plot_paint&quot; signal</h3
+>
+<table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+  <tr
+> 
+    <td
+> 
+      <pre>void (* plot_paint) (GtkWidget *plot); </pre>
+    </td
+>
+  </tr
+>
+</table
+>
+<p
+>&nbsp; </p
+>
+<div
+class="INFORMALTABLE"
+> 
+  <p
+></p
+>
+  <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+    <tbody
+> 
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>plot</i
+></tt
+></td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    </tbody
+> 
+  </table
+>
+</div
+>
+<h3
+><br>
+  The &quot;draw_legends&quot; signal</h3
+>
+<table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+  <tr
+> 
+    <td
+> 
+      <pre>void (* draw_legends) (GtkWidget *plot); </pre>
+    </td
+>
+  </tr
+>
+</table
+>
+<p
+>&nbsp; </p
+>
+<div
+class="INFORMALTABLE"
+> 
+  <p
+></p
+>
+  <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+    <tbody
+> 
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>plot</i
+></tt
+></td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    </tbody
+> 
+  </table
+>
+</div
+>
+<h3
+><br>
+  The &quot;get_pixel&quot; signal</h3
+>
+<table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+  <tr
+> 
+    <td
+> 
+      <pre>void (* get_pixel) (GtkWidget *plot, 
+                    gdouble x, gdouble y,
+                    gdouble *px, gdouble *py); </pre>
+    </td
+>
+  </tr
+>
+</table
+>
+<p
+>&nbsp; </p
+>
+<div
+class="INFORMALTABLE"
+> 
+  <p
+></p
+>
+  <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+    <tbody
+> 
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>plot</i
+></tt
+></td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    <tr
+>
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>*px,*py</td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    </tbody
+> 
+  </table
+>
+  <br>
+</div
+>
+<h3
+>The &quot;get_point&quot; signal</h3
+>
+<table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+  <tr
+> 
+    <td
+> 
+      <pre>void (* get_point) (GtkWidget *plot, 
+                    gint px, gint py,
+                    gdouble *x, gdouble *y); </pre>
+    </td
+>
+  </tr
+>
+</table
+>
+<p
+>&nbsp; </p
+>
+<div
+class="INFORMALTABLE"
+> 
+  <p
+></p
+>
+  <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+    <tbody
+> 
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>plot</i
+></tt
+></td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>*x,*y</td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    <tr
+> 
+      <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>px,py</td
+>
+      <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+    </tr
+>
+    </tbody
+> 
+  </table
+>
+</div
+>
+<h2><br>
+  <br>
+  <a name="GtkPlotData_signals"></a>GtkPlotData Signals </h2>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+> 
+    <DL
+> 
+      <div
+class="INFORMALTABLE"
+> </div
+>
+      <h3
+><br>
+        The &quot;add_to_plot&quot; signal</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>gboolean (* add_to_plot) (GtkPlotData *data, GtkPlot *plot); </pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp; </p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tbody
+> 
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>plot</i
+></tt
+></td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>data</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          </tbody
+> 
+        </table
+>
+      </div
+>
+      <h3
+><br>
+        The &quot;update&quot; signal</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>void (* update) (GtkPlotData *data, gboolean new_range); </pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp; </p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tbody
+> 
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>plot</i
+></tt
+></td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>new_range</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          </tbody
+> 
+        </table
+>
+      </div
+>
+      <h3
+><br>
+        The &quot;draw_data&quot; signal</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>void (* draw_data) (GtkPlotData *data); </pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp; </p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tbody
+> 
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>data</i
+></tt
+></td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          </tbody
+> 
+        </table
+>
+      </div
+>
+      <h3
+><br>
+        The &quot;draw_symbol&quot; signal</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>void (* draw_symbol) (GtkPlotData *data, 
+                      gdouble x, 
+                      gdouble y, 
+                      gdouble z,
+                      gdouble a,
+                      gdouble dx, 
+                      gdouble dy, 
+                      gdouble dz,
+                      gdouble da); </pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp; </p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tbody
+> 
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>data</i
+></tt
+></td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y,x</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>dx,dy,dz</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>a</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>da</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          </tbody
+> 
+        </table
+>
+      </div
+>
+      <h3
+><br>
+        The &quot;draw_legend&quot; signal</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>void (* draw_legend) (GtkPlotData *data, gint x, gint y); </pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp; </p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tbody
+> 
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>data</i
+></tt
+></td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          </tbody
+> 
+        </table
+>
+        <br>
+      </div
+>
+      <h3
+>The &quot;get_legend_size&quot; signal</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>void (* get_legend_size) (GtkPlotData *data, 
+                          gint *width, gint *height); </pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp; </p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tbody
+> 
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>data</i
+></tt
+></td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>*width,*height</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          </tbody
+> 
+        </table
+>
+      </div
+>
+      <DT
+><BR
+CLEAR="all">
+        <br>
+        <br>
+        <a name="GtkPlotAxis_signals"></a><font face="Arial, Helvetica, sans-serif" size="5">GtkPlotAxis 
+        Signals </font></DT
+>
+      <div
+class="INFORMALTABLE"
+> </div
+>
+      <h3
+><br>
+        The &quot;tick_label&quot; signal</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>gboolean (* tick_label) (GtkPlotAxis *axis, 
+                         gdouble *tick,
+                         gchar *label); </pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p
+>&nbsp; </p
+>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+          <tbody
+> 
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+><tt
+class="PARAMETER"
+><i
+>axis</i
+></tt
+></td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>tick</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>label</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+          </tr
+>
+          </tbody
+> 
+        </table
+>
+      </div
+>
+      <dt>&nbsp;</dt>
+      <dd> 
+        <h2>&nbsp;</h2>
+      </dd>
+    </DL
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+<TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

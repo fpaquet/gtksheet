@@ -1,0 +1,6154 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-Plot3d</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3> Gtkplot3d - 3d scientific plots widget for gtk+ </h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_plot3d_get_type">gtk_plot3d_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget* </pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_new">gtk_plot3d_new</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GdkDrawable *drawable); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget* </pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_new_with_size">gtk_plot3d_new_with_size</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GdkDrawable *drawable,
+gdouble width, gdouble height); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_construct">gtk_plot3d_construct</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GdkDrawable *drawable); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top" height="33"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top" height="33"> 
+        <pre><a href="#gtk_plot3d_construct_with_size">gtk_plot3d_construct_with_size</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF" height="33"> <pre>(GtkPlot3D *plot,
+GdkDrawable *drawable,
+gdouble width, gdouble height); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_autoscale">gtk_plot3d_autoscale</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>&nbsp;</pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td colspan="2" bgcolor="D6E8FF" align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="5">Rotations 
+        around global axes</font></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>&nbsp;</pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_rotate">gtk_plot3d_rotate</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot, 
+gdouble angle_x,
+gdouble angle_y,
+gdouble angle_z); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_rotate_vector">gtk_plot3d_rotate_vector</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotVector *vector,
+gdouble a1, 
+gdouble a2, 
+gdouble a3);
+</pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>&nbsp;</pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td colspan="2" bgcolor="D6E8FF" align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="5">Rotations 
+        around local axes</font></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>&nbsp;</pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_reset_angles">gtk_plot3d_reset_angles</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot);  </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_rotate_x">gtk_plot3d_rotate_x</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot, 
+gdouble angle); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_rotate_y">gtk_plot3d_rotate_y</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot, 
+gdouble angle); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_rotate_z">gtk_plot3d_rotate_z</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot, 
+gdouble angle); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_get_pixel">gtk_plot3d_get_pixel</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot, 
+gdouble x, 
+gdouble y, 
+gdouble z,
+gdouble *px, 
+gdouble *py,
+gdouble *pz); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_set_xrange">gtk_plot3d_set_xrange</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot, 
+gdouble min, gdouble max); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_set_yrange">gtk_plot3d_set_yrange</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot, 
+gdouble min, gdouble max); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_set_zrange">gtk_plot3d_set_zrange</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot, 
+gdouble min, gdouble max); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_set_xfactor">gtk_plot3d_set_xfactor</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot, 
+gdouble xfactor); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_set_yfactor">gtk_plot3d_set_yfactor</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot, 
+gdouble yfactor); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_set_zfactor">gtk_plot3d_set_zfactor</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot, 
+gdouble zfactor); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_get_xfactor">gtk_plot3d_get_xfactor</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_get_yfactor">gtk_plot3d_get_yfactor</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>gdouble</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_get_zfactor">gtk_plot3d_get_zfactor</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>&nbsp;</pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td colspan="2" bgcolor="D6E8FF" align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="5">Axes</font></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>&nbsp;</pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkPlotAxis *</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_get_axis">gtk_plot3d_get_axis</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotOrientation orientation); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkPlotAxis *</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_get_side">gtk_plot3d_get_side</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotSide side); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_axis_show_major_ticks">gtk_plot3d_axis_show_major_ticks</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotSide side,
+gint ticks_mask); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_axis_show_minor_ticks">gtk_plot3d_axis_show_minor_ticks</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotSide side,
+gint ticks_mask); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_axis_show_labels">gtk_plot3d_axis_show_labels</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotSide side,
+gint label_mask); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_axis_show_title">gtk_plot3d_axis_show_title</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotSide side); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_axis_hide_title">gtk_plot3d_axis_hide_title</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotSide side); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_axis_set_ticks">gtk_plot3d_axis_set_ticks</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotOrientation axis,
+gdouble major_step,
+gint nminor); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_axis_set_major_ticks">gtk_plot3d_axis_set_major_ticks</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotOrientation axis,
+gdouble major_step); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_axis_set_minor_ticks">gtk_plot3d_axis_set_minor_ticks</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotOrientation axis,
+gint nminor); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_axis_set_ticks_length">gtk_plot3d_axis_set_ticks_length</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotOrientation axis,
+gint length); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_axis_set_ticks_width">gtk_plot3d_axis_set_ticks_width</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotOrientation axis,
+gfloat width);</pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_axis_show_ticks">gtk_plot3d_axis_show_ticks</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotSide side,
+gint major_mask,
+gint minor_mask); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top" height="17"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top" height="17"> 
+        <pre><a href="#gtk_plot3d_set_titles_offset">gtk_plot3d_set_titles_offset</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF" height="17"> <pre>(GtkPlot3D *plot,
+gint offset); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_get_titles_offset">gtk_plot3d_get_titles_offset</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>&nbsp;</pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td colspan="2" bgcolor="D6E8FF" align="left" valign="top"> <pre><font face="Arial, Helvetica, sans-serif" size="5">Grids</font></pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre>&nbsp;</pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>&nbsp;</pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_major_grids_set_visible">gtk_plot3d_major_grids_set_visible</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+gboolean x,
+gboolean y,
+gboolean z); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_minor_grids_set_visible">gtk_plot3d_minor_grids_set_visible</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+gboolean x,
+gboolean y,
+gboolean z); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_major_grids_visible">gtk_plot3d_major_grids_visible</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>GtkPlot3D *plot,
+gboolean *x,
+gboolean *y,
+gboolean *z); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_minor_grids_visible">gtk_plot3d_minor_grids_visible</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+gboolean *x,
+gboolean *y,
+gboolean *z); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top" height="18"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top" height="18"> 
+        <pre><a href="#gtk_plot3d_major_zgrid_set_attributes">gtk_plot3d_major_zgrid_set_attributes</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF" height="18"> <pre>(GtkPlot3D *plot,
+GtkPlotLineStyle style, <br>gfloat width,
+const GdkColor *color); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_major_zgrid_get_attributes">gtk_plot3d_major_zgrid_get_attributes</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>GtkPlot3D *plot,
+GtkPlotLineStyle *style,
+gfloat *width,
+GdkColor *color); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_minor_zgrid_set_attributes">gtk_plot3d_minor_zgrid_set_attributes</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotLineStyle style,
+gfloat width,
+const GdkColor *color); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_plot3d_minor_zgrid_get_attributes">gtk_plot3d_minor_zgrid_get_attributes</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkPlot3D *plot,
+GtkPlotLineStyle *style,
+gfloat *width,
+GdkColor *color);
+       </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+>
+        <pre>&nbsp;</pre>
+      </TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <pre><a href="#get_pixel">void (* get_pixel)</a> (GtkWidget *widget, 
+                    gdouble x, gdouble y, gdouble z,
+                    gdouble *px, gdouble *py, gdouble *pz); </pre>
+      </TD
+>
+    </TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+><font face="Arial, Helvetica, sans-serif"><br>
+    GtkPlot is a widget for GTK+. It allows to draw high quality scientific plots 
+    in two dimensions with a look and feel very similar to Microcal Origin for 
+    Windows.<br>
+    The distribution includes GtkPlotCanvas subclass, and a demo program showing 
+    two layered plots with different kind of curves. <br>
+    You can choose between a number of symbol types, lines, connectors -straight 
+    lines, steps, splines-, and change their attributes -color, size, width-. 
+    <br>
+    You can also plot functions, add error bars, edit legends, rotate and move 
+    axis titles, change axis properties, etc. </font></h4
+>
+  <h4><font face="Arial, Helvetica, sans-serif">The package also includes GtkPlot3D 
+    and GtkPlotPolar. <br>
+    </font><font face="Arial, Helvetica, sans-serif">GtkPlotCanvas is a GtkFixed 
+    subclass and allows to DnD plots, points, and child objects (text, axis titles). 
+    You can move them or resize your plots dragging with the mouse! <br>
+    </font><font face="Arial, Helvetica, sans-serif">The distribution includes 
+    also a PostScript driver. </font></h4>
+  <h2
+><br>
+    Details</h2
+>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top" bgcolor="#FFFFCC"> 
+      <td width="19%"> 
+        <pre><a href="#_GtkPlotVector">struct GtkPlotVector;</a>
+<a href="#_GtkPlotVector">struct GtkPlotVector;</a></pre>
+      </td>
+    </tr>
+  </table>
+  <h2
+><br>
+    Screenshot<br>
+  </h2
+>
+  <DIV
+CLASS="REFSECT1"
+> 
+    <HR>
+    <DIV
+CLASS="REFSECT2"
+> 
+      <H3
+><a name="gtk_plot3d_get_type" id="gtk_plot3d_get_type"></a> gtk_plot3d_get_type 
+        ()</H3
+>
+      <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+        <TR
+> 
+          <TD
+> <pre>GtkType gtk_plot3d_get_type (void); </pre></TD
+>
+        </TR
+>
+      </TABLE
+>
+      <P
+><br>
+      </P
+>
+      <DIV
+CLASS="INFORMALTABLE"
+> 
+        <P
+></P
+>
+        <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+          <TBODY
+>
+            <TR
+> 
+              <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+              <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+            </TR
+>
+          </TBODY
+>
+        </TABLE
+>
+      </DIV
+>
+    </DIV
+>
+  </DIV
+>
+  <h2
+>&nbsp;</h2
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+<HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_plot3d_new"></a> gtk_plot3d_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>GtkWidget* gtk_plot3d_new (GdkDrawable *drawable); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Create a new GtkPlot3d widget.<br>
+    </P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TR
+>
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>drawable</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a GdkDrawable widget</TD
+>
+        </TR
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>a new GtkPlot3d widget</TD
+>
+        </TR
+>
+        </TBODY
+> 
+      </TABLE
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <P
+> </P
+>
+    </DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot3d_new_with_size"
+></A
+>gtk_plot3d_new_with_size ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> 
+          <pre>GtkWidget* gtk_plot3d_new_with_size (GdkDrawable *drawable,
+                                     gdouble width, gdouble height); </pre>
+        </TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>Create a new GtkPlot3d widget with specified size</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>drawable</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GdkDrawable widget</td
+>
+      </tr
+>
+      <tr
+>
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width,height</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>width,height of the widget</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a new GtkPlot3d widget</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <P
+></P
+></DIV
+></DIV
+>
+  <br>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_plot3d_construct"
+></A
+>gtk_plot3d_construct ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>void gtk_plot3d_construct (GtkPlot3D *plot,
+                           GdkDrawable *drawable); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Initialize a GtkPlot3D structure.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>drawable</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GdkDrawable widget</td
+>
+        </tr
+>
+        <TBODY
+> </TBODY
+> 
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_plot3d_construct_with_size"
+></a
+>gtk_plot3d_construct_with_size ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_plot3d_construct_with_size (GtkPlot3D *plot,
+                                     GdkDrawable *drawable,
+                                     gdouble width, gdouble height); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Initialize a GtkPlot3D structure with certain values.</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>drawable</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GdkDrawable widget</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width,height</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>width,height of the widget</td
+>
+        </tr
+>
+        <tbody
+> </tbody
+> 
+      </table
+>
+    </div
+>
+    <br>
+  </DIV
+>
+  <HR><DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <h3
+><a
+name="gtk_plot3d_autoscale"
+></a
+>gtk_plot3d_autoscale ()</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>void gtk_plot3d_autoscale (GtkPlot3D *plot); </pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p>&nbsp;</p>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+          </tr
+>
+          <tbody
+> </tbody
+> 
+        </table
+>
+        <br>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_rotate"
+></a
+>gtk_plot3d_rotate ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> 
+                <pre>void gtk_plot3d_rotate (GtkPlot3D *plot, 
+                        gdouble angle_x,
+                        gdouble angle_y,
+                        gdouble angle_z); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Rotate the widget with certain angles</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>angle_x,angle_y,angle_z</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>angles of rotation on x,y,z directions</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_rotate_vector"
+></a
+>gtk_plot3d_rotate_vector ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> 
+                <pre>void gtk_plot3d_rotate_vector (GtkPlot3D *plot,
+                               GtkPlotVector *vector,
+                               gdouble a1, 
+                               gdouble a2, 
+                               gdouble a3);
+               </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Rotate the specified vector by angles.</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>vector</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GtkPlotVector widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>a1,a2,a3</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>angles of rotation</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_reset_angles"
+></a
+>gtk_plot3d_reset_angles ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> 
+                <pre>void gtk_plot3d_reset_angles (GtkPlot3D *plot); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Reset the angle of rotation of the plot</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_rotate_x"
+></a
+>gtk_plot3d_rotate_x ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> 
+                <pre>void gtk_plot3d_rotate_x (GtkPlot3D *plot, 
+                          gdouble angle); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Rotate the 3d plot along x axis with a specified angle</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>angle</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>angle of rotation</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_rotate_y"
+></a
+>gtk_plot3d_rotate_y ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> 
+                <pre>void gtk_plot3d_rotate_y (GtkPlot3D *plot, 
+                          gdouble angle); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Rotate the 3d plot along y axis with a specified angle</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>angle</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>angle of rotation</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_rotate_z"
+></a
+>gtk_plot3d_rotate_z ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td
+> 
+                <pre>void gtk_plot3d_rotate_z (GtkPlot3D *plot, 
+                          gdouble angle); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Rotate the 3d plot along z axis with a specified angle</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>angle</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>angle of rotation</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_get_pixel"
+></a
+>gtk_plot3d_get_pixel ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="40"
+> 
+                <pre>void gtk_plot3d_get_pixel (GtkPlot3D *plot, 
+                           gdouble x, gdouble y, gdouble z,
+                           gdouble *px, gdouble *py, gdouble *pz); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y,z</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>*px,*py,*pz</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_set_xrange"
+></a
+>gtk_plot3d_set_xrange ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="40"
+> 
+                <pre>void gtk_plot3d_set_xrange (GtkPlot3D *plot, 
+                            gdouble min, gdouble max); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>min,max</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_set_yrange"
+></a
+>gtk_plot3d_set_yrange ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="40"
+> 
+                <pre>void gtk_plot3d_set_yrange (GtkPlot3D *plot, 
+                            gdouble min, gdouble max); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>min,max</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_set_zrange"
+></a
+>gtk_plot3d_set_zrange ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="40"
+> 
+                <pre>void gtk_plot3d_set_zrange (GtkPlot3D *plot, 
+                            gdouble min, gdouble max); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>min,max</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_set_xfactor"
+></a
+>gtk_plot3d_set_xfactor ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_set_xfactor (GtkPlot3D *plot, 
+                             gdouble xfactor); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>xfactor</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_set_yfactor"
+></a
+>gtk_plot3d_set_yfactor ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_set_xfactor (GtkPlot3D *plot, 
+                             gdouble yfactor); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>yfactor</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_set_zfactor"
+></a
+>gtk_plot3d_set_zfactor ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_set_zfactor (GtkPlot3D *plot, 
+                             gdouble zfactor); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>zfactor</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_get_xfactor"
+></a
+>gtk_plot3d_get_xfactor ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>gdouble gtk_plot3d_get_xfactor (GtkPlot3D *plot); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_get_yfactor"
+></a
+>gtk_plot3d_get_yfactor ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>gdouble gtk_plot3d_get_yfactor (GtkPlot3D *plot); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_get_zfactor"
+></a
+>gtk_plot3d_get_zfactor ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>gdouble gtk_plot3d_get_zfactor (GtkPlot3D *plot); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_plane_set_color"
+></a
+>gtk_plot3d_plane_set_color ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_plane_set_color (GtkPlot3D *plot,
+                                 GtkPlotPlane plane,
+                                 const GdkColor *color); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Set the color of the plane</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plane</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GtkPlotPlane widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the GdkCOlor of the plane</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_plane_set_visible"
+></a
+>gtk_plot3d_plane_set_visible ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_plane_set_visible (GtkPlot3D *plot,
+                                   GtkPlotPlane plane,
+                                   gboolean visible); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Set the visibility of the plane.</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plane</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GtkPlotPlane widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP" height="28"
+>visible</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP" height="28"
+>TRUE or FALSE</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_plane_visible"
+></a
+>gtk_plot3d_plane_visible ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>gboolean gtk_plot3d_plane_visible (GtkPlot3D *plot,
+                                   GtkPlotPlane plane); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Get the visibility of the plane</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plane</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GtkPlotPlane widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_corner_set_visible"
+></a
+>gtk_plot3d_corner_set_visible ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_corner_set_visible (GtkPlot3D *plot,
+                                    gboolean visible); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>visible</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_corner_visible"
+></a
+>gtk_plot3d_corner_visible ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>gboolean gtk_plot3d_corner_visible (GtkPlot3D *plot); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>TRUE or FALSE</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_corner_set_attributes"
+></a
+>gtk_plot3d_corner_set_attributes ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_corner_set_attributes(GtkPlot3D *plot,
+                                     GtkPlotLineStyle style, gfloat width,
+                                     const GdkColor *color); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_LINE_NONE ,<br>
+                  GTK_PLOT_LINE_SOLID ,<br>
+                  GTK_PLOT_LINE_DOTTED ,<br>
+                  GTK_PLOT_LINE_DASHED ,<br>
+                  GTK_PLOT_LINE_DOT_DASH ,<br>
+                  GTK_PLOT_LINE_DOT_DOT_DASH ,<br>
+                  GTK_PLOT_LINE_DOT_DASH_DASH </td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_corner_get_attributes"
+></a
+>gtk_plot3d_corner_get_attributes ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_corner_get_attributes(GtkPlot3D *plot,
+                                      GtkPlotLineStyle *style,
+                                      gfloat *width,
+                                      GdkColor *color); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_LINE_NONE ,<br>
+                  GTK_PLOT_LINE_SOLID ,<br>
+                  GTK_PLOT_LINE_DOTTED ,<br>
+                  GTK_PLOT_LINE_DASHED ,<br>
+                  GTK_PLOT_LINE_DOT_DASH ,<br>
+                  GTK_PLOT_LINE_DOT_DOT_DASH ,<br>
+                  GTK_PLOT_LINE_DOT_DASH_DASH </td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_frame_set_attributes"
+></a
+>gtk_plot3d_frame_set_attributes ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_frame_set_attributes (GtkPlot3D *plot,
+                                      GtkPlotLineStyle style,
+                                      gfloat width,
+                                      const GdkColor *color); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Set the attributes of the frame in the plot</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_LINE_NONE ,<br>
+                  GTK_PLOT_LINE_SOLID ,<br>
+                  GTK_PLOT_LINE_DOTTED ,<br>
+                  GTK_PLOT_LINE_DASHED ,<br>
+                  GTK_PLOT_LINE_DOT_DASH ,<br>
+                  GTK_PLOT_LINE_DOT_DOT_DASH ,<br>
+                  GTK_PLOT_LINE_DOT_DASH_DASH </td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>width of the frame</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>color of the frame</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_frame_get_attributes"
+></a
+>gtk_plot3d_frame_get_attributes ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_frame_get_attributes (GtkPlot3D *plot,
+                                     GtkPlotLineStyle *style,
+                                     gfloat *width,
+                                     GdkColor *color);
+               </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Get the attributes of the frame in a plot</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_LINE_NONE ,<br>
+                  GTK_PLOT_LINE_SOLID ,<br>
+                  GTK_PLOT_LINE_DOTTED ,<br>
+                  GTK_PLOT_LINE_DASHED ,<br>
+                  GTK_PLOT_LINE_DOT_DASH ,<br>
+                  GTK_PLOT_LINE_DOT_DOT_DASH ,<br>
+                  GTK_PLOT_LINE_DOT_DASH_DASH </td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>width of the frame</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>color of the frame</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_get_axis"
+></a
+>gtk_plot3d_get_axis ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>GtkPlotAxis * gtk_plot3d_get_axis (GtkPlot3D *plot,
+                                  GtkPlotOrientation orientation); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>orientation</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_AXIS_X ,<br>
+                  GTK_PLOT_AXIS_Y ,<br>
+                  GTK_PLOT_AXIS_Z , </td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_AXIS_LEFT ,<br>
+                  GTK_PLOT_AXIS_RIGHT ,<br>
+                  GTK_PLOT_AXIS_TOP ,<br>
+                  GTK_PLOT_AXIS_BOTTOM </td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_get_side"
+></a
+>gtk_plot3d_get_side ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>GtkPlotAxis * gtk_plot3d_get_side (GtkPlot3D *plot,
+                                   GtkPlotSide side); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>side</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_SIDE_XY<br>
+                  GTK_PLOT_SIDE_XZ<br>
+                  GTK_PLOT_SIDE_YX<br>
+                  GTK_PLOT_SIDE_YZ<br>
+                  GTK_PLOT_SIDE_ZX<br>
+                  GTK_PLOT_SIDE_ZY</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Return</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_AXIS_LEFT ,<br>
+                  GTK_PLOT_AXIS_RIGHT ,<br>
+                  GTK_PLOT_AXIS_TOP ,<br>
+                  GTK_PLOT_AXIS_BOTTOM </td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_axis_show_major_ticks"
+></a
+>gtk_plot3d_axis_show_major_ticks ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_axis_show_major_ticks(GtkPlot3D *plot,
+                                     GtkPlotSide side,
+                                     gint ticks_mask); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>side</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_SIDE_XY<br>
+                  GTK_PLOT_SIDE_XZ<br>
+                  GTK_PLOT_SIDE_YX<br>
+                  GTK_PLOT_SIDE_YZ<br>
+                  GTK_PLOT_SIDE_ZX<br>
+                  GTK_PLOT_SIDE_ZY</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>ticks_mask</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_axis_show_minor_ticks"
+></a
+>gtk_plot3d_axis_show_minor_ticks ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_axis_show_minor_ticks(GtkPlot3D *plot,
+                                     GtkPlotSide side,
+                                     gint ticks_mask); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>side</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_SIDE_XY<br>
+                  GTK_PLOT_SIDE_XZ<br>
+                  GTK_PLOT_SIDE_YX<br>
+                  GTK_PLOT_SIDE_YZ<br>
+                  GTK_PLOT_SIDE_ZX<br>
+                  GTK_PLOT_SIDE_ZY</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>ticks_mask</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_axis_show_labels"
+></a
+>gtk_plot3d_axis_show_labels ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_axis_show_labels (GtkPlot3D *plot,
+                                  GtkPlotSide side,
+                                  gint label_mask); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>side</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_SIDE_XY<br>
+                  GTK_PLOT_SIDE_XZ<br>
+                  GTK_PLOT_SIDE_YX<br>
+                  GTK_PLOT_SIDE_YZ<br>
+                  GTK_PLOT_SIDE_ZX<br>
+                  GTK_PLOT_SIDE_ZY</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>label_mask</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_axis_show_title"
+></a
+>gtk_plot3d_axis_show_title ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_axis_show_title (GtkPlot3D *plot,
+                                GtkPlotSide side); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Show the axis title.</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>side</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_SIDE_XY<br>
+                  GTK_PLOT_SIDE_XZ<br>
+                  GTK_PLOT_SIDE_YX<br>
+                  GTK_PLOT_SIDE_YZ<br>
+                  GTK_PLOT_SIDE_ZX<br>
+                  GTK_PLOT_SIDE_ZY</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_axis_hide_title"
+></a
+>gtk_plot3d_axis_hide_title ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_axis_hide_title (GtkPlot3D *plot,
+                                GtkPlotSide side); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>Hide the axis title</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>a GtkPlot3d widget</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>side</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>GTK_PLOT_SIDE_XY<br>
+                  GTK_PLOT_SIDE_XZ<br>
+                  GTK_PLOT_SIDE_YX<br>
+                  GTK_PLOT_SIDE_YZ<br>
+                  GTK_PLOT_SIDE_ZX<br>
+                  GTK_PLOT_SIDE_ZY</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_axis_set_ticks"
+></a
+>gtk_plot3d_axis_set_ticks ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_axis_set_ticks (GtkPlot3D *plot,
+                                GtkPlotOrientation axis,
+                                gdouble major_step,
+                                gint nminor); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>axis</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>major_step</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>nminor</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_axis_set_major_ticks"
+></a
+>gtk_plot3d_axis_set_major_ticks ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_axis_set_major_ticks (GtkPlot3D *plot,
+                                      GtkPlotOrientation axis,
+                                      gdouble major_step); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>axis</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>major_step</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_axis_set_minor_ticks"
+></a
+>gtk_plot3d_axis_set_minor_ticks ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_axis_set_minor_ticks (GtkPlot3D *plot,
+                                      GtkPlotOrientation axis,
+                                      gint nminor); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>axis</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>nminor</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_axis_set_ticks_length"
+></a
+>gtk_plot3d_axis_set_ticks_length ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_axis_set_ticks_length(GtkPlot3D *plot,
+                                     GtkPlotOrientation axis,
+                                     gint length); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>axis</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>length</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_axis_set_ticks_width"
+></a
+>gtk_plot3d_axis_set_ticks_width ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_axis_set_ticks_width (GtkPlot3D *plot,
+                                      GtkPlotOrientation axis,
+                                      gfloat width); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>axis</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_axis_show_ticks"
+></a
+>gtk_plot3d_axis_show_ticks ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_axis_show_ticks (GtkPlot3D *plot,
+                                GtkPlotSide side,
+                                gint major_mask,
+                                gint minor_mask); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>side</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>major_mask,minor_mask</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+> </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_set_titles_offset"
+></a
+>gtk_plot3d_set_titles_offset ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_set_titles_offset (GtkPlot3D *plot,
+                                   gint offset); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>offset</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_get_titles_offset"
+></a
+>gtk_plot3d_get_titles_offset ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>gint gtk_plot3d_get_titles_offset (GtkPlot3D *plot); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_major_grids_set_visible"
+></a
+>gtk_plot3d_major_grids_set_visible ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_major_grids_set_visible (GtkPlot3D *plot,
+                                         gboolean x,
+                                         gboolean y,
+                                         gboolean z); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y,z</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_minor_grids_set_visible"
+></a
+>gtk_plot3d_minor_grids_set_visible ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_minor_grids_set_visible (GtkPlot3D *plot,
+                                         gboolean x,
+                                         gboolean y,
+                                         gboolean z); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y,z</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_major_grids_visible"
+></a
+>gtk_plot3d_major_grids_visible ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="45"
+> 
+                <pre>void gtk_plot3d_major_grids_visible (GtkPlot3D *plot,
+                                     gboolean *x,
+                                     gboolean *y,
+                                     gboolean *z); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y,z</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_minor_grids_visible"
+></a
+>gtk_plot3d_minor_grids_visible ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="61"
+> 
+                <pre>void gtk_plot3d_minor_grids_visible (GtkPlot3D *plot,
+                                     gboolean *x,
+                                     gboolean *y,
+                                     gboolean *z); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y,z</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_major_zgrid_set_attributes"
+></a
+>gtk_plot3d_major_zgrid_set_attributes ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="61"
+> 
+                <pre>void gtk_plot3d_major_zgrid_set_attributes (GtkPlot3D *plot,
+                                           GtkPlotLineStyle style, gfloat width,
+                                           const GdkColor *color); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+>
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+            <br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_major_zgrid_get_attributes"
+></a
+>gtk_plot3d_major_zgrid_get_attributes ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="61"
+> 
+                <pre>void gtk_plot3d_major_zgrid_get_attributes (GtkPlot3D *plot,
+                                            GtkPlotLineStyle *style,
+                                            gfloat *width,
+                                            GdkColor *color); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_minor_zgrid_set_attributes"
+></a
+>gtk_plot3d_minor_zgrid_set_attributes ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="61"
+> 
+                <pre>void gtk_plot3d_minor_zgrid_set_attributes (GtkPlot3D *plot,
+                                            GtkPlotLineStyle style,
+                                            gfloat width,
+                                            const GdkColor *color); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+        <div
+class="REFSECT2"
+>
+          <div
+class="INFORMALTABLE"
+><br>
+          </div
+>
+        </div
+>
+        <hr>
+        <div
+class="REFSECT2"
+> 
+          <h3><a
+name="gtk_plot3d_minor_zgrid_get_attributes"
+></a
+>gtk_plot3d_minor_zgrid_get_attributes ()</h3>
+          <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+            <tr
+> 
+              <td height="61"
+> 
+                <pre>void gtk_plot3d_minor_zgrid_get_attributes (GtkPlot3D *plot,
+                                           GtkPlotLineStyle *style,
+                                           gfloat *width,
+                                           GdkColor *color); </pre>
+              </td
+>
+            </tr
+>
+          </table
+>
+          <p
+>&nbsp;</p
+>
+          <div
+class="INFORMALTABLE"
+> 
+            <p
+></p
+>
+            <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>plot</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>style</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>width</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tr bordercolor="#000033"
+> 
+                <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>color</td
+>
+                <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+              </tr
+>
+              <tbody
+> </tbody
+> 
+            </table
+>
+          </div
+>
+        </div
+>
+  <br>
+        <br>
+      </div
+>
+      
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+></div
+>
+            </div
+>
+          </div
+>
+          <div
+class="REFSECT1"
+>
+            <h2
+>Signals<br>
+            </h2
+>
+            <hr>
+            <h2
+><a name="get_pixel"></a>The &quot;get_pixel&quot; signal</h2
+>
+          </div
+>
+          <div
+class="REFSECT1"
+> 
+            <div
+class="REFSECT2"
+> 
+              <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+                <tr
+> 
+                  <td
+> 
+                    <pre>void (* get_pixel) (GtkWidget *widget, 
+                    gdouble x, gdouble y, gdouble z,
+                    gdouble *px, gdouble *py, gdouble *pz); </pre>
+                  </td
+>
+                </tr
+>
+              </table
+>
+              <p
+>&nbsp;</p
+>
+              <div
+class="INFORMALTABLE"
+> 
+                <p
+></p
+>
+                <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#FFFFFF"
+>
+                  <tbody
+> 
+                  <tr bordercolor="#000000"
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>widget</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr bordercolor="#000000"
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>x,y,z</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  <tr bordercolor="#000000"
+> 
+                    <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>px,py,pz</td
+>
+                    <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>&nbsp;</td
+>
+                  </tr
+>
+                  </tbody
+> 
+                </table
+>
+              </div
+>
+            </div
+>
+          </div
+>
+          <p><BR
+CLEAR="all">
+          </p>
+          <h2>Structures</h2>
+          <table width="100%" border="1" cellspacing="0" cellpadding="0" bgcolor="#CAF7E0">
+            <tr bordercolor="#000000"> 
+              <td width="15%" align="left" valign="top"> 
+                <pre><a name="_GtkPlot3D"></a>struct _GtkPlot3D</pre>
+              </td>
+              <td width="85%" align="left" valign="top"> 
+                <pre>  GtkPlot plot;<br>  GtkPlotVector e1, e2, e3;<br>  GtkPlotVector center;<br>  GtkPlotVector origin;<br>  gdouble a1, a2, a3;<br>  GtkPlotAxis *ax, *ay, *az; <br>  gboolean xy_visible;<br>  gboolean yz_visible;<br>  gboolean zx_visible;<br>  GdkColor color_xy;<br>  GdkColor color_yz;<br>  GdkColor color_zx;<br>  GtkPlotLine frame;<br>  GtkPlotLine corner;<br>  gboolean corner_visible;<br>  gdouble zmin, zmax;<br>  GtkPlotScale zscale;<br>  gint titles_offset;<br>  GtkPlotAxis xy, xz;<br>  GtkPlotAxis yx, yz;<br>  GtkPlotAxis zx, zy;<br>  gdouble xfactor, yfactor, zfactor;</pre>
+              </td>
+            </tr>
+            <tr bordercolor="#000000"> 
+              <td width="15%" align="left" valign="top"> 
+                <pre><a name="_GtkPlotVector"></a>struct _GtkPlotVector<br>
+</pre>
+              </td>
+              <td width="85%" align="left" valign="top"> 
+                <pre>
+ gdouble x, y, z;<br>  </pre>
+              </td>
+            </tr>
+          </table>
+          <p>&nbsp;</p>
+          <p><BR>
+          </p>
+          </div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

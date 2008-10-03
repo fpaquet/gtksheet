@@ -1,0 +1,834 @@
+<HTML
+><HEAD
+><TITLE
+>GtkExtra-ItemEntry</TITLE
+>
+<DIV
+CLASS="NAVHEADER"
+>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr bgcolor="#000000"> 
+      <td width="39%">&nbsp;</td>
+      <td width="61%"><font
+color="#FFFFFF"
+size="5"
+>GTK-EXTRA - Reference Manual</font
+></td>
+    </tr>
+  </table>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr bgcolor="#0033CC"> 
+      <td width="47%">&nbsp;</td>
+      <td width="53%"><font
+color="#FFFFFF"
+size="3"
+><b
+><a
+href="index.html"
+><font
+color="#FFFFFF"
+size="3"
+><b
+>Home</b
+></font
+></a
+></b
+></font
+></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</DIV
+>
+<DIV
+CLASS="REFNAMEDIV"
+>
+<H2
+>Name</H2
+>
+  <h3> GtkItemEntry - widget for gtk+ </h3>
+</DIV
+>
+<DIV
+CLASS="REFSYNOPSISDIV"
+>
+<H2
+>Synopsis</H2
+>
+  <br>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre>GtkType</pre></td>
+      <td bgcolor="D6E8FF" align="left" valign="top"><pre><a href="#gtk_item_entry_get_type">gtk_item_entry_get_type</a></pre></td>
+      <td bgcolor="D6E8FF"><pre>(void);</pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget* </pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_item_entry_new">gtk_item_entry_new</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(void);</pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>GtkWidget* </pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_item_entry_new_with_max_length">gtk_item_entry_new_with_max_length</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(guint16 max); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_item_entry_construct_with_max_length">gtk_item_entry_construct_with_max_length</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkItemEntry *item_entry,
+guint16 max); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top" height="33"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top" height="33"> 
+        <pre><a href="#gtk_item_entry_set_text">gtk_item_entry_set_text</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF" height="33"> <pre>(GtkItemEntry *item_entry,          
+const gchar *text,
+GtkJustification justification); </pre></td>
+    </tr>
+    <tr> 
+      <td width="8%" bgcolor="D6E8FF" align="left" valign="top"> <pre>void</pre></td>
+      <td width="23%" bgcolor="D6E8FF" align="left" valign="top"> <pre><a href="#gtk_item_entry_set_justification">gtk_item_entry_set_justification</a></pre></td>
+      <td width="69%" bgcolor="D6E8FF"> <pre>(GtkItemEntry *item_entry,
+GtkJustification justification); </pre></td>
+    </tr>
+  </table>
+  <H2
+>Object Hierarchy</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+>
+        <pre>     GtkObject
+         +----GtkWidget
+              +----GtkEditable
+                   +----GtkEntry
+                        +-----GtkItemEntry</pre>
+      </TD
+>
+    </TR
+></TABLE
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+> 
+  <H2
+><br>
+    Args</H2
+>
+  <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+><TD
+>
+        <PRE
+CLASS="SYNOPSIS"
+>&nbsp;</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Signal Prototypes</H2
+><TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+      <TD
+> 
+        <PRE
+CLASS="SYNOPSIS"
+>No signals</PRE
+>
+      </TD
+></TR
+></TABLE
+></DIV
+>
+<DIV
+CLASS="REFSECT1"
+><br>
+  <H2
+>Description</H2
+>
+  <h4
+><font face="Arial, Helvetica, sans-serif"><br>
+    It is a GtkEntry subclass. It can have fixed size or can be dinamically resized 
+    when the text is entered. <br>
+    You can change text justification to centered, left, or right, and change 
+    the foreground and background colors very easily. <br>
+    It only displays the text and has no borders. </font></h4
+>
+  <h2><br>
+    <br>
+    Details</h2>
+  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top" bgcolor="#FFFFCC"> 
+      <td width="19%"> 
+        <pre>struct _GtkItemEntry
+         {
+         GtkEntry parent;
+         gint text_max_size;
+         GdkGC *fg_gc;
+         GdkGC *bg_gc;
+         GtkJustification justification;
+         }; </pre>
+      </td>
+    </tr>
+  </table>
+  <h2
+>Screenshot<br>
+  </h2
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_item_entry_get_type" id="gtk_item_entry_get_type"></a> gtk_item_entry_get_type 
+      ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> <pre>GtkType gtk_item_entry_get_type (void); </pre></TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+><br>
+    </P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+> 
+      <P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+>
+          <TR
+> 
+            <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+            <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>&nbsp;</TD
+>
+          </TR
+>
+        </TBODY
+>
+      </TABLE
+>
+    </DIV
+>
+  </DIV
+>
+  <h2
+>&nbsp;</h2
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><a name="gtk_item_entry_new"></a> gtk_item_entry_new ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>GtkWidget* gtk_item_entry_new (void); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Create a new item entry widget<br>
+    </P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <TBODY
+> 
+        <TR
+> 
+          <TD
+WIDTH="20%"
+ALIGN="RIGHT"
+VALIGN="TOP"
+>Returns</TD
+>
+          <TD
+WIDTH="80%"
+ALIGN="LEFT"
+VALIGN="TOP"
+>the item entry widget</TD
+>
+        </TR
+>
+        </TBODY
+> 
+      </TABLE
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <P
+> </P
+>
+    </DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_item_entry_new_with_max_length"
+></A
+>gtk_item_entry_new_with_max_length ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+>
+      <TR
+> 
+        <TD
+> 
+          <pre>GtkWidget* gtk_item_entry_new_with_max_length (guint16 max);</pre>
+        </TD
+>
+      </TR
+>
+    </TABLE
+>
+    <P
+>Create a new item entry widget with a limited length</P
+>
+    <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>max</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>number of chars in the entry</td
+>
+      </tr
+>
+      <tr
+> 
+        <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>Returns</td
+>
+        <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the item entry widget</td
+>
+      </tr
+>
+      <tbody
+> </tbody
+> 
+    </table
+>
+      <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <P
+></P
+></DIV
+></DIV
+>
+  <br>
+  <HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <H3
+><A
+NAME="gtk_item_entry_construct_with_max_length"
+></A
+>gtk_item_entry_construct_with_max_length ()</H3
+>
+    <TABLE
+BORDER="0"
+BGCOLOR="#D6E8FF"
+WIDTH="100%"
+CELLPADDING="6"
+><TR
+>
+        <TD
+> 
+          <pre>void gtk_item_entry_construct_with_max_length (GtkItemEntry *item_entry,
+                                               guint16 max); </pre>
+        </TD
+>
+      </TR
+></TABLE
+>
+    <P
+>Initialize GtkitemEntry structure.</P
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+<P
+></P
+>
+      <TABLE
+BORDER="1"
+WIDTH="100%"
+BGCOLOR="#FFD0D0"
+CELLSPACING="0"
+CELLPADDING="4"
+CLASS="CALSTABLE" bordercolor="#000033"
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item_entry</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the item_entry widget</td
+>
+        </tr
+>
+        <tr
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>max</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>number of chars in the entry</td
+>
+        </tr
+>
+        <TBODY
+> </TBODY
+> 
+      </TABLE
+>
+      <P
+></P
+></DIV
+></DIV
+><HR>
+  <DIV
+CLASS="REFSECT2"
+> 
+    <h3><a
+name="gtk_item_entry_set_text"
+></a
+>gtk_item_entry_set_text ()</h3>
+    <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+      <tr
+> 
+        <td
+> 
+          <pre>void gtk_item_entry_set_text (GtkItemEntry *item_entry, 
+                              const gchar *text,
+                              GtkJustification justification); </pre>
+        </td
+>
+      </tr
+>
+    </table
+>
+    <p
+>Sets the text in the item entry widget to the given value, replacing the current 
+      contents.</p
+>
+    <div
+class="INFORMALTABLE"
+> 
+      <p
+></p
+>
+      <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000000"
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item_entry</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the item_entry widget</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+> 
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>text</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the new text.</td
+>
+        </tr
+>
+        <tr bordercolor="#000033"
+>
+          <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>justification</td
+>
+          <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the justification of text in entry <br>
+            GTK_JUSTIFY_LEFT, RIGHT, CENTER </td
+>
+        </tr
+>
+        <tbody
+> </tbody
+> 
+      </table
+>
+    </div
+>
+    <br>
+  </DIV
+>
+  <HR><DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <P
+></P
+>
+      <P
+> </P
+>
+      <h3
+><a
+name="gtk_item_entry_set_justification"
+></a
+>gtk_item_entry_set_justification ()</h3
+>
+      <table
+border="0"
+bgcolor="#D6E8FF"
+width="100%"
+cellpadding="6"
+>
+        <tr
+> 
+          <td
+> 
+            <pre>void gtk_item_entry_set_justification (GtkItemEntry *item_entry,
+                                       GtkJustification justification); </pre>
+          </td
+>
+        </tr
+>
+      </table
+>
+      <p>Sets the justification of the text in the item entry.</p>
+      <div
+class="INFORMALTABLE"
+> 
+        <p
+></p
+>
+        <table
+border="1"
+width="100%"
+bgcolor="#FFD0D0"
+cellspacing="0"
+cellpadding="4"
+class="CALSTABLE" bordercolor="#000033"
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>item_entry</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the item_entry widget</td
+>
+          </tr
+>
+          <tr
+> 
+            <td
+width="20%"
+align="RIGHT"
+valign="TOP"
+>justification</td
+>
+            <td
+width="80%"
+align="LEFT"
+valign="TOP"
+>the justification of text in entry <br>
+              GTK_JUSTIFY_LEFT, RIGHT, CENTER </td
+>
+          </tr
+>
+          <tbody
+> </tbody
+> 
+        </table
+>
+        <br>
+      </div
+>
+      
+    </DIV
+>
+  </DIV
+>
+  <DIV
+CLASS="REFSECT2"
+>
+    <DIV
+CLASS="INFORMALTABLE"
+>
+      <div
+class="REFSECT2"
+>
+        <div
+class="INFORMALTABLE"
+>
+          <div
+class="REFSECT2"
+>
+            <div
+class="INFORMALTABLE"
+>
+              <div
+class="REFSECT2"
+></div
+>
+            </div
+>
+          </div
+>
+          <p><BR
+CLEAR="all">
+            <BR>
+          </p>
+          </div
+>
+      </div
+>
+    </DIV
+>
+  </DIV
+>
+</DIV
+>
+<DIV
+CLASS="REFSECT1"
+>
+  <DIV
+CLASS="VARIABLELIST"
+></DIV
+>
+</DIV
+>
+<DIV
+CLASS="NAVFOOTER"
+>
+  <TABLE
+WIDTH="100%"
+BORDER="0"
+BGCOLOR="#000000"
+CELLPADDING="1"
+CELLSPACING="0"
+>
+    <TR
+> 
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="left"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="50%"
+BGCOLOR="#0000C0"
+ALIGN="center"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+><A
+HREF="index.html"
+><FONT
+COLOR="#FFFFFF"
+SIZE="3"
+><B
+>Home</B
+></FONT
+></A
+></B
+></FONT
+></TD
+>
+      <TD
+WIDTH="0%"
+BGCOLOR="#000000"
+ALIGN="center"
+>&nbsp;</TD
+>
+      <TD
+WIDTH="25%"
+BGCOLOR="#000000"
+ALIGN="right"
+>&nbsp;</TD
+>
+    </TR
+>
+  </TABLE
+>
+</DIV
+></BODY
+></HTML
+>

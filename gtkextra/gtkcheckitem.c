@@ -90,6 +90,13 @@ gtk_check_item_class_init (GtkCheckItemClass *klass)
   
   klass->indicator_size = INDICATOR_SIZE;
   klass->indicator_spacing = INDICATOR_SPACING;
+   /**
+   * GtkCheckItem::draw_indicator:
+   * @check_item: the #GtkCheckItem object that received the signal
+   * @area: the #GdkRectangle area of the check item.
+   *
+   * Emmited when the check item(check button) is pressed.
+   */ 
   klass->draw_indicator = gtk_real_check_item_draw_indicator;
 }
 
@@ -101,13 +108,25 @@ gtk_check_item_init (GtkCheckItem *check_item)
   GTK_TOGGLE_BUTTON (check_item)->draw_indicator = TRUE;
 }
 
+/**
+ * gtk_check_item_new:
+ * Return Value: the newly-created #GtkCheckItem.
+ *
+ * Create a #GtkCheckItem widget.
+ **/
 GtkWidget*
 gtk_check_item_new (void)
 {
   return gtk_widget_new (GTK_TYPE_CHECK_ITEM, NULL);
 }
 
-
+/**
+ * gtk_check_item_new_with_label:
+ * @label: text near the check item
+ * Return Value: the newly-created #GtkCheckItem.
+ *
+ * Create a #GtkCheckItem widget with a specified label.
+ **/
 GtkWidget*
 gtk_check_item_new_with_label (const gchar *label)
 {
@@ -119,6 +138,13 @@ gtk_check_item_new_with_label (const gchar *label)
   return check_item;
 }
 
+/**
+ * gtk_check_item_construct_with_label:
+ * @check_item: a #GtkCheckItem widget
+ * @label: text near the check item
+ *
+ * Initialize a #GtkCheckItem widget with a specified label.
+ **/
 void
 gtk_check_item_construct_with_label (GtkCheckItem* check_item, const gchar *label)
 {
@@ -273,6 +299,7 @@ gtk_check_item_expose (GtkWidget      *widget,
  
   return FALSE;
 }
+
 
 
 static void

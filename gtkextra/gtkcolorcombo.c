@@ -492,6 +492,12 @@ gtk_color_combo_get_type ()
   return color_combo_type;
 }
 
+/**
+ * gtk_color_combo_new:
+ * Return Value: the newly-created #GtkColorCombo widget.
+ * 
+ * Creates a new #GtkColorCombo widget.
+ **/
 GtkWidget *
 gtk_color_combo_new ()
 {
@@ -503,6 +509,12 @@ gtk_color_combo_new ()
   return(GTK_WIDGET(color_combo));
 }
 
+/**
+ * gtk_color_combo_construct:
+ * @color_combo: the #GtkColorCombo widget.
+ * 
+ * Initialize a #GtkColorCombo object.
+ **/
 void
 gtk_color_combo_construct(GtkColorCombo *color_combo)
 {
@@ -529,6 +541,15 @@ gtk_color_combo_construct(GtkColorCombo *color_combo)
 
 }
 
+/**
+ * gtk_color_combo_new_with_values:
+ * @nrows: number of rows in #GtkColorCombo.
+ * @ncols: number of columns in #GtkColorCombo.
+ * @colors: #GdkColor color.
+ * Return Value: the newly-created #GtkColorCombo widget.
+ * 
+ * Creates a new #GtkColorCombo widget having @nrows rows and @ncols columns with #GdkColor color.
+ **/
 GtkWidget *
 gtk_color_combo_new_with_values (gint nrows, gint ncols, GdkColor *colors)
 {
@@ -540,6 +561,15 @@ gtk_color_combo_new_with_values (gint nrows, gint ncols, GdkColor *colors)
   return(GTK_WIDGET(color_combo));
 }
 
+/**
+ * gtk_color_combo_construct_with_values:
+ * @color_combo: the #GtkColorCombo widget.
+ * @nrows: number of rows in #GtkColorCombo.
+ * @ncols: number of columns in #GtkColorCombo.
+ * @colors: #GdkColor color.
+ * 
+ * Initialize a #GtkColorCombo object with specified values.
+ **/
 void
 gtk_color_combo_construct_with_values(GtkColorCombo *color_combo,
 				      gint nrows, gint ncols, 
@@ -561,7 +591,16 @@ gtk_color_combo_construct_with_values(GtkColorCombo *color_combo,
 
 }
 
-
+/**
+ * gtk_color_combo_get_color_at:
+ * @color_combo: the #GtkColorCombo widget.
+ * @row: row number  in #GtkColorCombo.
+ * @col: column number in #GtkColorCombo.
+ * @colors: #GdkColor color.
+ * Return Value: the #GdkColor at @row,@col in @color_combo
+ * 
+ * Get the color in the combo at the specified row,column.
+ **/
 GdkColor 
 gtk_color_combo_get_color_at(GtkColorCombo *color_combo, gint row, gint col)
 {
@@ -570,6 +609,15 @@ gtk_color_combo_get_color_at(GtkColorCombo *color_combo, gint row, gint col)
 
 /* Returns best match for a given color */
 
+/**
+ * gtk_color_combo_find_color:
+ * @color_combo: the #GtkColorCombo widget.
+ * @color: the #GdkColor object.
+ * @row: row number in #GtkColorCombo.
+ * @col: column number in #GtkColorCombo.
+ * 
+ * Returns the best match for a given color.
+ **/
 void
 gtk_color_combo_find_color(GtkColorCombo *color_combo,
                            GdkColor *color, gint *row, gint *col)
@@ -611,6 +659,13 @@ gtk_color_combo_find_color(GtkColorCombo *color_combo,
    }
 } 
 
+/**
+ * gtk_color_combo_get_selection:
+ * @combo: the #GtkColorCombo widget.
+ * Return Value: the #GdkColor of the selection. 
+ * 
+ * Get the color in the combo at selection .
+ **/
 GdkColor
 gtk_color_combo_get_selection(GtkColorCombo *combo)
 {

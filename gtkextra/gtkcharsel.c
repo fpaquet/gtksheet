@@ -60,6 +60,12 @@ gtk_char_selection_get_type (void)
   return charsel_type;
 }
 
+/**
+ * gtk_char_selection_new:
+ * Return Value: the newly-created #GtkCharSelection.
+ *
+ * Create a new char selection widget.
+ **/
 GtkWidget*
 gtk_char_selection_new (void)
 {
@@ -299,12 +305,26 @@ new_selection(GtkButton *button, gpointer data)
   } 
 }
 
+/**
+ * gtk_char_selection_get_selection:
+ * @charsel: Char Selection widget.
+ * Return Value: . The current selection(a character from the list).0 is left,upper corner;256 is right, down corner.
+ *
+ * Gets the current selection
+ **/
 gint
 gtk_char_selection_get_selection(GtkCharSelection *charsel)
 {
   return (charsel->selection);
 }
 
+/**
+ * gtk_char_selection_set_selection:
+ * @charsel: Char Selection widget.
+ * @selection: (a character from the list).0 is left,upper corner;256 is right, down corner.
+ *
+ * Sets the selection for the #GtkCharSelection widget.
+ **/
 void
 gtk_char_selection_set_selection(GtkCharSelection *charsel, gint selection)
 {

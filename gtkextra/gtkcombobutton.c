@@ -147,7 +147,12 @@ gtk_combo_button_popup_display (GtkComboButton * combo_button)
 		    NULL, NULL, GDK_CURRENT_TIME);
 
 }
-
+/**
+ * gtk_combo_button_hide_popdown_window:
+ * combo_button: the #GtkComboButton widget.
+ * 
+ * Hides the popdown window of pressed #GtkComboButton.
+ **/
 void
 gtk_combo_button_hide_popdown_window(GtkComboButton *combo_button)
 {
@@ -255,6 +260,12 @@ gtk_combo_button_get_type ()
   return combo_button_type;
 }
 
+/**
+ * gtk_combo_button_new:
+ * Return Value: the newly-created #GtkComboButton toolbar.
+ * 
+ * Creates a new #GtkComboButton widget.
+ **/
 GtkWidget *
 gtk_combo_button_new ()
 {

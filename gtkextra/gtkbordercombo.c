@@ -95,6 +95,13 @@ gtk_border_combo_class_init (GtkBorderComboClass * klass)
   
   widget_class->realize = gtk_border_combo_realize;
 
+  /**
+   * GtkBorderCombo::changed:
+   * @border_combo: the #GtkBorderCombo object that received the signal
+   * @selection: the number of selected item
+   *
+   * Emmited when the GtkBorderCombo's state is changed
+   */ 
   border_combo_signals[CHANGED]=gtk_signal_new("changed",
                                       GTK_RUN_FIRST,
                                       GTK_CLASS_TYPE(object_class),
@@ -269,6 +276,12 @@ gtk_border_combo_get_type ()
   return border_combo_type;
 }
 
+/**
+ * gtk_border_combo_new:
+ * Return Value: the newly-created #GtkBorderCombo toolbar.
+ * 
+ * Creates a new toolbar #GtkBorderCombo 
+ **/
 GtkWidget *
 gtk_border_combo_new ()
 {

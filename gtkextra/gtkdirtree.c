@@ -218,6 +218,12 @@ gtk_dir_tree_get_type (void)
   return dir_tree_type;
 }
 
+/**
+ * gtk_dir_tree_new:
+ * Return Value: the newly-created #GtkDirTreeNew widget.
+ * 
+ * Creates a new #GtkDirTree widget. 
+ **/
 GtkWidget*
 gtk_dir_tree_new (void)
 {
@@ -496,6 +502,15 @@ expand_tree(GtkCTree *ctree,GtkCTreeNode *parent_node, gpointer data)
     parent_dirnode->scanned=TRUE;
   }
 }
+
+/**
+ * gtk_dir_tree_open_dir:
+ * @dir_tree: #GtkDirTree widget.
+ * @path: #gchar path to the dir to be opened.
+ * Return Value: TRUE(succes) or FALSE(failure).
+ * 
+ * Open files from directory path in dir_tree widget.
+ **/
 
 gint
 gtk_dir_tree_open_dir(GtkDirTree *dir_tree, const gchar *path)

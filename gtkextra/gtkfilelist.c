@@ -162,6 +162,16 @@ gtk_file_list_get_type (void)
   return file_list_type;
 }
 
+/**
+ * gtk_file_list_new:
+ * @icon_width: the width of the icon
+ * @mode:GTK_FILE_LIST_SORT_NAME , GTK_FILE_LIST_SORT_TYPE
+ * @path: the path to the files to be be opened in #GtkFileList widget.
+ * Return Value: the newly-created #GtkFileList widget.
+ * 
+ * Create a newfile list widget.
+ * Remark for the 2nd open file window you must use: gtk_icon_file_selection_show_tree(GTK_ICON_FILESEL(filesel), TRUE);
+ **/
 GtkWidget*
 gtk_file_list_new (guint icon_width, gint mode, const gchar *path)
 {
@@ -177,6 +187,15 @@ gtk_file_list_new (guint icon_width, gint mode, const gchar *path)
   return widget;
 }
 
+/**
+ * gtk_file_list_construct:
+ * @gile_list: #GtkFileList widget
+ * @icon_width: the width of the icon
+ * @mode:GTK_FILE_LIST_SORT_NAME , GTK_FILE_LIST_SORT_TYPE
+ * @path: the path to the files to be be opened in #GtkFileList widget.
+ * 
+ * Initializes newfile list widget with specified values.
+ **/
 void
 gtk_file_list_construct(GtkFileList *file_list, 
                         guint icon_width, gint mode, const gchar *path)
@@ -368,6 +387,14 @@ gtk_file_list_realize(GtkWidget *widget)
   gtk_file_list_open_dir(file_list, file_list->path); 
 }
 
+/**
+ * gtk_file_list_open_dir:
+ * @file_list: the #GtkFileList widget
+ * @dir_path: path of directory to be opened in #GtkFileList widget
+ * Return Value: TRUE(succes) or FALSE(failure)
+ * 
+ * Opens the content of specified directory in #GtkFileList widget.
+ **/
 gboolean 
 gtk_file_list_open_dir(GtkFileList *file_list, const gchar *dir_path)
 {
@@ -642,6 +669,13 @@ gtk_file_list_open_dir(GtkFileList *file_list, const gchar *dir_path)
   return TRUE;
 }
 
+/**
+ * gtk_file_list_set_filter:
+ * @file_list: the #GtkFileList widget.
+ * @filter: filter applied to files 
+ * 
+ * Sets a filter for files displayed in Open window. 
+ **/
 void
 gtk_file_list_set_filter(GtkFileList *filelist, const gchar *filter)
 {
@@ -649,12 +683,26 @@ gtk_file_list_set_filter(GtkFileList *filelist, const gchar *filter)
   gtk_file_list_open_dir(filelist, filelist->path);
 }
 
+/**
+ * gtk_file_list_get_path:
+ * @file_list: the #GtkFileList widget.
+ * Return value: the path of files.
+ * 
+ * Get the path of the files shown in filelist
+ **/
 const gchar *
 gtk_file_list_get_path(GtkFileList *file_list)
 {
   return(file_list->path);
 }
 
+/**
+ * gtk_file_list_get_filename:
+ * @file_list: the #GtkFileList widget.
+ * Return value: 
+ * 
+ * Get the path of the files shown in filelist
+ **/
 const gchar *
 gtk_file_list_get_filename(GtkFileList *file_list)
 {
@@ -674,6 +722,33 @@ gtk_file_list_get_filename(GtkFileList *file_list)
   return file;
 }
 
+/**
+ * gtk_file_list_get_filetype:
+ * @file_list: the #GtkFileList widget.
+ * Return value: The #GtkFileListType (   GTK_FILE_LIST_FOLDER,
+ *       GTK_FILE_LIST_FILE,
+ *       GTK_FILE_LIST_HTML,
+ *       GTK_FILE_LIST_TEXT,
+ *       GTK_FILE_LIST_DOC,
+ *       GTK_FILE_LIST_PDF,
+ *       GTK_FILE_LIST_C,
+ *       GTK_FILE_LIST_CPP,
+ *       GTK_FILE_LIST_H,
+ *       GTK_FILE_LIST_F,
+ *       GTK_FILE_LIST_JAVA,
+ *       GTK_FILE_LIST_EXEC,
+ *       GTK_FILE_LIST_IMG,
+ *       GTK_FILE_LIST_ARCH,
+ *       GTK_FILE_LIST_PKG,
+ *       GTK_FILE_LIST_DEB,
+ *       GTK_FILE_LIST_RPM,
+ *       GTK_FILE_LIST_CAT,
+ *       GTK_FILE_LIST_SOUND,
+ *       GTK_FILE_LIST_MOVIE,
+ *       GTK_FILE_LIST_CORE)
+ * 
+ * Get the #GtkFileListType of selected file in File List.
+ **/
 gint 
 gtk_file_list_get_filetype(GtkFileList *file_list)
 {
@@ -692,6 +767,15 @@ gtk_file_list_get_filetype(GtkFileList *file_list)
   return file;
 }
 
+
+/**
+ * gtk_file_list_add_type:
+ * @file_list: the #GtkFileList widget.
+ * @data: Pointer to a string containing the XPM data.(last argument of gdk_pixmap_create_from_xpm_d() ).
+ * Return value: the identification number given to the added filetype 
+ * 
+ * Add a new file type in a #GtkFileList structure. 
+ **/
 gint
 gtk_file_list_add_type       (GtkFileList *file_list,
                               const gchar **data)
@@ -712,6 +796,15 @@ gtk_file_list_add_type       (GtkFileList *file_list,
   return type;
 }
 
+/**
+ * gtk_file_list_add_type_with_pixmap:
+ * @file_list: the #GtkFileList widget.
+ * @pixmap: a #GdkPixmap object.
+ * @mask: a #GdkBitmap mask.
+ * Return value: the identification number given to the added filetype 
+ * 
+ * Add a new file type in a #GtkFileList structure. 
+ **/
 gint
 gtk_file_list_add_type_with_pixmap (GtkFileList *file_list,
                               GdkPixmap *pixmap, GdkBitmap *mask)
@@ -724,6 +817,14 @@ gtk_file_list_add_type_with_pixmap (GtkFileList *file_list,
   return (file_list->ntypes - 1);
 }
 
+/**
+ * gtk_file_list_add_type_filter:
+ * @file_list: the #GtkFileList widget.
+ * @type: file type.
+ * @filter: filter for specified type.
+ * 
+ * Add a filter for specified file type in a #GtkFileList structure. 
+ **/
 void
 gtk_file_list_add_type_filter(GtkFileList *file_list,
                               gint type,

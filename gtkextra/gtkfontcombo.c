@@ -107,6 +107,12 @@ gtk_font_combo_class_init (GtkFontComboClass * klass)
   object_class->destroy = gtk_font_combo_destroy;
   gobject_class->finalize = gtk_font_combo_finalize;
   
+  /**
+   * GtkFontCombo::changed:
+   * @bfont_combo: the #GtkFontCombo object that received the signal.
+   *
+   * Emmited whenever a different font is choosed.
+   */ 
   font_combo_signals[CHANGED] =
     gtk_signal_new ("changed",
                     GTK_RUN_LAST,
@@ -207,7 +213,7 @@ gtk_font_combo_init (GtkFontCombo * font_combo)
                      GTK_SIGNAL_FUNC(new_font), font_combo);
 
   gtk_signal_connect(GTK_OBJECT(GTK_COMBO(GTK_FONT_COMBO(font_combo)->size_combo)->entry),
-                     "changed",
+                     	"changed",
                      GTK_SIGNAL_FUNC(new_font), font_combo);
 
   gtk_signal_connect(GTK_OBJECT(GTK_FONT_COMBO(font_combo)->italic_button),
@@ -244,6 +250,12 @@ gtk_font_combo_get_type ()
   return font_combo_type;
 }
 
+/**
+ * gtk_font_combo_new:
+ * Return Value: the newly-created #GtkFontCombo widget.
+ * 
+ * Creates a new #GtkBorderCombo widget. 
+ **/
 GtkWidget *
 gtk_font_combo_new ()
 {
@@ -273,6 +285,15 @@ new_font(GtkWidget *widget, gpointer data)
   gtk_signal_emit(GTK_OBJECT(font_combo), font_combo_signals[CHANGED]);
 }
 
+/**
+ * gtk_font_combo_select:
+ * @family:font family
+ * @bold: TRUE or FALSE
+ * @italic: TRUE or FALSE
+ * @height: height of the font
+ * 
+ * Select from the combo a font which satisfies the arguments.
+ **/
 void
 gtk_font_combo_select (GtkFontCombo *combo, 
 		       const gchar *family,
@@ -298,6 +319,15 @@ gtk_font_combo_select (GtkFontCombo *combo,
   gtk_font_combo_select_nth(combo, n, bold, italic, height);
 }
 
+/**
+ * gtk_font_combo_select_nth:
+ * @n: nth font
+ * @bold: TRUE or FALSE
+ * @italic: TRUE or FALSE
+ * @height: height of the font
+ * 
+ * Select from the combo the nth font which satisfies the arguments.
+ **/
 void
 gtk_font_combo_select_nth (GtkFontCombo *combo, 
 		           gint n,

@@ -112,6 +112,12 @@ gtk_icon_file_selection_get_type (void)
   return filesel_type;
 }
 
+/**
+ * gtk_icon_file_selection_new:
+ * Return Value: the newly-created #GtkIconFileSelection widget.
+ * 
+ * Creates a new #GtkIconFileSelection widget 
+ **/
 GtkWidget*
 gtk_icon_file_selection_new (const gchar *title)
 {
@@ -124,6 +130,13 @@ gtk_icon_file_selection_new (const gchar *title)
   return widget;
 }
 
+/**
+ * gtk_icon_file_selection_construct:
+ * @file_sel: the #GtkIconFileSelection widget.
+ * @title: window title.
+ * 
+ * Sets the window title for #GtkIconFileSelection widget.
+ **/
 void
 gtk_icon_file_selection_construct (GtkIconFileSel *file_sel, const gchar *title)
 {
@@ -419,6 +432,13 @@ gtk_icon_file_selection_destroy(GtkObject *object)
     (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
 
+/**
+ * gtk_icon_file_selection_show_tree:
+ * @file_sel: the #GtkIconFileSelection widget.
+ * @show: TRUE(show) or FALSE(don't show).
+ * 
+ * Show icon file selection tree in filesel widget. 
+ **/
 void
 gtk_icon_file_selection_show_tree(GtkIconFileSel *filesel, gboolean show)
 {
@@ -679,6 +699,13 @@ open_dir(GtkWidget *widget, GtkCTreeNode *node, gint n, gpointer data)
   gtk_label_set_text(GTK_LABEL(filesel->path_label), path);
 }
 
+/**
+ * gtk_icon_file_selection_open_dir:
+ * @file_sel: the #GtkIconFileSelection widget.
+ * @path: directory path.
+ * 
+ * Show the file from path directory in filesel widget.
+ **/
 gint
 gtk_icon_file_selection_open_dir(GtkIconFileSel *filesel, const gchar *path)
 {
@@ -713,6 +740,13 @@ gtk_icon_file_selection_open_dir(GtkIconFileSel *filesel, const gchar *path)
   return return_val;
 }
 
+/**
+ * gtk_icon_file_selection_show_hidden:
+ * @filesel: the #GtkIconFileSelection widget.
+ * @visible: TRUE(show hidden files) or FALSE(don't show hidden files).
+ *  
+ * Set the visibility of hidden files.
+ **/
 void
 gtk_icon_file_selection_show_hidden(GtkIconFileSel *filesel, gboolean visible)
 {
@@ -722,6 +756,13 @@ gtk_icon_file_selection_show_hidden(GtkIconFileSel *filesel, gboolean visible)
     GTK_FILE_LIST(filesel->file_list)->show_hidden = visible;
 }
 
+/**
+ * gtk_icon_file_selection_set_filter:
+ * @filesel: the #GtkIconFileSelection widget.
+ * @filter: filter to be applied on files.
+ *  
+ * Set a filter for the files show in filelist.
+ **/
 void
 gtk_icon_file_selection_set_filter(GtkIconFileSel *filesel, const gchar *filter)
 {
@@ -919,6 +960,13 @@ entry_key_press(GtkWidget *widget,
   return FALSE;
 } 
 
+/**
+ * gtk_icon_file_selection_set_filter:
+ * @filesel: the #GtkIconFileSelection widget.
+ * Return value: the current selection.
+ *  
+ * Gets the current selection applied on #GtkIconFileSelection.
+ **/
 const gchar *
 gtk_icon_file_selection_get_selection(GtkIconFileSel *filesel)
 {

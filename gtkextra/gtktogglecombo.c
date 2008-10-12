@@ -66,6 +66,14 @@ gtk_toggle_combo_class_init (GtkToggleComboClass * klass)
 
   object_class->destroy = gtk_toggle_combo_destroy;
 
+  /**
+   * GtkToggleCombo::changed:
+   * @toggle_combo: the #GtkToggleCombo object that received the signal
+   * @row: row number
+   * @col: column number
+   *
+   * Emmited when the @row,@col are selected in #GtkToggleCombo
+   */ 
   toggle_combo_signals[CHANGED]=gtk_signal_new("changed",
                                       GTK_RUN_FIRST,
                                       GTK_CLASS_TYPE(object_class),
@@ -255,6 +263,14 @@ gtk_toggle_combo_get_type ()
   return toggle_combo_type;
 }
 
+/**
+ * gtk_toggle_combo_new:
+ * @nrows: number of rows
+ * @ncols: number of columns
+ * Return Value: the newly-created #GtkToggleCombo widget.
+ * 
+ * Creates a new #GtkToggleCombo widget with @nrows rows and @ncols columns.
+ **/
 GtkWidget *
 gtk_toggle_combo_new (gint nrows, gint ncols)
 {
@@ -267,6 +283,14 @@ gtk_toggle_combo_new (gint nrows, gint ncols)
   return(widget);
 }
 
+/**
+ * gtk_toggle_combo_construct:
+ * @toggle_combo: a #GtkToggleCombo
+ * @nrows: number of rows
+ * @ncols: number of columns
+ * 
+ * Initializes the #GtkToggleCombo with @nrows rows and @ncols columns.
+ **/
 void
 gtk_toggle_combo_construct(GtkToggleCombo *toggle_combo, gint nrows, gint ncols)
 {
@@ -278,18 +302,40 @@ gtk_toggle_combo_construct(GtkToggleCombo *toggle_combo, gint nrows, gint ncols)
   gtk_toggle_combo_create_buttons(GTK_WIDGET(toggle_combo));
 }
 
+/**
+ * gtk_toggle_combo_get_nrows:
+ * @combo: a #GtkToggleCombo
+ * Return value: number of rows
+ * 
+ * Get the number of rows in #GtkToggleCombo.
+ **/
 gint
 gtk_toggle_combo_get_nrows(GtkToggleCombo *combo)
 {
   return (combo->nrows);
 }
 
+/**
+ * gtk_toggle_combo_get_ncols:
+ * @combo: a #GtkToggleCombo
+ * Return value: number of columns
+ * 
+ * Get the number of columns in #GtkToggleCombo.
+ **/
 gint
 gtk_toggle_combo_get_ncols(GtkToggleCombo *combo)
 {
   return (combo->ncols);
 }
 
+/**
+ * gtk_toggle_combo_get_selection:
+ * @combo: a #GtkToggleCombo
+ * @row: number of row
+ * @col: number of column
+ * 
+ * Get the current selection(row,col) in #GtkToggleCombo.
+ **/
 void
 gtk_toggle_combo_get_selection(GtkToggleCombo *combo, gint *row, gint *col)
 {
@@ -297,6 +343,14 @@ gtk_toggle_combo_get_selection(GtkToggleCombo *combo, gint *row, gint *col)
   *row = combo->row;
 }
 
+/**
+ * gtk_toggle_combo_select:
+ * @toggle_combo: a #GtkToggleCombo
+ * @new_row: number of row
+ * @new_col: number of column
+ * 
+ * Select the cell(row,col) from #GtkToggleCombo. 
+ **/
 void
 gtk_toggle_combo_select (GtkToggleCombo *toggle_combo, 
                          gint new_row, gint new_col)

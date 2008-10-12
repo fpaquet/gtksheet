@@ -2133,6 +2133,12 @@ gtk_entry_update_primary_selection (GtkEntry *entry)
 /* Public API
  */
 
+/**
+ * gtk_item_entry_new:
+ * Return Value: the newly-created #GtkItemEntry widget.
+ * 
+ * Creates a new #GtkItemEntry Widget. 
+ **/
 GtkWidget*
 gtk_item_entry_new (void)
 {
@@ -2142,6 +2148,15 @@ gtk_item_entry_new (void)
   return widget;
 }
 
+/**
+ * gtk_item_entry_new_with_max_length:
+ * @max: the maximum length of the entry, or 0 for no maximum. (other than the maximum length of entries.) 
+ * The value passed in will be clamped to the range 0-65536.
+ * Return Value: the newly-created #GtkItemEntry widget.
+ * 
+ * Creates a new #GtkItemEntry with the maximum allowed length of the contents of the widget. 
+ * If the current contents are longer than the given length, then they will be truncated to fit. 
+ **/
 GtkWidget*
 gtk_item_entry_new_with_max_length (gint max)
 {
@@ -2153,6 +2168,14 @@ gtk_item_entry_new_with_max_length (gint max)
   return GTK_WIDGET (entry);
 }
 
+/**
+ * gtk_item_entry_set_text:
+ * @entry: a #GtkItemEntry
+ * @text: the new text
+ * @justification: a #GtkJustification : GTK_JUSTIFY_LEFT,GTK_JUSTIFY_RIGHT,GTK_JUSTIFY_CENTER,GTK_JUSTIFY_FILL
+ * 
+ * Sets the text in the widget to the given value, replacing the current contents.
+ **/
 void
 gtk_item_entry_set_text (GtkItemEntry    *entry,
 	      	         const gchar *text,
@@ -2236,6 +2259,13 @@ gtk_item_entry_get_layout_offsets (GtkItemEntry *entry,
     *y += text_area_y;
 }
 
+/**
+ * gtk_item_entry_set_justification:
+ * @entry: a #GtkItemEntry
+ * @just: a #GtkJustification : GTK_JUSTIFY_LEFT,GTK_JUSTIFY_RIGHT,GTK_JUSTIFY_CENTER,GTK_JUSTIFY_FILL
+ * 
+ * Sets justification of the widget to the given value, replacing the current one.
+ **/
 void
 gtk_item_entry_set_justification(GtkItemEntry *entry, GtkJustification just)
 {
@@ -2383,6 +2413,13 @@ gtk_entry_pend_cursor_blink (GtkEntry *entry)
     }
 }
 
+/**
+ * gtk_item_set_cursor_visible:
+ * @entry: a #GtkItemEntry
+ * @visible: TRUE(visible) or FALSE (invisible)
+ * 
+ * Sets the cursor visibility in the widget.
+ **/
 void
 gtk_item_entry_set_cursor_visible(GtkItemEntry *entry, gboolean visible)
 {
@@ -2391,6 +2428,13 @@ gtk_item_entry_set_cursor_visible(GtkItemEntry *entry, gboolean visible)
   GTK_ENTRY(entry)->cursor_visible = visible;
 }
 
+/**
+ * gtk_item_get_cursor_visible:
+ * @entry: a #GtkItemEntry
+ * Return value: TRUE(visible) or FALSE (invisible)
+ * 
+ * Gets the cursor visibility in the widget.
+ **/
 gboolean
 gtk_item_entry_get_cursor_visible(GtkItemEntry *entry)
 {

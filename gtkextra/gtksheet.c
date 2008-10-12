@@ -692,11 +692,11 @@ gtk_sheet_class_init (GtkSheetClass * klass)
   parent_class = g_type_class_peek_parent (klass);
 
   /**
-   * GtkSheet::select-row
+   * GtkSheet::select-row:
    * @sheet: the sheet widget that emitted the signal
    * @row: the newly selected row index
    *
-   * A row has been selected.
+   * Emmited when a row has been selected.
    */
   sheet_signals[SELECT_ROW] =
     gtk_signal_new ("select-row",
@@ -707,11 +707,11 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                     GTK_TYPE_NONE, 1, GTK_TYPE_INT);
 
   /**
-   * GtkSheet::select-column
+   * GtkSheet::select-column:
    * @sheet: the sheet widget that emitted the signal
-   * @column: the newly selected column index
+   * @select_column: the newly selected column index
    *
-   * A column has been selected.
+   * Emmited when a column has been selected.
    */
   sheet_signals[SELECT_COLUMN] =
     gtk_signal_new ("select-column",
@@ -721,6 +721,13 @@ gtk_sheet_class_init (GtkSheetClass * klass)
 		    gtkextra_VOID__INT,
                     GTK_TYPE_NONE, 1, GTK_TYPE_INT);
 
+  /**
+   * GtkSheet::select-range:
+   * @sheet: the sheet widget that emitted the signal
+   * @select_range: the newly selected #GtkSheetRange
+   *
+   * Emmited when a #GtkSheetRange has been selected.
+   */
   sheet_signals[SELECT_RANGE] =
     gtk_signal_new ("select-range",
 		    GTK_RUN_LAST,
@@ -728,7 +735,14 @@ gtk_sheet_class_init (GtkSheetClass * klass)
 		    GTK_SIGNAL_OFFSET (GtkSheetClass, select_range),
                     gtkextra_VOID__BOXED,
 	            GTK_TYPE_NONE, 1, GTK_TYPE_SHEET_RANGE);
-
+ 
+  /**
+   * GtkSheet::clip-range:
+   * @sheet: the sheet widget that emitted the signal
+   * @clip_range: the newly selected #GtkSheetRange
+   *
+   * Emmited when a #GtkSheetRange is clipping.
+   */
   sheet_signals[CLIP_RANGE] =
     gtk_signal_new ("clip-range",
 		    GTK_RUN_LAST,
@@ -737,6 +751,13 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                     gtkextra_VOID__BOXED,
 	            GTK_TYPE_NONE, 1, GTK_TYPE_SHEET_RANGE);
 
+   /**
+   * GtkSheet::resize-range:
+   * @sheet: the sheet widget that emitted the signal
+   * @resize_range: the newly selected #GtkSheetRange
+   *
+   * Emmited when a #GtkSheetRange is resized.
+   */
   sheet_signals[RESIZE_RANGE] =
     gtk_signal_new ("resize-range",
 		    GTK_RUN_LAST,
@@ -744,6 +765,14 @@ gtk_sheet_class_init (GtkSheetClass * klass)
 		    GTK_SIGNAL_OFFSET (GtkSheetClass, resize_range),
 		    gtkextra_VOID__BOXED_BOXED,
 	            GTK_TYPE_NONE, 2, GTK_TYPE_SHEET_RANGE, GTK_TYPE_SHEET_RANGE);
+
+  /**
+   * GtkSheet::move-range:
+   * @sheet: the sheet widget that emitted the signal.
+   * @move_range: the newly selected #GtkSheetRange.
+   *
+   * Emmited when a #GtkSheetRange is moved.
+   */
   sheet_signals[MOVE_RANGE] =
     gtk_signal_new ("move-range",
 		    GTK_RUN_LAST,
@@ -751,6 +780,18 @@ gtk_sheet_class_init (GtkSheetClass * klass)
 		    GTK_SIGNAL_OFFSET (GtkSheetClass, move_range),
 		    gtkextra_VOID__BOXED_BOXED,
                     GTK_TYPE_NONE, 2, GTK_TYPE_SHEET_RANGE, GTK_TYPE_SHEET_RANGE);
+
+  /**
+   * GtkSheet::traverse:
+   * @sheet: the sheet widget that emitted the signal.
+   * @row: row number.
+   * @column: column number.
+   * @*new_row: FIXME:: What is this for?
+   * @*new_column: FIXME:: What is this for?
+   *
+   * The "traverse" is emited before "deactivate_cell" and allows to veto the movement.
+   * In such case, the entry will remain in the site and the other signals will not be emited.
+   */
   sheet_signals[TRAVERSE] =
     gtk_signal_new ("traverse",
 		    GTK_RUN_LAST,
@@ -760,6 +801,14 @@ gtk_sheet_class_init (GtkSheetClass * klass)
 	            GTK_TYPE_BOOL, 4, GTK_TYPE_INT, GTK_TYPE_INT,
                                       GTK_TYPE_POINTER, GTK_TYPE_POINTER);
 
+  /**
+   * GtkSheet::deactivate:
+   * @sheet: the sheet widget that emitted the signal
+   * @row: row number of deactivated cell.
+   * @column: column number of deactivated cell.
+   *
+   * Emmited whenever a cell is deactivated(you click on other cell or start a new selection)
+   */
   sheet_signals[DEACTIVATE] =
     gtk_signal_new ("deactivate",
 		    GTK_RUN_LAST,
@@ -768,6 +817,14 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                     gtkextra_BOOLEAN__INT_INT,
 	            GTK_TYPE_BOOL, 2, GTK_TYPE_INT, GTK_TYPE_INT);
 
+  /**
+   * GtkSheet::activate:
+   * @sheet: the sheet widget that emitted the signal
+   * @row: row number of activated cell.
+   * @column: column number of activated cell.
+   *
+   * Emmited whenever a cell is activated(you click on it),
+   */
   sheet_signals[ACTIVATE] =
     gtk_signal_new ("activate",
 		    GTK_RUN_LAST,
@@ -776,6 +833,14 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                     gtkextra_BOOLEAN__INT_INT,
 	            GTK_TYPE_BOOL, 2, GTK_TYPE_INT, GTK_TYPE_INT);
 
+  /**
+   * GtkSheet::set-cell:
+   * @sheet: the sheet widget that emitted the signal
+   * @row: row number of activated cell.
+   * @column: column number of activated cell.
+   *
+   * Emited when clicking on a non-empty cell.
+   */
   sheet_signals[SET_CELL] =
     gtk_signal_new ("set-cell",
 		    GTK_RUN_LAST,
@@ -784,6 +849,14 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                     gtkextra_VOID__INT_INT,
 	            GTK_TYPE_NONE, 2, GTK_TYPE_INT, GTK_TYPE_INT);
 
+  /**
+   * GtkSheet::clear-cell:
+   * @sheet: the sheet widget that emitted the signal
+   * @row: row number of cleared cell.
+   * @column: column number of cleared cell.
+   *
+   * Emited when when the content of the cell is erased.
+   */
   sheet_signals[CLEAR_CELL] =
     gtk_signal_new ("clear-cell",
 		    GTK_RUN_LAST,
@@ -792,6 +865,15 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                     gtkextra_VOID__INT_INT,
 	            GTK_TYPE_NONE, 2, GTK_TYPE_INT, GTK_TYPE_INT);
 
+  /**
+   * GtkSheet::changed:
+   * @sheet: the sheet widget that emitted the signal
+   * @row: row number of changed cell.
+   * @column: column number of changed cell.
+   *
+   * "Emited when typing into the active cell, changing its content.
+   * It is emitted after each key press in cell and after deactivating cell.
+   */
   sheet_signals[CHANGED] =
     gtk_signal_new ("changed",
 		    GTK_RUN_LAST,
@@ -800,6 +882,14 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                     gtkextra_VOID__INT_INT,
 	            GTK_TYPE_NONE, 2, GTK_TYPE_INT, GTK_TYPE_INT);
 
+  /**
+   * GtkSheet::new-column-width:
+   * @sheet: the sheet widget that emitted the signal
+   * @row: modified row number.
+   * @width: new column width
+   *
+   * Emited when the width of a column is modified.
+   */
   sheet_signals[NEW_COL_WIDTH] =
     gtk_signal_new ("new-column-width",
 		    GTK_RUN_LAST,
@@ -808,6 +898,14 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                     gtkextra_VOID__INT_INT,
 	            GTK_TYPE_NONE, 2, GTK_TYPE_INT, GTK_TYPE_INT);
 
+  /**
+   * GtkSheet::new-row-height:
+   * @sheet: the sheet widget that emitted the signal
+   * @col: modified dolumn number.
+   * @height: new row height.
+   *
+   * Emited when the height of a row is modified.
+   */
   sheet_signals[NEW_ROW_HEIGHT] =
     gtk_signal_new ("new-row-height",
 		    GTK_RUN_LAST,
@@ -816,6 +914,14 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                     gtkextra_VOID__INT_INT,
 	            GTK_TYPE_NONE, 2, GTK_TYPE_INT, GTK_TYPE_INT);
 
+  /**
+   * GtkSheet::set-scroll-adjustments:
+   * @sheet: the sheet widget that emitted the signal
+   * @hadjustment: horizontal #GtkAdjustment.
+   * @vadjustment: vertical #GtkAdkjustment.
+   *
+   * Emited when scroll adjustments are set.
+   */
   widget_class->set_scroll_adjustments_signal =
     gtk_signal_new ("set-scroll-adjustments",
                     GTK_RUN_LAST,
@@ -948,7 +1054,7 @@ gtk_sheet_init (GtkSheet *sheet)
  *
  * Creates a new sheet widget with the given number of rows and columns.
  *
- * Returns: the new sheet widget
+ * Returns: the new sheet #GtkSheet
  */
 GtkWidget *
 gtk_sheet_new (guint rows, guint columns, const gchar *title)
@@ -966,6 +1072,15 @@ gtk_sheet_new (guint rows, guint columns, const gchar *title)
   return widget;
 }
 
+/**
+ * gtk_sheet_construct:
+ * @sheet: a #GtkSheet
+ * @rows: number of rows
+ * @columns: number of columns
+ * @title: sheet title
+ *
+ * Initializes an existent #GtkSheet with the given number of rows and columns.
+ */
 void
 gtk_sheet_construct (GtkSheet *sheet, guint rows, guint columns, const gchar *title)
 {
@@ -1007,7 +1122,16 @@ gtk_sheet_construct (GtkSheet *sheet, guint rows, guint columns, const gchar *ti
 
 }
 
-
+/**
+ * gtk_sheet_new_browser:
+ * @rows: initial number of rows
+ * @columns: initial number of columns
+ * @title: sheet title
+ *
+ * Creates a new browser sheet. Its cells cannot be edited(read-only).
+ *
+ * Returns: the new read-only #GtkSheet
+ */
 GtkWidget *
 gtk_sheet_new_browser(guint rows, guint columns, const gchar *title)
 {
@@ -1020,6 +1144,15 @@ gtk_sheet_new_browser(guint rows, guint columns, const gchar *title)
   return widget;
 }
 
+/**
+ * gtk_sheet_construct_browser:
+ * @sheet: a #GtkSheet
+ * @rows: number of rows
+ * @columns: number of columns
+ * @title: sheet title
+ *
+ * Initializes an existent read-only #GtkSheet with the given number of rows and columns.
+ */
 void
 gtk_sheet_construct_browser(GtkSheet *sheet, guint rows, guint columns, 
                            const gchar *title)
@@ -1030,6 +1163,17 @@ gtk_sheet_construct_browser(GtkSheet *sheet, guint rows, guint columns,
   sheet->autoresize = TRUE;
 }
 
+/**
+ * gtk_sheet_new_with_custom_entry:
+ * @rows: initial number of rows
+ * @columns: initial number of columns
+ * @title: sheet title
+ * @entry_type: a #GtkType
+ *
+ * Creates a new sheet widget with the given number of rows and columns and a custome entry type.
+ *
+ * Returns: the new sheet #GtkSheet
+ */
 GtkWidget *
 gtk_sheet_new_with_custom_entry (guint rows, guint columns, const gchar *title,
                                  GtkType entry_type)
@@ -1044,6 +1188,16 @@ gtk_sheet_new_with_custom_entry (guint rows, guint columns, const gchar *title,
   return widget;
 }
 
+/**
+ * gtk_sheet_construct_with_custom_entry:
+ * @sheet: a #GtkSheet
+ * @rows: number of rows
+ * @columns: number of columns
+ * @title: sheet title
+ * @entry_type: a #GtkType
+ *
+ * Initializes an existent read-only #GtkSheet with the given number of rows and columns and a custom entry.
+ */
 void
 gtk_sheet_construct_with_custom_entry (GtkSheet *sheet, 
                                       guint rows, guint columns, 
@@ -1056,7 +1210,13 @@ gtk_sheet_construct_with_custom_entry (GtkSheet *sheet,
   create_sheet_entry(sheet);
 }
 
-
+/**
+ * gtk_sheet_change_entry:
+ * @sheet: a #GtkSheet
+ * @entry_type: a #GtkType
+ *
+ * Changes the current entry of the cell in #GtkSheet.
+ */
 void
 gtk_sheet_change_entry(GtkSheet *sheet, GtkType entry_type)
 {
@@ -1085,6 +1245,13 @@ gtk_sheet_change_entry(GtkSheet *sheet, GtkType entry_type)
  
 }
 
+/**
+ * gtk_sheet_show_grid:
+ * @sheet: a #GtkSheet
+ * @show : TRUE(grid visible) or FALSE(grid invisible)
+ *
+ * Sets the visibility of grid in #GtkSheet.
+ */
 void
 gtk_sheet_show_grid(GtkSheet *sheet, gboolean show)
 {
@@ -1099,6 +1266,13 @@ gtk_sheet_show_grid(GtkSheet *sheet, gboolean show)
     gtk_sheet_range_draw(sheet, NULL);
 }
 
+/**
+ * gtk_sheet_grid_visible:
+ * @sheet: a #GtkSheet
+ * Return value: TRUE(grid visible) or FALSE(grid invisible)
+ *
+ * Gets the visibility of grid in #GtkSheet.
+ */
 gboolean
 gtk_sheet_grid_visible(GtkSheet *sheet)
 {
@@ -1108,6 +1282,13 @@ gtk_sheet_grid_visible(GtkSheet *sheet)
   return sheet->show_grid;
 }
 
+/**
+ * gtk_sheet_set_background:
+ * @sheet: a #GtkSheet
+ * @color: a #GdkColor structure
+ *
+ * Set the background color of all #GtkSheet.
+ */
 void
 gtk_sheet_set_background(GtkSheet *sheet, GdkColor *color)
 {
@@ -1124,6 +1305,13 @@ gtk_sheet_set_background(GtkSheet *sheet, GdkColor *color)
     gtk_sheet_range_draw(sheet, NULL);
 }
 
+/**
+ * gtk_sheet_set_grid:
+ * @sheet: a #GtkSheet
+ * @color: a #GdkColor structure
+ *
+ * Set the grid color.
+ */
 void
 gtk_sheet_set_grid(GtkSheet *sheet, GdkColor *color)
 {
@@ -1140,6 +1328,13 @@ gtk_sheet_set_grid(GtkSheet *sheet, GdkColor *color)
     gtk_sheet_range_draw(sheet, NULL);
 }
 
+/**
+ * gtk_sheet_get_columns_count:
+ * @sheet: a #GtkSheet
+ * Return value: number of columns.
+ *
+ * Returns the number of the columns of the #GtkSheet.
+ */
 guint
 gtk_sheet_get_columns_count(GtkSheet *sheet)
 {
@@ -1149,6 +1344,13 @@ gtk_sheet_get_columns_count(GtkSheet *sheet)
   return sheet->maxcol + 1;
 }
 
+/**
+ * gtk_sheet_get_rows_count:
+ * @sheet: a #GtkSheet
+ * Return value: number of rows.
+ *
+ * Returns the number of the rows of the #GtkSheet.
+ */
 guint
 gtk_sheet_get_rows_count(GtkSheet *sheet)
 {
@@ -1158,6 +1360,13 @@ gtk_sheet_get_rows_count(GtkSheet *sheet)
   return sheet->maxrow + 1;
 }
 
+/**
+ * gtk_sheet_get_state:
+ * @sheet: a #GtkSheet
+ * Return value: GTK_SHEET_NORMAL,GTK_SHEET_ROW_SELECTED,GTK_SHEET_COLUMN_SELECTED,GTK_SHEET_RANGE_SELECTED
+ *
+ * Returns the #GtkSheet state.
+ */
 gint
 gtk_sheet_get_state(GtkSheet *sheet)
 {
@@ -1167,6 +1376,13 @@ gtk_sheet_get_state(GtkSheet *sheet)
   return (sheet->state);
 }
 
+/**
+ * gtk_sheet_set_selection_mode:
+ * @sheet: a #GtkSheet
+ * @mode: GTK_SELECTION_SINGLE or GTK_SELECTION_BROWSE
+ *
+ * Sets the selection mode of the cells in a #GtkSheet. 
+ */
 void
 gtk_sheet_set_selection_mode(GtkSheet *sheet, gint mode)
 {
@@ -1179,8 +1395,16 @@ gtk_sheet_set_selection_mode(GtkSheet *sheet, gint mode)
   sheet->selection_mode = mode;
 }
 
+/**
+ * gtk_sheet_set_autoresize:
+ * @sheet: a #GtkSheet
+ * @autoresize: TRUE or FALSE
+ *
+ * The cells will be autoresized as you type text if autoresize=TRUE.
+ * If you want the cells to be autoresized when you pack widgets look at gtk_sheet_attach_*()
+ */
 void
-gtk_sheet_set_autoresize                (GtkSheet *sheet, gboolean autoresize)
+gtk_sheet_set_autoresize (GtkSheet *sheet, gboolean autoresize)
 {
   g_return_if_fail (sheet != NULL);
   g_return_if_fail (GTK_IS_SHEET (sheet));
@@ -1188,8 +1412,15 @@ gtk_sheet_set_autoresize                (GtkSheet *sheet, gboolean autoresize)
   sheet->autoresize = autoresize;
 }
 
+/**
+ * gtk_sheet_autoresize:
+ * @sheet: a #GtkSheet
+ * Return value: TRUE or FALSE
+ *
+ * Gets the autoresize mode of #GtkSheet.
+ */
 gboolean
-gtk_sheet_autoresize                    (GtkSheet *sheet)
+gtk_sheet_autoresize (GtkSheet *sheet)
 {
   g_return_val_if_fail (sheet != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
@@ -1229,8 +1460,15 @@ gtk_sheet_autoresize_column (GtkSheet *sheet, gint column)
   }
 }
 
+/**
+ * gtk_sheet_set_autoscroll:
+ * @sheet: a #GtkSheet
+ * @autoscroll: TRUE or FALSE
+ *
+ * The table will be automatically scrolled when you reach the last row/column in #GtkSheet  if autoscroll=TRUE.
+ */
 void
-gtk_sheet_set_autoscroll                (GtkSheet *sheet, gboolean autoscroll)
+gtk_sheet_set_autoscroll (GtkSheet *sheet, gboolean autoscroll)
 {
   g_return_if_fail (sheet != NULL);
   g_return_if_fail (GTK_IS_SHEET (sheet));
@@ -1238,8 +1476,15 @@ gtk_sheet_set_autoscroll                (GtkSheet *sheet, gboolean autoscroll)
   sheet->autoscroll = autoscroll;
 }
 
+/**
+ * gtk_sheet_autoscroll:
+ * @sheet: a #GtkSheet
+ * Return value: TRUE or FALSE
+ *
+ * Get the autoscroll mode of #GtkSheet.
+ */
 gboolean
-gtk_sheet_autoscroll                    (GtkSheet *sheet)
+gtk_sheet_autoscroll (GtkSheet *sheet)
 {
   g_return_val_if_fail (sheet != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
@@ -1247,8 +1492,15 @@ gtk_sheet_autoscroll                    (GtkSheet *sheet)
   return sheet->autoscroll;
 }
 
+/**
+ * gtk_sheet_set_clip_text:
+ * @sheet: a #GtkSheet
+ * @clip_text: TRUE or FALSE
+ *
+ * Clip text in cell.
+ */
 void
-gtk_sheet_set_clip_text                (GtkSheet *sheet, gboolean clip_text)
+gtk_sheet_set_clip_text  (GtkSheet *sheet, gboolean clip_text)
 {
   g_return_if_fail (sheet != NULL);
   g_return_if_fail (GTK_IS_SHEET (sheet));
@@ -1256,8 +1508,15 @@ gtk_sheet_set_clip_text                (GtkSheet *sheet, gboolean clip_text)
   sheet->clip_text = clip_text;
 }
 
+/**
+ * gtk_sheet_clip_text:
+ * @sheet: a #GtkSheet
+ * Return value: TRUE or FALSE
+ *
+ * Get clip text mode in #GtkSheet.
+ */
 gboolean
-gtk_sheet_clip_text                    (GtkSheet *sheet)
+gtk_sheet_clip_text (GtkSheet *sheet)
 {
   g_return_val_if_fail (sheet != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
@@ -1265,8 +1524,15 @@ gtk_sheet_clip_text                    (GtkSheet *sheet)
   return sheet->clip_text;
 }
 
+/**
+ * gtk_sheet_set_justify_entry:
+ * @sheet: a #GtkSheet
+ * @justify: TRUE or FALSE
+ *
+ * Justify cell text in #GtkSheet.
+ */
 void
-gtk_sheet_set_justify_entry             (GtkSheet *sheet, gboolean justify)
+gtk_sheet_set_justify_entry (GtkSheet *sheet, gboolean justify)
 {
   g_return_if_fail (sheet != NULL);
   g_return_if_fail (GTK_IS_SHEET (sheet));
@@ -1274,8 +1540,15 @@ gtk_sheet_set_justify_entry             (GtkSheet *sheet, gboolean justify)
   sheet->justify_entry = justify;
 }
 
+/**
+ * gtk_sheet_justify_entry:
+ * @sheet: a #GtkSheet
+ * Return value: TRUE or FALSE
+ *
+ * Get the cell text justification status in #GtkSheet.
+ */
 gboolean
-gtk_sheet_justify_entry                    (GtkSheet *sheet)
+gtk_sheet_justify_entry (GtkSheet *sheet)
 {
   g_return_val_if_fail (sheet != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
@@ -1283,8 +1556,15 @@ gtk_sheet_justify_entry                    (GtkSheet *sheet)
   return sheet->justify_entry;
 }
 
+/**
+ * gtk_sheet_set_locked:
+ * @sheet: a #GtkSheet
+ * @locked: TRUE or FALSE
+ *
+ * Lock the #GtkSheet .
+ */
 void
-gtk_sheet_set_locked             (GtkSheet *sheet, gboolean locked)
+gtk_sheet_set_locked (GtkSheet *sheet, gboolean locked)
 {
   g_return_if_fail (sheet != NULL);
   g_return_if_fail (GTK_IS_SHEET (sheet));
@@ -1292,8 +1572,15 @@ gtk_sheet_set_locked             (GtkSheet *sheet, gboolean locked)
   sheet->locked = locked;
 }
 
+/**
+ * gtk_sheet_set_locked:
+ * @sheet: a #GtkSheet
+ * Return value: TRUE or FALSE
+ *
+ * Get the lock status of #GtkSheet .
+ */
 gboolean
-gtk_sheet_locked                    (GtkSheet *sheet)
+gtk_sheet_locked (GtkSheet *sheet)
 {
   g_return_val_if_fail (sheet != NULL, FALSE);
   g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
@@ -1304,6 +1591,13 @@ gtk_sheet_locked                    (GtkSheet *sheet)
 /* This routine has problems with gtk+-1.2 related with the
  * label/button drawing - I think it's a bug in gtk+-1.2 */
 
+/**
+ * gtk_sheet_set_title:
+ * @sheet: a #GtkSheet
+ * @title: #GtkSheet title
+ *
+ * Set  #GtkSheet title.
+ */
 void
 gtk_sheet_set_title(GtkSheet *sheet, const gchar *title)
 {
@@ -1351,6 +1645,13 @@ gtk_sheet_set_title(GtkSheet *sheet, const gchar *title)
 */
 }
 
+/**
+ * gtk_sheet_freeze:
+ * @sheet: a #GtkSheet
+ *
+ * Freeze all visual updates of the #GtkSheet.
+ * The updates will occure in a more efficient way than if you made them on a unfrozen #GtkSheet .
+ */
 void
 gtk_sheet_freeze (GtkSheet *sheet)
 {
@@ -1361,6 +1662,13 @@ gtk_sheet_freeze (GtkSheet *sheet)
   GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IS_FROZEN);
 }
 
+/**
+ * gtk_sheet_thaw:
+ * @sheet: a #GtkSheet
+ *
+ * Thaw the sheet after you have made a number of changes on a frozen sheet.
+ * The updates will occure in a more efficient way than if you made them on a unfrozen sheet .
+ */
 void
 gtk_sheet_thaw(GtkSheet *sheet)
 {
@@ -1400,6 +1708,13 @@ gtk_sheet_thaw(GtkSheet *sheet)
 
 }
 
+/**
+ * gtk_sheet_set_row_titles_width:
+ * @sheet: a #GtkSheet
+ * @width: row titles width. 
+ *
+ * Resize row titles .
+ */
 void
 gtk_sheet_set_row_titles_width(GtkSheet *sheet, guint width)
 {
@@ -1419,6 +1734,13 @@ gtk_sheet_set_row_titles_width(GtkSheet *sheet, guint width)
  size_allocate_global_button(sheet);
 }
 
+/**
+ * gtk_sheet_set_column_titles_height:
+ * @sheet: a #GtkSheet
+ * @height: column title height. 
+ *
+ * Resize column titles height .
+ */
 void
 gtk_sheet_set_column_titles_height(GtkSheet *sheet, guint height)
 {
@@ -1438,6 +1760,12 @@ gtk_sheet_set_column_titles_height(GtkSheet *sheet, guint height)
  size_allocate_global_button(sheet);
 }
 
+/**
+ * gtk_sheet_show_column_titles:
+ * @sheet: a #GtkSheet
+ *
+ * Show column titles .
+ */
 void
 gtk_sheet_show_column_titles(GtkSheet *sheet)
 {
@@ -1473,6 +1801,12 @@ gtk_sheet_show_column_titles(GtkSheet *sheet)
  size_allocate_global_button(sheet);
 }
 
+/**
+ * gtk_sheet_show_row_titles:
+ * @sheet: a #GtkSheet
+ *
+ * Show row titles .
+ */
 void
 gtk_sheet_show_row_titles(GtkSheet *sheet)
 {
@@ -1508,6 +1842,12 @@ gtk_sheet_show_row_titles(GtkSheet *sheet)
  size_allocate_global_button(sheet);
 }
 
+/**
+ * gtk_sheet_hide_column_titles:
+ * @sheet: a #GtkSheet
+ *
+ * Hide column titles .
+ */
 void
 gtk_sheet_hide_column_titles(GtkSheet *sheet)
 {
@@ -1540,6 +1880,12 @@ gtk_sheet_hide_column_titles(GtkSheet *sheet)
 			      "value_changed");
 }
 
+/**
+ * gtk_sheet_hide_row_titles:
+ * @sheet: a #GtkSheet
+ *
+ * Hide row titles .
+ */
 void
 gtk_sheet_hide_row_titles(GtkSheet *sheet)
 {
@@ -1571,6 +1917,13 @@ gtk_sheet_hide_row_titles(GtkSheet *sheet)
 			      "value_changed");
 }
 
+/**
+ * gtk_sheet_column_titles_visible:
+ * @sheet: a #GtkSheet
+ * Return value: TRUE or FALSE
+ *
+ * Get the visibility of sheet column titles .
+ */
 gboolean
 gtk_sheet_column_titles_visible(GtkSheet *sheet)
 {
@@ -1579,6 +1932,13 @@ gtk_sheet_column_titles_visible(GtkSheet *sheet)
   return sheet->column_titles_visible;
 }
 
+/**
+ * gtk_sheet_row_titles_visible:
+ * @sheet: a #GtkSheet
+ * Return value: TRUE or FALSE
+ *
+ * Get the visibility of row column titles .
+ */
 gboolean
 gtk_sheet_row_titles_visible(GtkSheet *sheet)
 {
@@ -1587,6 +1947,14 @@ gtk_sheet_row_titles_visible(GtkSheet *sheet)
   return sheet->row_titles_visible;
 }
 
+/**
+ * gtk_sheet_set_column_title:
+ * @sheet: a #GtkSheet
+ * @column: column number
+ * @title: column title
+ *
+ * Set column title.
+ */
 void
 gtk_sheet_set_column_title (GtkSheet * sheet,
 			    gint column,
@@ -1601,6 +1969,14 @@ gtk_sheet_set_column_title (GtkSheet * sheet,
   sheet->column[column].name = g_strdup(title);
 }
 
+/**
+ * gtk_sheet_set_row_title:
+ * @sheet: a #GtkSheet
+ * @column: row number
+ * @title: row title
+ *
+ * Set row title.
+ */
 void
 gtk_sheet_set_row_title (GtkSheet * sheet,
 			 gint row,
@@ -1615,6 +1991,14 @@ gtk_sheet_set_row_title (GtkSheet * sheet,
   sheet->row[row].name = g_strdup (title);
 }
 
+/**
+ * gtk_sheet_get_row_title:
+ * @sheet: a #GtkSheet
+ * @column: row number
+ * Return value: row title
+ *
+ * Get row title.
+ */
 const gchar *
 gtk_sheet_get_row_title (GtkSheet * sheet,
 			 gint row)
@@ -1625,6 +2009,14 @@ gtk_sheet_get_row_title (GtkSheet * sheet,
   return(sheet->row[row].name);
 }
 
+/**
+ * gtk_sheet_get_column_title:
+ * @sheet: a #GtkSheet
+ * @column: column number
+ * Return value: column title
+ *
+ * Get column title.
+ */
 const gchar *
 gtk_sheet_get_column_title (GtkSheet * sheet,
 			    gint column)
@@ -1635,6 +2027,14 @@ gtk_sheet_get_column_title (GtkSheet * sheet,
   return(sheet->column[column].name);
 }
 
+/**
+ * gtk_sheet_row_button_add_label:
+ * @sheet: a #GtkSheet
+ * @column: row number
+ * @label: text label
+ *
+ * Set button label.It is used to set a row title.
+ */
 void
 gtk_sheet_row_button_add_label(GtkSheet *sheet, gint row, const gchar *label)
 {
@@ -1669,6 +2069,14 @@ gtk_sheet_row_button_add_label(GtkSheet *sheet, gint row, const gchar *label)
   }
 }  
 
+/**
+ * gtk_sheet_row_button_get_label:
+ * @sheet: a #GtkSheet
+ * @row: row number
+ * Return value: In case of succes , a pointer to label text.Otherwise NULL>
+ *
+ * Get button label.
+ */
 const gchar *
 gtk_sheet_row_button_get_label(GtkSheet *sheet, gint row)
 {
@@ -1680,6 +2088,14 @@ gtk_sheet_row_button_get_label(GtkSheet *sheet, gint row)
   return (sheet->row[row].button.label);
 }
 
+/**
+ * gtk_sheet_row_label_set_visibility:
+ * @sheet: a #GtkSheet
+ * @row: row number
+ * @visible: TRUE or FALSE
+ *
+ * Set row label visibility.
+ */
 void
 gtk_sheet_row_label_set_visibility(GtkSheet *sheet, gint row, gboolean visible)
 {
@@ -1696,6 +2112,13 @@ gtk_sheet_row_label_set_visibility(GtkSheet *sheet, gint row, gboolean visible)
   }
 }
 
+/**
+ * gtk_sheet_rows_labels_set_visibility:
+ * @sheet: a #GtkSheet
+ * @visible: TRUE or FALSE
+ *
+ * Set all rows label visibility.
+ */
 void
 gtk_sheet_rows_labels_set_visibility(GtkSheet *sheet, gboolean visible)
 {
@@ -1708,7 +2131,14 @@ gtk_sheet_rows_labels_set_visibility(GtkSheet *sheet, gboolean visible)
     gtk_sheet_row_label_set_visibility(sheet, i, visible);
 }
 
-
+/**
+ * gtk_sheet_column_button_add_label:
+ * @sheet: a #GtkSheet
+ * @column: column number
+ * @label:text label
+ *
+ * Set button label.It is used to set a column title.
+ */
 void
 gtk_sheet_column_button_add_label(GtkSheet *sheet, gint column, const gchar *label)
 {
@@ -1742,6 +2172,14 @@ gtk_sheet_column_button_add_label(GtkSheet *sheet, gint column, const gchar *lab
   }
 }  
 
+/**
+ * gtk_sheet_column_button_add_label:
+ * @sheet: a #GtkSheet.
+ * @column: column number.
+ * Return value: Column button label.
+ *
+ * Get column button label.
+ */
 const gchar *
 gtk_sheet_column_button_get_label(GtkSheet *sheet, gint column)
 {
@@ -1753,6 +2191,14 @@ gtk_sheet_column_button_get_label(GtkSheet *sheet, gint column)
   return(sheet->column[column].button.label);
 }
 
+/**
+ * gtk_sheet_column_label_set_visibility:
+ * @sheet: a #GtkSheet.
+ * @col: column number.
+ * @visible: TRUE or FALSE
+ *
+ * Set column label visibility. The default value is TRUE. If FALSE, the column label is hidden.
+ */
 void
 gtk_sheet_column_label_set_visibility(GtkSheet *sheet, gint col, gboolean visible)
 {
@@ -1769,6 +2215,13 @@ gtk_sheet_column_label_set_visibility(GtkSheet *sheet, gint col, gboolean visibl
   }
 }
 
+/**
+ * gtk_sheet_columns_labels_set_visibility:
+ * @sheet: a #GtkSheet.
+ * @visible: TRUE or FALSE
+ *
+ * Set all columns labels visibility. The default value is TRUE. If FALSE, the columns labels are hidden.
+ */
 void
 gtk_sheet_columns_labels_set_visibility(GtkSheet *sheet, gboolean visible)
 {
@@ -1781,6 +2234,14 @@ gtk_sheet_columns_labels_set_visibility(GtkSheet *sheet, gboolean visible)
     gtk_sheet_column_label_set_visibility(sheet, i, visible);
 }
 
+/**
+ * gtk_sheet_row_button_justify:
+ * @sheet: a #GtkSheet.
+ * @row: row number
+ * @justification : a #GtkJustification :GTK_JUSTIFY_LEFT, RIGHT, CENTER
+ *
+ * Set the justification(alignment) of the row buttons. 
+ */
 void
 gtk_sheet_row_button_justify(GtkSheet *sheet, gint row, 
                              GtkJustification justification)
@@ -1801,6 +2262,14 @@ gtk_sheet_row_button_justify(GtkSheet *sheet, gint row,
   }
 }  
 
+/**
+ * gtk_sheet_column_button_justify:
+ * @sheet: a #GtkSheet.
+ * @column: column number
+ * @justification : a #GtkJustification :GTK_JUSTIFY_LEFT, RIGHT, CENTER
+ *
+ * Set the justification(alignment) of the column buttons. 
+ */
 void
 gtk_sheet_column_button_justify(GtkSheet *sheet, gint column, 
                                 GtkJustification justification)
@@ -1821,7 +2290,18 @@ gtk_sheet_column_button_justify(GtkSheet *sheet, gint column,
   }
 }  
 
-
+/**
+ * gtk_sheet_moveto:
+ * @sheet: a #GtkSheet.
+ * @row: row number
+ * @column: column number
+ * @row_align: row alignment
+ * @column_align: column alignment
+ *
+ * Scroll the viewing area of the sheet to the given column and row; 
+ * row_align and col_align are between 0-1 representing the location the row should appear on the screnn, 0.0 being top or left,
+ * 1.0 being bottom or right; if row or column is negative then there is no change
+ */
 void
 gtk_sheet_moveto (GtkSheet * sheet,
 		  gint row,
@@ -1927,6 +2407,14 @@ gtk_sheet_moveto (GtkSheet * sheet,
     }
 }
 
+/**
+ * gtk_sheet_column_set_sensitivity:
+ * @sheet: a #GtkSheet.
+ * @column: column number
+ * @sensitive: TRUE or FALSE
+ *
+ * Set column button sensitivity. If sensitivity is TRUE it can be toggled, otherwise it acts as a title.
+ */
 void 
 gtk_sheet_column_set_sensitivity(GtkSheet *sheet, gint column, gboolean sensitive)
 {
@@ -1945,7 +2433,13 @@ gtk_sheet_column_set_sensitivity(GtkSheet *sheet, gint column, gboolean sensitiv
       gtk_sheet_button_draw(sheet, -1, column);
 }
 
-
+/**
+ * gtk_sheet_columns_set_sensitivity:
+ * @sheet: a #GtkSheet.
+ * @sensitive: TRUE or FALSE
+ *
+ * Set all columns buttons sensitivity. If sensitivity is TRUE button can be toggled, otherwise  act as titles.
+ */
 void
 gtk_sheet_columns_set_sensitivity(GtkSheet *sheet, gboolean sensitive)
 {
@@ -1958,6 +2452,13 @@ gtk_sheet_columns_set_sensitivity(GtkSheet *sheet, gboolean sensitive)
      gtk_sheet_column_set_sensitivity(sheet, i, sensitive);
 }
 
+/**
+ * gtk_sheet_columns_set_resizable:
+ * @sheet: a #GtkSheet.
+ * @resizable: TRUE or FALSE
+ *
+ * Set columns resizable status.
+ */
 void
 gtk_sheet_columns_set_resizable (GtkSheet *sheet, gboolean resizable)
 {
@@ -1967,6 +2468,13 @@ gtk_sheet_columns_set_resizable (GtkSheet *sheet, gboolean resizable)
   sheet->columns_resizable = resizable;
 }
 
+/**
+ * gtk_sheet_columns_resizable:
+ * @sheet: a #GtkSheet.
+ * Return value: TRUE or FALSE
+ *
+ * Get columns resizable status.
+ */
 gboolean
 gtk_sheet_columns_resizable (GtkSheet *sheet)
 {
@@ -1976,6 +2484,14 @@ gtk_sheet_columns_resizable (GtkSheet *sheet)
   return sheet->columns_resizable;
 }
 
+/**
+ * gtk_sheet_row_set_sensitivity:
+ * @sheet: a #GtkSheet.
+ * @row: row number
+ * @sensitive: TRUE or FALSE
+ *
+ * Set row button sensitivity. If sensitivity is TRUE can be toggled, otherwise it acts as a title . 
+ */
 void 
 gtk_sheet_row_set_sensitivity(GtkSheet *sheet, gint row,  gboolean sensitive)
 {
@@ -1995,6 +2511,13 @@ gtk_sheet_row_set_sensitivity(GtkSheet *sheet, gint row,  gboolean sensitive)
       gtk_sheet_button_draw(sheet, row, -1);
 }
 
+/**
+ * gtk_sheet_rows_set_sensitivity:
+ * @sheet: a #GtkSheet.
+ * @sensitive: TRUE or FALSE
+ *
+ * Set rows buttons sensitivity. If sensitivity is TRUE button can be toggled, otherwise act as titles. 
+ */
 void
 gtk_sheet_rows_set_sensitivity(GtkSheet *sheet, gboolean sensitive)
 {
@@ -2007,7 +2530,13 @@ gtk_sheet_rows_set_sensitivity(GtkSheet *sheet, gboolean sensitive)
      gtk_sheet_row_set_sensitivity(sheet, i, sensitive);
 }
 
-
+/**
+ * gtk_sheet_rows_set_resizable:
+ * @sheet: a #GtkSheet.
+ * @resizable: TRUE or FALSE
+ *
+ * Set rows resizable status.
+ */
 void
 gtk_sheet_rows_set_resizable (GtkSheet *sheet, gboolean resizable)
 {
@@ -2017,6 +2546,13 @@ gtk_sheet_rows_set_resizable (GtkSheet *sheet, gboolean resizable)
   sheet->rows_resizable = resizable;
 }
 
+/**
+ * gtk_sheet_rows_resizable:
+ * @sheet: a #GtkSheet.
+ * Return value: TRUE or FALSE
+ *
+ * Get rows resizable status.
+ */
 gboolean
 gtk_sheet_rows_resizable (GtkSheet *sheet)
 {
@@ -2026,6 +2562,14 @@ gtk_sheet_rows_resizable (GtkSheet *sheet)
   return sheet->rows_resizable;
 }
 
+/**
+ * gtk_sheet_column_set_visibility:
+ * @sheet: a #GtkSheet.
+ * @column: column number
+ * @visible: TRUE or FALSE
+ *
+ * Set column visibility. The default value is TRUE. If FALSE, the column is hidden.
+ */
 void
 gtk_sheet_column_set_visibility(GtkSheet *sheet, gint column, gboolean visible)
 {
@@ -2046,6 +2590,14 @@ gtk_sheet_column_set_visibility(GtkSheet *sheet, gint column, gboolean visible)
   }
 }
 
+/**
+ * gtk_sheet_row_set_visibility:
+ * @sheet: a #GtkSheet.
+ * @row: row number
+ * @visible: TRUE or FALSE
+ *
+ * Set row visibility. The default value is TRUE. If FALSE, the row is hidden.
+ */
 void
 gtk_sheet_row_set_visibility(GtkSheet *sheet, gint row, gboolean visible)
 {
@@ -2066,6 +2618,14 @@ gtk_sheet_row_set_visibility(GtkSheet *sheet, gint row, gboolean visible)
   }
 }
 
+/**
+ * gtk_sheet_select_row:
+ * @sheet: a #GtkSheet.
+ * @row: row number
+ * @visible: TRUE or FALSE
+ *
+ * Select the row. The range is then highlighted, and the bounds are stored in sheet->range. 
+ */
 void
 gtk_sheet_select_row (GtkSheet * sheet,
 		      gint row)
@@ -2098,7 +2658,14 @@ gtk_sheet_select_row (GtkSheet * sheet,
 
 }
 
-
+/**
+ * gtk_sheet_select_column:
+ * @sheet: a #GtkSheet.
+ * @column: column number
+ * @visible: TRUE or FALSE
+ *
+ * Select the column. The range is then highlighted, and the bounds are stored in sheet->range. 
+ */
 void
 gtk_sheet_select_column (GtkSheet * sheet,
 		         gint column)
@@ -2132,6 +2699,13 @@ gtk_sheet_select_column (GtkSheet * sheet,
 
 }
 
+/**
+ * gtk_sheet_clip_range:
+ * @sheet: a #GtkSheet.
+ * @range: #GtkSheetRange to be saved
+ *
+ * Save selected range to "clipboard". 
+ */
 void
 gtk_sheet_clip_range (GtkSheet *sheet, const GtkSheetRange *range)
 {
@@ -2156,6 +2730,12 @@ gtk_sheet_clip_range (GtkSheet *sheet, const GtkSheetRange *range)
 
 }
 
+/**
+ * gtk_sheet_unclip_range:
+ * @sheet: a #GtkSheet.
+ *
+ * Free clipboard. 
+ */
 void
 gtk_sheet_unclip_range(GtkSheet *sheet)
 {
@@ -2173,6 +2753,13 @@ gtk_sheet_unclip_range(GtkSheet *sheet)
     gtk_sheet_range_draw(sheet, &sheet->range);
 }
 
+/**
+ * gtk_sheet_in_clip:
+ * @sheet: a #GtkSheet.
+ * Return value: TRUE or FALSE 
+ *
+ * Get the clip status of #GtkSheet. 
+ */
 gboolean
 gtk_sheet_in_clip (GtkSheet *sheet)
 {
@@ -2181,6 +2768,7 @@ gtk_sheet_in_clip (GtkSheet *sheet)
 
   return GTK_SHEET_IN_CLIP(sheet);
 }
+
 
 static gint
 gtk_sheet_flash(gpointer data)
@@ -2356,6 +2944,15 @@ gtk_sheet_cell_isvisible (GtkSheet * sheet,
   return gtk_sheet_range_isvisible(sheet, range);
 }
 
+/**
+ * gtk_sheet_get_visible_range:
+ * @sheet: a #GtkSheet.
+ * @range : a selected #GtkSheetRange 
+ * struct _GtkSheetRange { gint row0,col0; //  upper-left cell 
+ * 			  gint rowi,coli;  // lower-right cell  };
+ *
+ * Returns sheet's ranges in a #GkSheetRange structure. 
+ */
 void 
 gtk_sheet_get_visible_range(GtkSheet *sheet, GtkSheetRange *range)
 {
@@ -2371,6 +2968,13 @@ gtk_sheet_get_visible_range(GtkSheet *sheet, GtkSheetRange *range)
 
 }
 
+/**
+ * gtk_sheet_get_vadjustment:
+ * @sheet: a #GtkSheet.
+ * Return value: a #GtkAdjustment
+ *
+ * Get vertical scroll adjustments.
+ */
 GtkAdjustment *
 gtk_sheet_get_vadjustment (GtkSheet * sheet)
 {
@@ -2380,6 +2984,13 @@ gtk_sheet_get_vadjustment (GtkSheet * sheet)
   return sheet->vadjustment;
 }
 
+/**
+ * gtk_sheet_get_hadjustment:
+ * @sheet: a #GtkSheet.
+ * Return value: a #GtkAdjustment
+ *
+ * Get horizontal scroll adjustments.
+ */
 GtkAdjustment *
 gtk_sheet_get_hadjustment (GtkSheet * sheet)
 {
@@ -2389,6 +3000,13 @@ gtk_sheet_get_hadjustment (GtkSheet * sheet)
   return sheet->hadjustment;
 }
 
+/**
+ * gtk_sheet_set_vadjustment:
+ * @sheet: a #GtkSheet.
+ * @adjustment: a #GtkAdjustment
+ *
+ * Change vertical scroll adjustments.
+ */
 void
 gtk_sheet_set_vadjustment (GtkSheet      *sheet,
 			   GtkAdjustment *adjustment)
@@ -2435,6 +3053,13 @@ gtk_sheet_set_vadjustment (GtkSheet      *sheet,
   sheet->old_vadjustment = sheet->vadjustment->value;
 }
 
+/**
+ * gtk_sheet_set_hadjustment:
+ * @sheet: a #GtkSheet.
+ * @adjustment: a #GtkAdjustment
+ *
+ * Change horizontal scroll adjustments.
+ */
 void
 gtk_sheet_set_hadjustment (GtkSheet      *sheet,
 			   GtkAdjustment *adjustment)
@@ -2481,6 +3106,14 @@ gtk_sheet_set_hadjustment (GtkSheet      *sheet,
   sheet->old_hadjustment = sheet->hadjustment->value;
 }
 
+/**
+ * gtk_sheet_set_scroll_adjustments:
+ * @sheet: a #GtkSheet.
+ * @hadjustment: a #GtkAdjustment
+ * @vadjustment: a #GtkAdjustment
+ *
+ * Change horizontal and vertical scroll adjustments.
+ */
 static void
 gtk_sheet_set_scroll_adjustments (GtkSheet *sheet,
 				  GtkAdjustment *hadjustment,
@@ -3518,6 +4151,15 @@ gtk_sheet_cell_new()
  return cell;
 }
 
+/**
+ * gtk_sheet_set_cell_text:
+ * @sheet: a #GtkSheet.
+ * @row: row_number
+ * @col: column number
+ * @text: cell text
+ *
+ * Set cell contents and allocate memory if needed.No justifcation is made. 
+ */
 void 
 gtk_sheet_set_cell_text(GtkSheet *sheet, gint row, gint col, const gchar *text)
 {
@@ -3532,6 +4174,16 @@ gtk_sheet_set_cell_text(GtkSheet *sheet, gint row, gint col, const gchar *text)
  gtk_sheet_set_cell(sheet, row, col, attributes.justification, text);
 }
 
+/**
+ * gtk_sheet_set_cell:
+ * @sheet: a #GtkSheet.
+ * @row: row_number
+ * @col: column number
+ * @justification: a #GtkJustification :GTK_JUSTIFY_LEFT, RIGHT, CENTER
+ * @text: cell text
+ *
+ * Set cell contents and allocate memory if needed.
+ */
 void 
 gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col, 
                    GtkJustification justification,
@@ -3596,6 +4248,14 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
 
 }
 
+/**
+ * gtk_sheet_cell_clear:
+ * @sheet: a #GtkSheet.
+ * @row: row_number
+ * @column: column number
+ *
+ * Clear cell contents. 
+ */
 void
 gtk_sheet_cell_clear (GtkSheet *sheet, gint row, gint column)
 {
@@ -3619,6 +4279,14 @@ gtk_sheet_cell_clear (GtkSheet *sheet, gint row, gint column)
   }
 }
 
+/**
+ * gtk_sheet_cell_delete:
+ * @sheet: a #GtkSheet.
+ * @row: row_number
+ * @column: column number
+ *
+ * Clear cell contents and remove links.
+ */
 void
 gtk_sheet_cell_delete (GtkSheet *sheet, gint row, gint column)
 {
@@ -3676,7 +4344,14 @@ gtk_sheet_real_cell_clear (GtkSheet *sheet, gint row, gint column, gboolean dele
   }
 
 }
-    
+ 
+/**
+ * gtk_sheet_range_clear:
+ * @sheet: a #GtkSheet.
+ * @range: a #GtkSheetRange
+ *
+ * Clear range contents. If range==NULL the whole sheet will be cleared.
+ */ 
 void
 gtk_sheet_range_clear (GtkSheet *sheet, const GtkSheetRange *range)
 {
@@ -3686,6 +4361,14 @@ gtk_sheet_range_clear (GtkSheet *sheet, const GtkSheetRange *range)
   gtk_sheet_real_range_clear(sheet, range, FALSE);
 }
 
+/**
+ * gtk_sheet_range_delete:
+ * @sheet: a #GtkSheet.
+ * @range: a #GtkSheetRange
+ *
+ * Clear range contents and remove links.
+ * FIXME:: if range==NULL whole sheet is deleted? 
+ */ 
 void
 gtk_sheet_range_delete (GtkSheet *sheet, const GtkSheetRange *range)
 {
@@ -3723,7 +4406,15 @@ gtk_sheet_real_range_clear (GtkSheet *sheet, const GtkSheetRange *range,
   gtk_sheet_range_draw(sheet, NULL);
 }
 
-
+/**
+ * gtk_sheet_cell_get_text:
+ * @sheet: a #GtkSheet
+ * @row: row number
+ * @col: column number
+ * Return value: cell text
+ *
+ * Get cell text.
+ */ 
 gchar *     
 gtk_sheet_cell_get_text (GtkSheet *sheet, gint row, gint col)
 {
@@ -3741,6 +4432,15 @@ gtk_sheet_cell_get_text (GtkSheet *sheet, gint row, gint col)
   return (sheet->data[row][col]->text);
 }
 
+/**
+ * gtk_sheet_link_cell:
+ * @sheet: a #GtkSheet
+ * @row: row number
+ * @col: column number
+ * @link: pointer linked to the cell
+ *
+ * Link pointer to a cell.
+ */ 
 void 
 gtk_sheet_link_cell(GtkSheet *sheet, gint row, gint col, gpointer link)
 {
@@ -3756,6 +4456,15 @@ gtk_sheet_link_cell(GtkSheet *sheet, gint row, gint col, gpointer link)
  sheet->data[row][col]->link = link;
 }
 
+/**
+ * gtk_sheet_get_link:
+ * @sheet: a #GtkSheet
+ * @row: row number
+ * @col: column number
+ * Return value: pointer linked to the cell
+ *
+ * Get link pointer from a cell.
+ */ 
 gpointer 
 gtk_sheet_get_link(GtkSheet *sheet, gint row, gint col)
 {
@@ -3771,6 +4480,14 @@ gtk_sheet_get_link(GtkSheet *sheet, gint row, gint col)
  return(sheet->data[row][col]->link);
 }
 
+/**
+ * gtk_sheet_remove_link:
+ * @sheet: a #GtkSheet
+ * @row: row number
+ * @col: column number
+ *
+ * Remove link pointer from a cell.
+ */ 
 void
 gtk_sheet_remove_link(GtkSheet *sheet, gint row, gint col)
 {
@@ -3786,7 +4503,15 @@ gtk_sheet_remove_link(GtkSheet *sheet, gint row, gint col)
                             sheet->data[row][col]->link = NULL;
 }
 
-
+/**
+ * gtk_sheet_cell_get_state:
+ * @sheet: a #GtkSheet
+ * @row: row number
+ * @col: column number
+ * Return value: a #GtkStateType: GTK_SHEET_NORMAL,GTK_SHEET_ROW_SELECTED,GTK_SHEET_COLUMN_SELECTED,GTK_SHEET_RANGE_SELECTED
+ *
+ * Returns sheet->state.
+ */ 
 GtkStateType
 gtk_sheet_cell_get_state (GtkSheet *sheet, gint row, gint col)
 {
@@ -3822,6 +4547,17 @@ gtk_sheet_cell_get_state (GtkSheet *sheet, gint row, gint col)
  return GTK_STATE_NORMAL;
 }
 
+/**
+ * gtk_sheet_get_pixel_info:
+ * @sheet: a #GtkSheet
+ * @x: x coordinate
+ * @y: y coordinate
+ * @row: cell row number
+ * @column: cell column number
+ * Return value: TRUE(success) or FALSE(failure)
+ *
+ * Get row and column correspondig to the given position in the screen.
+ */ 
 gboolean
 gtk_sheet_get_pixel_info (GtkSheet * sheet,
 			  gint x,
@@ -3851,6 +4587,16 @@ gtk_sheet_get_pixel_info (GtkSheet * sheet,
   return TRUE;
 }
 
+/**
+ * gtk_sheet_get_cell_area:
+ * @sheet: a #GtkSheet
+ * @row: row number
+ * @column: column number
+ * @area: a #GdkRectangle area of the cell
+ * Return value: TRUE(success) or FALSE(failure)
+ *
+ * Get area of a given cell.
+ */ 
 gboolean
 gtk_sheet_get_cell_area  (GtkSheet * sheet,
 			  gint row,
@@ -3891,6 +4637,15 @@ gtk_sheet_get_cell_area  (GtkSheet * sheet,
   return TRUE;
 }
 
+/**
+ * gtk_sheet_set_active_cell:
+ * @sheet: a #GtkSheet
+ * @row: row number
+ * @column: column number
+ * Return value: FALSE if current cell can't be deactivated or requested cell can't be activated 
+ *
+ * Set active cell where the entry will be displayed .
+ */ 
 gboolean 
 gtk_sheet_set_active_cell (GtkSheet *sheet, gint row, gint column)
 {
@@ -3913,6 +4668,14 @@ gtk_sheet_set_active_cell (GtkSheet *sheet, gint row, gint column)
  return TRUE;
 }
 
+/**
+ * gtk_sheet_get_active_cell:
+ * @sheet: a #GtkSheet
+ * @row: row number
+ * @column: column number
+ *
+ * Store in row and col the coordinates of the active cell. 
+ */ 
 void
 gtk_sheet_get_active_cell (GtkSheet *sheet, gint *row, gint *column)
 {
@@ -4709,6 +5472,13 @@ gtk_sheet_real_select_range (GtkSheet * sheet,
   gtk_signal_emit(GTK_OBJECT(sheet), sheet_signals[SELECT_RANGE], range);
 }
 
+/**
+ * gtk_sheet_select_range:
+ * @sheet: a #GtkSheet
+ * @range: a #GtkSheetRange
+ *
+ * Highlight the selected range and store bounds in sheet->range
+ */ 
 void
 gtk_sheet_select_range(GtkSheet * sheet, const GtkSheetRange *range)
 {
@@ -4741,7 +5511,12 @@ gtk_sheet_select_range(GtkSheet * sheet, const GtkSheetRange *range)
   gtk_sheet_real_select_range(sheet, NULL);
 
 }
-
+/**
+ * gtk_sheet_unselect_range:
+ * @sheet: a #GtkSheet
+ *
+ * Unselect the current selected range and clears the bounds in sheet->range. 
+ */ 
 void
 gtk_sheet_unselect_range (GtkSheet * sheet)
 {
@@ -6355,6 +7130,13 @@ create_sheet_entry(GtkSheet *sheet)
 }
 
 
+/**
+ * gtk_sheet_get_entry:
+ * @sheet: a #GtkSheet
+ * Return value: a #GtkWidget
+ *
+ * Returns sheet's entry widget.
+ */ 
 GtkWidget * 
 gtk_sheet_get_entry(GtkSheet *sheet)
 {
@@ -6399,6 +7181,13 @@ gtk_sheet_get_entry(GtkSheet *sheet)
 
 }
 
+/**
+ * gtk_sheet_get_entry_widget:
+ * @sheet: a #GtkSheet
+ * Return value: a #GtkWidget
+ *
+ * Returns sheet's entry widget.
+ */ 
 GtkWidget * 
 gtk_sheet_get_entry_widget(GtkSheet *sheet)
 {
@@ -7159,6 +7948,14 @@ new_row_height (GtkSheet * sheet,
   return height;
 }
 
+/**
+ * gtk_sheet_set_column_width:
+ * @sheet: a #GtkSheet.
+ * @column: column number.
+ * @width: the width of the column.
+ *
+ * Set column width.
+ */ 
 void
 gtk_sheet_set_column_width (GtkSheet * sheet,
 			    gint column,
@@ -7191,6 +7988,14 @@ gtk_sheet_set_column_width (GtkSheet * sheet,
 
 }
 
+/**
+ * gtk_sheet_set_row_height:
+ * @sheet: a #GtkSheet.
+ * @row: row number.
+ * @height: row height(in pixels).
+ *
+ * Set row height.
+ */ 
 void
 gtk_sheet_set_row_height (GtkSheet * sheet,
 			    gint row,
@@ -7223,7 +8028,13 @@ gtk_sheet_set_row_height (GtkSheet * sheet,
 
 }
 
-
+/**
+ * gtk_sheet_add_column:
+ * @sheet: a #GtkSheet.
+ * @ncols: number of columns to be appended.
+ *
+ * Append @ncols columns to the end of the sheet. 
+ */ 
 void
 gtk_sheet_add_column(GtkSheet *sheet, guint ncols)
 {
@@ -7245,6 +8056,13 @@ gtk_sheet_add_column(GtkSheet *sheet, guint ncols)
 			       "value_changed");
 }
 
+/**
+ * gtk_sheet_add_row:
+ * @sheet: a #GtkSheet.
+ * @nrows: number of rows to be appended.
+ *
+ * Append @nrows rows to the end of the sheet. 
+ */ 
 void
 gtk_sheet_add_row(GtkSheet *sheet, guint nrows)
 {
@@ -7266,6 +8084,14 @@ gtk_sheet_add_row(GtkSheet *sheet, guint nrows)
 			       "value_changed");
 }
 
+/**
+ * gtk_sheet_insert_rows:
+ * @sheet: a #GtkSheet.
+ * @row: row number.
+ * @nrows: number of rows to be inserted.
+ *
+ * Insert @nrows rows before the given row and pull right.
+ */ 
 void
 gtk_sheet_insert_rows(GtkSheet *sheet, guint row, guint nrows)
 {
@@ -7303,6 +8129,14 @@ gtk_sheet_insert_rows(GtkSheet *sheet, guint row, guint nrows)
 
 }
 
+/**
+ * gtk_sheet_insert_columns:
+ * @sheet: a #GtkSheet.
+ * @col: column number.
+ * @ncols: number of columns to be inserted.
+ *
+ * Insert @ncols columns before the given row and pull right.
+ */ 
 void
 gtk_sheet_insert_columns(GtkSheet *sheet, guint col, guint ncols)
 {
@@ -7340,6 +8174,14 @@ gtk_sheet_insert_columns(GtkSheet *sheet, guint col, guint ncols)
 
 }
 
+/**
+ * gtk_sheet_delete_rows:
+ * @sheet: a #GtkSheet.
+ * @row: row number.
+ * @nrows: number of rows to be deleted.
+ *
+ * Delete @nrows rows starting from @row.
+ */ 
 void
 gtk_sheet_delete_rows(GtkSheet *sheet, guint row, guint nrows)
 {
@@ -7407,6 +8249,14 @@ gtk_sheet_delete_rows(GtkSheet *sheet, guint row, guint nrows)
 
 }
 
+/**
+ * gtk_sheet_delete_columns:
+ * @sheet: a #GtkSheet.
+ * @col: column number.
+ * @ncols: number of columns to be deleted.
+ *
+ * Delete @ncols columns starting from @col.
+ */ 
 void
 gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
 {
@@ -7474,6 +8324,14 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
 
 }
 
+/**
+ * gtk_sheet_range_set_background:
+ * @sheet: a #GtkSheet.
+ * @urange: a #GtkSheetRange.
+ * @color: a #GdkColor.
+ *
+ * Set background color of the given range.
+ */ 
 void
 gtk_sheet_range_set_background(GtkSheet *sheet, const GtkSheetRange *urange, const GdkColor *color)
 {
@@ -7510,6 +8368,14 @@ gtk_sheet_range_set_background(GtkSheet *sheet, const GtkSheetRange *urange, con
 
 }
 
+/**
+ * gtk_sheet_range_set_foreground:
+ * @sheet: a #GtkSheet.
+ * @urange: a #GtkSheetRange.
+ * @color: a #GdkColor.
+ *
+ * Set foreground color of the given range.
+ */ 
 void
 gtk_sheet_range_set_foreground(GtkSheet *sheet, const GtkSheetRange *urange, const GdkColor *color)
 {
@@ -7542,6 +8408,15 @@ gtk_sheet_range_set_foreground(GtkSheet *sheet, const GtkSheetRange *urange, con
 
 }
 
+/**
+ * gtk_sheet_range_set_justification:
+ * @sheet: a #GtkSheet.
+ * @urange: a #GtkSheetRange.
+ * @just: a #GtkJustification : GTK_JUSTIFY_LEFT, RIGHT, CENTER.
+ *
+ * Set text justification (GTK_JUSTIFY_LEFT, RIGHT, CENTER) of the given range.
+ * The default value is GTK_JUSTIFY_LEFT. If autoformat is on, the default justification for numbers is GTK_JUSTIFY_RIGHT.
+ */ 
 void
 gtk_sheet_range_set_justification(GtkSheet *sheet, const GtkSheetRange *urange, 
                                   GtkJustification just)
@@ -7573,6 +8448,15 @@ gtk_sheet_range_set_justification(GtkSheet *sheet, const GtkSheetRange *urange,
 
 }
 
+/**
+ * gtk_sheet_column_set_justification:
+ * @sheet: a #GtkSheet.
+ * @col: column number
+ * @just: a #GtkJustification : GTK_JUSTIFY_LEFT, RIGHT, CENTER
+ *
+ * Set column justification (GTK_JUSTIFY_LEFT, RIGHT, CENTER).
+ * The default value is GTK_JUSTIFY_LEFT. If autoformat is on, the default justification for numbers is GTK_JUSTIFY_RIGHT.
+ */ 
 void
 gtk_sheet_column_set_justification(GtkSheet *sheet, gint col, 
                                    GtkJustification justification)
@@ -7590,6 +8474,14 @@ gtk_sheet_column_set_justification(GtkSheet *sheet, gint col,
 
 }
 
+/**
+ * gtk_sheet_column_set_editable:
+ * @sheet: a #GtkSheet.
+ * @urange: a #GtkSheetRange
+ * @editable: TRUE or FALSE
+ *
+ * Set if cell contents can be edited or not in the given range: accepted values are TRUE or FALSE.
+ */ 
 void
 gtk_sheet_range_set_editable(GtkSheet *sheet, const GtkSheetRange *urange, gboolean editable)
 {
@@ -7617,6 +8509,14 @@ gtk_sheet_range_set_editable(GtkSheet *sheet, const GtkSheetRange *urange, gbool
 
 }
 
+/**
+ * gtk_sheet_range_set_visible:
+ * @sheet: a #GtkSheet.
+ * @urange: a #GtkSheetRange.
+ * @visible: TRUE or FALSE.
+ *
+ * Set if cell contents are visible or not in the given range: accepted values are TRUE or FALSE. 
+ */ 
 void
 gtk_sheet_range_set_visible(GtkSheet *sheet, const GtkSheetRange *urange, gboolean visible)
 {
@@ -7644,6 +8544,16 @@ gtk_sheet_range_set_visible(GtkSheet *sheet, const GtkSheetRange *urange, gboole
 
 }
 
+/**
+ * gtk_sheet_range_set_border:
+ * @sheet: a #GtkSheet.
+ * @urange: a #GtkSheetRange where we set border style.
+ * @mask: CELL_LEFT_BORDER, CELL_RIGHT_BORDER, CELL_TOP_BORDER,CELL_BOTTOM_BORDER
+ * @width: width of the border line in pixels
+ * @line_style: GdkLineStyle for the border line
+ *
+ * Set cell border style in the given range. 
+ */ 
 void
 gtk_sheet_range_set_border(GtkSheet *sheet, const GtkSheetRange *urange, gint mask, 
 guint width, gint line_style)
@@ -7681,6 +8591,14 @@ guint width, gint line_style)
 
 }
 
+/**
+ * gtk_sheet_range_set_border_color:
+ * @sheet: a #GtkSheet.
+ * @urange: a #GtkSheetRange where we set border color.
+ * @color: a #GdkColor.
+ *
+ * Set border color for the given range.
+ */ 
 void
 gtk_sheet_range_set_border_color(GtkSheet *sheet, const GtkSheetRange *urange, const GdkColor *color)
 {
@@ -7708,6 +8626,14 @@ gtk_sheet_range_set_border_color(GtkSheet *sheet, const GtkSheetRange *urange, c
 
 }
 
+/**
+ * gtk_sheet_range_set_border_color:
+ * @sheet: a #GtkSheet.
+ * @urange: a #GtkSheetRange where we set font.
+ * @font: a #PangoFontDescription.
+ *
+ * Set font for the given range.
+ */ 
 void
 gtk_sheet_range_set_font(GtkSheet *sheet, const GtkSheetRange *urange, PangoFontDescription *font)
 {
@@ -7775,6 +8701,16 @@ gtk_sheet_set_cell_attributes(GtkSheet *sheet, gint row, gint col, GtkSheetCellA
   *((*cell)->attributes) = attributes;
 }
 
+/**
+ * gtk_sheet_get_attributes:
+ * @sheet: a #GtkSheet.
+ * @row: row number
+ * @col: column number
+ * @attributes: #GtkSheetCellAttr of the given range
+ * Return value: TRUE means that the cell is currently allocated.
+ *
+ * Gett cell attributes of the given cell. 
+ */ 
 gboolean
 gtk_sheet_get_attributes(GtkSheet *sheet, gint row, gint col, GtkSheetCellAttr *attributes)
 {
@@ -8188,6 +9124,20 @@ CheckBounds(GtkSheet *tbl, gint row, gint col)
  * gtk_sheet_get_child_at
  ********************************************************************/ 
 
+/**
+ * gtk_sheet_put:
+ * @sheet: a #GtkSheet.
+ * @child: GtkWidget to be put
+ * @x: x coordinate where we put the widget
+ * @y: y coordinate where we put the widget
+ * Return value: TRUE means that the cell is currently allocated.
+ *
+ * Add widgets to the sheet.
+ * The widget is floating in one given position (x,y) regardless of the configurations of rows/columns. 
+ * This means that cells do not resize depending on the widgets' size. 
+ * You can resize it yourself or use gtk_sheet_attach_*()
+ * You may remove it with gtk_container_remove(GTK_CONTAINER(sheet), GtkWidget *child); 
+ */ 
 GtkSheetChild *
 gtk_sheet_put(GtkSheet *sheet, GtkWidget *child, gint x, gint y)
 {
@@ -8242,6 +9192,16 @@ gtk_sheet_put(GtkSheet *sheet, GtkWidget *child, gint x, gint y)
   return (child_info);
 }
 
+/**
+ * gtk_sheet_attach_floating:
+ * @sheet: a #GtkSheet.
+ * @widget: #GtkWidget to be put
+ * @row: row number
+ * @col: column number
+ *
+ * The widget is attached to the top-left corner of a cell (row,column) and moves with it when you change width,
+ * height, or you delete of add row/columns
+ */ 
 void
 gtk_sheet_attach_floating       (GtkSheet *sheet,
                                  GtkWidget *widget,
@@ -8262,6 +9222,19 @@ gtk_sheet_attach_floating       (GtkSheet *sheet,
   child->col = col;
 }
 
+/**
+ * gtk_sheet_attach_default:
+ * @sheet: a #GtkSheet.
+ * @widget: #GtkWidget to be put
+ * @row: row number
+ * @col: column number
+ *
+ * Attaches a child widget to the given cell with the 0,0 alignments.
+ * Works basically like gtk_table_attach, with the same options, the widget is confined in the cell, and whether it fills the 
+ * cell, expands with it, or shrinks with it, depending on the options. 
+ * The child is reallocated each time the column or row changes, keeping attached to the same cell.
+ * It's in fact gtk_sheet_attach() with GTK_EXPAND set.
+ */ 
 void
 gtk_sheet_attach_default        (GtkSheet *sheet,
                                  GtkWidget *widget,
@@ -8275,6 +9248,22 @@ gtk_sheet_attach_default        (GtkSheet *sheet,
   gtk_sheet_attach(sheet, widget, row, col, GTK_EXPAND|GTK_FILL, GTK_EXPAND|GTK_FILL, 0, 0);
 }
 
+/**
+ * gtk_sheet_attach:
+ * @sheet: a #GtkSheet.
+ * @widget: #GtkWidget to be put
+ * @row: row number
+ * @col: column number
+ * @xoptions: if set GTK_EXPAND cell will expand/shrink on x direction
+ * @yoptions: if set GTK_EXPAND cell will expand/shrink on y direction
+ * @xpadding: x coordinate of the alignment
+ * @ypadding: y coordinate of the alignment
+ * 
+ * Attaches a child widget to the given cell with the given alignments.
+ * Works basically like gtk_table_attach, with the same options, the widget is confined in the cell, and whether it fills the
+ * cell, expands with it, or shrinks with it, depending on the options , if GTK_EXPAND is set. 
+ * The child is reallocated each time the column or row changes, keeping attached to the same cell.
+ */ 
 void
 gtk_sheet_attach        (GtkSheet *sheet,
                          GtkWidget *widget,
@@ -8339,6 +9328,15 @@ gtk_sheet_attach        (GtkSheet *sheet,
 
 }
 
+/**
+ * gtk_sheet_button_attach:
+ * @sheet: a #GtkSheet.
+ * @widget: #GtkWidget to be put
+ * @row: row number
+ * @col: column number
+ *
+ * Button attach works like cell attach but for the buttons.
+ */ 
 void
 gtk_sheet_button_attach		(GtkSheet *sheet, 
 				 GtkWidget *widget, 
@@ -8530,6 +9528,15 @@ gtk_sheet_column_size_request   (GtkSheet *sheet,
   sheet->column[col].requisition = *requisition;
 }
 
+/**
+ * gtk_sheet_move_child:
+ * @sheet: a #GtkSheet.
+ * @widget: #GtkWidget to be put.
+ * @x: x coord at which we move the widget.
+ * @y: y coord at which we move the widget.
+ *
+ * Move widgets added with gtk_sheet_put() in the sheet.
+ */ 
 void
 gtk_sheet_move_child(GtkSheet *sheet, GtkWidget *widget, gint x, gint y)
 {
@@ -8777,7 +9784,14 @@ gtk_sheet_realize_child(GtkSheet *sheet, GtkSheetChild *child)
 }
 
 
-   
+/**
+ * gtk_sheet_get_child_at:
+ * @sheet: a #GtkSheet.
+ * @row: row number
+ * @col: column number
+ *
+ * Returns the child attached at @row,@col.
+ */ 
 GtkSheetChild *
 gtk_sheet_get_child_at(GtkSheet *sheet, gint row, gint col)
 {

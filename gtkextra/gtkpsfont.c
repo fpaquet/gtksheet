@@ -303,6 +303,12 @@ static const char *default_font = "fixed";
 
 static GtkPSFont *find_psfont		(const gchar *name);
 
+/**
+ * gtk_psfont_init:
+ * Return value: TRUE(success) or FALSE(failure).
+ * 
+ * Initializes PS fonts.
+ **/
 gint
 gtk_psfont_init()
 {
@@ -354,7 +360,11 @@ gtk_psfont_init()
   return TRUE;
 }
 
-
+/**
+ * gtk_psfont_unref:
+ * 
+ * Unref ps fonts.
+ **/
 void
 gtk_psfont_unref()
 {
@@ -383,6 +393,37 @@ gtk_psfont_unref()
   psfont_init = FALSE;
 }
 
+/**
+ * gtk_psfont_init:
+ * 
+ * Unref ps fonts.
+ **/
+void
+gtk_psfont_unref()
+{
+  GList *list;
+
+  if(psfont_refcount <= 0) return;
+
+  psfont_refcount--;
+
+  if(psfont_refcount > 0) return;
+
+  list = psfont_families;
+  while(list){
+    psfont_families = g_list_remove_link(psfont_families, list);
+    g_list_free_1(list);
+    list = psfont_families;
+  }
+
+
+/**
+ * gtk_psfont_get_by_name:
+ * @name: font name
+ * Return value: a #GtkPSFont pointer.
+ * 
+ * Get PS Font by font name.
+ **/
 GtkPSFont *
 gtk_psfont_get_by_name(const gchar *name)
 {
@@ -403,6 +444,14 @@ gtk_psfont_get_by_name(const gchar *name)
   return (GtkPSFont *)font;
 }
 
+/**
+ * gtk_psfont_get_by_gdkfont:
+ * @font: a #GtkPSFont 
+ * @height: font height
+ * Return value: a #GdkFont pointer.
+ * 
+ * Get #GdkFOnt by PS Font.
+ **/
 GdkFont *
 gtk_psfont_get_gdkfont(GtkPSFont *font, gint height)
 {
@@ -434,6 +483,14 @@ gtk_psfont_get_gdkfont(GtkPSFont *font, gint height)
   return gdkfont;
 }
 
+/**
+ * gtk_psfont_get_font_description:
+ * @font: a #GtkPSFont 
+ * @height: font height
+ * Return value: a #PangoFontDescription pointer.
+ * 
+ * Get a #PangoDescriptionFont from PS Font.
+ **/
 PangoFontDescription *
 gtk_psfont_get_font_description(GtkPSFont *font, gint height)
 {
@@ -530,6 +587,13 @@ http://mail.gnome.org/archives/gtk-i18n-list/2003-August/msg00001.html
 }
 
 
+/**
+ * gtk_psfont_get_psfontname:
+ * @font: a #GtkPSFont 
+ * Return value: font name. 
+ * 
+ * Get font name from PS Font.
+ **/
 const gchar *
 gtk_psfont_get_psfontname(GtkPSFont *font)
 {
@@ -539,6 +603,17 @@ gtk_psfont_get_psfontname(GtkPSFont *font)
   return font->psname;
 }
 
+/**
+ * gtk_psfont_add_font:
+ * @fontname: font name
+ * @psname: PS font name
+ * @family: font family
+ * @pango_description: font Pango description
+ * @italic: TRUE or FALSE
+ * @bold: TRUE or FALSE
+ * 
+ * Add font in user font list.
+ **/
 void
 gtk_psfont_add_font (const gchar *fontname,
                      const gchar *psname, const gchar *family,
@@ -561,6 +636,19 @@ gtk_psfont_add_font (const gchar *fontname,
   user_fonts = g_list_append(user_fonts, font);
 }
 
+/**
+ * gtk_psfont_add_i18n_font:
+ * @fontname: font name
+ * @psname: PS font name
+ * @family: font family
+ * @i18n_latinfamily: International font family
+ * @pango_description: font Pango description
+ * @italic: TRUE or FALSE
+ * @bold: TRUE or FALSE
+ * @vertical: TRUE or FALSE
+ * 
+ * Add international font in user font list.
+ **/
 void
 gtk_psfont_add_i18n_font (const gchar *fontname,
                          const gchar *psname, const gchar *family,
@@ -583,7 +671,6 @@ gtk_psfont_add_i18n_font (const gchar *fontname,
 
   user_fonts = g_list_append(user_fonts, font);
 }
-
 
 static GtkPSFont *
 find_psfont(const gchar *name)
@@ -628,6 +715,14 @@ find_psfont(const gchar *name)
   return fontdata;
 }
 
+/**
+ * gtk_psfont_get_by_family:
+ * @name:  font name
+ * @italic: TRUE or FALSE
+ * @bold: TRUE or FALSE
+ * 
+ * Get #GtkPSFont by family. 
+ **/
 GtkPSFont *
 gtk_psfont_get_by_family(const gchar *name, gboolean italic, gboolean bold)
 {
@@ -672,6 +767,13 @@ gtk_psfont_get_by_family(const gchar *name, gboolean italic, gboolean bold)
 }
 
 
+/**
+ * gtk_psfont_get_families:
+ * @families:  font families
+ * @num_families: families number
+ * 
+ * Get #GtkPSFont by family. 
+ **/
 void
 gtk_psfont_get_families(GList **families, gint *num_families)
 {
@@ -685,6 +787,19 @@ gtk_psfont_get_families(GList **families, gint *num_families)
 }
 
 /* get the width, ascent and descent of a character. */
+
+/**
+ * gtk_psfont_get_char_size:
+ * @psfont: a #GtkPSFont
+ * @font: a #GdkFont
+ * @latin_font: a #GdkFont
+ * @wc: a #GdkWchar
+ * @width: font width
+ * @ascent: font ascent
+ * @descent: font  descent
+ * 
+ * Get font character size. 
+ **/
 void
 gtk_psfont_get_char_size(GtkPSFont *psfont,
                          GdkFont *font,

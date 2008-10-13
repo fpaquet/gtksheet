@@ -5,7 +5,7 @@ This library is GTK+extra vesion 3. It is a useful widget set
 complementary to GTK+ for creating graphical interfaces for the X Windows 
 System. It is written in C and requires GTK+ version 2.x.
 The author is Adrian Feiguin.
-Documentation was written by Mierla Victor <kornos@flash.ro>
+Documentation was written by Mierla Victor <victor.mierla@flash.ro>
 
 The official web site is:
 	http://gtkextra.sourceforge.net/

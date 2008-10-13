@@ -215,6 +215,14 @@ gtk_icon_list_class_init (GtkIconListClass *klass)
   widget_class->expose_event = gtk_icon_list_expose;
   widget_class->button_press_event = gtk_icon_list_button_press;
 
+  /**
+   * GtkIconList::select_icon:
+   * @iconlist: #GtkIconList widget created with gtk_icon_list_new()
+   * @icon: a #GtkIconListItem
+   * @event: a #GdkEvent
+   *
+   * Emmited  whenever the icon is selected.
+   */ 
   signals[SELECT_ICON] =
       gtk_signal_new("select_icon",
 		     GTK_RUN_LAST,
@@ -224,6 +232,14 @@ gtk_icon_list_class_init (GtkIconListClass *klass)
 		     GTK_TYPE_BOOL, 2,
 		     GTK_TYPE_ICON_LIST_ITEM, GDK_TYPE_EVENT); 
 
+  /**
+   * GtkIconList::unselect_icon:
+   * @iconlist: #GtkIconList widget created with gtk_icon_list_new()
+   * @icon: a #GtkIconListItem
+   * @event: a #GdkEvent
+   *
+   * Emmited  whenever the icon is unselected.
+   */
   signals[UNSELECT_ICON] =
       gtk_signal_new("unselect_icon",
 		     GTK_RUN_FIRST,
@@ -233,6 +249,14 @@ gtk_icon_list_class_init (GtkIconListClass *klass)
 		     GTK_TYPE_NONE, 2,
 		     GTK_TYPE_ICON_LIST_ITEM, GDK_TYPE_EVENT); 
 
+  /**
+   * GtkIconList::text_changed:
+   * @iconlist: #GtkIconList widget created with gtk_icon_list_new()
+   * @icon: a #GtkIconListItem
+   * @new_text: modified text
+   *
+   * Emmited  whenever text of the icon is changed.
+   */
   signals[TEXT_CHANGED] =
       gtk_signal_new("text_changed",
 		     GTK_RUN_LAST,
@@ -242,6 +266,13 @@ gtk_icon_list_class_init (GtkIconListClass *klass)
 		     GTK_TYPE_BOOL, 2,
 		     GTK_TYPE_ICON_LIST_ITEM, GTK_TYPE_STRING); 
 
+  /**
+   * GtkIconList::activate_icon:
+   * @iconlist: #GtkIconList widget created with gtk_icon_list_new()
+   * @icon: a #GtkIconListItem
+   *
+   * Emmited  whenever whenever an icon is activated.
+   */
   signals[ACTIVATE_ICON] =
       gtk_signal_new("activate_icon",
 		     GTK_RUN_LAST,
@@ -251,6 +282,13 @@ gtk_icon_list_class_init (GtkIconListClass *klass)
 		     GTK_TYPE_BOOL, 1,
 		     GTK_TYPE_ICON_LIST_ITEM); 
 
+  /**
+   * GtkIconList::deactivate_icon:
+   * @iconlist: #GtkIconList widget created with gtk_icon_list_new()
+   * @icon: a #GtkIconListItem
+   *
+   * Emmited  whenever whenever an icon is deactivated.
+   */
   signals[DEACTIVATE_ICON] =
       gtk_signal_new("deactivate_icon",
 		     GTK_RUN_LAST,
@@ -260,6 +298,13 @@ gtk_icon_list_class_init (GtkIconListClass *klass)
 		     GTK_TYPE_BOOL, 1,
 		     GTK_TYPE_ICON_LIST_ITEM); 
 
+  /**
+   * GtkIconList::click_event:
+   * @iconlist: #GtkIconList widget created with gtk_icon_list_new()
+   * @event: a #GdkEvent
+   *
+   * Emmited whenever an event occures.
+   */
   signals[CLICK_EVENT] =
       gtk_signal_new("click_event",
 		     GTK_RUN_LAST,
@@ -271,12 +316,25 @@ gtk_icon_list_class_init (GtkIconListClass *klass)
  
 }
 
+
+/**
+ * gtk_icon_list_freeze:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ *
+ * Freeze icon list. 
+ **/   
 void
 gtk_icon_list_freeze(GtkIconList *iconlist)
 {
  iconlist->freeze_count++;
 }
 
+/**
+ * gtk_icon_list_thaw:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ *
+ * Thaw(unfreeze) icon list. 
+ **/   
 void
 gtk_icon_list_thaw(GtkIconList *iconlist)
 {
@@ -286,6 +344,12 @@ gtk_icon_list_thaw(GtkIconList *iconlist)
                reorder_icons(iconlist);
 }
 
+/**
+ * gtk_icon_list_update:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ *
+ * Update the icon list widget.. 
+ **/ 
 void
 gtk_icon_list_update(GtkIconList *iconlist)
 {
@@ -811,6 +875,15 @@ unselect_all(GtkIconList *iconlist)
   iconlist->selection = NULL;
 }
 
+/**
+ * gtk_icon_list_new:
+ * @icon_width: the width of the icon 
+ * @mode: GTK_ICON_LIST_ICON,GTK_ICON_LIST_TEXT_RIGHT,GTK_ICON_LIST_TEXT_BELOW
+ *
+ * Return Value: the newly-created #GtkIconList widget.
+ * 
+ * Creates a new #GtkIconList widget.
+ **/
 GtkWidget*
 gtk_icon_list_new (guint icon_width, GtkIconListMode mode)
 {
@@ -826,6 +899,14 @@ gtk_icon_list_new (guint icon_width, GtkIconListMode mode)
   return GTK_WIDGET (icon_list);
 }
 
+/**
+ * gtk_icon_list_construct:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @icon_width: the width of the icon 
+ * @mode: GTK_ICON_LIST_ICON,GTK_ICON_LIST_TEXT_RIGHT,GTK_ICON_LIST_TEXT_BELOW
+ *
+ * Initialize iconlist structure. 
+ **/
 void
 gtk_icon_list_construct (GtkIconList *icon_list, guint icon_width, GtkIconListMode mode)
 {
@@ -836,6 +917,13 @@ gtk_icon_list_construct (GtkIconList *icon_list, guint icon_width, GtkIconListMo
   icon_list->selection_mode = GTK_SELECTION_SINGLE;
 }
 
+/**
+ * gtk_icon_list_set_mode:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @mode: GTK_ICON_LIST_ICON,GTK_ICON_LIST_TEXT_RIGHT,GTK_ICON_LIST_TEXT_BELOW
+ *
+ * Set the icons display mode . 
+ **/
 void
 gtk_icon_list_set_mode (GtkIconList *iconlist, GtkIconListMode mode)
 {
@@ -869,12 +957,26 @@ gtk_icon_list_set_mode (GtkIconList *iconlist, GtkIconListMode mode)
   reorder_icons(iconlist); 
 }
 
+/**
+ * gtk_icon_list_get_mode:
+ * @icon_list: #GtkIconList widget created with gtk_icon_list_new().
+ * Return value: GTK_ICON_LIST_ICON,GTK_ICON_LIST_TEXT_RIGHT,GTK_ICON_LIST_TEXT_BELOW
+ *
+ * Get the icons display mode . 
+ **/
 GtkIconListMode
 gtk_icon_list_get_mode (GtkIconList *iconlist)
 {
   return(iconlist->mode);
 }
 
+/**
+ * gtk_icon_list_set_text_space:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @text_space: distance in pixels.
+ *
+ * Set the text max size in pixels.
+ **/
 void
 gtk_icon_list_set_text_space (GtkIconList *iconlist, guint text_space)
 {
@@ -929,6 +1031,13 @@ gtk_icon_list_finalize (GObject *object)
     (*G_OBJECT_CLASS (parent_class)->finalize) (object);
 }
 
+/**
+ * gtk_icon_list_set_background:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @color: a #GdkColor
+ *
+ * Set the iconlist background color. 
+ **/
 void
 gtk_icon_list_set_background (GtkIconList *iconlist, GdkColor *color)
 {
@@ -1032,6 +1141,13 @@ entry_in (GtkWidget *widget, GdkEventButton *event, gpointer data)
   return FALSE;
 }
 
+/**
+ * gtk_icon_list_get_active_icon:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * Return Value: the icon pointer
+ *
+ * Set the iconlist background color. 
+ **/
 GtkIconListItem *
 gtk_icon_list_get_active_icon(GtkIconList *iconlist)
 {
@@ -1054,6 +1170,15 @@ get_icon_from_entry(GtkIconList *iconlist, GtkWidget *widget)
   return NULL;
 }
 
+/**
+ * gtk_icon_list_get_icon_at:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @x: x coordindate 
+ * @y: y coordinate
+ * Return Value: the icon pointer
+ *
+ * Get the icon situated at x,y coordinates in icon list.
+ **/
 GtkIconListItem *
 gtk_icon_list_get_icon_at(GtkIconList *iconlist, gint x, gint y)
 {
@@ -1073,6 +1198,15 @@ gtk_icon_list_get_icon_at(GtkIconList *iconlist, gint x, gint y)
   return NULL;
 }
 
+/**
+ * gtk_icon_list_add:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @file:  from #include "file.xpm"
+ * @label: label of the icon
+ * Return Value: the icon pointer
+ *
+ * Add a icon to the icon list.
+ **/
 GtkIconListItem *
 gtk_icon_list_add (GtkIconList *iconlist, 
                    const gchar *file,
@@ -1091,6 +1225,15 @@ gtk_icon_list_add (GtkIconList *iconlist,
   return item;
 }
 
+/**
+ * gtk_icon_list_add_from_data:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @data:  pointer to the xpm data string
+ * @label: label of the icon
+ * Return Value: the icon pointer
+ *
+ * Add a icon to the icon list.
+ **/
 GtkIconListItem *
 gtk_icon_list_add_from_data (GtkIconList *iconlist, 
                              gchar **data,
@@ -1109,6 +1252,17 @@ gtk_icon_list_add_from_data (GtkIconList *iconlist,
   return item;
 }
 
+/**
+ * gtk_icon_list_add_from_pixmap:
+ * @icon_list: #GtkIconList widget created with gtk_icon_list_new().
+ * @pixmap: a #GdkPixmap
+ * @mask:a #GdkBitmap 
+ * @label: label of the icon
+ * @link: a gpointer link to some data
+ * Return Value: the icon pointer
+ *
+ * Add a icon to the icon list.
+ **/
 GtkIconListItem *
 gtk_icon_list_add_from_pixmap (GtkIconList *iconlist, 
                                GdkPixmap *pixmap,
@@ -1396,7 +1550,13 @@ item_size_request(GtkIconList *iconlist,
 
 }
 
-   		  
+/**
+ * gtk_icon_list_set_editable:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @editable: TUE or FALSE
+ *
+ * Set if the user can edit the text in the editable widget or not.
+ **/ 		  
 void
 gtk_icon_list_set_editable (GtkIconList *iconlist, gboolean editable)
 {
@@ -1413,12 +1573,28 @@ gtk_icon_list_set_editable (GtkIconList *iconlist, gboolean editable)
   iconlist->is_editable = editable;
 } 
 
+/**
+ * gtk_icon_list_get_nth:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @n: icon index number.
+ * Return value : a #GtkIconListItem
+ *
+ * Get nth icon from the icon list.
+ **/ 	
 GtkIconListItem *
 gtk_icon_list_get_nth(GtkIconList *iconlist, guint n)
 {
   return (GtkIconListItem *)g_list_nth_data(iconlist->icons, n);
 }
 
+/**
+ * gtk_icon_list_get_index:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @item : a #GtkIconListItem
+ * Return value: icon index number
+ *
+ * Get the index number of the icon specified by its #GtkIconListItem pointer.
+ **/ 	
 gint
 gtk_icon_list_get_index(GtkIconList *iconlist, GtkIconListItem *item)
 {
@@ -1485,6 +1661,13 @@ pixmap_destroy(GtkPixmap* pixmap)
   }
 }
   
+/**
+ * gtk_icon_list_remove:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @item : a #GtkIconListItem
+ *
+ * Remove the icon from the iconlist. 
+ **/ 	
 void
 gtk_icon_list_remove (GtkIconList *iconlist, GtkIconListItem *item)
 {
@@ -1533,6 +1716,13 @@ gtk_icon_list_remove (GtkIconList *iconlist, GtkIconListItem *item)
   }
 }
 
+/**
+ * gtk_icon_list_remove:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @n: icon index number
+ *
+ * Remove nth icon from the iconlist. 
+ **/ 	
 void
 gtk_icon_list_remove_nth (GtkIconList *iconlist, guint n)
 {
@@ -1542,6 +1732,12 @@ gtk_icon_list_remove_nth (GtkIconList *iconlist, guint n)
   gtk_icon_list_remove(iconlist, item);
 }
 
+/**
+ * gtk_icon_list_clear:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ *
+ * Clear the icon list widget. 
+ **/ 	
 void
 gtk_icon_list_clear(GtkIconList *iconlist)
 {
@@ -1590,18 +1786,40 @@ gtk_icon_list_clear(GtkIconList *iconlist)
   iconlist->num_icons = 0;
 }    
 
+/**
+ * gtk_icon_list_link:
+ * @item: #GtkIconListItem
+ * @data: a gpointer to some data
+ *
+ * Add a gpointer link to a icon from the iconlist.
+ **/ 	
 void
 gtk_icon_list_link(GtkIconListItem *item, gpointer data)
 {
   item->link = data;
 } 
 
+/**
+ * gtk_icon_list_get_link:
+ * @item: a #GtkIconListItem 
+ * Return value: a gpointer to some data sed with gtk_icon_list_link().
+ *
+ * Add a gpointer link to a icon from the iconlist.
+ **/ 	
 gpointer
 gtk_icon_list_get_link(GtkIconListItem *item)
 {
   return item->link;
 }
 
+/**
+ * gtk_icon_list_get_icon_from_link:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @data: a gpointer to some data
+ * Return value: a #GtkIconListItem
+ *
+ * Gets the icon pointer from the link attached to it. 
+ **/ 	
 GtkIconListItem *
 gtk_icon_list_get_icon_from_link(GtkIconList *iconlist, gpointer data)
 {
@@ -1618,18 +1836,40 @@ gtk_icon_list_get_icon_from_link(GtkIconList *iconlist, gpointer data)
   return NULL;
 }
 
+/**
+ * gtk_icon_list_get_entry:
+ * @item: a #GtkIconListItem
+ * Return value: a #GtkWidget
+ *
+ * Get the item->entry.
+ **/ 	
 GtkWidget *
 gtk_icon_list_get_entry(GtkIconListItem *item)
 {
   return item->entry;
 }
 
+/**
+ * gtk_icon_list_get_pixmap:
+ * @item: a #GtkIconListItem
+ * Return value: a #GtkWidget
+ *
+ * Get the icon pixmap.
+ **/ 	
 GtkWidget *
 gtk_icon_list_get_pixmap(GtkIconListItem *item)
 {
   return item->pixmap;
 }
 
+/**
+ * gtk_icon_list_set_pixmap:
+ * @item: a #GtkIconListItem
+ * @pixmap: a #GdkPixmap
+ * @mask:  a #GdkBitmap
+ *
+ * Set the icon pixmap.
+ **/ 	
 void
 gtk_icon_list_set_pixmap(GtkIconListItem *item, 
 			 GdkPixmap *pixmap, 
@@ -1650,6 +1890,14 @@ gtk_icon_list_set_pixmap(GtkIconListItem *item,
   gtk_fixed_put(GTK_FIXED(widget), item->pixmap, x, y);
 }
 
+/**
+ * gtk_icon_list_set_label:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @item: a #GtkIconListItem
+ * @label: icon label
+ *
+ * Set the icon label.
+ **/ 	
 void 
 gtk_icon_list_set_label(GtkIconList *iconlist, GtkIconListItem *item, const gchar *label)
 {
@@ -1674,6 +1922,13 @@ gtk_icon_list_set_label(GtkIconList *iconlist, GtkIconListItem *item, const gcha
  * gtk_icon_list_icon_border
  **********************************/
 
+/**
+ * gtk_icon_list_set_icon_width:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @width: icon width in pixels.
+ *
+ * Set the icon width.
+ **/ 	
 void
 gtk_icon_list_set_icon_width(GtkIconList *iconlist, guint width)
 {
@@ -1681,6 +1936,13 @@ gtk_icon_list_set_icon_width(GtkIconList *iconlist, guint width)
   reorder_icons(iconlist);
 }
 
+/**
+ * gtk_icon_list_set_icon_border:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @border: icon border in pixels.
+ *
+ * Set the icon border.
+ **/ 	
 void
 gtk_icon_list_set_icon_border(GtkIconList *iconlist, guint border)
 {
@@ -1688,6 +1950,13 @@ gtk_icon_list_set_icon_border(GtkIconList *iconlist, guint border)
   reorder_icons(iconlist);
 }
 
+/**
+ * gtk_icon_list_set_row_spacing:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @spacing: spacing between rows in pixels.
+ *
+ * Set the icon spacing between rows.
+ **/ 	
 void
 gtk_icon_list_set_row_spacing(GtkIconList *iconlist, guint spacing)
 {
@@ -1695,6 +1964,13 @@ gtk_icon_list_set_row_spacing(GtkIconList *iconlist, guint spacing)
   reorder_icons(iconlist);
 }
 
+/**
+ * gtk_icon_list_set_col_spacing:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @spacing: spacing  between columns in pixels.
+ *
+ * Set the icon spacing between columns.
+ **/ 	
 void
 gtk_icon_list_set_col_spacing(GtkIconList *iconlist, guint spacing)
 {
@@ -1710,30 +1986,64 @@ gtk_icon_list_set_col_spacing(GtkIconList *iconlist, guint spacing)
  * gtk_icon_list_unselect_all
  **********************************/
 
+/**
+ * gtk_icon_list_set_selection_mode:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @mode: GTK_ICON_LIST_ICON, GTK_ICON_LIST_TEXT_RIGHT, GTK_ICON_LIST_TEXT_BELOW
+ *
+ * Set the icon selection mode.
+ **/ 	
 void
 gtk_icon_list_set_selection_mode(GtkIconList *iconlist, gint mode)
 {
   iconlist->selection_mode = mode;
 }
 
+/**
+ * gtk_icon_list_select_icon:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @item: a #GtkIconListItem
+ *
+ * Select the icon specified by pointer.
+ **/ 	
 void
 gtk_icon_list_select_icon(GtkIconList *iconlist, GtkIconListItem *item)
 {
   select_icon(iconlist, item, NULL);
 }
 
+/**
+ * gtk_icon_list_unselect_icon:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @item: a #GtkIconListItem
+ *
+ * Unselect the icon specified by pointer.
+ **/ 	
 void
 gtk_icon_list_unselect_icon(GtkIconList *iconlist, GtkIconListItem *item)
 {
   unselect_icon(iconlist, item, NULL);
 }
 
+/**
+ * gtk_icon_list_unselect_icon:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ *
+ * Unselect all icons.
+ **/ 	
 void
 gtk_icon_list_unselect_all(GtkIconList *iconlist)
 {
   unselect_all(iconlist);
 }
 
+/**
+ * gtk_icon_list_set_active_icon:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @icon: a #GtkIconListItem
+ *
+ * Set an active icon in the icon list.
+ **/ 	
 void
 gtk_icon_list_set_active_icon(GtkIconList *iconlist, GtkIconListItem *icon)
 {
@@ -1750,37 +2060,78 @@ gtk_icon_list_set_active_icon(GtkIconList *iconlist, GtkIconListItem *icon)
   }
 }
 
-
+/**
+ * gtk_icon_list_is_editable:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * Return value: TRUE or FALSE
+ *
+ * Get the editable status of icon list.
+ **/ 	
 gboolean
 gtk_icon_list_is_editable       (GtkIconList *iconlist)
 {
   return (iconlist->is_editable);
 }
 
+/**
+ * gtk_icon_list_get_row_spacing:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * Return value: spacing between rows in pixels.
+ *
+ * Get the spacing between rows.
+ **/ 	
 guint
 gtk_icon_list_get_row_spacing       (GtkIconList *iconlist)
 {
   return(iconlist->row_spacing);
 }
 
+/**
+ * gtk_icon_list_get_col_spacing:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * Return value: spacing between columns in pixels.
+ *
+ * Get the spacing between columns.
+ **/ 	
 guint
 gtk_icon_list_get_col_spacing       (GtkIconList *iconlist)
 {
   return(iconlist->col_spacing);
 }
 
+/**
+ * gtk_icon_list_get_text_space:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * Return value: text maximum size distance in pixels.
+ *
+ * Get the text maximum size in pixels.
+ **/ 	
 guint
 gtk_icon_list_get_text_space       (GtkIconList *iconlist)
 {
   return(iconlist->text_space);
 }
 
+/**
+ * gtk_icon_list_get_icon_border:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * Return value: icon border width in pixels.
+ *
+ * Get the icon border width.
+ **/ 	
 guint
 gtk_icon_list_get_icon_border       (GtkIconList *iconlist)
 {
   return(iconlist->icon_border);
 }
 
+/**
+ * gtk_icon_list_get_icon_width:
+ * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * Return value: icon width in pixels.
+ *
+ * Get the icon width.
+ **/ 	
 guint
 gtk_icon_list_get_icon_width       (GtkIconList *iconlist)
 {

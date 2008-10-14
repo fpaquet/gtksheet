@@ -1,8 +1,0 @@
-#include <glib.h>
-#include <glib-object.h>
-#include <gtkextra.h>
-#include <gtkextratypebuiltins.h>
-
-gtk_plot_array_get_type
-gtk_plot_array_list_get_type
-gtk_sheet_get_type

@@ -1,3 +1,5 @@
+#include <gtkextra.h>
+
 gtk_border_combo_get_type
 gtk_char_selection_get_type
 gtk_check_item_get_type

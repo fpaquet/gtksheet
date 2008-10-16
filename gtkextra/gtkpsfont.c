@@ -308,7 +308,7 @@ static GtkPSFont *find_psfont		(const gchar *name);
  * Return value: TRUE(success) or FALSE(failure).
  * 
  * Initializes PS fonts.
- **/
+ */
 gint
 gtk_psfont_init()
 {
@@ -397,7 +397,7 @@ gtk_psfont_unref()
  * gtk_psfont_init:
  * 
  * Unref ps fonts.
- **/
+ */
 void
 gtk_psfont_unref()
 {
@@ -451,7 +451,7 @@ gtk_psfont_get_by_name(const gchar *name)
  * Return value: a #GdkFont pointer.
  * 
  * Get #GdkFOnt by PS Font.
- **/
+ */
 GdkFont *
 gtk_psfont_get_gdkfont(GtkPSFont *font, gint height)
 {
@@ -490,7 +490,7 @@ gtk_psfont_get_gdkfont(GtkPSFont *font, gint height)
  * Return value: a #PangoFontDescription pointer.
  * 
  * Get a #PangoDescriptionFont from PS Font.
- **/
+ */
 PangoFontDescription *
 gtk_psfont_get_font_description(GtkPSFont *font, gint height)
 {
@@ -593,7 +593,7 @@ http://mail.gnome.org/archives/gtk-i18n-list/2003-August/msg00001.html
  * Return value: font name. 
  * 
  * Get font name from PS Font.
- **/
+ */
 const gchar *
 gtk_psfont_get_psfontname(GtkPSFont *font)
 {
@@ -648,7 +648,7 @@ gtk_psfont_add_font (const gchar *fontname,
  * @vertical: TRUE or FALSE
  * 
  * Add international font in user font list.
- **/
+ */
 void
 gtk_psfont_add_i18n_font (const gchar *fontname,
                          const gchar *psname, const gchar *family,
@@ -722,7 +722,7 @@ find_psfont(const gchar *name)
  * @bold: TRUE or FALSE
  * 
  * Get #GtkPSFont by family. 
- **/
+ */
 GtkPSFont *
 gtk_psfont_get_by_family(const gchar *name, gboolean italic, gboolean bold)
 {
@@ -773,7 +773,7 @@ gtk_psfont_get_by_family(const gchar *name, gboolean italic, gboolean bold)
  * @num_families: families number
  * 
  * Get #GtkPSFont by family. 
- **/
+ */
 void
 gtk_psfont_get_families(GList **families, gint *num_families)
 {
@@ -799,7 +799,7 @@ gtk_psfont_get_families(GList **families, gint *num_families)
  * @descent: font  descent
  * 
  * Get font character size. 
- **/
+ */
 void
 gtk_psfont_get_char_size(GtkPSFont *psfont,
                          GdkFont *font,

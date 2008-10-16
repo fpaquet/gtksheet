@@ -303,12 +303,6 @@ static const char *default_font = "fixed";
 
 static GtkPSFont *find_psfont		(const gchar *name);
 
-/**
- * gtk_psfont_init:
- * Return value: TRUE(success) or FALSE(failure).
- * 
- * Initializes PS fonts.
- */
 gint
 gtk_psfont_init()
 {
@@ -364,7 +358,7 @@ gtk_psfont_init()
  * gtk_psfont_unref:
  * 
  * Unref ps fonts.
- **/
+ */
 void
 gtk_psfont_unref()
 {
@@ -423,7 +417,7 @@ gtk_psfont_unref()
  * Return value: a #GtkPSFont pointer.
  * 
  * Get PS Font by font name.
- **/
+ */
 GtkPSFont *
 gtk_psfont_get_by_name(const gchar *name)
 {
@@ -613,7 +607,7 @@ gtk_psfont_get_psfontname(GtkPSFont *font)
  * @bold: TRUE or FALSE
  * 
  * Add font in user font list.
- **/
+ */
 void
 gtk_psfont_add_font (const gchar *fontname,
                      const gchar *psname, const gchar *family,

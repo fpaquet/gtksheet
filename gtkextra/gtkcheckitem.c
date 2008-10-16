@@ -108,12 +108,6 @@ gtk_check_item_init (GtkCheckItem *check_item)
   GTK_TOGGLE_BUTTON (check_item)->draw_indicator = TRUE;
 }
 
-/**
- * gtk_check_item_new:
- * Return Value: the newly-created #GtkCheckItem.
- *
- * Create a #GtkCheckItem widget.
- **/
 GtkWidget*
 gtk_check_item_new (void)
 {
@@ -126,7 +120,7 @@ gtk_check_item_new (void)
  * Return Value: the newly-created #GtkCheckItem.
  *
  * Create a #GtkCheckItem widget with a specified label.
- **/
+ */
 GtkWidget*
 gtk_check_item_new_with_label (const gchar *label)
 {
@@ -144,7 +138,7 @@ gtk_check_item_new_with_label (const gchar *label)
  * @label: text near the check item
  *
  * Initialize a #GtkCheckItem widget with a specified label.
- **/
+ */
 void
 gtk_check_item_construct_with_label (GtkCheckItem* check_item, const gchar *label)
 {

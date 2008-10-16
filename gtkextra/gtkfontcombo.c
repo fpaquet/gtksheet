@@ -250,12 +250,6 @@ gtk_font_combo_get_type ()
   return font_combo_type;
 }
 
-/**
- * gtk_font_combo_new:
- * Return Value: the newly-created #GtkFontCombo widget.
- * 
- * Creates a new #GtkBorderCombo widget. 
- **/
 GtkWidget *
 gtk_font_combo_new ()
 {
@@ -293,7 +287,7 @@ new_font(GtkWidget *widget, gpointer data)
  * @height: height of the font
  * 
  * Select from the combo a font which satisfies the arguments.
- **/
+ */
 void
 gtk_font_combo_select (GtkFontCombo *combo, 
 		       const gchar *family,
@@ -327,7 +321,7 @@ gtk_font_combo_select (GtkFontCombo *combo,
  * @height: height of the font
  * 
  * Select from the combo the nth font which satisfies the arguments.
- **/
+ */
 void
 gtk_font_combo_select_nth (GtkFontCombo *combo, 
 		           gint n,

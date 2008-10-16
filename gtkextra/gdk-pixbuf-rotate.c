@@ -20,12 +20,12 @@
 
 /**
  * gdk_pixbuf_flip:
- *  + pixbuf: a #GdkPixbuf
- *  + horizontal: Whether to flip in horizontal direction.  If  + horizontal is
+ * @pixbuf: a #GdkPixbuf
+ * @horizontal: Whether to flip in horizontal direction.  If  + horizontal is
  * #TRUE, then flip around in horizontal direction.
- *  + vertical: Whether to flip in vertical direction.  If  + vertical is #TRUE,
+ * @vertical: Whether to flip in vertical direction.  If  + vertical is #TRUE,
  * then flip in vertical direction.  (NOT IMPLEMENTED YET!)
- *  + in_place: If in_place is #TRUE, the original  + pixbuf is modified.
+ * @in_place: If in_place is #TRUE, the original  + pixbuf is modified.
  *
  * Flips  + pixbuf around horizontally and/or vertically.
  *
@@ -96,9 +96,9 @@ gdk_pixbuf_flip (GdkPixbuf *pixbuf,
 
 /**
  * gdk_pixbuf_rotate:
- *  + pixbuf: a #GdkPixbuf
- *  + angle: angle modulo 90-degree (ie 90, 180, 270 degrees angle)
- *  + in_place: If in_place is #TRUE, the original data is modified
+ * @pixbuf: a #GdkPixbuf
+ * @angle: angle modulo 90-degree (ie 90, 180, 270 degrees angle)
+ * @in_place: If in_place is #TRUE, the original data is modified
  * and the same value as  + pixbuf is returned.
  *
  * Rotates  + pixbuf by 90-degree multiples in the counter-clockwise

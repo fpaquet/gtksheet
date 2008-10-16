@@ -2133,12 +2133,6 @@ gtk_entry_update_primary_selection (GtkEntry *entry)
 /* Public API
  */
 
-/**
- * gtk_item_entry_new:
- * Return Value: the newly-created #GtkItemEntry widget.
- * 
- * Creates a new #GtkItemEntry Widget. 
- **/
 GtkWidget*
 gtk_item_entry_new (void)
 {
@@ -2156,7 +2150,7 @@ gtk_item_entry_new (void)
  * 
  * Creates a new #GtkItemEntry with the maximum allowed length of the contents of the widget. 
  * If the current contents are longer than the given length, then they will be truncated to fit. 
- **/
+ */
 GtkWidget*
 gtk_item_entry_new_with_max_length (gint max)
 {
@@ -2175,7 +2169,7 @@ gtk_item_entry_new_with_max_length (gint max)
  * @justification: a #GtkJustification : GTK_JUSTIFY_LEFT,GTK_JUSTIFY_RIGHT,GTK_JUSTIFY_CENTER,GTK_JUSTIFY_FILL
  * 
  * Sets the text in the widget to the given value, replacing the current contents.
- **/
+ */
 void
 gtk_item_entry_set_text (GtkItemEntry    *entry,
 	      	         const gchar *text,
@@ -2236,7 +2230,7 @@ gtk_item_entry_set_text (GtkItemEntry    *entry,
  * gtk_entry_text_index_to_layout_index() are needed to convert byte
  * indices in the layout to byte indices in the entry contents.
  * 
- **/
+ */
 void
 gtk_item_entry_get_layout_offsets (GtkItemEntry *entry,
                                    gint     *x,
@@ -2265,7 +2259,7 @@ gtk_item_entry_get_layout_offsets (GtkItemEntry *entry,
  * @just: a #GtkJustification : GTK_JUSTIFY_LEFT,GTK_JUSTIFY_RIGHT,GTK_JUSTIFY_CENTER,GTK_JUSTIFY_FILL
  * 
  * Sets justification of the widget to the given value, replacing the current one.
- **/
+ */
 void
 gtk_item_entry_set_justification(GtkItemEntry *entry, GtkJustification just)
 {
@@ -2419,7 +2413,7 @@ gtk_entry_pend_cursor_blink (GtkEntry *entry)
  * @visible: TRUE(visible) or FALSE (invisible)
  * 
  * Sets the cursor visibility in the widget.
- **/
+ */
 void
 gtk_item_entry_set_cursor_visible(GtkItemEntry *entry, gboolean visible)
 {
@@ -2434,7 +2428,7 @@ gtk_item_entry_set_cursor_visible(GtkItemEntry *entry, gboolean visible)
  * Return value: TRUE(visible) or FALSE (invisible)
  * 
  * Gets the cursor visibility in the widget.
- **/
+ */
 gboolean
 gtk_item_entry_get_cursor_visible(GtkItemEntry *entry)
 {

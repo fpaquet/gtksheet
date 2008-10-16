@@ -276,12 +276,6 @@ gtk_border_combo_get_type ()
   return border_combo_type;
 }
 
-/**
- * gtk_border_combo_new:
- * Return Value: the newly-created #GtkBorderCombo toolbar.
- * 
- * Creates a new toolbar #GtkBorderCombo 
- **/
 GtkWidget *
 gtk_border_combo_new ()
 {

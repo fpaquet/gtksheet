@@ -592,7 +592,7 @@ gtk_plot_segment_is_centered (GtkPlotSegment *segment)
 }
 
 void
-gtk_plot_segment_set_arrow_mask(GtkPlotSegment *segment, guint mask)
+gtk_plot_segment_set_arrow_mask(GtkPlotSegment *segment, GtkPlotArrow mask)
 {
   segment->arrow_mask = mask;
 }

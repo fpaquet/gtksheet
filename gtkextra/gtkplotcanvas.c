@@ -728,7 +728,7 @@ gtk_plot_canvas_set_pc(GtkPlotCanvas *canvas, GtkPlotPC *pc)
     gtk_object_unref(GTK_OBJECT(canvas->pc));
 
   if(!pc){
-    canvas->pc = gtk_plot_cairo_new(NULL);
+    canvas->pc = (GtkPlotPC *)gtk_plot_cairo_new(NULL);
     gtk_object_ref(GTK_OBJECT(canvas->pc));
     gtk_object_sink(GTK_OBJECT(canvas->pc));
   } else {

@@ -1419,7 +1419,7 @@ gtk_plot_real_set_pc(GtkPlot *plot, GtkPlotPC *pc)
     gtk_object_unref(GTK_OBJECT(plot->pc));
 
   if(!pc){
-    plot->pc = gtk_plot_cairo_new(NULL);
+    plot->pc = (GtkPlotPC *)gtk_plot_cairo_new(NULL);
     gtk_object_ref(GTK_OBJECT(plot->pc));
     gtk_object_sink(GTK_OBJECT(plot->pc));
   } else {

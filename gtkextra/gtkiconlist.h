@@ -116,7 +116,7 @@ GtkType		gtk_icon_list_get_type	(void);
 GtkType		gtk_icon_list_item_get_type	(void);
 GtkWidget*	gtk_icon_list_new		(guint icon_width,
 						 GtkIconListMode mode);
-void		gtk_icon_list_construct		(GtkIconList *icon_list,
+void		gtk_icon_list_construct		(GtkIconList *iconlist,
        						 guint icon_width,
 						 GtkIconListMode mode);
 void		gtk_icon_list_set_mode		(GtkIconList *iconlist,
@@ -132,28 +132,28 @@ void		gtk_icon_list_set_col_spacing	(GtkIconList *iconlist,
 						 guint spacing);
 guint		gtk_icon_list_get_col_spacing	(GtkIconList *iconlist);
 void		gtk_icon_list_set_text_space	(GtkIconList *iconlist,
-						 guint space);
+						 guint text_space);
 guint		gtk_icon_list_get_text_space	(GtkIconList *iconlist);
 void		gtk_icon_list_set_icon_border	(GtkIconList *iconlist,
-						 guint space);
+						 guint border);
 guint		gtk_icon_list_get_icon_border	(GtkIconList *iconlist);
 void		gtk_icon_list_set_icon_width	(GtkIconList *iconlist,
-						 guint space);
+						 guint width);
 guint		gtk_icon_list_get_icon_width	(GtkIconList *iconlist);
-void		gtk_icon_list_freeze		(GtkIconList *icon_list);
-void		gtk_icon_list_thaw		(GtkIconList *icon_list);
-void		gtk_icon_list_set_background	(GtkIconList *icon_list,
+void		gtk_icon_list_freeze		(GtkIconList *iconlist);
+void		gtk_icon_list_thaw		(GtkIconList *iconlist);
+void		gtk_icon_list_set_background	(GtkIconList *iconlist,
 						 GdkColor *color);
 GtkIconListItem *gtk_icon_list_add_from_pixmap	(GtkIconList *icon_list,
 						 GdkPixmap *pixmap,
-						 GdkBitmap *bitmap,
+						 GdkBitmap *bitmap_mask,
 						 const gchar *label,
                                                  gpointer link);
-GtkIconListItem *gtk_icon_list_add_from_data	(GtkIconList *icon_list,
+GtkIconListItem *gtk_icon_list_add_from_data	(GtkIconList *iconlist,
 						 gchar **data,
 						 const gchar *label,
                                                  gpointer link);
-GtkIconListItem *gtk_icon_list_add		(GtkIconList *icon_list,
+GtkIconListItem *gtk_icon_list_add		(GtkIconList *iconlist,
 						 const gchar *pixmap_file,
 						 const gchar *label,
                                                  gpointer link);
@@ -181,7 +181,7 @@ GtkWidget 	*gtk_icon_list_get_entry	(GtkIconListItem *item);
 GtkWidget 	*gtk_icon_list_get_pixmap	(GtkIconListItem *item);
 void		gtk_icon_list_set_pixmap	(GtkIconListItem *item,
 						 GdkPixmap *pixmap,
-						 GdkBitmap *bitmap);
+						 GdkBitmap *bitmap_mask);
 void 		gtk_icon_list_set_label		(GtkIconList *iconlist,
                                                  GtkIconListItem *item, 
 						 const gchar *label);

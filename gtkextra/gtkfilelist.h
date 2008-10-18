@@ -125,7 +125,7 @@ void 		gtk_file_list_construct      (GtkFileList *file_list,
 void 		gtk_file_list_set_filter     (GtkFileList *file_list, 
                                               const gchar *filter);
 gboolean 	gtk_file_list_open_dir       (GtkFileList *file_list, 
-                                              const gchar *path);
+                                              const gchar *dir_path);
 const gchar*    gtk_file_list_get_path       (GtkFileList *file_list);
 const gchar*    gtk_file_list_get_filename   (GtkFileList *file_list);
 gint            gtk_file_list_get_filetype   (GtkFileList *file_list);

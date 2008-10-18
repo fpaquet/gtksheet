@@ -68,7 +68,7 @@ void 	  gtk_color_combo_construct 		(GtkColorCombo *color_combo);
 void 	  gtk_color_combo_construct_with_values (GtkColorCombo *color_combo,
                                                  gint nrows, gint ncols,
                                                  GdkColor *colors);
-GdkColor  gtk_color_combo_get_color_at 		(GtkColorCombo *combo,
+GdkColor  gtk_color_combo_get_color_at 		(GtkColorCombo *color_combo,
                                                  gint row, gint col);
 void      gtk_color_combo_find_color		(GtkColorCombo *color_combo,
                            			 GdkColor *color, 

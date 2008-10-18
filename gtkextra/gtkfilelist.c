@@ -189,7 +189,7 @@ gtk_file_list_new (guint icon_width, gint mode, const gchar *path)
 
 /**
  * gtk_file_list_construct:
- * @gile_list: #GtkFileList widget
+ * @file_list: #GtkFileList widget
  * @icon_width: the width of the icon
  * @mode:GTK_FILE_LIST_SORT_NAME , GTK_FILE_LIST_SORT_TYPE
  * @path: the path to the files to be be opened in #GtkFileList widget.
@@ -389,7 +389,7 @@ gtk_file_list_realize(GtkWidget *widget)
 
 /**
  * gtk_file_list_open_dir:
- * @file_list: the #GtkFileList widget
+ * @file_list: a #GtkFileList widget
  * @dir_path: path of directory to be opened in #GtkFileList widget
  * Return value: TRUE(succes) or FALSE(failure)
  * 
@@ -778,7 +778,7 @@ gtk_file_list_get_filetype(GtkFileList *file_list)
  */
 gint
 gtk_file_list_add_type       (GtkFileList *file_list,
-                              const gchar **data)
+                              const gchar **pixmap_data)
 {
   GdkPixmap *pixmap;
   GdkBitmap *mask;
@@ -787,7 +787,7 @@ gtk_file_list_add_type       (GtkFileList *file_list,
   pixmap = gdk_pixmap_colormap_create_from_xpm_d(NULL,
                                                  gdk_colormap_get_system(),
                                                  &mask, NULL,
-                                                 (gchar **)data);
+                                                 (gchar **)pixmap_data);
 
   type = gtk_file_list_add_type_with_pixmap(file_list, pixmap, mask);
   gdk_pixmap_unref(pixmap);

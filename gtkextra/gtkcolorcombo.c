@@ -587,11 +587,10 @@ gtk_color_combo_construct_with_values(GtkColorCombo *color_combo,
 
 /**
  * gtk_color_combo_get_color_at:
- * @color_combo: the #GtkColorCombo widget.
+ * @color_combo: a #GtkColorCombo widget.
  * @row: row number  in #GtkColorCombo.
  * @col: column number in #GtkColorCombo.
- * @colors: #GdkColor color.
- * Return value: the #GdkColor at @row,@col in @color_combo
+ * Return value: a #GdkColor at @row,@col in @color_combo
  * 
  * Get the color in the combo at the specified row,column.
  */
@@ -605,8 +604,8 @@ gtk_color_combo_get_color_at(GtkColorCombo *color_combo, gint row, gint col)
 
 /**
  * gtk_color_combo_find_color:
- * @color_combo: the #GtkColorCombo widget.
- * @color: the #GdkColor object.
+ * @color_combo: a #GtkColorCombo widget.
+ * @color: a #GdkColor object.
  * @row: row number in #GtkColorCombo.
  * @col: column number in #GtkColorCombo.
  * 
@@ -655,8 +654,8 @@ gtk_color_combo_find_color(GtkColorCombo *color_combo,
 
 /**
  * gtk_color_combo_get_selection:
- * @combo: the #GtkColorCombo widget.
- * Return value: the #GdkColor of the selection. 
+ * @combo: a #GtkColorCombo widget.
+ * Return value: a #GdkColor of the selection. 
  * 
  * Get the color in the combo at selection .
  */

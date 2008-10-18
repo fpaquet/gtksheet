@@ -959,7 +959,7 @@ gtk_icon_list_set_mode (GtkIconList *iconlist, GtkIconListMode mode)
 
 /**
  * gtk_icon_list_get_mode:
- * @icon_list: #GtkIconList widget created with gtk_icon_list_new().
+ * @iconlist: a #GtkIconList widget created with gtk_icon_list_new().
  * Return value: GTK_ICON_LIST_ICON,GTK_ICON_LIST_TEXT_RIGHT,GTK_ICON_LIST_TEXT_BELOW
  *
  * Get the icons display mode . 
@@ -972,7 +972,7 @@ gtk_icon_list_get_mode (GtkIconList *iconlist)
 
 /**
  * gtk_icon_list_set_text_space:
- * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @iconlist: a #GtkIconList widget created with gtk_icon_list_new().
  * @text_space: distance in pixels.
  *
  * Set the text max size in pixels.
@@ -1209,7 +1209,7 @@ gtk_icon_list_get_icon_at(GtkIconList *iconlist, gint x, gint y)
  */
 GtkIconListItem *
 gtk_icon_list_add (GtkIconList *iconlist, 
-                   const gchar *file,
+                   const gchar *pixmap_file,
                    const gchar *label,
                    gpointer link)
 {
@@ -1220,16 +1220,17 @@ gtk_icon_list_add (GtkIconList *iconlist,
 
   colormap = gdk_colormap_get_system();
   pixmap = gdk_pixmap_colormap_create_from_xpm(NULL, colormap, &mask, NULL, 
-                                               file);
+                                               pixmap_file);
   item = gtk_icon_list_real_add(iconlist, pixmap, mask, label, link);
   return item;
 }
 
 /**
  * gtk_icon_list_add_from_data:
- * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @iconlist: a #GtkIconList widget created with gtk_icon_list_new().
  * @data:  pointer to the xpm data string
  * @label: label of the icon
+ * @link: a data pointer
  * Return value: the icon pointer
  *
  * Add a icon to the icon list.
@@ -1254,9 +1255,9 @@ gtk_icon_list_add_from_data (GtkIconList *iconlist,
 
 /**
  * gtk_icon_list_add_from_pixmap:
- * @icon_list: #GtkIconList widget created with gtk_icon_list_new().
+ * @icon_list: a #GtkIconList widget created with gtk_icon_list_new().
  * @pixmap: a #GdkPixmap
- * @mask:a #GdkBitmap 
+ * @bitmap_mask: a #GdkBitmap 
  * @label: label of the icon
  * @link: a gpointer link to some data
  * Return value: the icon pointer
@@ -1266,15 +1267,15 @@ gtk_icon_list_add_from_data (GtkIconList *iconlist,
 GtkIconListItem *
 gtk_icon_list_add_from_pixmap (GtkIconList *iconlist, 
                                GdkPixmap *pixmap,
-                               GdkBitmap *mask,
+                               GdkBitmap *bitmap_mask,
                                const gchar *label,
                                gpointer link)
 {
   GtkIconListItem *item;
 
   gdk_pixmap_ref(pixmap);
-  if(mask) gdk_bitmap_ref(mask);
-  item = gtk_icon_list_real_add(iconlist, pixmap, mask, label, link);
+  if(bitmap_mask) gdk_bitmap_ref(bitmap_mask);
+  item = gtk_icon_list_real_add(iconlist, pixmap, bitmap_mask, label, link);
   return item;
 }
 
@@ -1663,7 +1664,7 @@ pixmap_destroy(GtkPixmap* pixmap)
   
 /**
  * gtk_icon_list_remove:
- * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @iconlist: a #GtkIconList widget created with gtk_icon_list_new().
  * @item : a #GtkIconListItem
  *
  * Remove the icon from the iconlist. 
@@ -1717,7 +1718,7 @@ gtk_icon_list_remove (GtkIconList *iconlist, GtkIconListItem *item)
 }
 
 /**
- * gtk_icon_list_remove:
+ * gtk_icon_list_remove_nth:
  * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
  * @n: icon index number
  *
@@ -1873,7 +1874,7 @@ gtk_icon_list_get_pixmap(GtkIconListItem *item)
 void
 gtk_icon_list_set_pixmap(GtkIconListItem *item, 
 			 GdkPixmap *pixmap, 
-			 GdkBitmap *mask)
+			 GdkBitmap *bitmap_mask)
 {
   gint x, y;
   GtkWidget *widget = gtk_widget_get_parent(item->pixmap);
@@ -1885,7 +1886,7 @@ gtk_icon_list_set_pixmap(GtkIconListItem *item,
   x = item->pixmap->allocation.x;
   y = item->pixmap->allocation.y;
 
-  item->pixmap = gtk_pixmap_new(pixmap, mask);
+  item->pixmap = gtk_pixmap_new(pixmap, bitmap_mask);
   gtk_widget_show(item->pixmap);
   gtk_fixed_put(GTK_FIXED(widget), item->pixmap, x, y);
 }
@@ -1924,7 +1925,7 @@ gtk_icon_list_set_label(GtkIconList *iconlist, GtkIconListItem *item, const gcha
 
 /**
  * gtk_icon_list_set_icon_width:
- * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @iconlist: a #GtkIconList widget created with gtk_icon_list_new().
  * @width: icon width in pixels.
  *
  * Set the icon width.
@@ -1938,7 +1939,7 @@ gtk_icon_list_set_icon_width(GtkIconList *iconlist, guint width)
 
 /**
  * gtk_icon_list_set_icon_border:
- * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
+ * @iconlist: a #GtkIconList widget created with gtk_icon_list_new().
  * @border: icon border in pixels.
  *
  * Set the icon border.

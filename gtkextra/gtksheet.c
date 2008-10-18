@@ -1972,7 +1972,7 @@ gtk_sheet_set_column_title (GtkSheet * sheet,
 /**
  * gtk_sheet_set_row_title:
  * @sheet: a #GtkSheet
- * @column: row number
+ * @row: row number
  * @title: row title
  *
  * Set row title.
@@ -1994,7 +1994,7 @@ gtk_sheet_set_row_title (GtkSheet * sheet,
 /**
  * gtk_sheet_get_row_title:
  * @sheet: a #GtkSheet
- * @column: row number
+ * @row: row number
  * Return value: row title
  *
  * Get row title.
@@ -2030,7 +2030,7 @@ gtk_sheet_get_column_title (GtkSheet * sheet,
 /**
  * gtk_sheet_row_button_add_label:
  * @sheet: a #GtkSheet
- * @column: row number
+ * @row: row number
  * @label: text label
  *
  * Set button label.It is used to set a row title.
@@ -2296,7 +2296,7 @@ gtk_sheet_column_button_justify(GtkSheet *sheet, gint column,
  * @row: row number
  * @column: column number
  * @row_align: row alignment
- * @column_align: column alignment
+ * @col_align: column alignment
  *
  * Scroll the viewing area of the sheet to the given column and row; 
  * row_align and col_align are between 0-1 representing the location the row should appear on the screnn, 0.0 being top or left,
@@ -2622,7 +2622,6 @@ gtk_sheet_row_set_visibility(GtkSheet *sheet, gint row, gboolean visible)
  * gtk_sheet_select_row:
  * @sheet: a #GtkSheet.
  * @row: row number
- * @visible: TRUE or FALSE
  *
  * Select the row. The range is then highlighted, and the bounds are stored in sheet->range. 
  */
@@ -2662,7 +2661,6 @@ gtk_sheet_select_row (GtkSheet * sheet,
  * gtk_sheet_select_column:
  * @sheet: a #GtkSheet.
  * @column: column number
- * @visible: TRUE or FALSE
  *
  * Select the column. The range is then highlighted, and the bounds are stored in sheet->range. 
  */
@@ -8627,7 +8625,7 @@ gtk_sheet_range_set_border_color(GtkSheet *sheet, const GtkSheetRange *urange, c
 }
 
 /**
- * gtk_sheet_range_set_border_color:
+ * gtk_sheet_range_set_font:
  * @sheet: a #GtkSheet.
  * @urange: a #GtkSheetRange where we set font.
  * @font: a #PangoFontDescription.

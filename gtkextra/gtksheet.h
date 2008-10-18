@@ -481,10 +481,10 @@ gtk_sheet_thaw				(GtkSheet *sheet);
 /* Background colors */
 void
 gtk_sheet_set_background		(GtkSheet *sheet,
-					 GdkColor *bg_color);
+					 GdkColor *color);
 void
 gtk_sheet_set_grid			(GtkSheet *sheet,
-					 GdkColor *grid_color);
+					 GdkColor *color);
 void
 gtk_sheet_show_grid			(GtkSheet *sheet,
 					 gboolean show);
@@ -597,7 +597,7 @@ gtk_sheet_column_set_visibility		(GtkSheet *sheet,
 					gint column, gboolean visible);
 void
 gtk_sheet_column_label_set_visibility	(GtkSheet *sheet, 
-					gint column, gboolean visible);
+					gint col, gboolean visible);
 void
 gtk_sheet_columns_labels_set_visibility	(GtkSheet *sheet, gboolean visible);
 
@@ -676,10 +676,10 @@ gtk_sheet_cell_get_text 		(GtkSheet *sheet, gint row, gint col);
 
 /* clear cell contents */
 void 
-gtk_sheet_cell_clear			(GtkSheet *sheet, gint row, gint col);
+gtk_sheet_cell_clear			(GtkSheet *sheet, gint row, gint column);
 /* clear cell contents and remove links */
 void 
-gtk_sheet_cell_delete			(GtkSheet *sheet, gint row, gint col);
+gtk_sheet_cell_delete			(GtkSheet *sheet, gint row, gint column);
 
 /* clear range contents. If range==NULL the whole sheet will be cleared */
 void 
@@ -758,13 +758,13 @@ gtk_sheet_delete_columns		(GtkSheet *sheet, guint col, guint ncols);
 /* set abckground color of the given range */
 void
 gtk_sheet_range_set_background		(GtkSheet *sheet, 
-					const GtkSheetRange *range, 
+					const GtkSheetRange *urange, 
 					const GdkColor *color);
 
 /* set foreground color (text color) of the given range */
 void
 gtk_sheet_range_set_foreground		(GtkSheet *sheet, 
-					const GtkSheetRange *range, 
+					const GtkSheetRange *urange, 
 					const GdkColor *color);
 
 /* set text justification (GTK_JUSTIFY_LEFT, RIGHT, CENTER) of the given range.
@@ -772,24 +772,24 @@ gtk_sheet_range_set_foreground		(GtkSheet *sheet,
  * default justification for numbers is GTK_JUSTIFY_RIGHT */
 void
 gtk_sheet_range_set_justification	(GtkSheet *sheet, 
-					const GtkSheetRange *range, 
-					GtkJustification justification);
+					const GtkSheetRange *urange, 
+					GtkJustification just);
 void
 gtk_sheet_column_set_justification      (GtkSheet *sheet,
-                                        gint column,
-                                        GtkJustification justification);
+                                        gint col,
+                                        GtkJustification just);
 /* set if cell contents can be edited or not in the given range:
  * accepted values are TRUE or FALSE. */
 void
 gtk_sheet_range_set_editable		(GtkSheet *sheet, 
-					const GtkSheetRange *range, 
+					const GtkSheetRange *urange, 
 					gint editable);
 
 /* set if cell contents are visible or not in the given range:
  * accepted values are TRUE or FALSE.*/
 void
 gtk_sheet_range_set_visible		(GtkSheet *sheet, 
-					const GtkSheetRange *range, 
+					const GtkSheetRange *urange, 
 					gboolean visible);
 
 /* set cell border style in the given range.
@@ -799,7 +799,7 @@ gtk_sheet_range_set_visible		(GtkSheet *sheet,
  * line_style is the line_style for the border line */
 void
 gtk_sheet_range_set_border		(GtkSheet *sheet, 
-					const GtkSheetRange *range, 
+					const GtkSheetRange *urange, 
 					gint mask, 
 					guint width, 
 					gint line_style);
@@ -807,13 +807,13 @@ gtk_sheet_range_set_border		(GtkSheet *sheet,
 /* set border color for the given range */
 void
 gtk_sheet_range_set_border_color	(GtkSheet *sheet, 
-					const GtkSheetRange *range, 
+					const GtkSheetRange *urange, 
 					const GdkColor *color);
 
 /* set font for the given range */
 void
 gtk_sheet_range_set_font		(GtkSheet *sheet, 
-					const GtkSheetRange *range, 
+					const GtkSheetRange *urange, 
 					PangoFontDescription *font);
 
 /* get cell attributes of the given cell */
@@ -826,7 +826,7 @@ gtk_sheet_get_attributes		(GtkSheet *sheet,
 
 GtkSheetChild *
 gtk_sheet_put 				(GtkSheet *sheet, 
-					 GtkWidget *widget, 
+					 GtkWidget *child, 
 					 gint x, gint y);
 void
 gtk_sheet_attach_floating               (GtkSheet *sheet,

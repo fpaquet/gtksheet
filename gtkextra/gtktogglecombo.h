@@ -59,13 +59,13 @@ struct _GtkToggleComboClass {
 GtkType      gtk_toggle_combo_get_type          (void);
 
 GtkWidget*   gtk_toggle_combo_new     		(gint nrows, gint ncols);
-void	     gtk_toggle_combo_construct   	(GtkToggleCombo *combo,
+void	     gtk_toggle_combo_construct   	(GtkToggleCombo *toggle_combo,
                                                  gint nrows, gint ncols);
 
 gint	     gtk_toggle_combo_get_nrows		(GtkToggleCombo *combo);
 gint	     gtk_toggle_combo_get_ncols		(GtkToggleCombo *combo);
 
-void	     gtk_toggle_combo_select		(GtkToggleCombo *combo,
+void	     gtk_toggle_combo_select		(GtkToggleCombo *toggle_combo,
 						 gint row, gint col);
 void	     gtk_toggle_combo_get_selection	(GtkToggleCombo *combo,
 						 gint *row, gint *col);

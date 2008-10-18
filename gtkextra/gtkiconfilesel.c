@@ -126,17 +126,17 @@ gtk_icon_file_selection_new (const gchar *title)
 
 /**
  * gtk_icon_file_selection_construct:
- * @file_sel: the #GtkIconFileSelection widget.
+ * @filesel: the #GtkIconFileSelection widget.
  * @title: window title.
  * 
  * Sets the window title for #GtkIconFileSelection widget.
  */
 void
-gtk_icon_file_selection_construct (GtkIconFileSel *file_sel, const gchar *title)
+gtk_icon_file_selection_construct (GtkIconFileSel *filesel, const gchar *title)
 {
 /*  GTK_ICON_FILESEL(widget)->title = g_strdup(title);
 */
-  gtk_window_set_title(GTK_WINDOW(file_sel),title);
+  gtk_window_set_title(GTK_WINDOW(filesel),title);
 }
 
 static void
@@ -428,7 +428,7 @@ gtk_icon_file_selection_destroy(GtkObject *object)
 
 /**
  * gtk_icon_file_selection_show_tree:
- * @file_sel: the #GtkIconFileSelection widget.
+ * @filesel: the #GtkIconFileSelection widget.
  * @show: TRUE(show) or FALSE(don't show).
  * 
  * Show icon file selection tree in filesel widget. 
@@ -695,7 +695,7 @@ open_dir(GtkWidget *widget, GtkCTreeNode *node, gint n, gpointer data)
 
 /**
  * gtk_icon_file_selection_open_dir:
- * @file_sel: the #GtkIconFileSelection widget.
+ * @filesel: the #GtkIconFileSelection widget.
  * @path: directory path.
  * 
  * Show the file from path directory in filesel widget.

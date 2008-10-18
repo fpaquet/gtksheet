@@ -589,12 +589,12 @@ http://mail.gnome.org/archives/gtk-i18n-list/2003-August/msg00001.html
  * Get font name from PS Font.
  */
 const gchar *
-gtk_psfont_get_psfontname(GtkPSFont *font)
+gtk_psfont_get_psfontname(GtkPSFont *psfont)
 {
 
-  g_return_val_if_fail (font != NULL, NULL);
+  g_return_val_if_fail (psfont != NULL, NULL);
 
-  return font->psname;
+  return psfont->psname;
 }
 
 /**
@@ -711,14 +711,14 @@ find_psfont(const gchar *name)
 
 /**
  * gtk_psfont_get_by_family:
- * @name:  font name
+ * @name: font name
  * @italic: TRUE or FALSE
  * @bold: TRUE or FALSE
  * 
  * Get #GtkPSFont by family. 
  */
 GtkPSFont *
-gtk_psfont_get_by_family(const gchar *name, gboolean italic, gboolean bold)
+gtk_psfont_get_by_family(const gchar *family_name, gboolean italic, gboolean bold)
 {
   GtkPSFont *fontdata = NULL;
   GtkPSFont *data = NULL;
@@ -734,7 +734,7 @@ gtk_psfont_get_by_family(const gchar *name, gboolean italic, gboolean bold)
   fonts = user_fonts;
   while(fonts){
     data = (GtkPSFont *) fonts->data;
-    if(strcmp(name, data->family) == 0) {
+    if(strcmp(family_name, data->family) == 0) {
       return_data = data;
       if(data->italic == italic && data->bold == bold){
 	fontdata = data;
@@ -746,7 +746,7 @@ gtk_psfont_get_by_family(const gchar *name, gboolean italic, gboolean bold)
 
   if(fontdata == NULL) {
     for(i = 0; i < NUM_FONTS; i++){
-      if(strcmp(name, font_data[i].family) == 0) {
+      if(strcmp(family_name, font_data[i].family) == 0) {
 	return_data = &font_data[i];
 	if(font_data[i].italic == italic && font_data[i].bold == bold){
 	  fontdata = &font_data[i];

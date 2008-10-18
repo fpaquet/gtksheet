@@ -1333,7 +1333,7 @@ gtk_sheet_set_grid(GtkSheet *sheet, GdkColor *color)
  * @sheet: a #GtkSheet
  * Return value: number of columns.
  *
- * Returns the number of the columns of the #GtkSheet.
+ * Get the number of the columns of the #GtkSheet.
  */
 guint
 gtk_sheet_get_columns_count(GtkSheet *sheet)
@@ -1349,7 +1349,7 @@ gtk_sheet_get_columns_count(GtkSheet *sheet)
  * @sheet: a #GtkSheet
  * Return value: number of rows.
  *
- * Returns the number of the rows of the #GtkSheet.
+ * Get the number of the rows of the #GtkSheet.
  */
 guint
 gtk_sheet_get_rows_count(GtkSheet *sheet)
@@ -1365,7 +1365,7 @@ gtk_sheet_get_rows_count(GtkSheet *sheet)
  * @sheet: a #GtkSheet
  * Return value: GTK_SHEET_NORMAL,GTK_SHEET_ROW_SELECTED,GTK_SHEET_COLUMN_SELECTED,GTK_SHEET_RANGE_SELECTED
  *
- * Returns the #GtkSheet state.
+ * Get the #GtkSheet state.
  */
 gint
 gtk_sheet_get_state(GtkSheet *sheet)
@@ -2951,7 +2951,7 @@ gtk_sheet_cell_isvisible (GtkSheet * sheet,
  * struct _GtkSheetRange { gint row0,col0; //  upper-left cell 
  * 			  gint rowi,coli;  // lower-right cell  };
  *
- * Returns sheet's ranges in a #GkSheetRange structure. 
+ * Get sheet's ranges in a #GkSheetRange structure. 
  */
 void 
 gtk_sheet_get_visible_range(GtkSheet *sheet, GtkSheetRange *range)
@@ -4510,7 +4510,7 @@ gtk_sheet_remove_link(GtkSheet *sheet, gint row, gint col)
  * @col: column number
  * Return value: a #GtkStateType: GTK_SHEET_NORMAL,GTK_SHEET_ROW_SELECTED,GTK_SHEET_COLUMN_SELECTED,GTK_SHEET_RANGE_SELECTED
  *
- * Returns sheet->state.
+ * Get sheet->state.
  */ 
 GtkStateType
 gtk_sheet_cell_get_state (GtkSheet *sheet, gint row, gint col)
@@ -7135,7 +7135,7 @@ create_sheet_entry(GtkSheet *sheet)
  * @sheet: a #GtkSheet
  * Return value: a #GtkWidget
  *
- * Returns sheet's entry widget.
+ * Get sheet's entry widget.
  */ 
 GtkWidget * 
 gtk_sheet_get_entry(GtkSheet *sheet)
@@ -7186,7 +7186,7 @@ gtk_sheet_get_entry(GtkSheet *sheet)
  * @sheet: a #GtkSheet
  * Return value: a #GtkWidget
  *
- * Returns sheet's entry widget.
+ * Get sheet's entry widget.
  */ 
 GtkWidget * 
 gtk_sheet_get_entry_widget(GtkSheet *sheet)
@@ -9790,7 +9790,7 @@ gtk_sheet_realize_child(GtkSheet *sheet, GtkSheetChild *child)
  * @row: row number
  * @col: column number
  *
- * Returns the child attached at @row,@col.
+ * Get the child attached at @row,@col.
  */ 
 GtkSheetChild *
 gtk_sheet_get_child_at(GtkSheet *sheet, gint row, gint col)

@@ -610,7 +610,7 @@ gtk_color_combo_get_color_at(GtkColorCombo *color_combo, gint row, gint col)
  * @row: row number in #GtkColorCombo.
  * @col: column number in #GtkColorCombo.
  * 
- * Returns the best match for a given color.
+ * Find the best match for a given color.
  */
 void
 gtk_color_combo_find_color(GtkColorCombo *color_combo,

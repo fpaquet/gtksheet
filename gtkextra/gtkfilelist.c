@@ -771,7 +771,7 @@ gtk_file_list_get_filetype(GtkFileList *file_list)
 /**
  * gtk_file_list_add_type:
  * @file_list: the #GtkFileList widget.
- * @data: Pointer to a string containing the XPM data.(last argument of gdk_pixmap_create_from_xpm_d() ).
+ * @pixmap_data: Pointer to a string containing the XPM data.(last argument of gdk_pixmap_create_from_xpm_d() ).
  * Return value: the identification number given to the added filetype 
  * 
  * Add a new file type in a #GtkFileList structure. 

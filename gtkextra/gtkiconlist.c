@@ -1201,7 +1201,7 @@ gtk_icon_list_get_icon_at(GtkIconList *iconlist, gint x, gint y)
 /**
  * gtk_icon_list_add:
  * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
- * @file:  from #include "file.xpm"
+ * @pixmap_file:  from #include "file.xpm"
  * @label: label of the icon
  * Return value: the icon pointer
  *
@@ -1867,7 +1867,7 @@ gtk_icon_list_get_pixmap(GtkIconListItem *item)
  * gtk_icon_list_set_pixmap:
  * @item: a #GtkIconListItem
  * @pixmap: a #GdkPixmap
- * @mask:  a #GdkBitmap
+ * @bitmap_mask:  a #GdkBitmap
  *
  * Set the icon pixmap.
  */ 	

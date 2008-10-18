@@ -66,7 +66,7 @@ gint	     gtk_toggle_combo_get_nrows		(GtkToggleCombo *combo);
 gint	     gtk_toggle_combo_get_ncols		(GtkToggleCombo *combo);
 
 void	     gtk_toggle_combo_select		(GtkToggleCombo *toggle_combo,
-						 gint row, gint col);
+						 gint new_row, gint new_col);
 void	     gtk_toggle_combo_get_selection	(GtkToggleCombo *combo,
 						 gint *row, gint *col);
 

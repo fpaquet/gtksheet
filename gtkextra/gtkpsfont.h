@@ -109,7 +109,7 @@ void		gtk_psfont_add_i18n_font	(const char *fontname,
 						 gboolean italic,
                                                  gboolean bold,
 						 gboolean vertical);
-void 		gtk_psfont_get_families		(GList **families, gint *numf);
+void 		gtk_psfont_get_families		(GList **families, gint *num_families);
 void 		gtk_psfont_get_char_size	(GtkPSFont *psfont,
                         			 GdkFont *font,
                         			 GdkFont *latin_font,

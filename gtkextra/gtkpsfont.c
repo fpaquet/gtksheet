@@ -583,7 +583,7 @@ http://mail.gnome.org/archives/gtk-i18n-list/2003-August/msg00001.html
 
 /**
  * gtk_psfont_get_psfontname:
- * @font: a #GtkPSFont 
+ * @psfont: a #GtkPSFont 
  * Return value: font name. 
  * 
  * Get font name from PS Font.
@@ -711,7 +711,7 @@ find_psfont(const gchar *name)
 
 /**
  * gtk_psfont_get_by_family:
- * @name: font name
+ * @family_name: font name
  * @italic: TRUE or FALSE
  * @bold: TRUE or FALSE
  * 

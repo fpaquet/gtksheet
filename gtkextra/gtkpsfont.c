@@ -25,6 +25,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:gtkpsfont
+ * @short_description: PostScript Fonts handling.
+ *
+ *  Handles Postscript fonts.
+ */
+
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <string.h>

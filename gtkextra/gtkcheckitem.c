@@ -25,6 +25,21 @@
  * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
+/**
+ * SECTION:gtkcheckitem
+ * @short_description: Check item widget for Gtk
+ *
+ * It is a GtkCheckButton hack with the look and feel of the Redmond95 theme.
+ */
+
+/**
+ * GtkCheckItem:
+ *
+ * The GtkCheckItem struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
+
 #include "gtkcheckitem.h"
 
 

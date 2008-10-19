@@ -19,22 +19,25 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 /**
  * SECTION:gtksheet
- * @short_description: spreadsheet widget for gtk2
+ * @short_description: A spreadsheet widget for Gtk2
  *
- * GtkSheet is a matrix widget for GTK+. It consists of an scrollable grid of 
- * cells where you can allocate text. Cell contents can be edited interactively
- * through a specially designed entry, GtkItemEntry. It is also a container
- * subclass, allowing you to display buttons, curves, pixmaps and any other 
- * widgets in it.
- *
- * You can also set many attributes as: border, foreground and background color,
- * text justification, and more.
- *
- * The testgtksheet program shows how easy is to create a spreadsheet-like GUI
- * using this widget.
+ * #GtkSheet is a matrix widget for GTK+. It consists of an scrollable grid of cells where you can allocate text.
+ * Cell contents can be edited interactively through a specially designed entry, GtkItemEntry.
+ * It is also a container subclass, allowing you to display buttons, curves, pixmaps and any other widget in it.
+ * You can also set many attributes as: border, foreground and background color, text justification, and more.
+ * The testgtksheet program shows how easy is to create a spreadsheet-like GUI using this widget set. 
  */
+
+/**
+ * GtkSheet:
+ *
+ * The GtkSheet struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

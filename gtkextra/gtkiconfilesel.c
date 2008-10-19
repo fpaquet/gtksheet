@@ -17,6 +17,22 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:gtkiconfileselection
+ * @short_description: A file selection dialog widget for GTK.
+ *
+ * It is a nice looking file selection dialog using icons.
+ * It combines GtkDirTree and GtkFileList to navigate the file system and select files. 
+ * It has also two entries to select the file and filter.
+ */
+
+/**
+ * GtkIconFileSelection:
+ *
+ * The GtkIconFileSelection structure contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
 #include "config.h"
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>

@@ -17,6 +17,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
+
+/**
+ * SECTION:gtkcolorcombo
+ * @short_description: A color combo widget for GTK.
+ *
+ * A GtkColorCombo is a GtkCOmbo which contains all kinds of colors.
+ */
+
+/**
+ * GtkColorCombo:
+ *
+ * The GtkColorCombo struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
+
+
 #include <string.h>
 #include <stdio.h>
 #include <math.h>

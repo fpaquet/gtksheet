@@ -17,6 +17,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:gtkfontcombo
+ * @short_description: A font combo widget for GTK.
+ *
+ * It is a GtkToolBar subclass with two combos to select among the 35 standard Adobe PostScript fonts with different sizes. 
+ * It has also two buttons to select bold and italics.
+ * When you select a new font, it returns the name of the corresponding Postscript font and the equivalent Xfont. 
+ * This is what we all expect to have on the top of a GUI for a spreadsheet or word processor.
+ */
+
+/**
+ * GtkFontCombo:
+ *
+ * The GtkFontCombo struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
 #include <string.h>
 #include <stdlib.h>
 #include <gtk/gtk.h>

@@ -24,6 +24,20 @@
  * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
+/**
+ * SECTION:gtkitementry
+ * @short_description: An item entry widget.
+ *
+ * Originally GtkSheetEntry. This widget allows to change colors and justification and can be dinamically resized.
+ */
+
+/**
+ * GtkItemEntry:
+ *
+ * The GtkItemEntry struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
 #include <string.h>
 
 #include <pango/pango.h>

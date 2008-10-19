@@ -17,6 +17,20 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:gtkbordercombo
+ * @short_description: A border combo widget
+ *
+ * It is a #GtkComboBox subclass with a variety of border styles in the popdown window arranged in a table of togglebuttons.
+ */
+
+/**
+ * GtkBorderCombo:
+ *
+ * The GtkBorderCombo struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
 #include <string.h>
 #include <gtk/gtkarrow.h>
 #include <gtk/gtkhbox.h>

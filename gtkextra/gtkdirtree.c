@@ -20,6 +20,21 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:gtkdirtree
+ * @short_description: A directory tree widget for GTK.
+ * 
+ * It is a GtkCTree subclass that allows you to navigate the file-system.
+ */
+
+/**
+ * GtkDirTree:
+ *
+ * The GtkDirTree struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
+
 #include "config.h"
 #include <gtk/gtk.h>
 #include <sys/types.h>

@@ -17,6 +17,20 @@
  * Boston, MA 02111-1307, USA.
  */
 
+
+/**
+ * SECTION:gtkcombobutton
+ * @short_description: A combo button widget for GTK
+ *
+ */
+
+/**
+ * GtkComboButton:
+ *
+ * The GtkComboButton struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
 #include <string.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtktogglebutton.h>

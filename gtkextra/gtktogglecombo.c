@@ -17,6 +17,24 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:gtktogglecombo
+ * @short_description: A toggle combo widget for GTK.
+ *
+ * A GtkToggleCombo is a GtkCombo which will remain 'pressed-in' when clicked. 
+ * Clicking it again will cause the toggle combo to return to it's normal state.
+ * A toggle combo is created by calling gtk_toggle_combo_new().
+ * The number of rows/columns may be find out by calling gtk_toggle_combo_get_nrows() or gtk_toggle_combo_get_ncols().
+ * A combo row may be selected with gtk_toggle_combo_select().The current selection is returned by gtk_toggle_combo_get_selection().
+ */
+
+/**
+ * GtkToggleCombo:
+ *
+ * The GtkToggleCombo struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
 #include <string.h>
 #include <stdio.h>
 #include <math.h>

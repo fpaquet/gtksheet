@@ -17,6 +17,21 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:gtkcharsel
+ * @short_description: Character selection dialog
+ *
+ * Char selection is a widget which contains all the characters in a font.
+ * Connecting a callback to the ok button of the widget you get the selected char.
+ */
+
+/**
+ * GtkCharSelection:
+ *
+ * The GtkCharSelection struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
 #include <gtk/gtk.h>
 #include <glib/gunicode.h>
 

@@ -609,7 +609,7 @@ gtk_plot_gdk_draw_string                        (GtkPlotPC *pc,
   const gchar *lastchar = text;
   const gchar *wtext = text;
   const gchar *xaux = text;
-  gchar new_text[strlen(text)+1];
+  gchar *new_text; /* Support Tiny C compiler : Original : gchar new_text[strlen(text)+1];*/ 
   gchar num[4];
   PangoRectangle rect;
   PangoFontMetrics *metrics = NULL;
@@ -957,6 +957,8 @@ gtk_plot_gdk_draw_string                        (GtkPlotPC *pc,
        aux = g_utf8_next_char(aux);
      }
      xaux = lastchar;
+
+     new_text = (gchar *) g_new0(gchar , strlen(text)+1); /* Tiny C Compiler support */
      for(i = 0; i < new_len; i++) new_text[i] = *xaux++;
      new_text[new_len] = '\0';
      new_width = drawstring(pc, drawable, gc, angle, tx+x, ty+y,
@@ -964,6 +966,8 @@ gtk_plot_gdk_draw_string                        (GtkPlotPC *pc,
      x += sign_x * new_width;
      y += sign_y * new_width;
      lastchar = aux;
+     
+     g_free (new_text);
    }
   }
 

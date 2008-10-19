@@ -788,8 +788,11 @@ gtk_plot_csurface_draw_lines(GtkPlotData *data)
       GtkPlotPoint *p1 = NULL, *p2 = NULL;
       gint i, n = 0, x = 0;
       GtkAllocation *aux_bb = NULL;
-      GtkPlotPoint line[s->n1];
+      GtkPlotPoint *line = NULL;
       gboolean prev_x = 0;
+
+      if(!line)
+	      line = (GtkPlotPoint *) g_new0(GtkPlotPoint,s->n1 +1); /* Tiny C Compiler support */
 
       if(s->sublevel){
 	if(csurface->sublevels_line.line_style == GTK_PLOT_LINE_NONE)
@@ -873,6 +876,9 @@ gtk_plot_csurface_draw_lines(GtkPlotData *data)
       }
 
       list = list->next;
+
+      if(!list)
+	g_free (line);
     }
 
   }

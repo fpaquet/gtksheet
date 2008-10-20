@@ -150,38 +150,62 @@ It is a GtkCheckButton hack with the look and feel of the Redmond95 theme.
 
 <part  id="gtkextrabase">
     <title>GtkExtra Widgets and Objects</title>
-    <xi:include href="xml/gtkextramain.xml" />
+
+    <chapter>
+      <title>Object Hierarchy</title>
+      <xi:include href="xml/tree_index.sgml" />
+    </chapter>
+
+   <chapter>
+      <title>Widget Gallery</title>
+      <xi:include href="visual_index.xml" />
+    </chapter>
+
+   <chapter>
+     <title>Widgets</title>
     <xi:include href="xml/gtkbordercombo.xml" />
     <xi:include href="xml/gtkcharsel.xml" />
     <xi:include href="xml/gtkcheckitem.xml" />
-    <xi:include href="xml/gtkcombobox.xml" />
+    <xi:include href="xml/gtkcombobutton.xml" />
     <xi:include href="xml/gtkdirtree.xml" />
     <xi:include href="xml/gtkfilelist.xml" />
     <xi:include href="xml/gtkfontcombo.xml" />
-    <xi:include href="xml/gtkiconfileselection.xml" />
+    <xi:include href="xml/gtkiconfilesel.xml" />
     <xi:include href="xml/gtkiconlist.xml" />
     <xi:include href="xml/gtkitementry.xml" />
     <xi:include href="xml/gtkplot.xml" />
     <xi:include href="xml/gtkplot3d.xml" />
+    <xi:include href="xml/gtkplotarray.xml" />
     <xi:include href="xml/gtkplotbar.xml" />
     <xi:include href="xml/gtkplotbox.xml" />
+    <xi:include href="xml/gtkplotbubble.xml" />
+    <xi:include href="xml/gtkplotcairo.xml" />
+    <xi:include href="xml/gtkplotcandle.xml" />
     <xi:include href="xml/gtkplotcsurface.xml" />
     <xi:include href="xml/gtkplotcanvas.xml" />
+    <xi:include href="xml/gtkplotcanvasellipse.xml" />
+    <xi:include href="xml/gtkplotcanvasline.xml" />
+    <xi:include href="xml/gtkplotcanvasrectangle.xml" />
+    <xi:include href="xml/gtkplotcanvaspixmap.xml" />
+    <xi:include href="xml/gtkplotcanvastext.xml" /> 
+    <xi:include href="xml/gtkplotcanvasplot.xml" />
+    <xi:include href="xml/gtkplotbox.xml" />
     <xi:include href="xml/gtkplotdata.xml" />
     <xi:include href="xml/gtkplotdt.xml" />
+    <xi:include href="xml/gtkplotdtriangle.xml" />
     <xi:include href="xml/gtkplotflux.xml" />
+    <xi:include href="xml/gtkplotgdk.xml" />
     <xi:include href="xml/gtkplotpc.xml" />
     <xi:include href="xml/gtkplotpixmap.xml" />
     <xi:include href="xml/gtkplotpolar.xml" />
     <xi:include href="xml/gtkplotprint.xml" />
     <xi:include href="xml/gtkplotps.xml" />
+    <xi:include href="xml/gtkplotsegment.xml" />
     <xi:include href="xml/gtkplotsurface.xml" />
     <xi:include href="xml/gtkpsfont.xml" />
     <xi:include href="xml/gtksheet.xml" />
     <xi:include href="xml/gtktogglecombo.xml" />
-
-
-
+   </chapter>
   </part>
 
 

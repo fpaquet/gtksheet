@@ -30,7 +30,7 @@ MKTMPL_OPTIONS=
 
 # Extra options to supply to gtkdoc-fixref. Not normally needed.
 # e.g. FIXXREF_OPTIONS=--extra-dir=../gdk-pixbuf/html --extra-dir=../gdk/html
-FIXXREF_OPTIONS=
+FIXXREF_OPTIONS= 
 
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
@@ -44,7 +44,8 @@ IGNORE_HFILES= 			\
 	pixmaps.h		\
 	icons.h			\
 	gtkextra-marshal.h	\
-	gtkextra-marshal.list
+	gtkextra-marshal.list	\
+	gtkextratypebuiltins.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png

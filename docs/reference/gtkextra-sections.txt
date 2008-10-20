@@ -1035,7 +1035,7 @@ gtk_plot_pixmap_get_type
 
 <SECTION>
 <FILE>gtkplotpolar</FILE>
-<TITLE>GtkPlotPolar</TITL
+<TITLE>GtkPlotPolar</TITLE>
 GtkPlotPolar
 gtk_plot_polar_new
 gtk_plot_polar_new_with_size

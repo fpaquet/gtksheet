@@ -43,6 +43,8 @@
 #include <gtkextra/gtkplotdata.h>
 #include <gtkextra/gtkplotarray.h>
 #include <gtkextra/gtkplotsurface.h>
+#include <gtkextra/gtkplotcairo.h>
+#include <gtkextra/gtkplotcandle.h>
 #include <gtkextra/gtkplotcsurface.h>
 #include <gtkextra/gtkplotcanvas.h>
 #include <gtkextra/gtkplotcanvasellipse.h>

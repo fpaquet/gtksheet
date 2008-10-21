@@ -33,6 +33,8 @@ extern "C" {
 
 
 GtkType		gtk_plot_data_get_type		(void);
+GtkType         gtk_plot_marker_get_type        (void);
+
 GtkWidget*	gtk_plot_data_new		(void);
 GtkWidget* 	gtk_plot_data_new_function 	(GtkPlotFunc function);
 void		gtk_plot_data_construct_function (GtkPlotData *data,

@@ -10,6 +10,7 @@ gtk_border_combo_new
 GTK_BORDER_COMBO
 GTK_IS_BORDER_COMBO
 GTK_BORDER_COMBO_CLASS
+GtkBorderComboClass
 <SUBSECTION Private>
 gtk_border_combo_get_type
 </SECTION>
@@ -27,6 +28,7 @@ GTK_IS_CHAR_SELECTION
 GTK_TYPE_CHAR_SELECTION
 GTK_CHAR_SELECTION_CLASS
 GTK_IS_CHAR_SELECTION_CLASS
+GtkCharSelectionClass
 <SUBSECTION Private>
 gtk_char_selection_get_type
 </SECTION>
@@ -45,6 +47,7 @@ GTK_TYPE_CHECK_ITEM
 GTK_CHECK_ITEM_CLASS
 GTK_IS_CHECK_ITEM_CLASS
 GTK_CHECK_ITEM_GET_CLASS
+GtkCheckItemClass
 <SUBSECTION Private>
 gtk_check_item_get_type
 </SECTION>
@@ -64,6 +67,7 @@ gtk_color_combo_get_selection
 GTK_COLOR_COMBO
 GTK_IS_COLOR_COMBO
 GTK_COLOR_COMBO_CLASS
+GtkColorComboClass
 <SUBSECTION Private>
 gtk_color_combo_get_type
 </SECTION>
@@ -78,6 +82,7 @@ gtk_combo_button_hide_popdown_window
 GTK_COMBO_BUTTON
 GTK_IS_COMBO_BUTTON
 GTK_COMBO_BUTTON_CLASS
+GtkComboButtonClass
 <SUBSECTION Private>
 gtk_combo_button_get_type
 </SECTION>
@@ -95,6 +100,7 @@ GTK_IS_DIR_TREE
 GTK_TYPE_DIR_TREE
 GTK_DIR_TREE_CLASS
 GTK_IS_DIR_TREE_CLASS
+GtkDirTreeClass
 <SUBSECTION Private>
 gtk_dir_tree_get_type
 </SECTION>
@@ -121,6 +127,7 @@ GTK_IS_FILE_LIST
 GTK_TYPE_FILE_LIST
 GTK_FILE_LIST_CLASS
 GTK_IS_FILE_LIST_CLASS
+GtkFileListClass
 <SUBSECTION Private>
 gtk_file_list_get_type
 </SECTION>
@@ -140,6 +147,7 @@ gtk_font_combo_get_gdkfont
 GTK_FONT_COMBO
 GTK_IS_FONT_COMBO
 GTK_FONT_COMBO_CLASS
+GtkFontComboClass
 <SUBSECTION Private>
 gtk_font_combo_get_type
 </SECTION>
@@ -161,6 +169,7 @@ GTK_IS_ICON_FILESEL
 GTK_TYPE_ICON_FILESEL
 GTK_ICON_FILESEL_CLASS
 GTK_IS_ICON_FILESEL_CLASS
+GtkIconFileSelClass
 <SUBSECTION Private>
 gtk_icon_file_selection_get_type
 </SECTION>
@@ -171,7 +180,6 @@ gtk_icon_file_selection_get_type
 GtkIconList
 GtkIconListMode
 GtkIconListItem
-gtk_icon_list_item_get_type
 gtk_icon_list_new
 gtk_icon_list_construct
 gtk_icon_list_set_mode
@@ -220,8 +228,11 @@ GTK_IS_ICON_LIST
 GTK_TYPE_ICON_LIST
 GTK_ICON_LIST_CLASS
 GTK_TYPE_ICON_LIST_ITEM
+GtkIconListClass
 <SUBSECTION Private>
 gtk_icon_list_get_type
+gtk_icon_list_item_get_type
+gtk_icon_list_mode_get_type
 </SECTION>
 
 <SECTION>
@@ -240,6 +251,7 @@ GTK_IS_ITEM_ENTRY
 GTK_TYPE_ITEM_ENTRY
 GTK_ITEM_ENTRY_CLASS
 GTK_IS_ITEM_ENTRY_CLASS
+GtkItemEntryClass
 <SUBSECTION Private>
 gtk_item_entry_get_type
 </SECTION>
@@ -397,6 +409,7 @@ GTK_PLOT_AXIS
 GTK_PLOT_CLASS
 GTK_TYPE_PLOT_AXIS
 GTK_IS_PLOT_AXIS
+GtkPlotClass
 <SUBSECTION Private>
 gtk_plot_get_type
 gtk_plot_axis_get_type
@@ -472,6 +485,7 @@ GTK_PLOT3D_SET_FLAGS
 GTK_PLOT3D_UNSET_FLAGS
 GTK_PLOT3D_TRANSPARENT
 GTK_PLOT3D_CLASS
+GtkPlot3DClass
 <SUBSECTION Private>
 gtk_plot3d_get_type
 </SECTION>
@@ -517,6 +531,8 @@ GTK_PLOT_ARRAY
 GTK_TYPE_PLOT_ARRAY
 GTK_PLOT_ARRAY_CLASS
 GTK_IS_PLOT_ARRAY
+GtkPlotArrayClass
+GtkPlotArrayListClass
 <SUBSECTION Private>
 gtk_plot_array_get_type
 gtk_plot_array_list_get_type
@@ -536,6 +552,7 @@ GTK_PLOT_BAR
 GTK_IS_PLOT_BAR
 GTK_TYPE_PLOT_BAR
 GTK_PLOT_BAR_CLASS
+GtkPlotBarClass
 <SUBSECTION Private>
 gtk_plot_bar_get_type
 </SECTION>
@@ -551,6 +568,7 @@ GTK_PLOT_BOX
 GTK_IS_PLOT_BOX
 GTK_TYPE_PLOT_BOX
 GTK_PLOT_BOX_CLASS
+GtkPlotBoxClass
 <SUBSECTION Private>
 gtk_plot_box_get_type
 </SECTION>
@@ -572,6 +590,7 @@ GTK_PLOT_BUBBLE
 GTK_IS_PLOT_BUBBLE
 GTK_TYPE_PLOT_BUBBLE
 GTK_PLOT_BUBBLE_CLASS
+GtkPlotBubbleClass
 <SUBSECTION Private>
 gtk_plot_bubble_get_type
 </SECTION>
@@ -589,6 +608,7 @@ GTK_PLOT_CAIRO
 GTK_IS_PLOT_CAIRO
 GTK_TYPE_PLOT_CAIRO
 GTK_PLOT_CAIRO_CLASS
+GtkPlotCairoClass
 <SUBSECTION Private>
 gtk_plot_cairo_get_type
 </SECTION>
@@ -603,6 +623,7 @@ GTK_PLOT_CANDLE
 GTK_IS_PLOT_CANDLE
 GTK_TYPE_PLOT_CANDLE
 GTK_PLOT_CANDLE_CLASS
+GtkPlotCairoClass
 <SUBSECTION Private>
 gtk_plot_candle_get_type
 </SECTION>
@@ -663,6 +684,8 @@ GTK_IS_PLOT_CANVAS
 GTK_IS_PLOT_CANVAS_CHILD
 GTK_TYPE_PLOT_CANVAS
 GTK_TYPE_PLOT_CANVAS_CHILD
+GtkPlotCanvasClass
+GtkPlotCanvasChildClass
 <SUBSECTION Private>
 gtk_plot_canvas_get_type
 gtk_plot_canvas_child_get_type
@@ -679,6 +702,7 @@ GTK_PLOT_CANVAS_ELLIPSE
 GTK_IS_PLOT_CANVAS_ELLIPSE
 GTK_TYPE_PLOT_CANVAS_ELLIPSE
 GTK_PLOT_CANVAS_ELLIPSE_CLASS
+GtkPlotCanvasEllipseClass
 <SUBSECTION Private>
 gtk_plot_canvas_ellipse_get_type
 </SECTION>
@@ -696,6 +720,7 @@ GTK_PLOT_CANVAS_LINE
 GTK_IS_PLOT_CANVAS_LINE
 GTK_TYPE_PLOT_CANVAS_LINE
 GTK_PLOT_CANVAS_LINE_CLASS
+GtkPlotCanvasLineClass
 <SUBSECTION Private>
 gtk_plot_canvas_line_get_type
 </SECTION>
@@ -710,6 +735,7 @@ GTK_PLOT_CANVAS_PIXMAP
 GTK_IS_PLOT_CANVAS_PIXMAP
 GTK_TYPE_PLOT_CANVAS_PIXMAP
 GTK_PLOT_CANVAS_PIXMAP_CLASS
+GtkPlotCanvasPixmapClass
 <SUBSECTION Private>
 gtk_plot_canvas_pixmap_get_type
 </SECTION>
@@ -730,6 +756,7 @@ GTK_PLOT_CANVAS_PLOT_DND_POINT
 GTK_PLOT_CANVAS_PLOT_FLAGS
 GTK_PLOT_CANVAS_PLOT_SET_FLAGS
 GTK_PLOT_CANVAS_PLOT_UNSET_FLAGS
+GtkPlotCanvasPlotClass
 <SUBSECTION Private>
 gtk_plot_canvas_plot_get_type
 </SECTION>
@@ -745,6 +772,7 @@ GTK_PLOT_CANVAS_RECTANGLE
 GTK_IS_PLOT_CANVAS_RECTANGLE
 GTK_TYPE_PLOT_CANVAS_RECTANGLE
 GTK_PLOT_CANVAS_RECTANGLE_CLASS
+GtkPlotCanvasRectangleClass
 <SUBSECTION Private>
 gtk_plot_canvas_rectangle_get_type
 </SECTION>
@@ -760,6 +788,7 @@ GTK_PLOT_CANVAS_TEXT
 GTK_IS_PLOT_CANVAS_TEXT
 GTK_TYPE_PLOT_CANVAS_TEXT
 GTK_PLOT_CANVAS_TEXT_CLASS
+GtkPlotCanvasTextClass
 <SUBSECTION Private>
 gtk_plot_canvas_text_get_type
 </SECTION>
@@ -785,6 +814,7 @@ GTK_PLOT_CSURFACE
 GTK_IS_PLOT_CSURFACE
 GTK_TYPE_PLOT_CSURFACE
 GTK_PLOT_CSURFACE_CLASS
+GtkPlotCSurfaceClass
 <SUBSECTION Private>
 gtk_plot_csurface_get_type
 </SECTION>
@@ -901,6 +931,7 @@ GTK_PLOT_DATA
 GTK_IS_PLOT_DATA
 GTK_TYPE_PLOT_DATA
 GTK_PLOT_DATA_CLASS
+GtkPlotDataClass
 <SUBSECTION Private>
 gtk_plot_data_get_type
 </SECTION>
@@ -925,6 +956,7 @@ GTK_PLOT_DT
 GTK_IS_PLOT_DT
 GTK_TYPE_PLOT_DT
 GTK_PLOT_DT_CLASS
+GtkPlotDTClass
 <SUBSECTION Private>
 gtk_plot_dt_get_type
 </SECTION>
@@ -950,6 +982,7 @@ GTK_PLOT_FLUX
 GTK_IS_PLOT_FLUX
 GTK_TYPE_PLOT_FLUX
 GTK_PLOT_FLUX_CLASS
+GtkPlotFluxClass
 <SUBSECTION Private>
 gtk_plot_flux_get_type
 </SECTION>
@@ -966,6 +999,7 @@ GTK_PLOT_GDK
 GTK_IS_PLOT_GDK
 GTK_TYPE_PLOT_GDK
 GTK_PLOT_GDK_CLASS
+GtkPlotGdkClass
 <SUBSECTION Private>
 gtk_plot_gdk_get_type
 </SECTION>
@@ -1012,6 +1046,7 @@ GTK_PLOT_A4_W
 GTK_PLOT_A4_H
 GTK_PLOT_EXECUTIVE_W
 GTK_PLOT_EXECUTIVE_H
+GtkPlotPCClass
 <SUBSECTION Private>
 gtk_plot_pc_get_type
 </SECTION>
@@ -1029,6 +1064,7 @@ GTK_PLOT_PIXMAP
 GTK_IS_PLOT_PIXMAP
 GTK_TYPE_PLOT_PIXMAP
 GTK_PLOT_PIXMAP_CLASS
+GtkPlotPixmapClass
 <SUBSECTION Private>
 gtk_plot_pixmap_get_type
 </SECTION>
@@ -1052,6 +1088,7 @@ GTK_PLOT_POLAR_FLAGS
 GTK_PLOT_POLAR_SET_FLAGS
 GTK_PLOT_POLAR_UNSET_FLAGS
 GTK_PLOT_POLAR_TRANSPARENT
+GtkPlotPolarClass
 <SUBSECTION Private>
 gtk_plot_polar_get_type
 </SECTION>
@@ -1071,6 +1108,7 @@ GTK_PLOT_PS
 GTK_IS_PLOT_PS
 GTK_TYPE_PLOT_PS
 GTK_PLOT_PS_CLASS
+GtkPlotPSClass
 <SUBSECTION Private>
 gtk_plot_ps_get_type
 </SECTION>
@@ -1094,6 +1132,7 @@ GTK_PLOT_SEGMENT
 GTK_IS_PLOT_SEGMENT
 GTK_TYPE_PLOT_SEGMENT
 GTK_PLOT_SEGMENT_CLASS
+GtkPlotSegmentClass
 <SUBSECTION Private>
 gtk_plot_segment_get_type
 </SECTION>
@@ -1148,6 +1187,7 @@ GTK_PLOT_SURFACE
 GTK_IS_PLOT_SURFACE
 GTK_TYPE_PLOT_SURFACE
 GTK_PLOT_SURFACE_CLASS
+GtkPlotSurfaceClass
 <SUBSECTION Private>
 gtk_plot_surface_get_type
 </SECTION>
@@ -1295,6 +1335,7 @@ GTK_SHEET_ROW_TITLES_VISIBLE
 GTK_SHEET_COL_TITLES_VISIBLE
 GTK_SHEET_AUTO_SCROLL
 GTK_SHEET_JUSTIFY_ENTRY
+GtkSheetClass
 <SUBSECTION Private>
 gtk_sheet_get_type
 gtk_sheet_range_get_type
@@ -1314,6 +1355,7 @@ gtk_toggle_combo_get_selection
 GTK_TOGGLE_COMBO
 GTK_IS_TOGGLE_COMBO
 GTK_TOGGLE_COMBO_CLASS
+GtkToggleComboClass
 <SUBSECTION Private>
 gtk_toggle_combo_get_type
 </SECTION>

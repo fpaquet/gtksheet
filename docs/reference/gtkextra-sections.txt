@@ -1321,6 +1321,7 @@ gtk_toggle_combo_get_type
 
 <SECTION>
 <FILE>gtkplotdtriangle</FILE>
+<TITLE>GtkPlotDTriangle</TITLE>
 triangulate
 </SECTION>
 

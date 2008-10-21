@@ -189,7 +189,6 @@ It is a GtkCheckButton hack with the look and feel of the Redmond95 theme.
     <xi:include href="xml/gtkplotcanvaspixmap.xml" />
     <xi:include href="xml/gtkplotcanvastext.xml" /> 
     <xi:include href="xml/gtkplotcanvasplot.xml" />
-    <xi:include href="xml/gtkplotbox.xml" />
     <xi:include href="xml/gtkplotdata.xml" />
     <xi:include href="xml/gtkplotdt.xml" />
     <xi:include href="xml/gtkplotdtriangle.xml" />

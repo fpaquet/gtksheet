@@ -259,7 +259,6 @@ gtk_item_entry_get_type
 <FILE>gtkplot</FILE>
 <TITLE>GtkPlot</TITLE>
 GtkPlot
-GtkPlotData
 GtkPlotAxis
 GtkPlotText
 GtkPlotLine
@@ -822,6 +821,7 @@ gtk_plot_csurface_get_type
 <SECTION>
 <FILE>gtkplotdata</FILE>
 <TITLE>GtkPlotData</TITLE>
+GtkPlotData
 gtk_plot_data_new
 gtk_plot_data_new_function
 gtk_plot_data_construct_function
@@ -1197,7 +1197,6 @@ gtk_plot_surface_get_type
 <FILE>gtksheet</FILE>
 <TITLE>GtkSheet</TITLE>
 GtkSheet
-GtkSheetAttrType
 GtkSheetChild
 GtkSheetRow
 GtkSheetColumn
@@ -1206,6 +1205,7 @@ GtkSheetRange
 GtkSheetButton
 GtkSheetCellAttr
 GtkSheetCellBorder
+GtkSheetAttrType
 gtk_sheet_new
 gtk_sheet_construct
 gtk_sheet_new_browser
@@ -1397,6 +1397,7 @@ gtk_psfont_get_char_size
 
 <SECTION>
 <FILE>gtkextrafeatures</FILE>
+<TITLE>GtkExtra Versioning</TITLE>
 GTKEXTRA_MAJOR_VERSION
 GTKEXTRA_MINOR_VERSION
 GTKEXTRA_MICRO_VERSION

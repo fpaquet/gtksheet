@@ -31,12 +31,6 @@
  * The testgtksheet program shows how easy is to create a spreadsheet-like GUI using this widget set. 
  */
 
-/**
- * GtkSheet:
- *
- * The GtkSheet struct contains only private data.
- * It should only be accessed through the functions described below.
- */
 
 #include <string.h>
 #include <stdio.h>
@@ -1576,11 +1570,11 @@ gtk_sheet_set_locked (GtkSheet *sheet, gboolean locked)
 }
 
 /**
- * gtk_sheet_set_locked:
+ * gtk_sheet_locked:
  * @sheet: a #GtkSheet
  * Return value: TRUE or FALSE
  *
- * Get the lock status of #GtkSheet .
+ * Get the lock status of #GtkSheet.
  */
 gboolean
 gtk_sheet_locked (GtkSheet *sheet)
@@ -2138,7 +2132,7 @@ gtk_sheet_rows_labels_set_visibility(GtkSheet *sheet, gboolean visible)
  * gtk_sheet_column_button_add_label:
  * @sheet: a #GtkSheet
  * @column: column number
- * @label:text label
+ * @label: text label
  *
  * Set button label.It is used to set a column title.
  */
@@ -2176,7 +2170,7 @@ gtk_sheet_column_button_add_label(GtkSheet *sheet, gint column, const gchar *lab
 }  
 
 /**
- * gtk_sheet_column_button_add_label:
+ * gtk_sheet_column_button_get_label:
  * @sheet: a #GtkSheet.
  * @column: column number.
  * Return value: Column button label.
@@ -8476,12 +8470,12 @@ gtk_sheet_column_set_justification(GtkSheet *sheet, gint col,
 }
 
 /**
- * gtk_sheet_column_set_editable:
+ * gtk_sheet_range_set_editable:
  * @sheet: a #GtkSheet.
  * @urange: a #GtkSheetRange
  * @editable: TRUE or FALSE
  *
- * Set if cell contents can be edited or not in the given range: accepted values are TRUE or FALSE.
+ * Set if cell contents can be edited or not in the given range.
  */ 
 void
 gtk_sheet_range_set_editable(GtkSheet *sheet, const GtkSheetRange *urange, gboolean editable)

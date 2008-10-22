@@ -232,7 +232,6 @@ GtkIconListClass
 <SUBSECTION Private>
 gtk_icon_list_get_type
 gtk_icon_list_item_get_type
-gtk_icon_list_mode_get_type
 </SECTION>
 
 <SECTION>
@@ -410,6 +409,7 @@ GTK_PLOT_CLASS
 GTK_TYPE_PLOT_AXIS
 GTK_IS_PLOT_AXIS
 GtkPlotClass
+GtkPlotAxisClass
 <SUBSECTION Private>
 gtk_plot_get_type
 gtk_plot_axis_get_type
@@ -623,7 +623,7 @@ GTK_PLOT_CANDLE
 GTK_IS_PLOT_CANDLE
 GTK_TYPE_PLOT_CANDLE
 GTK_PLOT_CANDLE_CLASS
-GtkPlotCairoClass
+GtkPlotCandleClass
 <SUBSECTION Private>
 gtk_plot_candle_get_type
 </SECTION>
@@ -934,6 +934,7 @@ GTK_PLOT_DATA_CLASS
 GtkPlotDataClass
 <SUBSECTION Private>
 gtk_plot_data_get_type
+gtk_plot_marker_get_type
 </SECTION>
 
 <SECTION>

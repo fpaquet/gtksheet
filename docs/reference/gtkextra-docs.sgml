@@ -138,14 +138,8 @@ It is a GtkCheckButton hack with the look and feel of the Redmond95 theme.
     </para>
 </partintro>
 
- <xi:include href="building.sgml" />
     <xi:include href="compiling.sgml" />
-    <xi:include href="running.sgml" />
-    <xi:include href="x11.sgml" />
-    <xi:include href="windows.sgml" />
-    <xi:include href="osx.sgml" />
     <xi:include href="resources.sgml" />
-    <xi:include href="question_index.sgml" />
   </part>
 
 <part  id="gtkextrabase">
@@ -205,6 +199,11 @@ It is a GtkCheckButton hack with the look and feel of the Redmond95 theme.
     <xi:include href="xml/gtksheet.xml" />
     <xi:include href="xml/gtktogglecombo.xml" />
    </chapter>
+
+   <chapter>
+      <title>GtkExtra Versioning</title>
+      <xi:include href="xml/gtkextrafeatures.xml" />
+    </chapter>
   </part>
 
 

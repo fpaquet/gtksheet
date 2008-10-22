@@ -53,15 +53,9 @@ HTML_IMAGES=
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
 # e.g. content_files=running.sgml building.sgml changes-2.0.sgml
-content_files= version.xml                             \
-        running.sgml                            \
-        building.sgml                           \
-        compiling.sgml                          \
-        osx.sgml                                \
-        question_index.sgml                     \
-        resources.sgml                          \
-        windows.sgml                            \
-        x11.sgml
+content_files= version.xml	\
+        compiling.sgml	\
+        resources.sgml                          
 
 
 # SGML files where gtk-doc abbrevations (#GtkWidget) are expanded
@@ -69,14 +63,8 @@ content_files= version.xml                             \
 # e.g. expand_content_files=running.sgml
 expand_content_files=				\
         version.xml                             \
-        running.sgml                            \
-        building.sgml                           \
         compiling.sgml                          \
-        osx.sgml                                \
-        question_index.sgml                     \
-        resources.sgml                          \
-        windows.sgml                            \
-        x11.sgml                                
+        resources.sgml                          
 
 # CFLAGS and LDFLAGS for compiling gtkdoc-scangobj with your library.
 # Only needed if you are using gtkdoc-scangobj to dynamically query widget

@@ -28,6 +28,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
+G_BEGIN_DECLS
+
 
 typedef enum
 {
@@ -78,6 +80,8 @@ enum
 #define GTK_SHEET_AUTO_SCROLL(sheet)     gtk_sheet_autoscroll(sheet)
 #define GTK_SHEET_JUSTIFY_ENTRY(sheet)   gtk_sheet_justify_entry(sheet)
 
+
+
 typedef struct _GtkSheet GtkSheet;
 typedef struct _GtkSheetClass GtkSheetClass;
 typedef struct _GtkSheetChild GtkSheetChild;
@@ -89,8 +93,16 @@ typedef struct _GtkSheetButton       GtkSheetButton;
 typedef struct _GtkSheetCellAttr     GtkSheetCellAttr;
 typedef struct _GtkSheetCellBorder     GtkSheetCellBorder;
 
+
+/**
+ * GtkSheetChild:
+ *
+ * The GtkSheetChild struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkSheetChild
 {
+  /*< private >*/ 
   GtkWidget *widget;
   gint x,y ;
   gboolean attached_to_cell;
@@ -106,8 +118,16 @@ struct _GtkSheetChild
   gboolean yfill;
 };
 
+
+/**
+ * GtkSheetButton:
+ *
+ * The GtkSheetButton struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkSheetButton
 {
+  /*< private >*/
   GtkStateType state;
   gchar *label;
 
@@ -117,8 +137,16 @@ struct _GtkSheetButton
   GtkJustification justification;
 };
 
+
+/**
+ * GtkSheetCellBorder:
+ *
+ * The GtkSheetCellBorder struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkSheetCellBorder
 {
+  /*< private >*/
   gint8 mask;
   guint width;
   GdkLineStyle line_style;
@@ -127,8 +155,15 @@ struct _GtkSheetCellBorder
   GdkColor color;
 };
 
+/**
+ * GtkSheetCellAttr:
+ *
+ * The GtkSheetCellAttr struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkSheetCellAttr
 {
+  /*< private >*/
   GtkJustification justification;
   GdkFont *font;
   PangoFontDescription *font_desc;
@@ -139,8 +174,15 @@ struct _GtkSheetCellAttr
   gboolean is_visible;
 };
 
+/**
+ * GtkSheetCell:
+ *
+ * The GtkSheetCell struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkSheetCell
 {
+   /*< private >*/
   GdkRectangle area;
   gint row;
   gint col;
@@ -151,15 +193,29 @@ struct _GtkSheetCell
   gpointer link;
 };
 
+/**
+ * GtkSheetCellRange:
+ *
+ * The GtkSheetCellRange struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkSheetRange
 {
+  /*< private >*/
   gint row0,col0; /* upper-left cell */
   gint rowi,coli; /* lower-right cell */
 };
 
 
+/**
+ * GtkSheetRow:
+ *
+ * The GtkSheetRow struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkSheetRow
 {
+ /*< private >*/
  gchar *name;
  gint height;
  gint top_ypixel;
@@ -170,8 +226,15 @@ struct _GtkSheetRow
  gboolean is_visible;
 };
 
+/**
+ * GtkSheetColumn:
+ *
+ * The GtkSheetColumn struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkSheetColumn
 {
+ /*< private >*/
  gchar *name;
  gint width;
  gint left_xpixel;
@@ -188,6 +251,12 @@ struct _GtkSheetColumn
 };
 
 
+/**
+ * GtkSheet:
+ *
+ * The GtkSheet struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkSheet{
   GtkContainer container;
 
@@ -860,6 +929,8 @@ gtk_sheet_button_attach			(GtkSheet *sheet,
 					 GtkWidget *widget,
 					 gint row, gint col);
                        
+
+G_END_DECLS
 
 #ifdef __cplusplus
 }

@@ -17,6 +17,19 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkiconlist
+ * @short_description: A file icon list widget for GTK.
+ *
+ * GtkIconList is a GtkFixed subclass that allows you to display a table of xpm icons with editable labels.
+ * It's completely designed from scratch with some ideas borrowed from gnome-icon-list.
+ * It contains almost all of its features and more. 
+ * It can be used for file browsers and as a replacement of gnome-icon-list (without the need of using gnome libraries). 
+ * Like GtkSheet, it uses the widget GtkItemEntry to edit the text fields.
+ */
+
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

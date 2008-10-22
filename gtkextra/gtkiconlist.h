@@ -45,8 +45,16 @@ typedef struct _GtkIconList	GtkIconList;
 typedef struct _GtkIconListClass	GtkIconListClass;
 typedef struct _GtkIconListItem	GtkIconListItem;
 
+/**
+ * GtkIconListItem:
+ *
+ * The GtkIconListItem structure contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
 struct _GtkIconListItem
 {
+  /*< private >*/
   guint x, y;
 
   gint state;
@@ -60,6 +68,12 @@ struct _GtkIconListItem
   gpointer link;
 };
 
+/**
+ * GtkIconList:
+ *
+ * The GtkIconList structure contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkIconList
 {
   GtkFixed fixed;

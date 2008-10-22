@@ -18,7 +18,7 @@
  */
 
 /**
- * SECTION:gtkcharsel
+ * SECTION: gtkcharsel
  * @short_description: Character selection dialog
  *
  * Char selection is a widget which contains all the characters in a font.

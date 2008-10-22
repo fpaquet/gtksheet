@@ -18,7 +18,7 @@
  */
 
 /**
- * SECTION:gtktogglecombo
+ * SECTION: gtktogglecombo
  * @short_description: A toggle combo widget for GTK.
  *
  * A GtkToggleCombo is a GtkCombo which will remain 'pressed-in' when clicked. 

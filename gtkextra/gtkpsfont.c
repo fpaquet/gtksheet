@@ -26,7 +26,7 @@
  */
 
 /**
- * SECTION:gtkpsfont
+ * SECTION: gtkpsfont
  * @short_description: PostScript Fonts handling.
  *
  *  Handles Postscript fonts.
@@ -394,11 +394,11 @@ gtk_psfont_unref()
   psfont_init = FALSE;
 }
 
-/**
+/*
  * gtk_psfont_init:
  * 
  * Unref ps fonts.
- */
+ *
 void
 gtk_psfont_unref()
 {
@@ -416,7 +416,7 @@ gtk_psfont_unref()
     g_list_free_1(list);
     list = psfont_families;
   }
-
+*/
 
 /**
  * gtk_psfont_get_by_name:

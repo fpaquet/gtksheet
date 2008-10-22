@@ -18,19 +18,11 @@
  */
 
 /**
- * SECTION:gtkfilelist
+ * SECTION: gtkfilelist
  * @short_description: A file list widget fot GTK
  *
  * It is a GtkIconList subclass that displays the contents of a given directory using fancy icons for different types of files
  */
-
-/**
- * GtkFileList:
- *
- * The GtkFileList structure contains only private data.
- * It should only be accessed through the functions described below.
- */
-
 
 #include "config.h"
 #include <gtk/gtk.h>

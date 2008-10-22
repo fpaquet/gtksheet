@@ -75,20 +75,41 @@ typedef struct _GtkFileListItem   GtkFileListItem;
 typedef struct _GtkFileListType   GtkFileListType;
 typedef struct _GtkFileListClass  GtkFileListClass;
 
+
+/**
+ * GtkFileListType:
+ *
+ * The GtkFileListType structure contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkFileListType
 {
+  /*< private >*/
   gchar *extension;
   gint type;
 };
 
+/**
+ * GtkFileListItem:
+ *
+ * The GtkFileListItem structure contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkFileListItem
 {
+  /*< private >*/
   gchar *file_name;
   gint type;
   gint is_dir;
   gint is_link;
 };
 
+/**
+ * GtkFileList:
+ *
+ * The GtkFileList structure contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkFileList
 {
   GtkIconList iconlist;

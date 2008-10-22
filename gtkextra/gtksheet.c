@@ -21,7 +21,7 @@
  */
 
 /**
- * SECTION:gtksheet
+ * SECTION: gtksheet
  * @short_description: A spreadsheet widget for Gtk2
  *
  * #GtkSheet is a matrix widget for GTK+. It consists of an scrollable grid of cells where you can allocate text.

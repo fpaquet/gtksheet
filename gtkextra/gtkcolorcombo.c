@@ -19,7 +19,7 @@
 
 
 /**
- * SECTION:gtkcolorcombo
+ * SECTION: gtkcolorcombo
  * @short_description: A color combo widget for GTK.
  *
  * A GtkColorCombo is a GtkCOmbo which contains all kinds of colors.

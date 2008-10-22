@@ -18,7 +18,7 @@
  */
 
 /**
- * SECTION:gtkbordercombo
+ * SECTION: gtkbordercombo
  * @short_description: A border combo widget
  *
  * It is a #GtkComboBox subclass with a variety of border styles in the popdown window arranged in a table of togglebuttons.

@@ -21,7 +21,7 @@
  */
 
 /**
- * SECTION:gtkdirtree
+ * SECTION: gtkdirtree
  * @short_description: A directory tree widget for GTK.
  * 
  * It is a GtkCTree subclass that allows you to navigate the file-system.

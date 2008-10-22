@@ -18,7 +18,7 @@
  */
 
 /**
- * SECTION:gtkiconfileselection
+ * SECTION: gtkiconfilesel
  * @short_description: A file selection dialog widget for GTK.
  *
  * It is a nice looking file selection dialog using icons.

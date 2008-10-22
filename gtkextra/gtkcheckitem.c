@@ -26,7 +26,7 @@
  */
 
 /**
- * SECTION:gtkcheckitem
+ * SECTION: gtkcheckitem
  * @short_description: Check item widget for Gtk
  *
  * It is a GtkCheckButton hack with the look and feel of the Redmond95 theme.

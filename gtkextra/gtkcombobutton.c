@@ -19,7 +19,7 @@
 
 
 /**
- * SECTION:gtkcombobutton
+ * SECTION: gtkcombobutton
  * @short_description: A combo button widget for GTK
  *
  */

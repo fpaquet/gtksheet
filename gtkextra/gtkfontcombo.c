@@ -18,7 +18,7 @@
  */
 
 /**
- * SECTION:gtkfontcombo
+ * SECTION: gtkfontcombo
  * @short_description: A font combo widget for GTK.
  *
  * It is a GtkToolBar subclass with two combos to select among the 35 standard Adobe PostScript fonts with different sizes. 

@@ -530,7 +530,7 @@ gboolean
 gtk_sheet_justify_entry			(GtkSheet *sheet);
 
 void
-gtk_sheet_set_locked			(GtkSheet *sheet, gboolean lock);
+gtk_sheet_set_locked			(GtkSheet *sheet, gboolean locked);
 
 gboolean
 gtk_sheet_locked			(GtkSheet *sheet);

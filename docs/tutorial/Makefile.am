@@ -8,6 +8,7 @@ EXTRA_DIST = \
 	images/gtksheet_range_bg.jpg
 
 if HAVE_DOCBOOK
+all: html
 html:
 	if test -w $(srcdir); then \
 	  (cd $(srcdir); \
@@ -15,7 +16,7 @@ html:
 	   test -d html && rm -r html; \
 	   mv gtkextra-tutorial html; \
 	   mkdir html/images; \
-	   cp images/* html/images); \
+	   cp images/*.* html/images); \
 	fi
 
 pdf:

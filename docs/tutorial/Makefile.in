@@ -363,6 +363,7 @@ uninstall-am: uninstall-info-am
 	uninstall uninstall-am uninstall-info-am
 
 
+@HAVE_DOCBOOK_TRUE@all: html
 @HAVE_DOCBOOK_TRUE@html:
 @HAVE_DOCBOOK_TRUE@	if test -w $(srcdir); then \
 @HAVE_DOCBOOK_TRUE@	  (cd $(srcdir); \
@@ -370,7 +371,7 @@ uninstall-am: uninstall-info-am
 @HAVE_DOCBOOK_TRUE@	   test -d html && rm -r html; \
 @HAVE_DOCBOOK_TRUE@	   mv gtkextra-tutorial html; \
 @HAVE_DOCBOOK_TRUE@	   mkdir html/images; \
-@HAVE_DOCBOOK_TRUE@	   cp images/* html/images); \
+@HAVE_DOCBOOK_TRUE@	   cp images/*.* html/images); \
 @HAVE_DOCBOOK_TRUE@	fi
 
 @HAVE_DOCBOOK_TRUE@pdf:

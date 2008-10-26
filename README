@@ -9,6 +9,28 @@ The official web site is:
   http://gtkextra.sourceforge.net
 
 
+Prerequisites
+=============
+
+GtkExtra requires the following packages:
+
+ - The GTK+ , GLib, Pango, ATK and cairo libraries
+   GTK+ 2.14.4 requires at least GLib 2.17.6,
+   Pango 1.20, ATK 1.13.0 and cairo 1.6.0.
+
+ - The TIFF, PNG, and JPEG image loading libraries. You most
+   likely have these installed on your system already. If not
+   these libraries are available from:
+
+    http://www.libtiff.org/
+    http://www.libpng.org/
+    http://www.ijg.org/
+
+    libtiff must be version 3.6.0 or higher.
+
+ - For generating GtkDoc reference docs and tutorial you need GtkDoc 1.8 , Docbook 4.5 with all dependencies
+   (docbook-to-man,docbook-xls,docbook-utils , openjade , jadetex , tex-common , sgmlspl ,texlive ,tipa ,etc)
+
 
 Installation
 ============

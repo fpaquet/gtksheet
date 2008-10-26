@@ -1,0 +1,703 @@
+<!doctype book PUBLIC "-//OASIS//DTD DocBook V4.2//EN" [
+
+]>
+<book id="index">
+
+<bookinfo>
+    <date>October 24th, 2008</date>
+    <title>GtkExtra 3.0 Tutorial</title>
+    <authorgroup>
+      <author>
+        <firstname>Victor</firstname>
+        <surname>Mierla</surname>
+      </author>
+      <author>
+	<firstname>&amp; the GtkExtra team</firstname>
+      </author>
+    </authorgroup>
+    <abstract>
+      <para>This is a tutorial on how to use GtkExtra through its C interface.
+      </para>
+    </abstract>
+  </bookinfo>
+
+<toc></toc>
+
+<!-- ***************************************************************** -->
+<chapter id="ch-TutorialDownload">
+<title>Tutorial Availability</title>
+
+<para>A copy of this tutorial in SGML and HTML is distributed with each
+source code release of GtkExtra. For binary distributions, please check with
+your vendor.</para>
+
+<para>A copy is available online for reference at <ulink 
+url="http://gtkextra.sourceforge.net/">http://gtkextra.sourceforge.net</ulink>.</para>
+
+</chapter>
+
+<!-- ***************************************************************** -->
+<chapter id="ch-Introduction">
+<title>Introduction</title>
+
+<para> It is a useful widget set complementary to GTK+ for creating 
+graphical interfaces for the X Window System.
+It is licensed using the LGPL license, so you can develop
+open software, free software, or even commercial non-free software
+using GTK without having to spend anything for licenses or royalties.</para>
+
+<para>GtkExtra is essentially an object oriented application programmers
+interface (API). Although written completely in C, it is implemented
+using the idea of classes and callback functions (pointers to
+functions).</para>
+
+
+<para>This document is a "work in progress". Please look for updates on CVS at 
+<ulink url="http://gtkextra.sourceforge.net/">http://gtkextra.sourceforge,net/</ulink>.</para>
+
+<para>I would very much like to hear of any problems you have learning GtkExtra
+from this document, and would appreciate input as to how it may be
+improved. Please see the section on <link linkend="ch-Contributing">Contributing
+</link> for further information.</para>
+
+</chapter>
+
+<!-- ***************************************************************** -->
+<chapter id="ch-GettingGtkExtra">
+<title>Getting GtkExtra</title>
+
+<para>The first thing to do, of course, is download the GtkExtra source and
+install it. You can always get the latest version from <ulink 
+url="http://gtkextra.sourceforge.net">gtkextra.sourceforge.net</ulink>. 
+GtkExtra uses GNU autoconf for configuration. Once untar'd, type 
+<literal>./configure --help</literal> to see a list of options.</para>
+
+</chapter>
+
+<!-- ***************************************************************** -->
+<chapter id="ch-GtkSheet">
+<title>GtkSheet</title>
+
+<!-- ----------------------------------------------------------------- -->
+<sect1 id="sec-Introduction">
+<title>Introduction</title>
+
+<para>
+GtkSheet is a spreadsheet  widget for Gtk (an Excel-like table)
+</para>
+
+<para>
+A GtkSheetEntry widget( a cell in fact) is a GtkEntry subclass with the following  differences :
+  - It doesn't draw the border.   
+  - It is dinamically resized as the text is typed.
+  - It allows right/left/center text justification (gtk_entry_size_allocate & entry_adjust_scroll)
+</para>
+
+<para>
+In a cell you may pack text , pictures or other widgets.
+GtkEntry is a one text-line widget, so if you are looking for an Excel-cell like behaviour(a multi -line cell) ,
+you should probably consider improving GtkSheet.
+The maximum number of  rows/columns  in a sheet is an unsigned integer so in fact the maximum size of the sheet
+depends on  the available memory of your system.
+</para>
+
+</sect1>
+
+<!-- ----------------------------------------------------------------- -->
+<sect1 id="sec-CreatingaSheet">
+<title>Creating a Sheet</title>
+
+<para>
+The first step is to create the sheet widget and to pack it into a scrolled window.
+If you pack the sheet into a normal window you will receive some warnings about adjustment signals.
+</para>
+
+<programlisting role="C">
+window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+...............................
+window_box= gtk_vbox_new (FALSE,TRUE);
+
+scrolled_window=gtk_scrolled_window_new(NULL, NULL);    
+gtk_container_add (GTK_CONTAINER (window), window_box);         
+gtk_box_pack_start (GTK_BOX (window_box), scrolled_window, 1,1,1);  
+sheet=gtk_sheet_new(3,11,"Edit table");
+GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_AUTORESIZE);  
+gtk_container_add(GTK_CONTAINER(scrolled_window), sheet);
+
+
+gtk_widget_show_all(window);
+</programlisting>
+
+<para>
+You should set the GTK_SHEET_AUTORESIZE flag so the cell would resize as you type.
+GtkSheet can be created with a custom entry widget. You can use GtkEntry or a GtkEntry subclass 
+(e.g.  GtkSheetEntry, GtkSpinButton) or a box or table containing a GtkEntry subclass (e.g. GtkCombo)
+</para>
+
+<programlisting role="C">
+gtk_sheet_new_with_custom_entry  (gint nrows, gint ncols, GtkType *entry_type);
+</programlisting>
+
+<para>
+if you want to construct a non-editable spreadsheet ( called "browser sheet") , just fow viewing purposes use:
+</para>
+
+<programlisting role="C">
+gtk_sheet_construct_browser(GtkSheet *sheet,guint rows,guint columns, const gchar *title);
+</programlisting>
+
+<para>
+The lines and columns(white coloured by default) are numbered from 0 to max row/col number.
+The gray row/col are numbered -1 .
+GtkSheet screenshot:
+</para>
+
+<para>
+<inlinemediaobject>
+<imageobject>
+<imagedata fileref="images/gtksheet_new_sheet.jpg" format="jpg">
+</imageobject>
+</inlinemediaobject>
+</para>
+
+
+</sect1>
+
+<!-- ----------------------------------------------------------------- -->
+<sect1 id="sec-SheetSignals">
+<title>Sheet Signals</title>
+
+<para>
+The interaction between user and sheet is done(as in all Gtk programs) through signals.
+In GtkSheet the next signals are implemented :
+</para>
+
+<itemizedlist spacing=Compact>
+<listitem><simpara> <literal>SELECT_ROW</literal></simpara></listitem>
+<listitem><simpara> <literal>SELECT_COLUMN</literal></simpara></listitem>
+<listitem><simpara> <literal>SELECT_RANGE</literal></simpara></listitem>
+<listitem><simpara> <literal>CLIP_RANGE</literal></simpara></listitem>
+<listitem><simpara> <literal>RESIZE_RANGE</literal></simpara></listitem>
+<listitem><simpara> <literal>MOVE_RANGE</literal></simpara></listitem>
+<listitem><simpara> <literal>TRAVERSE</literal></simpara></listitem>
+<listitem><simpara> <literal>DEACTIVATE</literal></simpara></listitem>
+<listitem><simpara> <literal>ACTIVATE</literal></simpara></listitem>
+<listitem><simpara> <literal>SET_CELL</literal></simpara></listitem>
+<listitem><simpara> <literal>CLEAR_CELL</literal></simpara></listitem>
+<listitem><simpara> <literal>CHANGED</literal></simpara></listitem>
+<listitem><simpara> <literal>NEW_COL_WIDTH</literal></simpara></listitem>
+<listitem><simpara> <literal>NEW_ROW_WIDTH</literal></simpara></listitem>
+</itemizedlist>
+
+<para>
+If you want  to catch these signals , you must connect them to a callback(function that treats the signal/event).
+</para>
+<para>
+The most used signals  are :<emphasis> ACTIVATE,DEACTIVATE,TRAVERSE </emphasis>.
+</para>
+
+<para>
+Callback functions for different signals have different parameters.
+For a correct use you should check out the Gtk-Extra Reference Manual , the examples or GtkExtra source code.
+Incorrect use of the callback function parameters will have an undefined result(in the worst case).
+</para>
+
+<para>
+The <emphasis>ACTIVATE</emphasis> signal should be connected if you want to do something when a cell is clicked:
+</para>
+
+<programlisting role="C">
+g_signal_connect(G_OBJECT(sheet),
+                   "activate",
+                   alarm_activate,
+                    NULL);
+
+//The callback function should have these parameters:
+
+gint alarm_activate(GtkWidget *sheet, 
+                    gint row, gint col, gpointer data)
+{
+................
+}
+</programlisting>
+
+<para>
+If you have different functions that require the same cell to behave in a different way , I suggest that 
+instead of writing "n" alarm_activate() callbacks , write just one callback function that looks like this:
+</para>
+
+<programlisting role="C">
+g_signal_connect(G_OBJECT(sheet),
+                   "activate",
+                   alarm_activate,
+                   (gpointer)function_name);
+
+When the signal is connected , pass the function name (for example) as the last parameter.
+
+
+gint alarm_activate(GtkWidget *sheet, 
+                    gint row, gint col, gpointer function_name)
+{
+     if(strcmp(function_name,"table_new")==0){
+               .....do_some_stuf()
+     }
+     else if(strcmp(function_name,"table_edit")==0){
+               .....do_other_stuf()
+     }
+}
+</programlisting>
+
+<para>
+In this way , you will  have a much cleaner code  with fewer functions as possible.
+It is better to have a single callback function that treats all posible behaviour cases ,
+instead of many functions which make the code harder to read.
+</para>
+
+<para>
+A very important signal is <emphasis>TRAVERSE</emphasis>.
+</para>
+
+<programlisting role="C">
+gtk_signal_connect(G_OBJECT(sheet),
+                   "traverse",
+                   alarm_traverse,
+                    NULL);
+
+//The callback function should have these parameters:
+
+
+gint alarm_traverse(GtkWidget *widget,
+                    gint row, gint col, gint *new_row, gint *new_col,
+                    gpointer data)
+
+{
+...........
+}
+</programlisting>
+
+<para>
+The "traverse" signal  is emited before "deactivate_cell" and allows to veto the movement.
+In such case, the entry will remain in the site, and the other signals will not be emited.
+</para>
+
+<para>
+The traverse signal is useful when you need to know  what cell have you previously clicked or what was selected. 
+</para>
+
+<para>
+The explanation for the the other signals is quite straightforward so if you want more details you should check 
+GtkExtra Reference Manual or the GtkExtra source code.
+</para>
+
+</sect1>
+
+<!-- ----------------------------------------------------------------- -->
+<sect1 id="sec-ModifyingCellContents">
+<title>Modifying cell contents</title>
+
+<para>
+As previously stated , a cell may contain text, picture or other widgets.
+GtkSheet functions can be categorized after the number of modified cells:
+</para>
+
+<!-- ----------------------------------------------------------------- -->
+<sect2 id="sec-FunctionsThatModifyACell">
+<title>Functions that modify a cell</title>
+
+<para><emphasis role="bold"> A cell text is set by:</emphasis> </para>
+<programlisting role="C">
+/* Set a cell text with justification */
+
+void  gtk_sheet_set_cell  (GtkSheet *sheet, 
+                           gint row, gint col,
+                           GtkJustification justification,
+                           const gchar *text);
+
+/* No justification is made */
+void gtk_sheet_set_cell_text (GtkSheet *sheet, 
+                              gint row, gint col, 
+                              const gchar  *text); 
+</programlisting>
+
+<para>
+The text string will be strdup()ed by the gtkextra library so you may free your string after this line.
+Do not free the internally allocated string !
+This will be done by the library at the destruction of the sheet or when the gtk_sheet_set_cell is called again.
+</para>
+
+<para>
+The text justification in the cell may be : GTK_JUSTIFY_LEFT, GTK_JUSTIFY_RIGHT, GTK_JUSTIFY_CENTER
+</para>
+
+<para><emphasis role="bold"> A cell text is read by:</emphasis> </para>
+<programlisting role="C">
+gchar *  gtk_sheet_cell_get_text (GtkSheet *sheet, gint row, gint col);
+</programlisting>
+
+<para>
+<inlinemediaobject>
+<imageobject>
+<imagedata fileref="images/gtksheet_cell_text.jpg" format="jpg">
+</imageobject>
+</inlinemediaobject>
+</para>
+
+<para><emphasis role="bold"> A cell text is deleted by:</emphasis> </para>
+<programlisting role="C">
+void gtk_sheet_cell_clear(GtkSheet *sheet, gint row, gint col); /*- delete cell contents */
+void gtk_sheet_cell_delete(GGtSheet *sheet, gint row, gint col); /* - delete + remove links*/
+</programlisting>
+
+<para><emphasis role="bold"> You can pack a xpm into a cell like this:</emphasis> </para>
+
+<programlisting role="C">
+GtkWidget *sheet,*bullet;
+GdkPixmap *pixmap;
+GdkColormap *colormap;
+GdkBitmap *mask;
+............
+sheet=gtk_sheet_new(...);
+.......
+colormap = gdk_colormap_get_system();
+pixmap = gdk_pixmap_colormap_create_from_xpm_d(NULL, colormap, &amp;mask, NULL,
+                                               bullet_xpm);
+bullet = gtk_pixmap_new(pixmap, mask);
+gtk_sheet_attach(GTK_SHEET(sheet), bullet, 1, 1, 0,0 ,.5, .5);
+........
+gtk_widget_show_all (bullet); 
+gtk_widget_show_all (window);
+</programlisting>
+<para> See full example here: <ulink url="xpm.c">xpm.c</ulink> </para>
+<para>
+<inlinemediaobject>
+<imageobject>
+<imagedata fileref="images/gtksheet_pack_xpm.jpg" format="jpg">
+</imageobject>
+</inlinemediaobject>
+</para>
+
+<para><emphasis role="bold"> You can pack a combo box into a cell:</emphasis> </para>
+<programlisting role="C">
+GtkWidget *sheet,*combo;
+GList *combo_items;
+..................
+combo=gtk_combo_new();
+combo_items=NULL;
+combo_items=g_list_append (combo_items, "NULL");
+combo_items=g_list_append (combo_items, "NOT NULL");
+gtk_combo_set_popdown_strings (GTK_COMBO (nul_combo), combo_items);
+g_list_free(combo_items);
+
+// From GtkExtra 1.0 the cell may be resized automatically to fit the widget
+gtk_sheet_attach_default (GTK_SHEET(sheet), current_combo, row, col,0,0);
+</programlisting>
+<para>
+<inlinemediaobject>
+<imageobject>
+<imagedata fileref="images/gtksheet_pack_combo.jpg" format="jpg">
+</imageobject>
+</inlinemediaobject>
+</para>
+
+<para>
+The widgets can be added to a cell using these  functions.
+Some of them expand/shrink cell depending of widget size ,others don't.
+See the GtkSheet manual for details.
+</para>
+
+<programlisting role="C">
+/* Attach widget at (row x,col y) starting at the upper left of the cell */
+GtkSheetChild *gtk_sheet_put (GtkSheet *sheet, GtkWidget *widget, gint x, gint y); 
+void gtk_sheet_attach (GtkSheet *sheet,GtkWidget *widget,gint row, gint col,gint xoptions,gint yoptions,gint xpadding,gint ypadding); 
+void gtk_sheet_attach_default (GtkSheet *sheet,GtkWidget *widget,gint row, gint col); 
+void gtk_sheet_attach_floating (GtkSheet *sheet,GtkWidget *widget,gint row, gint col);
+</programlisting>
+
+<para><emphasis role="bold">You can set a link for each cell.</emphasis>
+This is in fact a pointer you want to be associated to the cell.
+</para>
+
+<programlisting role="C">
+void gtk_sheet_link_cell(GtkSheet *sheet, gint row, gint col,gpointer link);
+gpointer gtk_sheet_get_link(GtkSheet *sheet, gint row, gint col);
+void gtk_sheet_remove_link(GtkSheet *sheet, gint row, gint col);
+</programlisting>
+
+</sect2>
+
+<!-- ----------------------------------------------------------------- -->
+<sect2 id="sec-FunctionsThatModifyARange">
+<title>Functions that modify a range of cells</title>
+
+<para><emphasis role="bold">A range of cells</emphasis>is in fact:</para>
+<programlisting role="C">
+struct _GtkSheetRange
+{
+  gint row0,col0; /* upper-left cell */
+  gint rowi,coli; /* lower-right cell */
+};
+</programlisting>
+
+<para>Some functions operating on range of cells:</para>
+<programlisting role="C">
+void  gtk_sheet_get_visible_range (GtkSheet *sheet,GtkSheetRange *range); 
+void  gtk_sheet_range_set_background (GtkSheet *sheet, const GtkSheetRange *range, const GdkColor *color);
+void  gtk_sheet_range_set_foreground (GtkSheet *sheet, const GtkSheetRange *range,const GdkColor *color);
+void  gtk_sheet_select_range (GtkSheet *sheet, const GtkSheetRange *range);
+void  gtk_sheet_unselect_range (GtkSheet *sheet);
+void  gtk_sheet_range_clear (GtkSheet *sheet, const GtkSheetRange *range);
+void  gtk_sheet_range_delete (GtkSheet *sheet, const GtkSheetRange *range);
+void  gtk_sheet_range_set_editable (GtkSheet *sheet, const GtkSheetRange *range, gint editable);
+void  gtk_sheet_range_set_visible (GtkSheet *sheet, const GtkSheetRange *range, gboolean visible);
+void  gtk_sheet_range_set_border (GtkSheet *sheet, const GtkSheetRange *range, gint mask, guint width, gint line_style);
+void  gtk_sheet_range_set_border_color GtkSheet *sheet, const GtkSheetRange *range, const GdkColor  *color);
+</programlisting>
+
+<para><emphasis role="bold">Remark:</emphasis></para>
+<programlisting role="C">
+/* When you declare a range like this:*/
+
+......
+GtkSheetRange range;
+.................
+
+/* You must call the range functions like this : */
+
+void  gtk_sheet_range_clear (sheet, &amp;range); 
+</programlisting>
+
+<para><emphasis role="bold">Screenshot:</emphasis>Modifying the background color of a range.</para>
+<para>
+<inlinemediaobject>
+<imageobject>
+<imagedata fileref="images/gtksheet_range_bg.jpg" format="jpg">
+</imageobject>
+</inlinemediaobject>
+</para>
+
+</sect2>
+
+<!-- ----------------------------------------------------------------- -->
+<sect2 id="sec-FunctionsThatModifyAllCells">
+<title>Functions that modify all cells from sheet</title>
+
+<para>
+These functions are used if you want the cells to contain the same widget.
+These are some of them:
+</para>
+
+<programlisting role="C">
+GtkWidget *gtk_sheet_new_with_custom_entry (guint rows, guint columns, const gchar *title,GtkType entry_type); 
+void  gtk_sheet_set_foreground (GtkSheet *sheet,GdkColor *fg_color);
+void  gtk_sheet_set_background (GtkSheet *sheet,GdkColor *bg_color);
+</programlisting>
+
+</sect2>
+
+<!-- ----------------------------------------------------------------- -->
+<sect2 id="sec-FunctionsThatSetRowColumns">
+<title>Functions that set row/column titles , sheet title , etc </title>
+
+<para><emphasis role="bold">A row/column title </emphasis>can be set with:</para>
+<programlisting role="C">
+void gtk_sheet_row_button_add_label	(GtkSheet *sheet, gint row, const gchar *label); 
+void gtk_sheet_column_button_add_label	(GtkSheet *sheet, gint row, const gchar *label); 
+</programlisting>
+
+<para><emphasis role="bold">gtk_sheet_set_row_title() </emphasis> is used for setting an internal label associated with a row.
+</para>
+
+<para><emphasis role="bold">The sheet title  </emphasis> may be set with : </para>
+<programlisting role="C">
+void gtk_sheet_set_title (GtkSheet *sheet, const gchar *title);
+</programlisting>
+
+<para><emphasis role="bold">The dimensions of the row/column titles </emphasis> may be set with the next functions: 
+These functions exist because you may want to resize the width of a column or height of a row,
+unless you set the autoresize flag, which will do it automaticaly for you.
+</para>
+<programlisting role="C">
+void gtk_sheet_set_row_titles_width(GtkSheet *sheet, guint width); 
+void gtk_sheet_set_column_titles_height(GtkSheet *sheet, guint height);
+</programlisting>
+
+<para><emphasis role="bold"> Row/column title justification </emphasis> is done by: </para>
+<programlisting role="C">
+void gtk_sheet_set_row_titles_width(GtkSheet *sheet, guint width); 
+void gtk_sheet_set_column_titles_height(GtkSheet *sheet, guint height);
+</programlisting>
+
+</sect2>
+
+</sect1>
+
+<!-- ----------------------------------------------------------------- -->
+<sect1 id="sec-ModifyingSheetState">
+<title>Modifying sheet state</title>
+
+<para>You can <emphasis role="bold">freeze/unfreeze </emphasis> the sheet by: </para>
+<programlisting role="C">
+void gtk_sheet_freeze (GtkSheet *sheet); 
+void gtk_sheet_thaw (GtkSheet *sheet); /*thaw means unfreeze*/
+</programlisting>
+
+<para>Set if cell contents <emphasis role="bold">can be edited </emphasis> or not in the given range: </para>
+<programlisting role="C">
+void gtk_sheet_range_set_editable	(GtkSheet *sheet, const GtkSheetRange *range, gint editable);
+</programlisting>
+
+<para><emphasis role="bold">Remark: </emphasis>From GtkExtra 1.0 sheet   state will be set with functions: </para>
+<programlisting role="C">
+void gtk_sheet_set_autoresize (GtkSheet *sheet, gboolean autoresize);
+gboolean gtk_sheet_autoresize (GtkSheet *sheet);
+void gtk_sheet_set_autoscroll (GtkSheet *sheet, gboolean autoscroll);
+gboolean  gtk_sheet_autoscroll(GtkSheet *sheet);
+void gtk_sheet_set_clip_text  (GtkSheet *sheet, gboolean clip_text);
+gboolean gtk_sheet_clip_text  (GtkSheet *sheet);
+void gtk_sheet_set_locked     (GtkSheet *sheet, gboolean lock);
+void gtk_sheet_locked         (GtkSheet *sheet);
+void gtk_sheet_rows_set_resizable (GtkSheet *sheet, gboolean resizable);
+gboolean gtk_sheet_rows_resizable (GtkSheet *sheet);
+void gtk_sheet_columns_set_resizable (GtkSheet *sheet, gboolean resizable);
+gboolean  gtk_sheet_columns_resizable (GtkSheet *sheet);
+void gtk_sheet_show_column_titles (GtkSheet *sheet);
+void gtk_sheet_show_row_titles (GtkSheet *sheet);
+void gtk_sheet_hide_column_titles (GtkSheet *sheet);
+void gtk_sheet_hide_row_titles (GtkSheet *sheet);
+gboolean gtk_sheet_column_titles_visible (GtkSheet *sheet);
+gboolean gtk_sheet_row_titles_visible (GtkSheet *sheet);
+void gtk_sheet_set_justify_entry (GtkSheet *sheet, gboolean justify);
+gboolean gtk_sheet_justify_entry (GtkSheet *sheet);
+</programlisting>
+
+<para>Up to (including) GtkExtra 0.99.17  Sheet state is mainly set by<emphasis role="bold"> a set of macros. </emphasis> </para>
+<programlisting role="C">
+GTK_SHEET_AUTORESIZE(sheet)
+GTK_SHEET_ROW_FROZEN(sheet)   
+GTK_SHEET_COLUMN_FROZEN(sheet)   
+GTK_SHEET_CLIP_TEXT(sheet)   
+GTK_SHEET_AUTO_SCROLL(sheet)
+GTK_SHEET_JUSTIFY_ENTRY(sheet)   
+GTK_SHEET_ROW_TITLES_VISIBLE(sheet)
+GTK_SHEET_COL_TITLES_VISIBLE(sheet)
+</programlisting>
+
+</sect1>
+
+<!-- ----------------------------------------------------------------- -->
+<sect1 id="sec-Selections">
+<title>Selections</title>
+
+<para><emphasis role="bold"> Select a row/column: </emphasis> </para>
+<programlisting role="C">
+void gtk_sheet_select_row (GtkSheet * sheet,gint row);
+void gtk_sheet_select_column (GtkSheet * sheet,gint column);
+</programlisting>
+
+<para><emphasis role="bold"> Unselect a range: </emphasis> </para>
+<programlisting role="C">
+void gtk_sheet_select_range (GtkSheet *sheet, const GtkSheetRange *range); 
+void gtk_sheet_unselect_range	(GtkSheet *sheet);
+</programlisting>
+
+<para>A row/column selection can  be catched using "select_row" and "select_column" signals: </para>
+<programlisting role="C">
+void (*select_row) (GtkSheet *sheet, gint row);
+void (*select_column) (GtkSheet *sheet, gint column);
+</programlisting>
+
+</sect1>
+
+<!-- ----------------------------------------------------------------- -->
+<sect1 id="sec-RowColumnOperations">
+<title> Row/column operations</title>
+
+<para>The most common row/column operations are:</para>
+<itemizedlist spacing=Compact>
+<listitem><simpara> <literal>insertion</literal></simpara></listitem>
+<listitem><simpara> <literal>deletion</literal></simpara></listitem>
+<listitem><simpara> <literal>findind the number of rows/columns</literal></simpara></listitem>
+</itemizedlist>
+<programlisting role="C">
+void gtk_sheet_add_column (GtkSheet *sheet, guint ncols);
+void gtk_sheet_add_row (GtkSheet *sheet, guint nrows);
+void gtk_sheet_insert_rows (GtkSheet *sheet, guint row, guint nrows);
+void gtk_sheet_insert_columns (GtkSheet *sheet, guint col, guint ncols);
+
+void gtk_sheet_delete_rows (GtkSheet *sheet, guint row, guint nrows);
+void gtk_sheet_delete_columns (GtkSheet *sheet, guint col, guint ncols);
+
+guint gtk_sheet_get_columns_count (GtkSheet *sheet);
+guint gtk_sheet_get_rows_count (GtkSheet *sheet);
+</programlisting>
+
+</sect1>
+
+</chapter>
+
+<!-- ***************************************************************** -->
+<chapter id="ch-GtkPlot">
+<title>GtkPlot</title>
+
+<para><emphasis role="bold"> THIS SECTION IS A STUB!! PLEASE CONTRIBUTE ! </emphasis> </para>
+
+</chapter>
+
+
+<!-- ***************************************************************** -->
+<chapter id="ch-Credits">
+<title>Credits</title>
+
+<para>GtkExtra documentation authors are:</para>
+
+<itemizedlist>
+<listitem><simpara>Victor Mierla, <literal><ulink url="mailto:victor.mierla@flash.ro">victor.mierla@flash.ro</ulink></literal> GtkSheet tutorial.</simpara>
+</listitem>
+</itemizedlist>
+
+</chapter>
+
+<!-- ***************************************************************** -->
+<chapter id="ch-Contributing">
+<title>Contributing</title>
+
+<para>This document, like so much other great software out there, was
+created for free by volunteers.  If you are at all knowledgeable about
+any aspect of GTK that does not already have documentation, please
+consider contributing to this document.</para>
+
+<para>If you do decide to contribute, please mail your text to Victor Mierla,
+<literal><ulink url="mailto:victor.mierla@flash.ro">victor.mierla@flash.ro</ulink></literal>. Also, be aware that the entirety of this
+document is free, and any addition by you provide must also be
+free. That is, people may use any portion of your examples in their
+programs, and copies of this document may be distributed at will, etc.</para>
+
+<para>Thank you.</para>
+
+</chapter>
+
+<!-- ***************************************************************** -->
+<chapter id="ch-Tips">
+<title>Tips For Writing GtkExtra Applications</title>
+
+<para>This section is simply a gathering of wisdom, general style guidelines
+and hints to creating good GtkExtra applications. Currently this section
+is very short, but I hope it will get longer in future editions of
+this tutorial.</para>
+
+<para>Use GNU autoconf and automake! They are your friends :) Automake
+examines C files, determines how they depend on each other, and
+generates a Makefile so the files can be compiled in the correct
+order. Autoconf permits automatic configuration of software
+installation, handling a large number of system quirks to increase
+portability. I am planning to make a quick intro on them here.</para>
+
+<para>When writing C code, use only C comments (beginning with "/*" and
+ending with "*/"), and don't use C++-style comments ("//").  Although
+many C compilers understand C++ comments, others don't, and the ANSI C
+standard does not require that C++-style comments be processed as
+comments.</para>
+
+</chapter>
+
+</book>

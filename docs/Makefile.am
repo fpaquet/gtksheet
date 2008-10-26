@@ -1,4 +1,4 @@
-SUBDIRS = reference
+SUBDIRS = reference tutorial
 
 EXTRA_DIST = \
 	COPYING \

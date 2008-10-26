@@ -18,5 +18,7 @@ dependencies
 * linuxdoc-tools
 * docbook-utils
 * jade
+* Docbook dependencies
+ (docbook-to-man,docbook-xls, openjade , jadetex , tex-common , sgmlspl ,texlive ,tipa ,etc)
 
 Documentation is currently under development.

@@ -890,7 +890,7 @@ void		gtk_plot_y0line_set_attributes 	(GtkPlot *plot,
 						 gfloat width,
 						 const GdkColor *color);
 void		gtk_plot_x0line_set_attributes 	(GtkPlot *plot,
-						 GtkPlotLineStyle style,
+						 GtkPlotLineStyle line_style,
 						 gfloat width,
 						 const GdkColor *color);
 void		gtk_plot_major_vgrid_set_attributes 	(GtkPlot *plot,

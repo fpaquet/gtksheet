@@ -196,14 +196,28 @@ enum
   GTK_PLOT_GRADIENT_S		= 1 << 2,
 };
 
+/**
+ * GtkPlotMarker:
+ *
+ * The GtkPlotMarker struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotMarker
 {
+  /*< private >*/
   GtkPlotData *data;
   gint point;
 };
 
+/**
+ * GtkPlotText:
+ *
+ * The GtkPlotText struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotText
 {
+  /*< private >*/
   gdouble x, y;
   gint angle; /* 0, 90, 180, 270 */
   GdkColor fg;
@@ -224,8 +238,15 @@ struct _GtkPlotText
   GtkJustification justification;
 };
 
+/**
+ * GtkPlotLine:
+ *
+ * The GtkPlotLine struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotLine
 {
+  /*< private >*/
   GtkPlotLineStyle line_style;
   GdkCapStyle cap_style;
   GdkJoinStyle join_style;
@@ -234,8 +255,15 @@ struct _GtkPlotLine
   GdkColor color;
 };
 
+/**
+ * GtkPlotSymbol:
+ *
+ * The GtkPlotSymbol struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotSymbol
 {
+  /*< private >*/
   GtkPlotSymbolType symbol_type;
   GtkPlotSymbolStyle symbol_style;
 
@@ -245,19 +273,40 @@ struct _GtkPlotSymbol
   GtkPlotLine border;
 };
 
+/**
+ * GtkPlotVector:
+ *
+ * The GtkPlotVector struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotVector
 {
+  /*< private >*/
   gdouble x, y, z;
 };
 
+/**
+ * GtkPlotTick:
+ *
+ * The GtkPlotTick struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotTick
 {
+  /*< private >*/
   gdouble value;
   gboolean minor;
 };
 
+/**
+ * GtkPlotTicks:
+ *
+ * The GtkPlotTicks struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotTicks
 {
+  /*< private >*/
   gdouble min;
   gdouble max;
 
@@ -284,8 +333,16 @@ struct _GtkPlotTicks
   gdouble begin, end; 
 };
 
+/**
+ * GtkPlotAxis:
+ *
+ * The GtkPlotAxis struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
 struct _GtkPlotAxis
 {
+  /*< private >*/
   GtkObject object;
 
   gboolean is_visible;
@@ -340,8 +397,15 @@ struct _GtkPlotAxis
 					 gchar *label);
 };
 
+/**
+ * GtkPlotData:
+ *
+ * The GtkPlotData struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotData
 {
+  /*< private >*/
   GtkWidget widget;
 
   gboolean is_function;

@@ -41,6 +41,13 @@ typedef enum
       GTK_PLOT_ARROW_END             = 1 << 1
 } GtkPlotArrow;
 
+/**
+ * GtkPlotSegment:
+ *
+ * The GtkPlotSegment struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
 struct _GtkPlotSegment
 {
   GtkPlotData data;

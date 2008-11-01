@@ -49,8 +49,15 @@ typedef union
   gpointer *data_pointer;
 } GtkPlotArrayArg;
 
+/**
+ * GtkPlotArrayList:
+ *
+ * The GtkPlotArrayList struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotArrayList
 {
+ /*< private >*/
   GObject object;
 
   GList *arrays;
@@ -61,7 +68,12 @@ struct _GtkPlotArrayListClass
   GObjectClass parent_class;
 };
 
-
+/**
+ * GtkPlotArray:
+ *
+ * The GtkPlotArray struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotArray
 {
   GObject object;

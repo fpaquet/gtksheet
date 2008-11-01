@@ -36,6 +36,12 @@ extern "C" {
 typedef struct _GtkPlotCanvasEllipse	GtkPlotCanvasEllipse;
 typedef struct _GtkPlotCanvasEllipseClass	GtkPlotCanvasEllipseClass;
 
+/**
+ * GtkPlotCanvasEllipse:
+ *
+ * The GtkPlotCanvasEllipse struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotCanvasEllipse
 {
   GtkPlotCanvasChild parent;

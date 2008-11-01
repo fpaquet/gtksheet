@@ -41,6 +41,12 @@ typedef enum
   GTK_PLOT_BAR_ABSOLUTE,
 } GtkPlotBarUnits;
 
+/**
+ * GtkPlotBar:
+ *
+ * The GtkPlotBar struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotBar
 {
   GtkPlotData data;

@@ -36,6 +36,12 @@ extern "C" {
 typedef struct _GtkPlotCanvasRectangle	GtkPlotCanvasRectangle;
 typedef struct _GtkPlotCanvasRectangleClass	GtkPlotCanvasRectangleClass;
 
+/**
+ * GtkPlotCanvasRectangle:
+ *
+ * The GtkPlotCanvasRectangle struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotCanvasRectangle
 {
   GtkPlotCanvasChild parent;

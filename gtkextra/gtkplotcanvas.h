@@ -109,6 +109,12 @@ typedef struct _GtkPlotCanvasClass	GtkPlotCanvasClass;
 typedef struct _GtkPlotCanvasChild	GtkPlotCanvasChild;
 typedef struct _GtkPlotCanvasChildClass	GtkPlotCanvasChildClass;
 
+/**
+ * GtkPlotCanvasChild:
+ *
+ * The GtkPlotCanvasChild struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotCanvasChild
 {
   GtkObject object;
@@ -148,6 +154,12 @@ struct _GtkPlotCanvasChildClass
   void (*set_magnification) (GtkPlotCanvas *canvas, GtkPlotCanvasChild *child, gdouble m);
 };
 
+/**
+ * GtkPlotCanvas:
+ *
+ * The GtkPlotCanvas struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotCanvas
 {
   GtkFixed fixed;

@@ -41,6 +41,12 @@ extern "C" {
 typedef struct _GtkPlotPolar		GtkPlotPolar;
 typedef struct _GtkPlotPolarClass		GtkPlotPolarClass;
 
+/**
+ * GtkPlotPolar:
+ *
+ * The GtkPlotPolar struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotPolar
 {
   GtkPlot plot;

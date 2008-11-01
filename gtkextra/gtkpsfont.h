@@ -74,7 +74,14 @@ extern "C" {
 
 typedef struct _GtkPSFont GtkPSFont;
 
+/**
+ * GtkPSFont:
+ *
+ * The GtkPSFont struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPSFont {
+  /*< private >*/
   gchar *fontname;
   gchar *psname;
   gchar *family;

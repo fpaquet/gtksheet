@@ -34,6 +34,12 @@ extern "C" {
 typedef struct _GtkPlotCandle             GtkPlotCandle;
 typedef struct _GtkPlotCandleClass        GtkPlotCandleClass;
 
+/**
+ * GtkPlotCandle:
+ *
+ * The GtkPlotCandle struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotCandle
 {
   GtkPlotData data;

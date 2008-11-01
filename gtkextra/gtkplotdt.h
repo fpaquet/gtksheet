@@ -39,8 +39,15 @@ typedef struct _GtkPlotDT GtkPlotDT;
 typedef struct _GtkPlotDTClass GtkPlotDTClass;
 
 /* A 2D-node for the delaunay triangulation */
+/**
+ * GtkPlotDTnode:
+ *
+ * The GtkPlotDTnode struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotDTnode 
 {
+  /*< private >*/
   gdouble x, y, z;    /* actual coordinates */
   gdouble px, py, pz;	/* pixel coordinates */
   gint id;            /* some kind of 'meta-data' for external use */
@@ -48,8 +55,15 @@ struct _GtkPlotDTnode
   gint boundary_marker;
 };
 
+/**
+ * GtkPlotDTtriangle:
+ *
+ * The GtkPlotDTtriangle struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotDTtriangle 
 {
+  /*< private >*/
   gint a, b, c;
   GtkPlotDTnode *na, *nb, *nc;
   double radius;         /* radius-square */

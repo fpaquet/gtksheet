@@ -62,6 +62,12 @@ enum
       GTK_PLOT_CANVAS_PLOT_DND_POINT     =       1 << 1, /* DnD point */
 };
 
+/**
+ * GtkPlotCanvasPlot:
+ *
+ * The GtkPlotBar struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotCanvasPlot
 {
   GtkPlotCanvasChild parent;

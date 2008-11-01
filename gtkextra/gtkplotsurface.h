@@ -36,6 +36,12 @@ typedef struct _GtkPlotPolygon             GtkPlotPolygon;
 typedef struct _GtkPlotSurface             GtkPlotSurface;
 typedef struct _GtkPlotSurfaceClass        GtkPlotSurfaceClass;
 
+/**
+ * GtkPlotiPolygon:
+ *
+ * The GtkPlotPolygon struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotPolygon
 {
   GtkPlotDTtriangle *t;  		/* parent triangle */
@@ -47,6 +53,12 @@ struct _GtkPlotPolygon
   gboolean sublevel;
 };
 
+/**
+ * GtkPlotSurface:
+ *
+ * The GtkPlotSurface struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotSurface
 {
   GtkPlotData data;

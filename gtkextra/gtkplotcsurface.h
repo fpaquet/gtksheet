@@ -49,6 +49,13 @@ typedef enum
   GTK_PLOT_PROJECT_FULL,  /* draw filled contours */
 } GtkPlotProjection;      
 
+
+/**
+ * GtkPlotCSurface:
+ *
+ * The GtkPlotCSurface struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotCSurface
 {
   GtkPlotSurface surface;

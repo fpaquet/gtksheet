@@ -41,6 +41,13 @@ extern "C" {
     typedef struct _GtkPlotCairo GtkPlotCairo;
     typedef struct _GtkPlotCairoClass GtkPlotCairoClass;
 
+   
+/**
+ * GtkPlotCairo:
+ *
+ * The GtkPlotCairo struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
     struct _GtkPlotCairo
     {
         GtkPlotPC pc;

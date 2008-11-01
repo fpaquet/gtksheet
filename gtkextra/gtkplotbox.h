@@ -34,6 +34,12 @@ extern "C" {
 typedef struct _GtkPlotBox             GtkPlotBox;
 typedef struct _GtkPlotBoxClass        GtkPlotBoxClass;
 
+/**
+ * GtkPlotBox:
+ *
+ * The GtkPlotBox struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotBox
 {
   GtkPlotData data;

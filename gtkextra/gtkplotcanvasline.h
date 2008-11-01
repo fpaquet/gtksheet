@@ -43,6 +43,12 @@ typedef enum
       GTK_PLOT_CANVAS_ARROW_END             = 1 << 1
 } GtkPlotCanvasArrow;
                                                                                 
+/**
+ * GtkPlotCanvasLine:
+ *
+ * The GtkPlotCanvasLine struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotCanvasLine
 {
   GtkPlotCanvasChild parent;

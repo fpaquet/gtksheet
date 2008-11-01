@@ -60,6 +60,13 @@ typedef enum
   GTK_PLOT_SIDE_ZY	= 1 << 5 ,
 } GtkPlotSide;
 
+/**
+ * GtkPlot3D:
+ *
+ * The GtkPlot3D struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
+
 struct _GtkPlot3D
 {
   GtkPlot plot;

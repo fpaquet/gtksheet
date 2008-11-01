@@ -34,6 +34,12 @@ extern "C" {
 typedef struct _GtkPlotPixmap             GtkPlotPixmap;
 typedef struct _GtkPlotPixmapClass        GtkPlotPixmapClass;
 
+/**
+ * GtkPlotPixmap:
+ *
+ * The GtkPlotPixmap struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotPixmap
 {
   GtkPlotData data;

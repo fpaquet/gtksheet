@@ -35,6 +35,12 @@ typedef struct _GtkPlotBubble             GtkPlotBubble;
 typedef struct _GtkPlotBubbleClass        GtkPlotBubbleClass;
 
 
+/**
+ * GtkPlotBubble:
+ *
+ * The GtkPlotBubble struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotBubble
 {
   GtkPlotData data;

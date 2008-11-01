@@ -77,6 +77,12 @@ typedef struct _GtkPlotPC GtkPlotPC;
 typedef struct _GtkPlotPCClass GtkPlotPCClass;
 typedef struct _GtkPlotPoint         GtkPlotPoint;
 
+/**
+ * GtkPlotPoint:
+ *
+ * The GtkPlotPoint struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotPoint
 {
   gdouble x, y;

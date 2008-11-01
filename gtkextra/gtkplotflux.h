@@ -35,6 +35,12 @@ typedef struct _GtkPlotFlux             GtkPlotFlux;
 typedef struct _GtkPlotFluxClass        GtkPlotFluxClass;
 
 
+/**
+ * GtkPlotFlux:
+ *
+ * The GtkPlotFlux struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotFlux
 {
   GtkPlotData data;

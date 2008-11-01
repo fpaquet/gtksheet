@@ -39,6 +39,12 @@ extern "C" {
 typedef struct _GtkPlotGdk GtkPlotGdk;
 typedef struct _GtkPlotGdkClass GtkPlotGdkClass;
 
+/**
+ * GtkPlotGdk:
+ *
+ * The GtkPlotGdk struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotGdk
 {
    GtkPlotPC pc;

@@ -36,6 +36,12 @@ extern "C" {
 typedef struct _GtkPlotCanvasText	GtkPlotCanvasText;
 typedef struct _GtkPlotCanvasTextClass	GtkPlotCanvasTextClass;
 
+/**
+ * GtkPlotCanvasText:
+ *
+ * The GtkPlotCanvasText struct contains only private data.
+ * It should only be accessed through the functions described below.
+ */
 struct _GtkPlotCanvasText
 {
   GtkPlotCanvasChild parent;

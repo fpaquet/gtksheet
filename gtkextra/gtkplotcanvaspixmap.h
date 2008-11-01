@@ -51,7 +51,7 @@ struct _GtkPlotCanvasPixmapClass
 
 GtkType 	gtk_plot_canvas_pixmap_get_type	(void);
 GtkPlotCanvasChild * 
-		gtk_plot_canvas_pixmap_new(GdkPixmap *pixmap, GdkBitmap *mask);
+		gtk_plot_canvas_pixmap_new(GdkPixmap *_pixmap, GdkBitmap *mask);
 
 #ifdef __cplusplus
 }

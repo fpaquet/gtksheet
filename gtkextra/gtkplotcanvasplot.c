@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotcanvasplot
+ * @short_description: 
+ *
+ * FIXME:: need long description
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -89,6 +96,14 @@ gtk_plot_canvas_plot_get_type (void)
   return plot_canvas_plot_type;
 }
 
+/**
+ * gtk_plot_canvas_plot_new:
+ * @plot: a #GtkPlot.
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotCanvasChild*
 gtk_plot_canvas_plot_new (GtkPlot *plot)
 {

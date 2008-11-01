@@ -28,6 +28,13 @@
 #include "gtkplotgdk.h"
 #include "gtkplotps.h"
 
+/**
+ * SECTION: gtkplotcanvaspixmap
+ * @short_description: 
+ *
+ * FIXME:: need long description
+ */
+
 #define P_(string) string
 
 enum {
@@ -83,6 +90,15 @@ gtk_plot_canvas_pixmap_get_type (void)
   return plot_canvas_pixmap_type;
 }
 
+/**
+ * gtk_plot_canvas_pixmap_new:
+ * @_pixmap: a GdkPixmap.
+ * @mask:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotCanvasChild*
 gtk_plot_canvas_pixmap_new (GdkPixmap *_pixmap, GdkBitmap *mask)
 {

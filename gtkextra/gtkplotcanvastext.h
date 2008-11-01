@@ -57,7 +57,7 @@ GtkPlotCanvasChild *
 						 const GdkColor *bg,
                           			 gboolean transparent,
                           			 GtkJustification justification,
-                          			 const gchar *text);
+                          			 const gchar *real_text);
 
 void 		gtk_plot_canvas_text_set_attributes
 						(GtkPlotCanvasText *text,

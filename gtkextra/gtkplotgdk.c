@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotgdk
+ * @short_description: 
+ *
+ * FIXME:: Need long description.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -233,6 +240,14 @@ gtk_plot_gdk_class_init (GtkPlotGdkClass *klass)
 }
 
 
+/**
+ * gtk_plot_gdk_new:
+ * @widget:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkObject *
 gtk_plot_gdk_new                                (GtkWidget *widget)
 {
@@ -245,6 +260,13 @@ gtk_plot_gdk_new                                (GtkWidget *widget)
   return (object);
 }
 
+/**
+ * gtk_plot_gdk_construct:
+ * @pc:
+ * @widget:
+ *
+ *
+ */
 void
 gtk_plot_gdk_construct(GtkPlotGdk *pc, GtkWidget *widget)
 {
@@ -293,6 +315,13 @@ gtk_plot_gdk_leave (GtkPlotPC *pc)
 {
 }
 
+/**
+ * gtk_plot_gdk_set_drawable:
+ * @gdk:
+ * @drawable:
+ *
+ *
+ */
 void
 gtk_plot_gdk_set_drawable               (GtkPlotGdk *gdk, GdkDrawable *drawable)
 {

@@ -106,9 +106,9 @@ struct _GtkPlotDTClass
 
 GtkType         gtk_plot_dt_get_type               	(void);
 GtkObject*	gtk_plot_dt_new 			(gint num);
-void		gtk_plot_dt_set_quadrilateral		(GtkPlotDT *data, 
+void		gtk_plot_dt_set_quadrilateral		(GtkPlotDT *dt, 
 							 gboolean set);
-void		gtk_plot_dt_set_subsampling		(GtkPlotDT *data, 
+void		gtk_plot_dt_set_subsampling		(GtkPlotDT *dt, 
 							 gboolean set);
 gboolean        gtk_plot_dt_add_node			(GtkPlotDT *data, 
 							 GtkPlotDTnode node);

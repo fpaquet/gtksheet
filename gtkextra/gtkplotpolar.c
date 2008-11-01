@@ -17,6 +17,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotpolar
+ * @short_description: 
+ *
+ * FIXME:: Need long description.
+ */
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -117,6 +125,11 @@ gtk_plot_polar_class_init (GtkPlotPolarClass *klass)
   plot_class->get_point = gtk_plot_polar_real_get_point;
   plot_class->get_pixel = gtk_plot_polar_real_get_pixel;
 
+  /**
+   * GtkPlotPolar:rotation:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_ROTATION,
   g_param_spec_double ("rotation",
@@ -319,6 +332,14 @@ gtk_plot_polar_real_paint (GtkWidget *widget)
 }
 
 
+/**
+ * gtk_plot_polar_new:
+ * @drawable:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkWidget*
 gtk_plot_polar_new (GdkDrawable *drawable)
 {
@@ -331,6 +352,16 @@ gtk_plot_polar_new (GdkDrawable *drawable)
   return GTK_WIDGET (plot);
 }
 
+/**
+ * gtk_plot_polar_new_with_size:
+ * @drawable:
+ * @width:
+ * @height:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkWidget*
 gtk_plot_polar_new_with_size (GdkDrawable *drawable, gdouble width, gdouble height)
 {
@@ -343,13 +374,28 @@ gtk_plot_polar_new_with_size (GdkDrawable *drawable, gdouble width, gdouble heig
 
   return(plot);
 }
-
+/**
+ * gtk_plot_polar_construct:
+ * @plot: a #GtkPlotPolar widget.
+ * @drawable:
+ *
+ *
+ */
 void
 gtk_plot_polar_construct(GtkPlotPolar *plot, GdkDrawable *drawable)
 {
   GTK_PLOT(plot)->drawable = drawable;
 }
 
+/**
+ * gtk_plot_polar_construct_with_size:
+ * @plot: a #GtkPlotPolar widget.
+ * @drawable:
+ * @width:
+ * @height:
+ *
+ *
+ */
 void
 gtk_plot_polar_construct_with_size(GtkPlotPolar *plot, GdkDrawable *drawable, gdouble width, gdouble height)
 {
@@ -958,6 +1004,14 @@ gtk_plot_polar_real_get_point(GtkWidget *widget,
 /*******************************************
  * gtk_plot_polar_rotate
  *******************************************/
+
+/**
+ * gtk_plot_polar_rotate:
+ * @plot: a #GtkPlotPolar widget.
+ * @angle:
+ *
+ *
+ */
 void
 gtk_plot_polar_rotate(GtkPlotPolar *polar, gdouble angle)
 {
@@ -967,7 +1021,14 @@ gtk_plot_polar_rotate(GtkPlotPolar *polar, gdouble angle)
   gtk_signal_emit_by_name(GTK_OBJECT(polar), "changed");
 }
 
-
+/**
+ * gtk_plot_polar_get_angle:
+ * @plot: a #GtkPlotPolar widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble
 gtk_plot_polar_get_angle(GtkPlotPolar *polar)
 {

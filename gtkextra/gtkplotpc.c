@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotpc
+ * @short_description: 
+ *
+ * FIXME:: Need long description.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -94,6 +101,14 @@ gtk_plot_pc_new				(void)
   return (object);
 }
 
+/**
+ * gtk_plot_pc_init:
+ * @pc:
+ *
+ *
+ *
+ * Return value:
+ */
 gboolean gtk_plot_pc_init                                   (GtkPlotPC *pc)
 {
   pc->init_count++;
@@ -102,6 +117,12 @@ gboolean gtk_plot_pc_init                                   (GtkPlotPC *pc)
   return(GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->init(pc));
 }
 
+/**
+ * gtk_plot_pc_leave:
+ * @pc:
+ *
+ *
+ */
 void gtk_plot_pc_leave                                  (GtkPlotPC *pc)
 {
   pc->init_count--;
@@ -110,6 +131,14 @@ void gtk_plot_pc_leave                                  (GtkPlotPC *pc)
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->leave(pc);
 }
 
+/**
+ * gtk_plot_pc_set_viewport:
+ * @pc:
+ * @w:
+ * @h:
+ *
+ *
+ */
 void gtk_plot_pc_set_viewport (GtkPlotPC *pc, gdouble w, gdouble h)
 {
   pc->width = w;
@@ -117,22 +146,50 @@ void gtk_plot_pc_set_viewport (GtkPlotPC *pc, gdouble w, gdouble h)
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->set_viewport(pc, w, h);
 }
 
+/**
+ * gtk_plot_pc_gsave:
+ * @pc:
+ *
+ *
+ */
 void gtk_plot_pc_gsave                                  (GtkPlotPC *pc)
 {
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->gsave(pc);
 }
 
+/**
+ * gtk_plot_pc_grestore:
+ * @pc:
+ *
+ *
+ */
 void gtk_plot_pc_grestore                               (GtkPlotPC *pc)
 {
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->grestore(pc);
 }
 
+/**
+ * gtk_plot_pc_clip:
+ * @pc:
+ * @area:
+ *
+ *
+ */
 void gtk_plot_pc_clip                                   (GtkPlotPC *pc,
                                                          GdkRectangle *area)
 {
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->clip(pc, area);
 }
 
+/**
+ * gtk_plot_pc_clip_mask:
+ * @pc:
+ * @x:
+ * @y:
+ * @mask:
+ *
+ *
+ */
 void gtk_plot_pc_clip_mask                              (GtkPlotPC *pc,
 							 gdouble x,
 							 gdouble y,
@@ -141,6 +198,13 @@ void gtk_plot_pc_clip_mask                              (GtkPlotPC *pc,
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->clip_mask(pc, x, y, mask);
 }
 
+/**
+ * gtk_plot_pc_set_color:
+ * @pc:
+ * @color:
+ *
+ *
+ */
 void gtk_plot_pc_set_color                               (GtkPlotPC *pc,
                                                           GdkColor *color)
 {
@@ -148,6 +212,16 @@ void gtk_plot_pc_set_color                               (GtkPlotPC *pc,
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->set_color(pc, color);
 }
 
+/**
+ * gtk_plot_pc_set_lineattr:
+ * @pc:
+ * @line_width:
+ * @line_style:
+ * @cap_style:
+ * @join_style:
+ *
+ *
+ */
 void gtk_plot_pc_set_lineattr                    (GtkPlotPC *pc,
                                                  gfloat line_width,
                                                  GdkLineStyle line_style,
@@ -157,6 +231,15 @@ void gtk_plot_pc_set_lineattr                    (GtkPlotPC *pc,
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->set_lineattr(pc, line_width, line_style, cap_style, join_style);
 }
 
+/**
+ * gtk_plot_pc_set_dash:
+ * @pc:
+ * @offset_:
+ * @values:
+ * @num_values:
+ *
+ *
+ */
 void gtk_plot_pc_set_dash                                (GtkPlotPC *pc,
                                                          gdouble offset_,
                                                          gdouble *values,
@@ -165,6 +248,16 @@ void gtk_plot_pc_set_dash                                (GtkPlotPC *pc,
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->set_dash(pc, offset_, values, num_values);
 }
 
+/**
+ * gtk_plot_pc_draw_line:
+ * @pc:
+ * @x1:
+ * @y1:
+ * @x2:
+ * @y2:
+ *
+ *
+ */
 void gtk_plot_pc_draw_line                               (GtkPlotPC *pc,
                                                          gdouble x1, gdouble y1,
                                                          gdouble x2, gdouble y2)
@@ -172,6 +265,13 @@ void gtk_plot_pc_draw_line                               (GtkPlotPC *pc,
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_line(pc, x1, y1, x2, y2);
 }
 
+/**
+ * gtk_plot_pc_draw_lines:
+ * @points:
+ * @numpoints:
+ *
+ *
+ */
 void gtk_plot_pc_draw_lines                              (GtkPlotPC *pc,
                                                          GtkPlotPoint *points,
                                                          gint numpoints)
@@ -180,12 +280,31 @@ void gtk_plot_pc_draw_lines                              (GtkPlotPC *pc,
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_lines(pc, points, numpoints);
 }
 
+/**
+ * gtk_plot_pc_draw_point:
+ * @pc:
+ * @x:
+ * @y:
+ *
+ *
+ */
 void gtk_plot_pc_draw_point                             (GtkPlotPC *pc,
                                                          gdouble x, gdouble y)
 {
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_point(pc, x, y);
 }
 
+/**
+ * gtk_plot_pc_draw_rectangle:
+ * @pc:
+ * @filled:
+ * @x:
+ * @y:
+ * @width:
+ * @height:
+ *
+ *
+ */
 void gtk_plot_pc_draw_rectangle                          (GtkPlotPC *pc,
                                                          gint filled,
                                                          gdouble x, gdouble y,
@@ -195,6 +314,14 @@ void gtk_plot_pc_draw_rectangle                          (GtkPlotPC *pc,
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_rectangle(pc, filled, x, y, width, height);
 }
 
+/**
+ * gtk_plot_pc_draw_polygon:
+ * @pc:
+ * @filled:
+ * @points:
+ *
+ *
+ */
 void gtk_plot_pc_draw_polygon                            (GtkPlotPC *pc,
                                                          gint filled,
                                                          GtkPlotPoint *points,
@@ -204,6 +331,16 @@ void gtk_plot_pc_draw_polygon                            (GtkPlotPC *pc,
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_polygon(pc, filled, points, numpoints);
 }
 
+/**
+ * gtk_plot_pc_draw_circle:
+ * @pc:
+ * @filled:
+ * @x:
+ * @y:
+ * @size:
+ *
+ *
+ */
 void gtk_plot_pc_draw_circle                             (GtkPlotPC *pc,
                                                          gint filled,
                                                          gdouble x, gdouble y,
@@ -212,6 +349,17 @@ void gtk_plot_pc_draw_circle                             (GtkPlotPC *pc,
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_circle(pc, filled, x, y, size);
 }
 
+/**
+ * gtk_plot_pc_draw_ellipse:
+ * @pc:
+ * @filled:
+ * @x:
+ * @y:
+ * @width:
+ * @height:
+ *
+ *
+ */
 void gtk_plot_pc_draw_ellipse                            (GtkPlotPC *pc,
                                                          gint filled,
                                                          gdouble x, gdouble y,
@@ -221,6 +369,14 @@ void gtk_plot_pc_draw_ellipse                            (GtkPlotPC *pc,
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_ellipse(pc, filled, x, y, width, height);
 }
 
+/**
+ * gtk_plot_pc_set_font:
+ * @pc:
+ * @psfont:
+ * @height:
+ *
+ *
+ */
 void gtk_plot_pc_set_font                                (GtkPlotPC *pc,
 							 GtkPSFont *psfont,
                                                          gint height)
@@ -228,6 +384,26 @@ void gtk_plot_pc_set_font                                (GtkPlotPC *pc,
   GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->set_font(pc, psfont, height);
 }
 
+/**
+ * gtk_plot_pc_draw_string:
+ * @pc:
+ * @x:
+ * @y:
+ * @angle:
+ * @fg:
+ * @bg:
+ * @transparent:
+ * @border:
+ * @border_space:
+ * @border_width:
+ * @shadow_width:
+ * @font:
+ * @height:
+ * @just:
+ * @text:
+ *
+ *
+ */
 void gtk_plot_pc_draw_string                             (GtkPlotPC *pc,
                                                          gint x, gint y,
                                                          gint angle,
@@ -263,7 +439,22 @@ void gtk_plot_pc_draw_string                             (GtkPlotPC *pc,
 
 }
 
-
+/**
+ * gtk_plot_pc_draw_pixmap:
+ * @pc:
+ * @pixmap:
+ * @mask:
+ * @xsrc:
+ * @ysrc:
+ * @xdest:
+ * @ydest:
+ * @width:
+ * @height:
+ * @scale_x:
+ * @scale_y:
+ *
+ *
+ */
 void  gtk_plot_pc_draw_pixmap                           (GtkPlotPC *pc,
                                                          GdkPixmap *pixmap,
                                                          GdkBitmap *mask,

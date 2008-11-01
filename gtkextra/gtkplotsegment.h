@@ -68,11 +68,11 @@ gboolean	gtk_plot_segment_relative       (GtkPlotSegment *segment);
 void            gtk_plot_segment_set_arrow         (GtkPlotSegment *segment,
                                                  gint arrow_length,
                                                  gint arrow_width,
-                                                 GtkPlotSymbolStyle style);
+                                                 GtkPlotSymbolStyle arrow_style);
 void            gtk_plot_segment_get_arrow      (GtkPlotSegment *segment,
                                                  gint *arrow_length,
                                                  gint *arrow_width,
-                                                 GtkPlotSymbolStyle *style);
+                                                 GtkPlotSymbolStyle *arrow_style);
 void            gtk_plot_segment_set_arrow_mask (GtkPlotSegment *segment,
                                                  GtkPlotArrow mask);
 guint   	gtk_plot_segment_get_arrow_mask	(GtkPlotSegment *segment);

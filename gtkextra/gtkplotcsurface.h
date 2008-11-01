@@ -87,19 +87,19 @@ gboolean	gtk_plot_csurface_get_lines_visible (GtkPlotCSurface *csurface);
 void		gtk_plot_csurface_set_projection    (GtkPlotCSurface *csurface,
 						     GtkPlotProjection proj);
 GtkPlotProjection	gtk_plot_csurface_projection 	(GtkPlotCSurface *csurface);
-void            gtk_plot_csurface_set_levels_attributes (GtkPlotCSurface *data,
+void            gtk_plot_csurface_set_levels_attributes (GtkPlotCSurface *dataset,
                                                          GtkPlotLineStyle style,
                                                          gfloat width,
                                                          const GdkColor *color);
-void            gtk_plot_csurface_set_sublevels_attributes (GtkPlotCSurface *data,
+void            gtk_plot_csurface_set_sublevels_attributes (GtkPlotCSurface *dataset,
                                                          GtkPlotLineStyle style,
                                                          gfloat width,
                                                          const GdkColor *color);
-void            gtk_plot_csurface_get_levels_attributes (GtkPlotCSurface *data,
+void            gtk_plot_csurface_get_levels_attributes (GtkPlotCSurface *dataset,
                                                          GtkPlotLineStyle *style,
                                                          gfloat *width,
                                                          GdkColor *color);
-void            gtk_plot_csurface_get_sublevels_attributes (GtkPlotCSurface *data,
+void            gtk_plot_csurface_get_sublevels_attributes (GtkPlotCSurface *dataset,
                                                          GtkPlotLineStyle *style,
                                                          gfloat *width,
                                                          GdkColor *color);

@@ -252,8 +252,8 @@ void 		gtk_plot_canvas_set_transparent (GtkPlotCanvas *canvas,
 						 gboolean transparent);
 gboolean 	gtk_plot_canvas_transparent 	(GtkPlotCanvas *canvas);
 void		gtk_plot_canvas_set_background  (GtkPlotCanvas *canvas,
-						 const GdkColor *background);
-void            gtk_plot_canvas_get_pixel       (GtkPlotCanvas *plot_canvas,
+						 const GdkColor *bg_color);
+void            gtk_plot_canvas_get_pixel       (GtkPlotCanvas *canvas,
                                                  gdouble px, gdouble py,
                                                  gint *x, gint *y);
 void            gtk_plot_canvas_get_position    (GtkPlotCanvas *plot_canvas,

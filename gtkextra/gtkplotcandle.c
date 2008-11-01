@@ -28,6 +28,14 @@
 #include "gtkplotcandle.h"
 #include "gtkpsfont.h"
 
+/**
+ * SECTION: gtkplotcandle
+ * @short_description: 
+ *
+ * FIXME:: need long description.
+ */
+
+
 static void gtk_plot_candle_class_init 	(GtkPlotCandleClass *klass);
 static void gtk_plot_candle_init 	(GtkPlotCandle *data);
 static void gtk_plot_candle_draw_legend	(GtkPlotData *data, 

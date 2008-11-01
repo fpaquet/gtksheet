@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotbox
+ * @short_description: 
+ *
+ * FIXME:: need long description.
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -180,6 +187,15 @@ gtk_plot_box_init (GtkPlotBox *dataset)
   GTK_PLOT_DATA(dataset)->line.color = black;
 }
 
+/**
+ * gtk_plot_box_new:
+ * @orientation: GTK_ORIENTATION_HORIZONTAL or GTK_ORIENTATION_VERTICAL.
+ *
+ * Create a new GtkPlotBox widget.
+ *
+ * Return value: a new GtkWidget.
+ */
+
 GtkWidget*
 gtk_plot_box_new (GtkOrientation orientation)
 {
@@ -192,6 +208,13 @@ gtk_plot_box_new (GtkOrientation orientation)
   return (widget);
 }
 
+/**
+ * gtk_plot_box_construct:
+ * @box: a #GtkPlotBox widget.
+ * @orientation: GTK_ORIENTATION_HORIZONTAL or GTK_ORIENTATION_VERTICAL.
+ *
+ * Initializes a #GtkPlotBar structure.
+ */
 void
 gtk_plot_box_construct (GtkPlotBox *box, GtkOrientation orientation)
 {

@@ -17,6 +17,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplot
+ * @short_description: 3d scientific plots widget
+ *
+ * FIXME:: Need long description.
+ */
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -180,18 +188,36 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
   plot_class->plot_paint = gtk_plot3d_real_paint;
   plot3d_class->get_pixel = gtk_plot3d_real_get_pixel;
 
+
+  /**
+   * GtkPlot3D:center_vector:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_CENTER,
   g_param_spec_pointer ("center_vector",
                        P_("Center"),
                        P_("Position of the center point"),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:origin_vector:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ORIGIN,
   g_param_spec_pointer ("origin_vector",
                        P_("Origin"),
                        P_("Position of the origin"),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:a1:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_A1,
   g_param_spec_double ("a1",
@@ -199,6 +225,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("Angle 1"),
                            -G_MAXDOUBLE, G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:a2:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_A2,
   g_param_spec_double ("a2",
@@ -206,6 +238,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("Angle 2"),
                            -G_MAXDOUBLE, G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:a3:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_A3,
   g_param_spec_double ("a3",
@@ -213,6 +251,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("Angle 3"),
                            -G_MAXDOUBLE, G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:xy_visible:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_XY_VISIBLE,
   g_param_spec_boolean ("xy_visible",
@@ -220,6 +264,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("XY Plane visible"),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:yz_visible:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_YZ_VISIBLE,
   g_param_spec_boolean ("yz_visible",
@@ -227,6 +277,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("YZ Plane visible"),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zx_visible:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZX_VISIBLE,
   g_param_spec_boolean ("zx_visible",
@@ -234,36 +290,72 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("ZX Plane visible"),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:color_xy:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_COLOR_XY,
   g_param_spec_pointer ("color_xy",
                        P_("XY Color"),
                        P_("Color of XY Plane"),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:color_yz:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_COLOR_YZ,
   g_param_spec_pointer ("color_yz",
                        P_("YZ Color"),
                        P_("Color of YZ Plane"),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:color_zx:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_COLOR_ZX,
   g_param_spec_pointer ("color_zx",
                        P_("ZX Color"),
                        P_("Color of ZX Plane"),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:frame_line:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_FRAME,
   g_param_spec_pointer ("frame_line",
                        P_("Frame Line"),
                        P_("Frame Line"),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:corner_line:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_CORNER,
   g_param_spec_pointer ("corner_line",
                        P_("Corner Line"),
                        P_("Corner Line"),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:corner_visible:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_CORNER_VISIBLE,
   g_param_spec_boolean ("corner_visible",
@@ -271,6 +363,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("Draw the entire cube"),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zmin:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZMIN,
   g_param_spec_double ("zmin",
@@ -278,6 +376,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("Min value of the Z axis"),
                            -G_MAXDOUBLE, G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zmax:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZMAX,
   g_param_spec_double ("zmax",
@@ -285,6 +389,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("Max value of the Z axis"),
                            -G_MAXDOUBLE, G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zscale:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZSCALE,
   g_param_spec_int ("zscale",
@@ -292,6 +402,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("Scale used for the Z axis"),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:titles_offset:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_TITLES_OFFSET,
   g_param_spec_int ("titles_offset",
@@ -299,6 +415,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("Titles distance from the axes"),
                            -G_MAXINT,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:xfactor:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_XFACTOR,
   g_param_spec_double ("xfactor",
@@ -306,6 +428,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("Relative size of the x axis"),
                            0.0, G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:yfactor:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_YFACTOR,
   g_param_spec_double ("yfactor",
@@ -313,6 +441,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("Relative size of the y axis"),
                            0.0, G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zfactor:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZFACTOR,
   g_param_spec_double ("zfactor",
@@ -320,18 +454,36 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("Relative size of the z axis"),
                            0.0, G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:e1_vector:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_E1,
   g_param_spec_pointer ("e1_vector",
                        P_("E1"),
                        P_("Vector e1"),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:e2_vector:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_E2,
   g_param_spec_pointer ("e2_vector",
                        P_("E2"),
                        P_("Vector e2"),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:e3_vector:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_E3,
   g_param_spec_pointer ("e3_vector",
@@ -339,6 +491,11 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("Vector e3"),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
 
+  /**
+   * GtkPlot3D:xy_label_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_XY_LABEL_MASK,
   g_param_spec_int ("xy_label_mask",
@@ -346,6 +503,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("XY label mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:xy_major_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_XY_MAJOR_MASK,
   g_param_spec_int ("xy_major_mask",
@@ -353,6 +516,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("XY major mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:xy_minor_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_XY_MINOR_MASK,
   g_param_spec_int ("xy_minor_mask",
@@ -360,6 +529,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("XY minor mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:xy_title_visible:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_XY_TITLE_VISIBLE,
   g_param_spec_boolean ("xy_title_visible",
@@ -367,6 +542,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("XY title Visible"),
                        FALSE,
                        G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:xz_label_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_XZ_LABEL_MASK,
   g_param_spec_int ("xz_label_mask",
@@ -374,6 +555,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("XZ label mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:xz_major_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_XZ_MAJOR_MASK,
   g_param_spec_int ("xz_major_mask",
@@ -381,6 +568,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("XZ major mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:xz_minor_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_XZ_MINOR_MASK,
   g_param_spec_int ("xz_minor_mask",
@@ -388,6 +581,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("XZ minor mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:xz_title_visible:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_XZ_TITLE_VISIBLE,
   g_param_spec_boolean ("xz_title_visible",
@@ -395,6 +594,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("XZ title Visible"),
                        FALSE,
                        G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:yz_label_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_YZ_LABEL_MASK,
   g_param_spec_int ("yz_label_mask",
@@ -402,6 +607,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("YZ label mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:yz_major_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_YZ_MAJOR_MASK,
   g_param_spec_int ("yz_major_mask",
@@ -409,6 +620,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("YZ major mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:yz_minor_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_YZ_MINOR_MASK,
   g_param_spec_int ("yz_minor_mask",
@@ -416,6 +633,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("YZ minor mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:yz_title_visible:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_YZ_TITLE_VISIBLE,
   g_param_spec_boolean ("yz_title_visible",
@@ -423,6 +646,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("YZ title Visible"),
                        FALSE,
                        G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:yx_label_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_YX_LABEL_MASK,
   g_param_spec_int ("yx_label_mask",
@@ -430,6 +659,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("YX label mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:yx_major_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_YX_MAJOR_MASK,
   g_param_spec_int ("yx_major_mask",
@@ -437,6 +672,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("YX major mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:yx_minor_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_YX_MINOR_MASK,
   g_param_spec_int ("yx_minor_mask",
@@ -444,6 +685,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("YX minor mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:yx_title_visible:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_YX_TITLE_VISIBLE,
   g_param_spec_boolean ("yx_title_visible",
@@ -451,6 +698,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("YX title Visible"),
                        FALSE,
                        G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zx_label_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZX_LABEL_MASK,
   g_param_spec_int ("zx_label_mask",
@@ -458,6 +711,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("ZX label mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zx_major_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZX_MAJOR_MASK,
   g_param_spec_int ("zx_major_mask",
@@ -465,6 +724,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("ZX major mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zx_minor_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZX_MINOR_MASK,
   g_param_spec_int ("zx_minor_mask",
@@ -472,6 +737,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("ZX minor mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zx_title_visible:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZX_TITLE_VISIBLE,
   g_param_spec_boolean ("zx_title_visible",
@@ -479,6 +750,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                        P_("ZX title Visible"),
                        FALSE,
                        G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zy_label_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZY_LABEL_MASK,
   g_param_spec_int ("zy_label_mask",
@@ -486,6 +763,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("ZY label mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zy_major_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZY_MAJOR_MASK,
   g_param_spec_int ("zy_major_mask",
@@ -493,6 +776,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("ZY major mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zy_minor_mask:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZY_MINOR_MASK,
   g_param_spec_int ("zy_minor_mask",
@@ -500,6 +789,12 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
                     P_("ZY minor mask"),
                     0,3,0,
                     G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlot3D:zy_title_visible:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            PROP_ZY_TITLE_VISIBLE,
   g_param_spec_boolean ("zy_title_visible",
@@ -1417,7 +1712,14 @@ gtk_plot3d_real_paint (GtkWidget *widget)
   gtk_plot_pc_grestore(pc);
 }
 
-
+/**
+ * gtk_plot3d_new:
+ * @drawable: a Gdk drawable.
+ *
+ *
+ *
+ * Return value:
+ */
 GtkWidget*
 gtk_plot3d_new (GdkDrawable *drawable)
 {
@@ -1430,12 +1732,29 @@ gtk_plot3d_new (GdkDrawable *drawable)
   return GTK_WIDGET (plot);
 }
 
+/**
+ * gtk_plot3d_construct:
+ * @plot: a #GtkPlot3D widget.
+ * @drawable: a Gdk drawable.
+ *
+ *
+ */
 void
 gtk_plot3d_construct(GtkPlot3D *plot, GdkDrawable *drawable)
 {
   GTK_PLOT(plot)->drawable = drawable;
 }
 
+/**
+ * gtk_plot3d_new_with_size:
+ * @drawable: a Gdk drawable.
+ * @width:
+ * @height:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkWidget*
 gtk_plot3d_new_with_size (GdkDrawable *drawable, gdouble width, gdouble height)
 {
@@ -1448,6 +1767,15 @@ gtk_plot3d_new_with_size (GdkDrawable *drawable, gdouble width, gdouble height)
   return(plot);
 }
 
+/**
+ * gtk_plot3d_construct_with_size:
+ * @plot: a #GtkPlot3D widget.
+ * @drawable: a Gdk drawable.
+ * @width:
+ * @height:
+ *
+ *
+ */
 void
 gtk_plot3d_construct_with_size(GtkPlot3D *plot, GdkDrawable *drawable,
 			       gdouble width, gdouble height)
@@ -1457,6 +1785,16 @@ gtk_plot3d_construct_with_size(GtkPlot3D *plot, GdkDrawable *drawable,
   gtk_plot_resize (GTK_PLOT(plot), width, height);
 }
 
+/**
+ * gtk_plot3d_draw_plane:
+ * @plot: a #GtkPlot3D widget.
+ * @v1:
+ * @v2:
+ * @v3:
+ * @v4:
+ *
+ *
+ */
 static void
 gtk_plot3d_draw_plane(GtkPlot3D *plot, 
                       GtkPlotVector v1, 
@@ -1819,6 +2157,13 @@ get_clean_tick_size(gdouble delta)
 
 /******************************************
  ******************************************/
+
+/**
+ * gtk_plot3d_autoscale:
+ * @plot: a #GtkPlot3D widget.
+ *
+ *
+ */
 void
 gtk_plot3d_autoscale(GtkPlot3D *plot)
 {
@@ -1896,17 +2241,35 @@ gtk_plot3d_autoscale(GtkPlot3D *plot)
 }
 
 
+/**
+ * gtk_plot3d_rotate:
+ * @plot: a #GtkPlot3D widget.
+ * @angle_x:
+ * @angle_y:
+ * @angle_z:
+ *
+ *
+ */
 void
-gtk_plot3d_rotate(GtkPlot3D *plot, gdouble a1, gdouble a2, gdouble a3)
+gtk_plot3d_rotate(GtkPlot3D *plot, gdouble angle_x, gdouble angle_y, gdouble angle_z)
 {
-  gtk_plot3d_rotate_vector(plot, &plot->e1, a1, a2, a3);
-  gtk_plot3d_rotate_vector(plot, &plot->e2, a1, a2, a3);
-  gtk_plot3d_rotate_vector(plot, &plot->e3, a1, a2, a3);
+  gtk_plot3d_rotate_vector(plot, &plot->e1, angle_x, angle_y, angle_z);
+  gtk_plot3d_rotate_vector(plot, &plot->e2, angle_x, angle_y, angle_z);
+  gtk_plot3d_rotate_vector(plot, &plot->e3, angle_x, angle_y, angle_z);
 
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
+/**
+ * gtk_plot3d_rotate_vector:
+ * @plot: a #GtkPlot3D widget.
+ * @a1:
+ * @a2:
+ * @a3:
+ *
+ *
+ */
 void
 gtk_plot3d_rotate_vector(GtkPlot3D *plot, 
                           GtkPlotVector *vector,
@@ -1947,6 +2310,18 @@ gtk_plot3d_rotate_vector(GtkPlot3D *plot,
   vector->y = v.y;
 }
 
+/**
+ * gtk_plot3d_get_pixel:
+ * @plot: a #GtkPlot3D widget.
+ * @x:
+ * @y:
+ * @z:
+ * @px:
+ * @py:
+ * @pz:
+ *
+ *
+ */
 void
 gtk_plot3d_get_pixel(GtkPlot3D *plot, 
                      gdouble x, gdouble y, gdouble z,
@@ -2010,6 +2385,15 @@ gtk_plot3d_real_get_pixel(GtkWidget *widget,
  * gtk_plot3d_get_yfactor
  * gtk_plot3d_get_zfactor
  ***********************************************************/
+
+/**
+ * gtk_plot3d_set_xrange:
+ * @plot: a #GtkPlot3D widget.
+ * @min:
+ * @max:
+ *
+ *
+ */
 void
 gtk_plot3d_set_xrange(GtkPlot3D *plot, gdouble min, gdouble max)
 {
@@ -2025,6 +2409,15 @@ gtk_plot3d_set_xrange(GtkPlot3D *plot, gdouble min, gdouble max)
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
+/**
+ * gtk_plot3d_set_yrange:
+ * @plot: a #GtkPlot3D widget.
+ * @min:
+ * @max:
+ *
+ *
+ */
+
 void
 gtk_plot3d_set_yrange(GtkPlot3D *plot, gdouble min, gdouble max)
 {
@@ -2039,7 +2432,14 @@ gtk_plot3d_set_yrange(GtkPlot3D *plot, gdouble min, gdouble max)
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", TRUE);
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
-
+/**
+ * gtk_plot3d_set_zrange:
+ * @plot: a #GtkPlot3D widget.
+ * @min:
+ * @max:
+ *
+ *
+ */
 void
 gtk_plot3d_set_zrange(GtkPlot3D *plot, gdouble min, gdouble max)
 {
@@ -2055,6 +2455,13 @@ gtk_plot3d_set_zrange(GtkPlot3D *plot, gdouble min, gdouble max)
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
+/**
+ * gtk_plot3d_set_xfactor:
+ * @plot: a #GtkPlot3D widget.
+ * @xfactor:
+ *
+ *
+ */
 void
 gtk_plot3d_set_xfactor(GtkPlot3D *plot, gdouble xfactor)
 {
@@ -2076,6 +2483,13 @@ gtk_plot3d_set_xfactor(GtkPlot3D *plot, gdouble xfactor)
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
+/**
+ * gtk_plot3d_set_yfactor:
+ * @plot: a #GtkPlot3D widget.
+ * @yfactor:
+ *
+ *
+ */
 void
 gtk_plot3d_set_yfactor(GtkPlot3D *plot, gdouble yfactor)
 {
@@ -2097,6 +2511,13 @@ gtk_plot3d_set_yfactor(GtkPlot3D *plot, gdouble yfactor)
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
+/**
+ * gtk_plot3d_set_zfactor:
+ * @plot: a #GtkPlot3D widget.
+ * @zfactor:
+ *
+ *
+ */
 void
 gtk_plot3d_set_zfactor(GtkPlot3D *plot, gdouble zfactor)
 {
@@ -2118,18 +2539,42 @@ gtk_plot3d_set_zfactor(GtkPlot3D *plot, gdouble zfactor)
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
+/**
+ * gtk_plot3d_get_xfactor:
+ * @plot: a #GtkPlot3D widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble
 gtk_plot3d_get_xfactor(GtkPlot3D *plot)
 {
   return (plot->xfactor);
 }
 
+/**
+ * gtk_plot3d_get_yfactor:
+ * @plot: a #GtkPlot3D widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble
 gtk_plot3d_get_yfactor(GtkPlot3D *plot)
 {
   return (plot->yfactor);
 }
 
+/**
+ * gtk_plot3d_get_zfactor:
+ * @plot: a #GtkPlot3D widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble
 gtk_plot3d_get_zfactor(GtkPlot3D *plot)
 {
@@ -2143,6 +2588,13 @@ gtk_plot3d_get_zfactor(GtkPlot3D *plot)
  * gtk_plot3d_plane_visible
  ***********************************************************/
 
+/**
+ * gtk_plot3d_plane_set_color:
+ * @plane:
+ * @color:
+ *
+ *
+ */
 void            
 gtk_plot3d_plane_set_color      (GtkPlot3D *plot,
                                  GtkPlotPlane plane,
@@ -2165,6 +2617,13 @@ gtk_plot3d_plane_set_color      (GtkPlot3D *plot,
 
 }
 
+/**
+ * gtk_plot3d_plane_set_visible:
+ * @plane:
+ * @visible:
+ *
+ *
+ */
 void            
 gtk_plot3d_plane_set_visible    (GtkPlot3D *plot,
                                  GtkPlotPlane plane,
@@ -2187,6 +2646,15 @@ gtk_plot3d_plane_set_visible    (GtkPlot3D *plot,
 
 }
 
+/**
+ * gtk_plot3d_plane_visible:
+ * @plot: a #GtkPlot3D widget.
+ * @plane:
+ *
+ *
+ *
+ * Return value:
+ */
 gboolean        
 gtk_plot3d_plane_visible    (GtkPlot3D *plot,
                                  GtkPlotPlane plane)
@@ -2232,18 +2700,44 @@ gtk_plot3d_plane_visible    (GtkPlot3D *plot,
  * gtk_plot3d_set_titles_offset
  * gtk_plot3d_get_titles_offset
  ***********************************************************/
+
+
+/**
+ * gtk_plot3d_corner_set_visible:
+ * @plot: a #GtkPlot3D widget.
+ * @visible:
+ *
+ *
+ */
 void
 gtk_plot3d_corner_set_visible(GtkPlot3D *plot, gboolean visible)
 {
   plot->corner_visible = visible;
 }
 
+/**
+ * gtk_plot3d_corner_visible:
+ * @plot: a #GtkPlot3D widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gboolean
 gtk_plot3d_corner_visible(GtkPlot3D *plot)
 {
   return (plot->corner_visible);
 }
 
+/**
+ * gtk_plot3d_corner_set_attributes:
+ * @plot: a #GtkPlot3D widget.
+ * @style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void            
 gtk_plot3d_corner_set_attributes   (GtkPlot3D *plot,
                                     GtkPlotLineStyle style,
@@ -2255,7 +2749,15 @@ gtk_plot3d_corner_set_attributes   (GtkPlot3D *plot,
   if(color) plot->corner.color = *color;
 }
 
-
+/**
+ * gtk_plot3d_corner_get_attribute:
+ * @plot: a #GtkPlot3D widget.
+ * @style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void            
 gtk_plot3d_corner_get_attributes   (GtkPlot3D *plot,
                                     GtkPlotLineStyle *style,
@@ -2267,6 +2769,15 @@ gtk_plot3d_corner_get_attributes   (GtkPlot3D *plot,
   *color = plot->corner.color;
 }
 
+/**
+ * gtk_plot3d_frame_set_attributes:
+ * @plot: a #GtkPlot3D widget.
+ * @style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void            
 gtk_plot3d_frame_set_attributes   (GtkPlot3D *plot,
                                    GtkPlotLineStyle style,
@@ -2278,6 +2789,15 @@ gtk_plot3d_frame_set_attributes   (GtkPlot3D *plot,
   if(color) plot->frame.color = *color;
 }
 
+/**
+ * gtk_plot3d_frame_get_attributes:
+ * @plot: a #GtkPlot3D widget.
+ * @style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void            
 gtk_plot3d_frame_get_attributes   (GtkPlot3D *plot,
                                    GtkPlotLineStyle *style,
@@ -2289,6 +2809,15 @@ gtk_plot3d_frame_get_attributes   (GtkPlot3D *plot,
   *color = plot->frame.color;
 }
 
+/**
+ * gtk_plot3d_get_axis:
+ * @plot: a #GtkPlot3D widget.
+ * @orientation:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotAxis *
 gtk_plot3d_get_axis(GtkPlot3D *plot, GtkPlotOrientation orientation)
 {
@@ -2312,6 +2841,15 @@ gtk_plot3d_get_axis(GtkPlot3D *plot, GtkPlotOrientation orientation)
   return axis;
 } 
 
+/**
+ * gtk_plot3d_get_side:
+ * @plot: a #GtkPlot3D widget.
+ * @side:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotAxis *
 gtk_plot3d_get_side(GtkPlot3D *plot, GtkPlotSide side)
 {
@@ -2343,6 +2881,14 @@ gtk_plot3d_get_side(GtkPlot3D *plot, GtkPlotSide side)
   return axis;
 }
 
+/**
+ * gtk_plot3d_show_labels:
+ * @plot: a #GtkPlot3D widget.
+ * @side:
+ * @label_mask:
+ *
+ *
+ */
 void            
 gtk_plot3d_show_labels     (GtkPlot3D *plot,
 			    GtkPlotSide side,
@@ -2355,6 +2901,13 @@ gtk_plot3d_show_labels     (GtkPlot3D *plot,
   axis->label_mask = label_mask;
 }
 
+/**
+ * gtk_plot3d_show_title:
+ * @plot: a #GtkPlot3D widget.
+ * @side:
+ *
+ *
+ */
 void            
 gtk_plot3d_show_title     (GtkPlot3D *plot,
 			   GtkPlotSide side)
@@ -2366,6 +2919,13 @@ gtk_plot3d_show_title     (GtkPlot3D *plot,
   axis->title_visible = TRUE;
 }
 
+/**
+ * gtk_plot3d_hide_title:
+ * @plot: a #GtkPlot3D widget.
+ * @side:
+ *
+ *
+ */
 void            
 gtk_plot3d_hide_title     (GtkPlot3D *plot,
 			   GtkPlotSide side)
@@ -2378,6 +2938,14 @@ gtk_plot3d_hide_title     (GtkPlot3D *plot,
 }
 
 
+/**
+ * gtk_plot3d_show_major_ticks:
+ * @plot: a #GtkPlot3D widget.
+ * @side:
+ * @ticks_mask:
+ *
+ *
+ */
 void            
 gtk_plot3d_show_major_ticks (GtkPlot3D *plot,
 			     GtkPlotSide side,
@@ -2390,6 +2958,14 @@ gtk_plot3d_show_major_ticks (GtkPlot3D *plot,
   axis->major_mask = ticks_mask;
 }
 
+/**
+ * gtk_plot3d_show_minor_ticks:
+ * @plot: a #GtkPlot3D widget.
+ * @side:
+ * @ticks_mask:
+ *
+ *
+ */
 void            
 gtk_plot3d_show_minor_ticks(GtkPlot3D *plot,
 			    GtkPlotSide side,
@@ -2402,6 +2978,15 @@ gtk_plot3d_show_minor_ticks(GtkPlot3D *plot,
   axis->minor_mask = ticks_mask;
 }
 
+/**
+ * gtk_plot3d_set_ticks:
+ * @plot: a #GtkPlot3D widget.
+ * @direction:
+ * @major_step:
+ * @nminor:
+ *
+ *
+ */
 void
 gtk_plot3d_set_ticks        (GtkPlot3D *plot,
 			     GtkPlotOrientation direction,
@@ -2417,6 +3002,14 @@ gtk_plot3d_set_ticks        (GtkPlot3D *plot,
   axis->ticks.nminor = nminor;
 }
 
+/**
+ * gtk_plot3d_set_major_ticks:
+ * @plot: a #GtkPlot3D widget.
+ * @direction:
+ * @major_step:
+ *
+ *
+ */
 void
 gtk_plot3d_set_major_ticks  (GtkPlot3D *plot,
                              GtkPlotOrientation direction,
@@ -2429,6 +3022,14 @@ gtk_plot3d_set_major_ticks  (GtkPlot3D *plot,
   axis->ticks.step = major_step;
 }
 
+/**
+ * gtk_plot3d_set_minor_ticks:
+ * @plot: a #GtkPlot3D widget.
+ * @direction:
+ * @nminor:
+ *
+ *
+ */
 void
 gtk_plot3d_set_minor_ticks  (GtkPlot3D *plot,
                              GtkPlotOrientation direction,
@@ -2441,6 +3042,14 @@ gtk_plot3d_set_minor_ticks  (GtkPlot3D *plot,
   axis->ticks.nminor = nminor;
 }
 
+/**
+ * gtk_plot3d_set_ticks_length:
+ * @plot: a #GtkPlot3D widget.
+ * @direction:
+ * @length:
+ *
+ *
+ */
 void            
 gtk_plot3d_set_ticks_length  (GtkPlot3D *plot,
                               GtkPlotOrientation direction,
@@ -2453,6 +3062,14 @@ gtk_plot3d_set_ticks_length  (GtkPlot3D *plot,
   axis->ticks_length = length;
 }
 
+/**
+ * gtk_plot3d_set_ticks_width:
+ * @plot: a #GtkPlot3D widget.
+ * @direction:
+ * @width:
+ *
+ *
+ */
 void            
 gtk_plot3d_set_ticks_width   (GtkPlot3D *plot,
                               GtkPlotOrientation direction,
@@ -2465,6 +3082,15 @@ gtk_plot3d_set_ticks_width   (GtkPlot3D *plot,
   axis->ticks_width = width;
 }
 
+/**
+ * gtk_plot3d_show_ticks:
+ * @plot: a #GtkPlot3D widget.
+ * @side:
+ * @major_mask:
+ * @minor_mask:
+ *
+ *
+ */
 void            
 gtk_plot3d_show_ticks        (GtkPlot3D *plot,
                               GtkPlotSide side,
@@ -2479,7 +3105,13 @@ gtk_plot3d_show_ticks        (GtkPlot3D *plot,
   axis->minor_mask = minor_mask;
 }
 
-
+/**
+ * gtk_plot3d_set_titles_offset:
+ * @plot: a #GtkPlot3D widget.
+ * @offset
+ *
+ *
+ */
 void
 gtk_plot3d_set_titles_offset    (GtkPlot3D *plot,
                                  gint offset)
@@ -2487,6 +3119,14 @@ gtk_plot3d_set_titles_offset    (GtkPlot3D *plot,
   plot->titles_offset = offset;
 }
 
+/**
+ * gtk_plot3d_get_titles_offset:
+ * @plot: a #GtkPlot3D widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gint            
 gtk_plot3d_get_titles_offset    (GtkPlot3D *plot)
 {
@@ -2504,6 +3144,15 @@ gtk_plot3d_get_titles_offset    (GtkPlot3D *plot)
  * gtk_plot3d_minor_grids_get_attributes     
  ***********************************************************/
 
+/**
+ * gtk_plot3d_major_grids_set_visible:
+ * @plot: a #GtkPlot3D widget.
+ * @x:
+ * @y:
+ * @z:
+ *
+ *
+ */
 void            
 gtk_plot3d_major_grids_set_visible    (GtkPlot3D *plot,
                                        gboolean x,
@@ -2515,6 +3164,15 @@ gtk_plot3d_major_grids_set_visible    (GtkPlot3D *plot,
   plot->az->show_major_grid = z;
 }
 
+/**
+ * gtk_plot3d_minor_grids_set_visible:
+ * @plot: a #GtkPlot3D widget.
+ * @x:
+ * @y:
+ * @z:
+ *
+ *
+ */
 void            
 gtk_plot3d_minor_grids_set_visible    (GtkPlot3D *plot,
                                        gboolean x,
@@ -2526,6 +3184,15 @@ gtk_plot3d_minor_grids_set_visible    (GtkPlot3D *plot,
   plot->az->show_minor_grid = z;
 }
 
+/**
+ * gtk_plot3d_major_grids_visible:
+ * @plot: a #GtkPlot3D widget.
+ * @x:
+ * @y:
+ * @z:
+ *
+ *
+ */
 void            
 gtk_plot3d_major_grids_visible    (GtkPlot3D *plot,
                                        gboolean *x,
@@ -2537,6 +3204,15 @@ gtk_plot3d_major_grids_visible    (GtkPlot3D *plot,
   *z = plot->az->show_major_grid;
 }
 
+/**
+ * gtk_plot3d_minor_grids_visible:
+ * @plot: a #GtkPlot3D widget.
+ * @x:
+ * @y:
+ * @z:
+ *
+ *
+ */
 void            
 gtk_plot3d_minor_grids_visible    (GtkPlot3D *plot,
                                        gboolean *x,
@@ -2548,6 +3224,15 @@ gtk_plot3d_minor_grids_visible    (GtkPlot3D *plot,
   *z = plot->az->show_minor_grid;
 }
 
+/**
+ * gtk_plot3d_major_zgrid_set_attributes:
+ * @plot: a #GtkPlot3D widget.
+ * @style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void            
 gtk_plot3d_major_zgrid_set_attributes    (GtkPlot3D *plot,
                                          GtkPlotLineStyle style,
@@ -2559,6 +3244,15 @@ gtk_plot3d_major_zgrid_set_attributes    (GtkPlot3D *plot,
   if(color) plot->az->major_grid.color = *color;
 }
 
+/**
+ * gtk_plot3d_minor_zgrid_set_attributes:
+ * @plot: a #GtkPlot3D widget.
+ * @style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void            
 gtk_plot3d_minor_zgrid_set_attributes    (GtkPlot3D *plot,
                                          GtkPlotLineStyle style,
@@ -2570,6 +3264,15 @@ gtk_plot3d_minor_zgrid_set_attributes    (GtkPlot3D *plot,
   if(color) plot->az->minor_grid.color = *color;
 }
 
+/**
+ * gtk_plot3d_major_zgrid_get_attributes:
+ * @plot: a #GtkPlot3D widget.
+ * @style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void            
 gtk_plot3d_major_zgrid_get_attributes    (GtkPlot3D *plot,
                                          GtkPlotLineStyle *style,
@@ -2581,6 +3284,15 @@ gtk_plot3d_major_zgrid_get_attributes    (GtkPlot3D *plot,
   *color = plot->az->major_grid.color;
 }
 
+/**
+ * gtk_plot3d_minor_zgrid_set_attributes:
+ * @plot: a #GtkPlot3D widget.
+ * @style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void            
 gtk_plot3d_minor_zgrid_get_attributes    (GtkPlot3D *plot,
                                          GtkPlotLineStyle *style,
@@ -2598,6 +3310,13 @@ gtk_plot3d_minor_zgrid_get_attributes    (GtkPlot3D *plot,
  * gtk_plot3d_rotate_y                     
  * gtk_plot3d_rotate_z                     
  *******************************************/
+
+/**
+ * gtk_plot3d_reset_angles:
+ * @plot: a #GtkPlot3D widget.
+ *
+ *
+ */
 void
 gtk_plot3d_reset_angles(GtkPlot3D *plot)
 {
@@ -2618,6 +3337,13 @@ gtk_plot3d_reset_angles(GtkPlot3D *plot)
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
+/**
+ * gtk_plot3d_rotate_x:
+ * @plot: a #GtkPlot3D widget.
+ * @angle:
+ *
+ *
+ */
 void
 gtk_plot3d_rotate_x(GtkPlot3D *plot, gdouble angle)
 {
@@ -2674,6 +3400,13 @@ gtk_plot3d_rotate_x(GtkPlot3D *plot, gdouble angle)
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
+/**
+ * gtk_plot3d_rotate_y:
+ * @plot: a #GtkPlot3D widget.
+ * @angle:
+ *
+ *
+ */
 void
 gtk_plot3d_rotate_y(GtkPlot3D *plot, gdouble angle)
 {
@@ -2730,6 +3463,13 @@ gtk_plot3d_rotate_y(GtkPlot3D *plot, gdouble angle)
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
+/**
+ * gtk_plot3d_rotate_z:
+ * @plot: a #GtkPlot3D widget.
+ * @angle:
+ *
+ *
+ */
 void
 gtk_plot3d_rotate_z(GtkPlot3D *plot, gdouble angle)
 {
@@ -2785,6 +3525,14 @@ gtk_plot3d_rotate_z(GtkPlot3D *plot, gdouble angle)
   gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
+/**
+ * gtk_plot3d_set_scale:
+ * @plot: a #GtkPlot3D widget.
+ * @axis:
+ * @scale:
+ *
+ *
+ */
 void
 gtk_plot3d_set_scale       (GtkPlot3D *plot,
                             GtkPlotOrientation axis,
@@ -2794,6 +3542,16 @@ gtk_plot3d_set_scale       (GtkPlot3D *plot,
   ax = gtk_plot3d_get_axis(plot, axis);
   ax->ticks.scale = scale;
 }
+
+/**
+ * gtk_plot3d_get_scale:
+ * @plot: a #GtkPlot3D widget.
+ * @axis:
+ *
+ *
+ *
+ * Return value:
+ */
 
 GtkPlotScale
 gtk_plot3d_get_scale       (GtkPlot3D *plot,

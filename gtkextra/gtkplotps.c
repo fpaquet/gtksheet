@@ -27,6 +27,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotps
+ * @short_description: postscript driver
+ *
+ * FIXME:: Need long description.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -209,6 +216,20 @@ gtk_plot_ps_destroy(GtkObject *object)
   }
 }
 
+
+/**
+ * gtk_plot_ps_new:
+ * @psname:
+ * @orientation:
+ * @epsflag:
+ * @page_size:
+ * @scalex:
+ * @scaley:
+ *
+ * 
+ *
+ * Return value: a new GtkObject.
+ */
 GtkObject *
 gtk_plot_ps_new                         (const gchar *psname,
                                          gint orientation,
@@ -229,6 +250,17 @@ gtk_plot_ps_new                         (const gchar *psname,
   return (object);
 }
 
+/**
+ * gtk_plot_ps_construct:
+ * @ps: a #GtkPlotPS
+ * @orientation:
+ * @epsflag:
+ * @page_size:
+ * @scalex:
+ * @scaley:
+ *
+ * 
+ */
 void
 gtk_plot_ps_construct                   (GtkPlotPS *ps,
 					 const gchar *psname,
@@ -269,6 +301,21 @@ gtk_plot_ps_construct                   (GtkPlotPS *ps,
   gtk_plot_ps_set_size(ps, GTK_PLOT_PSPOINTS, width, height);
 }
 
+/**
+ * gtk_plot_ps_new_with_size:
+ * @psname:
+ * @orientation:
+ * @epsflag:
+ * @units:
+ * @width:
+ * @height:
+ * @scalex:
+ * @scaley:
+ *
+ * 
+ *
+ * Return value: a new GtkObject.
+ */
 GtkObject *
 gtk_plot_ps_new_with_size                       (const gchar *psname,
                                                  gint orientation,
@@ -289,6 +336,20 @@ gtk_plot_ps_new_with_size                       (const gchar *psname,
   return object;
 }
 
+/**
+ * gtk_plot_ps_construct_with_size:
+ * @ps: a #GtkPlotPS
+ * @psname:
+ * @orientation:
+ * @epsflag:
+ * @units:
+ * @width:
+ * @height:
+ * @scalex:
+ * @scaley:
+ *
+ * 
+ */
 void
 gtk_plot_ps_construct_with_size                 (GtkPlotPS *ps,
 						 const gchar *psname,
@@ -303,6 +364,15 @@ gtk_plot_ps_construct_with_size                 (GtkPlotPS *ps,
   gtk_plot_ps_set_size(ps, units, width, height);
 }
 
+/**
+ * gtk_plot_ps_set_size:
+ * @ps: a #GtkPlotPS
+ * @units:
+ * @width:
+ * @height:
+ * 
+ *
+ */
 void
 gtk_plot_ps_set_size                            (GtkPlotPS *ps,
                                                  gint units,
@@ -338,6 +408,14 @@ gtk_plot_ps_set_size                            (GtkPlotPS *ps,
      gtk_plot_pc_set_viewport(GTK_PLOT_PC(ps), ps->page_height, ps->page_width);
 }
 
+/**
+ * gtk_plot_ps_set_scale:
+ * @ps: a #GtkPlotPS
+ * @scalex:
+ * @scaley:
+ *
+ * 
+ */
 void
 gtk_plot_ps_set_scale                           (GtkPlotPS *ps,
                                                  gdouble scalex,

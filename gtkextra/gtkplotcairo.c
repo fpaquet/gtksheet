@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotcairo
+ * @short_description: 
+ *
+ * FIXME:: need long description
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -218,6 +225,14 @@ gtk_plot_cairo_class_init (GtkPlotCairoClass *klass)
   pc_class->draw_pixmap = gtk_plot_cairo_draw_pixmap;
 }
 
+/**
+ * gtk_plot_cairo_new:
+ * @cairo:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkObject *
 gtk_plot_cairo_new (cairo_t *cairo)
 {
@@ -230,7 +245,14 @@ gtk_plot_cairo_new (cairo_t *cairo)
   return (object);
 }
 
-
+/**
+ * gtk_plot_cairo_new_with_drawable:
+ * @drawable:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkObject *
 gtk_plot_cairo_new_with_drawable (GdkDrawable *drawable)
 {
@@ -245,6 +267,14 @@ gtk_plot_cairo_new_with_drawable (GdkDrawable *drawable)
   return (object);
 }
 
+/**
+ * gtk_plot_cairo_construct:
+ * @pc: A #GtkPlotCairo.
+ * @cairo:
+ * @context:
+ *
+ *
+ */
 void
 gtk_plot_cairo_construct(GtkPlotCairo *pc,
                          cairo_t *cairo,
@@ -298,6 +328,13 @@ gtk_plot_cairo_leave (GtkPlotPC *pc)
 {
 }
 
+/**
+ * gtk_plot_cairo_set_cairo:
+ * @pc: a #GtkPlotCairo
+ * @cairo:
+ *
+ *
+ */
 void
 gtk_plot_cairo_set_cairo(GtkPlotCairo *pc,
                          cairo_t *cairo)

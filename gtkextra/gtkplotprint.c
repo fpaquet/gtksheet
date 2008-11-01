@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotprint
+ * @short_description: 
+ *
+ * FIXME:: Need long description.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,9 +46,23 @@
 
 static void recalc_pixels(GtkPlot *plot);
 
+
+
+/**
+ * gtk_plot_export_ps:
+ * @plot: a #GtkPlot
+ * @file_name:
+ * @orient:
+ * @epsflag:
+ * @page_size:
+ *
+ * 
+ *
+ * Return value: 
+ */
 gboolean
 gtk_plot_export_ps                              (GtkPlot *plot,
-                                                 char *psname,
+                                                 char *file_name,
                                                  GtkPlotPageOrientation orient,
                                                  gboolean epsflag,
                                                  GtkPlotPageSize page_size)
@@ -54,7 +75,7 @@ gtk_plot_export_ps                              (GtkPlot *plot,
 
   m = plot->magnification;
 
-  ps = GTK_PLOT_PS(gtk_plot_ps_new(psname, orient, epsflag, page_size, 1.0, 1.0));
+  ps = GTK_PLOT_PS(gtk_plot_ps_new(file_name, orient, epsflag, page_size, 1.0, 1.0));
 
   if(orient == GTK_PLOT_PORTRAIT){
     scalex = (gfloat)ps->page_width /
@@ -86,9 +107,23 @@ gtk_plot_export_ps                              (GtkPlot *plot,
   return TRUE;
 }
 
+/**
+ * gtk_plot_export_ps_with_size:
+ * @plot: a #GtkPlot
+ * @file_name:
+ * @orient:
+ * @epsflag:
+ * @units:
+ * @width:
+ * @height:
+ *
+ * 
+ *
+ * Return value: 
+ */
 gboolean
 gtk_plot_export_ps_with_size                    (GtkPlot *plot,
-                                                 char *psname,
+                                                 char *file_name,
                                                  GtkPlotPageOrientation orient,
                                                  gboolean epsflag,
                                                  GtkPlotUnits units,
@@ -102,7 +137,7 @@ gtk_plot_export_ps_with_size                    (GtkPlot *plot,
 
   m = plot->magnification;
 
-  ps = GTK_PLOT_PS(gtk_plot_ps_new_with_size(psname, orient, epsflag, 
+  ps = GTK_PLOT_PS(gtk_plot_ps_new_with_size(file_name, orient, epsflag, 
                                              units, 
                                              width, height, 
                                              1.0 , 1.0));
@@ -137,9 +172,21 @@ gtk_plot_export_ps_with_size                    (GtkPlot *plot,
   return TRUE;
 }
 
+/**
+ * gtk_plot_canvas_export_ps:
+ * @canvas: a #GtkPlotCanvas .
+ * @file_name:
+ * @orient:
+ * @epsflag:
+ * @page_size:
+ *
+ * 
+ *
+ * Return value: 
+ */
 gboolean
 gtk_plot_canvas_export_ps                       (GtkPlotCanvas *canvas,
-                                                 char *psname,
+                                                 char *file_name,
                                                  GtkPlotPageOrientation orient,
                                                  gboolean epsflag,
                                                  GtkPlotPageSize page_size)
@@ -152,7 +199,7 @@ gtk_plot_canvas_export_ps                       (GtkPlotCanvas *canvas,
 
   m = canvas->magnification;
 
-  ps = GTK_PLOT_PS(gtk_plot_ps_new(psname, orient, epsflag, page_size, 1.0, 1.0));
+  ps = GTK_PLOT_PS(gtk_plot_ps_new(file_name, orient, epsflag, page_size, 1.0, 1.0));
 
   if(orient == GTK_PLOT_PORTRAIT){
     scalex = (gfloat)ps->page_width / (gfloat)canvas->width;
@@ -186,9 +233,23 @@ gtk_plot_canvas_export_ps                       (GtkPlotCanvas *canvas,
   return TRUE;
 }
 
+/**
+ * gtk_plot_canvas_export_ps_with_size:
+ * @canvas: a #GtkPlotCanvas .
+ * @file_name:
+ * @orient:
+ * @epsflag:
+ * @units:
+ * @width:
+ * @height:
+ *
+ * 
+ *
+ * Return value: 
+ */
 gboolean
 gtk_plot_canvas_export_ps_with_size             (GtkPlotCanvas *canvas,
-                                                 char *psname,
+                                                 char *file_name,
                                                  GtkPlotPageOrientation orient,
                                                  gboolean epsflag,
                                                  GtkPlotUnits units,
@@ -203,7 +264,7 @@ gtk_plot_canvas_export_ps_with_size             (GtkPlotCanvas *canvas,
 
   m = canvas->magnification;
 
-  ps = GTK_PLOT_PS(gtk_plot_ps_new_with_size(psname, orient, epsflag, 
+  ps = GTK_PLOT_PS(gtk_plot_ps_new_with_size(file_name, orient, epsflag, 
                                              units, 
                                              width, height, 
                                              1.0 , 1.0));
@@ -271,6 +332,17 @@ recalc_pixels(GtkPlot *plot)
     list = list->next;
   }
 }
+
+/**
+ * gtk_plot_canvas_export_cairo:
+ * @canvas: a #GtkPlotCanvas .
+ * @cairo:
+ *
+ * 
+ *
+ * Return value: 
+ */
+
 gboolean
 gtk_plot_canvas_export_cairo                    (GtkPlotCanvas *canvas,
 						 cairo_t *cairo)

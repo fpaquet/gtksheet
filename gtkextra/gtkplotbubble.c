@@ -17,6 +17,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplot
+ * @short_description: 
+ *
+ * FIXME:: Need long description.
+ */
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -32,7 +40,7 @@
 #define P_(string) string 
 
 static void gtk_plot_bubble_class_init 	(GtkPlotBubbleClass *klass);
-static void gtk_plot_bubble_init 		(GtkPlotBubble *data);
+static void gtk_plot_bubble_init 	(GtkPlotBubble *data);
 static void gtk_plot_bubble_destroy 	(GtkObject *data);
 static void gtk_plot_bubble_set_property       (GObject *object,
                                                 guint            prop_id,
@@ -118,6 +126,11 @@ gtk_plot_bubble_class_init (GtkPlotBubbleClass *klass)
   gobject_class->get_property = gtk_plot_bubble_get_property;
   object_class->destroy = gtk_plot_bubble_destroy;
 
+  /**
+   * GtkPlotBubble:scale_max:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            ARG_SCALE_MAX,
   g_param_spec_double ("scale_max",
@@ -125,6 +138,11 @@ gtk_plot_bubble_class_init (GtkPlotBubbleClass *klass)
                            P_("Scale Max."),
                            0, G_MAXDOUBLE, 0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+  /**
+   * GtkPlotBubble:size_max:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            ARG_SIZE_MAX,
   g_param_spec_int ("size_max",
@@ -132,6 +150,12 @@ gtk_plot_bubble_class_init (GtkPlotBubbleClass *klass)
                            P_("Size Max."),
                            0, G_MAXINT, 0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotBubble:show_scale:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            ARG_SHOW_SCALE,
   g_param_spec_boolean ("show_scale",
@@ -139,6 +163,12 @@ gtk_plot_bubble_class_init (GtkPlotBubbleClass *klass)
                            P_("Show scale in gradient legend"),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotBubble:labels_precision:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            ARG_LABEL_PRECISION,
   g_param_spec_int ("labels_precision",
@@ -146,6 +176,12 @@ gtk_plot_bubble_class_init (GtkPlotBubbleClass *klass)
                            P_("Labels Precision"),
                            0, G_MAXINT, 0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotBubble:labels_style:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            ARG_LABEL_STYLE,
   g_param_spec_int ("labels_style",
@@ -153,6 +189,12 @@ gtk_plot_bubble_class_init (GtkPlotBubbleClass *klass)
                            P_("Labels Style"),
                            0, G_MAXINT, 0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotBubble:labels_prefix:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            ARG_LABEL_PREFIX,
   g_param_spec_string ("labels_prefix",
@@ -160,6 +202,12 @@ gtk_plot_bubble_class_init (GtkPlotBubbleClass *klass)
                            P_("Labels Prefix"),
 			   NULL,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotBubble:labels_suffix:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            ARG_LABEL_SUFFIX,
   g_param_spec_string ("labels_suffix",
@@ -529,36 +577,78 @@ gtk_plot_bubble_draw_legend(GtkPlotData *data, gint x, gint y)
   data->symbol.symbol_style = style;
 }
 
+/**
+ * gtk_plot_bubble_show_scale:
+ * @bubble: a #GtkPlotBubble.
+ * @show:
+ *
+ *
+ */
 void            
 gtk_plot_bubble_show_scale        (GtkPlotBubble *bubble, gboolean show)
 {
   bubble->show_scale = show;
 }
 
+/**
+ * gtk_plot_bubble_set_scale_max:
+ * @bubble: a #GtkPlotBubble.
+ * @scale_max:
+ *
+ *
+ */
 void            
 gtk_plot_bubble_set_scale_max     (GtkPlotBubble *bubble, gdouble scale_max)
 {
   bubble->scale_max = fabs(scale_max);
 }
 
+/**
+ * gtk_plot_bubble_set_size_max:
+ * @bubble: a #GtkPlotBubble.
+ * @size_max:
+ *
+ *
+ */
 void            
 gtk_plot_bubble_set_size_max      (GtkPlotBubble *bubble, guint size_max)
 {
   bubble->size_max = size_max;
 }
 
+/**
+ * gtk_plot_bubble_set_labels_precision:
+ * @bubble: a #GtkPlotBubble.
+ * @precision:
+ *
+ *
+ */
 void
 gtk_plot_bubble_set_labels_precision (GtkPlotBubble *bubble, gint precision)
 {
   bubble->labels_precision = precision;
 }
 
+/**
+ * gtk_plot_bubble_set_labels_style:
+ * @bubble: a #GtkPlotBubble.
+ * @style:
+ *
+ *
+ */
 void
 gtk_plot_bubble_set_labels_style (GtkPlotBubble *bubble, GtkPlotLabelStyle style)
 {
   bubble->labels_style = style;
 }
 
+/**
+ * gtk_plot_bubble_set_labels_prefix:
+ * @bubble: a #GtkPlotBubble.
+ * @prefix:
+ *
+ *
+ */
 void
 gtk_plot_bubble_set_labels_prefix (GtkPlotBubble *bubble, const gchar *prefix)
 {
@@ -567,6 +657,13 @@ gtk_plot_bubble_set_labels_prefix (GtkPlotBubble *bubble, const gchar *prefix)
   if(prefix) bubble->labels_prefix = g_strdup(prefix);
 }
 
+/**
+ * gtk_plot_bubble_set_labels_suffix:
+ * @bubble: a #GtkPlotBubble.
+ * @suffix:
+ *
+ *
+ */
 void
 gtk_plot_bubble_set_labels_suffix (GtkPlotBubble *bubble, const gchar *suffix)
 {

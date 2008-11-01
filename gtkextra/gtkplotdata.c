@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotdata
+ * @short_description: 
+ *
+ * FIXME:: Need long description.
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -322,6 +329,11 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
   gobject_class->set_property = gtk_plot_data_set_property;
   gobject_class->get_property = gtk_plot_data_get_property;
 
+  /**
+   * GtkPlotData:name:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_NAME,
   g_param_spec_string ("name",
@@ -329,6 +341,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            NULL,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:legend:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LEGEND,
   g_param_spec_string ("legend",
@@ -336,6 +354,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            NULL,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:is_iterator:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_ITERATOR,
   g_param_spec_boolean ("is_iterator",
@@ -343,6 +367,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:is_function:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_FUNCTION,
   g_param_spec_boolean ("is_function",
@@ -350,6 +380,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:iterator_mask:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_ITERATOR_MASK,
   g_param_spec_int ("iterator_mask",
@@ -357,6 +393,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:num_points:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_NUM_POINTS,
   g_param_spec_int ("num_points",
@@ -364,6 +406,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:fill_area:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_FILL_AREA,
   g_param_spec_boolean ("fill_area",
@@ -371,6 +419,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:xstep:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_XSTEP,
   g_param_spec_double ("xstep",
@@ -378,6 +432,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:ystep:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_YSTEP,
   g_param_spec_double ("ystep",
@@ -385,6 +445,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:zstep:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_ZSTEP,
   g_param_spec_double ("zstep",
@@ -392,6 +458,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:symbol_type:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SYMBOL_TYPE,
   g_param_spec_int ("symbol_type",
@@ -399,6 +471,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:symbol_style:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SYMBOL_STYLE,
   g_param_spec_int ("symbol_style",
@@ -406,6 +484,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:symbol_size:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SYMBOL_SIZE,
   g_param_spec_int ("symbol_size",
@@ -413,12 +497,24 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:symbol_color:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SYMBOL_COLOR,
   g_param_spec_pointer ("symbol_color",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:symbol_border_width:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SYMBOL_BORDER_WIDTH,
   g_param_spec_double ("symbol_border_width",
@@ -426,12 +522,24 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:symbol_border_color:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SYMBOL_BORDER_COLOR,
   g_param_spec_pointer ("symbol_border_color",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:line_style:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LINE_STYLE,
   g_param_spec_int ("line_style",
@@ -439,6 +547,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:line_cap:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LINE_CAP,
   g_param_spec_int ("line_cap",
@@ -446,6 +560,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:line_join:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LINE_JOIN,
   g_param_spec_int ("line_join",
@@ -453,6 +573,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:line_width:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LINE_WIDTH,
   g_param_spec_double ("line_width",
@@ -460,12 +586,24 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:line_color:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LINE_COLOR,
   g_param_spec_pointer ("line_color",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:line_connector:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LINE_CONNECTOR,
   g_param_spec_int ("line_connector",
@@ -473,6 +611,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:xline_style:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_XLINE_STYLE,
   g_param_spec_int ("xline_style",
@@ -480,6 +624,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:xline_cap:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_XLINE_CAP,
   g_param_spec_int ("xline_cap",
@@ -487,6 +637,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:xline_join:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_XLINE_JOIN,
   g_param_spec_int ("xline_join",
@@ -494,6 +650,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:xline_width:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_XLINE_WIDTH,
   g_param_spec_double ("xline_width",
@@ -501,12 +663,24 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:xline_color:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_XLINE_COLOR,
   g_param_spec_pointer ("xline_color",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:yline_style:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_YLINE_STYLE,
   g_param_spec_int ("yline_style",
@@ -514,6 +688,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:yline_cap:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_YLINE_CAP,
   g_param_spec_int ("yline_cap",
@@ -521,6 +701,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:yline_join:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_YLINE_JOIN,
   g_param_spec_int ("yline_join",
@@ -528,6 +714,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:yline_join:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_YLINE_WIDTH,
   g_param_spec_double ("yline_width",
@@ -535,12 +727,24 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:yline_color:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_YLINE_COLOR,
   g_param_spec_pointer ("yline_color",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:zline_style:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_ZLINE_STYLE,
   g_param_spec_int ("zline_style",
@@ -548,6 +752,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:zline_cap:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_ZLINE_CAP,
   g_param_spec_int ("zline_cap",
@@ -555,6 +765,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:zline_join:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_ZLINE_JOIN,
   g_param_spec_int ("zline_join",
@@ -562,6 +778,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:zline_width:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_ZLINE_WIDTH,
   g_param_spec_double ("zline_width",
@@ -569,12 +791,24 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:zline_color:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_ZLINE_COLOR,
   g_param_spec_pointer ("zline_color",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:show_xerrbars:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SHOW_XERRBARS,
   g_param_spec_boolean ("show_xerrbars",
@@ -582,6 +816,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:xerrbar_width:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_XERRBARS_WIDTH,
   g_param_spec_int ("xerrbar_width",
@@ -589,6 +829,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:xerrbar_caps:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_XERRBARS_CAPS,
   g_param_spec_int ("xerrbar_caps",
@@ -596,6 +842,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:show_yerrbars:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SHOW_YERRBARS,
   g_param_spec_boolean ("show_yerrbars",
@@ -603,6 +855,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:yerrbar_width:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_YERRBARS_WIDTH,
   g_param_spec_int ("yerrbar_width",
@@ -610,6 +868,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:yerrbar_caps:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_YERRBARS_CAPS,
   g_param_spec_int ("yerrbar_caps",
@@ -617,6 +881,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:show_zerrbars:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SHOW_ZERRBARS,
   g_param_spec_boolean ("show_zerrbars",
@@ -624,6 +894,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:zerrbar_width:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_ZERRBARS_WIDTH,
   g_param_spec_int ("zerrbar_width",
@@ -631,6 +907,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:zerrbar_caps:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_ZERRBARS_CAPS,
   g_param_spec_int ("zerrbar_caps",
@@ -638,6 +920,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:show_legends:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SHOW_LEGENDS,
   g_param_spec_boolean ("show_legends",
@@ -645,6 +933,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            TRUE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:legends_precision:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LEGENDS_PRECISION,
   g_param_spec_int ("legends_precision",
@@ -652,6 +946,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:legends_style:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LEGENDS_STYLE,
   g_param_spec_int ("legends_style",
@@ -659,6 +959,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:show_labels:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SHOW_LABELS,
   g_param_spec_boolean ("show_labels",
@@ -666,6 +972,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            TRUE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:labels_border:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABELS_BORDER,
   g_param_spec_int ("labels_border",
@@ -673,6 +985,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:labels_border_space:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABELS_BORDER_SPACE,
   g_param_spec_int ("labels_border_space",
@@ -680,6 +998,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:labels_border_width:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABELS_BORDER_WIDTH,
   g_param_spec_int ("labels_border_width",
@@ -687,6 +1011,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:labels_border_shadow:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABELS_BORDER_SHADOW,
   g_param_spec_int ("labels_border_shadow",
@@ -694,6 +1024,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:labels_transparent:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABELS_TRANSPARENT,
   g_param_spec_boolean ("labels_transparent",
@@ -701,18 +1037,36 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            TRUE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:labels_fg_color:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABELS_FG,
   g_param_spec_pointer ("labels_fg_color",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:labels_bg_color:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABELS_BG,
   g_param_spec_pointer ("labels_bg_color",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:labels_angle:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABELS_ANGLE,
   g_param_spec_int ("labels_angle",
@@ -720,6 +1074,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,270,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:labels_offset:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABELS_OFFSET,
   g_param_spec_int ("labels_offset",
@@ -727,6 +1087,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:labels_size:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABELS_SIZE,
   g_param_spec_int ("labels_size",
@@ -734,6 +1100,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:labels_font:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABELS_FONT,
   g_param_spec_string ("labels_font",
@@ -741,6 +1113,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            NULL,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:labels_text:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABELS_TEXT,
   g_param_spec_string ("labels_text",
@@ -748,6 +1126,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            NULL,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:show_gradient:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SHOW_GRADIENT,
   g_param_spec_boolean ("show_gradient",
@@ -755,6 +1139,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            TRUE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_custom:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_CUSTOM,
   g_param_spec_boolean ("gradient_custom",
@@ -762,6 +1152,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_mask:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_MASK,
   g_param_spec_int ("gradient_mask",
@@ -769,30 +1165,60 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:color_min:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_COLOR_MIN,
   g_param_spec_pointer ("color_min",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:color_max:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_COLOR_MAX,
   g_param_spec_pointer ("color_max",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:color_lt_min:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_COLOR_LT_MIN,
   g_param_spec_pointer ("color_lt_min",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:color_gt_max:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_COLOR_GT_MAX,
   g_param_spec_pointer ("color_gt_max",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_max:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_MAX,
   g_param_spec_double ("gradient_max",
@@ -800,6 +1226,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            -G_MAXDOUBLE,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_min:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_MIN,
   g_param_spec_double ("gradient_min",
@@ -807,6 +1239,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            -G_MAXDOUBLE,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_step:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_STEP,
   g_param_spec_double ("gradient_step",
@@ -814,6 +1252,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_nminor:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_NMINOR,
   g_param_spec_int ("gradient_nminor",
@@ -821,6 +1265,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_nmajor:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_NMAJOR,
   g_param_spec_int ("gradient_nmajor",
@@ -828,6 +1278,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_scale:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_SCALE,
   g_param_spec_int ("gradient_scale",
@@ -835,6 +1291,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_break:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_BREAK,
   g_param_spec_boolean ("gradient_break",
@@ -842,6 +1304,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_break_max:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_BREAK_MAX,
   g_param_spec_double ("gradient_break_max",
@@ -849,6 +1317,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            -G_MAXDOUBLE,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_break_min:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_BREAK_MIN,
   g_param_spec_double ("gradient_break_min",
@@ -856,6 +1330,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            -G_MAXDOUBLE,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_break_step:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_BREAK_STEP,
   g_param_spec_double ("gradient_break_step",
@@ -863,6 +1343,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            -G_MAXDOUBLE,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_break_nminor:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_BREAK_NMINOR,
   g_param_spec_int ("gradient_break_nminor",
@@ -870,6 +1356,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_break_scale:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_BREAK_SCALE,
   g_param_spec_int ("gradient_break_scale",
@@ -877,6 +1369,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:gradient_break_position:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_GRADIENT_BREAK_POSITION,
   g_param_spec_double ("gradient_break_position",
@@ -884,6 +1382,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            P_(""),
                            0.,1.,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotData:bottom_axis:
+   *
+   *
+   **/
   g_object_class_install_property(gobject_class,
                            ARG_GRADIENT,
   g_param_spec_object ("bottom_axis",
@@ -904,6 +1408,15 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
   data_class->get_legend_size = gtk_plot_data_get_legend_size;
   data_class->get_gradient_size = gtk_plot_data_get_gradient_size;
 
+  /**
+   * GtkPlotData::add_to_plot:
+   * @data: a #GtkPlotData widget.
+   * @plot: a #GtkPlot widget.
+   * 
+   *
+   *
+   * Return value: 
+   */
   data_signals[ADD_TO_PLOT] =
     gtk_signal_new ("add_to_plot",
                     GTK_RUN_LAST,
@@ -912,6 +1425,13 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                     gtkextra_BOOL__POINTER,
                     GTK_TYPE_BOOL, 1, GTK_TYPE_PLOT);
 
+  /**
+   * GtkPlotData::update:
+   * @data: a #GtkPlotData widget.
+   * @new_range:
+   * 
+   *
+   */
   data_signals[UPDATE] =
     gtk_signal_new ("update",
                     GTK_RUN_LAST,
@@ -920,6 +1440,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                     gtkextra_VOID__BOOL,
                     GTK_TYPE_NONE, 1, GTK_TYPE_BOOL);
 
+  /**
+   * GtkPlotData::draw_data:
+   * @data: a #GtkPlotData widget.
+   * 
+   *
+   */
   data_signals[DRAW_DATA] =
     gtk_signal_new ("draw_data",
                     GTK_RUN_FIRST,
@@ -928,6 +1454,12 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                     gtkextra_VOID__VOID,
                     GTK_TYPE_NONE, 0, GTK_TYPE_NONE);
 
+  /**
+   * GtkPlotData::gradient_changed:
+   * @data: a #GtkPlotData widget.
+   * 
+   *
+   */
   data_signals[GRADIENT_CHANGED] =
     gtk_signal_new ("gradient_changed",
                     GTK_RUN_LAST,
@@ -935,7 +1467,13 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                     GTK_SIGNAL_OFFSET (GtkPlotDataClass, gradient_changed),
                     gtkextra_VOID__VOID,
                     GTK_TYPE_NONE, 0);
-
+ 
+  /**
+   * GtkPlotData::gradient_colors_changed:
+   * @data: a #GtkPlotData widget.
+   * 
+   *
+   */
   data_signals[GRADIENT_COLORS_CHANGED] =
     gtk_signal_new ("gradient_colors_changed",
                     GTK_RUN_LAST,
@@ -1741,6 +2279,14 @@ gtk_plot_data_new (void)
   return (widget);
 }
 
+/**
+ * gtk_plot_data_new_function:
+ * @function: a #GtkPlotFunc.
+ *
+ *
+ *
+ * Return value:
+ */
 GtkWidget*
 gtk_plot_data_new_function (GtkPlotFunc function)
 {
@@ -1753,6 +2299,13 @@ gtk_plot_data_new_function (GtkPlotFunc function)
   return (dataset);
 }
 
+/**
+ * gtk_plot_data_construct_function:
+ * @data: a #GtkPlotData widget.
+ * @function: a #GtkPlotFunc.
+ *
+ *
+ */
 void
 gtk_plot_data_construct_function (GtkPlotData *data, GtkPlotFunc function)
 {
@@ -1760,6 +2313,16 @@ gtk_plot_data_construct_function (GtkPlotData *data, GtkPlotFunc function)
   data->function = function;
 }
 
+/**
+ * gtk_plot_data_new_iterator:
+ * @iterator: a #GtkPlotIterator.
+ * @npoints:
+ * @mask:
+ *
+ *
+ *
+ * Return value: a new #GtkPlotData.
+ */
 GtkWidget*
 gtk_plot_data_new_iterator (GtkPlotIterator iterator, gint npoints, guint16 mask)
 {
@@ -1772,6 +2335,15 @@ gtk_plot_data_new_iterator (GtkPlotIterator iterator, gint npoints, guint16 mask
   return (dataset);
 }
 
+/**
+ * gtk_plot_data_construct_iterator:
+ * @data: a #GtkPlotData widget.
+ * @iterator: a #GtkPlotIterator.
+ * @npoints:
+ * @mask:
+ *
+ *
+ */
 void
 gtk_plot_data_construct_iterator (GtkPlotData *data,
 				  GtkPlotIterator iterator, gint npoints, guint16 mask)
@@ -1782,12 +2354,25 @@ gtk_plot_data_construct_iterator (GtkPlotData *data,
   data->num_points = npoints;
 }
 
+/**
+ * gtk_plot_data_clone:
+ * @data: a #GtkPlotData widget.
+ * @copy:
+ *
+ *
+ */
 void
 gtk_plot_data_clone (GtkPlotData *data, GtkPlotData *copy)
 {
   GTK_PLOT_DATA_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(data)))->clone(data, copy);
 }
 
+/**
+ * gtk_plot_data_update:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_update(GtkPlotData *data)
 {
@@ -3000,12 +3585,28 @@ gtk_plot_data_get_legend_size(GtkPlotData *data, gint *width, gint *height)
   }
 }
 
+/**
+ * gtk_plot_data_gradient:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotAxis *
 gtk_plot_data_gradient (GtkPlotData *data)
 {
   return data->gradient;
 }
 
+/**
+ * gtk_plot_data_move_gradient:
+ * @data: a #GtkPlotData widget.
+ * @x:
+ * @y:
+ * 
+ *
+ */
 void
 gtk_plot_data_move_gradient(GtkPlotData *data, gdouble x, gdouble y)
 {
@@ -3014,6 +3615,14 @@ gtk_plot_data_move_gradient(GtkPlotData *data, gdouble x, gdouble y)
   gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_CHANGED]);
 }
 
+/**
+ * gtk_plot_data_get_gradient_allocation:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
 GtkAllocation
 gtk_plot_data_get_gradient_allocation(GtkPlotData *data)
 {
@@ -3034,7 +3643,13 @@ gtk_plot_data_get_gradient_allocation(GtkPlotData *data)
 
   return allocation;
 }
-
+/**
+ * gtk_plot_data_set_gradient_size:
+ * @data: a #GtkPlotData widget.
+ * @size:
+ *
+ *
+ */
 void
 gtk_plot_data_set_gradient_size(GtkPlotData *data, gint size)
 {
@@ -3343,6 +3958,14 @@ gtk_plot_data_real_draw_symbol (GtkPlotData *data,
 }
 
 
+/**
+ * gtk_plot_data_draw_symbol:
+ * @data: a #GtkPlotData widget.
+ * @px:
+ * @py:
+ *
+ *
+ */
 void
 gtk_plot_data_draw_symbol (GtkPlotData *data, gdouble px, gdouble py)
 {
@@ -4077,6 +4700,16 @@ gtk_plot_data_connect_points(GtkPlotData *dataset, gint npoints)
 }
 
 /* New implementation */
+
+/**
+ * gtk_plot_data_find_dimension:
+ * @data: a #GtkPlotData widget.
+ * @name:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotArray *
 gtk_plot_data_find_dimension(GtkPlotData *data, const gchar *name)
 {
@@ -4093,6 +4726,18 @@ gtk_plot_data_find_dimension(GtkPlotData *data, const gchar *name)
   return NULL;
 }
 
+/**
+ * gtk_plot_data_add_dimension:
+ * @data: a #GtkPlotData widget.
+ * @label:
+ * @name:
+ * @desc:
+ * @value_type:
+ * @required:
+ * @independent:
+ *
+ *
+ */
 void
 gtk_plot_data_add_dimension(GtkPlotData *data,
                             const gchar *name,
@@ -4115,6 +4760,13 @@ gtk_plot_data_add_dimension(GtkPlotData *data,
   }
 }
 
+/**
+ * gtk_plot_data_remove_dimension:
+ * @data: a #GtkPlotData widget.
+ * @name:
+ *
+ *
+ */
 void
 gtk_plot_data_remove_dimension(GtkPlotData *data,
                                const gchar *name)
@@ -4133,6 +4785,14 @@ gtk_plot_data_remove_dimension(GtkPlotData *data,
   }
 }
 
+/**
+ * gtk_plot_data_dimension_set_array:
+ * @data: a #GtkPlotData widget.
+ * @name:
+ * @array:
+ *
+ *
+ */
 void
 gtk_plot_data_dimension_set_array(GtkPlotData *data,
 				  const gchar *name,
@@ -4148,6 +4808,16 @@ gtk_plot_data_dimension_set_array(GtkPlotData *data,
   }
 }
 
+/**
+ * gtk_plot_data_dimension_set_points:
+ * @data: a #GtkPlotData widget.
+ * @name:
+ * @points:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotArray *
 gtk_plot_data_dimension_set_points(GtkPlotData *data,
                             const gchar *name, gdouble *points)
@@ -4161,6 +4831,15 @@ gtk_plot_data_dimension_set_points(GtkPlotData *data,
   return dim;
 }
 
+/**
+ * gtk_plot_data_dimension_get_array:
+ * @data: a #GtkPlotData widget.
+ * @name:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotArray *
 gtk_plot_data_dimension_get_array(GtkPlotData *data,
                             const gchar *name)
@@ -4170,6 +4849,14 @@ gtk_plot_data_dimension_get_array(GtkPlotData *data,
   return dim;
 }
 
+/**
+ * gtk_plot_data_required_dimensions:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
 guint
 gtk_plot_data_required_dimensions(GtkPlotData *data)
 {
@@ -4184,6 +4871,14 @@ gtk_plot_data_required_dimensions(GtkPlotData *data)
   return n;
 }
 
+/**
+ * gtk_plot_data_independent_dimensions:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
 guint
 gtk_plot_data_independent_dimensions(GtkPlotData *data)
 {
@@ -4238,12 +4933,30 @@ gtk_plot_data_independent_dimensions(GtkPlotData *data)
  * gtk_plot_data_hide
  ******************************************/
 
+/**
+ * gtk_plot_data_draw_points:
+ * @data: a #GtkPlotData widget.
+ * @npoints:
+ *
+ *
+ */
 void
 gtk_plot_data_draw_points(GtkPlotData *data, gint npoints)
 {
   gtk_plot_data_real_draw(data, npoints);
 }
 
+/**
+ * gtk_plot_data_set_points:
+ * @data: a #GtkPlotData widget.
+ * @x:
+ * @y:
+ * @dx:
+ * @dy:
+ * num_points:
+ *
+ *
+ */
 void
 gtk_plot_data_set_points(GtkPlotData *data,
                          gdouble *x, gdouble *y,
@@ -4257,20 +4970,48 @@ gtk_plot_data_set_points(GtkPlotData *data,
   gtk_plot_data_set_numpoints(data, num_points);
 }
 
+/**
+ * gtk_plot_data_get_points:
+ * @dataset: a #GtkPlotData widget.
+ * @x:
+ * @y:
+ * @dx:
+ * @dy:
+ * @num_points:
+ *
+ *
+ */
 void
-gtk_plot_data_get_points(GtkPlotData *data,
+gtk_plot_data_get_points(GtkPlotData *dataset,
                             gdouble **x, gdouble **y,
                             gdouble **dx, gdouble **dy,
                             gint *num_points)
 {
   gint n;
-  *x = gtk_plot_data_get_x(data, &n);
-  *y = gtk_plot_data_get_y(data, &n);
-  *dx = gtk_plot_data_get_dx(data, &n);
-  *dy = gtk_plot_data_get_dy(data, &n);
-  *num_points = data->num_points;
+  *x = gtk_plot_data_get_x(dataset, &n);
+  *y = gtk_plot_data_get_y(dataset, &n);
+  *dx = gtk_plot_data_get_dx(dataset, &n);
+  *dy = gtk_plot_data_get_dy(dataset, &n);
+  *num_points = dataset->num_points;
 }
 
+/**
+ * gtk_plot_data_get_point:
+ * @dataset: a #GtkPlotData widget.
+ * @n:
+ * @x:
+ * @y:
+ * @z:
+ * @a:
+ * @dx:
+ * @dy:
+ * @dz:
+ * @da:
+ * @label:
+ * @error:
+ *
+ *
+ */
 void
 gtk_plot_data_get_point(GtkPlotData *dataset, gint n,
                         gdouble *x, gdouble *y, gdouble *z, gdouble *a,
@@ -4324,6 +5065,15 @@ gtk_plot_data_get_point(GtkPlotData *dataset, gint n,
   }
 }
 
+/**
+ * gtk_plot_data_set_x:
+ * @data: a #GtkPlotData widget.
+ * @x:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotArray *
 gtk_plot_data_set_x(GtkPlotData *data,
                     gdouble *x)
@@ -4333,6 +5083,15 @@ gtk_plot_data_set_x(GtkPlotData *data,
   return array;
 }
 
+/**
+ * gtk_plot_data_set_y:
+ * @data: a #GtkPlotData widget.
+ * @y:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotArray *
 gtk_plot_data_set_y(GtkPlotData *data,
                     gdouble *y)
@@ -4342,6 +5101,15 @@ gtk_plot_data_set_y(GtkPlotData *data,
   return array;
 }
 
+/**
+ * gtk_plot_data_set_z:
+ * @data: a #GtkPlotData widget.
+ * @z:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotArray *
 gtk_plot_data_set_z(GtkPlotData *data,
                     gdouble *z)
@@ -4351,6 +5119,15 @@ gtk_plot_data_set_z(GtkPlotData *data,
   return array;
 }
 
+/**
+ * gtk_plot_data_set_a:
+ * @data: a #GtkPlotData widget.
+ * @a:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotArray *
 gtk_plot_data_set_a(GtkPlotData *data,
                     gdouble *a)
@@ -4360,6 +5137,15 @@ gtk_plot_data_set_a(GtkPlotData *data,
   return array;
 }
 
+/**
+ * gtk_plot_data_set_dx:
+ * @data: a #GtkPlotData widget.
+ * @dx:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotArray *
 gtk_plot_data_set_dx(GtkPlotData *data,
                      gdouble *dx)
@@ -4369,6 +5155,15 @@ gtk_plot_data_set_dx(GtkPlotData *data,
   return array;
 }
 
+/**
+ * gtk_plot_data_set_dy:
+ * @data: a #GtkPlotData widget.
+ * @dy:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotArray *
 gtk_plot_data_set_dy(GtkPlotData *data,
                      gdouble *dy)
@@ -4378,7 +5173,15 @@ gtk_plot_data_set_dy(GtkPlotData *data,
   return array;
 }
 
-
+/**
+ * gtk_plot_data_set_dz:
+ * @data: a #GtkPlotData widget.
+ * @dz:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotArray *
 gtk_plot_data_set_dz(GtkPlotData *data,
                      gdouble *dz)
@@ -4388,6 +5191,15 @@ gtk_plot_data_set_dz(GtkPlotData *data,
   return array;
 }
 
+/**
+ * gtk_plot_data_set_da:
+ * @data: a #GtkPlotData widget.
+ * @da:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotArray *
 gtk_plot_data_set_da(GtkPlotData *data,
                      gdouble *da)
@@ -4397,6 +5209,13 @@ gtk_plot_data_set_da(GtkPlotData *data,
   return array;
 }
 
+/**
+ * gtk_plot_data_set_a_scale:
+ * @data: a #GtkPlotData widget.
+ * @a_scale:
+ *
+ *
+ */
 void
 gtk_plot_data_set_a_scale(GtkPlotData *data, gdouble a_scale)
 {
@@ -4404,7 +5223,15 @@ gtk_plot_data_set_a_scale(GtkPlotData *data, gdouble a_scale)
   if(dim) gtk_plot_array_set_scale(dim, a_scale);
 }
 
-
+/**
+ * gtk_plot_data_set_labels:
+ * @data: a #GtkPlotData widget.
+ * @labels:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotArray *
 gtk_plot_data_set_labels(GtkPlotData *data,
                          gchar **labels)
@@ -4420,7 +5247,15 @@ gtk_plot_data_set_labels(GtkPlotData *data,
   return dim;
 }
 
-
+/**
+ * gtk_plot_data_get_x:
+ * @dataset: a #GtkPlotData widget.
+ * @num_points:
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble *
 gtk_plot_data_get_x(GtkPlotData *dataset, gint *num_points)
 {
@@ -4433,6 +5268,15 @@ gtk_plot_data_get_x(GtkPlotData *dataset, gint *num_points)
   return NULL;
 }
 
+/**
+ * gtk_plot_data_get_y:
+ * @dataset: a #GtkPlotData widget.
+ * @num_points:
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble *
 gtk_plot_data_get_y(GtkPlotData *dataset, gint *num_points)
 {
@@ -4445,6 +5289,15 @@ gtk_plot_data_get_y(GtkPlotData *dataset, gint *num_points)
   return NULL;
 }
 
+/**
+ * gtk_plot_data_get_z:
+ * @dataset: a #GtkPlotData widget.
+ * @num_points:
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble *
 gtk_plot_data_get_z(GtkPlotData *dataset, gint *num_points)
 {
@@ -4457,6 +5310,15 @@ gtk_plot_data_get_z(GtkPlotData *dataset, gint *num_points)
   return NULL;
 }
 
+/**
+ * gtk_plot_data_get_a:
+ * @dataset: a #GtkPlotData widget.
+ * @num_points:
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble *
 gtk_plot_data_get_a(GtkPlotData *dataset, gint *num_points)
 {
@@ -4469,6 +5331,15 @@ gtk_plot_data_get_a(GtkPlotData *dataset, gint *num_points)
   return NULL;
 }
 
+/**
+ * gtk_plot_data_get_dx:
+ * @dataset: a #GtkPlotData widget.
+ * @num_points:
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble *
 gtk_plot_data_get_dx(GtkPlotData *dataset, gint *num_points)
 {
@@ -4481,6 +5352,15 @@ gtk_plot_data_get_dx(GtkPlotData *dataset, gint *num_points)
   return NULL;
 }
 
+/**
+ * gtk_plot_data_get_dy:
+ * @dataset: a #GtkPlotData widget.
+ * @num_points:
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble *
 gtk_plot_data_get_dy(GtkPlotData *dataset, gint *num_points)
 {
@@ -4493,6 +5373,15 @@ gtk_plot_data_get_dy(GtkPlotData *dataset, gint *num_points)
   return NULL;
 }
 
+/**
+ * gtk_plot_data_get_dz:
+ * @dataset: a #GtkPlotData widget.
+ * @num_points:
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble *
 gtk_plot_data_get_dz(GtkPlotData *dataset, gint *num_points)
 {
@@ -4505,6 +5394,15 @@ gtk_plot_data_get_dz(GtkPlotData *dataset, gint *num_points)
   return NULL;
 }
 
+/**
+ * gtk_plot_data_get_da:
+ * @dataset: a #GtkPlotData widget.
+ * @num_points:
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble *
 gtk_plot_data_get_da(GtkPlotData *dataset, gint *num_points)
 {
@@ -4517,6 +5415,14 @@ gtk_plot_data_get_da(GtkPlotData *dataset, gint *num_points)
   return NULL;
 }
 
+/**
+ * gtk_plot_data_get_a_scale:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gdouble
 gtk_plot_data_get_a_scale(GtkPlotData *dataset)
 {
@@ -4525,7 +5431,15 @@ gtk_plot_data_get_a_scale(GtkPlotData *dataset)
   return 0.;
 }
 
-
+/**
+ * gtk_plot_data_get_labels:
+ * @dataset: a #GtkPlotData widget.
+ * @show_labels:
+ *
+ *
+ *
+ * Return value:
+ */
 gchar **
 gtk_plot_data_get_labels(GtkPlotData *dataset, gboolean *show_labels)
 {
@@ -4536,12 +5450,30 @@ gtk_plot_data_get_labels(GtkPlotData *dataset, gboolean *show_labels)
   return NULL;
 }
 
+/**
+ * gtk_plot_data_show_labels:
+ * @dataset: a #GtkPlotData widget.
+ * @show_labels:
+ *
+ *
+ */
 void
 gtk_plot_data_show_labels(GtkPlotData *dataset, gboolean show_labels)
 {
   dataset->show_labels = show_labels;
 }
 
+/**
+ * gtk_plot_data_labels_set_attributes:
+ * @data: a #GtkPlotData widget.
+ * @font:
+ * @height:
+ * @angle:
+ * @fg:
+ * @bg:
+ *
+ *
+ */
 void
 gtk_plot_data_labels_set_attributes (GtkPlotData *data,
 				     const gchar *font,
@@ -4570,26 +5502,52 @@ gtk_plot_data_labels_set_attributes (GtkPlotData *data,
 
 }
 
-
+/**
+ * gtk_plot_data_set_numpoints:
+ * @dataset: a #GtkPlotData widget.
+ * @num_points:
+ *
+ *
+ */
 void
-gtk_plot_data_set_numpoints(GtkPlotData *dataset, gint numpoints)
+gtk_plot_data_set_numpoints(GtkPlotData *dataset, gint num_points)
 {
   GList *list;
-  dataset->num_points = numpoints;
+  dataset->num_points = num_points;
   list = dataset->data->arrays;
   while(list){
     GtkPlotArray *array = GTK_PLOT_ARRAY(list->data);
-    array->size = numpoints;
+    array->size = num_points;
     list = list->next;
   }
 }
 
+/**
+ * gtk_plot_data_data_get_numpoints:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gint
 gtk_plot_data_get_numpoints(GtkPlotData *dataset)
 {
   return(dataset->num_points);
 }
 
+/**
+ * gtk_plot_data_set_symbol:
+ * @dataset: a #GtkPlotData widget.
+ * @type:
+ * @style:
+ * @size:
+ * @line_width:
+ * @color:
+ * @border_color:
+ *
+ *
+ */
 void
 gtk_plot_data_set_symbol (GtkPlotData *dataset,
 		          GtkPlotSymbolType type,
@@ -4605,6 +5563,18 @@ gtk_plot_data_set_symbol (GtkPlotData *dataset,
   dataset->symbol.color = *color;
 }
 
+/**
+ * gtk_plot_data_get_symbol:
+ * @dataset: a #GtkPlotData widget.
+ * @type:
+ * @style:
+ * @size:
+ * @line_width:
+ * @color:
+ * @border_color:
+ *
+ *
+ */
 void
 gtk_plot_data_get_symbol (GtkPlotData *dataset,
 		          GtkPlotSymbolType *type,
@@ -4620,6 +5590,17 @@ gtk_plot_data_get_symbol (GtkPlotData *dataset,
   *border_color = dataset->symbol.border.color;
 }
 
+/**
+ * gtk_plot_data_set_line_attributes:
+ * @dataset: a #GtkPlotData widget.
+ * @style:
+ * @cap_style:
+ * @join_style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void
 gtk_plot_data_set_line_attributes (GtkPlotData *dataset,
                                    GtkPlotLineStyle style,
@@ -4635,6 +5616,17 @@ gtk_plot_data_set_line_attributes (GtkPlotData *dataset,
   dataset->line.color = *color;
 }
 
+/**
+ * gtk_plot_data_get_line_attributes:
+ * @dataset: a #GtkPlotData widget.
+ * @style:
+ * @cap_style:
+ * @join_style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void
 gtk_plot_data_get_line_attributes (GtkPlotData *dataset,
                                    GtkPlotLineStyle *style,
@@ -4651,6 +5643,13 @@ gtk_plot_data_get_line_attributes (GtkPlotData *dataset,
 }
 
 
+/**
+ * gtk_plot_data_set_connector:
+ * @dataset: a #GtkPlotData widget.
+ * @connector:
+ *
+ *
+ */
 void
 gtk_plot_data_set_connector (GtkPlotData *dataset,
 		             GtkPlotConnector connector)
@@ -4658,12 +5657,31 @@ gtk_plot_data_set_connector (GtkPlotData *dataset,
   dataset->line_connector = connector;
 }
 
+/**
+ * gtk_plot_data_get_connector:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gint
 gtk_plot_data_get_connector (GtkPlotData *dataset)
 {
   return (dataset->line_connector);
 }
 
+/**
+ * gtk_plot_data_set_x_attributes:
+ * @dataset: a #GtkPlotData widget.
+ * @style:
+ * @cap_style:
+ * @join_style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void
 gtk_plot_data_set_x_attributes (GtkPlotData *dataset,
                            	GtkPlotLineStyle style,
@@ -4679,6 +5697,17 @@ gtk_plot_data_set_x_attributes (GtkPlotData *dataset,
   dataset->x_line.color = *color;
 }
 
+/**
+ * gtk_plot_data_set_y_attributes:
+ * @dataset: a #GtkPlotData widget.
+ * @style:
+ * @cap_style:
+ * @join_style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void
 gtk_plot_data_set_y_attributes (GtkPlotData *dataset,
                            	GtkPlotLineStyle style,
@@ -4694,6 +5723,17 @@ gtk_plot_data_set_y_attributes (GtkPlotData *dataset,
   dataset->y_line.color = *color;
 }
 
+/**
+ * gtk_plot_data_set_z_attributes:
+ * @dataset: a #GtkPlotData widget.
+ * @style:
+ * @cap_style:
+ * @join_style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void
 gtk_plot_data_set_z_attributes (GtkPlotData *dataset,
                            	GtkPlotLineStyle style,
@@ -4710,67 +5750,136 @@ gtk_plot_data_set_z_attributes (GtkPlotData *dataset,
 }
 
 
+/**
+ * gtk_plot_data_show_xerrbars:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_show_xerrbars(GtkPlotData *dataset)
 {
   dataset->show_xerrbars = TRUE;
 }
 
+/**
+ * gtk_plot_data_show_yerrbars:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_show_yerrbars(GtkPlotData *dataset)
 {
   dataset->show_yerrbars = TRUE;
 }
 
+/**
+ * gtk_plot_data_show_zerrbars:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_show_zerrbars(GtkPlotData *dataset)
 {
   dataset->show_zerrbars = TRUE;
 }
 
-
+/**
+ * gtk_plot_data_hide_xerrbars:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_hide_xerrbars(GtkPlotData *dataset)
 {
   dataset->show_xerrbars = FALSE;
 }
 
+/**
+ * gtk_plot_data_hide_yerrbars:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_hide_yerrbars(GtkPlotData *dataset)
 {
   dataset->show_yerrbars = FALSE;
 }
 
+/**
+ * gtk_plot_data_hide_zerrbars:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_hide_zerrbars(GtkPlotData *dataset)
 {
   dataset->show_zerrbars = FALSE;
 }
 
+/**
+ * gtk_plot_data_fill_area:
+ * @dataset: a #GtkPlotData widget.
+ * @fill:
+ *
+ *
+ */
 void
 gtk_plot_data_fill_area(GtkPlotData *dataset, gboolean fill)
 {
   dataset->fill_area = fill;
 }
 
+/**
+ * gtk_plot_data_area_is_filled:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gboolean
 gtk_plot_data_area_is_filled(GtkPlotData *dataset)
 {
   return (dataset->fill_area);
 }
 
+/**
+ * gtk_plot_data_whow_legend:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_show_legend(GtkPlotData *dataset)
 {
   dataset->show_legend = TRUE;
 }
 
+/**
+ * gtk_plot_data_hide_legend:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_hide_legend(GtkPlotData *dataset)
 {
   dataset->show_legend = FALSE;
 }
 
+/**
+ * gtk_plot_data_set_legend:
+ * @dataset: a #GtkPlotData widget.
+ * @legend:
+ *
+ *
+ */
 void
 gtk_plot_data_set_legend(GtkPlotData *dataset,
                             const gchar *legend)
@@ -4781,13 +5890,26 @@ gtk_plot_data_set_legend(GtkPlotData *dataset,
   }
 }
 
+/**
+ * gtk_plot_data_set_legend_precision:
+ * @dataset: a #GtkPlotData widget.
+ * @precision:
+ *
+ *
+ */
 void
-gtk_plot_data_set_legend_precision (GtkPlotData *data,
+gtk_plot_data_set_legend_precision (GtkPlotData *dataset,
                                      gint precision)
 {
-  data->legends_precision = precision;
+  dataset->legends_precision = precision;
 }
 
+/**
+ * gtk_plot_data_get_legend_precision:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ */
 gint
 gtk_plot_data_get_legend_precision (GtkPlotData *data)
 {
@@ -4795,7 +5917,13 @@ gtk_plot_data_get_legend_precision (GtkPlotData *data)
   return (data->legends_precision);
 }
 
-
+/**
+ * gtk_plot_data_set_name:
+ * @dataset: a #GtkPlotData widget.
+ * @name:
+ *
+ *
+ */
 void
 gtk_plot_data_set_name(GtkPlotData *dataset, const gchar *name)
 {
@@ -4805,24 +5933,50 @@ gtk_plot_data_set_name(GtkPlotData *dataset, const gchar *name)
   dataset->name = g_strdup(name);
 }
 
+/**
+ * gtk_plot_data_set_link:
+ * @dataset: a #GtkPlotData widget.
+ * @link:
+ *
+ *
+ */
 void
 gtk_plot_data_set_link(GtkPlotData *dataset, gpointer link)
 {
   dataset->link = link;
 }
 
+/**
+ * gtk_plot_data_get_link:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ */
 gpointer
 gtk_plot_data_get_link(GtkPlotData *dataset)
 {
   return(dataset->link);
 }
 
+/**
+ * gtk_plot_data_remove_link:
+ * @dataset: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_remove_link(GtkPlotData *dataset)
 {
   dataset->link = NULL;
 }
 
+/**
+ * gtk_plot_data_set_gradient_mask:
+ * @data: a #GtkPlotData widget.
+ * @mask:
+ *
+ *
+ */
 void
 gtk_plot_data_set_gradient_mask (GtkPlotData *data, gint mask)
 {
@@ -4830,24 +5984,53 @@ gtk_plot_data_set_gradient_mask (GtkPlotData *data, gint mask)
   gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED]);
 }
 
+/**
+ * gtk_plot_data_get_gradient_mask:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gint
 gtk_plot_data_get_gradient_mask (GtkPlotData *data)
 {
   return (data->gradient_mask);
 }
 
+/**
+ * gtk_plot_data_set_visible:
+ * @data: a #GtkPlotData widget.
+ * @visible:
+ *
+ *
+ */
 void
 gtk_plot_data_gradient_set_visible (GtkPlotData *data, gboolean visible)
 {
   data->show_gradient = visible;
 }
 
+/**
+ * gtk_plot_data_gradient_visible:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gboolean
 gtk_plot_data_gradient_visible (GtkPlotData *data)
 {
   return(data->show_gradient);
 }
 
+/**
+ * gtk_plot_data_gradient_auoscale_a:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_gradient_autoscale_a (GtkPlotData *data)
 {
@@ -4876,6 +6059,12 @@ gtk_plot_data_gradient_autoscale_a (GtkPlotData *data)
   real_autoscale_gradient(data, amin, amax);
 }
 
+/**
+ * gtk_plot_data_gradient_autoscale_da:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_gradient_autoscale_da (GtkPlotData *data)
 {
@@ -4903,6 +6092,12 @@ gtk_plot_data_gradient_autoscale_da (GtkPlotData *data)
   real_autoscale_gradient(data, amin, amax);
 }
 
+/**
+ * gtk_plot_data_gradient_autoscale_z:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_gradient_autoscale_z (GtkPlotData *data)
 {
@@ -4940,6 +6135,14 @@ real_autoscale_gradient(GtkPlotData *data, gdouble xmin, gdouble xmax)
   data->legends_style = data->gradient->ticks.scale == GTK_PLOT_SCALE_LINEAR ? GTK_PLOT_LABEL_FLOAT : GTK_PLOT_LABEL_EXP;
 }
 
+/**
+ * gtk_plot_data_set_gradient_colors:
+ * @data: a #GtkPlotData widget.
+ * @min:
+ * @max:
+ *
+ *
+ */
 void
 gtk_plot_data_set_gradient_colors (GtkPlotData *data,
                                    const GdkColor *min,
@@ -4950,6 +6153,14 @@ gtk_plot_data_set_gradient_colors (GtkPlotData *data,
   gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED]);
 }
 
+/**
+ * gtk_plot_data_get_gradient_colors:
+ * @data: a #GtkPlotData widget.
+ * @min:
+ * @max:
+ *
+ *
+ */
 void
 gtk_plot_data_get_gradient_colors (GtkPlotData *data,
                                    GdkColor *min,
@@ -4959,6 +6170,14 @@ gtk_plot_data_get_gradient_colors (GtkPlotData *data,
   max = &data->color_max;
 }
 
+/**
+ * gtk_plot_data_set_gradient_nth_color:
+ * @data: a #GtkPlotData widget.
+ * @level:
+ * @color:
+ *
+ *
+ */
 void
 gtk_plot_data_set_gradient_nth_color (GtkPlotData *data,
                                       guint level,
@@ -4971,6 +6190,15 @@ gtk_plot_data_set_gradient_nth_color (GtkPlotData *data,
   gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED]);
 }
 
+/**
+ * gtk_plot_data_get_gradient_nth_color:
+ * @data: a #GtkPlotData widget.
+ * @level:
+ *
+ *
+ *
+ * Return value:
+ */
 const GdkColor *
 gtk_plot_data_get_gradient_nth_color (GtkPlotData *data,
                                       guint level)
@@ -4979,6 +6207,14 @@ gtk_plot_data_get_gradient_nth_color (GtkPlotData *data,
   return &data->gradient_colors[level];
 }
 
+/**
+ * gtk_plot_data_set_gradient_outer_colors:
+ * @data: a #GtkPlotData widget.
+ * @min:
+ * @max:
+ *
+ *
+ */
 void
 gtk_plot_data_set_gradient_outer_colors (GtkPlotData *data,
                                          const GdkColor *min,
@@ -4989,6 +6225,14 @@ gtk_plot_data_set_gradient_outer_colors (GtkPlotData *data,
   gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED]);
 }
 
+/**
+ * gtk_plot_data_get_gradient_outer_colors:
+ * @data: a #GtkPlotData widget.
+ * @min:
+ * @max:
+ *
+ *
+ */
 void
 gtk_plot_data_get_gradient_outer_colors (GtkPlotData *data,
                                          GdkColor *min,
@@ -4998,6 +6242,16 @@ gtk_plot_data_get_gradient_outer_colors (GtkPlotData *data,
   max = &data->color_gt_max;
 }
 
+/**
+ * gtk_plot_data_set_gradient:
+ * @data: a #GtkPlotData widget.
+ * @min:
+ * @max:
+ * @nlevels:
+ * @nsublevels:
+ *
+ *
+ */
 void
 gtk_plot_data_set_gradient (GtkPlotData *data,
                             gdouble min, gdouble max,
@@ -5013,6 +6267,16 @@ gtk_plot_data_set_gradient (GtkPlotData *data,
   gtk_plot_data_reset_gradient(data);
 }
 
+/**
+ * gtk_plot_data_get_gradient:
+ * @data: a #GtkPlotData widget.
+ * @min:
+ * @max:
+ * @nlevels:
+ * @nsublevels:
+ *
+ *
+ */
 void
 gtk_plot_data_get_gradient (GtkPlotData *data,
                             gdouble *min, gdouble *max,
@@ -5024,6 +6288,14 @@ gtk_plot_data_get_gradient (GtkPlotData *data,
   *nsublevels = data->gradient->ticks.nminor;
 }
 
+/**
+ * gtk_plot_data_get_gradient_level:
+ * @data: a #GtkPlotData widget.
+ * @level:
+ * @color:
+ *
+ *
+ */
 void
 gtk_plot_data_get_gradient_level (GtkPlotData *data, gdouble level, GdkColor *color)
 {
@@ -5099,6 +6371,14 @@ gtk_plot_data_get_gradient_level (GtkPlotData *data, gdouble level, GdkColor *co
   gdk_color_alloc(gtk_widget_get_colormap(GTK_WIDGET(data)), color);
 }
 
+/**
+ * gtk_plot_data_gradient_set_style:
+ * @data: a #GtkPlotData widget.
+ * @style:
+ * @precision:
+ *
+ *
+ */
 void
 gtk_plot_data_gradient_set_style        (GtkPlotData *data,
                                          GtkPlotLabelStyle style,
@@ -5108,6 +6388,13 @@ gtk_plot_data_gradient_set_style        (GtkPlotData *data,
   data->legends_precision = style;
 }
 
+/**
+ * gtk_plot_data_gradient_set_scale:
+ * @data: a #GtkPlotData widget.
+ * @scale:
+ *
+ *
+ */
 void            gtk_plot_data_gradient_set_scale        (GtkPlotData *data,
                                                          GtkPlotScale scale)
 {
@@ -5316,6 +6603,12 @@ gtk_plot_data_reset_gradient(GtkPlotData *data)
 }
 
 
+/**
+ * gtk_plot_data_reset_gradient_colors:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_reset_gradient_colors(GtkPlotData *data)
 {
@@ -5361,18 +6654,42 @@ gtk_plot_data_reset_gradient_colors(GtkPlotData *data)
   gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED]);
 }
 
+/**
+ * gtk_plot_data_gradient_use_custom_colors:
+ * @data: a #GtkPlotData widget.
+ * @custom:
+ *
+ *
+ */
 void
 gtk_plot_data_gradient_use_custom_colors(GtkPlotData *data, gboolean custom)
 {
   data->gradient_custom = custom;
 }
 
+/**
+ * gtk_plot_data_gradient_custom_colors:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gboolean
 gtk_plot_data_gradient_custom_colors(GtkPlotData *data)
 {
   return(data->gradient_custom);
 }
 
+/**
+ * gtk_plot_data_add_marker:
+ * @data: a #GtkPlotData widget.
+ * @point:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotMarker *
 gtk_plot_data_add_marker(GtkPlotData *data, guint point)
 {
@@ -5401,6 +6718,15 @@ gtk_plot_data_add_marker(GtkPlotData *data, guint point)
   return (marker);
 }
 
+/**
+ * gtk_plot_data_remove_marker:
+ * @data: a #GtkPlotData widget.
+ * @marker:
+ *
+ *
+ *
+ * Return value:
+ */
 gboolean
 gtk_plot_data_remove_marker(GtkPlotData *data, GtkPlotMarker *marker)
 {
@@ -5423,6 +6749,12 @@ gtk_plot_data_remove_marker(GtkPlotData *data, GtkPlotMarker *marker)
   return FALSE;
 }
 
+/**
+ * gtk_plot_data_remove_markers:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ */
 void
 gtk_plot_data_remove_markers(GtkPlotData *data)
 {
@@ -5439,12 +6771,27 @@ gtk_plot_data_remove_markers(GtkPlotData *data)
   data->markers = NULL;
 }
 
+/**
+ * gtk_plot_data_show_markers:
+ * @data: a #GtkPlotData widget.
+ * @show:
+ *
+ *
+ */
 void
 gtk_plot_data_show_markers(GtkPlotData *data, gboolean show)
 {
   data->show_markers = show;
 }
 
+/**
+ * gtk_plot_data_markers_visible:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gboolean
 gtk_plot_data_markers_visible(GtkPlotData *data)
 {

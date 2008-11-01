@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotbar
+ * @short_description: 3d scientific plots widget for GTK. 
+ *
+ * FIXME:: Need long description.
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -199,6 +206,15 @@ gtk_plot_bar_init (GtkPlotBar *dataset)
   dataset->width = .05;
 }
 
+
+/**
+ * gtk_plot_bar_new:
+ * @orientation: GTK_ORIENTATION_HORIZONTAL or GTK_ORIENTATION_VERTICAL.
+ *
+ * Create a new GtkPlotBar widget.
+ *
+ * Return value: a new GtkWidget.
+ */
 GtkWidget*
 gtk_plot_bar_new (GtkOrientation orientation)
 {
@@ -211,6 +227,13 @@ gtk_plot_bar_new (GtkOrientation orientation)
   return (widget);
 }
 
+/**
+ * gtk_plot_bar_construct:
+ * @bar: a #GtkPlotBar widget.
+ * @orientation: GTK_ORIENTATION_HORIZONTAL or GTK_ORIENTATION_VERTICAL.
+ *
+ * Initializes a #GtkPlotBar structure.
+ */
 void
 gtk_plot_bar_construct(GtkPlotBar *bar, GtkOrientation orientation)
 {
@@ -389,6 +412,13 @@ gtk_plot_bar_draw_legend(GtkPlotData *data, gint x, gint y)
 
 }
 
+/**
+ * gtk_plot_bar_set_width:
+ * @bar: a #GtkPlotBar widget.
+ * @width: widget width.
+ *
+ * Set the width of a GtkPlotBar widget.
+ */
 void
 gtk_plot_bar_set_width (GtkPlotBar *bar, gdouble width)
 {
@@ -397,6 +427,14 @@ gtk_plot_bar_set_width (GtkPlotBar *bar, gdouble width)
   bar->width = width;
 }
 
+/**
+ * gtk_plot_bar_get_width:
+ * @bar: a #GtkPlotBar widget.
+ *
+ * Set the width of a GtkPlotBar widget.
+ *
+ * Return value: widget width.
+ */
 gdouble
 gtk_plot_bar_get_width (GtkPlotBar *bar)
 {

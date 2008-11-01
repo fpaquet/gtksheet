@@ -150,30 +150,30 @@ GtkPlotArray *	gtk_plot_surface_set_dy		(GtkPlotSurface *data,
 						 gdouble *dy); 
 GtkPlotArray *	gtk_plot_surface_set_dz		(GtkPlotSurface *data,
 						 gdouble *dz); 
-gdouble * 	gtk_plot_surface_get_x		(GtkPlotSurface *data, 
+gdouble * 	gtk_plot_surface_get_x		(GtkPlotSurface *dataset, 
                                                  gint *nx);
-gdouble * 	gtk_plot_surface_get_y		(GtkPlotSurface *data, 
+gdouble * 	gtk_plot_surface_get_y		(GtkPlotSurface *dataset, 
                                                  gint *ny);
-gdouble * 	gtk_plot_surface_get_z		(GtkPlotSurface *data,
+gdouble * 	gtk_plot_surface_get_z		(GtkPlotSurface *dataset,
                                                  gint *nx, gint *ny); 
-gdouble * 	gtk_plot_surface_get_dx		(GtkPlotSurface *data); 
-gdouble * 	gtk_plot_surface_get_dy		(GtkPlotSurface *data); 
-gdouble * 	gtk_plot_surface_get_dz		(GtkPlotSurface *data); 
-void		gtk_plot_surface_set_nx  	(GtkPlotSurface *data,
+gdouble * 	gtk_plot_surface_get_dx		(GtkPlotSurface *dataset); 
+gdouble * 	gtk_plot_surface_get_dy		(GtkPlotSurface *dataset); 
+gdouble * 	gtk_plot_surface_get_dz		(GtkPlotSurface *dataset); 
+void		gtk_plot_surface_set_nx  	(GtkPlotSurface *dataset,
                                                  gint nx);
-void		gtk_plot_surface_set_ny  	(GtkPlotSurface *data,
+void		gtk_plot_surface_set_ny  	(GtkPlotSurface *dataset,
                                                  gint ny);
-gint		gtk_plot_surface_get_nx  	(GtkPlotSurface *data);
-gint		gtk_plot_surface_get_ny  	(GtkPlotSurface *data);
+gint		gtk_plot_surface_get_nx  	(GtkPlotSurface *dataset);
+gint		gtk_plot_surface_get_ny  	(GtkPlotSurface *dataset);
 
-void		gtk_plot_surface_set_xstep  	(GtkPlotSurface *data,
+void		gtk_plot_surface_set_xstep  	(GtkPlotSurface *dataset,
 						 gdouble xstep);
-void		gtk_plot_surface_set_ystep  	(GtkPlotSurface *data,
+void		gtk_plot_surface_set_ystep  	(GtkPlotSurface *dataset,
 						 gdouble ystep);
-gdouble		gtk_plot_surface_get_xstep  	(GtkPlotSurface *data);
-gdouble		gtk_plot_surface_get_ystep  	(GtkPlotSurface *data);
-void            gtk_plot_surface_build_mesh     (GtkPlotSurface *data);
-void            gtk_plot_surface_recalc_nodes   (GtkPlotSurface *data);
+gdouble		gtk_plot_surface_get_xstep  	(GtkPlotSurface *dataset);
+gdouble		gtk_plot_surface_get_ystep  	(GtkPlotSurface *dataset);
+void            gtk_plot_surface_build_mesh     (GtkPlotSurface *surface);
+void            gtk_plot_surface_recalc_nodes   (GtkPlotSurface *surface);
 
 
 #ifdef __cplusplus

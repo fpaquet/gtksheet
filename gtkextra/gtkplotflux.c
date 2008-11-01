@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotflux
+ * @short_description: 
+ *
+ * FIXME:: Need long description.
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -34,13 +41,13 @@ static void gtk_plot_flux_class_init 	(GtkPlotFluxClass *klass);
 static void gtk_plot_flux_init 		(GtkPlotFlux *data);
 static void gtk_plot_flux_destroy 	(GtkObject *data);
 static void gtk_plot_flux_get_property  (GObject      *object,
-                                         guint            prop_id,
-                                         GValue          *value,
-                                         GParamSpec      *pspec);
+                                         guint        prop_id,
+                                         GValue       *value,
+                                         GParamSpec   *pspec);
 static void gtk_plot_flux_set_property  (GObject      *object,
-                                         guint            prop_id,
-                                         const GValue          *value,
-                                         GParamSpec      *pspec);
+                                         guint        prop_id,
+                                         const GValue *value,
+                                         GParamSpec   *pspec);
 
 static void gtk_plot_flux_get_legend_size(GtkPlotData *data, 
 					 gint *width, gint *height);
@@ -121,6 +128,12 @@ gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
   gobject_class->get_property = gtk_plot_flux_get_property;
   object_class->destroy = gtk_plot_flux_destroy;
 
+
+  /**
+   * GtkPlotFlux:centered:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_CENTERED,
   g_param_spec_boolean ("centered",
@@ -128,6 +141,12 @@ gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
                            P_(""),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotFlux:style:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_STYLE,
   g_param_spec_int ("style",
@@ -135,6 +154,12 @@ gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotFlux:width:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_WIDTH,
   g_param_spec_int ("width",
@@ -142,6 +167,12 @@ gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotFlux:length:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LENGTH,
   g_param_spec_int ("length",
@@ -149,6 +180,12 @@ gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotFlux:scale_max:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SCALE_MAX,
   g_param_spec_double ("scale_max",
@@ -156,6 +193,12 @@ gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
                            P_(""),
                            0,G_MAXDOUBLE,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotFlux:size_max:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SIZE_MAX,
   g_param_spec_int ("size_max",
@@ -163,6 +206,12 @@ gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotFlux:show_scale:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_SHOW_SCALE,
   g_param_spec_boolean ("show_scale",
@@ -170,6 +219,12 @@ gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
                            P_(""),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotFlux:labels_precision:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABEL_PRECISION,
   g_param_spec_int ("labels_precision",
@@ -177,6 +232,12 @@ gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotFlux:labels_style:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABEL_STYLE,
   g_param_spec_int ("labels_style",
@@ -184,6 +245,12 @@ gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotFlux:labels_prefix:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABEL_PREFIX,
   g_param_spec_string ("labels_prefix",
@@ -191,6 +258,12 @@ gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
                            P_(""),
                            NULL,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotFlux:labels_suffix:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LABEL_SUFFIX,
   g_param_spec_string ("labels_suffix",
@@ -674,6 +747,15 @@ gtk_plot_flux_draw_arrow(GtkPlotFlux *flux, gdouble x1, gdouble y1, gdouble x2, 
   }
 }
 
+/**
+ * gtk_plot_flux_set_arrow:
+ * @flux:
+ * @arrow_length:
+ * @arrow_width:
+ * @arrow_style:
+ *
+ *
+ */
 void
 gtk_plot_flux_set_arrow (GtkPlotFlux *flux, 
                          gint arrow_length, 
@@ -685,6 +767,15 @@ gtk_plot_flux_set_arrow (GtkPlotFlux *flux,
   flux->arrow_style = arrow_style;
 }
 
+/**
+ * gtk_plot_flux_get_arrow:
+ * @flux:
+ * @arrow_length:
+ * @arrow_width:
+ * @arrow_style:
+ *
+ *
+ */
 void
 gtk_plot_flux_get_arrow (GtkPlotFlux *flux, 
                          gint *arrow_length, 
@@ -696,48 +787,105 @@ gtk_plot_flux_get_arrow (GtkPlotFlux *flux,
   *arrow_style = flux->arrow_style;
 }
 
+/**
+ * gtk_plot_flux_center:
+ * @flux:
+ * @center:
+ *
+ *
+ */
 void
 gtk_plot_flux_center (GtkPlotFlux *flux, gboolean center)
 {
   flux->centered = center;
 } 
 
+/**
+ * gtk_plot_flux_is_centered:
+ * @flux:
+ *
+ *
+ *
+ * Return value:
+ */
 gboolean
 gtk_plot_flux_is_centered (GtkPlotFlux *flux)
 {
   return(flux->centered);
 } 
 
+/**
+ * gtk_plot_flux_show_scale:
+ * @flux:
+ * @show:
+ *
+ *
+ */
 void            
 gtk_plot_flux_show_scale        (GtkPlotFlux *flux, gboolean show)
 {
   flux->show_scale = show;
 }
 
+/**
+ * gtk_plot_flux_set_scale_max:
+ * @flux:
+ * @scale_max:
+ *
+ *
+ */
 void            
 gtk_plot_flux_set_scale_max     (GtkPlotFlux *flux, gdouble scale_max)
 {
   flux->scale_max = fabs(scale_max);
 }
 
+/**
+ * gtk_plot_flux_set_size_max:
+ * @flux:
+ * @size_max:
+ *
+ *
+ */
 void            
 gtk_plot_flux_set_size_max      (GtkPlotFlux *flux, guint size_max)
 {
   flux->size_max = size_max;
 }
 
+/**
+ * gtk_plot_flux_set_labels_precision:
+ * @flux:
+ * @precision:
+ *
+ *
+ */
 void
 gtk_plot_flux_set_labels_precision (GtkPlotFlux *flux, gint precision)
 {
   flux->labels_precision = precision;
 }
 
+/**
+ * gtk_plot_flux_set_labels_style:
+ * @flux:
+ * @style:
+ *
+ *
+ */
 void
 gtk_plot_flux_set_labels_style (GtkPlotFlux *flux, GtkPlotLabelStyle style)
 {
   flux->labels_style = style;
 }
 
+/**
+ * gtk_plot_flux_set_labels_prefix:
+ * @flux:
+ * @prefix:
+ *
+ *
+ */
 void
 gtk_plot_flux_set_labels_prefix (GtkPlotFlux *flux, const gchar *prefix)
 {
@@ -747,6 +895,13 @@ gtk_plot_flux_set_labels_prefix (GtkPlotFlux *flux, const gchar *prefix)
     flux->labels_prefix = g_strdup(prefix);
 }
 
+/**
+ * gtk_plot_flux_set_labels_suffix:
+ * @flux:
+ * @suffix:
+ *
+ *
+ */
 void
 gtk_plot_flux_set_labels_suffix (GtkPlotFlux *flux, const gchar *suffix)
 {

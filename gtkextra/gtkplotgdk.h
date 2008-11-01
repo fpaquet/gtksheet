@@ -67,7 +67,7 @@ GtkType    gtk_plot_gdk_get_type			(void);
 GtkObject *gtk_plot_gdk_new				(GtkWidget *widget);
 void	   gtk_plot_gdk_construct			(GtkPlotGdk *pc,
 							 GtkWidget *widget);					 
-void	   gtk_plot_gdk_set_drawable			(GtkPlotGdk *pc,
+void	   gtk_plot_gdk_set_drawable			(GtkPlotGdk *gdk,
 							 GdkDrawable *drawable);					 
 
 #ifdef __cplusplus

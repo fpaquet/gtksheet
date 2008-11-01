@@ -29,6 +29,15 @@
 #include "gtkplotcsurface.h"
 #include "gtkpsfont.h"
 
+/**
+ * SECTION: gtkplotcsurface
+ * @short_description: 
+ *
+ * FIXME:: need long description
+ */
+
+
+
 #define P_(string) string
 
 typedef struct
@@ -158,6 +167,12 @@ gtk_plot_csurface_class_init (GtkPlotCSurfaceClass *klass)
   gobject_class->set_property = gtk_plot_csurface_set_property;
   gobject_class->get_property = gtk_plot_csurface_get_property;
 
+
+  /**
+   * GtkPlotCSurface:lines_visible:
+   *
+   *
+   **/ 
   g_object_class_install_property (gobject_class,
                            ARG_LINES_VISIBLE,
   g_param_spec_int ("lines_visible",
@@ -165,6 +180,12 @@ gtk_plot_csurface_class_init (GtkPlotCSurfaceClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotCSurface:projection:
+   *
+   *
+   **/ 
   g_object_class_install_property (gobject_class,
                            ARG_PROJECTION,
   g_param_spec_int ("projection",
@@ -172,6 +193,12 @@ gtk_plot_csurface_class_init (GtkPlotCSurfaceClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotCSurface:levels_style:
+   *
+   *
+   **/ 
   g_object_class_install_property (gobject_class,
                            ARG_LEVELS_STYLE,
   g_param_spec_int ("levels_style",
@@ -179,6 +206,13 @@ gtk_plot_csurface_class_init (GtkPlotCSurfaceClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotCSurface:levels_width:
+   *
+   *
+   **/ 
+
   g_object_class_install_property (gobject_class,
                            ARG_LEVELS_WIDTH,
   g_param_spec_double ("levels_width",
@@ -186,12 +220,24 @@ gtk_plot_csurface_class_init (GtkPlotCSurfaceClass *klass)
                            P_(""),
                            0,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotCSurface:levels_color:
+   *
+   *
+   **/ 
   g_object_class_install_property (gobject_class,
                            ARG_LEVELS_COLOR,
   g_param_spec_pointer ("levels_color",
                            P_(""),
                            P_(""),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotCSurface:sublevels_style:
+   *
+   *
+   **/ 
   g_object_class_install_property (gobject_class,
                            ARG_SUBLEVELS_STYLE,
   g_param_spec_int ("sublevels_style",
@@ -199,6 +245,12 @@ gtk_plot_csurface_class_init (GtkPlotCSurfaceClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotCSurface:sublevels_width:
+   *
+   *
+   **/ 
   g_object_class_install_property (gobject_class,
                            ARG_SUBLEVELS_WIDTH,
   g_param_spec_double ("sublevels_width",
@@ -206,6 +258,12 @@ gtk_plot_csurface_class_init (GtkPlotCSurfaceClass *klass)
                            P_(""),
                            0,G_MAXDOUBLE,0.0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotCSurface:sublevels_color:
+   *
+   *
+   **/ 
   g_object_class_install_property (gobject_class,
                            ARG_SUBLEVELS_COLOR,
   g_param_spec_pointer ("sublevels_color",
@@ -371,6 +429,12 @@ gtk_plot_csurface_new (void)
   return GTK_WIDGET (data);
 }
 
+/**
+ * gtk_plot_csurface_new_function:
+ * @function:
+ *
+ *
+ */
 GtkWidget*
 gtk_plot_csurface_new_function (GtkPlotFunc3D function)
 {
@@ -383,6 +447,12 @@ gtk_plot_csurface_new_function (GtkPlotFunc3D function)
   return data;
 }
 
+/**
+ * gtk_plot_csurface_construct_function:
+ * @function:
+ *
+ *
+ */
 void
 gtk_plot_csurface_construct_function (GtkPlotCSurface *data, 
                                       GtkPlotFunc3D function)
@@ -1792,30 +1862,69 @@ rgb_to_hsv (gdouble  r, gdouble  g, gdouble  b,
 
  ***********************************/
 
+/**
+ * gtk_plot_csurface_set_lines_visible:
+ * @csurface: a #GtkPlotCSurface/
+ * @visible:
+ *
+ *
+ */
 void
 gtk_plot_csurface_set_lines_visible (GtkPlotCSurface *csurface, gboolean visible)
 {
   csurface->lines_visible = visible;
 }
 
+/**
+ * gtk_plot_csurface_get_lines_visible:
+ * @csurface: a #GtkPlotCSurface.
+ *
+ *
+ *
+ * Return value:
+ */
 gboolean
 gtk_plot_csurface_get_lines_visible (GtkPlotCSurface *csurface)
 {
   return (csurface->lines_visible);
 }
 
+/**
+ * gtk_plot_csurface_set_projection:
+ * @csurface: a #GtkPlotCSurface.
+ * @proj:
+ *
+ *
+ */
 void
 gtk_plot_csurface_set_projection    (GtkPlotCSurface *csurface, GtkPlotProjection proj)
 {
   csurface->projection = proj;
 }
 
+/**
+ * gtk_plot_csurface_projection:
+ * @csurface: a #GtkPlotCSurface.
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotProjection       
 gtk_plot_csurface_projection    (GtkPlotCSurface *csurface)
 {
   return (csurface->projection);
 }
 
+/**
+ * gtk_plot_csurface_set_levels_attributes:
+ * @dataset: a #GtkPlotCSurface.
+ * @style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void
 gtk_plot_csurface_set_levels_attributes (GtkPlotCSurface *dataset,
                                         GtkPlotLineStyle style,
@@ -1827,6 +1936,15 @@ gtk_plot_csurface_set_levels_attributes (GtkPlotCSurface *dataset,
   dataset->levels_line.color = *color;
 }
 
+/**
+ * gtk_plot_csurface_set_sublevels_attributes:
+ * @dataset: a #GtkPlotCSurface.
+ * @style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void
 gtk_plot_csurface_set_sublevels_attributes (GtkPlotCSurface *dataset,
                                         GtkPlotLineStyle style,
@@ -1838,6 +1956,15 @@ gtk_plot_csurface_set_sublevels_attributes (GtkPlotCSurface *dataset,
   dataset->sublevels_line.color = *color;
 }
 
+/**
+ * gtk_plot_csurface_get_levels_attributes:
+ * @dataset: a #GtkPlotCSurface.
+ * @style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void
 gtk_plot_csurface_get_levels_attributes (GtkPlotCSurface *dataset,
                                         GtkPlotLineStyle *style,
@@ -1849,6 +1976,15 @@ gtk_plot_csurface_get_levels_attributes (GtkPlotCSurface *dataset,
   *color = dataset->levels_line.color;
 }
 
+/**
+ * gtk_plot_csurface_get_sublevels_attributes:
+ * @dataset: a #GtkPlotCSurface.
+ * @style:
+ * @width:
+ * @color:
+ *
+ *
+ */
 void
 gtk_plot_csurface_get_sublevels_attributes (GtkPlotCSurface *dataset,
                                            GtkPlotLineStyle *style,

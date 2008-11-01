@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotsegment
+ * @short_description: 
+ *
+ * FIXME:: need long description
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -112,6 +119,11 @@ gtk_plot_segment_class_init (GtkPlotSegmentClass *klass)
   gobject_class->set_property = gtk_plot_segment_set_property;
   gobject_class->get_property = gtk_plot_segment_get_property;
 
+  /**
+   * GtkPlotSegment:arrow_mask:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_MASK,
   g_param_spec_int ("arrow_mask",
@@ -119,6 +131,12 @@ gtk_plot_segment_class_init (GtkPlotSegmentClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotSegment:relative:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_RELATIVE,
   g_param_spec_boolean ("relative",
@@ -126,6 +144,12 @@ gtk_plot_segment_class_init (GtkPlotSegmentClass *klass)
                            P_(""),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotSegment:centered:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_CENTERED,
   g_param_spec_boolean ("centered",
@@ -133,6 +157,12 @@ gtk_plot_segment_class_init (GtkPlotSegmentClass *klass)
                            P_(""),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotSegment:style:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_STYLE,
   g_param_spec_int ("style",
@@ -140,6 +170,12 @@ gtk_plot_segment_class_init (GtkPlotSegmentClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotSegment:width:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_WIDTH,
   g_param_spec_int ("width",
@@ -147,6 +183,12 @@ gtk_plot_segment_class_init (GtkPlotSegmentClass *klass)
                            P_(""),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotSegment:length:
+   *
+   *
+   **/
   g_object_class_install_property (gobject_class,
                            ARG_LENGTH,
   g_param_spec_int ("length",
@@ -545,6 +587,15 @@ gtk_plot_segment_draw_arrow(GtkPlotSegment *segment, gdouble x1, gdouble y1, gdo
   }
 }
 
+/**
+ * gtk_plot_segment_set_arrow:
+ * @segment: a #GtkPlotSegment widget.
+ * @arrow_length:
+ * @arrow_width:
+ * @arrow_style:
+ *
+ *
+ */
 void
 gtk_plot_segment_set_arrow (GtkPlotSegment *segment,
                          gint arrow_length,
@@ -556,6 +607,15 @@ gtk_plot_segment_set_arrow (GtkPlotSegment *segment,
   segment->arrow_style = arrow_style;
 }
                                                                                 
+/**
+ * gtk_plot_segment_get_arrow:
+ * @segment: a #GtkPlotSegment widget.
+ * @arrow_length:
+ * @arrow_width:
+ * @arrow_style:
+ *
+ *
+ */
 void
 gtk_plot_segment_get_arrow (GtkPlotSegment *segment,
                          gint *arrow_length,
@@ -567,36 +627,81 @@ gtk_plot_segment_get_arrow (GtkPlotSegment *segment,
   *arrow_style = segment->arrow_style;
 }
 
+/**
+ * gtk_plot_segment_relative:
+ * @segment: a #GtkPlotSegment widget.
+ *
+ *
+ *
+ * Return value:
+ */
 gboolean
 gtk_plot_segment_relative (GtkPlotSegment *segment)
 {
   return(segment->relative);
 } 
 
+/**
+ * gtk_plot_segment_set_relative:
+ * @segment: a #GtkPlotSegment widget.
+ * @set:
+ *
+ *
+ */
 void            
 gtk_plot_segment_set_relative        (GtkPlotSegment *segment, gboolean set)
 {
   segment->relative = set;
 }
 
+/**
+ * gtk_plot_segment_center:
+ * @segment: a #GtkPlotSegment widget.
+ * @center:
+ *
+ *
+ */
 void
 gtk_plot_segment_center (GtkPlotSegment *segment, gboolean center)
 {
   segment->centered = center;
 }
-                                                                                
+           
+/**
+ * gtk_plot_segment_is_centered:
+ * @segment: a #GtkPlotSegment widget.
+ *
+ *
+ *
+ * Return value:
+ */                                                                   
 gboolean
 gtk_plot_segment_is_centered (GtkPlotSegment *segment)
 {
   return(segment->centered);
 }
 
+/**
+ * gtk_plot_segment_set_arrow_mask:
+ * @segment: a #GtkPlotSegment widget.
+ * @mask:
+ *
+ *
+ */
 void
 gtk_plot_segment_set_arrow_mask(GtkPlotSegment *segment, GtkPlotArrow mask)
 {
   segment->arrow_mask = mask;
 }
 
+/**
+ * gtk_plot_segment_get_arrow_mask:
+ * @segment: a #GtkPlotSegment widget.
+ *
+ *
+ *
+ * Return value:
+ */
 guint
 gtk_plot_segment_get_arrow_mask(GtkPlotSegment *segment)
 {

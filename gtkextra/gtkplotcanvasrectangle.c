@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotcanvasrectangle
+ * @short_description: 
+ *
+ * FIXME:: need long description
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -188,13 +195,25 @@ gtk_plot_canvas_rectangle_class_init (GtkPlotCanvasChildClass *klass)
 
   gobject_class->get_property = gtk_plot_canvas_rectangle_get_property;
   gobject_class->set_property = gtk_plot_canvas_rectangle_set_property;
-                                    
+
+
+  /**
+   * GtkPlotCanvasRectangle:line:
+   *
+   *
+   **/                                   
   g_object_class_install_property (gobject_class,
                            ARG_LINE,
   g_param_spec_pointer ("line",
                            P_("Line Attributes"),
                            P_("Line Attributes"),
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotCanvasRectangle:filled:
+   *
+   *
+   **/   
   g_object_class_install_property (gobject_class,
                            ARG_FILLED,
   g_param_spec_boolean ("filled",
@@ -202,6 +221,12 @@ gtk_plot_canvas_rectangle_class_init (GtkPlotCanvasChildClass *klass)
                            P_("Fill Figure"),
                            FALSE,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotCanvasRectangle:border:
+   *
+   *
+   **/   
   g_object_class_install_property (gobject_class,
                            ARG_BORDER,
   g_param_spec_int ("border",
@@ -209,6 +234,12 @@ gtk_plot_canvas_rectangle_class_init (GtkPlotCanvasChildClass *klass)
                            P_("Border Width"),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotCanvasRectangle:shadow_width:
+   *
+   *
+   **/   
   g_object_class_install_property (gobject_class,
                            ARG_SHADOW_WIDTH,
   g_param_spec_int ("shadow_width",
@@ -216,6 +247,12 @@ gtk_plot_canvas_rectangle_class_init (GtkPlotCanvasChildClass *klass)
                            P_("Shadow Width"),
                            0,G_MAXINT,0,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
+   * GtkPlotCanvasRectangle:color_bg:
+   *
+   *
+   **/   
   g_object_class_install_property (gobject_class,
                            ARG_BG,
   g_param_spec_pointer ("color_bg",
@@ -279,6 +316,18 @@ gtk_plot_canvas_rectangle_resize	(GtkPlotCanvas *canvas,
   return;
 }
 
+/**
+ * gtk_plot_canvas_rectangle_set_attributes:
+ * @rectangle: a #GtkPlotCanvasRectangle
+ * @style:
+ * @width:
+ * @fg:
+ * @bg:
+ * @border:
+ * @fill:
+ *
+ *
+ */
 void
 gtk_plot_canvas_rectangle_set_attributes(GtkPlotCanvasRectangle *rectangle,
                                     	 GtkPlotLineStyle style,

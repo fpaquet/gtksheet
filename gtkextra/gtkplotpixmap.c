@@ -17,6 +17,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION: gtkplotpixmap
+ * @short_description: Pixmap plots widget.
+ *
+ * FIXME:: Need long description.
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -180,6 +187,13 @@ gtk_plot_pixmap_init (GtkPlotPixmap *dataset)
   dataset->pixmap = NULL;
 }
 
+/**
+ * gtk_plot_pixmap_new:
+ * @pixmap: a GdkPixmap.
+ * @mask: 
+ *
+ * Return value: a new GtkWidget.
+ */
 GtkWidget*
 gtk_plot_pixmap_new (GdkPixmap *pixmap, GdkBitmap *mask)
 {
@@ -192,6 +206,14 @@ gtk_plot_pixmap_new (GdkPixmap *pixmap, GdkBitmap *mask)
   return (widget);
 }
 
+/**
+ * gtk_plot_pixmap_construct:
+ * @data:
+ * @pixmap: a GdkPixmap
+ * @mask: 
+ *
+ *
+ */
 void
 gtk_plot_pixmap_construct(GtkPlotPixmap *data, GdkPixmap *pixmap, GdkBitmap *mask)
 {
@@ -385,12 +407,28 @@ gtk_plot_pixmap_get_legend_size(GtkPlotData *data, gint *width, gint *height)
  * Public methods
  ******************************************************/
 
+/**
+ * gtk_plot_pixmap_get_pixmap:
+ * @pixmap: a #GdkPlotPixmap
+ *
+ * Get pixmap from #GtkPlotPixmap.
+ *
+ * Return value: a GdkPixmap.
+ */
 GdkPixmap *
 gtk_plot_pixmap_get_pixmap (GtkPlotPixmap *pixmap)
 {
   return(pixmap->pixmap);
 }
 
+/**
+ * gtk_plot_pixmap_get_mask:
+ * @pixmap: a #GdkPlotPixmap
+ *
+ * Get mask bitmap from #GtkPlotPixmap.
+ *
+ * Return value: a GdkBitmap.
+ */
 GdkBitmap *
 gtk_plot_pixmap_get_mask (GtkPlotPixmap *pixmap)
 {

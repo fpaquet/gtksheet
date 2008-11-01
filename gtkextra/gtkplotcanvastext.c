@@ -28,6 +28,13 @@
 #include "gtkplotgdk.h"
 #include "gtkplotps.h"
 
+/**
+ * SECTION: gtkplotcanvastext
+ * @short_description: 
+ *
+ * FIXME:: need long description
+ */
+
 static gchar DEFAULT_FONT[] = "Helvetica";
 #define DEFAULT_FONT_HEIGHT 12
 #define P_(string) string
@@ -80,6 +87,21 @@ gtk_plot_canvas_text_get_type (void)
   return plot_canvas_text_type;
 }
 
+/**
+ * gtk_plot_canvas_text_new:
+ * @font:
+ * @height:
+ * @angle:
+ * @fg:
+ * @bg:
+ * @transparent:
+ * @justification:
+ * @real_text:
+ *
+ *
+ *
+ * Return value:
+ */
 GtkPlotCanvasChild*
 gtk_plot_canvas_text_new (const gchar *font, gint height, gint angle,
                           const GdkColor *fg, const GdkColor *bg,
@@ -284,6 +306,20 @@ gtk_plot_canvas_text_size_allocate(GtkPlotCanvas *canvas, GtkPlotCanvasChild *ch
 
 }
 
+/**
+ * gtk_plot_canvas_text_set_attributes:
+ * @text: a #GtkPlotCanvasText.
+ * @font:
+ * @height:
+ * @angle:
+ * @fg:
+ * @bg:
+ * @transparent:
+ * @justification:
+ * @real_text:
+ *
+ *
+ */
 void
 gtk_plot_canvas_text_set_attributes(GtkPlotCanvasText *text,
 			  const gchar *font, gint height, gint angle,

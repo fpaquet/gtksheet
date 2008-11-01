@@ -56,8 +56,8 @@ void		gtk_plot_pixmap_construct	(GtkPlotPixmap *data,
 					         GdkPixmap *pixmap,
 					         GdkBitmap *mask);
 
-GdkPixmap*	gtk_plot_pixmap_get_pixmap  	(GtkPlotPixmap *data);
-GdkBitmap*	gtk_plot_pixmap_get_mask    	(GtkPlotPixmap *data);
+GdkPixmap*	gtk_plot_pixmap_get_pixmap  	(GtkPlotPixmap *pixmap);
+GdkBitmap*	gtk_plot_pixmap_get_mask    	(GtkPlotPixmap *pixmap);
 
 #ifdef __cplusplus
 }

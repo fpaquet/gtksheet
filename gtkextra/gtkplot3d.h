@@ -212,20 +212,20 @@ void		gtk_plot3d_show_title		(GtkPlot3D *plot,
 void		gtk_plot3d_hide_title		(GtkPlot3D *plot,
                                                  GtkPlotSide side);
 void 		gtk_plot3d_set_ticks       	(GtkPlot3D *plot,
-						 GtkPlotOrientation axis,
+						 GtkPlotOrientation direction,
                                  		 gdouble major_step,
                                  		 gint nminor);
 void 		gtk_plot3d_set_major_ticks 	(GtkPlot3D *plot,
-						 GtkPlotOrientation axis,
+						 GtkPlotOrientation direction,
                                  		 gdouble major_step);
 void 		gtk_plot3d_set_minor_ticks 	(GtkPlot3D *plot,
-						 GtkPlotOrientation axis,
+						 GtkPlotOrientation direction,
                                  		 gint nminor);
 void            gtk_plot3d_set_ticks_length	(GtkPlot3D *plot,
-                                                 GtkPlotOrientation axis,
+                                                 GtkPlotOrientation direction,
                                                  gint length);
 void            gtk_plot3d_set_ticks_width 	(GtkPlot3D *plot,
-                                                 GtkPlotOrientation axis,
+                                                 GtkPlotOrientation direction,
                                                  gfloat width);
 void            gtk_plot3d_show_ticks      	(GtkPlot3D *plot,
                                                  GtkPlotSide side,

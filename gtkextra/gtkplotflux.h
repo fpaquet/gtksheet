@@ -68,11 +68,11 @@ GtkWidget*	gtk_plot_flux_new		(void);
 void		gtk_plot_flux_set_arrow 	(GtkPlotFlux *flux,
                          			 gint arrow_length,
                          			 gint arrow_width,
-                         			 GtkPlotSymbolStyle style);
+                         			 GtkPlotSymbolStyle arrow_style);
 void		gtk_plot_flux_get_arrow 	(GtkPlotFlux *flux,
                          			 gint *arrow_length,
                          			 gint *arrow_width,
-                         			 GtkPlotSymbolStyle *style);
+                         			 GtkPlotSymbolStyle *arrow_style);
 void		gtk_plot_flux_center	 	(GtkPlotFlux *flux,
 						 gboolean center);
 gboolean	gtk_plot_flux_is_centered 	(GtkPlotFlux *flux);

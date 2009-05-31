@@ -1,0 +1,22 @@
+General Information
+===================
+
+This library is GTK+sheet version 0.0.99. It is a fork of the GtkSheet widget
+included in the GTK+extra library. It includes the GtkSheet widget, a widget
+displaying a spreadsheet-like matrix and GtkItemEntry widget, a GtkEntry 
+derivative to display data in the GtkSheet.
+
+The library is writeen in C and requires GTK+ version 2.x
+
+Website: not yet decided.
+
+Installation
+============
+
+See the file 'INSTALL'
+
+Documentation
+=============
+
+In preparation. Read the header files and test programs in the directory 
+./src for further information and examples.

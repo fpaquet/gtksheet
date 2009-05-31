@@ -1,0 +1,30 @@
+%%
+headers
+#include <Python.h>
+#include <pygobject.h>
+#include <pygtk/pygtk.h>
+#include <gtksheet/gtksheet.h>
+%%
+modulename sheet
+%%
+import gobject.GObject as PyGObject_Type
+import gtk.gdk.Pixmap as PyGdkPixmap_Type
+import gtk.gdk.Drawable as PyGdkDrawable_Type
+import gtk.gdk.Rectangle as PyGdkRectangle_Type
+import gtk.Widget as PyGtkWidget_Type
+import gtk.Object as PyGtkObject_Type
+import gtk.Container as PyGtkContainer_Type
+import gtk.Fixed as PyGtkFixed_Type
+import gtk.Toolbar as PyGtkToolbar_Type
+import gtk.Entry as PyGtkEntry_Type
+import gtk.Window as PyGtkWindow_Type
+import gtk.CTree as PyGtkCTree_Type
+import gtk.ToggleButton as PyGtkToggleButton_Type
+import gtk.Adjustment as PyGtkAdjustment_Type
+import gtk.HBox as PyGtkHBox_Type
+%%
+ignore-glob
+  *_get_type
+
+
+

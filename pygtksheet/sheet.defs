@@ -1,0 +1,1081 @@
+;; -*- scheme -*-
+; object definitions ...
+(define-object Sheet
+  (in-module "Gtk")
+  (parent "GtkContainer")
+  (c-name "GtkSheet")
+  (gtype-id "GTK_TYPE_SHEET")
+)
+
+;; Enumerations and flags ...
+
+;;(define-enum SheetAttrType
+;;  (in-module "Gtk")
+;;  (c-name "GtkSheetAttrType")
+;;  (gtype-id "GTK_TYPE_SHEET_ATTR_TYPE")
+;;  (values
+;;    '("foreground" "GTK_SHEET_FOREGROUND")
+;;    '("background" "GTK_SHEET_BACKGROUND")
+;;    '("font" "GTK_SHEET_FONT")
+;;    '("justification" "GTK_SHEET_JUSTIFICATION")
+;;    '("border" "GTK_SHEET_BORDER")
+;;    '("border-color" "GTK_SHEET_BORDER_COLOR")
+;;    '("is-editable" "GTK_SHEET_IS_EDITABLE")
+;;    '("is-visible" "GTK_SHEET_IS_VISIBLE")
+;;  )
+;;)
+
+
+;; From gtksheet.h
+
+(define-function gtk_sheet_get_type
+  (c-name "gtk_sheet_get_type")
+  (return-type "GType")
+)
+
+(define-function gtk_sheet_range_get_type
+  (c-name "gtk_sheet_range_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_sheet_new
+  (c-name "gtk_sheet_new")
+  (is-constructor-of "GtkSheet")
+  (return-type "GtkWidget*")
+  (parameters
+    '("guint" "rows")
+    '("guint" "columns")
+    '("const-gchar*" "title")
+  )
+)
+
+(define-method construct
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_construct")
+  (return-type "none")
+  (parameters
+    '("guint" "rows")
+    '("guint" "columns")
+    '("const-gchar*" "title")
+  )
+)
+
+(define-function gtk_sheet_new_browser
+  (c-name "gtk_sheet_new_browser")
+  (return-type "GtkWidget*")
+  (parameters
+    '("guint" "rows")
+    '("guint" "columns")
+    '("const-gchar*" "title")
+  )
+)
+
+(define-method construct_browser
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_construct_browser")
+  (return-type "none")
+  (parameters
+    '("guint" "rows")
+    '("guint" "columns")
+    '("const-gchar*" "title")
+  )
+)
+
+(define-function gtk_sheet_new_with_custom_entry
+  (c-name "gtk_sheet_new_with_custom_entry")
+  (return-type "GtkWidget*")
+  (parameters
+    '("guint" "rows")
+    '("guint" "columns")
+    '("const-gchar*" "title")
+    '("GtkType" "entry_type")
+  )
+)
+
+(define-method construct_with_custom_entry
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_construct_with_custom_entry")
+  (return-type "none")
+  (parameters
+    '("guint" "rows")
+    '("guint" "columns")
+    '("const-gchar*" "title")
+    '("GtkType" "entry_type")
+  )
+)
+
+(define-method set_hadjustment
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_hadjustment")
+  (return-type "none")
+  (parameters
+    '("GtkAdjustment*" "adjustment")
+  )
+)
+
+(define-method set_vadjustment
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_vadjustment")
+  (return-type "none")
+  (parameters
+    '("GtkAdjustment*" "adjustment")
+  )
+)
+
+(define-method change_entry
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_change_entry")
+  (return-type "none")
+  (parameters
+    '("GtkType" "entry_type")
+  )
+)
+
+(define-method get_entry
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_entry")
+  (return-type "GtkWidget*")
+)
+
+(define-method get_entry_widget
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_entry_widget")
+  (return-type "GtkWidget*")
+)
+
+(define-method get_state
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_state")
+  (return-type "gint")
+)
+
+(define-method get_columns_count
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_columns_count")
+  (return-type "guint")
+)
+
+(define-method get_rows_count
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_rows_count")
+  (return-type "guint")
+)
+
+(define-method get_visible_range
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_visible_range")
+  (return-type "none")
+  (parameters
+    '("GtkSheetRange*" "range")
+  )
+)
+
+(define-method set_selection_mode
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_selection_mode")
+  (return-type "none")
+  (parameters
+    '("gint" "mode")
+  )
+)
+
+(define-method set_autoresize
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_autoresize")
+  (return-type "none")
+  (parameters
+    '("gboolean" "autoresize")
+  )
+)
+
+(define-method autoresize
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_autoresize")
+  (return-type "gboolean")
+)
+
+(define-method set_autoscroll
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_autoscroll")
+  (return-type "none")
+  (parameters
+    '("gboolean" "autoscroll")
+  )
+)
+
+(define-method autoscroll
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_autoscroll")
+  (return-type "gboolean")
+)
+
+(define-method set_clip_text
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_clip_text")
+  (return-type "none")
+  (parameters
+    '("gboolean" "clip_text")
+  )
+)
+
+(define-method clip_text
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_clip_text")
+  (return-type "gboolean")
+)
+
+(define-method set_justify_entry
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_justify_entry")
+  (return-type "none")
+  (parameters
+    '("gboolean" "justify")
+  )
+)
+
+(define-method justify_entry
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_justify_entry")
+  (return-type "gboolean")
+)
+
+(define-method set_locked
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_locked")
+  (return-type "none")
+  (parameters
+    '("gboolean" "lock")
+  )
+)
+
+(define-method locked
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_locked")
+  (return-type "gboolean")
+)
+
+(define-method set_title
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_title")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "title")
+  )
+)
+
+(define-method freeze
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_freeze")
+  (return-type "none")
+)
+
+(define-method thaw
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_thaw")
+  (return-type "none")
+)
+
+(define-method set_background
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_background")
+  (return-type "none")
+  (parameters
+    '("GdkColor*" "bg_color")
+  )
+)
+
+(define-method set_grid
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_grid")
+  (return-type "none")
+  (parameters
+    '("GdkColor*" "grid_color")
+  )
+)
+
+(define-method show_grid
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_show_grid")
+  (return-type "none")
+  (parameters
+    '("gboolean" "show")
+  )
+)
+
+(define-method grid_visible
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_grid_visible")
+  (return-type "gboolean")
+)
+
+(define-method set_column_title
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_column_title")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("const-gchar*" "title")
+  )
+)
+
+(define-method get_column_title
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_column_title")
+  (return-type "const-gchar*")
+  (parameters
+    '("gint" "column")
+  )
+)
+
+(define-method set_row_title
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_row_title")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("const-gchar*" "title")
+  )
+)
+
+(define-method get_row_title
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_row_title")
+  (return-type "const-gchar*")
+  (parameters
+    '("gint" "row")
+  )
+)
+
+(define-method row_button_add_label
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_row_button_add_label")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("const-gchar*" "label")
+  )
+)
+
+(define-method column_button_add_label
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_column_button_add_label")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("const-gchar*" "label")
+  )
+)
+
+(define-method row_button_get_label
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_row_button_get_label")
+  (return-type "const-gchar*")
+  (parameters
+    '("gint" "row")
+  )
+)
+
+(define-method column_button_get_label
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_column_button_get_label")
+  (return-type "const-gchar*")
+  (parameters
+    '("gint" "column")
+  )
+)
+
+(define-method row_button_justify
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_row_button_justify")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("GtkJustification" "justification")
+  )
+)
+
+(define-method column_button_justify
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_column_button_justify")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("GtkJustification" "justification")
+  )
+)
+
+(define-method moveto
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_moveto")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+    '("gfloat" "row_align")
+    '("gfloat" "col_align")
+  )
+)
+
+(define-method set_row_titles_width
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_row_titles_width")
+  (return-type "none")
+  (parameters
+    '("guint" "width")
+  )
+)
+
+(define-method set_column_titles_height
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_column_titles_height")
+  (return-type "none")
+  (parameters
+    '("guint" "height")
+  )
+)
+
+(define-method show_column_titles
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_show_column_titles")
+  (return-type "none")
+)
+
+(define-method show_row_titles
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_show_row_titles")
+  (return-type "none")
+)
+
+(define-method hide_column_titles
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_hide_column_titles")
+  (return-type "none")
+)
+
+(define-method hide_row_titles
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_hide_row_titles")
+  (return-type "none")
+)
+
+(define-method column_titles_visible
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_column_titles_visible")
+  (return-type "gboolean")
+)
+
+(define-method row_titles_visible
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_row_titles_visible")
+  (return-type "gboolean")
+)
+
+(define-method column_set_sensitivity
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_column_set_sensitivity")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("gboolean" "sensitive")
+  )
+)
+
+(define-method columns_set_sensitivity
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_columns_set_sensitivity")
+  (return-type "none")
+  (parameters
+    '("gboolean" "sensitive")
+  )
+)
+
+(define-method columns_set_resizable
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_columns_set_resizable")
+  (return-type "none")
+  (parameters
+    '("gboolean" "resizable")
+  )
+)
+
+(define-method columns_resizable
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_columns_resizable")
+  (return-type "gboolean")
+)
+
+(define-method row_set_sensitivity
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_row_set_sensitivity")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gboolean" "sensitive")
+  )
+)
+
+(define-method rows_set_sensitivity
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_rows_set_sensitivity")
+  (return-type "none")
+  (parameters
+    '("gboolean" "sensitive")
+  )
+)
+
+(define-method rows_set_resizable
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_rows_set_resizable")
+  (return-type "none")
+  (parameters
+    '("gboolean" "resizable")
+  )
+)
+
+(define-method rows_resizable
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_rows_resizable")
+  (return-type "gboolean")
+)
+
+(define-method column_set_visibility
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_column_set_visibility")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("gboolean" "visible")
+  )
+)
+
+(define-method column_label_set_visibility
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_column_label_set_visibility")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("gboolean" "visible")
+  )
+)
+
+(define-method columns_labels_set_visibility
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_columns_labels_set_visibility")
+  (return-type "none")
+  (parameters
+    '("gboolean" "visible")
+  )
+)
+
+(define-method row_set_visibility
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_row_set_visibility")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gboolean" "visible")
+  )
+)
+
+(define-method row_label_set_visibility
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_row_label_set_visibility")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gboolean" "visible")
+  )
+)
+
+(define-method rows_labels_set_visibility
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_rows_labels_set_visibility")
+  (return-type "none")
+  (parameters
+    '("gboolean" "visible")
+  )
+)
+
+(define-method select_row
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_select_row")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+  )
+)
+
+(define-method select_column
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_select_column")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+  )
+)
+
+(define-method clip_range
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_clip_range")
+  (return-type "none")
+  (parameters
+    '("const-GtkSheetRange*" "range")
+  )
+)
+
+(define-method unclip_range
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_unclip_range")
+  (return-type "none")
+)
+
+(define-method in_clip
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_in_clip")
+  (return-type "gboolean")
+)
+
+(define-method get_vadjustment
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_vadjustment")
+  (return-type "GtkAdjustment*")
+)
+
+(define-method get_hadjustment
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_hadjustment")
+  (return-type "GtkAdjustment*")
+)
+
+(define-method select_range
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_select_range")
+  (return-type "none")
+  (parameters
+    '("const-GtkSheetRange*" "range")
+  )
+)
+
+(define-method unselect_range
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_unselect_range")
+  (return-type "none")
+)
+
+(define-method set_active_cell
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_active_cell")
+  (return-type "gboolean")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+  )
+)
+
+(define-method get_active_cell
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_active_cell")
+  (return-type "none")
+  (parameters
+    '("gint*" "row")
+    '("gint*" "column")
+  )
+)
+
+(define-method set_cell
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_cell")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "col")
+    '("GtkJustification" "justification")
+    '("const-gchar*" "text")
+  )
+)
+
+(define-method set_cell_text
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_cell_text")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "col")
+    '("const-gchar*" "text")
+  )
+)
+
+(define-method cell_get_text
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_cell_get_text")
+  (return-type "gchar*")
+  (parameters
+    '("gint" "row")
+    '("gint" "col")
+  )
+)
+
+(define-method cell_clear
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_cell_clear")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "col")
+  )
+)
+
+(define-method cell_delete
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_cell_delete")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "col")
+  )
+)
+
+(define-method range_clear
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_range_clear")
+  (return-type "none")
+  (parameters
+    '("const-GtkSheetRange*" "range")
+  )
+)
+
+(define-method range_delete
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_range_delete")
+  (return-type "none")
+  (parameters
+    '("const-GtkSheetRange*" "range")
+  )
+)
+
+(define-method cell_get_state
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_cell_get_state")
+  (return-type "GtkStateType")
+  (parameters
+    '("gint" "row")
+    '("gint" "col")
+  )
+)
+
+(define-method link_cell
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_link_cell")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "col")
+    '("gpointer" "link")
+  )
+)
+
+(define-method get_link
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_link")
+  (return-type "gpointer")
+  (parameters
+    '("gint" "row")
+    '("gint" "col")
+  )
+)
+
+(define-method remove_link
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_remove_link")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("gint" "col")
+  )
+)
+
+(define-method get_pixel_info
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_pixel_info")
+  (return-type "gboolean")
+  (parameters
+    '("gint" "x")
+    '("gint" "y")
+    '("gint*" "row")
+    '("gint*" "column")
+  )
+)
+
+(define-method get_cell_area
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_cell_area")
+  (return-type "gboolean")
+  (parameters
+    '("gint" "row")
+    '("gint" "column")
+    '("GdkRectangle*" "area")
+  )
+)
+
+(define-method set_column_width
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_column_width")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("guint" "width")
+  )
+)
+
+(define-method set_row_height
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_set_row_height")
+  (return-type "none")
+  (parameters
+    '("gint" "row")
+    '("guint" "height")
+  )
+)
+
+(define-method add_column
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_add_column")
+  (return-type "none")
+  (parameters
+    '("guint" "ncols")
+  )
+)
+
+(define-method add_row
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_add_row")
+  (return-type "none")
+  (parameters
+    '("guint" "nrows")
+  )
+)
+
+(define-method insert_rows
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_insert_rows")
+  (return-type "none")
+  (parameters
+    '("guint" "row")
+    '("guint" "nrows")
+  )
+)
+
+(define-method insert_columns
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_insert_columns")
+  (return-type "none")
+  (parameters
+    '("guint" "col")
+    '("guint" "ncols")
+  )
+)
+
+(define-method delete_rows
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_delete_rows")
+  (return-type "none")
+  (parameters
+    '("guint" "row")
+    '("guint" "nrows")
+  )
+)
+
+(define-method delete_columns
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_delete_columns")
+  (return-type "none")
+  (parameters
+    '("guint" "col")
+    '("guint" "ncols")
+  )
+)
+
+(define-method range_set_background
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_range_set_background")
+  (return-type "none")
+  (parameters
+    '("const-GtkSheetRange*" "range")
+    '("const-GdkColor*" "color")
+  )
+)
+
+(define-method range_set_foreground
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_range_set_foreground")
+  (return-type "none")
+  (parameters
+    '("const-GtkSheetRange*" "range")
+    '("const-GdkColor*" "color")
+  )
+)
+
+(define-method range_set_justification
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_range_set_justification")
+  (return-type "none")
+  (parameters
+    '("const-GtkSheetRange*" "range")
+    '("GtkJustification" "justification")
+  )
+)
+
+(define-method column_set_justification
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_column_set_justification")
+  (return-type "none")
+  (parameters
+    '("gint" "column")
+    '("GtkJustification" "justification")
+  )
+)
+
+(define-method range_set_editable
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_range_set_editable")
+  (return-type "none")
+  (parameters
+    '("const-GtkSheetRange*" "range")
+    '("gint" "editable")
+  )
+)
+
+(define-method range_set_visible
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_range_set_visible")
+  (return-type "none")
+  (parameters
+    '("const-GtkSheetRange*" "range")
+    '("gboolean" "visible")
+  )
+)
+
+(define-method range_set_border
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_range_set_border")
+  (return-type "none")
+  (parameters
+    '("const-GtkSheetRange*" "range")
+    '("gint" "mask")
+    '("guint" "width")
+    '("gint" "line_style")
+  )
+)
+
+(define-method range_set_border_color
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_range_set_border_color")
+  (return-type "none")
+  (parameters
+    '("const-GtkSheetRange*" "range")
+    '("const-GdkColor*" "color")
+  )
+)
+
+(define-method range_set_font
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_range_set_font")
+  (return-type "none")
+  (parameters
+    '("const-GtkSheetRange*" "range")
+    '("PangoFontDescription*" "font")
+  )
+)
+
+(define-method get_attributes
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_attributes")
+  (return-type "gboolean")
+  (parameters
+    '("gint" "row")
+    '("gint" "col")
+    '("GtkSheetCellAttr*" "attributes")
+  )
+)
+
+(define-method put
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_put")
+  (return-type "GtkSheetChild*")
+  (parameters
+    '("GtkWidget*" "widget")
+    '("gint" "x")
+    '("gint" "y")
+  )
+)
+
+(define-method attach_floating
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_attach_floating")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+    '("gint" "row")
+    '("gint" "col")
+  )
+)
+
+(define-method attach_default
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_attach_default")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+    '("gint" "row")
+    '("gint" "col")
+  )
+)
+
+(define-method attach
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_attach")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+    '("gint" "row")
+    '("gint" "col")
+    '("gint" "xoptions")
+    '("gint" "yoptions")
+    '("gint" "xpadding")
+    '("gint" "ypadding")
+  )
+)
+
+(define-method move_child
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_move_child")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+    '("gint" "x")
+    '("gint" "y")
+  )
+)
+
+(define-method get_child_at
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_child_at")
+  (return-type "GtkSheetChild*")
+  (parameters
+    '("gint" "row")
+    '("gint" "col")
+  )
+)
+
+(define-method button_attach
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_button_attach")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+    '("gint" "row")
+    '("gint" "col")
+  )
+)
+
+

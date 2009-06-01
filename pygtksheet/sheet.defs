@@ -1,5 +1,12 @@
 ;; -*- scheme -*-
 ; object definitions ...
+(define-object ItemEntry
+  (in-module "Gtk")
+  (parent "GtkEntry")
+  (c-name "GtkItemEntry")
+  (gtype-id "GTK_TYPE_ITEM_ENTRY")
+)
+
 (define-object Sheet
   (in-module "Gtk")
   (parent "GtkContainer")
@@ -26,7 +33,95 @@
 ;;)
 
 
+;; From gtkitementry.h
+
+(define-function gtk_item_entry_get_type
+  (c-name "gtk_item_entry_get_type")
+  (return-type "GtkType")
+)
+
+(define-function gtk_item_entry_new
+  (c-name "gtk_item_entry_new")
+  (is-constructor-of "GtkItemEntry")
+  (return-type "GtkWidget*")
+)
+
+(define-function gtk_item_entry_new_with_max_length
+  (c-name "gtk_item_entry_new_with_max_length")
+  (return-type "GtkWidget*")
+  (parameters
+    '("gint" "max")
+  )
+)
+
+(define-method set_text
+  (of-object "GtkItemEntry")
+  (c-name "gtk_item_entry_set_text")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "text")
+    '("GtkJustification" "justification")
+  )
+)
+
+(define-method set_justification
+  (of-object "GtkItemEntry")
+  (c-name "gtk_item_entry_set_justification")
+  (return-type "none")
+  (parameters
+    '("GtkJustification" "just")
+  )
+)
+
+(define-method set_cursor_visible
+  (of-object "GtkItemEntry")
+  (c-name "gtk_item_entry_set_cursor_visible")
+  (return-type "none")
+  (parameters
+    '("gboolean" "visible")
+  )
+)
+
+(define-method get_cursor_visible
+  (of-object "GtkItemEntry")
+  (c-name "gtk_item_entry_get_cursor_visible")
+  (return-type "gboolean")
+)
+
+
+
+;; From gtksheetfeatures.h
+
+(define-function gtksheet_check_version
+  (c-name "gtksheet_check_version")
+  (return-type "gchar*")
+  (parameters
+    '("guint" "required_major")
+    '("guint" "required_minor")
+    '("guint" "required_micro")
+  )
+)
+
+
+
 ;; From gtksheet.h
+
+
+
+;; From gtksheet-marshal.h
+
+
+
+;; From gtksheettypebuiltins.h
+
+(define-function gtk_sheet_attr_type_get_type
+  (c-name "gtk_sheet_attr_type_get_type")
+  (return-type "GType")
+)
+
+
+
+;; From gtksheetwidget.h
 
 (define-function gtk_sheet_get_type
   (c-name "gtk_sheet_get_type")
@@ -244,7 +339,7 @@
   (c-name "gtk_sheet_set_locked")
   (return-type "none")
   (parameters
-    '("gboolean" "lock")
+    '("gboolean" "locked")
   )
 )
 
@@ -280,7 +375,7 @@
   (c-name "gtk_sheet_set_background")
   (return-type "none")
   (parameters
-    '("GdkColor*" "bg_color")
+    '("GdkColor*" "color")
   )
 )
 
@@ -289,7 +384,7 @@
   (c-name "gtk_sheet_set_grid")
   (return-type "none")
   (parameters
-    '("GdkColor*" "grid_color")
+    '("GdkColor*" "color")
   )
 )
 
@@ -553,7 +648,7 @@
   (c-name "gtk_sheet_column_label_set_visibility")
   (return-type "none")
   (parameters
-    '("gint" "column")
+    '("gint" "col")
     '("gboolean" "visible")
   )
 )
@@ -721,7 +816,7 @@
   (return-type "none")
   (parameters
     '("gint" "row")
-    '("gint" "col")
+    '("gint" "column")
   )
 )
 
@@ -731,7 +826,7 @@
   (return-type "none")
   (parameters
     '("gint" "row")
-    '("gint" "col")
+    '("gint" "column")
   )
 )
 
@@ -900,7 +995,7 @@
   (c-name "gtk_sheet_range_set_background")
   (return-type "none")
   (parameters
-    '("const-GtkSheetRange*" "range")
+    '("const-GtkSheetRange*" "urange")
     '("const-GdkColor*" "color")
   )
 )
@@ -910,7 +1005,7 @@
   (c-name "gtk_sheet_range_set_foreground")
   (return-type "none")
   (parameters
-    '("const-GtkSheetRange*" "range")
+    '("const-GtkSheetRange*" "urange")
     '("const-GdkColor*" "color")
   )
 )
@@ -920,8 +1015,8 @@
   (c-name "gtk_sheet_range_set_justification")
   (return-type "none")
   (parameters
-    '("const-GtkSheetRange*" "range")
-    '("GtkJustification" "justification")
+    '("const-GtkSheetRange*" "urange")
+    '("GtkJustification" "just")
   )
 )
 
@@ -930,8 +1025,8 @@
   (c-name "gtk_sheet_column_set_justification")
   (return-type "none")
   (parameters
-    '("gint" "column")
-    '("GtkJustification" "justification")
+    '("gint" "col")
+    '("GtkJustification" "just")
   )
 )
 
@@ -940,7 +1035,7 @@
   (c-name "gtk_sheet_range_set_editable")
   (return-type "none")
   (parameters
-    '("const-GtkSheetRange*" "range")
+    '("const-GtkSheetRange*" "urange")
     '("gint" "editable")
   )
 )
@@ -950,7 +1045,7 @@
   (c-name "gtk_sheet_range_set_visible")
   (return-type "none")
   (parameters
-    '("const-GtkSheetRange*" "range")
+    '("const-GtkSheetRange*" "urange")
     '("gboolean" "visible")
   )
 )
@@ -960,7 +1055,7 @@
   (c-name "gtk_sheet_range_set_border")
   (return-type "none")
   (parameters
-    '("const-GtkSheetRange*" "range")
+    '("const-GtkSheetRange*" "urange")
     '("gint" "mask")
     '("guint" "width")
     '("gint" "line_style")
@@ -972,7 +1067,7 @@
   (c-name "gtk_sheet_range_set_border_color")
   (return-type "none")
   (parameters
-    '("const-GtkSheetRange*" "range")
+    '("const-GtkSheetRange*" "urange")
     '("const-GdkColor*" "color")
   )
 )
@@ -982,7 +1077,7 @@
   (c-name "gtk_sheet_range_set_font")
   (return-type "none")
   (parameters
-    '("const-GtkSheetRange*" "range")
+    '("const-GtkSheetRange*" "urange")
     '("PangoFontDescription*" "font")
   )
 )
@@ -1003,7 +1098,7 @@
   (c-name "gtk_sheet_put")
   (return-type "GtkSheetChild*")
   (parameters
-    '("GtkWidget*" "widget")
+    '("GtkWidget*" "child")
     '("gint" "x")
     '("gint" "y")
   )

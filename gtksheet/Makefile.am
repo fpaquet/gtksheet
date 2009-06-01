@@ -74,11 +74,9 @@ gtksheet_c_sources = 	\
         gtksheet-marshal.c	\
         gtksheettypebuiltins.c	\
         gtkitementry.c	\
+        gtksheet.c \
         gtksheetwidget.c
 
-#gtksheet_private_h_sources = \
-#	icons.h \
-#	pixmaps.h 
 gtksheet_built_public_sources =	\
 	gtksheet-marshal.h	\
 	gtksheettypebuiltins.h
@@ -111,9 +109,9 @@ endif
 EXTRA_LTLIBRARIES = libgtksheet-x11-2.0.la libgtksheet-linux-fb-2.0.la libgtksheet-win32-2.0.la
 
 MAINTAINERCLEANFILES = $(gtksheet_built_sources) 
-EXTRA_DIST = $(gtksheet_private_h_sources) $(gtksheet_extra_sources)
+EXTRA_DIST = $(gtksheet_extra_sources)
 EXTRA_DIST += $(gtksheet_built_sources)
-EXTRA_DIST += gtksheet.def Makefile.win32 makefile.msc sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
+EXTRA_DIST += gtksheet.def Makefile.win32 makefile.msc
 
 $(libgtksheet_x11_2_0_la_OBJECTS) $(libgtksheet_linux_fb_2_0_la_OBJECTS) $(libgtksheet_win32_2_0_la_OBJECTS): ${gtksheet_built_public_sources} ${gtksheet_built_private_headers}
 

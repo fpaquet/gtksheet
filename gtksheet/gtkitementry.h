@@ -55,12 +55,12 @@ struct _GtkItemEntryClass
 GtkType    gtk_item_entry_get_type       (void);
 GtkWidget* gtk_item_entry_new            (void);
 GtkWidget* gtk_item_entry_new_with_max_length (gint   max);
-void       gtk_item_entry_set_text            (GtkItemEntry *item_entry, 
+void       gtk_item_entry_set_text            (GtkItemEntry *entry, 
                                                const gchar *text,
                                                GtkJustification justification);
 
-void       gtk_item_entry_set_justification (GtkItemEntry        *item_entry,
-					     GtkJustification   justification);
+void       gtk_item_entry_set_justification (GtkItemEntry        *entry,
+					     GtkJustification   just);
 
 void       gtk_item_entry_set_cursor_visible 	(GtkItemEntry *entry,
 					 	 gboolean visible);

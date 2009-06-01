@@ -17,8 +17,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GTK_SHEET3_H
-#define GTK_SHEET3_H
+#ifndef GTK_SHEET_H
+#define GTK_SHEET_H
 
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>

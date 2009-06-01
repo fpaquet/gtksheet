@@ -20,8 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_SHEET_H__
-#define __GTK_SHEET_H__
+#ifndef __GTK_SHEETWIDGET_H__
+#define __GTK_SHEETWIDGET_H__
 
 
 #ifdef __cplusplus
@@ -937,6 +937,6 @@ G_END_DECLS
 #endif /* __cplusplus */
 
 
-#endif /* __GTK_SHEET_H__ */
+#endif /* __GTK_SHEETWIDGET_H__ */
 
 

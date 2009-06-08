@@ -1,0 +1,92 @@
+PRJ_TOP = ..
+PACKAGE = gtkextra
+PACKAGE_VER = 0.99
+!INCLUDE "..\..\gtk_cfg.inc"
+
+PKG_CFLAGS = -I.. -I$(GLIB) -I$(GTK) -I$(GTK)\$(GDKSUB) -I$(GMODULE) \
+
+PKG_LINK = $(GTK)\gtk\gtk-$(GTK_VER).lib $(GTK)\$(GDKSUB)\gdk-$(GTK_VER).lib \
+	$(GLIB)\gmodule-$(GLIB_VER).lib $(GLIB)\glib-$(GLIB_VER).lib \
+
+OBJECTS = \
+        gtkbordercombo.obj \
+        gtkcheckitem.obj \
+        gtkcolorcombo.obj \
+        gtkcombobox.obj \
+        gtkdirtree.obj \
+        gtkfilelist.obj \
+        gtkfontcombo.obj \
+        gtkiconlist.obj \
+        gtkitementry.obj \
+        gtkiconfilesel.obj \
+        gtkplot.obj \
+        gtkplotcanvas.obj \
+        gtkplotpc.obj \
+        gtkplotprint.obj \
+        gtkplotps.obj \
+        gtkpsfont.obj \
+        gtksheet.obj \
+
+## common stuff
+## compiler and linker switches
+!IFNDEF DEBUG
+# Full optimization:
+OPTIMIZE = -Ox -MD
+LINKDEBUG =
+!ELSE
+# Debugging:
+OPTIMIZE = -Zi -MDd
+LINKDEBUG = /debug
+!ENDIF
+
+# cl -? describes the options
+CC = cl -G5 -GF $(OPTIMIZE) -W3 -nologo
+
+# No general LDFLAGS needed
+LDFLAGS = /link $(LINKDEBUG)
+INSTALL = copy
+
+CFLAGS = -I. -DHAVE_CONFIG_H
+
+!IFNDEF TESTAPP
+# avoid endless recursion 
+TESTAPPS = testgtksheet testgtkiconlist testgtkfilesel testgtkplot testgtkfont testrealtime
+sub-test: 
+	for %d in ($(TESTAPPS)) do nmake -nologo -f makefile.msc TESTAPP=%d %d.exe
+!ENDIF
+
+## targets
+all : \
+	$(PRJ_TOP)\config.h \
+	$(PACKAGE).dll
+
+$(PACKAGE)-$(PACKAGE_VER).lib : $(OBJECTS)
+	lib /out:$(PACKAGE).lib $(OBJECTS)
+
+$(PACKAGE)-$(PACKAGE_VER).dll : $(OBJECTS) $(PACKAGE).def
+	$(CC) $(CFLAGS) -LD -Fe$(PACKAGE)-$(PACKAGE_VER).dll $(OBJECTS) $(PKG_LINK) user32.lib advapi32.lib wsock32.lib $(LDFLAGS) /def:$(PACKAGE).def
+
+$(TESTAPP).exe : $(TESTAPP).c $(PACKAGE)-$(PACKAGE_VER).dll
+   $(CC) $(PKG_CFLAGS) -MD $(TESTAPP).c $(PKG_LINK) $(PACKAGE)-$(PACKAGE_VER).lib user32.lib advapi32.lib wsock32.lib $(LDFLAGS)
+ 
+$(PRJ_TOP)\config.h: $(PRJ_TOP)\config.h.win32
+	copy $(PRJ_TOP)\config.h.win32 $(PRJ_TOP)\config.h
+
+.c.obj :
+	$(CC) $(CFLAGS) -GD -c $(PKG_CFLAGS) $<
+
+clean:
+	del config.h
+	del *.exe
+	del *.obj
+	del *.dll
+	del *.lib
+	del *.err
+	del *.map
+	del *.sym
+	del *.exp
+	del *.lk1
+	del *.mk1
+	del *.pdb
+	del *.ilk
+

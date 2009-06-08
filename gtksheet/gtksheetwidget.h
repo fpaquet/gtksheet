@@ -45,21 +45,21 @@ typedef enum
 
 /* sheet->state */
 
-enum 
+typedef enum 
 {
   GTK_SHEET_NORMAL,
   GTK_SHEET_ROW_SELECTED,
   GTK_SHEET_COLUMN_SELECTED,
   GTK_SHEET_RANGE_SELECTED
-};
+} GtkSheetState;
      
-enum
+typedef enum
 {
   GTK_SHEET_LEFT_BORDER     = 1 << 0, 
   GTK_SHEET_RIGHT_BORDER    = 1 << 1, 
   GTK_SHEET_TOP_BORDER      = 1 << 2, 
   GTK_SHEET_BOTTOM_BORDER   = 1 << 3 
-}; 
+} GtkSheetBorderFlags; 
 
 #define GTK_TYPE_SHEET_RANGE (gtk_sheet_range_get_type ())
 #define GTK_TYPE_SHEET (gtk_sheet_get_type ())

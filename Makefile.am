@@ -8,9 +8,6 @@ AUTOMAKE_OPTIONS = 1.7
 
 EXTRA_DIST = \
 	TODO \
-	gtksheet-2.0.m4 \
-	acconfig.h \
-	makecopyright \
 	config.h.win32 \
 	gtksheet-2.0.spec 
 

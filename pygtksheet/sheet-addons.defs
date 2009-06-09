@@ -1,0 +1,60 @@
+;; Not from any header file
+
+(define-method get_range
+  (of-object "GtkSheet")
+  (c-name "gtk_sheet_get_range")
+  (return-type "GtkSheetRange")
+)
+
+(define-boxed SheetRange
+  (in-module "Gtk")
+  (c-name "GtkSheetRange")
+  (gtype-id "GTK_TYPE_SHEET_RANGE")
+  (fields
+    '("gint" "row0")
+    '("gint" "col0")
+    '("gint" "rowi")
+    '("gint" "coli")
+  )
+)
+
+(define-function sheet_range_new
+  (is-constructor-of "GtkSheetRange")
+  (c-name "gtk_sheet_range_new")
+  (return-type "GtkSheetRange*")
+  (parameters
+    '("gint" "row0" (default "0"))
+    '("gint" "col0" (default "0"))
+    '("gint" "rowi" (default "0"))
+    '("gint" "coli" (default "0"))
+  )
+)
+
+(define-boxed SheetCellBorder
+  (in-module "Gtk")
+  (c-name "GtkSheetCellBorder")
+  (gtype-id "GTK_TYPE_SHEET_CELL_BORDER")
+  (fields
+    '("gint8" "mask")
+    '("guint" "width")
+    '("GdkLineStyle" "line_style")
+    '("GdkCapStyle" "cap_style")
+    '("GdkJoinStyle" "join_style")
+    '("GdkColor" "color")
+  )
+)
+
+(define-boxed SheetCellAttr
+  (in-module "Gtk")
+  (c-name "GtkSheetCellAttr")
+  (gtype-id "GTK_TYPE_SHEET_CELL_ATTR")
+  (fields
+    '("GtkJustification" "justification")
+    '("PangoFontDescription*" "font_desc")
+    '("GdkColor" "foreground")
+    '("GdkColor" "background")
+    '("GtkSheetCellBorder" "border")
+    '("gboolean" "is_editable")
+    '("gboolean" "is_visible")
+  )
+)

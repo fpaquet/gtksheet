@@ -41,7 +41,7 @@
 #include <string.h>
 
 #include <pango/pango.h>
-
+#include <glib-object.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 #include "gtkitementry.h"
@@ -63,8 +63,6 @@ typedef enum {
 
 /* GObject, GtkObject methods
  */
-static void   gtk_item_entry_class_init           (GtkItemEntryClass        *klass);
-static void   gtk_item_entry_init                 (GtkItemEntry         *entry);
 static void   gtk_item_entry_editable_init (GtkEditableClass *iface);
 
 /* GtkWidget methods
@@ -182,56 +180,21 @@ static void         get_widget_window_size             (GtkEntry       *entry,
 							gint           *width,
 							gint           *height);
 
-static GtkEntryClass *parent_class = NULL;
-
-GtkType
-gtk_item_entry_get_type (void)
-{
-  static GtkType item_entry_type = 0;
-
-  if (!item_entry_type)
-    {
-      static const GtkTypeInfo item_entry_info =
-      {
-	"GtkItemEntry",
-	sizeof (GtkItemEntry),
-	sizeof (GtkItemEntryClass),
-	(GtkClassInitFunc) gtk_item_entry_class_init,
-	(GtkObjectInitFunc) gtk_item_entry_init,
-	/* reserved_1 */ NULL,
-	/* reserved_2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      static const GInterfaceInfo item_editable_info =
-      {
-        (GInterfaceInitFunc) gtk_item_entry_editable_init,    /* interface_init */
-        NULL,                                            /* interface_finalize */
-        NULL                                             /* interface_data */
-      };
-
-
-      item_entry_type = gtk_type_unique (GTK_TYPE_ENTRY, &item_entry_info);
-
-      g_type_add_interface_static (item_entry_type,
-                                   GTK_TYPE_EDITABLE,
-                                   &item_editable_info);
-
-    }
-
-  return item_entry_type;
-}
+/* Register our widget */
+G_DEFINE_TYPE_EXTENDED(GtkItemEntry,
+                       gtk_item_entry,
+                       GTK_TYPE_ENTRY,
+                       0,
+                       G_IMPLEMENT_INTERFACE(GTK_TYPE_EDITABLE,
+                                             gtk_item_entry_editable_init));
 
 static void
 gtk_item_entry_class_init (GtkItemEntryClass *class)
 {
-  GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
   GtkEntryClass *entry_class;
 
-  object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
-  parent_class = gtk_type_class (GTK_TYPE_ENTRY);
   entry_class = (GtkEntryClass *) class;
 
   widget_class->realize = gtk_entry_realize;
@@ -547,7 +510,7 @@ gtk_entry_grab_focus (GtkWidget        *widget)
   GtkEntry *entry = GTK_ENTRY (widget);
   gboolean select_on_focus;
 
-  GTK_WIDGET_CLASS (parent_class)->grab_focus (widget);
+  GTK_WIDGET_CLASS (gtk_item_entry_parent_class)->grab_focus (widget);
 
   g_object_get (G_OBJECT (gtk_settings_get_default ()),
 		"gtk-entry-select-on-focus",
@@ -566,7 +529,7 @@ gtk_entry_direction_changed (GtkWidget        *widget,
 
   gtk_entry_recompute (entry);
       
-  GTK_WIDGET_CLASS (parent_class)->direction_changed (widget, previous_dir);
+  GTK_WIDGET_CLASS (gtk_item_entry_parent_class)->direction_changed (widget, previous_dir);
 }
 
 static void
@@ -2152,7 +2115,8 @@ gtk_item_entry_new (void)
 {
   GtkWidget *widget;
 
-  widget = GTK_WIDGET (gtk_type_new (GTK_TYPE_ITEM_ENTRY));
+  //widget = GTK_WIDGET (gtk_type_new (GTK_TYPE_ITEM_ENTRY));
+  widget = GTK_WIDGET (g_object_new(GTK_TYPE_ITEM_ENTRY, NULL));
   return widget;
 }
 
@@ -2168,12 +2132,12 @@ gtk_item_entry_new (void)
 GtkWidget*
 gtk_item_entry_new_with_max_length (gint max)
 {
-  GtkItemEntry *entry;
+  GtkWidget *widget;
 
-  entry = gtk_type_new (GTK_TYPE_ITEM_ENTRY);
-  gtk_entry_set_max_length(GTK_ENTRY(entry), max);
+  widget = GTK_WIDGET (g_object_new(GTK_TYPE_ITEM_ENTRY, NULL));
+  gtk_entry_set_max_length(GTK_ENTRY(widget), max);
 
-  return GTK_WIDGET (entry);
+  return widget;
 }
 
 /**

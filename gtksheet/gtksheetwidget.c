@@ -191,17 +191,7 @@ COLUMN_LEFT_XPIXEL(GtkSheet *sheet, gint ncol)
    return (sheet->hoffset + sheet->column[ncol].left_xpixel);
 }
 
-/* returns the column indgtk_signal_new ()
 
-guint               gtk_signal_new                      (const gchar *name,
-                                                         GtkSignalRunType signal_flags,
-                                                         GType object_type,
-                                                         guint function_offset,
-                                                         GSignalCMarshaller marshaller,
-                                                         GType return_val,
-                                                         guint n_args,
-                                                         ...);ex from a x pixel location in the 
- * context of the sheet's hoffset */
 static inline gint
 COLUMN_FROM_XPIXEL (GtkSheet * sheet,
 		    gint x)
@@ -222,6 +212,7 @@ COLUMN_FROM_XPIXEL (GtkSheet * sheet,
   /* no match */
   return sheet->maxcol;
 }
+
 
 /* returns the total height of the sheet */
 static inline gint SHEET_HEIGHT(GtkSheet *sheet)
@@ -370,8 +361,6 @@ static inline gint POSSIBLE_RESIZE(GtkSheet *sheet, gint x, gint y,
   return FALSE;  
 }
 
-static void gtk_sheet_class_init 		(GtkSheetClass * klass);
-static void gtk_sheet_init 			(GtkSheet * sheet);
 static void gtk_sheet_destroy 			(GtkObject * object);
 static void gtk_sheet_finalize 			(GObject * object);
 static void gtk_sheet_style_set 		(GtkWidget *widget,
@@ -607,11 +596,7 @@ enum {
       LAST_SIGNAL
 };
 
-static GtkContainerClass *parent_class = NULL;
 static guint sheet_signals[LAST_SIGNAL] = {0};
-
-
-
 
 /* SheetRange type */
 static GtkSheetRange*
@@ -643,7 +628,9 @@ gtk_sheet_range_get_type (void)
 
   if(sheet_range_type == 0)
   {
-    sheet_range_type = g_boxed_type_register_static("GtkSheetRange", (GBoxedCopyFunc)gtk_sheet_range_copy, (GBoxedFreeFunc)gtk_sheet_range_free);
+    sheet_range_type = g_boxed_type_register_static("GtkSheetRange", 
+                                        (GBoxedCopyFunc)gtk_sheet_range_copy, 
+                                        (GBoxedFreeFunc)gtk_sheet_range_free);
   }
   return sheet_range_type;
 
@@ -709,33 +696,8 @@ gtk_sheet_cell_attr_get_type (void)
   return our_type;
 }
 
-
 /*GtkSheet type*/
-GType
-gtk_sheet_get_type ()
-{
-  static GType sheet_type = 0;
-                                                                                
-  if (sheet_type==0)
-    {
-      static const GTypeInfo sheet_info =
-      {
-        sizeof (GtkSheetClass),
-        NULL,
-        NULL,
-        (GClassInitFunc) gtk_sheet_class_init,
-        NULL,        
-        NULL,       
-        sizeof (GtkSheet),
-        0,         
-        (GInstanceInitFunc) gtk_sheet_init,
-      };
-      sheet_type =
-        g_type_register_static (GTK_TYPE_CONTAINER, "GtkSheet",
-                                &sheet_info, 0);
-    }
-  return sheet_type;
-}
+G_DEFINE_TYPE(GtkSheet, gtk_sheet, GTK_TYPE_CONTAINER);
 
 static void
 gtk_sheet_class_init (GtkSheetClass * klass)
@@ -748,8 +710,6 @@ gtk_sheet_class_init (GtkSheetClass * klass)
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
   container_class = (GtkContainerClass *) klass;
-
-  parent_class = g_type_class_peek_parent (klass);
 
   /**
    * GtkSheet::select-row:
@@ -3242,8 +3202,8 @@ gtk_sheet_finalize (GObject * object)
       sheet->name = NULL;
   }
 
-  if (G_OBJECT_CLASS (parent_class)->finalize)
-    (*G_OBJECT_CLASS (parent_class)->finalize) (object);
+  if (G_OBJECT_CLASS (gtk_sheet_parent_class)->finalize)
+    (*G_OBJECT_CLASS (gtk_sheet_parent_class)->finalize) (object);
 }
 
 static void
@@ -3302,8 +3262,8 @@ gtk_sheet_destroy (GtkObject * object)
   }  
   sheet->children = NULL;
 
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+  if (GTK_OBJECT_CLASS (gtk_sheet_parent_class)->destroy)
+    (*GTK_OBJECT_CLASS (gtk_sheet_parent_class)->destroy) (object);
 }
 
 static void
@@ -3315,8 +3275,8 @@ gtk_sheet_style_set (GtkWidget *widget,
   g_return_if_fail (widget != NULL);
   g_return_if_fail (GTK_IS_SHEET (widget));
 
-  if (GTK_WIDGET_CLASS (parent_class)->style_set)
-    (*GTK_WIDGET_CLASS (parent_class)->style_set) (widget, previous_style);
+  if (GTK_WIDGET_CLASS (gtk_sheet_parent_class)->style_set)
+    (*GTK_WIDGET_CLASS (gtk_sheet_parent_class)->style_set) (widget, previous_style);
 
   sheet = GTK_SHEET (widget);
 
@@ -3560,8 +3520,8 @@ gtk_sheet_unrealize (GtkWidget * widget)
   sheet->fg_gc = NULL;
   sheet->bg_gc = NULL;
 
-  if (GTK_WIDGET_CLASS (parent_class)->unrealize)
-    (* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
+  if (GTK_WIDGET_CLASS (gtk_sheet_parent_class)->unrealize)
+    (* GTK_WIDGET_CLASS (gtk_sheet_parent_class)->unrealize) (widget);
 }
 
 static void
@@ -5714,7 +5674,7 @@ gtk_sheet_expose (GtkWidget * widget,
   if(sheet->state != GTK_SHEET_NORMAL && GTK_SHEET_IN_SELECTION(sheet))
      gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
-  (* GTK_WIDGET_CLASS (parent_class)->expose_event) (widget, event);
+  (* GTK_WIDGET_CLASS (gtk_sheet_parent_class)->expose_event) (widget, event);
 
   return FALSE;
 }

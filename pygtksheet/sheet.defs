@@ -1,4 +1,7 @@
 ;; -*- scheme -*-
+
+(include "sheet-addons.defs")
+
 ; object definitions ...
 (define-object ItemEntry
   (in-module "Gtk")
@@ -16,21 +19,45 @@
 
 ;; Enumerations and flags ...
 
-;;(define-enum SheetAttrType
-;;  (in-module "Gtk")
-;;  (c-name "GtkSheetAttrType")
-;;  (gtype-id "GTK_TYPE_SHEET_ATTR_TYPE")
-;;  (values
-;;    '("foreground" "GTK_SHEET_FOREGROUND")
-;;    '("background" "GTK_SHEET_BACKGROUND")
-;;    '("font" "GTK_SHEET_FONT")
-;;    '("justification" "GTK_SHEET_JUSTIFICATION")
-;;    '("border" "GTK_SHEET_BORDER")
-;;    '("border-color" "GTK_SHEET_BORDER_COLOR")
-;;    '("is-editable" "GTK_SHEET_IS_EDITABLE")
-;;    '("is-visible" "GTK_SHEET_IS_VISIBLE")
-;;  )
-;;)
+(define-enum SheetAttrType
+  (in-module "Gtk")
+  (c-name "GtkSheetAttrType")
+  (gtype-id "GTK_TYPE_SHEET_ATTR_TYPE")
+  (values
+    '("foreground" "GTK_SHEET_FOREGROUND")
+    '("background" "GTK_SHEET_BACKGROUND")
+    '("font" "GTK_SHEET_FONT")
+    '("justification" "GTK_SHEET_JUSTIFICATION")
+    '("border" "GTK_SHEET_BORDER")
+    '("border-color" "GTK_SHEET_BORDER_COLOR")
+    '("is-editable" "GTK_SHEET_IS_EDITABLE")
+    '("is-visible" "GTK_SHEET_IS_VISIBLE")
+  )
+)
+
+(define-enum SheetState
+  (in-module "Gtk")
+  (c-name "GtkSheetState")
+  (gtype-id "GTK_TYPE_SHEET_STATE")
+  (values
+    '("normal" "GTK_SHEET_NORMAL")
+    '("row-selected" "GTK_SHEET_ROW_SELECTED")
+    '("column-selected" "GTK_SHEET_COLUMN_SELECTED")
+    '("range-selected" "GTK_SHEET_RANGE_SELECTED")
+  )
+)
+
+(define-flags SheetBorderFlags
+  (in-module "Gtk")
+  (c-name "GtkSheetBorderFlags")
+  (gtype-id "GTK_TYPE_SHEET_BORDER_FLAGS")
+  (values
+    '("left-border" "GTK_SHEET_LEFT_BORDER")
+    '("right-border" "GTK_SHEET_RIGHT_BORDER")
+    '("top-border" "GTK_SHEET_TOP_BORDER")
+    '("bottom-border" "GTK_SHEET_BOTTOM_BORDER")
+  )
+)
 
 
 ;; From gtkitementry.h
@@ -130,18 +157,28 @@
 
 (define-function gtk_sheet_range_get_type
   (c-name "gtk_sheet_range_get_type")
-  (return-type "GtkType")
+  (return-type "GType")
+)
+
+(define-function gtk_sheet_cell_border_get_type
+  (c-name "gtk_sheet_cell_border_get_type")
+  (return-type "GType")
+)
+
+(define-function gtk_sheet_cell_attr_get_type
+  (c-name "gtk_sheet_cell_attr_get_type")
+  (return-type "GType")
 )
 
 (define-function gtk_sheet_new
   (c-name "gtk_sheet_new")
   (is-constructor-of "GtkSheet")
   (return-type "GtkWidget*")
-  (parameters
-    '("guint" "rows")
-    '("guint" "columns")
-    '("const-gchar*" "title")
-  )
+;  (parameters
+;    '("guint" "rows" (default 10))
+;    '("guint" "columns" (default 10))
+;    '("const-gchar*" "title" (default ""))
+;  )
 )
 
 (define-method construct
@@ -1058,7 +1095,7 @@
     '("const-GtkSheetRange*" "urange")
     '("gint" "mask")
     '("guint" "width")
-    '("gint" "line_style")
+    '("gint" "line_style" (default "GDK_LINE_SOLID"))
   )
 )
 

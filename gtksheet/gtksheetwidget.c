@@ -714,7 +714,8 @@ enum {
     PROP_COLUMN_TITLES_VISIBLE,
     PROP_ROWS_RESIZABLE,
     PROP_ROW_TITLES_VISIBLE,
-    PROP_TITLE
+    PROP_TITLE,
+    PROP_ACTIVE_CELL
 };
 
 static void
@@ -793,6 +794,9 @@ gtk_sheet_get_property (GObject    *object,
                         GParamSpec *pspec)
 {
   GtkSheet *self = GTK_SHEET (object);
+  gint cell[2] = {0,0};
+  GValue auxval = {0,};
+  GValueArray *valarray;
 
   switch (property_id)
     {
@@ -844,11 +848,28 @@ gtk_sheet_get_property (GObject    *object,
       g_value_set_string(value, self->name);
       break;
 
+    case PROP_ACTIVE_CELL:
+      /* Create a GValueArray of gint-containing GValues with the active_cells
+         row and col. */
+      valarray = g_value_array_new(2);
+      g_value_init(&auxval, G_TYPE_INT);
+      g_value_set_int(&auxval, self->active_cell.row);      
+      g_value_array_append(valarray, &auxval); 
+      g_value_set_int(&auxval, self->active_cell.col);
+      g_value_array_append(valarray, &auxval); 
+      /* Put the GValueArray in the provided GValue, which should be 
+         initialized with g_value_init(value, G_TYPE_VALUE_ARRAY) */
+      g_value_set_boxed(value, valarray);
+      /* Free the auxiliary GValueArray */ 
+      g_value_array_free(valarray);
+      break;
+
     default:
       /* We don't have any other property... */
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
     }
+
 }
 
 /*GtkSheet type*/
@@ -1224,6 +1245,15 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                               G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
                                    PROP_TITLE,
+                                   pspec);
+
+  pspec = g_param_spec_boxed("active-cell",
+                             "Active cell (row, column)",
+                             "An array (row, column) indicating the active cell",
+                             G_TYPE_VALUE_ARRAY,
+                             G_PARAM_READABLE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_ACTIVE_CELL,
                                    pspec);
 
 

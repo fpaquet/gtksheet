@@ -161,6 +161,9 @@ class TestWindow(gtk.Window):
         else:
             self.entry.set_text("")
 
+        print self.sheet.props.active_cell
+
+
     def _font_changed_cb(self, widget):
         r = self.sheet.get_range()
         fd = pango.FontDescription(widget.get_font_name())

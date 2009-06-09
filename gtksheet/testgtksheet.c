@@ -10,6 +10,7 @@
 
 GtkWidget *window;
 GtkWidget *colorbutton;
+GtkWidget *fontbutton;
 
 void
 quit ()
@@ -24,14 +25,29 @@ activate_sheet_cell_cb(GtkWidget *widget, gint row, gint column, gpointer data)
 
     GtkSheet *sheet;
     const gchar *text;
+    GtkSheetCellAttr attrs;
+    PangoFontDescription *font_desc;
+    char *font_name;
 
     sheet=GTK_SHEET(widget);
 
     text = gtk_sheet_cell_get_text(sheet, row, column);
     if (text)
     {
-        g_message(text);
+        g_message("Row: %d Column: %d Text: %s", row, column, text);
     }
+
+    gtk_sheet_get_attributes(sheet, row, column, &attrs);
+
+    font_desc = (attrs.font_desc == NULL)? widget->style->font_desc : attrs.font_desc;
+    font_name = pango_font_description_to_string(font_desc);
+    gtk_font_button_set_font_name(GTK_FONT_BUTTON(fontbutton), font_name);
+    g_free(font_name);
+
+    gtk_color_button_set_color(GTK_COLOR_BUTTON(colorbutton), &(attrs.background));
+
+    
+   
 }
 
 void
@@ -99,7 +115,7 @@ int main(int argc, char *argv[])
     gtk_signal_connect(GTK_OBJECT(colorbutton), "color-set", 
                        GTK_SIGNAL_FUNC(bg_color_changed_cb), sheet);
 
-    GtkWidget *fontbutton = gtk_font_button_new();
+    fontbutton = gtk_font_button_new();
     gtk_signal_connect(GTK_OBJECT(fontbutton), "font-set",
                        GTK_SIGNAL_FUNC(font_changed_cb), sheet);
        

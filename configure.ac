@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl Created by Anjuta application wizard.
 
-AC_INIT(gtksheet, 2.1.1)
+AC_INIT(gtksheet, 0.0.99)
 
 
 # Save this value here, since automake will set cflags later
@@ -16,9 +16,9 @@ AC_DIVERT_PUSH(NOTICE)dnl
 # if backwards compatibility has been broken,
 # set GTK_BINARY_AGE and GTK_SHEET_INTERFACE_AGE to 0.
 
-GTK_SHEET_MAJOR_VERSION=2
-GTK_SHEET_MINOR_VERSION=1
-GTK_SHEET_MICRO_VERSION=1
+GTK_SHEET_MAJOR_VERSION=0
+GTK_SHEET_MINOR_VERSION=0
+GTK_SHEET_MICRO_VERSION=99
 GTK_SHEET_INTERFACE_AGE=0
 GTK_SHEET_BINARY_AGE=0
 GTK_SHEET_VERSION=$GTK_SHEET_MAJOR_VERSION.$GTK_SHEET_MINOR_VERSION.$GTK_SHEET_MICRO_VERSION

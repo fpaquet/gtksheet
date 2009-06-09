@@ -64,11 +64,11 @@ typedef enum
 #define GTK_TYPE_SHEET_CELL_BORDER (gtk_sheet_cell_border_get_type ())
 #define GTK_TYPE_SHEET_CELL_ATTR (gtk_sheet_cell_attr_get_type ())
 #define GTK_TYPE_SHEET_RANGE (gtk_sheet_range_get_type ())
-#define GTK_TYPE_SHEET (gtk_sheet_get_type ())
 
-#define GTK_SHEET(obj)          GTK_CHECK_CAST (obj, gtk_sheet_get_type (), GtkSheet)
-#define GTK_SHEET_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, gtk_sheet_get_type (), GtkSheetClass)
-#define GTK_IS_SHEET(obj)       GTK_CHECK_TYPE (obj, gtk_sheet_get_type ())
+#define GTK_TYPE_SHEET (gtk_sheet_get_type ())
+#define GTK_SHEET(obj)          (G_TYPE_CHECK_INSTANCE_CAST ((obj),GTK_TYPE_SHEET, GtkSheet))
+#define GTK_SHEET_CLASS(klass)  (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SHEET, GtkSheetClass))
+#define GTK_IS_SHEET(obj)       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SHEET))
 #define GTK_IS_SHEET_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SHEET))
 #define GTK_SHEET_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SHEET, GtkSheetClass))
 

@@ -1,7 +1,7 @@
 
 DEFS=`pkg-config --variable=defsdir pygtk-2.0`
 
-sheet.c: sheet.defs sheet.override sheet-addons.defs
+sheet.c: sheet.defs sheet.override sheetrange.override sheet-addons.defs
 	pygobject-codegen-2.0 --prefix sheet \
 	--register $(DEFS)/gdk-types.defs \
 	--register $(DEFS)/gtk-types.defs \

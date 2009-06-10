@@ -715,7 +715,8 @@ enum {
     PROP_ROWS_RESIZABLE,
     PROP_ROW_TITLES_VISIBLE,
     PROP_TITLE,
-    PROP_ACTIVE_CELL
+    PROP_ACTIVE_CELL,
+    PROP_SELECTED_RANGE
 };
 
 static void
@@ -862,6 +863,10 @@ gtk_sheet_get_property (GObject    *object,
       g_value_set_boxed(value, valarray);
       /* Free the auxiliary GValueArray */ 
       g_value_array_free(valarray);
+      break;
+
+    case PROP_SELECTED_RANGE:
+      g_value_set_boxed(value, &(self->range));
       break;
 
     default:
@@ -1256,6 +1261,14 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                                    PROP_ACTIVE_CELL,
                                    pspec);
 
+  pspec = g_param_spec_boxed("selected-range",
+                             "Selected cells range",
+                             "A SheetRange with the currently selected cells",
+                             GTK_TYPE_SHEET_RANGE,
+                             G_PARAM_READABLE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_SELECTED_RANGE,
+                                   pspec);
 
   container_class->add = NULL;
   container_class->remove = gtk_sheet_remove;
@@ -3018,8 +3031,10 @@ gtk_sheet_select_row (GtkSheet * sheet,
   sheet->range.col0=0;
   sheet->range.rowi=row;
   sheet->range.coli=sheet->maxcol;
+  g_object_notify(G_OBJECT(sheet), "selected-range");
   sheet->active_cell.row=row;
   sheet->active_cell.col=0;
+  g_object_notify(G_OBJECT(sheet), "active-cell");
 
   g_object_notify(G_OBJECT(sheet), "state");
 
@@ -3060,8 +3075,11 @@ gtk_sheet_select_column (GtkSheet * sheet,
   sheet->range.col0=column;
   sheet->range.rowi=sheet->maxrow;
   sheet->range.coli=column;
+  g_object_notify(G_OBJECT(sheet), "selected-range");
   sheet->active_cell.row=0;
   sheet->active_cell.col=column;
+  g_object_notify(G_OBJECT(sheet), "active-cell");
+
 
   g_object_notify(G_OBJECT(sheet), "state");
   gtk_signal_emit (GTK_OBJECT (sheet), sheet_signals[SELECT_COLUMN], column);
@@ -5230,8 +5248,10 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
     sheet->range.col0=col;
     sheet->range.rowi=row;
     sheet->range.coli=col;
+    g_object_notify(G_OBJECT(sheet), "selected-range");
     sheet->active_cell.row=row;
     sheet->active_cell.col=col;
+    g_object_notify(G_OBJECT(sheet), "active-cell");
     sheet->selection_cell.row=row;
     sheet->selection_cell.col=col;
     row_button_set(sheet, row);
@@ -5565,7 +5585,6 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 	   	           TRUE,
 	                   x+1,y+1,
 	                   width,height);
-
     }   
 
    }
@@ -5597,33 +5616,25 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
   	                           sheet->xor_gc,
 	   	                   TRUE,
 	                           x+1,y-1,
-	                           width,3);
-
-           
+	                           width,3);    
          if(mask2 & 2)
                gdk_draw_rectangle (sheet->sheet_window,
   	                           sheet->xor_gc,
 	   	                   TRUE,
 	                           x+1,y+height-1,
 	                           width,3);
-
          if(mask2 & 4)
                gdk_draw_rectangle (sheet->sheet_window,
   	                           sheet->xor_gc,
 	   	                   TRUE,
 	                           x-1,y+1,
 	                           3,height);
-
-
          if(mask2 & 8)
                gdk_draw_rectangle (sheet->sheet_window,
   	                           sheet->xor_gc,
 	   	                   TRUE,
 	                           x+width-1,y+1,
 	                           3,height);
-
-       
-
        }         
 
     } 
@@ -5830,21 +5841,20 @@ gtk_sheet_real_select_range (GtkSheet * sheet,
 
   if(range->coli != sheet->range.coli || range->col0 != sheet->range.col0 ||
      range->rowi != sheet->range.rowi || range->row0 != sheet->range.row0)
-         {
+  {
+    gtk_sheet_new_selection(sheet, range);
 
-           gtk_sheet_new_selection(sheet, range);
-
-	   sheet->range.col0=range->col0;
-	   sheet->range.coli=range->coli;
-	   sheet->range.row0=range->row0;
-	   sheet->range.rowi=range->rowi;
-
-	 }
+    sheet->range.col0=range->col0;
+    sheet->range.coli=range->coli;
+    sheet->range.row0=range->row0;
+    sheet->range.rowi=range->rowi;
+    g_object_notify(G_OBJECT(sheet), "selected-range");
+  }
   else
-         {
+  {
 	   gtk_sheet_draw_backing_pixmap(sheet, sheet->range);
            gtk_sheet_range_draw_selection(sheet, sheet->range);
-         }
+  }
 
   gtk_signal_emit(GTK_OBJECT(sheet), sheet_signals[SELECT_RANGE], range);
 }
@@ -5879,8 +5889,11 @@ gtk_sheet_select_range(GtkSheet * sheet, const GtkSheetRange *range)
   sheet->range.rowi=range->rowi;
   sheet->range.col0=range->col0;
   sheet->range.coli=range->coli;
+  g_object_notify(G_OBJECT(sheet), "selected-range");
   sheet->active_cell.row=range->row0;
   sheet->active_cell.col=range->col0;
+  g_object_notify(G_OBJECT(sheet), "active-cell");
+
   sheet->selection_cell.row=range->rowi;
   sheet->selection_cell.col=range->coli;
 
@@ -6242,19 +6255,19 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint column, gboolean *veto)
       if(column == -1 && row >= 0){
           if(gtk_sheet_autoscroll(sheet))
             gtk_sheet_move_query(sheet, row, column);
- 	  gtk_sheet_select_row(sheet, row);
+          gtk_sheet_select_row(sheet, row);
           return;
       }
 
       if(row==-1 && column ==-1){
-          sheet->range.row0=0;
-          sheet->range.col0=0;
-          sheet->range.rowi=sheet->maxrow;
-          sheet->range.coli=sheet->maxcol;
-	  sheet->active_cell.row=0;
-	  sheet->active_cell.col=0;
-	  gtk_sheet_select_range(sheet, NULL);
-	  return;
+        sheet->range.row0=0; /*gtk_sheet_select_range will gobject_notify this*/
+        sheet->range.col0=0;
+        sheet->range.rowi=sheet->maxrow;
+        sheet->range.coli=sheet->maxcol;
+        sheet->active_cell.row=0; /*gtk_sheet_activate_cell will gobject_notify*/
+        sheet->active_cell.col=0;
+        gtk_sheet_select_range(sheet, NULL);
+        return;
       }
 
       if (row!=-1 && column !=-1) {
@@ -6281,6 +6294,8 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint column, gboolean *veto)
           sheet->range.col0=column;
           sheet->range.rowi=row;
           sheet->range.coli=column;
+          /*g_object_notify(G_OBJECT(sheet), "selected-range");*/
+
 	      sheet->state=GTK_SHEET_NORMAL;
           g_object_notify(G_OBJECT(sheet), "state");
           GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
@@ -6346,7 +6361,7 @@ gtk_sheet_button_release (GtkWidget * widget,
       sheet->selection_cell.col = sheet->selection_cell.col +
                                   (sheet->drag_range.col0 - sheet->range.col0);
       old_range=sheet->range;
-      sheet->range=sheet->drag_range;
+      sheet->range=sheet->drag_range; /*gobject_notify in gtk_sheet_select_range*/
       sheet->drag_range=old_range;
       gtk_signal_emit(GTK_OBJECT(sheet),sheet_signals[MOVE_RANGE],
                       &sheet->drag_range, &sheet->range);
@@ -8440,7 +8455,10 @@ gtk_sheet_add_column(GtkSheet *sheet, guint ncols)
 
  adjust_scrollbars(sheet);
 
- if(sheet->state==GTK_SHEET_ROW_SELECTED) sheet->range.coli+=ncols;
+ if(sheet->state==GTK_SHEET_ROW_SELECTED) {
+    sheet->range.coli+=ncols;
+    g_object_notify(G_OBJECT(sheet), "selected-range");
+ }
 
  sheet->old_hadjustment = -1.;
  if(!GTK_SHEET_IS_FROZEN(sheet) && sheet->hadjustment)
@@ -8466,7 +8484,10 @@ gtk_sheet_add_row(GtkSheet *sheet, guint nrows)
 
  if(!GTK_WIDGET_REALIZED(sheet)) return;
 
- if(sheet->state==GTK_SHEET_COLUMN_SELECTED) sheet->range.rowi+=nrows;
+ if(sheet->state==GTK_SHEET_COLUMN_SELECTED) {
+   sheet->range.rowi+=nrows;
+   g_object_notify(G_OBJECT(sheet), "selected-range");
+ }
 
  adjust_scrollbars(sheet);
 
@@ -8511,7 +8532,10 @@ gtk_sheet_insert_rows(GtkSheet *sheet, guint row, guint nrows)
 
  if(!GTK_WIDGET_REALIZED(sheet)) return;
 
- if(sheet->state==GTK_SHEET_COLUMN_SELECTED) sheet->range.rowi+=nrows;
+ if(sheet->state==GTK_SHEET_COLUMN_SELECTED) {
+   sheet->range.rowi+=nrows;
+   g_object_notify(G_OBJECT(sheet), "selected-range");
+ }
  adjust_scrollbars(sheet);
  
  sheet->old_vadjustment = -1.;
@@ -8556,7 +8580,10 @@ gtk_sheet_insert_columns(GtkSheet *sheet, guint col, guint ncols)
 
  if(!GTK_WIDGET_REALIZED(sheet)) return;
 
- if(sheet->state==GTK_SHEET_ROW_SELECTED) sheet->range.coli+=ncols;
+ if(sheet->state==GTK_SHEET_ROW_SELECTED) {
+   sheet->range.coli+=ncols;
+   g_object_notify(G_OBJECT(sheet), "selected-range");
+ }
  adjust_scrollbars(sheet);
 
  sheet->old_hadjustment = -1.;

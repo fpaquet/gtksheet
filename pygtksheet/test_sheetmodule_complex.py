@@ -165,7 +165,7 @@ class TestWindow(gtk.Window):
 
 
     def _font_changed_cb(self, widget):
-        r = self.sheet.get_range()
+        r = self.sheet.props.selected_range
         fd = pango.FontDescription(widget.get_font_name())
         self.sheet.range_set_font(r, fd)
         
@@ -173,13 +173,13 @@ class TestWindow(gtk.Window):
     def _justification_cb(self, widget, data=None):
         if data is None:
             return
-        r = self.sheet.get_range()
+        r = self.sheet.props.selected_range
         if r:
             self.sheet.range_set_justification(r, data)
 
     def _border_changed_cb(self, widget):
         border = widget.get_active()
-        range = self.sheet.get_range()
+        range = self.sheet.props.selected_range
         border_width = 3
         self.sheet.range_set_border(range, 0, 0)
         if border == 1:
@@ -271,7 +271,7 @@ class TestWindow(gtk.Window):
         if data is None:
             return
         color = widget.get_color()
-        _range = self.sheet.get_range()
+        _range = self.sheet.props.selected_range
         if data == "f":
             self.sheet.range_set_foreground(_range, color)
         else:

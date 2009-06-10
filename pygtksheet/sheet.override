@@ -215,13 +215,6 @@ _wrap_gtk_sheet_get_attributes (PyGObject *self, PyObject *args, PyObject *kwarg
     return Py_None;
 }
 %%
-override gtk_sheet_get_range
-static PyObject *
-_wrap_gtk_sheet_get_range(PyGObject *self, PyObject *args, PyObject *kwargs)
-{   
-    return pyg_boxed_new(GTK_TYPE_SHEET_RANGE, &(GTK_SHEET(self->obj)->range), TRUE, TRUE);
-}
-%%
 override gtk_sheet_cell_get_text
 static PyObject *
 _wrap_gtk_sheet_cell_get_text(PyGObject *self, PyObject *args, PyObject *kwargs)

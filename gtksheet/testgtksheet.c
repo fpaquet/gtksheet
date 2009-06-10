@@ -95,6 +95,25 @@ font_changed_cb(GtkWidget *widget, gpointer data)
     }
 }
 
+static void
+_selected_range_cb(GtkWidget *widget, gpointer data)
+{
+
+   GtkSheet *sheet = GTK_SHEET(widget);
+   GValue val = {0,};
+   GtkSheetRange *range;
+
+   g_value_init(&val, GTK_TYPE_SHEET_RANGE);
+   g_object_get_property(G_OBJECT(sheet), "selected-range", &val);
+   range = g_value_get_boxed(&val);
+
+   g_message("Selected range: Row %d to %d, Col %d  to %d",
+             range->row0, range->rowi, 
+             range->col0, range->coli);
+   g_free(range);
+}
+
+
 int main(int argc, char *argv[])
 {
     gtk_init(&argc, &argv);
@@ -131,7 +150,8 @@ int main(int argc, char *argv[])
     g_value_set_string(&val2, g_strdup("Sheet Example"));
     g_message("Setting title property again");
     g_object_set_property(G_OBJECT(sheet), "title", &val2);
-    
+    g_signal_connect(G_OBJECT(sheet), "notify::selected-range", 
+                     (GCallback)_selected_range_cb, NULL);    
 
     GtkWidget *scrwin = gtk_scrolled_window_new(NULL, NULL);
     gtk_container_add(GTK_CONTAINER(scrwin), sheet);

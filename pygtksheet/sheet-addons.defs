@@ -1,11 +1,5 @@
 ;; Not from any header file
 
-(define-method get_range
-  (of-object "GtkSheet")
-  (c-name "gtk_sheet_get_range")
-  (return-type "GtkSheetRange")
-)
-
 (define-boxed SheetRange
   (in-module "Gtk")
   (c-name "GtkSheetRange")

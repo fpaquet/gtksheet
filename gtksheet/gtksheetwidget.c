@@ -1658,7 +1658,7 @@ gtk_sheet_show_grid(GtkSheet *sheet, gboolean show)
   if(show == sheet->show_grid) return;
  
   sheet->show_grid = show;
-  g_object_notify(G_OBJECT(sheet), "show-grid");
+  g_object_notify(G_OBJECT(sheet), "grid-visible");
 
   if(!GTK_SHEET_IS_FROZEN(sheet)) 
     gtk_sheet_range_draw(sheet, NULL);

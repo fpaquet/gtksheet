@@ -121,7 +121,7 @@
 
 (define-function gtksheet_check_version
   (c-name "gtksheet_check_version")
-  (return-type "gchar*")
+  (return-type "const-gchar*")
   (parameters
     '("guint" "required_major")
     '("guint" "required_minor")

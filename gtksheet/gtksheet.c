@@ -28,7 +28,7 @@ const guint gtksheet_micro_version = GTKSHEET_MICRO_VERSION;
 const guint gtksheet_binary_age = GTKSHEET_BINARY_AGE;
 const guint gtksheet_interface_age = GTKSHEET_INTERFACE_AGE;
 
-gchar * 
+const gchar * 
 gtksheet_check_version (guint required_major,
                         guint required_minor,
                         guint required_micro)

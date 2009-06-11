@@ -404,31 +404,31 @@ get_widget_window_size (GtkEntry *entry,
                         gint     *width,
                         gint     *height)
 {
-  GtkRequisition requisition;
-  GtkWidget *widget = GTK_WIDGET (entry);
-      
-  gtk_widget_get_child_requisition (widget, &requisition);
+    GtkRequisition requisition;
+    GtkWidget *widget = GTK_WIDGET (entry);
 
-  if (x)
-    *x = widget->allocation.x;
+    gtk_widget_get_child_requisition (widget, &requisition);
 
-  if (y)
+    if (x)
+        *x = widget->allocation.x;
+
+    if (y)
     {
-      if (entry->is_cell_renderer)
-	*y = widget->allocation.y;
-      else
-	*y = widget->allocation.y + (widget->allocation.height - requisition.height) / 2;
+        if (entry->is_cell_renderer)
+            *y = widget->allocation.y;
+        else
+            *y = widget->allocation.y + (widget->allocation.height - requisition.height) / 2;
     }
 
-  if (width)
-    *width = widget->allocation.width;
+    if (width)
+        *width = widget->allocation.width;
 
-  if (height)
+    if (height)
     {
-      if (entry->is_cell_renderer)
-	*height = widget->allocation.height;
-      else
-	*height = requisition.height;
+        if (entry->is_cell_renderer)
+            *height = widget->allocation.height;
+        else
+            *height = requisition.height;
     }
 }
 
@@ -480,26 +480,26 @@ gtk_entry_expose (GtkWidget      *widget,
   if (widget->window == event->window)
     gtk_entry_draw_frame (widget);
   else if (entry->text_area == event->window)
-    {
-      gint area_width, area_height;
+  {
+    gint area_width, area_height;
 
-      get_text_area_size (entry, NULL, NULL, &area_width, &area_height);
+    get_text_area_size (entry, NULL, NULL, &area_width, &area_height);
 
-      gdk_draw_rectangle (entry->text_area,
-                          widget->style->bg_gc[GTK_WIDGET_STATE(widget)],
-                          TRUE,
-                          0, 0, area_width, area_height);
+    gdk_draw_rectangle (entry->text_area,
+                        widget->style->bg_gc[GTK_WIDGET_STATE(widget)],
+                        TRUE,
+                        0, 0, area_width, area_height);
 
-      if ((entry->visible || entry->invisible_char != 0) &&
-	  GTK_WIDGET_HAS_FOCUS (widget) &&
-	  entry->selection_bound == entry->current_pos && entry->cursor_visible)
-	gtk_entry_draw_cursor (GTK_ENTRY (widget), CURSOR_STANDARD);
+    if ((entry->visible || entry->invisible_char != 0) &&
+        GTK_WIDGET_HAS_FOCUS (widget) &&
+        entry->selection_bound == entry->current_pos && entry->cursor_visible)
+      gtk_entry_draw_cursor (GTK_ENTRY (widget), CURSOR_STANDARD);
 
-      if (entry->dnd_position != -1)
-	gtk_entry_draw_cursor (GTK_ENTRY (widget), CURSOR_DND);
-      
-      gtk_entry_draw_text (GTK_ENTRY (widget));
-    }
+    if (entry->dnd_position != -1)
+      gtk_entry_draw_cursor (GTK_ENTRY (widget), CURSOR_DND);
+  
+    gtk_entry_draw_text (GTK_ENTRY (widget));
+  }
 
   return FALSE;
 }
@@ -513,9 +513,9 @@ gtk_entry_grab_focus (GtkWidget        *widget)
   GTK_WIDGET_CLASS (gtk_item_entry_parent_class)->grab_focus (widget);
 
   g_object_get (G_OBJECT (gtk_settings_get_default ()),
-		"gtk-entry-select-on-focus",
-		&select_on_focus,
-		NULL);
+                "gtk-entry-select-on-focus",
+                &select_on_focus,
+                NULL);
   
   if (select_on_focus && entry->editable && !entry->in_click)
     gtk_editable_select_region (GTK_EDITABLE (widget), 0, -1);
@@ -745,10 +745,10 @@ gtk_entry_real_delete_text (GtkEditable *editable,
       entry->n_bytes -= (end_index - start_index);
       
       if (entry->current_pos > start_pos)
-	entry->current_pos -= MIN (entry->current_pos, end_pos) - start_pos;
+        entry->current_pos -= MIN (entry->current_pos, end_pos) - start_pos;
 
       if (entry->selection_bound > start_pos)
-	entry->selection_bound -= MIN (entry->selection_bound, end_pos) - start_pos;
+        entry->selection_bound -= MIN (entry->selection_bound, end_pos) - start_pos;
       /* We might have deleted the selection
        */
       gtk_entry_update_primary_selection (entry);
@@ -781,8 +781,8 @@ get_better_cursor_x (GtkEntry *entry,
   PangoRectangle strong_pos, weak_pos;
   
   g_object_get (gtk_widget_get_settings (GTK_WIDGET (entry)),
-		"gtk-split-cursor", &split_cursor,
-		NULL);
+                "gtk-split-cursor", &split_cursor,
+                NULL);
 
   pango_layout_get_cursor_pos (layout, index, &strong_pos, &weak_pos);
 
@@ -1613,8 +1613,8 @@ gtk_entry_draw_cursor (GtkEntry  *entry,
       gint x2 = 0;
       GdkGC *gc;
 
-      gdk_window_get_size (entry->text_area, NULL, &text_area_height);
-      
+      gdk_drawable_get_size (GDK_DRAWABLE(entry->text_area), 
+                             NULL, &text_area_height);      
       gtk_entry_get_cursor_locations (entry, type, &strong_x, &weak_x);
 
       g_object_get (gtk_widget_get_settings (widget),
@@ -1730,7 +1730,7 @@ gtk_entry_adjust_scroll (GtkEntry *entry)
 
   item_entry = GTK_ITEM_ENTRY(entry);
   
-  gdk_window_get_size (entry->text_area, &text_area_width, NULL);
+  gdk_drawable_get_size(GDK_DRAWABLE(entry->text_area), &text_area_width, NULL);
   text_area_width -= 2 * INNER_BORDER;
 
   layout = gtk_entry_ensure_layout (entry, TRUE);

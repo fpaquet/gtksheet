@@ -101,6 +101,7 @@ class TestWindow(gtk.Window):
         self.sheet = TestSheet()
         self.sheet.connect("activate", self._activate_sheet_cell_cb)
         self.sheet.get_entry().connect("changed", self._show_entry_cb)
+        self.sheet.connect("changed", self._sheet_changed_cb)
         ws = gtk.ScrolledWindow()
         ws.add(self.sheet)
 
@@ -115,6 +116,9 @@ class TestWindow(gtk.Window):
         self.add(vbox)
         self.set_size_request(500,400)
         self.show_all()
+
+    def _sheet_changed_cb(self, sheet, row, column):
+        print "Sheet change at row: %d, column: %d" % (row, column)
 
     def _show_sheet_entry_cb(self, entry):
         if not entry.flags() & gtk.HAS_FOCUS:

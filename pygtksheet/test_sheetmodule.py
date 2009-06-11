@@ -5,9 +5,22 @@ pygtk.require("2.0")
 import gtk
 import sheet
 
+def _selection_toggled_cb(button, sheet):
+    print "The sheet has %d rows and %d columns" % (sheet.props.n_rows, 
+                                                    sheet.props.n_columns)
+    if button.props.active:
+        button.props.label = "Selection single"
+        sheet.props.selection_mode = gtk.SELECTION_SINGLE
+    else:
+        button.props.label = "Selection browse"
+        sheet.props.selection_mode = gtk.SELECTION_BROWSE
 
 def run_test():
     s = sheet.Sheet(20,20,"Test PyGtkSheet")
+
+    b = gtk.ToggleButton("Selection browse")
+    b.connect("toggled", _selection_toggled_cb, s)
+    s.attach_default(b, 1, 1)
 
     ws = gtk.ScrolledWindow()
     ws.add(s)

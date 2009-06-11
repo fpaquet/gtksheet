@@ -716,7 +716,10 @@ enum {
     PROP_ROW_TITLES_VISIBLE,
     PROP_TITLE,
     PROP_ACTIVE_CELL,
-    PROP_SELECTED_RANGE
+    PROP_SELECTED_RANGE,
+    PROP_N_ROWS,
+    PROP_N_COLUMNS,
+    PROP_SELECTION_MODE,
 };
 
 static void
@@ -779,6 +782,14 @@ gtk_sheet_set_property (GObject      *object,
       mytitle = g_value_dup_string(value);
       gtk_sheet_set_title(self, mytitle);
       g_free(mytitle);      
+      break;
+
+    case PROP_SELECTION_MODE:
+      /* Currently only selection single and selection browse are supported */
+      if (g_value_get_enum(value) == GTK_SELECTION_SINGLE)
+        gtk_sheet_set_selection_mode(self, GTK_SELECTION_SINGLE);
+      else
+        gtk_sheet_set_selection_mode(self, GTK_SELECTION_BROWSE);
       break;
 
     default:
@@ -867,6 +878,18 @@ gtk_sheet_get_property (GObject    *object,
 
     case PROP_SELECTED_RANGE:
       g_value_set_boxed(value, &(self->range));
+      break;
+
+    case PROP_N_COLUMNS:
+      g_value_set_uint(value, gtk_sheet_get_columns_count(self));
+      break;
+
+    case PROP_N_ROWS:
+      g_value_set_uint(value, gtk_sheet_get_rows_count(self));
+      break;
+
+    case PROP_SELECTION_MODE:
+      g_value_set_enum(value, self->selection_mode);
       break;
 
     default:
@@ -1268,6 +1291,34 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                              G_PARAM_READABLE);
   g_object_class_install_property (gobject_class,
                                    PROP_SELECTED_RANGE,
+                                   pspec);
+
+  pspec = g_param_spec_uint("n-rows",
+                             "Number of rows",
+                             "Number of rows in the sheet.",
+                             MINROWS, G_MAXUINT, MINROWS,
+                             G_PARAM_READABLE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_N_ROWS,
+                                   pspec);
+
+  pspec = g_param_spec_uint("n-columns",
+                             "Number of columns",
+                             "Number of columns in the sheet.",
+                             MINCOLS, G_MAXUINT, MINCOLS,
+                             G_PARAM_READABLE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_N_COLUMNS,
+                                   pspec);
+
+  pspec = g_param_spec_enum("selection-mode",
+                            "Selection mode",
+                            "Selection mode for the sheet",
+                            GTK_TYPE_SELECTION_MODE,
+                            GTK_SELECTION_BROWSE,
+                            G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class,
+                                   PROP_SELECTION_MODE,
                                    pspec);
 
   container_class->add = NULL;
@@ -1734,7 +1785,7 @@ gtk_sheet_get_state(GtkSheet *sheet)
  * Sets the selection mode of the cells in a #GtkSheet. 
  */
 void
-gtk_sheet_set_selection_mode(GtkSheet *sheet, gint mode)
+gtk_sheet_set_selection_mode(GtkSheet *sheet, GtkSelectionMode mode)
 {
   g_return_if_fail (sheet != NULL);
   g_return_if_fail (GTK_IS_SHEET (sheet));
@@ -1743,6 +1794,7 @@ gtk_sheet_set_selection_mode(GtkSheet *sheet, gint mode)
    gtk_sheet_real_unselect_range(sheet, NULL);
 
   sheet->selection_mode = mode;
+  g_object_notify(G_OBJECT(sheet), "selection-mode");
 }
 
 /**
@@ -8450,6 +8502,7 @@ gtk_sheet_add_column(GtkSheet *sheet, guint ncols)
  g_return_if_fail (GTK_IS_SHEET (sheet));
 
  AddColumn(sheet, ncols);
+ g_object_notify(G_OBJECT(sheet), "n-columns");
 
  if(!GTK_WIDGET_REALIZED(sheet)) return;
 
@@ -8481,6 +8534,7 @@ gtk_sheet_add_row(GtkSheet *sheet, guint nrows)
  g_return_if_fail (GTK_IS_SHEET (sheet));
 
  AddRow(sheet, nrows);
+ g_object_notify(G_OBJECT(sheet), "n-rows");
 
  if(!GTK_WIDGET_REALIZED(sheet)) return;
 
@@ -8518,6 +8572,7 @@ gtk_sheet_insert_rows(GtkSheet *sheet, guint row, guint nrows)
    gtk_sheet_real_unselect_range(sheet, NULL);
 
  InsertRow(sheet, row, nrows);
+ g_object_notify(G_OBJECT(sheet), "n-rows");
 
  children = sheet->children;
  while(children)
@@ -8566,6 +8621,7 @@ gtk_sheet_insert_columns(GtkSheet *sheet, guint col, guint ncols)
    gtk_sheet_real_unselect_range(sheet, NULL);
 
  InsertColumn(sheet, col, ncols);
+ g_object_notify(G_OBJECT(sheet), "n-columns");
 
  children = sheet->children;
  while(children)
@@ -8618,6 +8674,7 @@ gtk_sheet_delete_rows(GtkSheet *sheet, guint row, guint nrows)
    gtk_sheet_real_unselect_range(sheet, NULL);
 
  DeleteRow(sheet, row, nrows);
+ g_object_notify(G_OBJECT(sheet), "n-rows");
 
  children = sheet->children;
  while(children)
@@ -8693,6 +8750,7 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
    gtk_sheet_real_unselect_range(sheet, NULL);
 
  DeleteColumn(sheet, col, ncols);
+ g_object_notify(G_OBJECT(sheet), "n-columns");
 
  children = sheet->children;
  while(children)

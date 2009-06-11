@@ -31,7 +31,7 @@ _wrap_gtk_sheet_range_new(PyGBoxed *self, PyObject *args, PyObject *kwargs)
 				     "|iiii:GtkSheetRange.__init__",
 				     kwlist, &(rng.row0), &(rng.col0),
 				     &(rng.rowi), &(rng.coli)))
-	return -1;
+	    return -1;
 
     self->boxed =  g_boxed_copy(GTK_TYPE_SHEET_RANGE, &rng);
     self->free_on_dealloc = TRUE;
@@ -58,13 +58,13 @@ _wrap_gtk_sheet_range_getitem(PyGBoxed *self, Py_ssize_t pos)
     }
     rect = pyg_boxed_get(self, GtkSheetRange);
     switch (pos) {
-    case 0: return PyInt_FromLong(rect->row0);
-    case 1: return PyInt_FromLong(rect->col0);
-    case 2: return PyInt_FromLong(rect->rowi);
-    case 3: return PyInt_FromLong(rect->coli);
-    default:
-        g_assert_not_reached();
-        return NULL;
+        case 0: return PyInt_FromLong(rect->row0);
+        case 1: return PyInt_FromLong(rect->col0);
+        case 2: return PyInt_FromLong(rect->rowi);
+        case 3: return PyInt_FromLong(rect->coli);
+        default:
+            g_assert_not_reached();
+            return NULL;
     }
 }
 static int
@@ -83,13 +83,13 @@ _wrap_gtk_sheet_range_setitem(PyGBoxed *self, Py_ssize_t pos, PyObject *value)
     if (PyErr_Occurred())
         return -1;
     switch(pos) {
-    case 0: rect->row0 = val; break;
-    case 1: rect->col0 = val; break;
-    case 2: rect->rowi = val; break;
-    case 3: rect->coli = val; break;
-    default:
-        g_assert_not_reached();
-        return -1;
+        case 0: rect->row0 = val; break;
+        case 1: rect->col0 = val; break;
+        case 2: rect->rowi = val; break;
+        case 3: rect->coli = val; break;
+        default:
+            g_assert_not_reached();
+            return -1;
     }
     return 0;
 }

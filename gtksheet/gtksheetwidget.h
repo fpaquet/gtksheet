@@ -508,7 +508,7 @@ void
 gtk_sheet_get_visible_range		(GtkSheet *sheet,
 					 GtkSheetRange *range);
 void
-gtk_sheet_set_selection_mode		(GtkSheet *sheet, gint mode);
+gtk_sheet_set_selection_mode		(GtkSheet *sheet, GtkSelectionMode mode);
 
 void
 gtk_sheet_set_autoresize		(GtkSheet *sheet, gboolean autoresize);

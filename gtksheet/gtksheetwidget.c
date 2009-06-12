@@ -724,6 +724,7 @@ gtk_sheet_set_child_property (GtkContainer    *container,
   GtkSheet *sheet = GTK_SHEET (container);
   GtkSheetChild *sheet_child;
   GList *list;
+  guint row, column;
 
   sheet_child = NULL;
   for (list = sheet->children; list; list = list->next) {
@@ -738,6 +739,38 @@ gtk_sheet_set_child_property (GtkContainer    *container,
 
   switch (property_id)
   {
+    case CHILD_PROP_X:
+      sheet_child->x = g_value_get_int(value);
+      break;
+    case CHILD_PROP_Y:
+      sheet_child->y = g_value_get_int(value);
+      break;
+    case CHILD_PROP_ROW:
+      row = g_value_get_int(value);
+      if (row >= 0 && row <= sheet->maxrow)
+          sheet_child->row = row;
+      else {
+          /* Warn about invalid property value */
+          g_warning("Invalid row number.");
+          return;
+      }
+      break;
+    case CHILD_PROP_COLUMN:
+      column = g_value_get_int(value);
+      if (column >= 0 && column <= sheet->maxcol)
+          sheet_child->col = column;
+      else {
+          /* Warn about invalid property value */
+          g_warning("Invalid column number.");
+          return;
+      }
+      break;
+    case CHILD_PROP_ATTACHED_TO_CELL:
+      sheet_child->attached_to_cell = g_value_get_boolean(value);
+      break;
+    case CHILD_PROP_FLOATING:
+      sheet_child->floating = g_value_get_boolean(value);
+      break;
     case CHILD_PROP_X_OPTIONS:
       sheet_child->xexpand = (g_value_get_flags (value) & GTK_EXPAND) != 0;
       sheet_child->xshrink = (g_value_get_flags (value) & GTK_SHRINK) != 0;
@@ -786,6 +819,24 @@ gtk_sheet_get_child_property (GtkContainer    *container,
 
   switch (property_id)
   {
+    case CHILD_PROP_X:
+      g_value_set_int(value, sheet_child->x);
+      break;
+    case CHILD_PROP_Y:
+      g_value_set_int(value, sheet_child->y);
+      break;
+    case CHILD_PROP_ROW:
+      g_value_set_int(value, sheet_child->row);
+      break;
+    case CHILD_PROP_COLUMN:
+      g_value_set_int(value, sheet_child->col);
+      break;
+    case CHILD_PROP_ATTACHED_TO_CELL:
+      g_value_set_boolean(value, sheet_child->attached_to_cell);
+      break;
+    case CHILD_PROP_FLOATING:
+      g_value_set_boolean(value, sheet_child->floating);
+      break;
     case CHILD_PROP_X_OPTIONS:
       g_value_set_flags (value, (sheet_child->xexpand * GTK_EXPAND |
 				                 sheet_child->xshrink * GTK_SHRINK |
@@ -807,9 +858,6 @@ gtk_sheet_get_child_property (GtkContainer    *container,
       break;
   }
 }
-
-
-
 
 /* Properties */
 enum {
@@ -923,7 +971,7 @@ gtk_sheet_get_property (GObject    *object,
   GValueArray *valarray;
 
   switch (property_id)
-    {
+  {
     case PROP_AUTORESIZE:
       g_value_set_boolean (value, gtk_sheet_autoresize(self));
       break;
@@ -1008,7 +1056,7 @@ gtk_sheet_get_property (GObject    *object,
       /* We don't have any other property... */
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
-    }
+  }
 
 }
 
@@ -1471,6 +1519,48 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                                    PROP_SELECTION_MODE,
                                    pspec);
 
+  gtk_container_class_install_child_property (container_class,
+					      CHILD_PROP_X,
+					      g_param_spec_int ("x", 
+								 "Horizontal pixel position", 
+								 "Horizontal position of the child in the sheet, in pixels",
+								 G_MININT, G_MAXINT, 0,
+								 G_PARAM_READWRITE));
+  gtk_container_class_install_child_property (container_class,
+					      CHILD_PROP_Y,
+					      g_param_spec_int ("y", 
+								 "Vertical pixel position", 
+								 "Vertical position of the child in the sheet, in pixels",
+								 G_MININT, G_MAXINT, 0,
+								 G_PARAM_READWRITE));
+  gtk_container_class_install_child_property (container_class,
+					      CHILD_PROP_ROW,
+					      g_param_spec_int ("row", 
+								 "Row which the child is attached to", 
+								 "The sheet row which the child is attached to",
+								 0, G_MAXINT, 0,
+								 G_PARAM_READWRITE));
+  gtk_container_class_install_child_property (container_class,
+					      CHILD_PROP_COLUMN,
+					      g_param_spec_int ("column", 
+								 "Column which the child is attached to", 
+								 "The sheet column which the child is attached to",
+								 0, G_MAXINT, 0,
+								 G_PARAM_READWRITE));
+  gtk_container_class_install_child_property (container_class,
+					      CHILD_PROP_ATTACHED_TO_CELL,
+					      g_param_spec_boolean ("attached-to-cell", 
+								 "Whether child is attached", 
+								 "Whether the child's position is kept attached to the cell indicated by 'row' and 'column'",
+								 TRUE,
+								 G_PARAM_READWRITE));
+  gtk_container_class_install_child_property (container_class,
+					      CHILD_PROP_FLOATING,
+					      g_param_spec_boolean ("floating", 
+								 "Resize child with the cell", 
+								 "Whether the child size is kept within the area of the cell indicated by 'row' and 'column'",
+								 FALSE,
+								 G_PARAM_READWRITE));
   gtk_container_class_install_child_property (container_class,
 					      CHILD_PROP_X_OPTIONS,
 					      g_param_spec_flags ("x-options", 

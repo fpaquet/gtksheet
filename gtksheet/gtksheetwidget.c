@@ -698,8 +698,120 @@ gtk_sheet_cell_attr_get_type (void)
   return our_type;
 }
 
-/* Properties */
+/* Child properties */
+enum
+{
+  CHILD_PROP_0,
+  CHILD_PROP_X,
+  CHILD_PROP_Y,
+  CHILD_PROP_ATTACHED_TO_CELL,
+  CHILD_PROP_FLOATING,
+  CHILD_PROP_ROW,
+  CHILD_PROP_COLUMN,
+  CHILD_PROP_X_OPTIONS,
+  CHILD_PROP_Y_OPTIONS,
+  CHILD_PROP_X_PADDING,
+  CHILD_PROP_Y_PADDING  
+};
 
+static void
+gtk_sheet_set_child_property (GtkContainer    *container,
+			      GtkWidget       *child,
+			      guint            property_id,
+			      const GValue    *value,
+			      GParamSpec      *pspec)
+{
+  GtkSheet *sheet = GTK_SHEET (container);
+  GtkSheetChild *sheet_child;
+  GList *list;
+
+  sheet_child = NULL;
+  for (list = sheet->children; list; list = list->next) {
+    sheet_child = list->data;
+    if (sheet_child->widget == child)
+      break;
+  }
+  if (!list) {
+    GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
+    return;
+  }
+
+  switch (property_id)
+  {
+    case CHILD_PROP_X_OPTIONS:
+      sheet_child->xexpand = (g_value_get_flags (value) & GTK_EXPAND) != 0;
+      sheet_child->xshrink = (g_value_get_flags (value) & GTK_SHRINK) != 0;
+      sheet_child->xfill = (g_value_get_flags (value) & GTK_FILL) != 0;
+      break;
+    case CHILD_PROP_Y_OPTIONS:
+      sheet_child->yexpand = (g_value_get_flags (value) & GTK_EXPAND) != 0;
+      sheet_child->yshrink = (g_value_get_flags (value) & GTK_SHRINK) != 0;
+      sheet_child->yfill = (g_value_get_flags (value) & GTK_FILL) != 0;
+      break;
+    case CHILD_PROP_X_PADDING:
+      sheet_child->xpadding = g_value_get_uint (value);
+      break;
+    case CHILD_PROP_Y_PADDING:
+      sheet_child->ypadding = g_value_get_uint (value);
+      break;
+    default:
+      GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
+      break;
+  }
+  if (GTK_WIDGET_VISIBLE (child) && GTK_WIDGET_VISIBLE (sheet))
+    gtk_widget_queue_resize (child);
+}
+
+static void
+gtk_sheet_get_child_property (GtkContainer    *container,
+			      GtkWidget       *child,
+			      guint            property_id,
+			      GValue          *value,
+			      GParamSpec      *pspec)
+{
+  GtkSheet *sheet = GTK_SHEET (container);
+  GtkSheetChild *sheet_child;
+  GList *list;
+
+  sheet_child = NULL;
+  for (list = sheet->children; list; list = list->next) {
+    sheet_child = list->data;
+    if (sheet_child->widget == child)
+      break;
+  }
+  if (!list) {
+    GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
+    return;
+  }
+
+  switch (property_id)
+  {
+    case CHILD_PROP_X_OPTIONS:
+      g_value_set_flags (value, (sheet_child->xexpand * GTK_EXPAND |
+				                 sheet_child->xshrink * GTK_SHRINK |
+				                 sheet_child->xfill * GTK_FILL));
+      break;
+    case CHILD_PROP_Y_OPTIONS:
+      g_value_set_flags (value, (sheet_child->yexpand * GTK_EXPAND |
+				                 sheet_child->yshrink * GTK_SHRINK |
+				                 sheet_child->yfill * GTK_FILL));
+      break;
+    case CHILD_PROP_X_PADDING:
+      g_value_set_uint (value, sheet_child->xpadding);
+      break;
+    case CHILD_PROP_Y_PADDING:
+      g_value_set_uint (value, sheet_child->ypadding);
+      break;
+    default:
+      GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
+      break;
+  }
+}
+
+
+
+
+/* Properties */
 enum {
     PROP_0,
 
@@ -917,6 +1029,47 @@ gtk_sheet_class_init (GtkSheetClass * klass)
   widget_class = (GtkWidgetClass *) klass;
   container_class = (GtkContainerClass *) klass;
 
+
+  container_class->add = NULL;
+  container_class->remove = gtk_sheet_remove;
+  container_class->forall = gtk_sheet_forall;
+  container_class->set_child_property = gtk_sheet_set_child_property;
+  container_class->get_child_property = gtk_sheet_get_child_property;
+
+  object_class->destroy = gtk_sheet_destroy;
+  gobject_class->finalize = gtk_sheet_finalize;
+  gobject_class->set_property = gtk_sheet_set_property;
+  gobject_class->get_property = gtk_sheet_get_property;
+
+  widget_class->realize = gtk_sheet_realize;
+  widget_class->unrealize = gtk_sheet_unrealize;
+  widget_class->map = gtk_sheet_map;
+  widget_class->unmap = gtk_sheet_unmap;
+  widget_class->style_set = gtk_sheet_style_set;
+  widget_class->button_press_event = gtk_sheet_button_press;
+  widget_class->button_release_event = gtk_sheet_button_release;
+  widget_class->motion_notify_event = gtk_sheet_motion;
+  widget_class->key_press_event = gtk_sheet_key_press;
+  widget_class->expose_event = gtk_sheet_expose;
+  widget_class->size_request = gtk_sheet_size_request;
+  widget_class->size_allocate = gtk_sheet_size_allocate;
+  widget_class->focus_in_event = NULL;
+  widget_class->focus_out_event = NULL;
+
+  klass->set_scroll_adjustments = gtk_sheet_set_scroll_adjustments;
+  klass->select_row = NULL;
+  klass->select_column = NULL;
+  klass->select_range = NULL;
+  klass->clip_range = NULL;
+  klass->resize_range = NULL;
+  klass->move_range = NULL;
+  klass->traverse = NULL;
+  klass->deactivate = NULL;
+  klass->activate = NULL;
+  klass->set_cell = NULL;
+  klass->clear_cell = NULL;
+  klass->changed = NULL;
+
   /**
    * GtkSheet::select-row:
    * @sheet: the sheet widget that emitted the signal
@@ -1086,7 +1239,7 @@ gtk_sheet_class_init (GtkSheetClass * klass)
             gtksheet_VOID__INT_INT,
 	        G_TYPE_NONE, 2, G_TYPE_INT, G_TYPE_INT);
 
-  /**
+  /**static void
    * GtkSheet::clear-cell:
    * @sheet: the sheet widget that emitted the signal
    * @row: row number of cleared cell.
@@ -1171,9 +1324,6 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                     NULL, NULL,
                     gtksheet_VOID__OBJECT_OBJECT,
                     G_TYPE_NONE, 2, GTK_TYPE_ADJUSTMENT, GTK_TYPE_ADJUSTMENT);
-
-  gobject_class->set_property = gtk_sheet_set_property;
-  gobject_class->get_property = gtk_sheet_get_property;
 
   pspec = g_param_spec_boolean("autoresize",
                                "Autoresize",
@@ -1321,42 +1471,34 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                                    PROP_SELECTION_MODE,
                                    pspec);
 
-  container_class->add = NULL;
-  container_class->remove = gtk_sheet_remove;
-  container_class->forall = gtk_sheet_forall;
-
-  object_class->destroy = gtk_sheet_destroy;
-  gobject_class->finalize = gtk_sheet_finalize;
-
-  widget_class->realize = gtk_sheet_realize;
-  widget_class->unrealize = gtk_sheet_unrealize;
-  widget_class->map = gtk_sheet_map;
-  widget_class->unmap = gtk_sheet_unmap;
-  widget_class->style_set = gtk_sheet_style_set;
-  widget_class->button_press_event = gtk_sheet_button_press;
-  widget_class->button_release_event = gtk_sheet_button_release;
-  widget_class->motion_notify_event = gtk_sheet_motion;
-  widget_class->key_press_event = gtk_sheet_key_press;
-  widget_class->expose_event = gtk_sheet_expose;
-  widget_class->size_request = gtk_sheet_size_request;
-  widget_class->size_allocate = gtk_sheet_size_allocate;
-  widget_class->focus_in_event = NULL;
-  widget_class->focus_out_event = NULL;
-
-  klass->set_scroll_adjustments = gtk_sheet_set_scroll_adjustments;
-  klass->select_row = NULL;
-  klass->select_column = NULL;
-  klass->select_range = NULL;
-  klass->clip_range = NULL;
-  klass->resize_range = NULL;
-  klass->move_range = NULL;
-  klass->traverse = NULL;
-  klass->deactivate = NULL;
-  klass->activate = NULL;
-  klass->set_cell = NULL;
-  klass->clear_cell = NULL;
-  klass->changed = NULL;
-
+  gtk_container_class_install_child_property (container_class,
+					      CHILD_PROP_X_OPTIONS,
+					      g_param_spec_flags ("x-options", 
+								  "Horizontal options", 
+								  "Options specifying the horizontal behaviour of the child",
+								  GTK_TYPE_ATTACH_OPTIONS, GTK_EXPAND | GTK_FILL,
+								  G_PARAM_READWRITE));
+  gtk_container_class_install_child_property (container_class,
+					      CHILD_PROP_Y_OPTIONS,
+					      g_param_spec_flags ("y-options", 
+								  "Vertical options", 
+								  "Options specifying the vertical behaviour of the child",
+								  GTK_TYPE_ATTACH_OPTIONS, GTK_EXPAND | GTK_FILL,
+								  G_PARAM_READWRITE));
+  gtk_container_class_install_child_property (container_class,
+					      CHILD_PROP_X_PADDING,
+					      g_param_spec_uint ("x-padding", 
+								 "Horizontal padding", 
+								 "Extra space to put between the child and its left and right neighbors, in pixels",
+								 0, 65535, 0,
+								 G_PARAM_READWRITE));
+  gtk_container_class_install_child_property (container_class,
+					      CHILD_PROP_Y_PADDING,
+					      g_param_spec_uint ("y-padding", 
+								 "Vertical padding", 
+								 "Extra space to put between the child and its upper and lower neighbors, in pixels",
+								 0, 65535, 0,
+								 G_PARAM_READWRITE));
 }
 
 static void 

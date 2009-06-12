@@ -222,7 +222,8 @@ AUTOMAKE_OPTIONS = 1.7
 EXTRA_DIST = \
 	TODO \
 	config.h.win32 \
-	gtksheet-2.0.spec 
+	gtksheet-2.0.spec \
+	ChangeLog.gtkextra    
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = gtksheet-2.0.pc

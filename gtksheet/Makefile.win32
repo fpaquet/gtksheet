@@ -1,0 +1,225 @@
+#
+# Makefile for mingw environment (native win32 no cygwin dll
+# dependencies). Requires mingw gcc release >= 2.95.2-1 and of
+# course a version of make.
+#
+###########################################################################
+
+#
+# User variables, change for your local system
+#
+
+# comment out for no debugging 
+DEBUGGING_ON = 1
+
+# Put the path to where your gtk libraries are kept
+GTK_PATH = c:/mingw
+
+################## Try not to edit ############################
+CC = gcc
+CXX = g++
+
+DEBUG = -g -Wall 
+CXXFLAGS = 
+
+ifdef DEBUGGING_ON
+CFLAGS = $(DEBUG) -O2  -mwindows -fnative-struct -mpentium 
+else
+CFLAGS = -O2  -mwindows -fexpensive-optimizations  -ffast-math\
+-fnative-struct -mpentium 
+endif
+
+CPPFLAGS = -I.
+
+DLL_CFLAGS = -DHAVE_CONFIG_H -I ..
+exeext = .exe
+
+#
+# Various targets to build.
+#
+DLL_NAME = libgtkextra-win32-2.0.dll
+DLL_EXP_LIB = libgtkextra-win32-2.0.dll.a
+DLL_EXP_DEF = gtkextra.def
+LIBA=libgtkextra-win32-2.0.a
+
+TESTAPPS = testgtksheet testgtkiconlist testgtkfilesel testgtkplot \
+     testbubbles testgtkfont testrealtime testgtkplot3d \
+     testcontour testpolar testflux testboxes testimage
+TESTEXE = $(TESTAPPS:=.exe)
+TESTOBJ = $(TESTAPPS:=.o)
+
+
+
+
+#
+# sources, objects, etc. 
+#
+
+SRCS = \
+gtkbordercombo.c  gtkfontcombo.c    gtkplotcanvas.c    gtkplotprint.c \
+gtkcharsel.c      gtkiconfilesel.c  gtkplotcsurface.c  gtkplotps.c \
+gtkcheckitem.c    gtkiconlist.c     gtkplotdata.c      gtkplotsurface.c \
+gtkcolorcombo.c   gtkitementry.c    gtkplotflux.c      gtkpsfont.c \
+gtkcombobox.c     gtkplot.c         gtkplotgdk.c       gtksheet.c \
+gtkdirtree.c      gtkplot3d.c       gtkplotpc.c        gtktogglecombo.c \
+gtkextra.c        gtkextra-marshal.c gtkplotbar.c      gtkplotpixmap.c \
+gtkfilelist.c     gtkplotbox.c      gtkplotpolar.c     gtkplotdt.c \
+gtkplotcandle.c
+
+
+# $(wildcard *.cc *.c)
+OBJS  = $(SRCS:.cc=.o)
+OBJS := $(OBJS:.c=.o)
+
+#
+# DLL related variables. These are used when building the DLL. See later.
+#
+#
+
+INC= -I . -I $(GTK_PATH)/include/glib-2.0\
+     -I $(GTK_PATH)/include/glib-2.0/gmodule \
+     -I $(GTK_PATH)/lib/glib-2.0/include \
+     -I $(GTK_PATH)/lib/gtk-2.0/include \
+     -I $(GTK_PATH)/include/gtk-2.0 \
+     -I $(GTK_PATH)/include/pango-1.0 \
+     -I $(GTK_PATH)/include/atk-1.0 \
+     -I ..
+
+LIB = -L . -L $(GTK_PATH)/lib/ \
+     -L $(GTK_PATH)/lib/glib-2.0  \
+     -L $(GTK_PATH)/lib/glib-2.0/gmodule  
+
+DLL_CFLAGS = 
+# The default entry point defined by dllwrap; the default user callback
+# is DllMain
+DLL_LDFLAGS = 
+# any extra libraries that your DLL may depend on.
+
+DLL_LDLIBS =  -L $(GTK_PATH)/lib \
+     -lgtk-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lpango-1.0 -latk-1.0 \
+	 -lglib-2.0 \
+     -lgmodule-2.0 \
+     -lgobject-2.0 \
+     -lgthread-2.0 \
+     -lm -luser32 -ladvapi32 -lwsock32  
+
+DLL_SRCS  =  $(SRCS)
+ 
+DLL_OBJS  = $(DLL_SRCS:.cc=.o)
+DLL_OBJS := $(DLL_OBJS:.c=.o)
+
+all: config $(LIBA) $(DLL_NAME) tests
+
+static:$(LIBA)
+
+dll:$(DLL_NAME) 
+
+config:
+	copy ..\config.h.win32 ..\config.h
+
+$(LIBA):$(DLL_OBJS)
+	ar rc $@ $^
+
+#
+# Build the dll using the shared switch
+#
+$(DLL_NAME):
+	$(CC) --shared $(DLL_OBJS) $(DLL_LDFLAGS) $(DLL_LDLIBS) \
+	 -o $@ -Wl,--out-implib,$(DLL_EXP_LIB)
+#
+# Here we build the test executeables
+#
+
+tests:\
+testboxes    testflux         testgtkplot    testpixmap \
+testbubbles  testgtkfilesel   testgtkplot3d  testpolar \
+testcharsel  testgtkfont      testgtksheet   testrealtime \
+testcontour  testgtkiconlist  
+
+
+testgtkfilesel: testgtkfilesel.o
+	$(CC)  $(INC) $(LIB) testgtkfilesel.o -o $@ -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0
+
+testgtkplot: testgtkplot.o
+	$(CC)  $(INC) $(LIB) testgtkplot.o -o $@ -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+
+testboxes: testboxes.o
+	$(CC)  $(INC) $(LIB) testboxes.o -o $@ -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+
+testflux: testflux.o
+	$(CC)  $(INC) $(LIB) testflux.o -o $@ -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+
+testbubbles: testbubbles.o
+	$(CC)  $(INC) $(LIB) testbubbles.o -o $@  -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+
+testpolar: testpolar.o 
+	$(CC)  $(INC) $(LIB) testpolar.o -o $@  -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+
+testcontour: testcontour.o 
+	$(CC)  $(INC) $(LIB) testcontour.o -o $@ -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+
+testgtkplot3d: testgtkplot3d.o
+	$(CC)  $(INC) $(LIB) testgtkplot3d.o -o $@  -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+
+testgtksheet: testgtksheet.o
+	$(CC)  $(INC) $(LIB)  -o $@ testgtksheet.o -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+
+testgtkfont: testgtkfont.o
+	$(CC)  $(INC) $(LIB) testgtkfont.o -o $@ -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+
+
+testrealtime: testrealtime.o
+	$(CC)  $(INC) $(LIB) -o $@ testrealtime.o -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+
+testgtkiconlist: testgtkiconlist.o
+	$(CC)  $(INC) $(LIB) -o $@ testgtkiconlist.o -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+
+testpixmap: testpixmap.o
+	$(CC)  $(INC) $(LIB) -o $@ testpixmap.o -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+
+testcharsel: testcharsel.o
+	$(CC)  $(INC) $(LIB) -o $@ testcharsel.o -lm \
+         -lgtkextra-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lgtk-win32-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 \
+         -lglib-2.0  -luser32 -ladvapi32 -lwsock32 -lpango-1.0 -latk-1.0 
+#
+# default rules for building DLL objects. Note that client programs (ie.,
+# the ones that *use* the DLL) have to be compiled without the DLL_CFLAGS
+# flags.
+#
+
+.cc.o:
+	$(CXX) -c $(DLL_CFLAGS) $(CPPFLAGS) $(CXXFLAGS) -o $@ $<
+.c.o:
+	$(CC) -c $(DLL_CFLAGS) $(CPPFLAGS) $(CFLAGS) $(INC) -o  $@ $<
+
+
+clean:
+	-rm -f $(OBJS) $(DLL_NAME) $(DLL_EXP_LIB) $(LIBA) \
+               $(TESTEXE) $(TESTOBJ)
+

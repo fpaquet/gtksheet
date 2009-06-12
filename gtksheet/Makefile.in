@@ -70,8 +70,8 @@ libgtksheet_x11_2_0_la_LIBADD =
 am_libgtksheet_x11_2_0_la_OBJECTS = $(am__objects_1)
 libgtksheet_x11_2_0_la_OBJECTS = $(am_libgtksheet_x11_2_0_la_OBJECTS)
 PROGRAMS = $(noinst_PROGRAMS)
-testgtksheet_SOURCES = testgtksheet.c
-testgtksheet_OBJECTS = testgtksheet.$(OBJEXT)
+am_testgtksheet_OBJECTS = testgtksheet.$(OBJEXT)
+testgtksheet_OBJECTS = $(am_testgtksheet_OBJECTS)
 am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -87,10 +87,10 @@ LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(libgtksheet_linux_fb_2_0_la_SOURCES) \
 	$(libgtksheet_win32_2_0_la_SOURCES) \
-	$(libgtksheet_x11_2_0_la_SOURCES) testgtksheet.c
+	$(libgtksheet_x11_2_0_la_SOURCES) $(testgtksheet_SOURCES)
 DIST_SOURCES = $(libgtksheet_linux_fb_2_0_la_SOURCES) \
 	$(libgtksheet_win32_2_0_la_SOURCES) \
-	$(libgtksheet_x11_2_0_la_SOURCES) testgtksheet.c
+	$(libgtksheet_x11_2_0_la_SOURCES) $(testgtksheet_SOURCES)
 DATA = $(noinst_DATA)
 gtksheetincludeHEADERS_INSTALL = $(INSTALL_HEADER)
 HEADERS = $(gtksheetinclude_HEADERS)
@@ -305,6 +305,7 @@ EXTRA_DIST = $(gtksheet_extra_sources) $(gtksheet_built_sources) \
 	gtksheet.def Makefile.win32 makefile.msc
 DEPS = $(gtksheettargetlib)
 LDADDS = $(gtksheettargetlib) $(GTK_LIBS)
+testgtksheet_SOURCES = testgtksheet.c testgtksheet.h
 testgtksheet_DEPENDENCIES = $(DEPS)
 testgtksheet_LDADD = $(LDADDS)
 all: all-am

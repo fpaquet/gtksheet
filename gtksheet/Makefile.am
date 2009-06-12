@@ -149,7 +149,7 @@ $(srcdir)/gtksheettypebuiltins.c: $(gtksheet_public_h_sources)
 noinst_PROGRAMS = testgtksheet
 DEPS = $(gtksheettargetlib)
 LDADDS = $(gtksheettargetlib) $(GTK_LIBS)
-
+testgtksheet_SOURCES = testgtksheet.c testgtksheet.h
 testgtksheet_DEPENDENCIES = $(DEPS)
 testgtksheet_LDADD = $(LDADDS)
 

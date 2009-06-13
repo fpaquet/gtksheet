@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl Created by Anjuta application wizard.
 
-AC_INIT(gtksheet, 0.0.99)
+AC_INIT(gtksheet, 0.1.0)
 
 
 # Save this value here, since automake will set cflags later

@@ -1,0 +1,21 @@
+gtksheet 0.1.0
+==============
+* Fork of GtkSheet widget in gtkextra    
+* Fixed double free (apply patch from Debian gtkextra2 package)
+* Fixed memory leak in gtk_sheet_range_set_font
+* Allocate colors in gtk_sheet_range_set_foreground, 
+      gtk_sheet_range_set_background, gtk_sheet_set_grid, 
+      gtk_sheet_set_background
+* Add properties:
+    autoresize, autoscroll, clip_text, grid_visible, justify_entry, locked,
+    state, columns_resizable, column_titles_visible, rows_resizable,
+    row_titles_visible, title, active_cell, selected_range, n_rows, 
+    n_columns, selection_mode.
+* Add child-properties: 
+    floating, attached-to-cell, x, y, column, row properties, x-padding, 
+    y-padding, x-options, y-options
+* Fix anonymous enums for GtkSheetBorderFlags and 
+    GtkSheetState.
+* New gtypes for GtkSheetCellBorder and GtkSheetCellAttr structures
+* Clean deprecated glib/gtk+ function calls
+* Refactored the gtksheet test, fixing a segfault

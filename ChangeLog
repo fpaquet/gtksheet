@@ -1,20 +1,118 @@
-2009-06-12 Victor M. Hernandez <victor.hr@gmail.com> 
-    * Fork of GtkSheet widget in gtkextra    
-	* gtksheetwidget.c: Fixed memory leak in gtk_sheet_range_set_font
-	* gtksheetwidget.c: Allocate colors in gtk_sheet_range_set_foreground, 
-          gtk_sheet_range_set_background, gtk_sheet_set_grid, 
-          gtk_sheet_set_background
-    * gtksheetwidget.c: Add properties (very useful for bindings):
-        autoresize, autoscroll, clip_text, grid_visible, justify_entry, locked,
-        state, columns_resizable, column_titles_visible, rows_resizable,
-        row_titles_visible, title, active_cell, selected_range, n_rows, 
-        n_columns, selection_mode.
-    * gtksheetwidget.c: Fix anonymous enums for GtkSheetBorderFlags and 
-        GtkSheetState.
-    * gtksheetwidget.c: gtk types for GtkSheetCellBorder and GtkSheetCellAttr
-        structures
-    * Clean deprecated glib/gtk+ function calls
-    * testgtksheet.c: refactored the gtksheet test, fixing a segfault
+2009-06-12 Víctor M. Hernández <victor.hr@gmail.com>
+ * gtksheet/gtksheetwidget.c, pygtksheet/test_sheetmodule.py: Add floating,
+ attached-to-cell, x, y, column, row properties
+
+ * gtksheet/gtksheetwidget.c, pygtksheet/test_sheetmodule.py: Added x-padding,
+ y-padding, x-options and y-options child properties
+
+ * ChangeLog, ChangeLog.gtkextra, Makefile.am, Makefile.in, TODO: Updated
+ ChangeLog
+
+ * gtksheet/Makefile.win32: Track win32 makefile
+
+ * gtksheet/Makefile.am, gtksheet/Makefile.in: Fix makefile to include
+ testgtksheet.h
+
+ * gtksheet/testgtksheet.c, gtksheet/testgtksheet.h: Refactored gtksheet demo
+
+2009-06-11 Víctor M. Hernández <victor.hr@gmail.com>
+ * gtksheet/gtksheetwidget.c: Fix notify grid-visible
+
+ * gtksheet/gtkitementry.c, gtksheet/gtksheetwidget.c: Clean deprecated
+ function calls
+
+ * INSTALL, gtksheet/gtksheet.c, gtksheet/gtksheetfeatures.h.in,
+ pygtksheet/sheet.defs: gtksheet_check_version returns a const gchar*
+
+ * gtksheet/gtksheetwidget.c, pygtksheet/test_sheetmodule_complex.py:
+ gtk_singal --> g_signal, gtk_object_ref/unref --> g_object_ref/unref
+
+ * gtksheet/gtksheetwidget.c, gtksheet/gtksheetwidget.h,
+ pygtksheet/sheetrange.override, pygtksheet/test_sheetmodule.py: Add n_rows,
+ n_columns, selection_mode properties
+
+2009-06-10 Víctor M. Hernández <victor.hr@gmail.com>
+ * gtksheet/gtksheetwidget.c, gtksheet/testgtksheet.c,
+ pygtksheet/sheet-addons.defs, pygtksheet/sheet.override,
+ pygtksheet/test_sheetmodule_complex.py: Add selected-range property
+
+2009-06-09 Víctor M. Hernández <victor.hr@gmail.com>
+
+ * gtksheet/gtksheetwidget.c, gtksheet/testgtksheet.c,
+ pygtksheet/test_sheetmodule_complex.py: Add active_cell property
+
+ * gtksheet/gtksheetwidget.c: Add autoresize, autoscroll, clip_text,
+ grid_visible, justify_entry, locked, state, columns_resizable,
+ column_titles_visible, rows_resizable, column_titles_visible and title
+ properties.
+
+ * config.status, configure.ac, libtool: Set version to 0.0.99
+
+ * pygtksheet/bordercombo.py: Python equivalent to gtkextra BorderCombo
+
+ * TODO: Update TODO
+
+ * pygtksheet/Makefile: Fix pygtksheet Makefile
+
+ * pygtksheet/sheet-addons.defs, pygtksheet/sheetrange.override: Update
+ experimental python bindings
+
+ * pygtksheet/Makefile, pygtksheet/sheet.defs, pygtksheet/sheet.override,
+ pygtksheet/sheetmodule.c, pygtksheet/test_sheetmodule_complex.py: Update
+ experimental python bindings
+
+ * gtksheet/gtksheetwidget.c: Use G_DEFINE_TYPE macro in GtkSheet
+
+ * gtksheet/gtkitementry.c, gtksheet/gtkitementry.h: Use g_object_new in
+ GtkItemEntry
+
+ * gtksheet/gtksheetwidget.h: Fix deprecated type cast/checks
+
+ * gtksheet/gtksheetwidget.c: Only inlcude toplevel gtk headers
+
+ * gtksheet/testgtksheet.c: Update testgtksheet
+
+ * gtksheet/gtksheetwidget.h: Add boxed types for GtkSheetCellAttr and
+ GtkSheetCellBorder, needed for bindings
+
+ * gtksheet/gtksheetwidget.c: Change deprecated symbols
+
+2009-06-08 Víctor M. Hernández <victor.hr@gmail.com>
+ * Makefile.am, Makefile.in: Fix make dist
+
+ * config.h.win32, gtksheet/makefile.msc: Add missing win32 build scripts
+
+ * aclocal.m4: Include missing autotools scripts
+
+ * Makefile.in, config.guess, config.h.in, config.status, config.sub, depcomp,
+ gtksheet/Makefile.in, install-sh, libtool, ltmain.sh, missing: Include
+ autotools scripts
+
+ * gtksheet/gtksheetwidget.h: typedefs for state constants and border type
+ flags.\nNecessary to create bindings
+
+ * AUTHORS: Update AUTHORS
+
+2009-06-08 victor <victor@minino.(none)>
+ * gtksheet/testgtksheet.c: Update test
+
+ * gtksheet/gtksheetwidget.c: * gtk_type_new --> g_object_new * allocate
+ colors in range_set_background/foreground_color, etc. * Fix memory leaks when
+ setting font
+
+2009-06-01 victor <victor@minino.(none)>
+ * pygtksheet/Makefile, pygtksheet/sheet.defs: Updated python wrapper
+ definitions
+
+ * gtksheet/gtkitementry.c, gtksheet/gtkitementry.h: Update gtkitementry up to
+ gtkextra-3
+
+ * gtksheet/gtksheet.h, gtksheet/gtksheetwidget.h: Fix inclusion wards
+
+ * gtksheet/Makefile.am, gtksheet/gtksheet.c, gtksheet/gtksheetwidget.c,
+ gtksheet/gtksheetwidget.h: Update to gtkextra-3
+
+
 
     
     

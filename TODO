@@ -1,14 +1,5 @@
 
-- More properties for GtkSheet (see if anything obvious is missing)
-
-- Child properties for GtkSheet
-
 - GtkItemEntry uses GtkEntry struct members directly, which is deprecated, as
   in Gtk+ 3.0 this will not be allowed.
-
-- Proper python bindings
-
-- Implement GtkBuildable interface for GtkSheet. This will make possible
-  to build GtkSheet from a GtkBuilder XML file.
 
 

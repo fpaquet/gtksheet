@@ -1,9 +1,9 @@
 # Note that this is NOT a relocatable package
 
 %define name  gtksheet2
-%define major @GTK_SHEET_MAJOR_VERSION@
-%define minor @GTK_SHEET_MINOR_VERSION@
-%define micro @GTK_SHEET_MICRO_VERSION@
+%define major 0
+%define minor 1
+%define micro 0
 %define ver   %major.%minor.%micro
 %define rel      1
 %define prefix   /usr

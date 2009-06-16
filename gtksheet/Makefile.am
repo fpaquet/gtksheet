@@ -63,18 +63,18 @@ AM_LDFLAGS = \
 
 
 gtksheet_public_h_sources = \
+        gtkitementry.h	\
+        gtksheet.h 
         gtksheetfeatures.h	\
         gtksheet-marshal.h	\
         gtksheettypebuiltins.h	\
-        gtkitementry.h	\
         gtksheetwidget.h \
-        gtksheet.h 
 
 gtksheet_c_sources = 	\
-        gtksheet-marshal.c	\
-        gtksheettypebuiltins.c	\
         gtkitementry.c	\
         gtksheet.c \
+        gtksheet-marshal.c	\
+        gtksheettypebuiltins.c	\
         gtksheetwidget.c
 
 gtksheet_built_public_sources =	\
@@ -125,7 +125,7 @@ $(srcdir)/gtksheet-marshal.c: gtksheet-marshal.h
         || ( rm -f gtksheet-marshal.tmp && exit 1 )
 
 
-$(srcdir)/gtksheettypebuiltins.h: gtksheet-marshal.h
+$(srcdir)/gtksheettypebuiltins.h: $(gtksheet_public_h_sources)
 	( cd $(srcdir) && glib-mkenums \
 		--fhead "#ifndef __GTKSHEET_TYPE_BUILTINS_H__\n#define __GTKSHEET_TYPE_BUILTINS_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
 		--fprod "/* enumerations from \"@filename@\" */\n" \

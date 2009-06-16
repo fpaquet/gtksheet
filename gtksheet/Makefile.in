@@ -673,7 +673,7 @@ $(srcdir)/gtksheet-marshal.c: gtksheet-marshal.h
         && mv gtksheet-marshal.tmp gtksheet-marshal.c ) \
         || ( rm -f gtksheet-marshal.tmp && exit 1 )
 
-$(srcdir)/gtksheettypebuiltins.h: gtksheet-marshal.h
+$(srcdir)/gtksheettypebuiltins.h: $(gtksheet_public_h_sources)
 	( cd $(srcdir) && glib-mkenums \
 		--fhead "#ifndef __GTKSHEET_TYPE_BUILTINS_H__\n#define __GTKSHEET_TYPE_BUILTINS_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
 		--fprod "/* enumerations from \"@filename@\" */\n" \

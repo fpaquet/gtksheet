@@ -10,7 +10,8 @@ EXTRA_DIST = \
 	TODO \
 	config.h.win32 \
 	gtksheet-2.0.spec \
-	ChangeLog.gtkextra    
+	ChangeLog.gtkextra \
+	gitlog2changelog.py
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA= gtksheet-2.0.pc
@@ -38,7 +39,7 @@ sanity:
 snapshot:
 	$(MAKE) dist distdir=$(PACKAGE)-`date +"%y%m%d"`
 
-ChangeLog.cvs:
-	cvs log | perl mkchlog > ChangeLog.cvs
+ChangeLog.git:
+	./gitlog2changelog.py ChangeLog.git
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-man --disable-rebuilds

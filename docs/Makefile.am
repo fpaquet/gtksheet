@@ -1,2 +1,6 @@
 SUBDIRS = reference
 
+EXTRA_DIST = \
+	COPYING \
+	AUTHORS
+

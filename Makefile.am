@@ -1,7 +1,7 @@
 ## Makefile.am for gtk+sheet
 
 SRC_SUBDIRS = gtksheet 
-SUBDIRS = $(SRC_SUBDIRS)
+SUBDIRS = $(SRC_SUBDIRS) docs
 
 # require automake 1.7
 AUTOMAKE_OPTIONS = 1.7
@@ -40,3 +40,5 @@ snapshot:
 
 ChangeLog.cvs:
 	cvs log | perl mkchlog > ChangeLog.cvs
+
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-man --disable-rebuilds

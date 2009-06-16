@@ -3,7 +3,6 @@ dnl Created by Anjuta application wizard.
 
 AC_INIT(gtksheet, 0.1.0)
 
-
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS+set}
 
@@ -42,9 +41,25 @@ AC_SUBST(LIBGTKSHEET_SO_VERSION)
 
 
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
-AC_CONFIG_HEADERS([config.h])
-AM_MAINTAINER_MODE
+AC_CONFIG_HEADER(config.h)
+AC_CONFIG_MACRO_DIR(m4)
+AC_DEFINE([ENABLE_NLS],1,undef)
+AC_DEFINE([HAVE_GETTEXT],1,undef)
 
+# Build time sanity check...
+AM_SANITY_CHECK
+
+AC_PROG_CC
+AC_ISC_POSIX
+AM_PROG_CC_STDC
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+
+# Initialize libtool
+AC_LIBTOOL_WIN32_DLL
+AM_PROG_LIBTOOL
+
+AM_MAINTAINER_MODE
 
 AC_MSG_CHECKING([for some Win32 platform])
 case "$host" in
@@ -121,9 +136,10 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
-AC_ISC_POSIX
-AC_PROG_CC
-AM_PROG_CC_STDC
+# Honor aclocal flags
+ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
+
+# Checks for header files.
 AC_HEADER_STDC
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -154,7 +170,41 @@ AC_TRY_COMPILE([#include <dirent.h>], [DIR *dir;],
 AC_C_CONST
 AC_C_INLINE
 
-GTK_REQUIRED=2.0.0
+##################################################
+# Checks for gtk-doc and docbook-tools
+##################################################
+
+# check for gtk-doc
+GTK_DOC_CHECK(1.8)
+
+AC_CHECK_PROG(DB2HTML, db2html, true, false)
+AM_CONDITIONAL(HAVE_DOCBOOK, $DB2HTML)
+
+AC_ARG_ENABLE(man,
+              [AC_HELP_STRING([--enable-man],
+                              [regenerate man pages from Docbook [default=no]])],enable_man=yes,
+              enable_man=no)
+
+if test "${enable_man}" != no; then
+  dnl
+  dnl Check for xsltproc
+  dnl
+  AC_PATH_PROG([XSLTPROC], [xsltproc])
+  if test -z "$XSLTPROC"; then
+    enable_man=no
+  fi
+
+  dnl check for DocBook DTD and stylesheets in the local catalog.
+  JH_CHECK_XML_CATALOG([-//OASIS//DTD DocBook XML V4.1.2//EN],
+     [DocBook XML DTD V4.1.2],,enable_man=no)
+  JH_CHECK_XML_CATALOG([http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl],
+     [DocBook XSL Stylesheets],,enable_man=no)
+fi
+
+AM_CONDITIONAL(ENABLE_MAN, test x$enable_man != xno)
+
+
+GTK_REQUIRED=2.12.0
 GLIB_REQUIRED=2.0.0
 
 AC_LIBTOOL_WIN32_DLL
@@ -168,6 +218,8 @@ AM_PATH_GLIB_2_0($GLIB_REQUIRED)
 
 AC_OUTPUT(
 Makefile
+docs/Makefile
+docs/reference/Makefile
 gtksheet/Makefile
 gtksheet/gtksheetfeatures.h
 gtksheet-2.0.spec

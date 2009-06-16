@@ -422,8 +422,6 @@ _create_sheet1(TestMainWindow *self)
     gtk_sheet_set_cell(sheet, 8, 1, GTK_JUSTIFY_LEFT,
         "Store the selection on the clipboard pressing Ctrl-C");
     gtk_sheet_set_cell(sheet, 9, 1, GTK_JUSTIFY_LEFT,
-        "(The selection handler has not been implemented yet)");
-    gtk_sheet_set_cell(sheet, 10, 1, GTK_JUSTIFY_LEFT,
         "You can add buttons, charts, pixmaps, and other widgets");
 
     GtkWidget *bullet[10];
@@ -431,13 +429,10 @@ _create_sheet1(TestMainWindow *self)
     GdkPixmap *pixmap = gdk_pixmap_colormap_create_from_xpm_d(NULL, colormap, 
                                                               &mask, NULL,
 			                                                  bullet_xpm);
-    for (i=0; i<5; i++) {
+    for (i=0; i<=5; i++) {
         bullet[i] = gtk_image_new_from_pixmap(pixmap, mask);
         gtk_sheet_attach(sheet, bullet[i], 4+i, 0, GTK_EXPAND, GTK_EXPAND, 0, 0);
     }
-
-    bullet[5] = gtk_pixmap_new(pixmap, mask);
-    gtk_sheet_attach(sheet, bullet[5], 10, 0, GTK_EXPAND, GTK_EXPAND, 0, 0);
     g_object_unref(pixmap);
     g_object_unref(mask);
 
@@ -677,7 +672,6 @@ _add_widget_to_toolbar(TestMainWindow *self, GtkWidget *widget, gboolean separat
 static gint
 popup_activated(GtkWidget *widget, gpointer data)
 {
-    gint cur_page;
     PopupData *popup_data = (PopupData *)data;
     const gchar *item = popup_data->menu_text;
     TestMainWindow *self = popup_data->main_win;
@@ -1435,6 +1429,7 @@ int main(int argc, char *argv[])
 
     gtk_main();
 
+    return 0;
 }
 
 

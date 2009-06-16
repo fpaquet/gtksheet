@@ -1,0 +1,350 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Sheet Signals</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="GtkSheet Tutorial"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="GtkSheet"
+HREF="c32.html"><LINK
+REL="PREVIOUS"
+TITLE="Creating a Sheet"
+HREF="x46.html"><LINK
+REL="NEXT"
+TITLE="Modifying cell contents"
+HREF="x121.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GtkSheet Tutorial</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x46.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. GtkSheet</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x121.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC-SHEETSIGNALS"
+>4.3. Sheet Signals</A
+></H1
+><P
+>The interaction between user and sheet is done(as in all Gtk programs) through signals.
+In GtkSheet the next signals are implemented :</P
+><P
+></P
+><UL
+COMPACT="COMPACT"
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>SELECT_ROW</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>SELECT_COLUMN</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>SELECT_RANGE</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>CLIP_RANGE</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>RESIZE_RANGE</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>MOVE_RANGE</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>TRAVERSE</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>DEACTIVATE</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>ACTIVATE</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>SET_CELL</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>CLEAR_CELL</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>CHANGED</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>NEW_COL_WIDTH</TT
+></SPAN
+></LI
+><LI
+><SPAN
+> <TT
+CLASS="LITERAL"
+>NEW_ROW_WIDTH</TT
+></SPAN
+></LI
+></UL
+><P
+>If you want  to catch these signals , you must connect them to a callback(function that treats the signal/event).</P
+><P
+>The most used signals  are :<SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+> ACTIVATE,DEACTIVATE,TRAVERSE </I
+></SPAN
+>.</P
+><P
+>Callback functions for different signals have different parameters.
+For a correct use you should check out the GtkSheet Reference Manual and the
+examples or GtkSheet source code.
+Incorrect use of the callback function parameters will have an undefined result 
+(in the worst case).</P
+><P
+>The <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>ACTIVATE</I
+></SPAN
+> signal should be connected if you want to do something when a cell is clicked:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>g_signal_connect(G_OBJECT(sheet),
+                   "activate",
+                   alarm_activate,
+                    NULL);
+
+//The callback function should have these parameters:
+
+gint alarm_activate(GtkWidget *sheet, 
+                    gint row, gint col, gpointer data)
+{
+................
+}</PRE
+><P
+>If you have different functions that require the same cell to behave in a different way , I suggest that 
+instead of writing "n" alarm_activate() callbacks , write just one callback function that looks like this:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>g_signal_connect(G_OBJECT(sheet),
+                   "activate",
+                   alarm_activate,
+                   (gpointer)function_name);
+
+When the signal is connected , pass the function name (for example) as the last parameter.
+
+
+gint alarm_activate(GtkWidget *sheet, 
+                    gint row, gint col, gpointer function_name)
+{
+     if(strcmp(function_name,"table_new")==0){
+               .....do_some_stuf()
+     }
+     else if(strcmp(function_name,"table_edit")==0){
+               .....do_other_stuf()
+     }
+}</PRE
+><P
+>In this way , you will  have a much cleaner code  with fewer functions as possible.
+It is better to have a single callback function that treats all posible behaviour cases ,
+instead of many functions which make the code harder to read.</P
+><P
+>A very important signal is <SPAN
+CLASS="emphasis"
+><I
+CLASS="EMPHASIS"
+>TRAVERSE</I
+></SPAN
+>.</P
+><PRE
+CLASS="PROGRAMLISTING"
+>gtk_signal_connect(G_OBJECT(sheet),
+                   "traverse",
+                   alarm_traverse,
+                    NULL);
+
+//The callback function should have these parameters:
+
+
+gint alarm_traverse(GtkWidget *widget,
+                    gint row, gint col, gint *new_row, gint *new_col,
+                    gpointer data)
+
+{
+...........
+}</PRE
+><P
+>The "traverse" signal  is emited before "deactivate_cell" and allows to veto the
+movement. In such case, the entry will remain in the site, and the other signals
+will not be emited.</P
+><P
+>The traverse signal is useful when you need to know  what cell have you
+previously clicked or what was selected. </P
+><P
+>The explanation for the other signals is quite straightforward so if you want
+more details you should check GtkSheet Reference Manual or the GtkSheet source code.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x46.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x121.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Creating a Sheet</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c32.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Modifying cell contents</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

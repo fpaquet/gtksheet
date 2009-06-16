@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Modifying sheet state</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="GtkSheet Tutorial"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="GtkSheet"
+HREF="c32.html"><LINK
+REL="PREVIOUS"
+TITLE="Modifying cell contents"
+HREF="x121.html"><LINK
+REL="NEXT"
+TITLE="Selections"
+HREF="x212.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GtkSheet Tutorial</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x121.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. GtkSheet</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x212.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC-MODIFYINGSHEETSTATE"
+>4.5. Modifying sheet state</A
+></H1
+><P
+>You can <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>freeze/unfreeze </B
+></SPAN
+> the sheet by: </P
+><PRE
+CLASS="PROGRAMLISTING"
+>void gtk_sheet_freeze (GtkSheet *sheet); 
+void gtk_sheet_thaw (GtkSheet *sheet); /*thaw means unfreeze*/</PRE
+><P
+>Set if cell contents <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>can be edited </B
+></SPAN
+> or not in the given range: </P
+><PRE
+CLASS="PROGRAMLISTING"
+>void gtk_sheet_range_set_editable	(GtkSheet *sheet, const GtkSheetRange *range, gint editable);</PRE
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Remark: </B
+></SPAN
+>Sheet state can be set with these functions: </P
+><PRE
+CLASS="PROGRAMLISTING"
+>void gtk_sheet_set_autoresize (GtkSheet *sheet, gboolean autoresize);
+gboolean gtk_sheet_autoresize (GtkSheet *sheet);
+void gtk_sheet_set_autoscroll (GtkSheet *sheet, gboolean autoscroll);
+gboolean  gtk_sheet_autoscroll(GtkSheet *sheet);
+void gtk_sheet_set_clip_text  (GtkSheet *sheet, gboolean clip_text);
+gboolean gtk_sheet_clip_text  (GtkSheet *sheet);
+void gtk_sheet_set_locked     (GtkSheet *sheet, gboolean lock);
+void gtk_sheet_locked         (GtkSheet *sheet);
+void gtk_sheet_rows_set_resizable (GtkSheet *sheet, gboolean resizable);
+gboolean gtk_sheet_rows_resizable (GtkSheet *sheet);
+void gtk_sheet_columns_set_resizable (GtkSheet *sheet, gboolean resizable);
+gboolean  gtk_sheet_columns_resizable (GtkSheet *sheet);
+void gtk_sheet_show_column_titles (GtkSheet *sheet);
+void gtk_sheet_show_row_titles (GtkSheet *sheet);
+void gtk_sheet_hide_column_titles (GtkSheet *sheet);
+void gtk_sheet_hide_row_titles (GtkSheet *sheet);
+gboolean gtk_sheet_column_titles_visible (GtkSheet *sheet);
+gboolean gtk_sheet_row_titles_visible (GtkSheet *sheet);
+void gtk_sheet_set_justify_entry (GtkSheet *sheet, gboolean justify);
+gboolean gtk_sheet_justify_entry (GtkSheet *sheet);</PRE
+><P
+>A set of macros, provided for compatibility with the GtkExtra versions 
+prior to 1.0, also allows setting the state of the sheet. Their use in newly
+written code is <SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>deprecated</B
+></SPAN
+>. </P
+><PRE
+CLASS="PROGRAMLISTING"
+>GTK_SHEET_AUTORESIZE(sheet)
+GTK_SHEET_ROW_FROZEN(sheet)   
+GTK_SHEET_COLUMN_FROZEN(sheet)   
+GTK_SHEET_CLIP_TEXT(sheet)   
+GTK_SHEET_AUTO_SCROLL(sheet)
+GTK_SHEET_JUSTIFY_ENTRY(sheet)   
+GTK_SHEET_ROW_TITLES_VISIBLE(sheet)
+GTK_SHEET_COL_TITLES_VISIBLE(sheet)</PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x121.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x212.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Modifying cell contents</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c32.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Selections</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

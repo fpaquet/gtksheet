@@ -1,0 +1,460 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Modifying cell contents</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="GtkSheet Tutorial"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="GtkSheet"
+HREF="c32.html"><LINK
+REL="PREVIOUS"
+TITLE="Sheet Signals"
+HREF="x59.html"><LINK
+REL="NEXT"
+TITLE="Modifying sheet state"
+HREF="x198.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GtkSheet Tutorial</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x59.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. GtkSheet</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x198.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC-MODIFYINGCELLCONTENTS"
+>4.4. Modifying cell contents</A
+></H1
+><P
+>As previously stated , a cell may contain text, picture or other widgets.
+GtkSheet functions can be categorized after the number of modified cells:</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SEC-FUNCTIONSTHATMODIFYACELL"
+>4.4.1. Functions that modify a cell</A
+></H2
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+> A cell text is set by:</B
+></SPAN
+> </P
+><PRE
+CLASS="PROGRAMLISTING"
+>/* Set a cell text with justification */
+
+void  gtk_sheet_set_cell  (GtkSheet *sheet, 
+                           gint row, gint col,
+                           GtkJustification justification,
+                           const gchar *text);
+
+/* No justification is made */
+void gtk_sheet_set_cell_text (GtkSheet *sheet, 
+                              gint row, gint col, 
+                              const gchar  *text); </PRE
+><P
+>The text string will be copied by the gtksheet library so you may free your
+string after this line.
+Do not free the internally allocated string !
+This will be done by the library at the destruction of the sheet or when the
+gtk_sheet_set_cell is called again.</P
+><P
+>The text justification in the cell may be: GTK_JUSTIFY_LEFT, GTK_JUSTIFY_RIGHT,
+GTK_JUSTIFY_CENTER</P
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+> A cell text is read by:</B
+></SPAN
+> </P
+><PRE
+CLASS="PROGRAMLISTING"
+>gchar *  gtk_sheet_cell_get_text (GtkSheet *sheet, gint row, gint col);</PRE
+><P
+><SPAN
+CLASS="INLINEMEDIAOBJECT"
+><IMG
+SRC="images/gtksheet_cell_text.jpg"></SPAN
+></P
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+> A cell text is deleted by:</B
+></SPAN
+> </P
+><PRE
+CLASS="PROGRAMLISTING"
+>void gtk_sheet_cell_clear(GtkSheet *sheet, gint row, gint col); /*- delete cell contents */
+void gtk_sheet_cell_delete(GGtSheet *sheet, gint row, gint col); /* - delete + remove links*/</PRE
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+> You can pack a xpm into a cell like this:</B
+></SPAN
+> </P
+><PRE
+CLASS="PROGRAMLISTING"
+>GtkWidget *sheet,*bullet;
+GdkPixmap *pixmap;
+GdkColormap *colormap;
+GdkBitmap *mask;
+............
+sheet=gtk_sheet_new(...);
+.......
+colormap = gdk_colormap_get_system();
+pixmap = gdk_pixmap_colormap_create_from_xpm_d(NULL, colormap, &amp;mask, NULL,
+                                               bullet_xpm);
+bullet = gtk_pixmap_new(pixmap, mask);
+gtk_sheet_attach(GTK_SHEET(sheet), bullet, 1, 1, 0,0 ,.5, .5);
+........
+gtk_widget_show_all (bullet); 
+gtk_widget_show_all (window);</PRE
+><P
+> See full example here: <A
+HREF="xpm.c"
+TARGET="_top"
+>xpm.c</A
+> </P
+><P
+><SPAN
+CLASS="INLINEMEDIAOBJECT"
+><IMG
+SRC="images/gtksheet_pack_xpm.jpg"></SPAN
+></P
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+> You can pack a combo box into a cell:</B
+></SPAN
+> </P
+><PRE
+CLASS="PROGRAMLISTING"
+>GtkWidget *sheet,*combo;
+GList *combo_items;
+..................
+combo=gtk_combo_new();
+combo_items=NULL;
+combo_items=g_list_append (combo_items, "NULL");
+combo_items=g_list_append (combo_items, "NOT NULL");
+gtk_combo_set_popdown_strings (GTK_COMBO (nul_combo), combo_items);
+g_list_free(combo_items);
+
+// The cell may be resized automatically to fit the widget
+gtk_sheet_attach_default (GTK_SHEET(sheet), current_combo, row, col,0,0);</PRE
+><P
+><SPAN
+CLASS="INLINEMEDIAOBJECT"
+><IMG
+SRC="images/gtksheet_pack_combo.jpg"></SPAN
+></P
+><P
+>The widgets can be added to a cell using these  functions.
+Some of them expand/shrink cell depending of widget size ,others don't.
+See the GtkSheet manual for details.</P
+><PRE
+CLASS="PROGRAMLISTING"
+>/* Attach widget at (row x,col y) starting at the upper left of the cell */
+GtkSheetChild *gtk_sheet_put (GtkSheet *sheet, GtkWidget *widget, gint x, gint y); 
+void gtk_sheet_attach (GtkSheet *sheet,GtkWidget *widget,gint row, gint col,gint xoptions,gint yoptions,gint xpadding,gint ypadding); 
+void gtk_sheet_attach_default (GtkSheet *sheet,GtkWidget *widget,gint row, gint col); 
+void gtk_sheet_attach_floating (GtkSheet *sheet,GtkWidget *widget,gint row, gint col);</PRE
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>You can set a link for each cell.</B
+></SPAN
+>
+This is in fact a pointer you want to be associated to the cell.</P
+><PRE
+CLASS="PROGRAMLISTING"
+>void gtk_sheet_link_cell(GtkSheet *sheet, gint row, gint col,gpointer link);
+gpointer gtk_sheet_get_link(GtkSheet *sheet, gint row, gint col);
+void gtk_sheet_remove_link(GtkSheet *sheet, gint row, gint col);</PRE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SEC-FUNCTIONSTHATMODIFYARANGE"
+>4.4.2. Functions that modify a range of cells</A
+></H2
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>A range of cells</B
+></SPAN
+>is in fact:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>struct _GtkSheetRange
+{
+  gint row0,col0; /* upper-left cell */
+  gint rowi,coli; /* lower-right cell */
+};</PRE
+><P
+>Some functions operating on range of cells:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>void  gtk_sheet_get_visible_range (GtkSheet *sheet,GtkSheetRange *range); 
+void  gtk_sheet_range_set_background (GtkSheet *sheet, const GtkSheetRange *range, const GdkColor *color);
+void  gtk_sheet_range_set_foreground (GtkSheet *sheet, const GtkSheetRange *range,const GdkColor *color);
+void  gtk_sheet_select_range (GtkSheet *sheet, const GtkSheetRange *range);
+void  gtk_sheet_unselect_range (GtkSheet *sheet);
+void  gtk_sheet_range_clear (GtkSheet *sheet, const GtkSheetRange *range);
+void  gtk_sheet_range_delete (GtkSheet *sheet, const GtkSheetRange *range);
+void  gtk_sheet_range_set_editable (GtkSheet *sheet, const GtkSheetRange *range, gint editable);
+void  gtk_sheet_range_set_visible (GtkSheet *sheet, const GtkSheetRange *range, gboolean visible);
+void  gtk_sheet_range_set_border (GtkSheet *sheet, const GtkSheetRange *range, gint mask, guint width, gint line_style);
+void  gtk_sheet_range_set_border_color GtkSheet *sheet, const GtkSheetRange *range, const GdkColor  *color);</PRE
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Remark:</B
+></SPAN
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>/* When you declare a range like this:*/
+
+......
+GtkSheetRange range;
+.................
+
+/* You must call the range functions like this : */
+
+void  gtk_sheet_range_clear (sheet, &amp;range); </PRE
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>Screenshot:</B
+></SPAN
+>Modifying the background color of a range.</P
+><P
+><SPAN
+CLASS="INLINEMEDIAOBJECT"
+><IMG
+SRC="images/gtksheet_range_bg.jpg"></SPAN
+></P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SEC-FUNCTIONSTHATMODIFYALLCELLS"
+>4.4.3. Functions that modify all cells from sheet</A
+></H2
+><P
+>These functions are used if you want the cells to contain the same widget.
+These are some of them:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>GtkWidget *gtk_sheet_new_with_custom_entry (guint rows, guint columns, const gchar *title,GtkType entry_type); 
+void  gtk_sheet_set_foreground (GtkSheet *sheet,GdkColor *fg_color);
+void  gtk_sheet_set_background (GtkSheet *sheet,GdkColor *bg_color);</PRE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SEC-FUNCTIONSTHATSETROWCOLUMNS"
+>4.4.4. Functions that set row/column titles , sheet title , etc</A
+></H2
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>A row/column title </B
+></SPAN
+>can be set with:</P
+><PRE
+CLASS="PROGRAMLISTING"
+>void gtk_sheet_row_button_add_label	(GtkSheet *sheet, gint row, const gchar *label); 
+void gtk_sheet_column_button_add_label	(GtkSheet *sheet, gint row, const gchar *label); </PRE
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>gtk_sheet_set_row_title() </B
+></SPAN
+> is used for setting an internal label associated with a row.</P
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>The sheet title  </B
+></SPAN
+> may be set with : </P
+><PRE
+CLASS="PROGRAMLISTING"
+>void gtk_sheet_set_title (GtkSheet *sheet, const gchar *title);</PRE
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+>The dimensions of the row/column titles </B
+></SPAN
+> may be set with the next functions: 
+These functions exist because you may want to resize the width of a column or height of a row,
+unless you set the autoresize flag, which will do it automaticaly for you.</P
+><PRE
+CLASS="PROGRAMLISTING"
+>void gtk_sheet_set_row_titles_width(GtkSheet *sheet, guint width); 
+void gtk_sheet_set_column_titles_height(GtkSheet *sheet, guint height);</PRE
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+> Row/column title justification </B
+></SPAN
+> is done by: </P
+><PRE
+CLASS="PROGRAMLISTING"
+>void gtk_sheet_set_row_titles_width(GtkSheet *sheet, guint width); 
+void gtk_sheet_set_column_titles_height(GtkSheet *sheet, guint height);</PRE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x59.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x198.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Sheet Signals</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c32.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Modifying sheet state</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

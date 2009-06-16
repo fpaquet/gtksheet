@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>GtkSheet Versioning</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="GtkSheet Reference Manual">
+<link rel="up" href="ch02.html" title="GtkSheet Versioning">
+<link rel="prev" href="ch02.html" title="GtkSheet Versioning">
+<link rel="next" href="object-tree.html" title="Object Hierarchy">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="gtksheet.html" title="Part I. Gtksheet Overview">
+<link rel="part" href="gtksheetbase.html" title="Part II. ">
+<link rel="chapter" href="ch01.html" title="Widgets">
+<link rel="chapter" href="ch02.html" title="GtkSheet Versioning">
+<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
+<link rel="index" href="api-index-full.html" title="API Index">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch02.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">GtkSheet Reference Manual</th>
+<td><a accesskey="n" href="object-tree.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#gtksheet-GtkSheet-Versioning.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#gtksheet-GtkSheet-Versioning.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" lang="en">
+<a name="gtksheet-GtkSheet-Versioning"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="gtksheet-GtkSheet-Versioning.top_of_page"></a>GtkSheet Versioning</span></h2>
+<p>GtkSheet Versioning</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv">
+<a name="gtksheet-GtkSheet-Versioning.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+
+#include &lt;gtksheet.h&gt;
+
+#define             <a class="link" href="gtksheet-GtkSheet-Versioning.html#GTKSHEET-MAJOR-VERSION--CAPS" title="GTKSHEET_MAJOR_VERSION">GTKSHEET_MAJOR_VERSION</a>
+#define             <a class="link" href="gtksheet-GtkSheet-Versioning.html#GTKSHEET-MINOR-VERSION--CAPS" title="GTKSHEET_MINOR_VERSION">GTKSHEET_MINOR_VERSION</a>
+#define             <a class="link" href="gtksheet-GtkSheet-Versioning.html#GTKSHEET-MICRO-VERSION--CAPS" title="GTKSHEET_MICRO_VERSION">GTKSHEET_MICRO_VERSION</a>
+#define             <a class="link" href="gtksheet-GtkSheet-Versioning.html#GTKSHEET-BINARY-AGE--CAPS" title="GTKSHEET_BINARY_AGE">GTKSHEET_BINARY_AGE</a>
+#define             <a class="link" href="gtksheet-GtkSheet-Versioning.html#GTKSHEET-INTERFACE-AGE--CAPS" title="GTKSHEET_INTERFACE_AGE">GTKSHEET_INTERFACE_AGE</a>
+#define             <a class="link" href="gtksheet-GtkSheet-Versioning.html#GTKSHEET-CHECK-VERSION--CAPS" title="GTKSHEET_CHECK_VERSION()">GTKSHEET_CHECK_VERSION</a>              (major,minor,micro)
+extern              const guint <a class="link" href="gtksheet-GtkSheet-Versioning.html#gtksheet-major-version" title="gtksheet_major_version">gtksheet_major_version</a>;
+extern              const guint <a class="link" href="gtksheet-GtkSheet-Versioning.html#gtksheet-minor-version" title="gtksheet_minor_version">gtksheet_minor_version</a>;
+extern              const guint <a class="link" href="gtksheet-GtkSheet-Versioning.html#gtksheet-micro-version" title="gtksheet_micro_version">gtksheet_micro_version</a>;
+extern              const guint <a class="link" href="gtksheet-GtkSheet-Versioning.html#gtksheet-binary-age" title="gtksheet_binary_age">gtksheet_binary_age</a>;
+extern              const guint <a class="link" href="gtksheet-GtkSheet-Versioning.html#gtksheet-interface-age" title="gtksheet_interface_age">gtksheet_interface_age</a>;
+const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        <a class="link" href="gtksheet-GtkSheet-Versioning.html#gtksheet-check-version" title="gtksheet_check_version ()">gtksheet_check_version</a>              (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
+>guint</a> required_major,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
+>guint</a> required_minor,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
+>guint</a> required_micro);
+</pre>
+</div>
+<div class="refsect1" lang="en">
+<a name="gtksheet-GtkSheet-Versioning.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" lang="en">
+<a name="gtksheet-GtkSheet-Versioning.details"></a><h2>Details</h2>
+<div class="refsect2" lang="en">
+<a name="GTKSHEET-MAJOR-VERSION--CAPS"></a><h3>GTKSHEET_MAJOR_VERSION</h3>
+<pre class="programlisting">#define GTKSHEET_MAJOR_VERSION			(0)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="GTKSHEET-MINOR-VERSION--CAPS"></a><h3>GTKSHEET_MINOR_VERSION</h3>
+<pre class="programlisting">#define GTKSHEET_MINOR_VERSION			(1)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="GTKSHEET-MICRO-VERSION--CAPS"></a><h3>GTKSHEET_MICRO_VERSION</h3>
+<pre class="programlisting">#define GTKSHEET_MICRO_VERSION			(0)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="GTKSHEET-BINARY-AGE--CAPS"></a><h3>GTKSHEET_BINARY_AGE</h3>
+<pre class="programlisting">#define GTKSHEET_BINARY_AGE			(0)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="GTKSHEET-INTERFACE-AGE--CAPS"></a><h3>GTKSHEET_INTERFACE_AGE</h3>
+<pre class="programlisting">#define GTKSHEET_INTERFACE_AGE			(0)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="GTKSHEET-CHECK-VERSION--CAPS"></a><h3>GTKSHEET_CHECK_VERSION()</h3>
+<pre class="programlisting">#define             GTKSHEET_CHECK_VERSION(major,minor,micro)</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>major</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>minor</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>micro</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gtksheet-major-version"></a><h3>gtksheet_major_version</h3>
+<pre class="programlisting">extern const guint gtksheet_major_version;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gtksheet-minor-version"></a><h3>gtksheet_minor_version</h3>
+<pre class="programlisting">extern const guint gtksheet_minor_version;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gtksheet-micro-version"></a><h3>gtksheet_micro_version</h3>
+<pre class="programlisting">extern const guint gtksheet_micro_version;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gtksheet-binary-age"></a><h3>gtksheet_binary_age</h3>
+<pre class="programlisting">extern const guint gtksheet_binary_age;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gtksheet-interface-age"></a><h3>gtksheet_interface_age</h3>
+<pre class="programlisting">extern const guint gtksheet_interface_age;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" lang="en">
+<a name="gtksheet-check-version"></a><h3>gtksheet_check_version ()</h3>
+<pre class="programlisting">const <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gchar"
+>gchar</a>*        gtksheet_check_version              (<a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
+>guint</a> required_major,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
+>guint</a> required_minor,
+                                                         <a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
+>guint</a> required_micro);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>required_major</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>required_minor</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>required_micro</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

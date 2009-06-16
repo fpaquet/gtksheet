@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
+<book xmlns="http://www.devhelp.net/book" title="GtkSheet Reference Manual" link="index.html" author="" name="gtksheet" version="2" language="c">
+  <chapters>
+    <sub name="Gtksheet Overview" link="gtksheet.html">
+      <sub name="Compiling GtkSheet Applications" link="compiling.html"/>
+      <sub name="Mailing lists and bug reports" link="resources.html"/>
+      <sub name="GtkSheet Screenshots" link="compiling.html"/>
+    </sub>
+    <sub name="" link="gtksheetbase.html">
+      <sub name="Widgets" link="ch01.html">
+        <sub name="GtkSheet" link="GtkSheet.html"/>
+        <sub name="GtkItemEntry" link="GtkItemEntry.html"/>
+      </sub>
+      <sub name="GtkSheet Versioning" link="ch02.html">
+        <sub name="GtkSheet Versioning" link="gtksheet-GtkSheet-Versioning.html"/>
+      </sub>
+      <sub name="Object Hierarchy" link="object-tree.html"/>
+    </sub>
+  </chapters>
+  <functions>
+    <keyword type="struct" name="GtkSheet" link="GtkSheet.html#GtkSheet-struct"/>
+    <keyword type="struct" name="GtkSheetChild" link="GtkSheet.html#GtkSheetChild"/>
+    <keyword type="struct" name="GtkSheetRow" link="GtkSheet.html#GtkSheetRow"/>
+    <keyword type="struct" name="GtkSheetColumn" link="GtkSheet.html#GtkSheetColumn"/>
+    <keyword type="struct" name="GtkSheetCell" link="GtkSheet.html#GtkSheetCell"/>
+    <keyword type="struct" name="GtkSheetRange" link="GtkSheet.html#GtkSheetRange"/>
+    <keyword type="struct" name="GtkSheetButton" link="GtkSheet.html#GtkSheetButton"/>
+    <keyword type="struct" name="GtkSheetCellAttr" link="GtkSheet.html#GtkSheetCellAttr"/>
+    <keyword type="struct" name="GtkSheetCellBorder" link="GtkSheet.html#GtkSheetCellBorder"/>
+    <keyword type="enum" name="enum GtkSheetAttrType" link="GtkSheet.html#GtkSheetAttrType"/>
+    <keyword type="enum" name="enum GtkSheetState" link="GtkSheet.html#GtkSheetState"/>
+    <keyword type="enum" name="enum GtkSheetBorderFlags" link="GtkSheet.html#GtkSheetBorderFlags"/>
+    <keyword type="function" name="gtk_sheet_new ()" link="GtkSheet.html#gtk-sheet-new"/>
+    <keyword type="function" name="gtk_sheet_construct ()" link="GtkSheet.html#gtk-sheet-construct"/>
+    <keyword type="function" name="gtk_sheet_new_browser ()" link="GtkSheet.html#gtk-sheet-new-browser"/>
+    <keyword type="function" name="gtk_sheet_construct_browser ()" link="GtkSheet.html#gtk-sheet-construct-browser"/>
+    <keyword type="function" name="gtk_sheet_new_with_custom_entry ()" link="GtkSheet.html#gtk-sheet-new-with-custom-entry"/>
+    <keyword type="function" name="gtk_sheet_construct_with_custom_entry ()" link="GtkSheet.html#gtk-sheet-construct-with-custom-entry"/>
+    <keyword type="function" name="gtk_sheet_set_hadjustment ()" link="GtkSheet.html#gtk-sheet-set-hadjustment"/>
+    <keyword type="function" name="gtk_sheet_set_vadjustment ()" link="GtkSheet.html#gtk-sheet-set-vadjustment"/>
+    <keyword type="function" name="gtk_sheet_change_entry ()" link="GtkSheet.html#gtk-sheet-change-entry"/>
+    <keyword type="function" name="gtk_sheet_get_entry ()" link="GtkSheet.html#gtk-sheet-get-entry"/>
+    <keyword type="function" name="gtk_sheet_get_entry_widget ()" link="GtkSheet.html#gtk-sheet-get-entry-widget"/>
+    <keyword type="function" name="gtk_sheet_get_state ()" link="GtkSheet.html#gtk-sheet-get-state"/>
+    <keyword type="function" name="gtk_sheet_get_columns_count ()" link="GtkSheet.html#gtk-sheet-get-columns-count"/>
+    <keyword type="function" name="gtk_sheet_get_rows_count ()" link="GtkSheet.html#gtk-sheet-get-rows-count"/>
+    <keyword type="function" name="gtk_sheet_get_visible_range ()" link="GtkSheet.html#gtk-sheet-get-visible-range"/>
+    <keyword type="function" name="gtk_sheet_set_selection_mode ()" link="GtkSheet.html#gtk-sheet-set-selection-mode"/>
+    <keyword type="function" name="gtk_sheet_set_autoresize ()" link="GtkSheet.html#gtk-sheet-set-autoresize"/>
+    <keyword type="function" name="gtk_sheet_autoresize ()" link="GtkSheet.html#gtk-sheet-autoresize"/>
+    <keyword type="function" name="gtk_sheet_set_autoscroll ()" link="GtkSheet.html#gtk-sheet-set-autoscroll"/>
+    <keyword type="function" name="gtk_sheet_autoscroll ()" link="GtkSheet.html#gtk-sheet-autoscroll"/>
+    <keyword type="function" name="gtk_sheet_set_clip_text ()" link="GtkSheet.html#gtk-sheet-set-clip-text"/>
+    <keyword type="function" name="gtk_sheet_clip_text ()" link="GtkSheet.html#gtk-sheet-clip-text"/>
+    <keyword type="function" name="gtk_sheet_set_justify_entry ()" link="GtkSheet.html#gtk-sheet-set-justify-entry"/>
+    <keyword type="function" name="gtk_sheet_justify_entry ()" link="GtkSheet.html#gtk-sheet-justify-entry"/>
+    <keyword type="function" name="gtk_sheet_set_locked ()" link="GtkSheet.html#gtk-sheet-set-locked"/>
+    <keyword type="function" name="gtk_sheet_locked ()" link="GtkSheet.html#gtk-sheet-locked"/>
+    <keyword type="function" name="gtk_sheet_set_title ()" link="GtkSheet.html#gtk-sheet-set-title"/>
+    <keyword type="function" name="gtk_sheet_freeze ()" link="GtkSheet.html#gtk-sheet-freeze"/>
+    <keyword type="function" name="gtk_sheet_thaw ()" link="GtkSheet.html#gtk-sheet-thaw"/>
+    <keyword type="function" name="gtk_sheet_set_background ()" link="GtkSheet.html#gtk-sheet-set-background"/>
+    <keyword type="function" name="gtk_sheet_set_grid ()" link="GtkSheet.html#gtk-sheet-set-grid"/>
+    <keyword type="function" name="gtk_sheet_show_grid ()" link="GtkSheet.html#gtk-sheet-show-grid"/>
+    <keyword type="function" name="gtk_sheet_grid_visible ()" link="GtkSheet.html#gtk-sheet-grid-visible"/>
+    <keyword type="function" name="gtk_sheet_set_column_title ()" link="GtkSheet.html#gtk-sheet-set-column-title"/>
+    <keyword type="function" name="gtk_sheet_get_column_title ()" link="GtkSheet.html#gtk-sheet-get-column-title"/>
+    <keyword type="function" name="gtk_sheet_set_row_title ()" link="GtkSheet.html#gtk-sheet-set-row-title"/>
+    <keyword type="function" name="gtk_sheet_get_row_title ()" link="GtkSheet.html#gtk-sheet-get-row-title"/>
+    <keyword type="function" name="gtk_sheet_row_button_add_label ()" link="GtkSheet.html#gtk-sheet-row-button-add-label"/>
+    <keyword type="function" name="gtk_sheet_column_button_add_label ()" link="GtkSheet.html#gtk-sheet-column-button-add-label"/>
+    <keyword type="function" name="gtk_sheet_row_button_get_label ()" link="GtkSheet.html#gtk-sheet-row-button-get-label"/>
+    <keyword type="function" name="gtk_sheet_column_button_get_label ()" link="GtkSheet.html#gtk-sheet-column-button-get-label"/>
+    <keyword type="function" name="gtk_sheet_row_button_justify ()" link="GtkSheet.html#gtk-sheet-row-button-justify"/>
+    <keyword type="function" name="gtk_sheet_column_button_justify ()" link="GtkSheet.html#gtk-sheet-column-button-justify"/>
+    <keyword type="function" name="gtk_sheet_moveto ()" link="GtkSheet.html#gtk-sheet-moveto"/>
+    <keyword type="function" name="gtk_sheet_set_row_titles_width ()" link="GtkSheet.html#gtk-sheet-set-row-titles-width"/>
+    <keyword type="function" name="gtk_sheet_set_column_titles_height ()" link="GtkSheet.html#gtk-sheet-set-column-titles-height"/>
+    <keyword type="function" name="gtk_sheet_show_column_titles ()" link="GtkSheet.html#gtk-sheet-show-column-titles"/>
+    <keyword type="function" name="gtk_sheet_show_row_titles ()" link="GtkSheet.html#gtk-sheet-show-row-titles"/>
+    <keyword type="function" name="gtk_sheet_hide_column_titles ()" link="GtkSheet.html#gtk-sheet-hide-column-titles"/>
+    <keyword type="function" name="gtk_sheet_hide_row_titles ()" link="GtkSheet.html#gtk-sheet-hide-row-titles"/>
+    <keyword type="function" name="gtk_sheet_column_titles_visible ()" link="GtkSheet.html#gtk-sheet-column-titles-visible"/>
+    <keyword type="function" name="gtk_sheet_row_titles_visible ()" link="GtkSheet.html#gtk-sheet-row-titles-visible"/>
+    <keyword type="function" name="gtk_sheet_column_set_sensitivity ()" link="GtkSheet.html#gtk-sheet-column-set-sensitivity"/>
+    <keyword type="function" name="gtk_sheet_columns_set_sensitivity ()" link="GtkSheet.html#gtk-sheet-columns-set-sensitivity"/>
+    <keyword type="function" name="gtk_sheet_columns_set_resizable ()" link="GtkSheet.html#gtk-sheet-columns-set-resizable"/>
+    <keyword type="function" name="gtk_sheet_columns_resizable ()" link="GtkSheet.html#gtk-sheet-columns-resizable"/>
+    <keyword type="function" name="gtk_sheet_row_set_sensitivity ()" link="GtkSheet.html#gtk-sheet-row-set-sensitivity"/>
+    <keyword type="function" name="gtk_sheet_rows_set_sensitivity ()" link="GtkSheet.html#gtk-sheet-rows-set-sensitivity"/>
+    <keyword type="function" name="gtk_sheet_rows_set_resizable ()" link="GtkSheet.html#gtk-sheet-rows-set-resizable"/>
+    <keyword type="function" name="gtk_sheet_rows_resizable ()" link="GtkSheet.html#gtk-sheet-rows-resizable"/>
+    <keyword type="function" name="gtk_sheet_column_set_visibility ()" link="GtkSheet.html#gtk-sheet-column-set-visibility"/>
+    <keyword type="function" name="gtk_sheet_column_label_set_visibility ()" link="GtkSheet.html#gtk-sheet-column-label-set-visibility"/>
+    <keyword type="function" name="gtk_sheet_columns_labels_set_visibility ()" link="GtkSheet.html#gtk-sheet-columns-labels-set-visibility"/>
+    <keyword type="function" name="gtk_sheet_row_set_visibility ()" link="GtkSheet.html#gtk-sheet-row-set-visibility"/>
+    <keyword type="function" name="gtk_sheet_row_label_set_visibility ()" link="GtkSheet.html#gtk-sheet-row-label-set-visibility"/>
+    <keyword type="function" name="gtk_sheet_rows_labels_set_visibility ()" link="GtkSheet.html#gtk-sheet-rows-labels-set-visibility"/>
+    <keyword type="function" name="gtk_sheet_select_row ()" link="GtkSheet.html#gtk-sheet-select-row"/>
+    <keyword type="function" name="gtk_sheet_select_column ()" link="GtkSheet.html#gtk-sheet-select-column"/>
+    <keyword type="function" name="gtk_sheet_clip_range ()" link="GtkSheet.html#gtk-sheet-clip-range"/>
+    <keyword type="function" name="gtk_sheet_unclip_range ()" link="GtkSheet.html#gtk-sheet-unclip-range"/>
+    <keyword type="function" name="gtk_sheet_in_clip ()" link="GtkSheet.html#gtk-sheet-in-clip"/>
+    <keyword type="function" name="gtk_sheet_get_vadjustment ()" link="GtkSheet.html#gtk-sheet-get-vadjustment"/>
+    <keyword type="function" name="gtk_sheet_get_hadjustment ()" link="GtkSheet.html#gtk-sheet-get-hadjustment"/>
+    <keyword type="function" name="gtk_sheet_select_range ()" link="GtkSheet.html#gtk-sheet-select-range"/>
+    <keyword type="function" name="gtk_sheet_unselect_range ()" link="GtkSheet.html#gtk-sheet-unselect-range"/>
+    <keyword type="function" name="gtk_sheet_set_active_cell ()" link="GtkSheet.html#gtk-sheet-set-active-cell"/>
+    <keyword type="function" name="gtk_sheet_get_active_cell ()" link="GtkSheet.html#gtk-sheet-get-active-cell"/>
+    <keyword type="function" name="gtk_sheet_set_cell ()" link="GtkSheet.html#gtk-sheet-set-cell"/>
+    <keyword type="function" name="gtk_sheet_set_cell_text ()" link="GtkSheet.html#gtk-sheet-set-cell-text"/>
+    <keyword type="function" name="gtk_sheet_cell_get_text ()" link="GtkSheet.html#gtk-sheet-cell-get-text"/>
+    <keyword type="function" name="gtk_sheet_cell_clear ()" link="GtkSheet.html#gtk-sheet-cell-clear"/>
+    <keyword type="function" name="gtk_sheet_cell_delete ()" link="GtkSheet.html#gtk-sheet-cell-delete"/>
+    <keyword type="function" name="gtk_sheet_range_clear ()" link="GtkSheet.html#gtk-sheet-range-clear"/>
+    <keyword type="function" name="gtk_sheet_range_delete ()" link="GtkSheet.html#gtk-sheet-range-delete"/>
+    <keyword type="function" name="gtk_sheet_cell_get_state ()" link="GtkSheet.html#gtk-sheet-cell-get-state"/>
+    <keyword type="function" name="gtk_sheet_link_cell ()" link="GtkSheet.html#gtk-sheet-link-cell"/>
+    <keyword type="function" name="gtk_sheet_get_link ()" link="GtkSheet.html#gtk-sheet-get-link"/>
+    <keyword type="function" name="gtk_sheet_remove_link ()" link="GtkSheet.html#gtk-sheet-remove-link"/>
+    <keyword type="function" name="gtk_sheet_get_pixel_info ()" link="GtkSheet.html#gtk-sheet-get-pixel-info"/>
+    <keyword type="function" name="gtk_sheet_get_cell_area ()" link="GtkSheet.html#gtk-sheet-get-cell-area"/>
+    <keyword type="function" name="gtk_sheet_set_column_width ()" link="GtkSheet.html#gtk-sheet-set-column-width"/>
+    <keyword type="function" name="gtk_sheet_set_row_height ()" link="GtkSheet.html#gtk-sheet-set-row-height"/>
+    <keyword type="function" name="gtk_sheet_add_column ()" link="GtkSheet.html#gtk-sheet-add-column"/>
+    <keyword type="function" name="gtk_sheet_add_row ()" link="GtkSheet.html#gtk-sheet-add-row"/>
+    <keyword type="function" name="gtk_sheet_insert_rows ()" link="GtkSheet.html#gtk-sheet-insert-rows"/>
+    <keyword type="function" name="gtk_sheet_insert_columns ()" link="GtkSheet.html#gtk-sheet-insert-columns"/>
+    <keyword type="function" name="gtk_sheet_delete_rows ()" link="GtkSheet.html#gtk-sheet-delete-rows"/>
+    <keyword type="function" name="gtk_sheet_delete_columns ()" link="GtkSheet.html#gtk-sheet-delete-columns"/>
+    <keyword type="function" name="gtk_sheet_range_set_background ()" link="GtkSheet.html#gtk-sheet-range-set-background"/>
+    <keyword type="function" name="gtk_sheet_range_set_foreground ()" link="GtkSheet.html#gtk-sheet-range-set-foreground"/>
+    <keyword type="function" name="gtk_sheet_range_set_justification ()" link="GtkSheet.html#gtk-sheet-range-set-justification"/>
+    <keyword type="function" name="gtk_sheet_column_set_justification ()" link="GtkSheet.html#gtk-sheet-column-set-justification"/>
+    <keyword type="function" name="gtk_sheet_range_set_editable ()" link="GtkSheet.html#gtk-sheet-range-set-editable"/>
+    <keyword type="function" name="gtk_sheet_range_set_visible ()" link="GtkSheet.html#gtk-sheet-range-set-visible"/>
+    <keyword type="function" name="gtk_sheet_range_set_border ()" link="GtkSheet.html#gtk-sheet-range-set-border"/>
+    <keyword type="function" name="gtk_sheet_range_set_border_color ()" link="GtkSheet.html#gtk-sheet-range-set-border-color"/>
+    <keyword type="function" name="gtk_sheet_range_set_font ()" link="GtkSheet.html#gtk-sheet-range-set-font"/>
+    <keyword type="function" name="gtk_sheet_get_attributes ()" link="GtkSheet.html#gtk-sheet-get-attributes"/>
+    <keyword type="function" name="gtk_sheet_put ()" link="GtkSheet.html#gtk-sheet-put"/>
+    <keyword type="function" name="gtk_sheet_attach_floating ()" link="GtkSheet.html#gtk-sheet-attach-floating"/>
+    <keyword type="function" name="gtk_sheet_attach_default ()" link="GtkSheet.html#gtk-sheet-attach-default"/>
+    <keyword type="function" name="gtk_sheet_attach ()" link="GtkSheet.html#gtk-sheet-attach"/>
+    <keyword type="function" name="gtk_sheet_move_child ()" link="GtkSheet.html#gtk-sheet-move-child"/>
+    <keyword type="function" name="gtk_sheet_get_child_at ()" link="GtkSheet.html#gtk-sheet-get-child-at"/>
+    <keyword type="function" name="gtk_sheet_button_attach ()" link="GtkSheet.html#gtk-sheet-button-attach"/>
+    <keyword type="property" name="The &quot;active-cell&quot; property" link="GtkSheet.html#GtkSheet--active-cell"/>
+    <keyword type="property" name="The &quot;autoresize&quot; property" link="GtkSheet.html#GtkSheet--autoresize"/>
+    <keyword type="property" name="The &quot;autoscroll&quot; property" link="GtkSheet.html#GtkSheet--autoscroll"/>
+    <keyword type="property" name="The &quot;clip-text&quot; property" link="GtkSheet.html#GtkSheet--clip-text"/>
+    <keyword type="property" name="The &quot;column-titles-visible&quot; property" link="GtkSheet.html#GtkSheet--column-titles-visible"/>
+    <keyword type="property" name="The &quot;columns-resizable&quot; property" link="GtkSheet.html#GtkSheet--columns-resizable"/>
+    <keyword type="property" name="The &quot;grid-visible&quot; property" link="GtkSheet.html#GtkSheet--grid-visible"/>
+    <keyword type="property" name="The &quot;locked&quot; property" link="GtkSheet.html#GtkSheet--locked"/>
+    <keyword type="property" name="The &quot;n-columns&quot; property" link="GtkSheet.html#GtkSheet--n-columns"/>
+    <keyword type="property" name="The &quot;n-rows&quot; property" link="GtkSheet.html#GtkSheet--n-rows"/>
+    <keyword type="property" name="The &quot;row-titles-visible&quot; property" link="GtkSheet.html#GtkSheet--row-titles-visible"/>
+    <keyword type="property" name="The &quot;rows-resizable&quot; property" link="GtkSheet.html#GtkSheet--rows-resizable"/>
+    <keyword type="property" name="The &quot;selected-range&quot; property" link="GtkSheet.html#GtkSheet--selected-range"/>
+    <keyword type="property" name="The &quot;selection-mode&quot; property" link="GtkSheet.html#GtkSheet--selection-mode"/>
+    <keyword type="property" name="The &quot;state&quot; property" link="GtkSheet.html#GtkSheet--state"/>
+    <keyword type="property" name="The &quot;title&quot; property" link="GtkSheet.html#GtkSheet--title"/>
+    <keyword type="property" name="The &quot;attached-to-cell&quot; child property" link="GtkSheet.html#GtkSheet--c-attached-to-cell"/>
+    <keyword type="property" name="The &quot;column&quot; child property" link="GtkSheet.html#GtkSheet--c-column"/>
+    <keyword type="property" name="The &quot;floating&quot; child property" link="GtkSheet.html#GtkSheet--c-floating"/>
+    <keyword type="property" name="The &quot;row&quot; child property" link="GtkSheet.html#GtkSheet--c-row"/>
+    <keyword type="property" name="The &quot;x&quot; child property" link="GtkSheet.html#GtkSheet--c-x"/>
+    <keyword type="property" name="The &quot;x-options&quot; child property" link="GtkSheet.html#GtkSheet--c-x-options"/>
+    <keyword type="property" name="The &quot;x-padding&quot; child property" link="GtkSheet.html#GtkSheet--c-x-padding"/>
+    <keyword type="property" name="The &quot;y&quot; child property" link="GtkSheet.html#GtkSheet--c-y"/>
+    <keyword type="property" name="The &quot;y-options&quot; child property" link="GtkSheet.html#GtkSheet--c-y-options"/>
+    <keyword type="property" name="The &quot;y-padding&quot; child property" link="GtkSheet.html#GtkSheet--c-y-padding"/>
+    <keyword type="signal" name="The &quot;activate&quot; signal" link="GtkSheet.html#GtkSheet-activate"/>
+    <keyword type="signal" name="The &quot;changed&quot; signal" link="GtkSheet.html#GtkSheet-changed"/>
+    <keyword type="signal" name="The &quot;clear-cell&quot; signal" link="GtkSheet.html#GtkSheet-clear-cell"/>
+    <keyword type="signal" name="The &quot;clip-range&quot; signal" link="GtkSheet.html#GtkSheet-clip-range"/>
+    <keyword type="signal" name="The &quot;deactivate&quot; signal" link="GtkSheet.html#GtkSheet-deactivate"/>
+    <keyword type="signal" name="The &quot;move-range&quot; signal" link="GtkSheet.html#GtkSheet-move-range"/>
+    <keyword type="signal" name="The &quot;new-column-width&quot; signal" link="GtkSheet.html#GtkSheet-new-column-width"/>
+    <keyword type="signal" name="The &quot;new-row-height&quot; signal" link="GtkSheet.html#GtkSheet-new-row-height"/>
+    <keyword type="signal" name="The &quot;resize-range&quot; signal" link="GtkSheet.html#GtkSheet-resize-range"/>
+    <keyword type="signal" name="The &quot;select-column&quot; signal" link="GtkSheet.html#GtkSheet-select-column"/>
+    <keyword type="signal" name="The &quot;select-range&quot; signal" link="GtkSheet.html#GtkSheet-select-range"/>
+    <keyword type="signal" name="The &quot;select-row&quot; signal" link="GtkSheet.html#GtkSheet-select-row"/>
+    <keyword type="signal" name="The &quot;set-cell&quot; signal" link="GtkSheet.html#GtkSheet-set-cell"/>
+    <keyword type="signal" name="The &quot;set-scroll-adjustments&quot; signal" link="GtkSheet.html#GtkSheet-set-scroll-adjustments"/>
+    <keyword type="signal" name="The &quot;traverse&quot; signal" link="GtkSheet.html#GtkSheet-traverse"/>
+    <keyword type="struct" name="GtkItemEntry" link="GtkItemEntry.html#GtkItemEntry-struct"/>
+    <keyword type="function" name="gtk_item_entry_new ()" link="GtkItemEntry.html#gtk-item-entry-new"/>
+    <keyword type="function" name="gtk_item_entry_new_with_max_length ()" link="GtkItemEntry.html#gtk-item-entry-new-with-max-length"/>
+    <keyword type="function" name="gtk_item_entry_set_text ()" link="GtkItemEntry.html#gtk-item-entry-set-text"/>
+    <keyword type="function" name="gtk_item_entry_set_justification ()" link="GtkItemEntry.html#gtk-item-entry-set-justification"/>
+    <keyword type="function" name="gtk_item_entry_set_cursor_visible ()" link="GtkItemEntry.html#gtk-item-entry-set-cursor-visible"/>
+    <keyword type="function" name="gtk_item_entry_get_cursor_visible ()" link="GtkItemEntry.html#gtk-item-entry-get-cursor-visible"/>
+    <keyword type="macro" name="GTKSHEET_MAJOR_VERSION" link="gtksheet-GtkSheet-Versioning.html#GTKSHEET-MAJOR-VERSION--CAPS"/>
+    <keyword type="macro" name="GTKSHEET_MINOR_VERSION" link="gtksheet-GtkSheet-Versioning.html#GTKSHEET-MINOR-VERSION--CAPS"/>
+    <keyword type="macro" name="GTKSHEET_MICRO_VERSION" link="gtksheet-GtkSheet-Versioning.html#GTKSHEET-MICRO-VERSION--CAPS"/>
+    <keyword type="macro" name="GTKSHEET_BINARY_AGE" link="gtksheet-GtkSheet-Versioning.html#GTKSHEET-BINARY-AGE--CAPS"/>
+    <keyword type="macro" name="GTKSHEET_INTERFACE_AGE" link="gtksheet-GtkSheet-Versioning.html#GTKSHEET-INTERFACE-AGE--CAPS"/>
+    <keyword type="macro" name="GTKSHEET_CHECK_VERSION()" link="gtksheet-GtkSheet-Versioning.html#GTKSHEET-CHECK-VERSION--CAPS"/>
+    <keyword type="variable" name="gtksheet_major_version" link="gtksheet-GtkSheet-Versioning.html#gtksheet-major-version"/>
+    <keyword type="variable" name="gtksheet_minor_version" link="gtksheet-GtkSheet-Versioning.html#gtksheet-minor-version"/>
+    <keyword type="variable" name="gtksheet_micro_version" link="gtksheet-GtkSheet-Versioning.html#gtksheet-micro-version"/>
+    <keyword type="variable" name="gtksheet_binary_age" link="gtksheet-GtkSheet-Versioning.html#gtksheet-binary-age"/>
+    <keyword type="variable" name="gtksheet_interface_age" link="gtksheet-GtkSheet-Versioning.html#gtksheet-interface-age"/>
+    <keyword type="function" name="gtksheet_check_version ()" link="gtksheet-GtkSheet-Versioning.html#gtksheet-check-version"/>
+  </functions>
+</book>

@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Selections</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="GtkSheet Tutorial"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="GtkSheet"
+HREF="c32.html"><LINK
+REL="PREVIOUS"
+TITLE="Modifying sheet state"
+HREF="x198.html"><LINK
+REL="NEXT"
+TITLE=" Row/column operations"
+HREF="x222.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GtkSheet Tutorial</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x198.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. GtkSheet</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x222.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC-SELECTIONS"
+>4.6. Selections</A
+></H1
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+> Select a row/column: </B
+></SPAN
+> </P
+><PRE
+CLASS="PROGRAMLISTING"
+>void gtk_sheet_select_row (GtkSheet * sheet,gint row);
+void gtk_sheet_select_column (GtkSheet * sheet,gint column);</PRE
+><P
+><SPAN
+CLASS="bold"
+><B
+CLASS="EMPHASIS"
+> Unselect a range: </B
+></SPAN
+> </P
+><PRE
+CLASS="PROGRAMLISTING"
+>void gtk_sheet_select_range (GtkSheet *sheet, const GtkSheetRange *range); 
+void gtk_sheet_unselect_range	(GtkSheet *sheet);</PRE
+><P
+>A row/column selection can  be catched using "select_row" and "select_column" signals: </P
+><PRE
+CLASS="PROGRAMLISTING"
+>void (*select_row) (GtkSheet *sheet, gint row);
+void (*select_column) (GtkSheet *sheet, gint column);</PRE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x198.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x222.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Modifying sheet state</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c32.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Row/column operations</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

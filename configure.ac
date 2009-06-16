@@ -220,6 +220,7 @@ AC_OUTPUT(
 Makefile
 docs/Makefile
 docs/reference/Makefile
+docs/tutorial/Makefile
 gtksheet/Makefile
 gtksheet/gtksheetfeatures.h
 gtksheet-2.0.spec

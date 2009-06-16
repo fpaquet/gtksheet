@@ -2124,10 +2124,11 @@ gtk_item_entry_new (void)
  * gtk_item_entry_new_with_max_length:
  * @max: the maximum length of the entry, or 0 for no maximum. (other than the maximum length of entries.) 
  * The value passed in will be clamped to the range 0-65536.
- * Return Value: the newly-created #GtkItemEntry widget.
  * 
  * Creates a new #GtkItemEntry with the maximum allowed length of the contents of the widget. 
  * If the current contents are longer than the given length, then they will be truncated to fit. 
+ *
+ * Return value: the newly-created #GtkItemEntry widget.
  */
 GtkWidget*
 gtk_item_entry_new_with_max_length (gint max)

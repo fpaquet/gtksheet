@@ -63,19 +63,19 @@ AM_LDFLAGS = \
 
 
 gtksheet_public_h_sources = \
-        gtkitementry.h	\
-        gtksheet.h 
-        gtksheetfeatures.h	\
-        gtksheet-marshal.h	\
-        gtksheettypebuiltins.h	\
-        gtksheetwidget.h \
+		gtkitementry.h	\
+		gtksheet.h \
+		gtksheetfeatures.h	\
+		gtksheet-marshal.h	\
+		gtksheettypebuiltins.h	\
+		gtksheetwidget.h
 
 gtksheet_c_sources = 	\
-        gtkitementry.c	\
-        gtksheet.c \
-        gtksheet-marshal.c	\
-        gtksheettypebuiltins.c	\
-        gtksheetwidget.c
+		gtkitementry.c	\
+		gtksheet.c \
+		gtksheet-marshal.c	\
+		gtksheettypebuiltins.c	\
+		gtksheetwidget.c
 
 gtksheet_built_public_sources =	\
 	gtksheet-marshal.h	\
@@ -83,7 +83,7 @@ gtksheet_built_public_sources =	\
 gtksheet_built_sources = \
 	gtksheet-marshal.c	\
 	gtksheettypebuiltins.c	\
-	${gtksheet_built_public_sources}            
+	${gtksheet_built_public_sources}
 gtksheet_extra_sources = \
 	gtksheetfeatures.h.in	\
 	gtksheet-marshal.list 	
@@ -116,13 +116,13 @@ EXTRA_DIST += gtksheet.def Makefile.win32 makefile.msc
 $(libgtksheet_x11_2_0_la_OBJECTS) $(libgtksheet_linux_fb_2_0_la_OBJECTS) $(libgtksheet_win32_2_0_la_OBJECTS): ${gtksheet_built_public_sources} ${gtksheet_built_private_headers}
 
 $(srcdir)/gtksheet-marshal.h: gtksheet-marshal.list
-        ( @GLIB_GENMARSHAL@ --prefix=gtksheet gtksheet-marshal.list --header > gtksheet-marshal.tmp \
-        && mv gtksheet-marshal.tmp gtksheet-marshal.h ) \
-        || ( rm -f gtksheet-marshal.tmp && exit 1 )
+		( @GLIB_GENMARSHAL@ --prefix=gtksheet gtksheet-marshal.list --header > xgen-gsmh \
+		&& mv xgen-gsmh gtksheet-marshal.h ) \
+		|| ( rm -f gtksheet-marshal.tmp && exit 1 )
 $(srcdir)/gtksheet-marshal.c: gtksheet-marshal.h
-        ( @GLIB_GENMARSHAL@ --prefix=gtksheet gtksheet-marshal.list --body > gtksheet-marshal.tmp \
-        && mv gtksheet-marshal.tmp gtksheet-marshal.c ) \
-        || ( rm -f gtksheet-marshal.tmp && exit 1 )
+		( @GLIB_GENMARSHAL@ --prefix=gtksheet gtksheet-marshal.list --body > xgen-gsmc \
+		&& mv xgen-gsmc gtksheet-marshal.c ) \
+		|| ( rm -f gtksheet-marshal.tmp && exit 1 )
 
 
 $(srcdir)/gtksheettypebuiltins.h: $(gtksheet_public_h_sources)

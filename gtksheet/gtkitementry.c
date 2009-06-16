@@ -803,75 +803,77 @@ gtk_entry_move_cursor (GtkEntry       *entry,
   gtk_entry_reset_im_context (entry);
 
   if (entry->current_pos != entry->selection_bound && !extend_selection)
+  {
+    /* If we have a current selection and aren't extending it, move to the
+     * start/or end of the selection as appropriate
+     */
+    switch (step)
     {
-      /* If we have a current selection and aren't extending it, move to the
-       * start/or end of the selection as appropriate
-       */
-      switch (step)
-	{
-	case GTK_MOVEMENT_VISUAL_POSITIONS:
-	  {
-	    gint current_x = get_better_cursor_x (entry, entry->current_pos);
-	    gint bound_x = get_better_cursor_x (entry, entry->selection_bound);
+      case GTK_MOVEMENT_VISUAL_POSITIONS:
+      {
+        gint current_x = get_better_cursor_x (entry, entry->current_pos);
+        gint bound_x = get_better_cursor_x (entry, entry->selection_bound);
 
-	    if (count < 0)
-	      new_pos = current_x < bound_x ? entry->current_pos : entry->selection_bound;
-	    else
-	      new_pos = current_x > bound_x ? entry->current_pos : entry->selection_bound;
+        if (count < 0)
+          new_pos = current_x < bound_x ? entry->current_pos : entry->selection_bound;
+        else
+          new_pos = current_x > bound_x ? entry->current_pos : entry->selection_bound;
 
-	    break;
-	  }
-	case GTK_MOVEMENT_LOGICAL_POSITIONS:
-	case GTK_MOVEMENT_WORDS:
-	  if (count < 0)
-	    new_pos = MIN (entry->current_pos, entry->selection_bound);
-	  else
-	    new_pos = MAX (entry->current_pos, entry->selection_bound);
-	  break;
-	case GTK_MOVEMENT_DISPLAY_LINE_ENDS:
-	case GTK_MOVEMENT_PARAGRAPH_ENDS:
-	case GTK_MOVEMENT_BUFFER_ENDS:
-	  new_pos = count < 0 ? 0 : entry->text_length;
-	  break;
-	case GTK_MOVEMENT_DISPLAY_LINES:
-	case GTK_MOVEMENT_PARAGRAPHS:
-	case GTK_MOVEMENT_PAGES:
-	  break;
-	}
+        break;
+      }
+      case GTK_MOVEMENT_LOGICAL_POSITIONS:
+      case GTK_MOVEMENT_WORDS:
+        if (count < 0)
+          new_pos = MIN (entry->current_pos, entry->selection_bound);
+        else
+          new_pos = MAX (entry->current_pos, entry->selection_bound);
+        break;
+      case GTK_MOVEMENT_DISPLAY_LINE_ENDS:
+      case GTK_MOVEMENT_PARAGRAPH_ENDS:
+      case GTK_MOVEMENT_BUFFER_ENDS:
+        new_pos = count < 0 ? 0 : entry->text_length;
+        break;
+      case GTK_MOVEMENT_DISPLAY_LINES:
+      case GTK_MOVEMENT_PARAGRAPHS:
+      case GTK_MOVEMENT_PAGES:
+      case GTK_MOVEMENT_HORIZONTAL_PAGES:
+        break;
     }
+  }
   else
+  {
+    switch (step)
     {
-      switch (step)
-	{
-	case GTK_MOVEMENT_LOGICAL_POSITIONS:
-	  new_pos = gtk_entry_move_logically (entry, new_pos, count);
-	  break;
-	case GTK_MOVEMENT_VISUAL_POSITIONS:
-	  new_pos = gtk_entry_move_visually (entry, new_pos, count);
-	  break;
-	case GTK_MOVEMENT_WORDS:
-	  while (count > 0)
-	    {
-	      new_pos = gtk_entry_move_forward_word (entry, new_pos);
-	      count--;
-	    }
-	  while (count < 0)
-	    {
-	      new_pos = gtk_entry_move_backward_word (entry, new_pos);
-	      count++;
-	    }
-	  break;
-	case GTK_MOVEMENT_DISPLAY_LINE_ENDS:
-	case GTK_MOVEMENT_PARAGRAPH_ENDS:
-	case GTK_MOVEMENT_BUFFER_ENDS:
-	  new_pos = count < 0 ? 0 : entry->text_length;
-	  break;
-	case GTK_MOVEMENT_DISPLAY_LINES:
-	case GTK_MOVEMENT_PARAGRAPHS:
-	case GTK_MOVEMENT_PAGES:
-	  break;
-	}
+      case GTK_MOVEMENT_LOGICAL_POSITIONS:
+        new_pos = gtk_entry_move_logically (entry, new_pos, count);
+        break;
+      case GTK_MOVEMENT_VISUAL_POSITIONS:
+        new_pos = gtk_entry_move_visually (entry, new_pos, count);
+        break;
+      case GTK_MOVEMENT_WORDS:
+        while (count > 0)
+        {
+          new_pos = gtk_entry_move_forward_word (entry, new_pos);
+          count--;
+        }
+        while (count < 0)
+        {
+          new_pos = gtk_entry_move_backward_word (entry, new_pos);
+          count++;
+        }
+        break;
+      case GTK_MOVEMENT_DISPLAY_LINE_ENDS:
+      case GTK_MOVEMENT_PARAGRAPH_ENDS:
+      case GTK_MOVEMENT_BUFFER_ENDS:
+        new_pos = count < 0 ? 0 : entry->text_length;
+        break;
+      case GTK_MOVEMENT_DISPLAY_LINES:
+      case GTK_MOVEMENT_PARAGRAPHS:
+      case GTK_MOVEMENT_PAGES:
+      case GTK_MOVEMENT_HORIZONTAL_PAGES:
+        break;
     }
+  }
 
   if (extend_selection)
     gtk_editable_select_region (GTK_EDITABLE (entry), entry->selection_bound, new_pos);

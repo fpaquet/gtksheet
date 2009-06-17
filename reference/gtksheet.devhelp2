@@ -20,7 +20,7 @@
   </chapters>
   <functions>
     <keyword type="struct" name="GtkSheet" link="GtkSheet.html#GtkSheet-struct"/>
-    <keyword type="struct" name="GtkSheetChild" link="GtkSheet.html#GtkSheetChild"/>
+    <keyword type="struct" name="GtkSheetChild" link="GtkSheet.html#GtkSheetChild" deprecated="0.1.0: Use child properties instead."/>
     <keyword type="struct" name="GtkSheetRow" link="GtkSheet.html#GtkSheetRow"/>
     <keyword type="struct" name="GtkSheetColumn" link="GtkSheet.html#GtkSheetColumn"/>
     <keyword type="struct" name="GtkSheetCell" link="GtkSheet.html#GtkSheetCell"/>

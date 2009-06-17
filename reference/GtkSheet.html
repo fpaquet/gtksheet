@@ -898,13 +898,148 @@ It should only be accessed through the functions described below.</p>
 <div class="refsect2" lang="en">
 <a name="GtkSheetChild"></a><h3>GtkSheetChild</h3>
 <pre class="programlisting">typedef struct {
+  GtkWidget *widget;
+  gint x,y ;
+  gboolean attached_to_cell;
+  gboolean floating;
+  gint row, col;
+  guint16 xpadding;
+  guint16 ypadding;
+  gboolean xexpand;
+  gboolean yexpand;
+  gboolean xshrink;
+  gboolean yshrink;
+  gboolean xfill;
+  gboolean yfill;
 } GtkSheetChild;
 </pre>
+<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">GtkSheetChild</code> has been deprecated since version 0.1.0 and should not be used in newly-written code. Use child properties instead.</p>
+</div>
 <p>
-The GtkSheetChild struct contains only private data.
-It should only be accessed through the functions described below.</p>
+The GtkSheetChild struct is returned by the <a class="link" href="GtkSheet.html#gtk-sheet-get-child-at" title="gtk_sheet_get_child_at ()"><code class="function">gtk_sheet_get_child_at()</code></a> and 
+<a class="link" href="GtkSheet.html#gtk-sheet-put" title="gtk_sheet_put ()"><code class="function">gtk_sheet_put()</code></a> functions and contains information about the child's packing
+inside a GtkSheet.
+Previously, modifying this structure was the only way to modify child's 
+packing. However, now that child properties have been implemented, you 
+shouldn't use this method. To change child packing options
+set child properties with the <a
+href="/usr/share/gtk-doc/html/gtk/GtkContainer.html#gtk-container-child-set-property"
+><code class="function">gtk_container_child_set_property()</code></a> or similar
+functions.</p>
 <p>
 </p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
+>GtkWidget</a> *<em class="structfield"><code>widget</code></em>;</span></p></td>
+<td> the child's widget
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> <em class="structfield"><code>x</code></em>;</span></p></td>
+<td> the horizontal pixel position of the widget in the gtksheet
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> <em class="structfield"><code>y</code></em>;</span></p></td>
+<td> the vertical pixel position of the widget in the gtksheet
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> <em class="structfield"><code>attached_to_cell</code></em>;</span></p></td>
+<td> whether the child's position is kept attached to the cell indicated by <em class="parameter"><code>row</code></em> and <em class="parameter"><code>col</code></em>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> <em class="structfield"><code>floating</code></em>;</span></p></td>
+<td> whether the child size is kept within the area of the cell indicated by <em class="parameter"><code>row</code></em> and <em class="parameter"><code>col</code></em>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> <em class="structfield"><code>row</code></em>;</span></p></td>
+<td> the sheet row which the child is attached to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
+>gint</a> <em class="structfield"><code>col</code></em>;</span></p></td>
+<td> the sheet column which the child is attached to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"
+>guint16</a> <em class="structfield"><code>xpadding</code></em>;</span></p></td>
+<td> extra horizontal padding added around the widget 
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint16"
+>guint16</a> <em class="structfield"><code>ypadding</code></em>;</span></p></td>
+<td> extra vertical padding added around the widget 
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> <em class="structfield"><code>xexpand</code></em>;</span></p></td>
+<td> whether the sheet cell should expand to take up any extra horizontal space that has been allocated to the sheet.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> <em class="structfield"><code>yexpand</code></em>;</span></p></td>
+<td> whether the sheet cell should expand to take up any extra vertical space that has been allocated to the sheet.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> <em class="structfield"><code>xshrink</code></em>;</span></p></td>
+<td> whether the widget should shrink when the sheet cell shrinks horizontally.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> <em class="structfield"><code>yshrink</code></em>;</span></p></td>
+<td> whether the widget should shrink when the sheet cell shrinks vertically.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> <em class="structfield"><code>xfill</code></em>;</span></p></td>
+<td> whether the widget should fill the horizontal space allocated to it in the sheet cell.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><a
+href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gboolean"
+>gboolean</a> <em class="structfield"><code>yfill</code></em>;</span></p></td>
+<td> whether the widget should fill the vertical space allocated to it in the sheet cell
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2" lang="en">
@@ -946,8 +1081,15 @@ It should only be accessed through the functions described below.</p>
 <div class="refsect2" lang="en">
 <a name="GtkSheetRange"></a><h3>GtkSheetRange</h3>
 <pre class="programlisting">typedef struct {
+  gint row0,col0; /* upper-left cell */
+  gint rowi,coli; /* bottom-right cell */
 } GtkSheetRange;
 </pre>
+<p>
+The <span class="type">GtkSheetCellRange</span> struct is used in many GtkSheet functions to indicate 
+a range of cells of the sheet where some properties or changes must be made. 
+The range goes from the the upper-left cell determined by <em class="parameter"><code>row0</code></em> and <em class="parameter"><code>col0</code></em>, to
+the bottom-right cell indicated by <em class="parameter"><code>rowi</code></em> and <em class="parameter"><code>coli</code></em>.</p>
 <p>
 </p>
 </div>
@@ -1010,12 +1152,14 @@ It should only be accessed through the functions described below.</p>
 <a name="GtkSheetState"></a><h3>enum GtkSheetState</h3>
 <pre class="programlisting">typedef enum 
 {
-  GTK_SHEET_NORMAL,
-  GTK_SHEET_ROW_SELECTED,
-  GTK_SHEET_COLUMN_SELECTED,
-  GTK_SHEET_RANGE_SELECTED
+  GTK_SHEET_NORMAL,             /* Nothing selected */
+  GTK_SHEET_ROW_SELECTED,       /* A single row is selected */
+  GTK_SHEET_COLUMN_SELECTED,    /* A single column is selected */
+  GTK_SHEET_RANGE_SELECTED      /* A range of cells is selected */
 } GtkSheetState;
 </pre>
+<p>
+</p>
 <p>
 </p>
 </div>
@@ -1030,6 +1174,8 @@ It should only be accessed through the functions described below.</p>
   GTK_SHEET_BOTTOM_BORDER   = 1 &lt;&lt; 3 
 } GtkSheetBorderFlags; 
 </pre>
+<p>
+Used to build a border mask when setting border properties with <a class="link" href="GtkSheet.html#gtk-sheet-range-set-border" title="gtk_sheet_range_set_border ()"><code class="function">gtk_sheet_range_set_border()</code></a>.</p>
 <p>
 </p>
 </div>

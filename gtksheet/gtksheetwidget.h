@@ -43,16 +43,23 @@ typedef enum
   GTK_SHEET_IS_VISIBLE
 } GtkSheetAttrType;
 
-/* sheet->state */
-
+/**
+ * GtkSheetState:
+ */
 typedef enum 
 {
-  GTK_SHEET_NORMAL,
-  GTK_SHEET_ROW_SELECTED,
-  GTK_SHEET_COLUMN_SELECTED,
-  GTK_SHEET_RANGE_SELECTED
+  GTK_SHEET_NORMAL,             /* Nothing selected */
+  GTK_SHEET_ROW_SELECTED,       /* A single row is selected */
+  GTK_SHEET_COLUMN_SELECTED,    /* A single column is selected */
+  GTK_SHEET_RANGE_SELECTED      /* A range of cells is selected */
 } GtkSheetState;
-     
+
+
+/**
+ * GtkSheetBorderFlags:
+ * 
+ * Used to build a border mask when setting border properties with gtk_sheet_range_set_border().
+ */     
 typedef enum
 {
   GTK_SHEET_LEFT_BORDER     = 1 << 0, 
@@ -100,13 +107,35 @@ typedef struct _GtkSheetCellBorder     GtkSheetCellBorder;
 
 /**
  * GtkSheetChild:
+ * @widget: the child's widget
+ * @x: the horizontal pixel position of the widget in the gtksheet
+ * @y: the vertical pixel position of the widget in the gtksheet
+ * @attached_to_cell: whether the child's position is kept attached to the cell indicated by @row and @col
+ * @floating: whether the child size is kept within the area of the cell indicated by @row and @col
+ * @row: the sheet row which the child is attached to.
+ * @col: the sheet column which the child is attached to.
+ * @xpadding: extra horizontal padding added around the widget 
+ * @ypadding: extra vertical padding added around the widget 
+ * @xexpand: whether the sheet cell should expand to take up any extra horizontal space that has been allocated to the sheet.
+ * @yexpand: whether the sheet cell should expand to take up any extra vertical space that has been allocated to the sheet.
+ * @xshrink: whether the widget should shrink when the sheet cell shrinks horizontally.
+ * @yshrink: whether the widget should shrink when the sheet cell shrinks vertically.
+ * @xfill: whether the widget should fill the horizontal space allocated to it in the sheet cell.
+ * @yfill: whether the widget should fill the vertical space allocated to it in the sheet cell
  *
- * The GtkSheetChild struct contains only private data.
- * It should only be accessed through the functions described below.
+ * The GtkSheetChild struct is returned by the gtk_sheet_get_child_at() and 
+ * gtk_sheet_put() functions and contains information about the child's packing
+ * inside a GtkSheet.
+ * Previously, modifying this structure was the only way to modify child's 
+ * packing. However, now that child properties have been implemented, you 
+ * shouldn't use this method. To change child packing options
+ * set child properties with the gtk_container_child_set_property() or similar
+ * functions.
+ *
+ * Deprecated: 0.1.0: Use child properties instead.
  */
 struct _GtkSheetChild
-{
-  /*< private >*/ 
+{ 
   GtkWidget *widget;
   gint x,y ;
   gboolean attached_to_cell;
@@ -197,16 +226,17 @@ struct _GtkSheetCell
 };
 
 /**
- * GtkSheetCellRange:
+ * GtkSheetRange:
  *
- * The GtkSheetCellRange struct contains only private data.
- * It should only be accessed through the functions described below.
+ * The #GtkSheetCellRange struct is used in many GtkSheet functions to indicate 
+ * a range of cells of the sheet where some properties or changes must be made. 
+ * The range goes from the the upper-left cell determined by @row0 and @col0, to
+ * the bottom-right cell indicated by @rowi and @coli.
  */
 struct _GtkSheetRange
 {
-  /*< private >*/
   gint row0,col0; /* upper-left cell */
-  gint rowi,coli; /* lower-right cell */
+  gint rowi,coli; /* bottom-right cell */
 };
 
 

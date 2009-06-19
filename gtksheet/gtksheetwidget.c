@@ -5046,8 +5046,8 @@ gtk_sheet_range_clear (GtkSheet *sheet, const GtkSheetRange *range)
  * @sheet: a #GtkSheet.
  * @range: a #GtkSheetRange
  *
- * Clear range contents and remove links.
- * FIXME:: if range==NULL whole sheet is deleted? 
+ * Clear range contents and remove links. If range==NULL the whole sheet 
+ * will be deleted.
  */ 
 void
 gtk_sheet_range_delete (GtkSheet *sheet, const GtkSheetRange *range)
@@ -5189,8 +5189,9 @@ gtk_sheet_remove_link(GtkSheet *sheet, gint row, gint col)
  * @row: row number
  * @col: column number
  *
- * Get sheet->state.
- * Return value: a #GtkStateType: GTK_SHEET_NORMAL,GTK_SHEET_ROW_SELECTED,GTK_SHEET_COLUMN_SELECTED,GTK_SHEET_RANGE_SELECTED
+ * Get the cell state (GTK_STATE_SELECTED if it is selected or GTK_STATE_NORMAL
+ * if it is not).
+ * Return value: a #GtkStateType: GTK_STATE_NORMAL or GTK_STATE_SELECTED
  */ 
 GtkStateType
 gtk_sheet_cell_get_state (GtkSheet *sheet, gint row, gint col)

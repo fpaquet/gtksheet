@@ -1286,7 +1286,7 @@ gtk_sheet_class_init (GtkSheetClass * klass)
             gtksheet_VOID__INT_INT,
 	        G_TYPE_NONE, 2, G_TYPE_INT, G_TYPE_INT);
 
-  /**static void
+  /**
    * GtkSheet::clear-cell:
    * @sheet: the sheet widget that emitted the signal
    * @row: row number of cleared cell.
@@ -1578,14 +1578,14 @@ gtk_sheet_class_init (GtkSheetClass * klass)
 					      CHILD_PROP_X_PADDING,
 					      g_param_spec_uint ("x-padding", 
 								 "Horizontal padding", 
-								 "Extra space to put between the child and its left and right neighbors, in pixels",
+								 "Extra space to put between the child and the left and right cell borders, in pixels",
 								 0, 65535, 0,
 								 G_PARAM_READWRITE));
   gtk_container_class_install_child_property (container_class,
 					      CHILD_PROP_Y_PADDING,
 					      g_param_spec_uint ("y-padding", 
 								 "Vertical padding", 
-								 "Extra space to put between the child and its upper and lower neighbors, in pixels",
+								 "Extra space to put between the child and the upper and lower cell borders, in pixels",
 								 0, 65535, 0,
 								 G_PARAM_READWRITE));
 }

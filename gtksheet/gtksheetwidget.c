@@ -1156,7 +1156,7 @@ gtk_sheet_class_init (GtkSheetClass * klass)
    * @sheet: the sheet widget that emitted the signal
    * @select_range: the newly selected #GtkSheetRange
    *
-   * Emmited when a #GtkSheetRange has been selected.
+   * Emmited when a block of cells has been selected.
    */
    sheet_signals[SELECT_RANGE] =
     g_signal_new ("select-range",
@@ -1170,9 +1170,13 @@ gtk_sheet_class_init (GtkSheetClass * klass)
   /**
    * GtkSheet::clip-range:
    * @sheet: the sheet widget that emitted the signal
-   * @clip_range: the newly selected #GtkSheetRange
+   * @range: the range of cells that have been marked to be copied to the clipboard
    *
-   * Emmited when a #GtkSheetRange is clipping.
+   * Emitted when gtk_sheet_clip_range() method is called. The @range parameter 
+   * of the callback indicates the block of cells have been marked to be copied 
+   * to the clipboard. Note that your program is reposible for actually copying 
+   * the cell contents to the clipboard. The clip_range() method just marks the 
+   * cells to indicate that their respective contents are on the clipboard. 
    */
   sheet_signals[CLIP_RANGE] =
     g_signal_new ("clip-range",
@@ -1186,9 +1190,11 @@ gtk_sheet_class_init (GtkSheetClass * klass)
    /**
    * GtkSheet::resize-range:
    * @sheet: the sheet widget that emitted the signal
-   * @resize_range: the newly selected #GtkSheetRange
+   * @original_range:the orignal #GtkSheetRange range of selected cells.
+   * @new_range: the new resized #GtkSheetRange of selected cells 
    *
-   * Emmited when a #GtkSheetRange is resized.
+   * Emmited when a block of selected cells is resized by the user by clicking 
+   * in the border of the selected cells and dragging and dropping it. 
    */
   sheet_signals[RESIZE_RANGE] =
     g_signal_new ("resize-range",
@@ -1201,9 +1207,15 @@ gtk_sheet_class_init (GtkSheetClass * klass)
   /**
    * GtkSheet::move-range:
    * @sheet: the sheet widget that emitted the signal.
-   * @move_range: the newly selected #GtkSheetRange.
+   * @origin_range: a #GtkSheetRange specifying the block of cells dragged by the 
+   *                user
+   * @destiny_range: a #GtkSheetRange specifying the new positions for the dragged 
+   *                 cells according to where the user dropped them
    *
-   * Emmited when a #GtkSheetRange is moved.
+   * Emitted when the user drags a block of selected cells and drops them in a 
+   * different position in the sheet. Your program is responsible of actually 
+   * replacing the contents of the @destiny_range cells with the contents of the
+   * @origin_range cells. 
    */
   sheet_signals[MOVE_RANGE] =
     g_signal_new ("move-range",
@@ -1217,13 +1229,14 @@ gtk_sheet_class_init (GtkSheetClass * klass)
   /**
    * GtkSheet::traverse:
    * @sheet: the sheet widget that emitted the signal.
-   * @row: row number.
-   * @column: column number.
-   * @*new_row: FIXME:: What is this for?
-   * @*new_column: FIXME:: What is this for?
+   * @row: the previously active cell row number.
+   * @column: the previously active cell column number.
+   * @*new_row: a pointer to the new active cell row number 
+   * @*new_column: a pointer to the new active cell column number
    *
    * The "traverse" is emited before "deactivate_cell" and allows to veto the movement.
    * In such case, the entry will remain in the site and the other signals will not be emited.
+   * FIXME:: Should the user modify @new_row and @new_col ?
    */
   sheet_signals[TRAVERSE] =
     g_signal_new ("traverse",
@@ -3369,7 +3382,10 @@ gtk_sheet_select_column (GtkSheet * sheet,
  * @sheet: a #GtkSheet.
  * @range: #GtkSheetRange to be saved
  *
- * Save selected range to "clipboard". 
+ * Marks a block of cells to be copied to the clipboard. A dashed line will be
+ * drawn around the block of cells indicated by @range to indicate that the cell
+ * contents are copied to the clipboard. Only one range of cells can be clipped 
+ * at a time. This method emits the "clip-range" signal.
  */
 void
 gtk_sheet_clip_range (GtkSheet *sheet, const GtkSheetRange *range)

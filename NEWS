@@ -1,3 +1,12 @@
+gtksheet 0.2.0
+==============
+* Copied gtksheet tutorial from gtkextra-3 cvs
+* Generate API docs with gtk-doc
+* Several documentation fixes
+* Fix generation of marshalers and builtintypes
+* gtksheet test demonstrate copy to clipboard
+* Several small fixes
+
 gtksheet 0.1.0
 ==============
 * Fork of GtkSheet widget in gtkextra    

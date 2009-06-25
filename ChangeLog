@@ -1,3 +1,95 @@
+2009-06-25  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * gtksheet/gtksheetwidget.c: Documentation fixes
+
+2009-06-21  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * gtksheet/gtksheetwidget.c: Small documentation fixes
+
+2009-06-19  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * gtksheet/gtksheetwidget.c: Fix docs for remove_link and range_delete
+  methods
+
+2009-06-17  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * gtksheet/gtksheetwidget.h: Document GtkSheetChild GtkSheetRange
+  GtkSheetState GtkSheetBorderFalgs
+
+2009-06-16  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * Makefile.am, Makefile.in, gitlog2changelog.py: Script to generate GNU-style
+  ChangeLogs from git
+  (http://github.com/cryos/avogadro/blob/master/scripts/gitlog2changelog.py)
+
+  * gtksheet/gtkitementry.c: Handle GTK_MOVE_MENT_HORIZONTAL_PAGESin
+  gtk_entry_move_cursor, fixes compilation warning
+
+  * .gitignore: Added .gitignore
+
+  * gtksheet/Makefile.am, gtksheet/Makefile.in, gtksheet/gtksheet-marshal.c,
+  gtksheet/gtksheet-marshal.h, gtksheet/gtksheetfeatures.h: Fix generation of
+  marshalers and builtintypes
+
+  * gtksheet/gtksheet-marshal.c, gtksheet/gtksheet-marshal.h,
+  gtksheet/gtksheetfeatures.h: Track built files
+
+  * gtksheet/Makefile.am, gtksheet/Makefile.in: Try to solve
+  gtksheet-marshal.c/h generation
+
+  * docs/reference/gtksheet-sections.txt: More doc fixes
+
+  * docs/reference/gtksheet-docs.sgml, docs/reference/gtksheet-sections.txt,
+  docs/reference/gtksheet.types, gtksheet/gtkitementry.c,
+  gtksheet/gtksheetwidget.c: Documentation fixes
+
+  * configure.ac, docs/Makefile.am, docs/Makefile.in,
+  docs/tutorial/Makefile.am, docs/tutorial/Makefile.in,
+  docs/tutorial/gtksheet-tutorial.sgml,
+  docs/tutorial/images/gtksheet_cell_text.jpg,
+  docs/tutorial/images/gtksheet_new_sheet.jpg,
+  docs/tutorial/images/gtksheet_pack_combo.jpg,
+  docs/tutorial/images/gtksheet_pack_xpm.jpg,
+  docs/tutorial/images/gtksheet_range_bg.jpg: Add and adapt gtksheet tutorial
+  from GtkExtra3
+
+  * docs/AUTHORS, docs/COPYING, docs/Makefile.am, docs/Makefile.in: Add docs
+  authors and license
+
+  * Makefile.am, Makefile.in, aclocal.m4, configure.ac, docs/Makefile.am,
+  docs/Makefile.in, docs/reference/Makefile.am, docs/reference/Makefile.in,
+  docs/reference/compiling.sgml, docs/reference/gtksheet-docs.sgml,
+  docs/reference/gtksheet-sections.txt, docs/reference/gtksheet.types,
+  docs/reference/pics/gtksheet1.png, docs/reference/pics/gtksheet2.png,
+  docs/reference/pics/gtksheet3.png, docs/reference/resources.sgml,
+  docs/reference/screenshots.sgml, docs/reference/version.xml, gtk-doc.make,
+  gtksheet/Makefile.in, m4/gtk-doc.m4, m4/libtool.m4, m4/ltoptions.m4,
+  m4/ltsugar.m4, m4/ltversion.m4, m4/lt~obsolete.m4, m4/xml.m4: Copy and update
+  gtk-doc reference generation from GtkExtra
+
+  * gtksheet/testgtksheet.c: Demo implements copy handler
+
+2009-06-15  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * README, gtksheet-2.0.spec, gtksheet-2.0.spec.in: Update README and spec
+  file
+
+  * config.status, libtool: Ignore some autotools-generated files
+
+  * pygtksheet/Makefile, pygtksheet/bordercombo.py,
+  pygtksheet/sheet-addons.defs, pygtksheet/sheet.defs,
+  pygtksheet/sheet.override, pygtksheet/sheetmodule.c,
+  pygtksheet/sheetrange.override, pygtksheet/test_sheetmodule.py,
+  pygtksheet/test_sheetmodule_complex.py: Remove experimental python
+  bindings.\nNew python bindings in github.com/vhernandez/pygtksheet
+
+2009-06-13  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * config.status, configure.ac, libtool: Fix release version number
+
+  * ChangeLog, NEWS, TODO, config.status, configure.ac: Bump version, update
+  Changelog, NEWS, TODO
+
 2009-06-12 Víctor M. Hernández <victor.hr@gmail.com>
  * gtksheet/gtksheetwidget.c, pygtksheet/test_sheetmodule.py: Add floating,
  attached-to-cell, x, y, column, row properties

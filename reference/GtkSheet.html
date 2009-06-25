@@ -3240,7 +3240,10 @@ Select the column. The range is then highlighted, and the bounds are stored in s
 <pre class="programlisting">void                gtk_sheet_clip_range                (<a class="link" href="GtkSheet.html" title="GtkSheet">GtkSheet</a> *sheet,
                                                          const <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange">GtkSheetRange</a> *range);</pre>
 <p>
-Save selected range to "clipboard".</p>
+Marks a block of cells to be copied to the clipboard. A dashed line will be
+drawn around the block of cells indicated by <em class="parameter"><code>range</code></em> to indicate that the cell
+contents are copied to the clipboard. Only one range of cells can be clipped 
+at a time. This method emits the "clip-range" signal.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -3716,8 +3719,8 @@ Clear range contents. If range==NULL the whole sheet will be cleared.</p>
 <pre class="programlisting">void                gtk_sheet_range_delete              (<a class="link" href="GtkSheet.html" title="GtkSheet">GtkSheet</a> *sheet,
                                                          const <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange">GtkSheetRange</a> *range);</pre>
 <p>
-Clear range contents and remove links.
-FIXME:: if range==NULL whole sheet is deleted?</p>
+Clear range contents and remove links. If range==NULL the whole sheet 
+will be deleted.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -3749,7 +3752,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
 >gint</a> col);</pre>
 <p>
-Get sheet-&gt;state.</p>
+Get the cell state (GTK_STATE_SELECTED if it is selected or GTK_STATE_NORMAL
+if it is not).</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -3772,7 +3776,7 @@ Get sheet-&gt;state.</p>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td> a <span class="type">""</span> GTK_SHEET_NORMAL,GTK_SHEET_ROW_SELECTED,GTK_SHEET_COLUMN_SELECTED,GTK_SHEET_RANGE_SELECTED
+<td> a <span class="type">""</span> GTK_STATE_NORMAL or GTK_STATE_SELECTED
 </td>
 </tr>
 </tbody>
@@ -5212,7 +5216,7 @@ href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkAttachOption
 <pre class="programlisting">  "x-padding"                <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
 >guint</a>                 : Read / Write</pre>
-<p>Extra space to put between the child and its left and right neighbors, in pixels.</p>
+<p>Extra space to put between the child and the left and right cell borders, in pixels.</p>
 <p>Allowed values: &lt;= 65535</p>
 <p>Default value: 0</p>
 </div>
@@ -5240,7 +5244,7 @@ href="/usr/share/gtk-doc/html/gtk/gtk-Standard-Enumerations.html#GtkAttachOption
 <pre class="programlisting">  "y-padding"                <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#guint"
 >guint</a>                 : Read / Write</pre>
-<p>Extra space to put between the child and its upper and lower neighbors, in pixels.</p>
+<p>Extra space to put between the child and the upper and lower cell borders, in pixels.</p>
 <p>Allowed values: &lt;= 65535</p>
 <p>Default value: 0</p>
 </div>
@@ -5339,13 +5343,15 @@ It is emitted after each key press in cell and after deactivating cell.</p>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GtkSheet.html" title="GtkSheet">GtkSheet</a> *sheet,
                                                         <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a>      arg1,
+>gint</a>      row,
                                                         <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gint"
->gint</a>      arg2,
+>gint</a>      column,
                                                         <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 >gpointer</a>  user_data)      : Run Last</pre>
+<p>
+Emited when when the content of the cell is erased.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -5353,17 +5359,17 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sheet</code></em> :</span></p></td>
-<td>the object which received the signal.
+<td> the sheet widget that emitted the signal
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>arg1</code></em> :</span></p></td>
-<td>
+<td><p><span class="term"><em class="parameter"><code>row</code></em> :</span></p></td>
+<td> row number of cleared cell.
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>arg2</code></em> :</span></p></td>
-<td>
+<td><p><span class="term"><em class="parameter"><code>column</code></em> :</span></p></td>
+<td> column number of cleared cell.
 </td>
 </tr>
 <tr>
@@ -5377,12 +5383,16 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 <div class="refsect2" lang="en">
 <a name="GtkSheet-clip-range"></a><h3>The <code class="literal">"clip-range"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GtkSheet.html" title="GtkSheet">GtkSheet</a>      *sheet,
-                                                        <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange">GtkSheetRange</a> *clip_range,
+                                                        <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange">GtkSheetRange</a> *range,
                                                         <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>       user_data)       : Run Last</pre>
+>gpointer</a>       user_data)      : Run Last</pre>
 <p>
-Emmited when a <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange"><span class="type">GtkSheetRange</span></a> is clipping.</p>
+Emitted when <a class="link" href="GtkSheet.html#gtk-sheet-clip-range" title="gtk_sheet_clip_range ()"><code class="function">gtk_sheet_clip_range()</code></a> method is called. The <em class="parameter"><code>range</code></em> parameter
+of the callback indicates the block of cells have been marked to be copied 
+to the clipboard. Note that your program is reposible for actually copying 
+the cell contents to the clipboard. The <code class="function">clip_range()</code> method just marks the 
+cells to indicate that their respective contents are on the clipboard.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -5394,8 +5404,8 @@ Emmited when a <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkShee
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>clip_range</code></em> :</span></p></td>
-<td> the newly selected <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange"><span class="type">GtkSheetRange</span></a>
+<td><p><span class="term"><em class="parameter"><code>range</code></em> :</span></p></td>
+<td> the range of cells that have been marked to be copied to the clipboard
 </td>
 </tr>
 <tr>
@@ -5453,13 +5463,16 @@ Emmited whenever a cell is deactivated(you click on other cell or start a new se
 <div class="refsect2" lang="en">
 <a name="GtkSheet-move-range"></a><h3>The <code class="literal">"move-range"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GtkSheet.html" title="GtkSheet">GtkSheet</a>      *sheet,
-                                                        <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange">GtkSheetRange</a> *move_range,
-                                                        <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange">GtkSheetRange</a> *arg2,
+                                                        <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange">GtkSheetRange</a> *origin_range,
+                                                        <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange">GtkSheetRange</a> *destiny_range,
                                                         <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>       user_data)       : Run Last</pre>
+>gpointer</a>       user_data)          : Run Last</pre>
 <p>
-Emmited when a <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange"><span class="type">GtkSheetRange</span></a> is moved.</p>
+Emitted when the user drags a block of selected cells and drops them in a 
+different position in the sheet. Your program is responsible of actually 
+replacing the contents of the <em class="parameter"><code>destiny_range</code></em> cells with the contents of the
+<em class="parameter"><code>origin_range</code></em> cells.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -5471,8 +5484,15 @@ Emmited when a <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkShee
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>move_range</code></em> :</span></p></td>
-<td> the newly selected <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange"><span class="type">GtkSheetRange</span></a>.
+<td><p><span class="term"><em class="parameter"><code>origin_range</code></em> :</span></p></td>
+<td> a <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange"><span class="type">GtkSheetRange</span></a> specifying the block of cells dragged by the 
+               user
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>destiny_range</code></em> :</span></p></td>
+<td> a <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange"><span class="type">GtkSheetRange</span></a> specifying the new positions for the dragged 
+                cells according to where the user dropped them
 </td>
 </tr>
 <tr>
@@ -5570,13 +5590,14 @@ Emited when the height of a row is modified.</p>
 <div class="refsect2" lang="en">
 <a name="GtkSheet-resize-range"></a><h3>The <code class="literal">"resize-range"</code> signal</h3>
 <pre class="programlisting">void                user_function                      (<a class="link" href="GtkSheet.html" title="GtkSheet">GtkSheet</a>      *sheet,
-                                                        <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange">GtkSheetRange</a> *resize_range,
-                                                        <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange">GtkSheetRange</a> *arg2,
+                                                        <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange">GtkSheetRange</a> *original_range,
+                                                        <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange">GtkSheetRange</a> *new_range,
                                                         <a
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
->gpointer</a>       user_data)         : Run Last</pre>
+>gpointer</a>       user_data)           : Run Last</pre>
 <p>
-Emmited when a <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange"><span class="type">GtkSheetRange</span></a> is resized.</p>
+Emmited when a block of selected cells is resized by the user by clicking 
+in the border of the selected cells and dragging and dropping it.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -5588,8 +5609,13 @@ Emmited when a <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkShee
 </td>
 </tr>
 <tr>
-<td><p><span class="term"><em class="parameter"><code>resize_range</code></em> :</span></p></td>
-<td> the newly selected <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange"><span class="type">GtkSheetRange</span></a>
+<td><p><span class="term"><em class="parameter"><code>original_range</code></em> :</span></p></td>
+<td>the orignal <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange"><span class="type">GtkSheetRange</span></a> range of selected cells.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>new_range</code></em> :</span></p></td>
+<td> the new resized <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange"><span class="type">GtkSheetRange</span></a> of selected cells 
 </td>
 </tr>
 <tr>
@@ -5642,7 +5668,7 @@ Emmited when a column has been selected.</p>
 href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 >gpointer</a>       user_data)         : Run Last</pre>
 <p>
-Emmited when a <a class="link" href="GtkSheet.html#GtkSheetRange" title="GtkSheetRange"><span class="type">GtkSheetRange</span></a> has been selected.</p>
+Emmited when a block of cells has been selected.</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -5808,7 +5834,8 @@ href="/usr/share/gtk-doc/html/glib/glib-Basic-Types.html#gpointer"
 >gpointer</a>  user_data)        : Run Last</pre>
 <p>
 The "traverse" is emited before "deactivate_cell" and allows to veto the movement.
-In such case, the entry will remain in the site and the other signals will not be emited.</p>
+In such case, the entry will remain in the site and the other signals will not be emited.
+FIXME:: Should the user modify <em class="parameter"><code>new_row</code></em> and <em class="parameter"><code>new_col</code></em> ?</p>
 <p>
 </p>
 <div class="variablelist"><table border="0">
@@ -5821,22 +5848,22 @@ In such case, the entry will remain in the site and the other signals will not b
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>row</code></em> :</span></p></td>
-<td> row number.
+<td> the previously active cell row number.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>column</code></em> :</span></p></td>
-<td> column number.
+<td> the previously active cell column number.
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>*new_row</code></em> :</span></p></td>
-<td> FIXME:: What is this for?
+<td> a pointer to the new active cell row number 
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>*new_column</code></em> :</span></p></td>
-<td> FIXME:: What is this for?
+<td> a pointer to the new active cell column number
 </td>
 </tr>
 <tr>

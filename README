@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This library is gtksheet version 0.1.0. It is a fork of the GtkSheet widget
+This library is gtksheet version 0.2.0. It is a fork of the GtkSheet widget
 included in the GTK+extra library. It includes the GtkSheet widget, a widget
 displaying a spreadsheet-like matrix and GtkItemEntry widget, a GtkEntry 
 derivative to display data in the GtkSheet.

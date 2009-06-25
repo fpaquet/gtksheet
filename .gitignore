@@ -7,6 +7,7 @@ config.h
 config.log
 configure
 gtksheet-2.0.pc
+gtksheet-2.0.spec
 libtool
 Makefile
 autom4te.cache/*

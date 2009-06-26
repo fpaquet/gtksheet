@@ -5,6 +5,8 @@
 *.l[oa]
 *.so
 *.stamp
+Makefile
+Makefile.in
 aclocal.m4
 autoregen.sh
 config.guess
@@ -14,11 +16,13 @@ config.log
 config.status
 config.sub
 configure
+depcomp
 gtksheet-2.0.pc
 gtksheet-2.0.spec
+install-sh
 libtool
-Makefile
-Makefile.in
+ltmain.sh
+missingg
 autom4te.cache/*
 gtksheet/Makefile
 gtksheet/Makefile.in

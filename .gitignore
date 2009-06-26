@@ -2,6 +2,7 @@
 *.l[oa]
 *.so
 *.stamp
+autoregen.sh
 config.status
 config.h
 config.log

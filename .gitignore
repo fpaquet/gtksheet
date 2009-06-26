@@ -5,6 +5,7 @@
 *.l[oa]
 *.so
 *.stamp
+aclocal.m4
 autoregen.sh
 config.guess
 config.h.in

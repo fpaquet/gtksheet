@@ -20,7 +20,7 @@ if test `uname` = FreeBSD -a -e macros/$package.0.m4 ; then
 fi
 
 LIBTOOLIZE="libtoolize --copy --force --automake"
-ACLOCAL="aclocal -Im4"
+ACLOCAL="aclocal -I m4"
 AUTOCONF=autoconf
 AUTOHEADER=autoheader
 AUTOMAKE="automake --add-missing"

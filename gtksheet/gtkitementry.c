@@ -180,6 +180,54 @@ static void         get_widget_window_size             (GtkEntry       *entry,
 							gint           *width,
 							gint           *height);
 
+/* Properties */
+enum {
+    PROP_0,
+
+    PROP_JUSTIFICATION,
+};
+
+static void
+gtk_item_entry_set_property (GObject      *object,
+                             guint         property_id,
+                             const GValue *value,
+                             GParamSpec   *pspec)
+{
+  GtkItemEntry *self = GTK_ITEM_ENTRY (object);
+
+  switch (property_id)
+    {
+    case PROP_JUSTIFICATION:
+      gtk_item_entry_set_justification(self, g_value_get_enum(value));
+      break;
+    default:
+      /* We don't have any other property... */
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+static void
+gtk_item_entry_get_property (GObject    *object,
+                             guint       property_id,
+                             GValue     *value,
+                             GParamSpec *pspec)
+{
+  GtkItemEntry *self = GTK_ITEM_ENTRY (object);
+
+  switch (property_id)
+    {
+    case PROP_JUSTIFICATION:
+      g_value_set_enum (value, gtk_item_entry_get_justification(self));
+      break;
+    default:
+      /* We don't have any other property... */
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      break;
+    }
+}
+
+
 /* Register our widget */
 G_DEFINE_TYPE_EXTENDED(GtkItemEntry,
                        gtk_item_entry,
@@ -189,13 +237,18 @@ G_DEFINE_TYPE_EXTENDED(GtkItemEntry,
                                              gtk_item_entry_editable_init));
 
 static void
-gtk_item_entry_class_init (GtkItemEntryClass *class)
+gtk_item_entry_class_init (GtkItemEntryClass *klass)
 {
-  GtkWidgetClass *widget_class;
-  GtkEntryClass *entry_class;
+  GtkWidgetClass *widget_class; 
+  GtkEntryClass *entry_class; 
+  GObjectClass *gobject_class; 
 
-  widget_class = (GtkWidgetClass*) class;
-  entry_class = (GtkEntryClass *) class;
+  entry_class = (GtkEntryClass *) klass;
+  widget_class = (GtkWidgetClass*) klass; 
+  gobject_class = G_OBJECT_CLASS (klass);
+
+  gobject_class->set_property = gtk_item_entry_set_property;
+  gobject_class->get_property = gtk_item_entry_get_property;
 
   widget_class->realize = gtk_entry_realize;
   widget_class->size_request = gtk_entry_size_request;
@@ -209,6 +262,15 @@ gtk_item_entry_class_init (GtkItemEntryClass *class)
   entry_class->move_cursor = gtk_entry_move_cursor;
   entry_class->insert_at_cursor = gtk_entry_insert_at_cursor;
   entry_class->delete_from_cursor = gtk_entry_delete_from_cursor;
+
+  g_object_class_install_property (gobject_class,
+                                   PROP_JUSTIFICATION,
+                                   g_param_spec_enum("justification",
+                                                     "Justification",
+                                                     "Justification of the text in the item entry",
+                                                      GTK_TYPE_JUSTIFICATION,
+                                                      GTK_JUSTIFY_LEFT,
+                                                      G_PARAM_READWRITE));
 
 }
 
@@ -2247,6 +2309,22 @@ gtk_item_entry_set_justification(GtkItemEntry *entry, GtkJustification just)
   g_return_if_fail (GTK_IS_ITEM_ENTRY (entry));
 
   entry->justification = just;
+}
+
+/**
+ * gtk_item_entry_get_justification:
+ * @entry: a #GtkItemEntry
+ *
+ * Gets justification of the @entry.
+ *
+ * Return value: a #GtkJustification : GTK_JUSTIFY_LEFT,GTK_JUSTIFY_RIGHT,GTK_JUSTIFY_CENTER,GTK_JUSTIFY_FILL
+ */
+GtkJustification
+gtk_item_entry_get_justification(GtkItemEntry *entry)
+{
+  g_return_val_if_fail (GTK_IS_ITEM_ENTRY (entry), 0);
+
+  return entry->justification;
 }
 
 

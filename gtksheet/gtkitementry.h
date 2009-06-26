@@ -60,8 +60,9 @@ void       gtk_item_entry_set_text            (GtkItemEntry *entry,
                                                const gchar *text,
                                                GtkJustification justification);
 
-void       gtk_item_entry_set_justification (GtkItemEntry        *entry,
-					     GtkJustification   just);
+GtkJustification gtk_item_entry_get_justification (GtkItemEntry *entry);
+void       gtk_item_entry_set_justification(GtkItemEntry        *entry,
+                                            GtkJustification   just);
 
 void       gtk_item_entry_set_cursor_visible 	(GtkItemEntry *entry,
 					 	 gboolean visible);

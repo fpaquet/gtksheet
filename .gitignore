@@ -1,3 +1,6 @@
+*~
+*.deps
+*.msg
 *.[oa]
 *.l[oa]
 *.so

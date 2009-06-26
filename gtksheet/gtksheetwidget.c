@@ -9887,6 +9887,10 @@ CheckBounds(GtkSheet *tbl, gint row, gint col)
 GtkSheetChild *
 gtk_sheet_put(GtkSheet *sheet, GtkWidget *child, gint x, gint y)
 {
+  g_return_val_if_fail(GTK_IS_SHEET (sheet), NULL);
+  g_return_val_if_fail(GTK_IS_WIDGET(child), NULL);
+  g_return_val_if_fail(child->parent == NULL, NULL);
+
   GtkRequisition child_requisition;
   GtkSheetChild *child_info;
 
@@ -10019,6 +10023,10 @@ gtk_sheet_attach        (GtkSheet *sheet,
                          gint xpadding,
                          gint ypadding)
 {
+  g_return_if_fail(GTK_IS_SHEET (sheet));
+  g_return_if_fail(GTK_IS_WIDGET(widget));
+  g_return_if_fail(widget->parent == NULL);
+
   GdkRectangle area;
   GtkSheetChild *child = NULL;
 
@@ -10044,21 +10052,22 @@ gtk_sheet_attach        (GtkSheet *sheet,
 
   sheet->children = g_list_append(sheet->children, child);
 
+  gtk_widget_set_parent(widget, GTK_WIDGET(sheet));
+
   gtk_sheet_get_cell_area(sheet, row, col, &area);
 
   child->x = area.x + child->xpadding;
   child->y = area.y + child->ypadding;
 
   if (GTK_WIDGET_VISIBLE(GTK_WIDGET(sheet)))
-    {
-       if(GTK_WIDGET_REALIZED(GTK_WIDGET(sheet)) &&
-          (!GTK_WIDGET_REALIZED(widget) || GTK_WIDGET_NO_WINDOW(widget)))
+  {
+     if (GTK_WIDGET_REALIZED(GTK_WIDGET(sheet)) &&
+        (!GTK_WIDGET_REALIZED(widget) || GTK_WIDGET_NO_WINDOW(widget)))
         gtk_sheet_realize_child(sheet, child);
 
-       if(GTK_WIDGET_MAPPED(GTK_WIDGET(sheet)) &&
-          !GTK_WIDGET_MAPPED(widget))
+     if(GTK_WIDGET_MAPPED(GTK_WIDGET(sheet)) && !GTK_WIDGET_MAPPED(widget))
         gtk_widget_map(widget);
-    }
+  }
 
   gtk_sheet_position_child(sheet, child);
 
@@ -10088,6 +10097,10 @@ gtk_sheet_button_attach		(GtkSheet *sheet,
 				 GtkWidget *widget, 
 				 gint row, gint col)
 {
+  g_return_if_fail(GTK_IS_SHEET (sheet));
+  g_return_if_fail(GTK_IS_WIDGET(widget));
+  g_return_if_fail(widget->parent == NULL);
+
   GtkSheetButton *button;
   GtkSheetChild *child;
   GtkRequisition button_requisition;
@@ -10118,6 +10131,8 @@ gtk_sheet_button_attach		(GtkSheet *sheet,
   }
 
   sheet->children = g_list_append(sheet->children, child);
+
+  gtk_widget_set_parent(widget, GTK_WIDGET(sheet));
 
   gtk_sheet_button_size_request(sheet, button, &button_requisition);
 
@@ -10526,7 +10541,8 @@ gtk_sheet_realize_child(GtkSheet *sheet, GtkSheetChild *child)
       gtk_widget_set_parent_window(child->widget, sheet->sheet_window);
   }
 
-  gtk_widget_set_parent(child->widget, widget);
+  if (child->widget->parent == NULL)
+      gtk_widget_set_parent(child->widget, widget);
 }
 
 

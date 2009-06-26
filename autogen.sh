@@ -20,10 +20,10 @@ if test `uname` = FreeBSD -a -e macros/$package.0.m4 ; then
 fi
 
 LIBTOOLIZE="libtoolize --copy --force --automake"
-ACLOCAL=aclocal -Im4
+ACLOCAL="aclocal -Im4"
 AUTOCONF=autoconf
 AUTOHEADER=autoheader
-AUTOMAKE="automake -a -c --foreign"
+AUTOMAKE="automake --add-missing"
 GTKDOCIZE=gtkdocize
 
 # Get m4 from current PATH!

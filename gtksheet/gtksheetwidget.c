@@ -8650,6 +8650,27 @@ new_row_height (GtkSheet * sheet,
   return height;
 }
 
+
+/**
+ * gtk_sheet_get_column_width:
+ * @sheet: a #GtkSheet.
+ * @column: a column number.
+ *
+ * Returns the width of @column.
+ *
+ * Return value: the width of the column.
+ */ 
+guint
+gtk_sheet_get_column_width (GtkSheet * sheet,
+			    gint column)
+{
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), 0);
+    if (column < 0 || column > sheet->maxcol)
+        return 0;
+
+    return sheet->column[column].width;
+}
+
 /**
  * gtk_sheet_set_column_width:
  * @sheet: a #GtkSheet.
@@ -8688,6 +8709,26 @@ gtk_sheet_set_column_width (GtkSheet * sheet,
   g_signal_emit (sheet, sheet_signals[CHANGED], 0, -1, column);
   g_signal_emit (sheet, sheet_signals[NEW_COL_WIDTH], 0, column, width);
 
+}
+
+/**
+ * gtk_sheet_get_row_height:
+ * @sheet: a #GtkSheet.
+ * @column: a column number.
+ *
+ * Returns the height of @row.
+ *
+ * Return value: the height of the row.
+ */ 
+guint
+gtk_sheet_get_row_height (GtkSheet * sheet,
+			    gint row)
+{
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), 0);
+    if (row < 0 || row > sheet->maxcol)
+        return 0;
+
+    return sheet->row[row].height;
 }
 
 /**

@@ -823,11 +823,22 @@ gtk_sheet_get_cell_area (GtkSheet *sheet,
                          gint column,
                          GdkRectangle *area);
 
+/* get column width */
+guint 
+gtk_sheet_get_column_width (GtkSheet * sheet,
+			    gint column);
+
 /* set column width */
 void
 gtk_sheet_set_column_width (GtkSheet * sheet,
 			    gint column,
 			    guint width);
+
+/* get row height */
+guint
+gtk_sheet_get_row_height (GtkSheet * sheet,
+			  gint row);
+
 
 /* set row height */
 void

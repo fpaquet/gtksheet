@@ -85,7 +85,7 @@ G_DEFINE_TYPE (TestMainWindow, test_main_window, GTK_TYPE_WINDOW);
 static void
 test_main_window_class_init (TestMainWindowClass *klass)
 {
-    GObjectClass *object_class = G_OBJECT_CLASS (klass); 
+    /*GObjectClass *object_class = G_OBJECT_CLASS (klass); */
 
     /*object_class->finalize = test_main_window_finalize; */
 }
@@ -144,8 +144,8 @@ test_main_window_init (TestMainWindow *self)
 
         g_signal_connect(G_OBJECT(sheet), "activate",
                          (GCallback)activate_sheet_cell_cb, self);
-        /*g_signal_connect(G_OBJECT(self->sheet), "notify::selected-range", 
-                         (GCallback)_selected_range_cb, self);*/
+        g_signal_connect(G_OBJECT(sheet), "notify::selected-range", 
+                         (GCallback)_selected_range_cb, self);
         g_signal_connect( gtk_sheet_get_entry(sheet), "changed", 
                           (GCallback)show_entry_cb, self);
         /*g_signal_connect( self->sheet, "changed", (GCallback)sheet_changed_cb, self);*/
@@ -1179,7 +1179,9 @@ activate_sheet_cell_cb(GtkWidget *widget, gint row, gint column, gpointer data)
     GValue val = {0, };
     g_value_init(&val, G_TYPE_VALUE_ARRAY);
     g_object_get_property(G_OBJECT(sheet), "active-cell", &val);
-    GValueArray *a = g_value_get_boxed(&val);
+    GValueArray *active_cell_array = g_value_get_boxed(&val);
+    if (!active_cell_array)
+        g_warning("Could not retrieve the active cell!");
     
     gtk_color_button_set_color(GTK_COLOR_BUTTON(self->bg_color_button),
                                &(attrs.background));

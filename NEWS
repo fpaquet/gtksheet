@@ -6,6 +6,7 @@ gtksheet 0.2.1
 * New GtkSheet "unselect-range" signal
 * Important bugfix: Fix compilation of gtkitementry.c in GTK+ 2.18 by using 
     the new GtkEntryBuffer object. For lower GTK+ versions the old code is used.
+    (Many thanks to John Cupitt for his patch to solve this)
 * Several small fixes
 
 gtksheet 0.2.0

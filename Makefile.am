@@ -8,6 +8,7 @@ AUTOMAKE_OPTIONS = 1.7
 
 EXTRA_DIST = \
 	TODO \
+	autogen.sh \
 	config.h.win32 \
 	gtksheet-2.0.spec \
 	ChangeLog.gtkextra \

@@ -1,3 +1,61 @@
+2009-11-29  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * configure.ac, docs/reference/version.xml: Bump version
+
+  * README: Update readme
+
+2009-11-25  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * README: Update README with new website url
+
+  * m4/gtk-doc.m4: Include gtk-doc.m4
+
+2009-11-09  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * gtksheet/gtkitementry.c: Fix gtkitementry for GTK >= 18 using
+  GtkEntryBuffer
+
+2009-10-31  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * gtksheet/testgtksheet.c: Fix compiler warnings in testgtksheet.c
+
+  * gtksheet/gtksheetwidget.c, gtksheet/gtksheetwidget.h: Add unselect range
+  property
+
+2009-06-28  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * gtksheet/gtksheetwidget.c, gtksheet/gtksheetwidget.h: new methods:
+  gtk_sheet_get_row_height() and gtk_sheet_get_column_width()
+
+2009-06-26  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * .gitignore, depcomp, install-sh, ltmain.sh, missing: Ignore autogen.sh
+  generated files
+
+  * .gitignore, aclocal.m4, autogen.sh: Fix aclocal generation
+
+  * gtksheet/gtkitementry.c, gtksheet/gtkitementry.h: Add justification
+  property to GtkItemEntry and add gtk_item_entry_get_justification() method)
+
+  * .gitignore: Ignore even more stuff (Bert Timmerman)
+
+2009-06-26  Bert Timmerman <bert.timmerman@xs4all.nl>
+
+  * gtksheet/gtkitementry.c: Fixed another typo. 
+
+  * README: Correction of a typo. 
+
+2009-06-26  Víctor M. Hernández <victor.hr@gmail.com>
+
+  * gtksheet/gtksheetwidget.c: Fix set child parent immediately in
+  gtk_sheet_attach and gtk_sheet_button_attach
+
+  * .gitignore, autogen.sh, config.h.in: Fixes to autogen.sh
+
+  * .gitignore, Makefile.in, autogen.sh, config.guess, config.h.in, config.sub,
+  docs/Makefile.in, docs/reference/Makefile.in, docs/tutorial/Makefile.in,
+  gtksheet/Makefile.in: Add autogen script
+
 2009-06-25  Víctor M. Hernández <victor.hr@gmail.com>
 
   * gtksheet/gtksheetwidget.c: Documentation fixes

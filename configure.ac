@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl Created by Anjuta application wizard.
 
-AC_INIT(gtksheet, 0.2.0)
+AC_INIT(gtksheet, 0.2.1)
 
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS+set}
@@ -17,7 +17,7 @@ AC_DIVERT_PUSH(NOTICE)dnl
 
 GTK_SHEET_MAJOR_VERSION=0
 GTK_SHEET_MINOR_VERSION=2
-GTK_SHEET_MICRO_VERSION=0
+GTK_SHEET_MICRO_VERSION=1
 GTK_SHEET_INTERFACE_AGE=0
 GTK_SHEET_BINARY_AGE=0
 GTK_SHEET_VERSION=$GTK_SHEET_MAJOR_VERSION.$GTK_SHEET_MINOR_VERSION.$GTK_SHEET_MICRO_VERSION

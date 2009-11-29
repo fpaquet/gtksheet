@@ -1,9 +1,9 @@
 General Information
 ===================
 
-This library is gtksheet version 0.2.0. It is a fork of the GtkSheet widget
+This library is gtksheet version 0.2.1. It is a fork of the GtkSheet widget
 included in the GTK+extra library. It includes the GtkSheet widget, a widget
-displaying a spreadsheet-like matrix and GtkItemEntry widget, a GtkEntry 
+displaying a spreadsheet-like matrix and GtkItemEntry, a GtkEntry 
 derivative to display data in the GtkSheet.
 
 The library is written in C and requires GTK+ version 2.x
@@ -18,5 +18,12 @@ See the file 'INSTALL'
 Documentation
 =============
 
-In preparation. Read the header files and test programs in the directory 
-./src for further information and examples.
+The library API is documented using gtk-doc, to enable the generation of this
+documentation invoke the ./configure script with the --enable-gtk-doc option. 
+This reference is located in /doc/reference.
+
+Moreover a tutorial describing the use of the GtkSheet widget is include in
+/doc/tutorial.
+
+Also look at the /src/testgtksheet.c file as an example of how to use GtkSheet
+to build a spreadsheet interface.

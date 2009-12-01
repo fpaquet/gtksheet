@@ -94,7 +94,7 @@ INCLUDES = -I$(top_buildir) -I$(top_srcdir) $(GTK_CFLAGS)
 lib_LTLIBRARIES = $(gtksheettargetlib)
 
 gtksheetincludedir = $(includedir)/gtksheet-2.0/gtksheet
-gtksheetinclude_HEADERS = $(gtksheet_public_h_sources) $(gtksheet_built_public_sources)
+gtksheetinclude_HEADERS = $(gtksheet_public_h_sources)
 
 libgtksheet_x11_2_0_la_SOURCES = $(gtksheet_c_sources)
 libgtksheet_linux_fb_2_0_la_SOURCES = $(gtksheet_c_sources)

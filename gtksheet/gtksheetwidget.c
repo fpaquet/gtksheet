@@ -1171,7 +1171,7 @@ gtk_sheet_class_init (GtkSheetClass * klass)
    /**
     * GtkSheet::unselect-range:
     * @sheet: the sheet widget that emitted the signal
-    * @range: the range of cells that have been marked to be copied to the clipboard
+    * @range: the range of cells that are no longer selected
     *
     * Emitted when a block of cells has been unselected. The @range parameter
     * indicates the cells which are no longer selected.

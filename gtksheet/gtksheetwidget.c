@@ -2107,10 +2107,11 @@ gtk_sheet_autoresize_column (GtkSheet *sheet, gint column)
 
   g_return_if_fail (sheet != NULL);
   g_return_if_fail (GTK_IS_SHEET (sheet));
-  if (column > sheet->maxcol || column < 0) return;
+  if (column > sheet->maxcol || column < 0 || column > sheet->maxalloccol) return;
 
-  for (row = 0; row < sheet->maxrow; row++){
-    GtkSheetCell      **cell = &sheet->data[row][column];
+  for (row = 0; row < sheet->maxrow && row <= sheet->maxallocrow; row++){
+    GtkSheetCell **cell = &sheet->data[row][column];
+    
     if (*cell && (*cell)->text && strlen((*cell)->text) > 0){
       GtkSheetCellAttr attributes;
 
@@ -6360,7 +6361,7 @@ gtk_sheet_button_press (GtkWidget * widget,
 
 /*
   if(event->type != GDK_BUTTON_PRESS) return TRUE;
-*/
+*/    
   gdk_window_get_pointer(widget->window, NULL, NULL, &mods);
   if(!(mods & GDK_BUTTON1_MASK)) return TRUE;
 
@@ -6412,7 +6413,7 @@ gtk_sheet_button_press (GtkWidget * widget,
 
   /* the sheet itself does not handle other than single click events */
   if(event->type != GDK_BUTTON_PRESS) return FALSE;
-
+    
   /* selections on the sheet */
     if(event->window == sheet->sheet_window){
      gtk_widget_get_pointer (widget, &x, &y);

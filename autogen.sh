@@ -3,7 +3,7 @@
 # Script to do the configuration work required before running configure
 # when starting from fresh CVS checkout, or cvs update
 
-package="gtkextra-2"
+package="gtkextra-3"
 
 # a silly hack that generates autoregen.sh but it's handy
 echo "#!/bin/sh" > autoregen.sh

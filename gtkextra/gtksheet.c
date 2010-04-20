@@ -87,8 +87,8 @@ enum
 #define TIMEOUT_FLASH 200
 #define TIME_INTERVAL 8
 #define COLUMN_MIN_WIDTH 10
-#define MINROWS 1
-#define MINCOLS 1
+#define MINROWS 0
+#define MINCOLS 0
 #define MAXLENGTH 30
 #define CELLOFFSET 4
 #define DEFAULT_COLUMN_WIDTH 80
@@ -8995,11 +8995,11 @@ DeleteRow(GtkSheet *tbl, gint row, gint nrows)
     }
 
     tbl->maxallocrow-=MIN(nrows,tbl->maxallocrow-row+1);
-    tbl->maxallocrow = MIN(tbl->maxallocrow, tbl->maxrow);
 
   }
 
   tbl->maxrow-=nrows;
+  tbl->maxallocrow = MIN(tbl->maxallocrow, tbl->maxrow);
   gtk_sheet_recalc_top_ypixels(tbl, 0);
   return TRUE;
 } 

@@ -408,7 +408,7 @@ gtk_plot_box_draw_legend(GtkPlotData *data, gint x, gint y)
 
   g_return_if_fail(data->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(data->plot));
-  g_return_if_fail(GTK_WIDGET_REALIZED(data->plot));
+  //g_return_if_fail(GTK_WIDGET_REALIZED(data->plot));  // is this required?? RRR
 
   plot = data->plot;
   area.x = GTK_WIDGET(plot)->allocation.x;

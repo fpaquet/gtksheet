@@ -43,6 +43,8 @@ struct _GtkItemEntry
   GtkEntry parent;
 
   gint text_max_size;
+  gint16 item_text_size;
+  gint16 item_n_bytes;
 
   GtkJustification justification;
 };

@@ -199,11 +199,11 @@ EXTRA_DIST += gtkextra.def Makefile.win32 makefile.msc sat.xpm sg_small.xpm clou
 $(libgtkextra_x11_2_0_la_OBJECTS) $(libgtkextra_linux_fb_2_0_la_OBJECTS) $(libgtkextra_win32_2_0_la_OBJECTS): ${gtkextra_built_public_sources} ${gtkextra_built_private_headers}
 
 $(srcdir)/gtkextra-marshal.h: gtkextra-marshal.list
-        ( @GLIB_GENMARSHAL@ --prefix=gtkextra gtkextra-marshal.list --header > gtkextra-marshal.tmp \
+	( @GLIB_GENMARSHAL@ --prefix=gtkextra gtkextra-marshal.list --header > gtkextra-marshal.tmp \
         && mv gtkextra-marshal.tmp gtkextra-marshal.h ) \
         || ( rm -f gtkextra-marshal.tmp && exit 1 )
 $(srcdir)/gtkextra-marshal.c: gtkextra-marshal.h
-        ( @GLIB_GENMARSHAL@ --prefix=gtkextra gtkextra-marshal.list --body > gtkextra-marshal.tmp \
+	( @GLIB_GENMARSHAL@ --prefix=gtkextra gtkextra-marshal.list --body > gtkextra-marshal.tmp \
         && mv gtkextra-marshal.tmp gtkextra-marshal.c ) \
         || ( rm -f gtkextra-marshal.tmp && exit 1 )
 

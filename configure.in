@@ -143,6 +143,10 @@ changequote([,])dnl
 # Honor aclocal flags
 ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
 
+# Compiler and Lib Stuff
+AC_PROG_CXX
+AC_PROG_RANLIB
+
 # Checks for header files.
 AC_HEADER_STDC
 
@@ -152,10 +156,21 @@ AC_C_CONST
 dnl header file checks
 AC_CHECK_HEADERS(unistd.h, AC_DEFINE(HAVE_UNISTD_H))
 AC_CHECK_HEADERS(dirent.h, AC_DEFINE(HAVE_DIRENT_H))
+AC_CHECK_HEADERS([locale.h])
+AC_CHECK_HEADERS([sys/time.h])
+
 dnl Don't attempt to use fnmatch under win32 due to problems with creating DLLs.
 if test "$platform_win32" = "no"; then
   AC_CHECK_HEADERS(fnmatch.h, AC_DEFINE(HAVE_FNMATCH_H))
 fi
+
+# Checks for nonportable Functions
+AC_CHECK_FUNCS([floor getcwd gethostname gettimeofday])
+AC_CHECK_FUNCS([pow setlocale sqrt strstr strtol])
+AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
+AC_FUNC_MALLOC
+AC_FUNC_REALLOC
+AC_FUNC_STRTOD
 
 dnl NeXTStep cc seems to need this
 AC_MSG_CHECKING([for extra flags for POSIX compliance])

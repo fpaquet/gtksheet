@@ -11,9 +11,9 @@ echo "./autogen.sh $@ \$@" >> autoregen.sh
 chmod +x autoregen.sh
 
 
-if test `uname` = FreeBSD -a -e macros/$package.0.m4 ; then
+if test "`uname`" = ""FreeBSD"" -a -f "macros/$package.0.m4" ; then
 	echo
-	echo -n 'FreeBSD patch: removing "macros/$package.0.m4"... '
+	echo 'FreeBSD patch: removing "macros/$package.0.m4"... '
 	rm -f macros/$package.0.m4
 	echo "done"
 	echo
@@ -27,7 +27,7 @@ AUTOMAKE="automake -a -c --foreign"
 GTKDOCIZE=gtkdocize
 
 # Get m4 from current PATH!
-echo -n "Locating m4 macro language processor... "
+echo "Locating m4 macro language processor... "
 for GNUM4 in ${M4} m4 gm4 gnum4 ; do
 	if test -x "`which ${GNUM4}`"; then
 		ok=yes
@@ -47,7 +47,7 @@ rm -f config.cache config.log config.status
 # generate config.guess config.sub ltconfig ltmain.sh
 if ( libtoolize --version ) </dev/null > /dev/null 2>&1; then
 	rm -f config.guess config.sub ltconfig ltmain.sh
-	echo -n "Building files for libtool... "
+	echo "Building files for libtool... "
 	${LIBTOOLIZE}
 	echo "done."
 else
@@ -57,7 +57,7 @@ fi
 
 # generate gtk-doc.make, <m4dir>/gtk-doc.m4
 if ( gtkdocize --version ) </dev/null > /dev/null 2>&1; then
-	echo -n "Building files for gtkdoc... "
+	echo "Building files for gtkdoc... "
 	${GTKDOCIZE}
 	echo "done."
 fi
@@ -65,7 +65,7 @@ fi
 # generate aclocal.m4
 if ( aclocal --version ) </dev/null > /dev/null 2>&1; then
 	rm -f aclocal.m4
-	echo -n "Building aclocal.m4... "
+	echo "Building aclocal.m4... "
 	${ACLOCAL}
 	echo "done."
 else
@@ -76,7 +76,7 @@ fi
 # generate configure from configure.in
 if ( autoconf --version ) </dev/null > /dev/null 2>&1; then
 	rm -f configure
-	echo -n "Building configure... "
+	echo "Building configure... "
 	${AUTOCONF}
 	echo "done."
 else
@@ -87,7 +87,7 @@ fi
 # generate config.h.in
 if ( autoheader --version ) </dev/null > /dev/null 2>&1; then
 	rm -f config.h.in
-	echo -n "Building config header template... "
+	echo "Building config header template... "
 	${AUTOHEADER} 
 	echo "done."
 else
@@ -98,7 +98,7 @@ fi
 # generate stamp-h.in and all Makefile.in
 if ( automake --version ) </dev/null > /dev/null 2>&1; then
 	rm -f stamp-h.in
-	echo -n "Building Makefile templates... "
+	echo "Building Makefile templates... "
 	${AUTOMAKE}
 	echo "done."
 else

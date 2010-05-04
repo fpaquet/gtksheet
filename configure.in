@@ -241,7 +241,9 @@ dnl
 
 # Find the GTK+ include and library directories.
 
-PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.12.0 fontconfig])
+# 4.5.10/fp - fontconfig should be implicit to pango  
+#PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.12.0 fontconfig])
+PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.12.0])
 
 AC_OUTPUT(
 Makefile

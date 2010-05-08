@@ -1435,7 +1435,7 @@ gtk_sheet_autoresize_column (GtkSheet *sheet, gint column)
   g_return_if_fail (GTK_IS_SHEET (sheet));
   if (column > sheet->maxcol || column < 0) return;
 
-  for (row = 0; row < sheet->maxrow; row++){
+  for (row = 0; row < sheet->maxallocrow; row++){
     GtkSheetCell      **cell = &sheet->data[row][column];
     if (*cell && (*cell)->text && strlen((*cell)->text) > 0){
       GtkSheetCellAttr attributes;

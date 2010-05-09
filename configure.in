@@ -95,8 +95,6 @@ fi
 AM_CONDITIONAL(MS_LIB_AVAILABLE, test x$ms_librarian = xyes)
 
 # --enable-debug option
-dnl this macro is used to get the arguments supplied
-dnl to the configure script (./configure --enable-debug)
 dnl Check if we have enable debug support.
 AC_MSG_CHECKING(whether to enable debugging)
 debug_default="no"
@@ -105,10 +103,10 @@ AC_ARG_ENABLE(debug,
 	enable_debug=$debug_default)
 dnl Yes, shell scripts can be used
 if test "x$enable_debug" = "xyes"; then
-  CFLAGS="$CFLAGS -g -DDEBUG"
+  test "$cflags_set" = set || CFLAGS="$CFLAGS -g -DDEBUG"
   AC_MSG_RESULT(yes)
 else
-  CFLAGS="$CFLAGS -O2"
+  test "$cflags_set" = set || CFLAGS="$CFLAGS -O2"
   AC_MSG_RESULT(no)
 fi
 

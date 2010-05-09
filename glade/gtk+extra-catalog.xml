@@ -16,7 +16,7 @@ glade-3
             </actions>
             <properties>
                 <property query="True" id="title" default="GtkSheet" />
-                <property query="True" needs-sync="True" id="n-rows" default="1" />
+                <property query="True" needs-sync="True" id="n-rows" default="2" />
                 <property query="True" needs-sync="True" id="n-cols" default="3" />
             </properties>
         </glade-widget-class>

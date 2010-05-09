@@ -358,8 +358,11 @@ change_entry(GtkWidget *widget,
          gtk_sheet_change_entry(sheet, GTK_TYPE_SPIN_BUTTON);
 
   if(*new_col >= 3 && (col < 3 || sheet->state != GTK_STATE_NORMAL))
-//         gtk_sheet_change_entry(sheet, GTK_TYPE_ITEM_ENTRY);
-         gtk_sheet_change_entry(sheet, GTK_TYPE_CELL_EDITABLE);
+         gtk_sheet_change_entry(sheet, GTK_TYPE_ITEM_ENTRY);
+/* this one crashes with SEGV in GLib
+   GLib-GObject-WARNING **: cannot retrieve class for invalid (unclassed) type `GtkCellEditable'
+           gtk_sheet_change_entry(sheet, GTK_TYPE_CELL_EDITABLE);
+           */
 
   return TRUE;
 }

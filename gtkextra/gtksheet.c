@@ -68,12 +68,31 @@ enum
   GTK_SHEET_REDRAW_PENDING  = 1 << 8,
 } GTK_SHEET_STATE;
 
+#define JUSTIFY_ENTRY_OBSOLETE  /* sheet->justify_entry seams not to be used at all */
+
 enum
 {
-    PROP_0,  /* dummy */
-    PROP_GTK_SHEET_TITLE, /* sheet title */
-    PROP_GTK_SHEET_NROWS,  /* number of rows */
-    PROP_GTK_SHEET_NCOLS, /* number of colunms */
+  PROP_0,  /* dummy */
+  PROP_GTK_SHEET_TITLE, /* gtk_sheet_set_title() */
+  PROP_GTK_SHEET_NCOLS, /* number of colunms - necessary for glade object creation */
+  PROP_GTK_SHEET_NROWS,  /* number of rows - necessary for glade object creation */
+  PROP_GTK_SHEET_LOCKED,  /* gtk_sheet_set_locked() */
+  PROP_GTK_SHEET_SELECTION_MODE,  /* gtk_sheet_set_selection_mode() */
+  PROP_GTK_SHEET_AUTO_RESIZE,  /* gtk_sheet_set_autoresize() */
+  PROP_GTK_SHEET_AUTO_SCROLL,  /* gtk_sheet_set_autoscroll() */
+  PROP_GTK_SHEET_CLIP_TEXT,  /* gtk_sheet_set_clip_text() */
+#ifndef JUSTIFY_ENTRY_OBSOLETE
+  PROP_GTK_SHEET_JUSTIFY_ENTRY,  /* gtk_sheet_set_justify_entry() */
+#endif
+  PROP_GTK_SHEET_BG_COLOR,  /* gtk_sheet_set_background() */
+  PROP_GTK_SHEET_GRID_VISIBLE,  /* gtk_sheet_show_grid() */
+  PROP_GTK_SHEET_GRID_COLOR,  /* gtk_sheet_set_grid() */
+  PROP_GTK_SHEET_COLUMN_TITLES_VISIBLE,  /* gtk_sheet_show_column_titles() */
+  PROP_GTK_SHEET_COLUMNS_RESIZABLE,  /* gtk_sheet_columns_set_resizable() */
+  PROP_GTK_SHEET_COLUMN_TITLES_HEIGHT,  /* gtk_sheet_set_column_titles_height() */
+  PROP_GTK_SHEET_ROW_TITLES_VISIBLE,  /* gtk_sheet_show_row_titles() */
+  PROP_GTK_SHEET_ROWS_RESIZABLE,  /* gtk_sheet_rows_set_resizable() */
+  PROP_GTK_SHEET_ROW_TITLES_WIDTH,  /* gtk_sheet_set_row_titles_width() */
 } GTK_SHEET_PROPERTIES;
 
 #define GTK_SHEET_FLAGS(sheet)             (GTK_SHEET (sheet)->flags)
@@ -99,7 +118,10 @@ enum
 #define MINCOLS 0
 #define MAXLENGTH 30
 #define CELLOFFSET 4
-#define DEFAULT_COLUMN_WIDTH 80
+#define GTK_SHEET_DEFAULT_COLUMN_WIDTH 80
+#define GTK_SHEET_DEFAULT_ROW_HEIGHT 24
+#define GTK_SHEET_DEFAULT_BG_COLOR      "white"
+#define GTK_SHEET_DEFAULT_GRID_COLOR  "gray"
 
 static inline gint
 gtk_sheet_row_height(GtkSheet *sheet, gint row)
@@ -115,7 +137,7 @@ gtk_sheet_column_width(GtkSheet *sheet, gint col)
 
 static inline guint DEFAULT_ROW_HEIGHT(GtkWidget *widget) 
 { 
-  if(!widget->style->font_desc) return 24;
+  if(!widget->style->font_desc) return GTK_SHEET_DEFAULT_ROW_HEIGHT;
   else {
     PangoContext *context = gtk_widget_get_pango_context(widget); 
     PangoFontMetrics *metrics = pango_context_get_metrics(context,
@@ -683,8 +705,69 @@ gtk_sheet_range_get_type (void)
 }
 
 /**
+ * Glade-3 - child widget interface (experimental)
+ * 
+ */
+
+static void
+gtk_sheet_children_callback (GtkWidget *widget,
+                                 gpointer client_data)
+{
+        GList **children;
+
+        children = (GList**) client_data;
+        *children = g_list_prepend (*children, widget);
+}
+
+GList *
+glade_gtk_sheet_get_children (/*GladeWidgetAdaptor*/void  *adaptor,
+                                  GtkContainer *container)
+{
+        GList *children = NULL;
+
+        g_return_val_if_fail (GTK_IS_SHEET (container), NULL);
+
+        gtk_container_forall (container,
+                              gtk_sheet_children_callback,
+                              &children);
+
+        /* Is has the children list already reversed? */
+        return children;
+}
+
+void
+glade_gtk_sheet_add_child (/*GladeWidgetAdaptor*/void *adaptor,
+                                                 GObject *object, 
+                                                 GObject *child)
+{
+  GtkSheet *sheet;
+  gint row,col;
+
+  g_return_if_fail (GTK_IS_SHEET (object));
+  g_return_if_fail (GTK_IS_WIDGET (child));
+
+  sheet = GTK_SHEET(object);
+
+  gtk_sheet_get_active_cell(sheet, &row, &col);
+  gtk_sheet_attach_floating(sheet, GTK_WIDGET(child), row, col);
+}
+
+void
+glade_gtk_sheet_remove_child (/*GladeWidgetAdaptor*/void *adaptor,
+                              GObject *object,
+                              GObject *child)
+{
+        g_return_if_fail (GTK_IS_SHEET (object));
+        g_return_if_fail (GTK_IS_WIDGET (child));
+
+        gtk_container_remove (GTK_CONTAINER (object), GTK_WIDGET (child));
+}
+
+
+/**
  * gtk_sheet_set_property - set sheet property
  * gtk_sheet_get_property - get sheet property
+ * gtk_sheet_class_init_properties - initialize class properties 
  * 
  * @param object
  * @param property_id
@@ -715,12 +798,10 @@ static void gtk_sheet_set_property (GObject *object,
                 if (newval < (sheet->maxrow+1))
                 {
                     gtk_sheet_delete_rows(sheet, newval, (sheet->maxrow+1) - newval);
-                    gtk_sheet_range_draw (sheet, NULL);
                 }
                 else if (newval > (sheet->maxrow+1))
                 {
                     gtk_sheet_add_row(sheet, newval - (sheet->maxrow+1));
-                    gtk_sheet_range_draw (sheet, NULL);
                 }
             }
             break;
@@ -735,21 +816,90 @@ static void gtk_sheet_set_property (GObject *object,
                 if (newval < (sheet->maxcol+1))
                 {
                     gtk_sheet_delete_columns(sheet, newval, (sheet->maxcol+1) - newval);
-                    gtk_sheet_range_draw (sheet, NULL);
                 }
                 else if (newval > (sheet->maxcol+1))
                 {
                     gtk_sheet_add_column(sheet, newval - (sheet->maxcol+1));
-                    gtk_sheet_range_draw (sheet, NULL);
                 }
             }
             break;
 
-        default:
+      case PROP_GTK_SHEET_LOCKED:
+          gtk_sheet_set_locked(sheet, g_value_get_boolean(value));
+          break;
+
+      case PROP_GTK_SHEET_SELECTION_MODE:
+          gtk_sheet_set_selection_mode(sheet, g_value_get_enum(value));
+          break;
+
+      case PROP_GTK_SHEET_AUTO_RESIZE:
+          gtk_sheet_set_autoresize(sheet, g_value_get_boolean(value));
+          break;
+
+      case PROP_GTK_SHEET_AUTO_SCROLL:
+          gtk_sheet_set_autoscroll(sheet, g_value_get_boolean(value));
+          break;
+
+      case PROP_GTK_SHEET_CLIP_TEXT:
+          gtk_sheet_set_clip_text(sheet, g_value_get_boolean(value));
+          break;
+
+#ifndef JUSTIFY_ENTRY_OBSOLETE
+      case PROP_GTK_SHEET_JUSTIFY_ENTRY:
+          gtk_sheet_set_justify_entry(sheet, g_value_get_boolean(value));
+          break;
+#endif
+
+      case PROP_GTK_SHEET_BG_COLOR:
+          gtk_sheet_set_background(sheet, g_value_get_boxed (value));
+          break;
+
+      case PROP_GTK_SHEET_GRID_VISIBLE:
+          gtk_sheet_show_grid(sheet, g_value_get_boolean(value));
+          break;
+
+      case PROP_GTK_SHEET_GRID_COLOR:
+          gtk_sheet_set_grid(sheet, g_value_get_boxed (value));
+          break;
+
+      case PROP_GTK_SHEET_COLUMN_TITLES_VISIBLE:
+          if(g_value_get_boolean(value))
+            gtk_sheet_show_column_titles(sheet);
+          else
+            gtk_sheet_hide_column_titles(sheet);
+          break;
+
+      case PROP_GTK_SHEET_COLUMNS_RESIZABLE:
+          gtk_sheet_columns_set_resizable(sheet, g_value_get_boolean(value));
+          break;
+
+      case PROP_GTK_SHEET_COLUMN_TITLES_HEIGHT:
+          gtk_sheet_set_column_titles_height(sheet, g_value_get_uint (value));
+          break;
+
+      case PROP_GTK_SHEET_ROW_TITLES_VISIBLE:
+          if(g_value_get_boolean(value))
+            gtk_sheet_show_row_titles(sheet);
+          else
+            gtk_sheet_hide_row_titles(sheet);
+          break;
+
+      case PROP_GTK_SHEET_ROWS_RESIZABLE:
+          gtk_sheet_rows_set_resizable(sheet, g_value_get_boolean(value));
+          break;
+
+      case PROP_GTK_SHEET_ROW_TITLES_WIDTH:
+          gtk_sheet_set_row_titles_width(sheet, g_value_get_uint (value));
+          break;
+
+      default:
             /* We don't have any other property... */
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
             break;
     }
+    gtk_sheet_range_draw (sheet, NULL);
+/* this one will not work, it simply does noop
+   gtk_widget_queue_draw(GTK_WIDGET(sheet)); */
 }
 
 static void gtk_sheet_get_property (GObject    *object,
@@ -773,6 +923,68 @@ static void gtk_sheet_get_property (GObject    *object,
             g_value_set_int (value, sheet->maxcol);
             break;
 
+      case PROP_GTK_SHEET_LOCKED:
+          g_value_set_boolean (value, sheet->locked);
+          break;
+
+      case PROP_GTK_SHEET_SELECTION_MODE:
+          g_value_set_enum (value, sheet->selection_mode);
+          break;
+
+      case PROP_GTK_SHEET_AUTO_RESIZE:
+          g_value_set_boolean (value, sheet->autoresize);
+          break;
+
+      case PROP_GTK_SHEET_AUTO_SCROLL:
+          g_value_set_boolean (value, sheet->autoscroll);
+          break;
+
+      case PROP_GTK_SHEET_CLIP_TEXT:
+          g_value_set_boolean (value, sheet->clip_text);
+          break;
+
+#ifndef JUSTIFY_ENTRY_OBSOLETE
+      case PROP_GTK_SHEET_JUSTIFY_ENTRY:
+          g_value_set_boolean (value, sheet->justify_entry);
+          break;
+#endif
+
+      case PROP_GTK_SHEET_BG_COLOR:
+          g_value_set_boxed (value, &sheet->bg_color);
+          break;
+
+      case PROP_GTK_SHEET_GRID_VISIBLE:
+          g_value_set_boolean (value, sheet->show_grid);
+          break;
+
+      case PROP_GTK_SHEET_GRID_COLOR:
+          g_value_set_boxed (value, &sheet->grid_color);
+          break;
+
+      case PROP_GTK_SHEET_COLUMN_TITLES_VISIBLE:
+          g_value_set_boolean (value, sheet->column_titles_visible);
+          break;
+
+      case PROP_GTK_SHEET_COLUMNS_RESIZABLE:
+          g_value_set_boolean (value, sheet->columns_resizable);
+          break;
+
+      case PROP_GTK_SHEET_COLUMN_TITLES_HEIGHT:
+          g_value_set_uint (value, sheet->column_title_area.height);
+          break;
+
+      case PROP_GTK_SHEET_ROW_TITLES_VISIBLE:
+          g_value_set_boolean (value, sheet->row_titles_visible);
+          break;
+
+      case PROP_GTK_SHEET_ROWS_RESIZABLE:
+          g_value_set_boolean (value, sheet->rows_resizable);
+          break;
+
+      case PROP_GTK_SHEET_ROW_TITLES_WIDTH:
+          g_value_set_uint (value, sheet->row_title_area.width);
+          break;
+
         default:
             /* We don't have any other property... */
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -780,26 +992,214 @@ static void gtk_sheet_get_property (GObject    *object,
     }
 }
 
-/**
- * gtk_sheet_class_init - GtkSheet class initialisation
- * 
- * @param klass
- */
-
-static void
-gtk_sheet_class_init (GtkSheetClass * klass)
+static void gtk_sheet_class_init_properties(GObjectClass *gobject_class)
 {
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
-  GtkContainerClass *container_class;
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+      GParamSpec *pspec;
 
-  object_class = (GtkObjectClass *) klass;
-  widget_class = (GtkWidgetClass *) klass;
-  container_class = (GtkContainerClass *) klass;
+      gobject_class->set_property = gtk_sheet_set_property;
+      gobject_class->get_property = gtk_sheet_get_property;
 
-  parent_class = g_type_class_peek_parent (klass);
+     /**
+      * GtkSheet:title:
+      * 
+      * The sheets title string
+      */
+      pspec = g_param_spec_string ("title", "Sheet title",
+                                   "The sheets title string",
+                                   "GtkSheet" /* default value */,
+                                   G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_TITLE, pspec);
 
+      /**
+       * GtkSheet:n-cols:
+       * 
+       * Number of columns in the sheet
+       */
+      pspec = g_param_spec_int ("n-cols", "Number of columns",
+                                "Number of columns in the sheet",
+                                0, 1024, 1,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_NCOLS, pspec);
+
+      /**
+       * GtkSheet:n-rows:
+       * 
+       * Number of rows in the sheet
+       */
+      pspec = g_param_spec_int ("n-rows", "Number of rows",
+                                "Number of rows in the sheet",
+                                0, 1000000, 1,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_NROWS, pspec);
+
+      /**
+       * GtkSheet:locked:
+       * 
+       * If the sheet ist locked, it is not editable, cell contents 
+       * cannot be changed by the user. 
+       */
+      pspec = g_param_spec_boolean ("locked", "Locked",
+                                "If the sheet is locked, it is not editable, cell contents cannot be changed by the user",
+                                FALSE,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_LOCKED, pspec);
+
+      /**
+       * GtkSheet:selection-mode:
+       * 
+       * Sets the selection mode of the cells in a #GtkSheet
+       */
+      pspec = g_param_spec_enum ("selection-mode", "Selection mode",
+                                    "Sets the selection mode of the cells in a sheet",
+                                    GTK_TYPE_SELECTION_MODE,
+                                    GTK_SELECTION_BROWSE,
+                                    G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_SELECTION_MODE, pspec);
+
+      /**
+       * GtkSheet:autoresize:
+       * 
+       * Autoreisize cells while typing
+       */
+      pspec = g_param_spec_boolean ("autoresize", "Autoresize cells",
+                                "Autoreisize cells while typing",
+                                FALSE,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_AUTO_RESIZE, pspec);
+
+      /**
+       * GtkSheet:autoscroll:
+       * 
+       * The sheet will be automatically scrolled when you move beyond
+       * the last visible row/column 
+       */
+      pspec = g_param_spec_boolean ("autoscroll", "Autoscroll sheet",
+                                "The sheet will be automatically scrolled when you move beyond the last row/column",
+                                TRUE,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_AUTO_SCROLL, pspec);
+
+      /**
+       * GtkSheet:clip-text:
+       * 
+       * Clip text in cells 
+       */
+      pspec = g_param_spec_boolean ("clip-text", "Clip cell text",
+                                "Clip text in cells",
+                                FALSE,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_CLIP_TEXT, pspec);
+
+#ifndef JUSTIFY_ENTRY_OBSOLETE
+      pspec = g_param_spec_boolean ("justify-entry", "Justify cell text",
+                                "Justify text in cells",
+                                TRUE,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_JUSTIFY_ENTRY, pspec);
+ #endif
+
+      /**
+       * GtkSheet:bgcolor:
+       * 
+       * Background color of the sheet 
+       */
+      pspec = g_param_spec_boxed ("bgcolor", "Background color",
+                                "Background color of the sheet",
+                                GDK_TYPE_COLOR,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_BG_COLOR, pspec);
+
+      /**
+       * GtkSheet:grid-visible:
+       * 
+       * Sets the visibility of grid 
+       */
+      pspec = g_param_spec_boolean ("grid-visible", "Grid visible",
+                                "Sets the visibility of grid",
+                                TRUE,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_GRID_VISIBLE, pspec);
+
+      /**
+       * GtkSheet:grid-color:
+       * 
+       * Color of the grid 
+       */
+      pspec = g_param_spec_boxed ("grid-color", "Grid color",
+                                "Color of the grid",
+                                GDK_TYPE_COLOR,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_GRID_COLOR, pspec);
+
+      /**
+       * GtkSheet:col-titles-visible:
+       * 
+       * Visibility of the column titles 
+       */
+      pspec = g_param_spec_boolean ("col-titles-visible", "Column titles visible",
+                                "Visibility of the column titles",
+                                TRUE,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_COLUMN_TITLES_VISIBLE, pspec);
+
+      /**
+       * GtkSheet:columns-resizable:
+       * 
+       * Columns resizable 
+       */
+      pspec = g_param_spec_boolean ("columns-resizable", "Columns resizable",
+                                "Columns resizable",
+                                TRUE,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_COLUMNS_RESIZABLE, pspec);
+
+      /**
+       * GtkSheet:col-titles-height:
+       * 
+       * Height of the column titles 
+       */
+      pspec = g_param_spec_uint ("col-titles-height", "Column titles height",
+                                "Height of the column title area",
+                                0, 1024, GTK_SHEET_DEFAULT_ROW_HEIGHT,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_COLUMN_TITLES_HEIGHT, pspec);
+
+      /**
+       * GtkSheet:row-titles-visible:
+       * 
+       * Row titles visible 
+       */
+      pspec = g_param_spec_boolean ("row-titles-visible", "Row titles visible",
+                                "Row titles visible",
+                                TRUE,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_ROW_TITLES_VISIBLE, pspec);
+
+      /**
+       * GtkSheet:rows-resizable:
+       * 
+       * Rows resizable 
+       */
+      pspec = g_param_spec_boolean ("rows-resizable", "Rows resizable",
+                                "Rows resizable",
+                                TRUE,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_ROWS_RESIZABLE, pspec);
+
+      /**
+       * GtkSheet:row-titles-width:
+       * 
+       * Width of the row title area 
+       */
+      pspec = g_param_spec_uint ("row-titles-width", "Row titles width",
+                                "Width of the row title area",
+                                0, 2048, GTK_SHEET_DEFAULT_COLUMN_WIDTH,
+                                G_PARAM_READWRITE);
+      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_ROW_TITLES_WIDTH, pspec);
+}
+
+static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidgetClass *widget_class)
+{
   /**
    * GtkSheet::select-row:
    * @sheet: the sheet widget that emitted the signal
@@ -1038,7 +1438,29 @@ gtk_sheet_class_init (GtkSheetClass * klass)
                     GTK_SIGNAL_OFFSET (GtkSheetClass, set_scroll_adjustments),
                     gtkextra_VOID__OBJECT_OBJECT,
                     GTK_TYPE_NONE, 2, GTK_TYPE_ADJUSTMENT, GTK_TYPE_ADJUSTMENT);
+}
 
+/**
+ * gtk_sheet_class_init - GtkSheet class initialisation
+ * 
+ * @param klass
+ */
+
+static void
+gtk_sheet_class_init (GtkSheetClass * klass)
+{
+  GtkObjectClass *object_class;
+  GtkWidgetClass *widget_class;
+  GtkContainerClass *container_class;
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+  object_class = (GtkObjectClass *) klass;
+  widget_class = (GtkWidgetClass *) klass;
+  container_class = (GtkContainerClass *) klass;
+
+  parent_class = g_type_class_peek_parent (klass);
+
+  gtk_sheet_class_init_signals(object_class, widget_class);
 
   container_class->add = NULL;
   container_class->remove = gtk_sheet_remove;
@@ -1047,30 +1469,7 @@ gtk_sheet_class_init (GtkSheetClass * klass)
   object_class->destroy = gtk_sheet_destroy;
   gobject_class->finalize = gtk_sheet_finalize;
 
-  {
-      GParamSpec *pspec;
-
-      gobject_class->set_property = gtk_sheet_set_property;
-      gobject_class->get_property = gtk_sheet_get_property;
-
-      pspec = g_param_spec_string ("title", "GtkSheet-Title",
-                                   "The sheets title string",
-                                   "GtkSheet" /* default value */,
-                                   G_PARAM_READWRITE);
-      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_TITLE, pspec);
-
-      pspec = g_param_spec_int ("n-rows", "Number of rows",
-                                "The number of rows in the sheet",
-                                0, 1000000, 1,
-                                G_PARAM_READWRITE);
-      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_NROWS, pspec);
-
-      pspec = g_param_spec_int ("n-cols", "Number of columns",
-                                "Number of columns in the sheet",
-                                0, 1024, 1,
-                                G_PARAM_READWRITE);
-      g_object_class_install_property (gobject_class, PROP_GTK_SHEET_NCOLS, pspec);
-  }
+  gtk_sheet_class_init_properties(gobject_class);
 
   widget_class->realize = gtk_sheet_realize;
   widget_class->unrealize = gtk_sheet_unrealize;
@@ -1100,7 +1499,6 @@ gtk_sheet_class_init (GtkSheetClass * klass)
   klass->set_cell = NULL;
   klass->clear_cell = NULL;
   klass->changed = NULL;
-
 }
 
 static void 
@@ -1136,7 +1534,7 @@ gtk_sheet_init (GtkSheet *sheet)
   sheet->row_title_window=NULL;
   sheet->row_title_area.x=0;
   sheet->row_title_area.y=0;
-  sheet->row_title_area.width=DEFAULT_COLUMN_WIDTH;
+  sheet->row_title_area.width=GTK_SHEET_DEFAULT_COLUMN_WIDTH;
   sheet->row_title_area.height=0;
 
   sheet->active_cell.row=0;
@@ -1173,10 +1571,10 @@ gtk_sheet_init (GtkSheet *sheet)
   sheet->x_drag = 0;
   sheet->y_drag = 0;
 
-  gdk_color_parse("white", &sheet->bg_color);
-  gdk_color_alloc(gdk_colormap_get_system(), &sheet->bg_color);
-  gdk_color_parse("gray", &sheet->grid_color);
-  gdk_color_alloc(gdk_colormap_get_system(), &sheet->grid_color);
+  gdk_color_parse(GTK_SHEET_DEFAULT_BG_COLOR, &sheet->bg_color);
+  gdk_colormap_alloc_color(gdk_colormap_get_system(), &sheet->bg_color, FALSE, TRUE);
+  gdk_color_parse(GTK_SHEET_DEFAULT_GRID_COLOR, &sheet->grid_color);
+  gdk_colormap_alloc_color(gdk_colormap_get_system(), &sheet->grid_color, FALSE, TRUE);
   sheet->show_grid = TRUE;
 
   /* for glade to be able to construct the object, we need to complete initialisation here */
@@ -1424,7 +1822,8 @@ gtk_sheet_grid_visible(GtkSheet *sheet)
  * @sheet: a #GtkSheet
  * @color: a #GdkColor structure
  *
- * Set the background color of all #GtkSheet.
+ * Sets the background color of the #GtkSheet.
+ * If pass NULL, the sheet will be reset to the default color. 
  */
 void
 gtk_sheet_set_background(GtkSheet *sheet, GdkColor *color)
@@ -1432,11 +1831,12 @@ gtk_sheet_set_background(GtkSheet *sheet, GdkColor *color)
   g_return_if_fail (sheet != NULL);
   g_return_if_fail (GTK_IS_SHEET (sheet));
 
-  if(!color) {
-    gdk_color_parse("white", &sheet->bg_color);
-    gdk_color_alloc(gdk_colormap_get_system(), &sheet->bg_color);
-  } else
+  if (!color) {
+    gdk_color_parse(GTK_SHEET_DEFAULT_BG_COLOR, &sheet->bg_color);
+  } else {
     sheet->bg_color = *color;
+  }
+  gdk_colormap_alloc_color(gdk_colormap_get_system(), &sheet->bg_color, FALSE, TRUE);
 
   if(!GTK_SHEET_IS_FROZEN(sheet)) 
     gtk_sheet_range_draw(sheet, NULL);
@@ -1447,7 +1847,8 @@ gtk_sheet_set_background(GtkSheet *sheet, GdkColor *color)
  * @sheet: a #GtkSheet
  * @color: a #GdkColor structure
  *
- * Set the grid color.
+ * Set the grid color. 
+ * If pass NULL, the grid will be reset to the default color.
  */
 void
 gtk_sheet_set_grid(GtkSheet *sheet, GdkColor *color)
@@ -1455,11 +1856,12 @@ gtk_sheet_set_grid(GtkSheet *sheet, GdkColor *color)
   g_return_if_fail (sheet != NULL);
   g_return_if_fail (GTK_IS_SHEET (sheet));
 
-  if(!color){
-    gdk_color_parse("black", &sheet->grid_color);
-    gdk_color_alloc(gdk_colormap_get_system(), &sheet->grid_color);
-  }else
+  if (!color){
+    gdk_color_parse(GTK_SHEET_DEFAULT_GRID_COLOR, &sheet->grid_color);
+  }else{
     sheet->grid_color = *color;
+  }
+  gdk_colormap_alloc_color(gdk_colormap_get_system(), &sheet->grid_color, FALSE, TRUE);
 
   if(!GTK_SHEET_IS_FROZEN(sheet)) 
     gtk_sheet_range_draw(sheet, NULL);
@@ -1521,7 +1923,7 @@ gtk_sheet_get_state(GtkSheet *sheet)
  * Sets the selection mode of the cells in a #GtkSheet. 
  */
 void
-gtk_sheet_set_selection_mode(GtkSheet *sheet, gint mode)
+gtk_sheet_set_selection_mode(GtkSheet *sheet, GtkSelectionMode mode)
 {
   g_return_if_fail (sheet != NULL);
   g_return_if_fail (GTK_IS_SHEET (sheet));
@@ -1605,7 +2007,8 @@ gtk_sheet_autoresize_column (GtkSheet *sheet, gint column)
  * @sheet: a #GtkSheet
  * @autoscroll: TRUE or FALSE
  *
- * The table will be automatically scrolled when you reach the last row/column in #GtkSheet  if autoscroll=TRUE.
+ * The sheet will be automatically scrolled when you move beyond 
+ * the last row/column in #GtkSheet.
  */
 void
 gtk_sheet_set_autoscroll (GtkSheet *sheet, gboolean autoscroll)
@@ -1701,8 +2104,9 @@ gtk_sheet_justify_entry (GtkSheet *sheet)
  * @sheet: a #GtkSheet
  * @locked: TRUE or FALSE
  *
- * Lock the #GtkSheet .
- */
+ * Lock the #GtkSheet, which means it is no longer editable, 
+ * cell contents cannot be changed by the user. 
+                                                                */
 void
 gtk_sheet_set_locked (GtkSheet *sheet, gboolean locked)
 {
@@ -1717,7 +2121,8 @@ gtk_sheet_set_locked (GtkSheet *sheet, gboolean locked)
  * @sheet: a #GtkSheet
  * Return value: TRUE or FALSE
  *
- * Get the lock status of #GtkSheet.
+ * Get the lock status of #GtkSheet, locked means the sheet is 
+ * not editable, cell contents cannot be changed by the user. 
  */
 gboolean
 gtk_sheet_locked (GtkSheet *sheet)
@@ -2257,7 +2662,9 @@ gtk_sheet_row_label_set_visibility(GtkSheet *sheet, gint row, gboolean visible)
  * @sheet: a #GtkSheet
  * @visible: TRUE or FALSE
  *
- * Set all rows label visibility.
+ * Set all rows label visibility. The sheet itself
+ * has no such property, this is a convenience function to set 
+ * the property for all existing rows. 
  */
 void
 gtk_sheet_rows_labels_set_visibility(GtkSheet *sheet, gboolean visible)
@@ -2360,7 +2767,10 @@ gtk_sheet_column_label_set_visibility(GtkSheet *sheet, gint col, gboolean visibl
  * @sheet: a #GtkSheet.
  * @visible: TRUE or FALSE
  *
- * Set all columns labels visibility. The default value is TRUE. If FALSE, the columns labels are hidden.
+ * Set all columns labels visibility. The default value is TRUE.
+ * If FALSE, the columns labels are hidden. The sheet itself
+ * has no such property, it is a convenience function to set the
+ * property for all existing columns. 
  */
 void
 gtk_sheet_columns_labels_set_visibility(GtkSheet *sheet, gboolean visible)
@@ -2575,7 +2985,10 @@ gtk_sheet_column_set_sensitivity(GtkSheet *sheet, gint column, gboolean sensitiv
  * @sheet: a #GtkSheet.
  * @sensitive: TRUE or FALSE
  *
- * Set all columns buttons sensitivity. If sensitivity is TRUE button can be toggled, otherwise  act as titles.
+ * Set all columns buttons sensitivity. If sensitivity is TRUE 
+ * button can be toggled, otherwise  act as titles. The sheet itself
+ * has no such property, it is a convenience function to set the
+ * property for all existing columns. 
  */
 void
 gtk_sheet_columns_set_sensitivity(GtkSheet *sheet, gboolean sensitive)
@@ -2653,7 +3066,10 @@ gtk_sheet_row_set_sensitivity(GtkSheet *sheet, gint row,  gboolean sensitive)
  * @sheet: a #GtkSheet.
  * @sensitive: TRUE or FALSE
  *
- * Set rows buttons sensitivity. If sensitivity is TRUE button can be toggled, otherwise act as titles. 
+ * Set rows buttons sensitivity. If sensitivity is TRUE button 
+ * can be toggled, otherwise act as titles. The sheet itself
+ * has no such property, it is a convenience function to set the
+ * property for all existing rows. 
  */
 void
 gtk_sheet_rows_set_sensitivity(GtkSheet *sheet, gboolean sensitive)
@@ -6779,7 +7195,7 @@ gtk_sheet_size_request (GtkWidget * widget,
 
   sheet = GTK_SHEET (widget);
 
-  requisition->width = 3*DEFAULT_COLUMN_WIDTH;
+  requisition->width = 3*GTK_SHEET_DEFAULT_COLUMN_WIDTH;
   requisition->height = 3*DEFAULT_ROW_HEIGHT(widget);
 
   /* compute the size of the column title area */
@@ -7634,7 +8050,7 @@ adjust_scrollbars (GtkSheet * sheet)
  if(sheet->hadjustment){
   sheet->hadjustment->page_size = sheet->sheet_window_width;
   sheet->hadjustment->page_increment = sheet->sheet_window_width / 2;
-  sheet->hadjustment->step_increment = DEFAULT_COLUMN_WIDTH;
+  sheet->hadjustment->step_increment = GTK_SHEET_DEFAULT_COLUMN_WIDTH;
   sheet->hadjustment->lower = 0;
   sheet->hadjustment->upper = SHEET_WIDTH (sheet)+ 80;
 /*
@@ -8940,7 +9356,7 @@ AddColumn(GtkSheet *tbl, gint ncols)
   }
 
   for(i=tbl->maxcol-ncols+1; i<= tbl->maxcol; i++){
-    tbl->column[i].width=DEFAULT_COLUMN_WIDTH;
+    tbl->column[i].width=GTK_SHEET_DEFAULT_COLUMN_WIDTH;
     tbl->column[i].button.label=NULL;
     tbl->column[i].button.child=NULL;
     tbl->column[i].button.state=GTK_STATE_NORMAL;
@@ -8952,7 +9368,7 @@ AddColumn(GtkSheet *tbl, gint ncols)
     tbl->column[i].left_text_column=i;
     tbl->column[i].right_text_column=i;
     tbl->column[i].justification=GTK_JUSTIFY_FILL;
-    tbl->column[i].requisition=DEFAULT_COLUMN_WIDTH;
+    tbl->column[i].requisition=GTK_SHEET_DEFAULT_COLUMN_WIDTH;
 
     if(i>0)
     {
@@ -9065,7 +9481,7 @@ InsertColumn(GtkSheet *tbl, gint col, gint ncols)
     tbl->column[i].left_text_column=tbl->column[i-ncols].left_text_column;
     tbl->column[i].right_text_column=tbl->column[i-ncols].right_text_column;
     tbl->column[i].justification=tbl->column[i-ncols].justification;
-    if(auxcol.is_visible) tbl->column[i].left_xpixel+=ncols*DEFAULT_COLUMN_WIDTH;
+    if(auxcol.is_visible) tbl->column[i].left_xpixel+=ncols*GTK_SHEET_DEFAULT_COLUMN_WIDTH;
     tbl->column[i-ncols]=auxcol;
   }
 

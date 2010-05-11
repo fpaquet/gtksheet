@@ -10,14 +10,40 @@ glade-3
         <glade-widget-class name="GtkCharSelection" generic-name="gtkcharselection" title="GtkCharSelection - a widget which contains all the characters in a font" />
 
         <glade-widget-class name="GtkSheet" generic-name="gtksheet" title="GtkSheet - a spreadsheet widget" >
+            <!-- The next line is experimental -->
             <action-activate-function>glade_gtk_treeview_action_activate</action-activate-function>
+
+            <get-children-function>glade_gtk_sheet_get_children</get-children-function>
+            <add-child-function>glade_gtk_sheet_add_child</add-child-function>
+            <remove-child-function>glade_gtk_sheet_remove_child</remove-child-function>
+
             <actions>
                 <action stock="gtk-edit" important="True" id="launch_editor" name="Edit&#8230;"></action>
             </actions>
             <properties>
                 <property query="True" id="title" default="GtkSheet" />
+                <property query="True" needs-sync="True" id="n-cols" default="2" />
                 <property query="True" needs-sync="True" id="n-rows" default="2" />
-                <property query="True" needs-sync="True" id="n-cols" default="3" />
+                <property id="locked" default="False" />
+                <property id="selection-mode">
+                    <displayable-values>
+                        <value id="GTK_SELECTION_NONE" name="None" disable="True"></value>
+                        <value id="GTK_SELECTION_SINGLE" name="Single"></value>
+                        <value id="GTK_SELECTION_BROWSE" name="Browse"></value>
+                    </displayable-values>
+                </property>
+                <property id="autoresize" default="False" />
+                <property id="autoscroll" default="True" />
+                <property id="clip-text" default="False" />
+                <property id="bgcolor" default="White"/>
+                <property id="grid-visible" default="True" />
+                <property id="grid-color" default="Gray"/>
+                <property id="col-titles-visible" default="True" />
+                <property id="col-titles-height" />
+                <property id="columns-resizable" default="True" />
+                <property id="row-title-visible" default="True" />
+                <property id="row-title-width" />
+                <property id="rows-resizable" default="True" />
             </properties>
         </glade-widget-class>
 
@@ -76,7 +102,6 @@ glade-3
         <glade-widget-class-ref name="GtkBorderCombo" />
         <glade-widget-class-ref name="GtkToggleCombo" />
         <glade-widget-class-ref name="GtkComboButton" />
-        <glade-widget-class-ref name="GtkColorCombo" />
         <glade-widget-class-ref name="GtkFontCombo" />
 
         <glade-widget-class-ref name="GtkDirTree" />

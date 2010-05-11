@@ -4,3 +4,4 @@ Makefile.in
 .libs
 html
 tmpl
+xml

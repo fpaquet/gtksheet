@@ -26,4 +26,5 @@ testiterator
 testpixmap
 testpolar
 testrealtime
-
+testgtkplotcanvas
+testsegment

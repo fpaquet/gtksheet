@@ -20,4 +20,8 @@ missing
 mkinstalldirs
 stamp-h
 stamp-h.in
+autoscan.log
+configure.scan
+install.log
+make.log
 

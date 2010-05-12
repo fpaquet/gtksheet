@@ -26,8 +26,8 @@ gtk_plot_canvas_plot_get_type
 gtk_plot_canvas_rectangle_get_type 
 gtk_plot_canvas_text_get_type
 gtk_plot_csurface_get_type
-gtk_plot_marker_get_type
 gtk_plot_data_get_type 
+
 gtk_plot_dt_get_type
 gtk_plot_flux_get_type
 gtk_plot_gdk_get_type
@@ -40,3 +40,6 @@ gtk_plot_surface_get_type
 gtk_sheet_get_type
 gtk_sheet_range_get_type
 gtk_toggle_combo_get_type
+
+gtk_plot_marker_get_type
+

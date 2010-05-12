@@ -1206,6 +1206,7 @@ GtkSheetButton
 GtkSheetCellAttr
 GtkSheetCellBorder
 GtkSheetAttrType
+GtkSheetState
 gtk_sheet_new
 gtk_sheet_construct
 gtk_sheet_new_browser

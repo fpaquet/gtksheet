@@ -43,15 +43,23 @@ typedef enum
   GTK_SHEET_IS_VISIBLE
 } GtkSheetAttrType;
 
-/* sheet->state */
-
-enum 
+/**
+ * GtkSheetState:
+ * @GTK_SHEET_NORMAL: nothing selected
+ * @GTK_SHEET_ROW_SELECTED: one row selected
+ * @GTK_SHEET_COLUMN_SELECTED: one column selected
+ * @GTK_SHEET_RANGE_SELECTED: rectangular area of cells selected
+ *
+ * Selection state of the #GtkSheet
+ *
+ **/
+typedef enum 
 {
   GTK_SHEET_NORMAL,
   GTK_SHEET_ROW_SELECTED,
   GTK_SHEET_COLUMN_SELECTED,
   GTK_SHEET_RANGE_SELECTED
-};
+} GtkSheetState;
      
 enum
 {
@@ -302,7 +310,7 @@ struct _GtkSheet{
   /* sheet data: dynamically allocated array of cell pointers */
   GtkSheetCell ***data;
 
-  /* max number of allocated cells */
+  /* max number of allocated cells in **data */
   gint maxallocrow;
   gint maxalloccol;
 
@@ -325,7 +333,7 @@ struct _GtkSheet{
   GtkWidget *button;
 
   /* sheet state */
-  gint state;
+  GtkSheetState state;
 
   /* selected range */
   GtkSheetRange range;
@@ -486,9 +494,8 @@ gtk_sheet_get_entry			(GtkSheet *sheet);
 GtkWidget *
 gtk_sheet_get_entry_widget		(GtkSheet *sheet);
 
-/* Returns sheet->state 
- * Added by Steven Rostedt <steven.rostedt@lmco.com> */
-gint
+/* Added by Steven Rostedt <steven.rostedt@lmco.com> */
+GtkSheetState
 gtk_sheet_get_state 			(GtkSheet *sheet);
 
 /* Returns sheet's ranges 

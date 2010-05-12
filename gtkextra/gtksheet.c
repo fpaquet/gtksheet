@@ -7944,7 +7944,7 @@ gtk_sheet_button_draw (GtkSheet *sheet, gint row, gint column)
   gtk_paint_box (sheet->button->style, window,
                  GTK_STATE_NORMAL, GTK_SHADOW_OUT, 
                  &allocation, GTK_WIDGET(sheet->button),
-                 "buttondefault", x, y, width, height);
+                 "button", x, y, width, height);
 
   state = button->state;
   if(!is_sensitive) state=GTK_STATE_INSENSITIVE;

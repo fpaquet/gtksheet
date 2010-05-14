@@ -956,8 +956,9 @@ static void gtk_sheet_set_property (GObject *object,
             break;
     }
     gtk_sheet_range_draw (sheet, NULL);
-/* this one will not work, it simply does noop
-   gtk_widget_queue_draw(GTK_WIDGET(sheet)); */
+
+    /* this one will not work, it simply does noop
+   gtk_widget_queue_draw(GTK_WIDGET(sheet));*/
 }
 
 static void gtk_sheet_get_property (GObject    *object,
@@ -7714,80 +7715,75 @@ gtk_sheet_entry_set_max_size(GtkSheet *sheet)
 }
 
 static void
-create_sheet_entry(GtkSheet *sheet)
+    create_sheet_entry(GtkSheet *sheet)
 {
- GtkWidget *widget;
- GtkWidget *parent;
- GtkWidget *entry;
- GtkStyle *style;
- gint found_entry = FALSE;
+    GtkWidget *widget;
+    GtkWidget *parent;
+    GtkWidget *entry;
+    GtkStyle *style;
+    gint found_entry = FALSE;
 
- widget = GTK_WIDGET(sheet);
+    widget = GTK_WIDGET(sheet);
 
- style = gtk_style_copy(GTK_WIDGET(sheet)->style); 
+    style = gtk_style_copy(GTK_WIDGET(sheet)->style); 
 
- if(sheet->sheet_entry){
-    /* avoids warnings */
-    gtk_widget_ref(sheet->sheet_entry);
-    gtk_widget_unparent(sheet->sheet_entry);
-    gtk_widget_destroy(sheet->sheet_entry);
- }
+    if (sheet->sheet_entry)
+    {
+        /* avoids warnings */
+        gtk_widget_ref(sheet->sheet_entry);
+        gtk_widget_unparent(sheet->sheet_entry);
+        gtk_widget_destroy(sheet->sheet_entry);
+    }
 
- if(sheet->entry_type){
+    if (sheet->entry_type)
+    {
+        if (!g_type_is_a (sheet->entry_type, GTK_TYPE_ENTRY))
+        {
+            parent = GTK_WIDGET(gtk_type_new(sheet->entry_type));
 
-   if(!g_type_is_a (sheet->entry_type, GTK_TYPE_ENTRY)){
+            sheet->sheet_entry = parent;
 
-     parent = GTK_WIDGET(gtk_type_new(sheet->entry_type));
+            entry = gtk_sheet_get_entry (sheet);
+            if (GTK_IS_ENTRY(entry)) found_entry = TRUE;
+        }
+        else
+        {
+            parent = GTK_WIDGET(gtk_type_new(sheet->entry_type));
+            entry = parent;
+            found_entry = TRUE;
+        }             
 
-     sheet->sheet_entry = parent;
+        if (!found_entry)
+        {
+            g_warning ("Entry type must be GtkEntry subclass, using default");
+            entry = gtk_item_entry_new();
+            sheet->sheet_entry = entry;
+        }
+        else
+        {
+            sheet->sheet_entry = parent;
+        }
+    }
+    else
+    {
+        entry = gtk_item_entry_new();
+        sheet->sheet_entry = entry;
+    }
 
-     entry = gtk_sheet_get_entry (sheet);
-     if(GTK_IS_ENTRY(entry)) found_entry = TRUE;
+    gtk_widget_size_request(sheet->sheet_entry, NULL);
 
-   } else {
+    if (GTK_WIDGET_REALIZED(sheet))
+    {
+        gtk_widget_set_parent_window (sheet->sheet_entry, sheet->sheet_window);
+        gtk_widget_set_parent(sheet->sheet_entry, GTK_WIDGET(sheet));
+        gtk_widget_realize(sheet->sheet_entry);
+    }
 
-     parent = GTK_WIDGET(gtk_type_new(sheet->entry_type));
-     entry = parent;
-     found_entry = TRUE;
+    gtk_signal_connect_object(GTK_OBJECT(entry),"key_press_event",
+                              (GtkSignalFunc) gtk_sheet_entry_key_press,
+                              GTK_OBJECT(sheet)); 
 
-   }             
-                                    
-   if(!found_entry){
-
-     g_warning ("Entry type must be GtkEntry subclass, using default");
-     entry = gtk_item_entry_new();
-     sheet->sheet_entry = entry;
-
-   } else {
-
-     sheet->sheet_entry = parent;
-
-   }
-
-
- } else {
-
-     entry = gtk_item_entry_new();
-     sheet->sheet_entry = entry;
-
-g_warning("create_sheet_entry: setting sheet entry name to col1");
-gtk_widget_set_name(GTK_WIDGET(sheet->sheet_entry), "col1");
- }
- 
- gtk_widget_size_request(sheet->sheet_entry, NULL);
- 
- if(GTK_WIDGET_REALIZED(sheet))
-   {
-      gtk_widget_set_parent_window (sheet->sheet_entry, sheet->sheet_window);
-      gtk_widget_set_parent(sheet->sheet_entry, GTK_WIDGET(sheet));
-      gtk_widget_realize(sheet->sheet_entry);
-   }
-
- gtk_signal_connect_object(GTK_OBJECT(entry),"key_press_event",
-                           (GtkSignalFunc) gtk_sheet_entry_key_press,
-                           GTK_OBJECT(sheet)); 
-
- gtk_widget_show (sheet->sheet_entry); 
+    gtk_widget_show (sheet->sheet_entry); 
 }
 
 
@@ -10458,32 +10454,30 @@ gtk_sheet_realize_child(GtkSheet *sheet, GtkSheetChild *child)
  *
  * Get the child attached at @row,@col. 
  *  
- * returns: the #GtkSheetChild attached to row,col or NULL 
+ * returns: the #GtkSheetChild attached to @row,@col or NULL 
  */ 
 GtkSheetChild *
-gtk_sheet_get_child_at(GtkSheet *sheet, gint row, gint col)
+    gtk_sheet_get_child_at(GtkSheet *sheet, gint row, gint col)
 {
-  GList *children;
-  GtkSheetChild *child = 0;
+    GList *children;
 
-  g_return_val_if_fail(sheet != NULL, NULL);
-  g_return_val_if_fail(GTK_IS_SHEET(sheet), NULL);
+    g_return_val_if_fail(sheet != NULL, NULL);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), NULL);
 
-  children = sheet->children;
+    children = sheet->children;
 
-  while(children)
-   {
-     child = (GtkSheetChild *)children->data;
+    while (children)
+    {
+        GtkSheetChild *child = (GtkSheetChild *) children->data;
 
-     if(child->attached_to_cell)
-        if(child->row == row && child->col == col) break; 
-     
-     children = children->next;
-   }
+        if (child->attached_to_cell)
+        {
+            if (child->row == row && child->col == col) return(child);
+        }
 
-  if(children) return child; 
-
-  return NULL;
+        children = children->next;
+    }
+    return (NULL);
 }
 
 static void
@@ -10497,6 +10491,5 @@ static void
 gtk_sheet_child_show(GtkSheetChild *child) 
 {
   g_return_if_fail(child != NULL);
-
   gtk_widget_show(child->widget);
 }

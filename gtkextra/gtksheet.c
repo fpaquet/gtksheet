@@ -24,13 +24,14 @@
  * SECTION: gtksheet
  * @short_description: A spreadsheet widget for Gtk2
  *
- * #GtkSheet is a matrix widget for GTK+. It consists of an scrollable grid of cells where you can allocate text.
- * Cell contents can be edited interactively through a specially designed entry, GtkItemEntry.
- * It is also a container subclass, allowing you to display buttons, curves, pixmaps and any other widget in it.
- * You can also set many attributes as: border, foreground and background color, text justification, and more.
- * The testgtksheet program shows how easy is to create a spreadsheet-like GUI using this widget set. 
+ * #GtkSheet is a matrix widget for GTK+. It consists of an scrollable grid of 
+ * cells where you can allocate text. Cell contents can be edited interactively 
+ * through a specially designed entry, GtkItemEntry. It is also a container 
+ * subclass, allowing you to display buttons, curves, pixmaps and any other 
+ * widget in it. You can also set many attributes as: border, foreground and 
+ * background color, text justification, and more. The testgtksheet program 
+ * shows how easy is to create a spreadsheet-like GUI using this widget set. 
  */
-
 
 #include <string.h>
 #include <stdio.h>
@@ -55,7 +56,7 @@
 #include "gtkextra-marshal.h"
 
 /* sheet flags */
-enum
+enum _GtkSheetFlags
 { 
   GTK_SHEET_IS_LOCKED       = 1 << 0,
   GTK_SHEET_IS_FROZEN       = 1 << 1,
@@ -66,11 +67,11 @@ enum
   GTK_SHEET_IN_RESIZE       = 1 << 6,
   GTK_SHEET_IN_CLIP         = 1 << 7,
   GTK_SHEET_REDRAW_PENDING  = 1 << 8,
-} GTK_SHEET_FLAGS;
+};
 
 #define JUSTIFY_ENTRY_OBSOLETE  /* sheet->justify_entry seams not to be used at all */
 
-enum
+enum _GtkSheetProperties
 {
   PROP_0,  /* dummy */
   PROP_GTK_SHEET_TITLE, /* gtk_sheet_set_title() */
@@ -93,7 +94,29 @@ enum
   PROP_GTK_SHEET_ROW_TITLES_VISIBLE,  /* gtk_sheet_show_row_titles() */
   PROP_GTK_SHEET_ROWS_RESIZABLE,  /* gtk_sheet_rows_set_resizable() */
   PROP_GTK_SHEET_ROW_TITLES_WIDTH,  /* gtk_sheet_set_row_titles_width() */
-} GTK_SHEET_PROPERTIES;
+};
+
+/* Signals */
+
+enum _GtkSheetSignals 
+{
+      SELECT_ROW, 
+      SELECT_COLUMN, 
+      SELECT_RANGE,
+      CLIP_RANGE,
+      RESIZE_RANGE,
+      MOVE_RANGE,
+      TRAVERSE, 
+      DEACTIVATE, 
+      ACTIVATE,
+      SET_CELL,
+      CLEAR_CELL,
+      CHANGED,
+      NEW_COL_WIDTH,
+      NEW_ROW_HEIGHT,
+      LAST_SIGNAL
+};
+static guint sheet_signals[LAST_SIGNAL] = {0};
 
 #define GTK_SHEET_FLAGS(sheet)             (GTK_SHEET (sheet)->flags)
 #define GTK_SHEET_SET_FLAGS(sheet,flag)    (GTK_SHEET_FLAGS (sheet) |= (flag))
@@ -418,7 +441,11 @@ static inline gint POSSIBLE_RESIZE(GtkSheet *sheet, gint x, gint y,
     return FALSE;  
 }
 
-/* Prototypes */
+/* Prototypes (extern) */
+
+extern void _gtkextra_signal_emit(GtkObject *object, guint signal_id, ...);
+
+/* Prototypes (static) */
 
 static void gtk_sheet_class_init 		(GtkSheetClass * klass);
 static void gtk_sheet_init 			(GtkSheet * sheet);
@@ -430,7 +457,7 @@ static void gtk_sheet_realize 			(GtkWidget * widget);
 static void gtk_sheet_unrealize 		(GtkWidget * widget);
 static void gtk_sheet_map 			(GtkWidget * widget);
 static void gtk_sheet_unmap 			(GtkWidget * widget);
-static gint gtk_sheet_expose 			(GtkWidget * widget,
+static gint gtk_sheet_expose 			(GtkWidget * widget, 
 		  				 GdkEventExpose * event);
 static void gtk_sheet_forall 			(GtkContainer *container,
                               			 gboolean include_internals,
@@ -633,44 +660,40 @@ static void gtk_sheet_row_size_request          (GtkSheet *sheet,
                                                  gint row,
                                                  guint *requisition);
 
+/* GtkBuildableIface */
 
-/* Signals */
+static void 
+gtk_sheet_buildable_add_child(GtkBuildable  *buildable,
+                              GtkBuilder    *builder,
+                              GObject       *child,
+                              const gchar   *type)
+{
+    g_warning("gtk_sheet_buildable_add_child: %s", type);
+}
 
-extern void 
-_gtkextra_signal_emit(GtkObject *object, guint signal_id, ...);
+static GObject *
+gtk_sheet_buildable_construct_child(GtkBuildable  *buildable,
+                                    GtkBuilder    *builder,
+                                    const gchar   *name)
+{
+    g_warning("gtk_sheet_buildable_construct_child: %s", name);
+    return(NULL);
+}
 
-enum {
-      SELECT_ROW, 
-      SELECT_COLUMN, 
-      SELECT_RANGE,
-      CLIP_RANGE,
-      RESIZE_RANGE,
-      MOVE_RANGE,
-      TRAVERSE, 
-      DEACTIVATE, 
-      ACTIVATE,
-      SET_CELL,
-      CLEAR_CELL,
-      CHANGED,
-      NEW_COL_WIDTH,
-      NEW_ROW_HEIGHT,
-      LAST_SIGNAL
-};
+static void
+gtk_sheet_buildable_init (GtkBuildableIface *iface)
+{
+    g_warning("gtk_sheet_buildable_init");
+    iface->add_child = gtk_sheet_buildable_add_child;
+    iface->construct_child = gtk_sheet_buildable_construct_child;
+}
+
+/* Type initialisation */
 
 static GtkContainerClass *parent_class = NULL;
-static guint sheet_signals[LAST_SIGNAL] = {0};
-
-/*
-static void                                        
-gtk_sheet_buildable_init (GtkBuildableIface *iface)
-{                                                  
-  iface->set_name = gtk_action_buildable_set_name; 
-  iface->get_name = gtk_action_buildable_get_name; 
-}                                                  
-*/
 
 GType
-gtk_sheet_get_type ()
+gtk_sheet_get_type (void)
 {
     static GType sheet_type = 0;
 
@@ -689,18 +712,16 @@ gtk_sheet_get_type ()
             (GInstanceInitFunc) gtk_sheet_init,
             NULL,
         };
-/*
+
         static const GInterfaceInfo interface_info = { 
           (GInterfaceInitFunc) gtk_sheet_buildable_init
         };                                             
-*/
+
         sheet_type = g_type_register_static (GTK_TYPE_CONTAINER, 
                                              "GtkSheet", 
                                              &sheet_info, 
                                              0);
-/*
         g_type_add_interface_static (sheet_type, GTK_TYPE_BUILDABLE, &interface_info);
-*/
     }
     return sheet_type;
 }
@@ -767,7 +788,7 @@ glade_gtk_sheet_get_children (/*GladeWidgetAdaptor*/void  *adaptor,
                           gtk_sheet_children_callback,
                           &children);
 
-    /* Is has the children list already reversed? */
+    /* Is the children list already reversed? */
     return children;
 }
 
@@ -781,6 +802,8 @@ glade_gtk_sheet_add_child (/*GladeWidgetAdaptor*/void *adaptor,
 
     g_return_if_fail (GTK_IS_SHEET (object));
     g_return_if_fail (GTK_IS_WIDGET (child));
+
+    g_warning("glade_gtk_sheet_add_child: %s", gtk_widget_get_name(GTK_WIDGET(child)));
 
     sheet = GTK_SHEET(object);
 
@@ -803,11 +826,7 @@ glade_gtk_sheet_remove_child (/*GladeWidgetAdaptor*/void *adaptor,
  * gtk_sheet_set_property - set sheet property
  * gtk_sheet_get_property - get sheet property
  * gtk_sheet_class_init_properties - initialize class properties 
- * 
- * @param object
- * @param property_id
- * @param value
- * @param pspec
+ * gtk_sheet_class_init_signals - initialize class signals 
  */
 
 static void gtk_sheet_set_property (GObject *object,
@@ -1479,7 +1498,7 @@ static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidget
                     GTK_TYPE_NONE, 2, GTK_TYPE_ADJUSTMENT, GTK_TYPE_ADJUSTMENT);
 }
 
-/**
+/*
  * gtk_sheet_class_init - GtkSheet class initialisation
  * 
  * @param klass
@@ -2016,38 +2035,42 @@ gtk_sheet_autoresize (GtkSheet *sheet)
 }
 
 static void
-gtk_sheet_autoresize_column (GtkSheet *sheet, gint column)
+    gtk_sheet_autoresize_column (GtkSheet *sheet, gint column)
 {
-  gint text_width = 0;
-  gint row;
+    gint text_width = 0;
+    gint row;
 
-  g_return_if_fail (sheet != NULL);
-  g_return_if_fail (GTK_IS_SHEET (sheet));
+    g_return_if_fail (sheet != NULL);
+    g_return_if_fail (GTK_IS_SHEET (sheet));
 
-  if (column < 0 || column > sheet->maxalloccol || column > sheet->maxcol) return;
+    if (column < 0 || column > sheet->maxalloccol || column > sheet->maxcol) return;
 
-  for (row = 0; row < sheet->maxallocrow; row++){
-    GtkSheetCell **cell = &sheet->data[row][column];
+    for (row = 0; row <= sheet->maxallocrow; row++)
+    {
+        GtkSheetCell **cell = &sheet->data[row][column];
 
-    if (*cell && (*cell)->text && strlen((*cell)->text) > 0){
-      GtkSheetCellAttr attributes;
+        if (*cell && (*cell)->text && strlen((*cell)->text) > 0)
+        {
+            GtkSheetCellAttr attributes;
 
-      gtk_sheet_get_attributes(sheet, row, column, &attributes);
+            gtk_sheet_get_attributes(sheet, row, column, &attributes);
 
-      if(attributes.is_visible){
-        gint width = STRING_WIDTH(GTK_WIDGET(sheet),
-                                  attributes.font_desc,
-                                  (*cell)->text)
-                   + 2*CELLOFFSET + attributes.border.width;
-        text_width = MAX (text_width, width);
-      }
+            if (attributes.is_visible)
+            {
+                gint width = STRING_WIDTH(GTK_WIDGET(sheet),
+                                          attributes.font_desc,
+                                          (*cell)->text)
+                + 2*CELLOFFSET + attributes.border.width;
+                text_width = MAX (text_width, width);
+            }
+        }
     }
-  }
 
-  if(text_width > (gint)sheet->column[column].width){
-      gtk_sheet_set_column_width(sheet, column, text_width);
-      GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_REDRAW_PENDING);
-  }
+    if (text_width > (gint)sheet->column[column].width)
+    {
+        gtk_sheet_set_column_width(sheet, column, text_width);
+        GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_REDRAW_PENDING);
+    }
 }
 
 /**
@@ -5120,7 +5143,7 @@ gtk_sheet_remove_link(GtkSheet *sheet, gint row, gint col)
  if(col < 0 || row < 0) return;
  
  /* Fixed by Andreas Voegele */
- if(row < sheet->maxallocrow && col < sheet->maxalloccol &&
+ if(row <= sheet->maxallocrow && col <= sheet->maxalloccol &&
     sheet->data[row] && sheet->data[row][col] &&
     sheet->data[row][col]->link)
                             sheet->data[row][col]->link = NULL;
@@ -5352,7 +5375,8 @@ gtk_sheet_entry_changed(GtkWidget *widget, gpointer data)
  else
  {
  /* Added by Matias Mutchinick */
-      if(row < sheet->maxallocrow && col < sheet->maxalloccol && sheet->data[row] && sheet->data[row][col] && sheet->data[row][col]->text) {
+      if(row <= sheet->maxallocrow && col <= sheet->maxalloccol && 
+         sheet->data[row] && sheet->data[row][col] && sheet->data[row][col]->text) {
         g_free(sheet->data[row][col]->text);
         sheet->data[row][col]->text = NULL;
       }
@@ -7746,6 +7770,8 @@ create_sheet_entry(GtkSheet *sheet)
      entry = gtk_item_entry_new();
      sheet->sheet_entry = entry;
 
+g_warning("create_sheet_entry: setting sheet entry name to col1");
+gtk_widget_set_name(GTK_WIDGET(sheet->sheet_entry), "col1");
  }
  
  gtk_widget_size_request(sheet->sheet_entry, NULL);
@@ -10430,7 +10456,9 @@ gtk_sheet_realize_child(GtkSheet *sheet, GtkSheetChild *child)
  * @row: row number
  * @col: column number
  *
- * Get the child attached at @row,@col.
+ * Get the child attached at @row,@col. 
+ *  
+ * returns: the #GtkSheetChild attached to row,col or NULL 
  */ 
 GtkSheetChild *
 gtk_sheet_get_child_at(GtkSheet *sheet, gint row, gint col)

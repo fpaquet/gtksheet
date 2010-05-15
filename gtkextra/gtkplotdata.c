@@ -3152,7 +3152,7 @@ draw_gradient_vertical(GtkPlotData *data, gdouble px, gdouble py)
         gtk_plot_draw_text(plot, legend);
       }
       if(data->gradient->label_mask & GTK_PLOT_LABEL_OUT){
-        legend.x = (gdouble)(area.x + x + roundint((data->gradient_line_width + data->gradient->labels_offset) * m)) / (gdouble)area.width;
+        legend.x = (gdouble)(area.x + x + roundint(data->gradient_line_width * m) + roundint(data->gradient->labels_offset * m)) / (gdouble)area.width;
         legend.justification = GTK_JUSTIFY_LEFT;
         gtk_plot_draw_text(plot, legend);
       }
@@ -3161,7 +3161,7 @@ draw_gradient_vertical(GtkPlotData *data, gdouble px, gdouble py)
                             x, ry,
                             x + roundint(data->gradient->ticks_length * m), ry);
       gtk_plot_pc_draw_line(plot->pc,
-                            x + roundint((data->gradient_line_width - data->gradient->ticks_length)* m),
+                            x + roundint(data->gradient_line_width * m) - roundint(data->gradient->ticks_length * m),
                             ry,
                             x + roundint(data->gradient_line_width * m),
                             ry);
@@ -3183,7 +3183,7 @@ draw_gradient_vertical(GtkPlotData *data, gdouble px, gdouble py)
       case GTK_PLOT_AXIS_RIGHT:
         legend = data->gradient->title;
         legend.angle = 270;
-        legend.x = (gdouble)(area.x + x + lwidth + roundint((data->gradient_line_width + 2*data->gradient_border_offset) * m)) / (gdouble)area.width;
+        legend.x = (gdouble)(area.x + x + lwidth + roundint(data->gradient_line_width) * m + roundint(2*data->gradient_border_offset * m)) / (gdouble)area.width;
         legend.y = (gdouble)(area.y + y_orig + height / 2.)/(gdouble)area.height;
         legend.justification = GTK_JUSTIFY_CENTER;
         gtk_plot_draw_text(plot, legend);
@@ -3496,7 +3496,7 @@ draw_gradient_horizontal(GtkPlotData *data, gdouble px, gdouble py)
         gtk_plot_draw_text(plot, legend);
       }
       if(data->gradient->label_mask & GTK_PLOT_LABEL_OUT){
-        legend.y = (gdouble)(area.y + y + lheight + roundint((data->gradient_line_height + data->gradient->labels_offset) * m)) / (gdouble)area.height;
+        legend.y = (gdouble)(area.y + y + lheight + roundint(data->gradient_line_height * m ) + roundint(data->gradient->labels_offset * m)) / (gdouble)area.height;
         legend.justification = GTK_JUSTIFY_CENTER;
         gtk_plot_draw_text(plot, legend);
       }
@@ -3505,7 +3505,7 @@ draw_gradient_horizontal(GtkPlotData *data, gdouble px, gdouble py)
                             rx, y,
                             rx, y + roundint(data->gradient->ticks_length * m));
       gtk_plot_pc_draw_line(plot->pc,
-                            rx, y + roundint((data->gradient_line_height - data->gradient->ticks_length)* m),
+                            rx, y + roundint(data->gradient_line_height * m) - roundint(data->gradient->ticks_length * m),
                             rx,
                             y + roundint(data->gradient_line_height * m));
     }

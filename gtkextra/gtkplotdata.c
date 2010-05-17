@@ -257,6 +257,7 @@ enum {
   ARG_GRADIENT_BREAK_SCALE,
   ARG_GRADIENT_BREAK_POSITION,
   ARG_GRADIENT,
+  ARG_GRADIENT_SHOW_LT_GT,
 };
 
 static GtkWidgetClass *parent_class = NULL;
@@ -1167,6 +1168,19 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
 
   /**
+   * GtkPlotData:gradient_show_lt_gt:
+   *
+   *
+   **/
+  g_object_class_install_property (gobject_class,
+                           ARG_GRADIENT_SHOW_LT_GT,
+  g_param_spec_boolean ("gradient_show_lt_gt",
+                           P_(""),
+                           P_(""),
+                           TRUE,
+                           G_PARAM_READABLE|G_PARAM_WRITABLE));
+
+  /**
    * GtkPlotData:color_min:
    *
    *
@@ -1532,6 +1546,7 @@ gtk_plot_data_init (GtkPlotData *dataset)
   dataset->gradient->label_style = GTK_PLOT_LABEL_FLOAT;
   dataset->gradient->labels_offset = 4;
   dataset->gradient_mask = GTK_PLOT_GRADIENT_H;
+  dataset->gradient_show_lt_gt = FALSE;
   dataset->gradient_title_pos = GTK_PLOT_AXIS_RIGHT;
   dataset->gradient_x = .6;
   dataset->gradient_y = .05;
@@ -1910,6 +1925,9 @@ gtk_plot_data_set_property (GObject      *object,
       case ARG_GRADIENT_MASK:
         data->gradient_mask = g_value_get_int(value);
         break;
+      case ARG_GRADIENT_SHOW_LT_GT:
+        data->gradient_show_lt_gt = g_value_get_boolean(value);
+        break;
       case ARG_COLOR_MIN:
         data->color_min = *((GdkColor *)g_value_get_pointer(value));
         break;
@@ -2195,6 +2213,9 @@ gtk_plot_data_get_property (GObject      *object,
         break;
       case ARG_GRADIENT_MASK:
         g_value_set_int(value, data->gradient_mask);
+        break;
+      case ARG_GRADIENT_SHOW_LT_GT:
+        g_value_set_boolean(value, data->gradient_show_lt_gt);
         break;
       case ARG_COLOR_MIN:
         g_value_set_pointer(value, &data->color_min);
@@ -5971,6 +5992,34 @@ gtk_plot_data_remove_link(GtkPlotData *dataset)
 }
 
 /**
+ * gtk_plot_data_set_gradient_show_lt_gt:
+ * @data: a #GtkPlotData widget.
+ * @show:
+ *
+ *
+ */
+void
+gtk_plot_data_set_gradient_show_lt_gt (GtkPlotData *data, gboolean show)
+{
+  data->gradient_show_lt_gt = show;
+  gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED]);
+}
+
+/**
+ * gtk_plot_data_gradient_show_lt_gt:
+ * @data: a #GtkPlotData widget.
+ *
+ *
+ *
+ * Return value:
+ */
+gboolean
+gtk_plot_data_gradient_show_lt_gt (GtkPlotData *data)
+{
+  return (data->gradient_show_lt_gt);
+}
+
+/**
  * gtk_plot_data_set_gradient_mask:
  * @data: a #GtkPlotData widget.
  * @mask:
@@ -6580,8 +6629,6 @@ spline_eval (int n, gdouble x[], gdouble y[], gdouble y2[], gdouble val)
 void
 gtk_plot_data_reset_gradient(GtkPlotData *data)
 {
-  gdouble min, max;
-  gint nmajorticks = data->gradient->ticks.nmajorticks;
   data->gradient->ticks.step = (data->gradient->ticks.max - data->gradient->ticks.min)/data->gradient->ticks.nmajorticks;
   gtk_plot_axis_ticks_recalc(data->gradient);
 

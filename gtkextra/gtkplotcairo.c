@@ -612,7 +612,6 @@ drawstring(GtkPlotPC *pc,
   PangoFontDescription *font;
   PangoRectangle rect;
   PangoFontMap *map;
-  const gchar *aux = text;
   gint ret_value;
   gint dpi_cairo, dpi_screen;
   GdkScreen *screen = gdk_screen_get_default();
@@ -673,7 +672,6 @@ gtk_plot_cairo_draw_string                        (GtkPlotPC *pc,
                                                    const gchar *text)
 {
   cairo_t *cairo = GTK_PLOT_CAIRO(pc)->cairo;
-  GdkGC *gc;
   GList *family = NULL;
   gint x0, y0;
   gint old_width, old_height;
@@ -694,7 +692,6 @@ gtk_plot_cairo_draw_string                        (GtkPlotPC *pc,
   gchar *new_text; /* Support Tiny C compiler : Original : gchar new_text[strlen(text)+1];*/
   gchar num[4];
   PangoRectangle rect;
-  PangoFontMetrics *metrics = NULL;
   PangoLayout *layout = NULL;
   gint real_x, real_y, real_width, real_height;
   GdkColor real_fg = *fg;

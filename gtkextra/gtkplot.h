@@ -459,6 +459,7 @@ struct _GtkPlotData
 
   GdkColor color_min, color_max;
   GdkColor color_lt_min, color_gt_max;
+  gboolean gradient_show_lt_gt;
   gint gradient_mask;
   GtkPlotAxis * gradient;
   gboolean gradient_custom;

@@ -892,7 +892,7 @@ gtk_plot_csurface_draw_lines(GtkPlotData *data)
 
         aux = labels;
         while(aux){
-          gdouble t1, t2;
+          gdouble t1 = 0., t2 = 0.;
           aux_bb = (GtkAllocation *)aux->data;
           prev_x = x;
           x = line_intersect(aux_bb,p1,p2,&x1,&x2,&t1,&t2);

@@ -1846,8 +1846,8 @@ static void
 gtk_plot3d_draw_grids(GtkPlot3D *plot, GtkPlotAxis *axis, GtkPlotVector delta)
 {
   GtkWidget *widget;
-  GtkPlotLine major_grid, minor_grid;
   gdouble xx;
+  GtkPlotLine major_grid, minor_grid;
   gdouble x1, x2, y1, y2;
   gint size, width, height;
   gdouble xp, yp, oz;
@@ -1862,6 +1862,8 @@ gtk_plot3d_draw_grids(GtkPlot3D *plot, GtkPlotAxis *axis, GtkPlotVector delta)
 
   size = MIN(width, height) / SQRT2;
 
+  major_grid = GTK_PLOT(plot)->left->major_grid;
+  minor_grid = GTK_PLOT(plot)->left->minor_grid;
   switch(axis->orientation){
     case GTK_PLOT_AXIS_X:
       major_grid = GTK_PLOT(plot)->left->major_grid;

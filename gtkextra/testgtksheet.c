@@ -104,82 +104,85 @@ popup_activated(GtkWidget *widget, gpointer data)
 }
 
 static GtkWidget *
-build_menu(GtkWidget *sheet)
+    build_menu(GtkWidget *sheet)
 {
-	static char *items[]={
-		"Add Column",
-		"Add Row",
-		"Insert Row",
-		"Insert Column",
-		"Delete Row",
-                "Delete Column",
-                "Clear Cells"
-	};
-	GtkWidget *menu;
-	GtkWidget *item;
-	int i;
+    static char *items[]={
+        "Add Column",
+        "Add Row",
+        "Insert Row",
+        "Insert Column",
+        "Delete Row",
+        "Delete Column",
+        "Clear Cells"
+    };
+    GtkWidget *menu;
+    GtkWidget *item;
+    int i;
 
-	menu=gtk_menu_new();
+    menu=gtk_menu_new();
 
-	for (i=0; i < (sizeof(items)/sizeof(items[0])) ; i++){
-	 	item=gtk_menu_item_new_with_label(items[i]);
+    for (i=0; i < (sizeof(items)/sizeof(items[0])) ; i++)
+    {
+        item=gtk_menu_item_new_with_label(items[i]);
 
-	 	gtk_signal_connect(GTK_OBJECT(item),"activate",
-				   (GtkSignalFunc) popup_activated,
-				   items[i]);
+        gtk_signal_connect(GTK_OBJECT(item),"activate",
+                           (GtkSignalFunc) popup_activated,
+                           items[i]);
 
-                GTK_WIDGET_SET_FLAGS (item, GTK_SENSITIVE | GTK_CAN_FOCUS);
-                switch(i){
-                  case 2:
-                    if(GTK_SHEET(sheet)->state!=GTK_SHEET_ROW_SELECTED)
-                     GTK_WIDGET_UNSET_FLAGS (item, 
+        GTK_WIDGET_SET_FLAGS (item, GTK_SENSITIVE | GTK_CAN_FOCUS);
+        switch (i)
+        {
+            case 2:
+                if (GTK_SHEET(sheet)->state!=GTK_SHEET_ROW_SELECTED)
+                    GTK_WIDGET_UNSET_FLAGS (item, 
                                             GTK_SENSITIVE | GTK_CAN_FOCUS);
-                    break;
-                  case 3:
-                    if(GTK_SHEET(sheet)->state!=GTK_SHEET_COLUMN_SELECTED)
-                     GTK_WIDGET_UNSET_FLAGS (item, 
+                break;
+            case 3:
+                if (GTK_SHEET(sheet)->state!=GTK_SHEET_COLUMN_SELECTED)
+                    GTK_WIDGET_UNSET_FLAGS (item, 
                                             GTK_SENSITIVE | GTK_CAN_FOCUS);
-                    break;
-                  case 4:
-                    if(GTK_SHEET(sheet)->state!=GTK_SHEET_ROW_SELECTED)
-                     GTK_WIDGET_UNSET_FLAGS (item, 
+                break;
+            case 4:
+                if (GTK_SHEET(sheet)->state!=GTK_SHEET_ROW_SELECTED)
+                    GTK_WIDGET_UNSET_FLAGS (item, 
                                             GTK_SENSITIVE | GTK_CAN_FOCUS);
-                    break;
-                  case 5:
-                    if(GTK_SHEET(sheet)->state!=GTK_SHEET_COLUMN_SELECTED)
-                     GTK_WIDGET_UNSET_FLAGS (item, 
+                break;
+            case 5:
+                if (GTK_SHEET(sheet)->state!=GTK_SHEET_COLUMN_SELECTED)
+                    GTK_WIDGET_UNSET_FLAGS (item, 
                                             GTK_SENSITIVE | GTK_CAN_FOCUS);
-                    break;
-                } 
+                break;
+        } 
 
-		gtk_widget_show(item);
-	    	gtk_menu_append(GTK_MENU(menu),item);
-	}
+        gtk_widget_show(item);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+    }
 
-	return menu;
+    return menu;
 }
 
 gint
-do_popup(GtkWidget *widget, GdkEventButton *event, gpointer data)
+    do_popup(GtkWidget *widget, GdkEventButton *event, gpointer data)
 {
-   GdkModifierType mods;
-   GtkWidget *sheet;
+    GdkModifierType mods;
+    GtkWidget *sheet = GTK_WIDGET(widget);
 
-   sheet=GTK_WIDGET(widget);
+    gdk_window_get_pointer (sheet->window, NULL, NULL, &mods);
 
-   gdk_window_get_pointer (sheet->window, NULL, NULL, &mods);
-   if(mods&GDK_BUTTON3_MASK){ 
+    if (mods&GDK_BUTTON3_MASK)
+    {
+        if (popup)
+        {
+            gtk_object_destroy(popup);
+            popup = NULL;
+        }
 
-    if(popup)
-       g_free(popup);
+        popup=build_menu(sheet);
 
-    popup=build_menu(sheet);
-
-    gtk_menu_popup(GTK_MENU(popup), NULL, NULL, NULL, NULL,
-		   event->button, event->time);
-   }
-
-   return FALSE;
+        gtk_menu_popup(GTK_MENU(popup), NULL, NULL, NULL, NULL,
+                       event->button, event->time);
+    }
+    return FALSE;
 }
 
 void
@@ -204,7 +207,7 @@ format_text (GtkSheet *sheet, const gchar *text, gint *justification, char *labe
   char_width = pango_font_metrics_get_approximate_char_width(metrics);
   pango_font_metrics_unref(metrics);
 
-  cell_width=sheet->column[sheet->active_cell.col].width;
+  cell_width = gtk_sheet_get_column_width(sheet, sheet->active_cell.col);
   space= (double)cell_width/(double)char_width;
 
   intspace=MIN(space, DEFAULT_SPACE);
@@ -935,8 +938,8 @@ activate_sheet_cell(GtkWidget *widget, gint row, gint column, gpointer data)
   sheet=GTK_SHEET(widget);
   sheet_entry = GTK_ENTRY(gtk_sheet_get_entry(sheet));
 
-  if(GTK_SHEET(widget)->column[column].name)
-   sprintf(cell,"  %s:%d  ",GTK_SHEET(widget)->column[column].name, row);
+  if (gtk_sheet_get_column_title(GTK_SHEET(widget), column))
+   sprintf(cell,"  %s:%d  ", gtk_sheet_get_column_title(GTK_SHEET(widget), column), row);
   else
    sprintf(cell, " ROW: %d COLUMN: %d ", row, column);
 

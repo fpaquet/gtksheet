@@ -69,12 +69,21 @@ enum
   GTK_SHEET_BOTTOM_BORDER   = 1 << 3 
 }; 
 
-#define GTK_TYPE_SHEET_RANGE (gtk_sheet_range_get_type ())
-#define GTK_TYPE_SHEET (gtk_sheet_get_type ())
+#define GTK_TYPE_SHEET    (gtk_sheet_get_type ())
+#define GTK_SHEET(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SHEET, GtkSheet))
+#define GTK_IS_SHEET(obj)    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SHEET))
+#define GTK_SHEET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SHEET, GtkSheetClass))
+#define GTK_IS_SHEET_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SHEET))
+#define GTK_SHEET_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SHEET, GtkSheetClass))
 
-#define GTK_SHEET(obj)          GTK_CHECK_CAST (obj, gtk_sheet_get_type (), GtkSheet)
-#define GTK_SHEET_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, gtk_sheet_get_type (), GtkSheetClass)
-#define GTK_IS_SHEET(obj)       GTK_CHECK_TYPE (obj, gtk_sheet_get_type ())
+#define GTK_TYPE_SHEET_COLUMN    (gtk_sheet_column_get_type ())
+#define GTK_SHEET_COLUMN(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SHEET_COLUMN, GtkSheetColumn))
+#define GTK_IS_SHEET_COLUMN(obj)    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SHEET_COLUMN))
+#define GTK_SHEET_COLUMN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SHEET_COLUMN, GtkSheetColumnClass))
+#define GTK_IS_SHEET_COLUMN_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SHEET_COLUMN))
+#define GTK_SHEET_COLUMN_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SHEET_COLUMN, GtkSheetColumnClass))
+
+#define GTK_TYPE_SHEET_RANGE (gtk_sheet_range_get_type ())
 
 /* Public flags, for compatibility */
 
@@ -95,6 +104,7 @@ typedef struct _GtkSheetClass GtkSheetClass;
 typedef struct _GtkSheetChild GtkSheetChild;
 typedef struct _GtkSheetRow GtkSheetRow;
 typedef struct _GtkSheetColumn GtkSheetColumn;
+typedef struct _GtkSheetColumnClass GtkSheetColumnClass;
 typedef struct _GtkSheetCell GtkSheetCell;
 typedef struct _GtkSheetRange GtkSheetRange;
 typedef struct _GtkSheetButton       GtkSheetButton;
@@ -223,15 +233,15 @@ struct _GtkSheetRange
  */
 struct _GtkSheetRow
 {
- /*< private >*/
- gchar *name;
- gint height;
- gint top_ypixel;
- guint16 requisition;
+    /*< private >*/
+    gchar *name;
+    gint height;
+    guint16 requisition;
+    gint top_ypixel;
 
- GtkSheetButton button;
- gboolean is_sensitive;
- gboolean is_visible;
+    GtkSheetButton button;
+    gboolean is_sensitive;
+    gboolean is_visible;
 };
 
 /**
@@ -242,20 +252,29 @@ struct _GtkSheetRow
  */
 struct _GtkSheetColumn
 {
- /*< private >*/
- gchar *name;
- gint width;
- gint left_xpixel;
- guint16 requisition;
+    GtkWidget parent;
 
- GtkSheetButton button;
+    /*< private >*/
+    gchar *title;
+    gint width;
+    gint left_xpixel;   /* left edge of the column*/
+    guint16 requisition;
 
- gint left_text_column; /* min left column displaying text on this column */
- gint right_text_column; /* max right column displaying text on this column */
+    GtkSheetButton button;
 
- GtkJustification justification;
- gboolean is_sensitive;
- gboolean is_visible;
+    gint left_text_column;    /* min left column displaying text on this column */
+    gint right_text_column;    /* max right column displaying text on this column */
+
+    GtkJustification justification;
+    gboolean is_sensitive;
+    gboolean is_visible;
+};
+
+struct _GtkSheetColumnClass
+{
+    GtkWidgetClass parent_class;
+
+    /*< private >*/
 };
 
 
@@ -266,7 +285,7 @@ struct _GtkSheetColumn
  * It should only be accessed through the functions described below.
  */
 struct _GtkSheet{
-  GtkContainer container;
+  GtkContainer container;    /* parent instance */
 
   guint16 flags;
 
@@ -291,10 +310,10 @@ struct _GtkSheet{
      and the width of the shadow border */
   GdkRectangle internal_allocation;
 
-  gchar *name;
+  gchar *title;
 
   GtkSheetRow *row;
-  GtkSheetColumn *column;
+  GtkSheetColumn **column;  /* flexible array of column pointers */
 
   gboolean rows_resizable;
   gboolean columns_resizable;
@@ -574,8 +593,10 @@ gtk_sheet_set_column_title 		(GtkSheet * sheet,
 			    		const gchar * title);
 
 const gchar *
-gtk_sheet_get_column_title 		(GtkSheet * sheet,
-			    		gint column);
+gtk_sheet_get_column_title (GtkSheet * sheet, gint column);
+
+const gint
+gtk_sheet_get_column_width (GtkSheet * sheet, gint column);
 
 /* set/get row title */
 void

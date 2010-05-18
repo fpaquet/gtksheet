@@ -57,6 +57,7 @@
 
 #undef GTK_SHEET_DEBUG
 #define GTK_SHEET_DEBUG 1  /* define to activate debug hooks */
+#undef GTK_SHEET_DEBUG
 
 /* sheet flags */
 enum _GtkSheetFlags

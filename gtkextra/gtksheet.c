@@ -847,12 +847,25 @@ glade_gtk_sheet_get_children (/*GladeWidgetAdaptor*/void  *adaptor,
                               GtkContainer *container)
 {
     GList *children = NULL;
+    GtkSheet *sheet;
+    gint col;
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("glade_gtk_sheet_get_children: called");
+#endif
 
     g_return_val_if_fail (GTK_IS_SHEET (container), NULL);
+
+    sheet = GTK_SHEET(container);
 
     gtk_container_forall (container,
                           gtk_sheet_children_callback,
                           &children);
+
+    for (col=0; col<sheet->maxcol; col++)
+    {
+        children = g_list_append(children, sheet->column[col]);
+    }
 
     /* Is the children list already reversed? */
     return children;

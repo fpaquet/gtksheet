@@ -4,14 +4,15 @@ setenv GLADE_CATALOG_PATH /home/devel/Z/gtk
 setenv GLADE_MODULE_PATH /home/devel/Z/gtk/gtk+extra-2.1.2/gtkextra/.libs
 glade-3
 -->
-<glade-catalog name="gtkextra" library="libgtkextra-x11-2.0.so" depends="gtk+">
+<glade-catalog name="gtkextra" library="libgladegtkextra.so" depends="gtk+">
 
     <glade-widget-classes>
         <glade-widget-class name="GtkCharSelection" generic-name="gtkcharselection" title="GtkCharSelection - a widget which contains all the characters in a font" />
 
         <glade-widget-class name="GtkSheet" generic-name="gtksheet" title="GtkSheet - a spreadsheet widget" >
             <!-- The next line is experimental -->
-            <action-activate-function>glade_gtk_treeview_action_activate</action-activate-function>
+            <action-activate-function>glade_gtk_sheet_action_activate</action-activate-function>
+            <get-children-function>glade_gtk_sheet_get_children</get-children-function>
 
             <get-children-function>glade_gtk_sheet_get_children</get-children-function>
             <add-child-function>glade_gtk_sheet_add_child</add-child-function>
@@ -46,6 +47,8 @@ glade-3
                 <property id="rows-resizable" default="True" />
             </properties>
         </glade-widget-class>
+
+        <glade-widget-class name="GtkSheetColumn" libglade-unsupported="True" generic-name="gtksheetcolumn" title="GtkSheetColumn - a Sheet Column" />
 
         <glade-widget-class name="GtkCheckItem" generic-name="gtkcheckitem" title="GtkCheckItem - CheckButton-hack with the look and feel of the Redmond95 theme" />
         <glade-widget-class name="GtkItemEntry" generic-name="gtkitementry" title="GtkItemEntry" />

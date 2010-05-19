@@ -1,6 +1,10 @@
 ## Makefile.am for gtk+extra
 
-SRC_SUBDIRS = gtkextra 
+if ENABLE_GLADE
+    GLADE_SUBDIR = glade
+endif
+
+SRC_SUBDIRS = gtkextra  $(GLADE_SUBDIR)
 SUBDIRS = $(SRC_SUBDIRS) docs
 
 # require automake 1.7

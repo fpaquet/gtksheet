@@ -1236,10 +1236,12 @@ gtk_sheet_locked
 gtk_sheet_set_title
 gtk_sheet_freeze
 gtk_sheet_thaw
+gtk_sheet_moveto
 gtk_sheet_set_background
 gtk_sheet_set_grid
 gtk_sheet_show_grid
 gtk_sheet_grid_visible
+
 gtk_sheet_set_column_title
 gtk_sheet_get_column_title
 gtk_sheet_set_row_title
@@ -1250,7 +1252,6 @@ gtk_sheet_row_button_get_label
 gtk_sheet_column_button_get_label
 gtk_sheet_row_button_justify
 gtk_sheet_column_button_justify
-gtk_sheet_moveto
 gtk_sheet_set_row_titles_width
 gtk_sheet_set_column_titles_height
 gtk_sheet_show_column_titles
@@ -1298,13 +1299,16 @@ gtk_sheet_remove_link
 gtk_sheet_get_pixel_info
 gtk_sheet_get_cell_area
 gtk_sheet_set_column_width
+gtk_sheet_get_column_width
 gtk_sheet_set_row_height
+
 gtk_sheet_add_column
 gtk_sheet_add_row
 gtk_sheet_insert_rows
 gtk_sheet_insert_columns
 gtk_sheet_delete_rows
 gtk_sheet_delete_columns
+
 gtk_sheet_range_set_background
 gtk_sheet_range_set_foreground
 gtk_sheet_range_set_justification
@@ -1323,11 +1327,22 @@ gtk_sheet_move_child
 gtk_sheet_get_child_at
 gtk_sheet_button_attach
 <SUBSECTION Standard>
+GTK_TYPE_SHEET
 GTK_SHEET
 GTK_IS_SHEET
-GTK_TYPE_SHEET
 GTK_SHEET_CLASS
+GTK_SHEET_GET_CLASS
+GTK_IS_SHEET_CLASS
+
+GTK_TYPE_SHEET_COLUMN
+GTK_SHEET_COLUMN
+GTK_IS_SHEET_COLUMN
+GTK_SHEET_COLUMN_CLASS
+GTK_SHEET_COLUMN_GET_CLASS
+GTK_IS_SHEET_COLUMN_CLASS
+
 GTK_TYPE_SHEET_RANGE
+
 GTK_SHEET_IS_LOCKED
 GTK_SHEET_ROW_FROZEN
 GTK_SHEET_COLUMN_FROZEN
@@ -1337,7 +1352,9 @@ GTK_SHEET_ROW_TITLES_VISIBLE
 GTK_SHEET_COL_TITLES_VISIBLE
 GTK_SHEET_AUTO_SCROLL
 GTK_SHEET_JUSTIFY_ENTRY
+
 GtkSheetClass
+GtkSheetColumnClass
 <SUBSECTION Private>
 gtk_sheet_get_type
 gtk_sheet_range_get_type

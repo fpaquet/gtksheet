@@ -27,6 +27,12 @@
 #include "glade-gtksheet-editor.h"
 #include "gtkextra/gtksheet.h"
 
+#undef GTK_SHEET_DEBUG
+
+#ifdef DEBUG
+#  define GTK_SHEET_DEBUG 1  /* define to activate debug output */
+#endif
+
 
 static void glade_sheet_editor_finalize        (GObject              *object);
 
@@ -306,4 +312,179 @@ void
                                                              object,
                                                              action_path);
 }
+
+
+/**
+ * Glade-3 - child widget adaptor interface
+ *
+ */
+
+static void
+    gtk_sheet_buildable_add_child_internal(GtkSheet *sheet, GtkSheetColumn *child)
+{
+    int col;
+
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+    g_return_if_fail(GTK_IS_SHEET_COLUMN(child));
+
+
+    gtk_sheet_add_column(sheet, 1);
+    col = gtk_sheet_get_columns_count(sheet) - 1;
+
+    if (sheet->column[col])
+    {
+        g_object_unref(sheet->column[col]);
+        sheet->column[col] = NULL;
+    }
+
+    sheet->column[col] = child;
+/*  g_object_ref(child);*/
+
+    {
+        const gchar *name = gtk_widget_get_name(GTK_WIDGET(child));
+
+        if (name)
+        {
+            gtk_sheet_column_button_add_label(sheet, col, name);
+            gtk_sheet_set_column_title(sheet, col, name);
+        }
+    }
+}
+
+
+/*
+static void                                                              
+    gtk_sheet_children_callback (GtkWidget *widget, gpointer client_data)
+{                                                                        
+    GList **children;                                                    
+                                                                         
+    children = (GList**) client_data;                                    
+    *children = g_list_prepend (*children, widget);                      
+}                                                                        
+*/
+
+GList *
+    glade_gtk_sheet_get_children (/*GladeWidgetAdaptor*/void  *adaptor, 
+                                                        GtkContainer *container)
+{
+    GList *children = NULL;
+    GtkSheet *sheet;
+    gint col;
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("glade_gtk_sheet_get_children: called");
+#endif
+
+    g_return_val_if_fail (GTK_IS_SHEET (container), NULL);
+
+    sheet = GTK_SHEET(container);
+
+/*
+    gtk_container_forall (container,                  
+                          gtk_sheet_children_callback,
+                          &children);                 
+*/
+
+    for (col=0; col<=sheet->maxcol; col++)
+    {
+        children = g_list_append(children, sheet->column[col]);
+    }
+
+    /* Is the children list already reversed? */
+    return children;
+}
+
+void
+    glade_gtk_sheet_add_child (/*GladeWidgetAdaptor*/void *adaptor,
+                                                     GObject *object,
+                                                     GObject *child)
+{
+    GtkSheet *sheet;
+    GtkSheetColumn *newcol;
+    const gchar *name = gtk_widget_get_name(GTK_WIDGET(child));
+
+    g_return_if_fail (GTK_IS_SHEET (object));
+    g_return_if_fail (GTK_IS_WIDGET (child));
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("glade_gtk_sheet_add_child: %s", name ? name : "NULL");
+#endif
+
+    sheet = GTK_SHEET(object);
+    newcol = GTK_SHEET_COLUMN(child);
+
+    gtk_sheet_buildable_add_child_internal(sheet, newcol);
+}
+
+void
+    glade_gtk_sheet_remove_child (/*GladeWidgetAdaptor*/void *adaptor,
+                                                        GObject *object,
+                                                        GObject *child)
+{
+    gint col;
+    GtkSheet *sheet;
+    GtkSheetColumn *oldcol;
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("glade_gtk_sheet_remove_child: called");
+#endif
+
+    g_return_if_fail (GTK_IS_SHEET (object));
+    g_return_if_fail (GTK_IS_WIDGET (child));
+
+    sheet = GTK_SHEET(object);
+    oldcol = GTK_SHEET_COLUMN(child);
+
+    for (col=0; col<=sheet->maxcol; col++)
+    {
+        if (oldcol == sheet->column[col])
+        {
+            gtk_sheet_delete_columns(sheet, col, 1);
+            return;
+        }
+    }
+    g_warning("glade_gtk_sheet_remove_child: couldn't remove child %p", child);
+}
+
+void
+    glade_gtk_sheet_replace_child (/*GladeWidgetAdaptor*/void *adaptor,
+                                                         GObject *object,
+                                                         GObject *old_obj,
+                                                         GObject *new_obj)
+{
+    gint col;
+    GtkSheet *sheet;
+    GtkSheetColumn *oldcol, *newcol;
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("glade_gtk_sheet_replace_child: called %p -> %p", old_obj, new_obj);
+#endif
+
+    g_return_if_fail (GTK_IS_SHEET (object));
+    g_return_if_fail (GTK_IS_WIDGET (old_obj));
+
+    if (GLADE_IS_PLACEHOLDER (new_obj))
+    {
+        glade_gtk_sheet_remove_child (adaptor, object, old_obj);
+        return;
+    }
+
+    g_return_if_fail (GTK_IS_WIDGET (new_obj));
+
+    sheet = GTK_SHEET(object);
+    oldcol = GTK_SHEET_COLUMN(old_obj);
+    newcol = GTK_SHEET_COLUMN(new_obj);
+
+    for (col=0; col<=sheet->maxcol; col++)
+    {
+        if (oldcol == sheet->column[col])
+        {
+            g_object_unref(sheet->column[col]);
+            sheet->column[col] = newcol;
+            return;
+        }
+    }
+    g_warning("glade_gtk_sheet_replace_child: couldn't replace child %p by %p", old_obj, new_obj);
+}
+
 

@@ -468,7 +468,8 @@ struct _GtkSheetClass
 };
   
 GType gtk_sheet_get_type (void);
-GtkType gtk_sheet_range_get_type (void);
+GType gtk_sheet_column_get_type (void);
+GType gtk_sheet_range_get_type (void);
 
 /* create a new sheet */
 GtkWidget *
@@ -594,9 +595,6 @@ gtk_sheet_set_column_title 		(GtkSheet * sheet,
 
 const gchar *
 gtk_sheet_get_column_title (GtkSheet * sheet, gint column);
-
-const gint
-gtk_sheet_get_column_width (GtkSheet * sheet, gint column);
 
 /* set/get row title */
 void
@@ -821,6 +819,9 @@ void
 gtk_sheet_set_column_width (GtkSheet * sheet,
 			    gint column,
 			    guint width);
+
+const gint
+gtk_sheet_get_column_width (GtkSheet * sheet, gint column);
 
 /* set row height */
 void

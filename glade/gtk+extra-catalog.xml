@@ -17,6 +17,7 @@ glade-3
             <get-children-function>glade_gtk_sheet_get_children</get-children-function>
             <add-child-function>glade_gtk_sheet_add_child</add-child-function>
             <remove-child-function>glade_gtk_sheet_remove_child</remove-child-function>
+            <replace-child-function>glade_gtk_sheet_replace_child</replace-child-function>
 
             <actions>
                 <action stock="gtk-edit" important="True" id="launch_editor" name="Edit&#8230;"></action>

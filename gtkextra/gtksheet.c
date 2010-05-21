@@ -7153,13 +7153,24 @@ gtk_sheet_motion (GtkWidget * widget,
        gint v_h, current_col, current_row, col_threshold, row_threshold;
        v_h=1;
 
-       if(abs(x-COLUMN_LEFT_XPIXEL(sheet,sheet->drag_cell.col)) >
-          abs(y-ROW_TOP_YPIXEL(sheet,sheet->drag_cell.row))) v_h=2;
+       /* use center of the selection to determine h_v */
+       g_assert(0 <= sheet->drag_cell.col && sheet->drag_cell.col <= sheet->maxcol);
+       g_assert(0 <= sheet->drag_cell.row && sheet->drag_cell.row <= sheet->maxrow);
+
+       if (abs(x-(COLUMN_LEFT_XPIXEL(sheet,sheet->drag_cell.col)+sheet->column[sheet->drag_cell.col]->width/2)) >
+          abs(y-(ROW_TOP_YPIXEL(sheet,sheet->drag_cell.row)+sheet->row[sheet->drag_cell.row].height/2))) 
+       {
+           v_h=2;
+       }
 
        current_col = COLUMN_FROM_XPIXEL(sheet,x);
        current_row = ROW_FROM_YPIXEL(sheet,y);
        column = current_col-sheet->drag_cell.col;
        row    = current_row-sheet->drag_cell.row;
+
+#ifdef GTK_SHEET_DEBUG
+      g_debug("gtk_sheet_motion: row %d cr %d column %d", row, current_row, column);
+#endif
 
        /*use half of column width resp. row height as threshold to expand selection*/
        col_threshold = COLUMN_LEFT_XPIXEL(sheet,current_col)+gtk_sheet_column_width (sheet,current_col)/2;
@@ -7191,6 +7202,11 @@ gtk_sheet_motion (GtkWidget * widget,
            column=0;
        else
            row=0;
+
+#ifdef GTK_SHEET_DEBUG
+      g_debug("gtk_sheet_motion: 2 state %d row %d cr %d th %d column %d", 
+              v_h, row, current_row, row_threshold, column);
+#endif
 
        if(aux.row0+row >= 0 && aux.rowi+row <= sheet->maxrow &&
           aux.col0+column >= 0 && aux.coli+column <= sheet->maxcol){
@@ -7299,12 +7315,15 @@ static void
     gint state;
     gint r,c;
 
+#ifdef GTK_SHEET_DEBUG
+      g_debug("gtk_sheet_extend_selection: row %d column %d", row, column);
+#endif
+
     if (sheet->selection_mode == GTK_SELECTION_SINGLE) return;
     if (row == sheet->selection_cell.row && column == sheet->selection_cell.col) return;
 
     if (sheet->active_cell.row < 0 || sheet->active_cell.row > sheet->maxrow) return;
     if (sheet->active_cell.col < 0 || sheet->active_cell.col > sheet->maxcol) return;
-
 
     gtk_sheet_move_query(sheet, row, column);
     gtk_widget_grab_focus(GTK_WIDGET(sheet));
@@ -8040,7 +8059,7 @@ static void
         column_width = GTK_SHEET_DEFAULT_COLUMN_WIDTH;
 
     if (0 < sheet->active_cell.row && sheet->active_cell.row < sheet->maxrow)
-        row_height = sheet->column[sheet->active_cell.col]->width;
+        row_height = sheet->row[sheet->active_cell.row].height;
     else
         row_height = GTK_SHEET_DEFAULT_ROW_HEIGHT;
 

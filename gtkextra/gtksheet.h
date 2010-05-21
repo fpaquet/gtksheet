@@ -255,6 +255,8 @@ struct _GtkSheetColumn
     GtkWidget parent;
 
     /*< private >*/
+    GtkSheet *sheet;  /* the sheet this column belongs to */
+
     gchar *title;
     gint width;
     gint left_xpixel;   /* left edge of the column*/

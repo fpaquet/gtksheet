@@ -30,56 +30,51 @@
 #undef GTK_SHEET_DEBUG
 
 #ifdef DEBUG
-#  define GTK_SHEET_DEBUG 1  /* define to activate debug output */
+    #define GTK_SHEET_DEBUG 1  /* define to activate debug output */
 #endif
 
 
-static void glade_sheet_editor_finalize        (GObject              *object);
+static void glade_sheet_editor_finalize(GObject *object);
+static void glade_sheet_editor_editable_init(GladeEditableIface *iface);
+static void glade_sheet_editor_realize(GtkWidget *widget);
+static void glade_sheet_editor_grab_focus(GtkWidget *widget);
 
-static void glade_sheet_editor_editable_init   (GladeEditableIface *iface);
-
-static void glade_sheet_editor_realize         (GtkWidget            *widget);
-static void glade_sheet_editor_grab_focus      (GtkWidget            *widget);
-
-
-G_DEFINE_TYPE_WITH_CODE (GladeSheetEditor, glade_sheet_editor, GTK_TYPE_HBOX,
-                         G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE,
-                                                glade_sheet_editor_editable_init));
-
+G_DEFINE_TYPE_WITH_CODE (
+    GladeSheetEditor, glade_sheet_editor, GTK_TYPE_HBOX,
+    G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE, glade_sheet_editor_editable_init)
+    );
 
 static void
-glade_sheet_editor_class_init (GladeSheetEditorClass *klass)
+    glade_sheet_editor_class_init (GladeSheetEditorClass *klass)
 {
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-    object_class->finalize     = glade_sheet_editor_finalize;
+    object_class->finalize = glade_sheet_editor_finalize;
 
-    widget_class->realize      = glade_sheet_editor_realize;
-    widget_class->grab_focus   = glade_sheet_editor_grab_focus;
+    widget_class->realize = glade_sheet_editor_realize;
+    widget_class->grab_focus = glade_sheet_editor_grab_focus;
 }
 
 static void
-glade_sheet_editor_init (GladeSheetEditor *self)
+    glade_sheet_editor_init (GladeSheetEditor *self)
 {
 }
 
 static void
-project_changed (GladeProject      *project,
+    project_changed (GladeProject      *project,
                  GladeCommand      *command,
                  gboolean           execute,
                  GladeSheetEditor *view_editor)
 {
-    if (!GTK_WIDGET_MAPPED (view_editor))
-        return;
+    if (!GTK_WIDGET_MAPPED (view_editor)) return;
 
     /* Reload on all commands */
     glade_editable_load (GLADE_EDITABLE (view_editor), view_editor->loaded_widget);
 }
 
 static void
-project_finalized (GladeSheetEditor *view_editor,
-                   GladeProject       *where_project_was)
+    project_finalized (GladeSheetEditor *view_editor, GladeProject *where_project_was)
 {
     view_editor->loaded_widget = NULL;
 
@@ -87,17 +82,16 @@ project_finalized (GladeSheetEditor *view_editor,
 }
 
 static GladeWidget *
-get_model_widget (GladeWidget *view)
+    get_model_widget (GladeWidget *view)
 {
     return NULL;
 }
 
 static void
-glade_sheet_editor_load (GladeEditable *editable,
-                         GladeWidget   *widget)
+    glade_sheet_editor_load (GladeEditable *editable, GladeWidget   *widget)
 {
-    GladeSheetEditor   *view_editor = GLADE_SHEET_EDITOR (editable);
-    GladeWidget           *model_widget;
+    GladeSheetEditor *view_editor = GLADE_SHEET_EDITOR (editable);
+    GladeWidget *model_widget;
 
     /* Since we watch the project*/
     if (view_editor->loaded_widget)
@@ -122,7 +116,7 @@ glade_sheet_editor_load (GladeEditable *editable,
 
         /* The widget/project could die unexpectedly... */
         g_object_weak_ref (G_OBJECT (view_editor->loaded_widget->project),
-                           (GWeakNotify)project_finalized,
+                           (GWeakNotify) project_finalized,
                            view_editor);
     }
 
@@ -160,23 +154,21 @@ glade_sheet_editor_load (GladeEditable *editable,
 }
 
 static void
-glade_sheet_editor_set_show_name (GladeEditable *editable,
-                                  gboolean       show_name)
+    glade_sheet_editor_set_show_name (GladeEditable *editable, gboolean show_name)
 {
     GladeSheetEditor *view_editor = GLADE_SHEET_EDITOR (editable);
-
     glade_editable_set_show_name (GLADE_EDITABLE (view_editor->embed), show_name);
 }
 
 static void
-glade_sheet_editor_editable_init (GladeEditableIface *iface)
+    glade_sheet_editor_editable_init (GladeEditableIface *iface)
 {
     iface->load = glade_sheet_editor_load;
     iface->set_show_name = glade_sheet_editor_set_show_name;
 }
 
 static void
-glade_sheet_editor_finalize (GObject *object)
+    glade_sheet_editor_finalize (GObject *object)
 {
     GladeSheetEditor *view_editor = GLADE_SHEET_EDITOR (object);
 
@@ -191,7 +183,7 @@ glade_sheet_editor_finalize (GObject *object)
 
 
 static void
-glade_sheet_editor_realize (GtkWidget *widget)
+    glade_sheet_editor_realize (GtkWidget *widget)
 {
     GladeSheetEditor *view_editor = GLADE_SHEET_EDITOR (widget);
 
@@ -201,7 +193,7 @@ glade_sheet_editor_realize (GtkWidget *widget)
 }
 
 static void
-glade_sheet_editor_grab_focus (GtkWidget *widget)
+    glade_sheet_editor_grab_focus (GtkWidget *widget)
 {
     GladeSheetEditor *view_editor = GLADE_SHEET_EDITOR (widget);
 
@@ -209,12 +201,11 @@ glade_sheet_editor_grab_focus (GtkWidget *widget)
 }
 
 GtkWidget *
-glade_sheet_editor_new (GladeWidgetAdaptor *adaptor,
-                        GladeEditable      *embed)
+    glade_sheet_editor_new (GladeWidgetAdaptor *adaptor, GladeEditable *embed)
 {
-    GladeSheetEditor    *view_editor;
-    GtkWidget              *vbox, *separator;
-    gchar                  *str;
+    GladeSheetEditor *view_editor;
+    GtkWidget *vbox, *separator;
+    gchar *str;
 
     g_return_val_if_fail (GLADE_IS_WIDGET_ADAPTOR (adaptor), NULL);
     g_return_val_if_fail (GLADE_IS_EDITABLE (embed), NULL);
@@ -242,13 +233,13 @@ glade_sheet_editor_new (GladeWidgetAdaptor *adaptor,
 
     gtk_box_pack_start (GTK_BOX (vbox), view_editor->no_model_message, TRUE, TRUE, 0);
 
-    view_editor->embed_list_store = (GtkWidget *)glade_widget_adaptor_create_editable
-                                    (glade_widget_adaptor_get_by_type (GTK_TYPE_LIST_STORE), GLADE_PAGE_GENERAL);
+    view_editor->embed_list_store = (GtkWidget *) glade_widget_adaptor_create_editable(
+        glade_widget_adaptor_get_by_type (GTK_TYPE_LIST_STORE), GLADE_PAGE_GENERAL);
     glade_editable_set_show_name (GLADE_EDITABLE (view_editor->embed_list_store), FALSE);
     gtk_box_pack_start (GTK_BOX (vbox), view_editor->embed_list_store, TRUE, TRUE, 0);
 
-    view_editor->embed_tree_store = (GtkWidget *)glade_widget_adaptor_create_editable
-                                    (glade_widget_adaptor_get_by_type (GTK_TYPE_TREE_STORE), GLADE_PAGE_GENERAL);
+    view_editor->embed_tree_store = (GtkWidget *)glade_widget_adaptor_create_editable(
+        glade_widget_adaptor_get_by_type (GTK_TYPE_TREE_STORE), GLADE_PAGE_GENERAL);
     glade_editable_set_show_name (GLADE_EDITABLE (view_editor->embed_tree_store), FALSE);
     gtk_box_pack_start (GTK_BOX (vbox), view_editor->embed_tree_store, TRUE, TRUE, 0);
 
@@ -257,20 +248,98 @@ glade_sheet_editor_new (GladeWidgetAdaptor *adaptor,
     return GTK_WIDGET (view_editor);
 }
 
-/*--------------------------- GtkTreeView ---------------------------------*/                                                                             
+
+
+static gboolean
+    glade_gtk_sheet_layout_move_child (GladeBaseEditor *editor, 
+                                       GladeWidget *gparent,
+                                       GladeWidget *gchild,
+                                       gpointer data)
+{   
+    GObject *parent = glade_widget_get_object (gparent);
+    GObject *child  = glade_widget_get_object (gchild);
+    GList list   = { 0,};
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("glade_gtk_sheet_layout_move_child: called");
+#endif
+
+    if (GTK_IS_SHEET(parent) && !GTK_IS_SHEET_COLUMN (child)) return FALSE;
+    if (GTK_IS_CELL_LAYOUT(parent) && !GTK_IS_CELL_RENDERER (child)) return FALSE;
+    if (GTK_IS_CELL_RENDERER(parent)) return FALSE;
+
+    if (gparent != glade_widget_get_parent (gchild))
+    {
+        list.data = gchild;
+        glade_command_dnd(&list, gparent, NULL);
+    }
+
+    return TRUE;
+}
+
 static void
-    glade_gtk_sheet_launch_editor (GObject  *treeview)
+    glade_gtk_sheet_layout_child_selected (GladeBaseEditor *editor,
+                                           GladeWidget *gchild,
+                                           gpointer data)
 {
-    GladeWidget *widget = glade_widget_get_from_gobject (treeview);
+    GObject *child = glade_widget_get_object (gchild);
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("glade_gtk_sheet_layout_child_selected: called");
+#endif
+
+    glade_base_editor_add_label (editor, GTK_IS_SHEET_COLUMN (child) ? 
+                                 _("GtkSheet Column") : _("Unknown"));
+
+    glade_base_editor_add_default_properties (editor, gchild);
+
+    glade_base_editor_add_label (editor, GTK_IS_SHEET_COLUMN (child) ? 
+                                 _("Properties") : _("Properties and Attributes"));
+
+    glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_GENERAL);
+
+    if (GTK_IS_CELL_RENDERER (child))
+    {
+        glade_base_editor_add_label (editor, _("Common Properties and Attributes"));
+        glade_base_editor_add_editable (editor, gchild, GLADE_PAGE_COMMON);
+    }
+}
+
+
+static gchar *
+    glade_gtk_sheet_layout_get_display_name (GladeBaseEditor *editor,
+                                         GladeWidget *gchild,
+                                         gpointer user_data)
+{
+    GObject *child = glade_widget_get_object (gchild);
+    gchar *name;
+
+    if (GTK_IS_TREE_VIEW_COLUMN (child))
+        glade_widget_property_get (gchild, "title", &name);
+    else
+        name = gchild->name;
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("glade_gtk_sheet_layout_get_display_name: called <%s>", name ? name : "NULL");
+#endif
+
+    return g_strdup (name);
+}
+
+
+static void
+    glade_gtk_sheet_launch_editor(GObject  *sheet)
+{
+    GladeWidget *widget = glade_widget_get_from_gobject (sheet);
     GladeBaseEditor *editor;
-    GladeEditable *treeview_editor;
+    GladeEditable *sheet_editor;
     GtkWidget *window;
 
-    treeview_editor = glade_widget_adaptor_create_editable (widget->adaptor, GLADE_PAGE_GENERAL);
-    treeview_editor = (GladeEditable *)glade_sheet_editor_new (widget->adaptor, treeview_editor);
+    sheet_editor = glade_widget_adaptor_create_editable (widget->adaptor, GLADE_PAGE_GENERAL);
+    sheet_editor = (GladeEditable *) glade_sheet_editor_new (widget->adaptor, sheet_editor);
 
     /* Editor */
-    editor = glade_base_editor_new (treeview, treeview_editor,
+    editor = glade_base_editor_new (sheet, sheet_editor,
                                     _("Column"), GTK_TYPE_SHEET_COLUMN,
                                     NULL);
 
@@ -286,11 +355,12 @@ static void
                                     NULL);                                         
 */
 
-/*
-    g_signal_connect (editor, "get-display-name", G_CALLBACK (glade_gtk_cell_layout_get_display_name), NULL);
-    g_signal_connect (editor, "child-selected", G_CALLBACK (glade_gtk_cell_layout_child_selected), NULL);    
-    g_signal_connect (editor, "move-child", G_CALLBACK (glade_gtk_cell_layout_move_child), NULL);            
-*/
+    g_signal_connect (editor, "get-display-name", 
+                      G_CALLBACK (glade_gtk_sheet_layout_get_display_name), NULL);
+    g_signal_connect (editor, "child-selected", 
+                      G_CALLBACK (glade_gtk_sheet_layout_child_selected), NULL);
+    g_signal_connect (editor, "move-child", 
+                      G_CALLBACK (glade_gtk_sheet_layout_move_child), NULL);
 
     gtk_widget_show (GTK_WIDGET (editor));
 
@@ -300,8 +370,8 @@ static void
 
 void
     glade_gtk_sheet_action_activate (GladeWidgetAdaptor *adaptor,
-        GObject *object,
-        const gchar *action_path)
+                                     GObject *object,
+                                     const gchar *action_path)
 {
     if (strcmp (action_path, "launch_editor") == 0)
     {
@@ -320,34 +390,32 @@ void
  */
 
 static void
-    gtk_sheet_buildable_add_child_internal(GtkSheet *sheet, GtkSheetColumn *child)
+    gtk_sheet_buildable_add_child_internal(GtkSheet *sheet, GtkSheetColumn *child, char *name)
 {
     int col;
 
     g_return_if_fail(GTK_IS_SHEET(sheet));
     g_return_if_fail(GTK_IS_SHEET_COLUMN(child));
 
-
     gtk_sheet_add_column(sheet, 1);
     col = gtk_sheet_get_columns_count(sheet) - 1;
 
     if (sheet->column[col])
     {
+        sheet->column[col]->sheet = NULL;
+
         g_object_unref(sheet->column[col]);
         sheet->column[col] = NULL;
     }
 
+    child->sheet = sheet;
     sheet->column[col] = child;
-/*  g_object_ref(child);*/
+    /*  do we need to g_object_ref_sink() or g_object_ref() */
 
+    if (name)
     {
-        const gchar *name = gtk_widget_get_name(GTK_WIDGET(child));
-
-        if (name)
-        {
-            gtk_sheet_column_button_add_label(sheet, col, name);
-            gtk_sheet_set_column_title(sheet, col, name);
-        }
+        gtk_sheet_column_button_add_label(sheet, col, name);
+        gtk_sheet_set_column_title(sheet, col, name);
     }
 }
 
@@ -364,8 +432,7 @@ static void
 */
 
 GList *
-    glade_gtk_sheet_get_children (/*GladeWidgetAdaptor*/void  *adaptor, 
-                                                        GtkContainer *container)
+    glade_gtk_sheet_get_children(GladeWidgetAdaptor *adaptor, GtkContainer *container)
 {
     GList *children = NULL;
     GtkSheet *sheet;
@@ -395,31 +462,31 @@ GList *
 }
 
 void
-    glade_gtk_sheet_add_child (/*GladeWidgetAdaptor*/void *adaptor,
-                                                     GObject *object,
-                                                     GObject *child)
+    glade_gtk_sheet_add_child(GladeWidgetAdaptor *adaptor, GObject *object, GObject *child)
 {
     GtkSheet *sheet;
     GtkSheetColumn *newcol;
-    const gchar *name = gtk_widget_get_name(GTK_WIDGET(child));
+    GladeWidget *child_widget = glade_widget_get_from_gobject (child);
+    const gchar *name = glade_widget_get_name(child_widget);
 
     g_return_if_fail (GTK_IS_SHEET (object));
     g_return_if_fail (GTK_IS_WIDGET (child));
 
 #ifdef GTK_SHEET_DEBUG
-    g_debug("glade_gtk_sheet_add_child: %s", name ? name : "NULL");
+    g_debug("glade_gtk_sheet_add_child: %s %d", 
+            name ? name : "NULL",
+            GLADE_IS_WIDGET(child)
+            );
 #endif
 
     sheet = GTK_SHEET(object);
     newcol = GTK_SHEET_COLUMN(child);
 
-    gtk_sheet_buildable_add_child_internal(sheet, newcol);
+    gtk_sheet_buildable_add_child_internal(sheet, newcol, name);
 }
 
 void
-    glade_gtk_sheet_remove_child (/*GladeWidgetAdaptor*/void *adaptor,
-                                                        GObject *object,
-                                                        GObject *child)
+    glade_gtk_sheet_remove_child(GladeWidgetAdaptor *adaptor, GObject *object, GObject *child)
 {
     gint col;
     GtkSheet *sheet;
@@ -447,10 +514,10 @@ void
 }
 
 void
-    glade_gtk_sheet_replace_child (/*GladeWidgetAdaptor*/void *adaptor,
-                                                         GObject *object,
-                                                         GObject *old_obj,
-                                                         GObject *new_obj)
+    glade_gtk_sheet_replace_child(GladeWidgetAdaptor *adaptor,
+                               GObject *object,
+                               GObject *old_obj,
+                               GObject *new_obj)
 {
     gint col;
     GtkSheet *sheet;

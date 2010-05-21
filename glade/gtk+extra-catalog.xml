@@ -24,8 +24,8 @@ glade-3
             </actions>
             <properties>
                 <property query="True" id="title" default="GtkSheet" />
-                <property query="True" needs-sync="True" id="n-cols" default="2" />
-                <property query="True" needs-sync="True" id="n-rows" default="2" />
+                <property query="True" needs-sync="True" id="n-cols" default="1" />
+                <property query="True" needs-sync="True" id="n-rows" default="1" />
                 <property id="locked" default="False" />
                 <property id="selection-mode">
                     <displayable-values>
@@ -49,7 +49,11 @@ glade-3
             </properties>
         </glade-widget-class>
 
-        <glade-widget-class name="GtkSheetColumn" libglade-unsupported="True" generic-name="gtksheetcolumn" title="GtkSheetColumn - a Sheet Column" />
+        <glade-widget-class name="GtkSheetColumn" libglade-unsupported="True" generic-name="gtksheetcolumn" title="GtkSheetColumn - a Sheet Column" >
+            <properties>
+                <property id="position" name="Position"/>
+            </properties>
+        </glade-widget-class>
 
         <glade-widget-class name="GtkCheckItem" generic-name="gtkcheckitem" title="GtkCheckItem - CheckButton-hack with the look and feel of the Redmond95 theme" />
         <glade-widget-class name="GtkItemEntry" generic-name="gtkitementry" title="GtkItemEntry" />

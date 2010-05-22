@@ -24,8 +24,8 @@ glade-3
             </actions>
             <properties>
                 <property query="True" id="title" default="GtkSheet" />
-                <property query="True" needs-sync="True" id="n-cols" default="1" />
-                <property query="True" needs-sync="True" id="n-rows" default="1" />
+                <property save="False" query="False" needs-sync="True" id="n-cols" default="0" />
+                <property save-always="True" query="True" needs-sync="True" id="n-rows" default="1" />
                 <property id="locked" default="False" />
                 <property id="selection-mode">
                     <displayable-values>

@@ -389,36 +389,8 @@ void
  *
  */
 
-static void
-    gtk_sheet_buildable_add_child_internal(GtkSheet *sheet, GtkSheetColumn *child, char *name)
-{
-    int col;
-
-    g_return_if_fail(GTK_IS_SHEET(sheet));
-    g_return_if_fail(GTK_IS_SHEET_COLUMN(child));
-
-    gtk_sheet_add_column(sheet, 1);
-    col = gtk_sheet_get_columns_count(sheet) - 1;
-
-    if (sheet->column[col])
-    {
-        sheet->column[col]->sheet = NULL;
-
-        g_object_unref(sheet->column[col]);
-        sheet->column[col] = NULL;
-    }
-
-    child->sheet = sheet;
-    sheet->column[col] = child;
-    /*  do we need to g_object_ref_sink() or g_object_ref() */
-
-    if (name)
-    {
-        gtk_sheet_column_button_add_label(sheet, col, name);
-        gtk_sheet_set_column_title(sheet, col, name);
-    }
-}
-
+extern void
+    gtk_sheet_buildable_add_child_internal(GtkSheet *sheet, GtkSheetColumn *child, char *name);
 
 /*
 static void                                                              

@@ -145,7 +145,9 @@ static void         gtk_entry_draw_cursor              (GtkEntry       *entry,
 static PangoLayout *gtk_entry_ensure_layout            (GtkEntry       *entry,
                                                         gboolean        include_preedit);
 static void         gtk_entry_queue_draw               (GtkEntry       *entry);
+#if GTK_CHECK_VERSION(2,21,0) == 0
 static void         gtk_entry_reset_im_context         (GtkEntry       *entry);
+#endif 
 static void         gtk_entry_recompute                (GtkEntry       *entry);
 static void         gtk_entry_get_cursor_locations     (GtkEntry       *entry,
 							CursorType      type,
@@ -1768,6 +1770,7 @@ gtk_entry_queue_draw (GtkEntry *entry)
     gdk_window_invalidate_rect (entry->text_area, NULL, FALSE);
 }
 
+#if GTK_CHECK_VERSION(2,21,0) == 0
 static void
 gtk_entry_reset_im_context (GtkEntry *entry)
 {
@@ -1777,6 +1780,7 @@ gtk_entry_reset_im_context (GtkEntry *entry)
       gtk_im_context_reset (entry->im_context);
     }
 }
+#endif // GTK_CHECK_VERSION(2,21,0) == 0
 
 static void
 gtk_entry_get_cursor_locations (GtkEntry   *entry,

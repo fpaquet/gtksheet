@@ -1,3 +1,6 @@
+2010-06-12 Roy Rankin <rrankin AT ihug DOT com DOT au>
+        * gtkextra/gtkitementry.c : patch to allow build with gtk2-21
+
 2010-04-20 Roy Rankin <rrankin AT ihug DOT com DOT au>
 	* gtkitementry.h gtkitementry.c gtksheet.c gtkplotbox.c:
 	  add gtkextra-2 patches to work with gtk+2.18

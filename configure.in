@@ -132,6 +132,7 @@ esac
 gtkextratargetlib=libgtkextra-$gdktarget-2.0.la
 
 AC_SUBST(gtkextratargetlib)
+AC_CHECK_LIB(m, sqrt)
 
 if test "x$gdktarget" = "xwin32"; then
   # We start off with the libraries from Pango
@@ -186,7 +187,7 @@ fi
 
 # Checks for nonportable Functions
 AC_CHECK_FUNCS([floor getcwd gethostname gettimeofday])
-AC_CHECK_FUNCS([pow setlocale sqrt strstr strtol])
+AC_CHECK_FUNCS([pow setlocale strstr strtol sin])
 AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC

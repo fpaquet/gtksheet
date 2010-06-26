@@ -1,3 +1,6 @@
+2010-06-26 Roy Rankin <rrankin AT ihug DOT com DOT au>
+	* configure.in : link with math lib required by Fedora 13
+
 2010-06-12 Roy Rankin <rrankin AT ihug DOT com DOT au>
         * gtkextra/gtkitementry.c : patch to allow build with gtk2-21
 

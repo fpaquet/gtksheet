@@ -27,9 +27,9 @@ extern "C" {
 
 #include "gtkcombobutton.h"
 
-#define GTK_TOGGLE_COMBO(obj)			GTK_CHECK_CAST (obj, gtk_toggle_combo_get_type (), GtkToggleCombo)
-#define GTK_TOGGLE_COMBO_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, gtk_toggle_combo_get_type (), GtkToggleComboClass)
-#define GTK_IS_TOGGLE_COMBO(obj)       GTK_CHECK_TYPE (obj, gtk_toggle_combo_get_type ())
+#define GTK_TOGGLE_COMBO(obj)			G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_toggle_combo_get_type (), GtkToggleCombo)
+#define GTK_TOGGLE_COMBO_CLASS(klass)	G_TYPE_CHECK_CLASS_CAST (klass, gtk_toggle_combo_get_type (), GtkToggleComboClass)
+#define GTK_IS_TOGGLE_COMBO(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_toggle_combo_get_type ())
 
 typedef struct _GtkToggleCombo		GtkToggleCombo;
 typedef struct _GtkToggleComboClass	GtkToggleComboClass;
@@ -56,7 +56,7 @@ struct _GtkToggleComboClass {
         void (*changed) (GtkToggleCombo *toggle_combo, gint row, gint col); 
 };
 
-GtkType      gtk_toggle_combo_get_type          (void);
+GType        gtk_toggle_combo_get_type          (void);
 
 GtkWidget*   gtk_toggle_combo_new     		(gint nrows, gint ncols);
 void	     gtk_toggle_combo_construct   	(GtkToggleCombo *toggle_combo,

@@ -30,10 +30,10 @@ extern "C" {
 #include "gtkplotpc.h"
 
 
-#define GTK_PLOT_CSURFACE(obj)        GTK_CHECK_CAST (obj, gtk_plot_csurface_get_type (), GtkPlotCSurface)
-#define GTK_TYPE_PLOT_CSURFACE        (gtk_plot_csurface_get_type ())
-#define GTK_PLOT_CSURFACE_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_csurface_get_type, GtkPlotCSurfaceClass)
-#define GTK_IS_PLOT_CSURFACE(obj)     GTK_CHECK_TYPE (obj, gtk_plot_csurface_get_type ())
+#define GTK_PLOT_CSURFACE(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_csurface_get_type (), GtkPlotCSurface)
+#define G_TYPE_PLOT_CSURFACE        (gtk_plot_csurface_get_type ())
+#define GTK_PLOT_CSURFACE_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_csurface_get_type, GtkPlotCSurfaceClass)
+#define GTK_IS_PLOT_CSURFACE(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_csurface_get_type ())
 
 typedef struct _GtkPlotCSurface		GtkPlotCSurface;
 typedef struct _GtkPlotCSurfaceClass	GtkPlotCSurfaceClass;
@@ -81,7 +81,7 @@ struct _GtkPlotCSurfaceClass
 
 /* PlotCSurface */
 
-GtkType		gtk_plot_csurface_get_type	(void);
+GType		gtk_plot_csurface_get_type	(void);
 GtkWidget*	gtk_plot_csurface_new		(void);
 GtkWidget*	gtk_plot_csurface_new_function	(GtkPlotFunc3D function);
 

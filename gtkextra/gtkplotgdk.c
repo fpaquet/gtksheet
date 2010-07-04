@@ -133,26 +133,21 @@ extern inline gint roundint                         (gdouble x);
 
 static GtkPlotPCClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot_gdk_get_type (void)
 {
-  static GtkType pc_type = 0;
+  static GType pc_type = 0;
 
   if (!pc_type)
     {
-      GtkTypeInfo pc_info =
-      {
-        "GtkPlotGdk",
-        sizeof (GtkPlotGdk),
-        sizeof (GtkPlotGdkClass),
-        (GtkClassInitFunc) gtk_plot_gdk_class_init,
-        (GtkObjectInitFunc) gtk_plot_gdk_init,
-        /* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      pc_type = gtk_type_unique (GTK_TYPE_PLOT_PC, &pc_info);
+      pc_type = g_type_register_static_simple (
+		GTK_TYPE_PLOT_PC,
+		"GtkPlotGdk",
+		sizeof (GtkPlotGdkClass),
+		(GClassInitFunc) gtk_plot_gdk_class_init,
+		sizeof (GtkPlotGdk),
+		(GInstanceInitFunc) gtk_plot_gdk_init,
+		0);
     }
   return pc_type;
 }
@@ -205,7 +200,7 @@ gtk_plot_gdk_class_init (GtkPlotGdkClass *klass)
   GtkPlotPCClass *pc_class;
   GtkPlotGdkClass *gdk_class;
 
-  parent_class = gtk_type_class (gtk_plot_pc_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_pc_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   gobject_class = (GObjectClass *) klass;
@@ -253,7 +248,7 @@ gtk_plot_gdk_new                                (GtkWidget *widget)
 {
   GtkObject *object;
 
-  object = gtk_type_new(gtk_plot_gdk_get_type());
+  object = g_object_new(gtk_plot_gdk_get_type(), NULL);
 
   gtk_plot_gdk_construct(GTK_PLOT_GDK(object), widget);
 

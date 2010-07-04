@@ -60,14 +60,14 @@ activate_plot(GtkWidget *widget, gpointer data)
 
   while(n < nlayers)
     {
-      gtk_signal_handler_block_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
+      g_signal_handlers_block_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
       if(widget_list[n] == active_widget){
             active_plot = plots[n];
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[n]), TRUE);
       }else{
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[n]), FALSE);
       }
-      gtk_signal_handler_unblock_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
+      g_signal_handlers_unblock_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
                                                                                 
       n++;
     }
@@ -94,12 +94,12 @@ new_layer(GtkWidget *canvas)
 */
  gtk_widget_size_request(buttons[nlayers-1], &req);
  size = MAX(req.width,req.height);
- gtk_widget_set_usize(buttons[nlayers-1], size, size);
+ gtk_widget_set_size_request(buttons[nlayers-1], size, size);
  gtk_fixed_put(GTK_FIXED(canvas), buttons[nlayers-1], (nlayers-1)*20, 0);
  gtk_widget_show(buttons[nlayers-1]);
 
- gtk_signal_connect(GTK_OBJECT(buttons[nlayers-1]), "toggled",
-                    (GtkSignalFunc) activate_plot, canvas);
+ g_signal_connect(GTK_OBJECT(buttons[nlayers-1]), "toggled",
+                    (void *) activate_plot, canvas);
 
  plots[nlayers-1] = gtk_plot_new_with_size(NULL, .65, .55);
  gtk_widget_show(plots[nlayers-1]);
@@ -114,7 +114,7 @@ void
 build_example1(GtkWidget *active_plot)
 {
  GdkPixmap *pixmap;
- GdkBitmap *mask;
+ GdkBitmap *mask = NULL;
  GdkColormap *colormap;
 
  colormap = gdk_colormap_get_system();
@@ -122,6 +122,11 @@ build_example1(GtkWidget *active_plot)
  pixmap = gdk_pixmap_colormap_create_from_xpm(NULL, colormap, &mask, NULL,
                                               "sat.xpm");
 
+  if (!pixmap)
+  {
+    perror("sat.xpm");
+    return;
+  }
  gtk_plot_set_background_pixmap(GTK_PLOT(active_plot), pixmap);
 
  gdk_pixmap_unref(pixmap);
@@ -145,10 +150,10 @@ int main(int argc, char *argv[]){
 
  window1=gtk_window_new(GTK_WINDOW_TOPLEVEL);
  gtk_window_set_title(GTK_WINDOW(window1), "Image Demo");
- gtk_widget_set_usize(window1,550,650);
+ gtk_widget_set_size_request(window1,550,650);
  gtk_container_border_width(GTK_CONTAINER(window1),0);
 
- gtk_signal_connect (GTK_OBJECT (window1), "destroy",
+ g_signal_connect (GTK_OBJECT (window1), "destroy",
 		     GTK_SIGNAL_FUNC (quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);

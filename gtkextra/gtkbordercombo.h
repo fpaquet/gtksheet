@@ -27,9 +27,9 @@ extern "C" {
 
 #include "gtkcombobutton.h"
 
-#define GTK_BORDER_COMBO(obj)			GTK_CHECK_CAST (obj, gtk_border_combo_get_type (), GtkBorderCombo)
-#define GTK_BORDER_COMBO_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, gtk_border_combo_get_type (), GtkBorderComboClass)
-#define GTK_IS_BORDER_COMBO(obj)       GTK_CHECK_TYPE (obj, gtk_border_combo_get_type ())
+#define GTK_BORDER_COMBO(obj)	G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_border_combo_get_type (), GtkBorderCombo)
+#define GTK_BORDER_COMBO_CLASS(klass)	G_TYPE_CHECK_CLASS_CAST (klass, gtk_border_combo_get_type (), GtkBorderComboClass)
+#define GTK_IS_BORDER_COMBO(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_border_combo_get_type ())
 
 typedef struct _GtkBorderCombo		GtkBorderCombo;
 typedef struct _GtkBorderComboClass	GtkBorderComboClass;
@@ -54,7 +54,7 @@ struct _GtkBorderComboClass {
         void (*changed) (GtkBorderCombo *border_combo, gint selection);
 };
 
-GtkType      gtk_border_combo_get_type              (void);
+GType      gtk_border_combo_get_type              (void);
 
 GtkWidget *gtk_border_combo_new                   (void);
 

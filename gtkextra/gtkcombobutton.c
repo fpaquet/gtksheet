@@ -31,6 +31,7 @@
  * It should only be accessed through the functions described below.
  */
 
+
 #include <string.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtktogglebutton.h>
@@ -71,7 +72,7 @@ gtk_combo_button_class_init (GtkComboButtonClass * klass)
   GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
 
-  parent_class = gtk_type_class (gtk_hbox_get_type ());
+  parent_class = g_type_class_ref (gtk_hbox_get_type ());
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
 
@@ -85,7 +86,7 @@ static void
 gtk_combo_button_destroy (GtkObject * combo_button)
 {
   gtk_widget_destroy (GTK_COMBO_BUTTON (combo_button)->popwin);
-  gtk_widget_unref (GTK_COMBO_BUTTON (combo_button)->popwin);
+  g_object_unref (GTK_COMBO_BUTTON (combo_button)->popwin);
 
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
     (*GTK_OBJECT_CLASS (parent_class)->destroy) (combo_button);
@@ -150,7 +151,7 @@ gtk_combo_button_popup_display (GtkComboButton * combo_button)
   gtk_combo_button_get_pos (combo_button, &x, &y, &height, &width);
 
   gtk_window_move(GTK_WINDOW(combo_button->popwin), x, y);
-  gtk_widget_set_usize (combo_button->popwin, width, height);
+  gtk_widget_set_size_request (combo_button->popwin, width, height);
   gtk_widget_show (combo_button->popwin);
 
   gtk_grab_add (combo_button->popwin);
@@ -221,14 +222,14 @@ gtk_combo_button_init (GtkComboButton * combo_button)
   gtk_widget_show (combo_button->button);
   gtk_widget_show (combo_button->arrow);
 
-  gtk_signal_connect (GTK_OBJECT (combo_button->arrow), "toggled",
-		      (GtkSignalFunc) gtk_combo_button_arrow_press, combo_button);
+  g_signal_connect (GTK_OBJECT (combo_button->arrow), "toggled",
+		      (void *) gtk_combo_button_arrow_press, combo_button);
 
                        
   combo_button->popwin = gtk_window_new (GTK_WINDOW_POPUP);
-  gtk_widget_ref (combo_button->popwin);
-  gtk_window_set_resizable (GTK_WINDOW (combo_button->popwin), FALSE);
-  gtk_window_set_policy (GTK_WINDOW (combo_button->popwin), 1, 1, 0);
+  g_object_ref (combo_button->popwin);
+  // DUP ? RRR gtk_window_set_resizable (GTK_WINDOW (combo_button->popwin), FALSE);
+  gtk_window_set_resizable (GTK_WINDOW (combo_button->popwin), TRUE);
   gtk_widget_set_events (combo_button->popwin, GDK_KEY_PRESS_MASK);
  
   event_box = gtk_event_box_new ();
@@ -245,31 +246,28 @@ gtk_combo_button_init (GtkComboButton * combo_button)
   gtk_frame_set_shadow_type (GTK_FRAME (combo_button->frame), GTK_SHADOW_OUT);
   gtk_widget_show (combo_button->frame);
 
-  gtk_signal_connect (GTK_OBJECT (combo_button->popwin), "button_press_event",
-		      GTK_SIGNAL_FUNC (gtk_combo_button_button_press), combo_button);
+  g_signal_connect (GTK_OBJECT (combo_button->popwin), "button_press_event",
+		      (void *)gtk_combo_button_button_press, combo_button);
   
 
 }
 
-GtkType
+GType
 gtk_combo_button_get_type ()
 {
-  static GtkType combo_button_type = 0;
+  static GType combo_button_type = 0;
 
   if (!combo_button_type)
     {
-      GtkTypeInfo combo_button_info =
-      {
-	"GtkComboButton",
-	sizeof (GtkComboButton),
-	sizeof (GtkComboButtonClass),
-	(GtkClassInitFunc) gtk_combo_button_class_init,
-	(GtkObjectInitFunc) gtk_combo_button_init,
-	NULL,
-	NULL,
-	(GtkClassInitFunc) NULL,
-      };
-      combo_button_type = gtk_type_unique (gtk_hbox_get_type (), &combo_button_info);
+	combo_button_type = g_type_register_static_simple (
+		gtk_hbox_get_type (),
+		"GtkComboButton",
+		sizeof (GtkComboButtonClass),
+		(GClassInitFunc) gtk_combo_button_class_init,
+		sizeof (GtkComboButton),
+		(GInstanceInitFunc) gtk_combo_button_init,
+		0);
+
     }
   return combo_button_type;
 }
@@ -279,7 +277,7 @@ gtk_combo_button_new ()
 {
   GtkComboButton *combo_button;
 
-  combo_button = gtk_type_new (gtk_combo_button_get_type ());
+  combo_button = g_object_new (gtk_combo_button_get_type (), NULL);
 
   return(GTK_WIDGET(combo_button));
 

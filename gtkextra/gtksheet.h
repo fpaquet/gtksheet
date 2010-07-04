@@ -69,21 +69,21 @@ enum
   GTK_SHEET_BOTTOM_BORDER   = 1 << 3 
 }; 
 
-#define GTK_TYPE_SHEET    (gtk_sheet_get_type ())
-#define GTK_SHEET(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SHEET, GtkSheet))
-#define GTK_IS_SHEET(obj)    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SHEET))
-#define GTK_SHEET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SHEET, GtkSheetClass))
-#define GTK_IS_SHEET_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SHEET))
-#define GTK_SHEET_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SHEET, GtkSheetClass))
+#define G_TYPE_SHEET    (gtk_sheet_get_type ())
+#define GTK_SHEET(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_SHEET, GtkSheet))
+#define GTK_IS_SHEET(obj)    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_SHEET))
+#define GTK_SHEET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_SHEET, GtkSheetClass))
+#define GTK_IS_SHEET_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), G_TYPE_SHEET))
+#define GTK_SHEET_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), G_TYPE_SHEET, GtkSheetClass))
 
-#define GTK_TYPE_SHEET_COLUMN    (gtk_sheet_column_get_type ())
-#define GTK_SHEET_COLUMN(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SHEET_COLUMN, GtkSheetColumn))
-#define GTK_IS_SHEET_COLUMN(obj)    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SHEET_COLUMN))
-#define GTK_SHEET_COLUMN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SHEET_COLUMN, GtkSheetColumnClass))
-#define GTK_IS_SHEET_COLUMN_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SHEET_COLUMN))
-#define GTK_SHEET_COLUMN_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SHEET_COLUMN, GtkSheetColumnClass))
+#define G_TYPE_SHEET_COLUMN    (gtk_sheet_column_get_type ())
+#define GTK_SHEET_COLUMN(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_SHEET_COLUMN, GtkSheetColumn))
+#define GTK_IS_SHEET_COLUMN(obj)    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_SHEET_COLUMN))
+#define GTK_SHEET_COLUMN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_SHEET_COLUMN, GtkSheetColumnClass))
+#define GTK_IS_SHEET_COLUMN_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), G_TYPE_SHEET_COLUMN))
+#define GTK_SHEET_COLUMN_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), G_TYPE_SHEET_COLUMN, GtkSheetColumnClass))
 
-#define GTK_TYPE_SHEET_RANGE (gtk_sheet_range_get_type ())
+#define G_TYPE_SHEET_RANGE (gtk_sheet_range_get_type ())
 
 /* Public flags, for compatibility */
 
@@ -339,7 +339,7 @@ struct _GtkSheet{
   GtkSheetCell active_cell;
   GtkWidget *sheet_entry;
 
-  GtkType entry_type;
+  GType entry_type;
 
   /* expanding selection */
   GtkSheetCell selection_cell;
@@ -493,12 +493,12 @@ gtk_sheet_construct_browser		(GtkSheet *sheet,
 GtkWidget *
 gtk_sheet_new_with_custom_entry 	(guint rows, guint columns, 
                                          const gchar *title,
-                                 	 GtkType entry_type);
+                                 	 GType entry_type);
 void
 gtk_sheet_construct_with_custom_entry	(GtkSheet *sheet,
        					 guint rows, guint columns, 
                                          const gchar *title,
-					 GtkType entry_type);
+					 GType entry_type);
 /* change scroll adjustments */
 void
 gtk_sheet_set_hadjustment		(GtkSheet *sheet,
@@ -508,7 +508,7 @@ gtk_sheet_set_vadjustment		(GtkSheet *sheet,
 					 GtkAdjustment *adjustment); 
 /* Change entry */
 void
-gtk_sheet_change_entry			(GtkSheet *sheet, GtkType entry_type);
+gtk_sheet_change_entry			(GtkSheet *sheet, GType entry_type);
 
 /* Returns sheet's entry widget */
 GtkWidget *

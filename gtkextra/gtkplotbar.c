@@ -24,6 +24,7 @@
  * FIXME:: Need long description.
  */
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -72,26 +73,21 @@ enum {
 
 static GtkPlotDataClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot_bar_get_type (void)
 {
-  static GtkType data_type = 0;
+  static GType data_type = 0;
 
   if (!data_type)
     {
-      GtkTypeInfo data_info =
-      {
-	"GtkPlotBar",
-	sizeof (GtkPlotBar),
-	sizeof (GtkPlotBarClass),
-	(GtkClassInitFunc) gtk_plot_bar_class_init,
-	(GtkObjectInitFunc) gtk_plot_bar_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      data_type = gtk_type_unique (gtk_plot_data_get_type(), &data_info);
+      data_type = g_type_register_static_simple (
+		gtk_plot_data_get_type(),
+		"GtkPlotBar",
+		sizeof (GtkPlotBarClass),
+		(GClassInitFunc) gtk_plot_bar_class_init,
+		sizeof (GtkPlotBar),
+		(GInstanceInitFunc) gtk_plot_bar_init,
+		0);
     }
   return data_type;
 }
@@ -104,7 +100,7 @@ gtk_plot_bar_class_init (GtkPlotBarClass *klass)
   GtkPlotDataClass *data_class;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-  parent_class = gtk_type_class (gtk_plot_data_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_data_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
@@ -126,7 +122,8 @@ gtk_plot_bar_class_init (GtkPlotBarClass *klass)
   g_param_spec_enum ("orientation",
                            P_("Orientation"),
                            P_("Orientation"),
-                           GTK_TYPE_ORIENTATION, 0, 
+			   gtk_orientation_get_type (),
+                           0, 
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
 
   data_class->clone = gtk_plot_bar_clone;
@@ -220,7 +217,7 @@ gtk_plot_bar_new (GtkOrientation orientation)
 {
   GtkWidget *widget;
 
-  widget = gtk_type_new (gtk_plot_bar_get_type ());
+  widget = gtk_widget_new (gtk_plot_bar_get_type (), NULL);
 
   gtk_plot_bar_construct(GTK_PLOT_BAR(widget), orientation);
 
@@ -355,8 +352,8 @@ gtk_plot_bar_draw_legend(GtkPlotData *data, gint x, gint y)
 
   g_return_if_fail(data->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(data->plot));
-  g_return_if_fail(GTK_WIDGET_VISIBLE(data));
-  g_return_if_fail(GTK_WIDGET_VISIBLE(data->plot));
+  g_return_if_fail(gtk_widget_get_visible(GTK_WIDGET(data)));
+  g_return_if_fail(gtk_widget_get_visible(GTK_WIDGET(data->plot)));
 
   plot = data->plot;
   area.x = GTK_WIDGET(plot)->allocation.x;

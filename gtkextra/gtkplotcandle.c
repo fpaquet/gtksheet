@@ -17,6 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -55,26 +56,21 @@ extern inline gint roundint (gdouble x);
 
 static GtkPlotDataClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot_candle_get_type (void)
 {
-  static GtkType data_type = 0;
+  static GType data_type = 0;
 
   if (!data_type)
     {
-      GtkTypeInfo data_info =
-      {
-	"GtkPlotCandle",
-	sizeof (GtkPlotCandle),
-	sizeof (GtkPlotCandleClass),
-	(GtkClassInitFunc) gtk_plot_candle_class_init,
-	(GtkObjectInitFunc) gtk_plot_candle_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      data_type = gtk_type_unique (gtk_plot_data_get_type(), &data_info);
+      data_type = g_type_register_static_simple (
+		gtk_plot_data_get_type(),
+		"GtkPlotCandle",
+		sizeof (GtkPlotCandleClass),
+		(GClassInitFunc) gtk_plot_candle_class_init,
+		sizeof (GtkPlotCandle),
+		(GInstanceInitFunc) gtk_plot_candle_init,
+		0);
     }
   return data_type;
 }
@@ -86,7 +82,7 @@ gtk_plot_candle_class_init (GtkPlotCandleClass *klass)
   GtkWidgetClass *widget_class;
   GtkPlotDataClass *data_class;
 
-  parent_class = gtk_type_class (gtk_plot_data_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_data_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
@@ -143,7 +139,7 @@ gtk_plot_candle_new (void)
 {
   GtkWidget *widget;
 
-  widget = gtk_type_new (gtk_plot_candle_get_type ());
+  widget = gtk_widget_new (gtk_plot_candle_get_type (), NULL);
 
   return (widget);
 }
@@ -248,7 +244,7 @@ gtk_plot_candle_draw_legend(GtkPlotData *data, gint x, gint y)
 
   g_return_if_fail(data->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(data->plot));
-  if(!GTK_WIDGET_REALIZED(data->plot)) return;
+  if(!gtk_widget_get_realized(GTK_WIDGET(data->plot))) return;
 
   plot = data->plot;
   area.x = GTK_WIDGET(plot)->allocation.x;

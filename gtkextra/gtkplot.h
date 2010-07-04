@@ -26,16 +26,16 @@ extern "C" {
 #include "gtkplotpc.h"
 #include "gtkplotarray.h"
 
-#define GTK_PLOT(obj)        GTK_CHECK_CAST (obj, gtk_plot_get_type (), GtkPlot)
+#define GTK_PLOT(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_get_type (), GtkPlot)
 
-#define GTK_TYPE_PLOT   (gtk_plot_get_type ())
+#define G_TYPE_PLOT   (gtk_plot_get_type ())
 
-#define GTK_PLOT_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_get_type(), GtkPlotClass)
-#define GTK_IS_PLOT(obj)     GTK_CHECK_TYPE (obj, gtk_plot_get_type ())
-#define GTK_PLOT_AXIS(obj)        GTK_CHECK_CAST (obj, gtk_plot_axis_get_type (), GtkPlotAxis)
+#define GTK_PLOT_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_get_type(), GtkPlotClass)
+#define GTK_IS_PLOT(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_get_type ())
+#define GTK_PLOT_AXIS(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_axis_get_type (), GtkPlotAxis)
 
-#define GTK_TYPE_PLOT_AXIS   (gtk_plot_axis_get_type ())
-#define GTK_IS_PLOT_AXIS(obj)     GTK_CHECK_TYPE (obj, gtk_plot_axis_get_type ())
+#define G_TYPE_PLOT_AXIS   (gtk_plot_axis_get_type ())
+#define GTK_IS_PLOT_AXIS(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_axis_get_type ())
 
 typedef struct _GtkPlot		GtkPlot;
 typedef struct _GtkPlotClass	GtkPlotClass;
@@ -627,7 +627,7 @@ struct _GtkPlotAxisClass
 
 /* Plot */
 
-GtkType		gtk_plot_get_type		(void);
+GType		gtk_plot_get_type		(void);
 GtkWidget*	gtk_plot_new			(GdkDrawable *drawable);
 GtkWidget*	gtk_plot_new_with_size		(GdkDrawable *drawable,
                                                  gdouble width, gdouble height);
@@ -766,7 +766,7 @@ void            gtk_plot_remove_break      	(GtkPlot *plot,
 
 /* Axis */
 
-GtkType		gtk_plot_axis_get_type		(void);
+GType		gtk_plot_axis_get_type		(void);
 GtkObject*	gtk_plot_axis_new		(GtkPlotOrientation orientation);
 void		gtk_plot_axis_construct		(GtkPlotAxis *axis, 
 					         GtkPlotOrientation orientation);

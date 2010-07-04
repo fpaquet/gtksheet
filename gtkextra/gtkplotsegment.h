@@ -26,10 +26,10 @@ extern "C" {
 
 #include "gtkplot.h"
 
-#define GTK_PLOT_SEGMENT(obj)        GTK_CHECK_CAST (obj, gtk_plot_segment_get_type (), GtkPlotSegment)
-#define GTK_TYPE_PLOT_SEGMENT        (gtk_plot_segment_get_type ())
-#define GTK_PLOT_SEGMENT_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_segment_get_type(), GtkPlotSegmentClass)
-#define GTK_IS_PLOT_SEGMENT(obj)     GTK_CHECK_TYPE (obj, gtk_plot_segment_get_type ())
+#define GTK_PLOT_SEGMENT(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_segment_get_type (), GtkPlotSegment)
+#define G_TYPE_PLOT_SEGMENT        (gtk_plot_segment_get_type ())
+#define GTK_PLOT_SEGMENT_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_segment_get_type(), GtkPlotSegmentClass)
+#define GTK_IS_PLOT_SEGMENT(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_segment_get_type ())
 
 typedef struct _GtkPlotSegment             GtkPlotSegment;
 typedef struct _GtkPlotSegmentClass        GtkPlotSegmentClass;
@@ -67,7 +67,7 @@ struct _GtkPlotSegmentClass
 };
 
 
-GtkType		gtk_plot_segment_get_type		(void);
+GType		gtk_plot_segment_get_type		(void);
 GtkWidget*	gtk_plot_segment_new		(void);
 void		gtk_plot_segment_set_relative   (GtkPlotSegment *segment,
 						 gboolean set);

@@ -141,26 +141,21 @@ extern inline gint roundint			(gdouble x);
 
 static GtkPlotClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot3d_get_type (void)
 {
-  static GtkType plot_type = 0;
+  static GType plot_type = 0;
 
   if (!plot_type)
     {
-      GtkTypeInfo plot_info =
-      {
-	"GtkPlot3D",
-	sizeof (GtkPlot3D),
-	sizeof (GtkPlot3DClass),
-	(GtkClassInitFunc) gtk_plot3d_class_init,
-	(GtkObjectInitFunc) gtk_plot3d_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      plot_type = gtk_type_unique (gtk_plot_get_type(), &plot_info);
+      plot_type = g_type_register_static_simple (
+		gtk_plot_get_type(),
+		"GtkPlot3D",
+		sizeof (GtkPlot3DClass),
+		(GClassInitFunc) gtk_plot3d_class_init,
+		sizeof (GtkPlot3D),
+		(GInstanceInitFunc) gtk_plot3d_init,
+		0);
     }
   return plot_type;
 }
@@ -174,7 +169,7 @@ gtk_plot3d_class_init (GtkPlot3DClass *klass)
   GtkPlot3DClass *plot3d_class;
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  parent_class = gtk_type_class (gtk_plot_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
@@ -1410,7 +1405,7 @@ gtk_plot3d_real_paint (GtkWidget *widget)
   GtkPlotVector vx, vy, vz;
   gint i;
 
-  if(!GTK_WIDGET_VISIBLE(widget)) return;
+  if(!gtk_widget_get_visible(widget)) return;
 
   plot = GTK_PLOT3D(widget);
 
@@ -1723,13 +1718,13 @@ gtk_plot3d_real_paint (GtkWidget *widget)
 GtkWidget*
 gtk_plot3d_new (GdkDrawable *drawable)
 {
-  GtkPlot3D *plot;
+  GtkWidget *plot;
 
-  plot = gtk_type_new (gtk_plot3d_get_type ());
+  plot = gtk_widget_new (gtk_plot3d_get_type (), NULL);
 
   gtk_plot3d_construct(GTK_PLOT3D(plot), drawable);
 
-  return GTK_WIDGET (plot);
+  return plot;
 }
 
 /**
@@ -1760,7 +1755,7 @@ gtk_plot3d_new_with_size (GdkDrawable *drawable, gdouble width, gdouble height)
 {
   GtkWidget *plot; 
 
-  plot = gtk_type_new (gtk_plot3d_get_type ());
+  plot = gtk_widget_new (gtk_plot3d_get_type (), NULL);
 
   gtk_plot3d_construct_with_size(GTK_PLOT3D(plot), drawable, width, height);
 
@@ -1812,7 +1807,7 @@ gtk_plot3d_draw_plane(GtkPlot3D *plot,
   gint i;
 
   widget = GTK_WIDGET(plot);
-  if(!GTK_WIDGET_VISIBLE(plot)) return;
+  if(!gtk_widget_get_visible(widget)) return;
 
   pixmap = GTK_PLOT(plot)->drawable;
   pc = GTK_PLOT(plot)->pc;
@@ -2111,7 +2106,7 @@ gtk_plot3d_draw_labels(GtkPlot3D *plot,
       }
       else
       {
-        gtk_signal_emit_by_name(GTK_OBJECT(axis), "tick_label", 
+        g_signal_emit_by_name(GTK_OBJECT(axis), "tick_label", 
                                 &tick_value, label, &veto);
         if(!veto)
           gtk_plot_axis_parse_label(axis, tick_value, axis->label_precision, axis->label_style, label);
@@ -2238,8 +2233,8 @@ gtk_plot3d_autoscale(GtkPlot3D *plot)
   plot->zmin = plot->az->ticks.min; 
   plot->zmax = plot->az->ticks.max; 
 
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", TRUE);
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
+  g_signal_emit_by_name(GTK_OBJECT(plot), "update", TRUE);
+  g_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
 
@@ -2259,8 +2254,8 @@ gtk_plot3d_rotate(GtkPlot3D *plot, gdouble angle_x, gdouble angle_y, gdouble ang
   gtk_plot3d_rotate_vector(plot, &plot->e2, angle_x, angle_y, angle_z);
   gtk_plot3d_rotate_vector(plot, &plot->e3, angle_x, angle_y, angle_z);
 
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
+  g_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
+  g_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
 /**
@@ -2407,8 +2402,8 @@ gtk_plot3d_set_xrange(GtkPlot3D *plot, gdouble min, gdouble max)
   plot->ax->ticks.max = max;
   gtk_plot_axis_ticks_recalc(plot->ax);
 
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", TRUE);
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
+  g_signal_emit_by_name(GTK_OBJECT(plot), "update", TRUE);
+  g_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
 /**
@@ -2431,8 +2426,8 @@ gtk_plot3d_set_yrange(GtkPlot3D *plot, gdouble min, gdouble max)
   plot->ay->ticks.max = max;
   gtk_plot_axis_ticks_recalc(plot->ay);
 
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", TRUE);
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
+  g_signal_emit_by_name(GTK_OBJECT(plot), "update", TRUE);
+  g_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 /**
  * gtk_plot3d_set_zrange:
@@ -2453,8 +2448,8 @@ gtk_plot3d_set_zrange(GtkPlot3D *plot, gdouble min, gdouble max)
   plot->az->ticks.max = max;
   gtk_plot_axis_ticks_recalc(plot->az);
 
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", TRUE);
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
+  g_signal_emit_by_name(GTK_OBJECT(plot), "update", TRUE);
+  g_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
 /**
@@ -2481,8 +2476,8 @@ gtk_plot3d_set_xfactor(GtkPlot3D *plot, gdouble xfactor)
 
   plot->ax->direction = plot->e1;
 
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
+  g_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
+  g_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
 /**
@@ -2509,8 +2504,8 @@ gtk_plot3d_set_yfactor(GtkPlot3D *plot, gdouble yfactor)
 
   plot->ay->direction = plot->e1;
 
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
+  g_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
+  g_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
 /**
@@ -2537,8 +2532,8 @@ gtk_plot3d_set_zfactor(GtkPlot3D *plot, gdouble zfactor)
 
   plot->az->direction = plot->e1;
 
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
+  g_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
+  g_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
 /**
@@ -3335,8 +3330,8 @@ gtk_plot3d_reset_angles(GtkPlot3D *plot)
   plot->e3.y = 0.;
   plot->e3.z = -plot->zfactor;
 
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
+  g_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
+  g_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
 /**
@@ -3398,8 +3393,8 @@ gtk_plot3d_rotate_x(GtkPlot3D *plot, gdouble angle)
   plot->e3.y *= plot->zfactor;
   plot->e3.z *= plot->zfactor;
 
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
+  g_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
+  g_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
 /**
@@ -3461,8 +3456,8 @@ gtk_plot3d_rotate_y(GtkPlot3D *plot, gdouble angle)
   plot->e3.y *= plot->zfactor;
   plot->e3.z *= plot->zfactor;
 
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
+  g_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
+  g_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
 /**
@@ -3523,8 +3518,8 @@ gtk_plot3d_rotate_z(GtkPlot3D *plot, gdouble angle)
   plot->e3.y *= plot->zfactor;
   plot->e3.z *= plot->zfactor;
 
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
-  gtk_signal_emit_by_name(GTK_OBJECT(plot), "changed");
+  g_signal_emit_by_name(GTK_OBJECT(plot), "update", FALSE);
+  g_signal_emit_by_name(GTK_OBJECT(plot), "changed");
 }
 
 /**

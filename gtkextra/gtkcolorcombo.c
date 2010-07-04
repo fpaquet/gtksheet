@@ -150,7 +150,7 @@ gtk_color_combo_class_init (GtkColorComboClass * klass)
   GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
 
-  parent_class = gtk_type_class (gtk_hbox_get_type ());
+  parent_class = g_type_class_ref (gtk_hbox_get_type ());
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
 
@@ -158,14 +158,14 @@ gtk_color_combo_class_init (GtkColorComboClass * klass)
 
   widget_class->realize = gtk_color_combo_realize;
  
-  color_combo_signals[CHANGED]=gtk_signal_new("changed",
-                                      GTK_RUN_FIRST,
-                                      GTK_CLASS_TYPE(object_class),
-                                      GTK_SIGNAL_OFFSET(GtkColorComboClass,
-                                      changed),
-                                      gtkextra_VOID__INT_BOXED,
-                                      GTK_TYPE_NONE,  
-                                      2, GTK_TYPE_INT, GDK_TYPE_COLOR);
+  color_combo_signals[CHANGED]=g_signal_new("changed",
+                                 G_TYPE_FROM_CLASS(object_class),
+                                 G_SIGNAL_RUN_FIRST,
+                                 G_STRUCT_OFFSET(GtkColorComboClass, changed),
+				 NULL, NULL,
+                                 gtkextra_VOID__INT_BOXED,
+                                 G_TYPE_NONE,  
+                                 2, G_TYPE_INT, GDK_TYPE_COLOR);
 
   klass->changed = NULL;
 }
@@ -222,7 +222,7 @@ gtk_color_combo_update (GtkWidget * widget, GtkColorCombo * color_combo)
   for(i=0 ; i<color_combo->nrows; i++)
     for(j=0; j<color_combo->ncols; j++){
       gint index = i*color_combo->ncols+j;
-      if(GTK_WIDGET_HAS_FOCUS(color_combo->button[index])){
+      if(gtk_widget_has_focus(color_combo->button[index])){
             focus_row=i;
             focus_col=j;
       }
@@ -254,7 +254,7 @@ gtk_color_combo_update (GtkWidget * widget, GtkColorCombo * color_combo)
       color_combo->column=new_col;
       color_combo->selection = color_combo->colors[new_row*color_combo->ncols+new_col];
 
-      gtk_signal_emit (GTK_OBJECT(color_combo), color_combo_signals[CHANGED],
+      g_signal_emit (GTK_OBJECT(color_combo), color_combo_signals[CHANGED], 0,
                   new_row * color_combo->ncols + new_col,
                   &color_combo->selection);
 
@@ -263,8 +263,8 @@ gtk_color_combo_update (GtkWidget * widget, GtkColorCombo * color_combo)
   if(!new_selection && row >= 0 && column >= 0){
       gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(color_combo->button[row*color_combo->ncols+column]), TRUE);
       gtk_widget_queue_draw(color_combo->button[row*color_combo->ncols+column]);
-      gtk_signal_emit (GTK_OBJECT(color_combo),
-                       color_combo_signals[CHANGED],
+      g_signal_emit (GTK_OBJECT(color_combo),
+                       color_combo_signals[CHANGED], 0,
                        row * color_combo->ncols + column,
                        &color_combo->colors[row*color_combo->ncols+column]);
 
@@ -296,35 +296,16 @@ pick_color(GtkWidget *widget, gpointer data)
 {
   GtkColorCombo *combo;
   GdkColor color;
-  gdouble values[4];
-/*
-  GdkGC *tmp_gc;
-  GtkWidget *pixmap;
-*/
   
   combo = GTK_COLOR_COMBO(data);
 
-  gtk_color_selection_get_color(GTK_COLOR_SELECTION(GTK_COLOR_SELECTION_DIALOG(dialog)->colorsel), values);
+  gtk_color_selection_get_current_color(GTK_COLOR_SELECTION(GTK_COLOR_SELECTION_DIALOG(dialog)->colorsel), &color);
 
-  color.red = (gushort)(0xffff * values[0]);
-  color.green = (gushort)(0xffff * values[1]);
-  color.blue = (gushort)(0xffff * values[2]);
   gdk_color_alloc(gdk_colormap_get_system(), &color);
 
-/*
-  combo->colors[combo->row*combo->ncols+combo->column] = color;
-
-  tmp_gc=gdk_gc_new(widget->window);
-  gdk_gc_set_foreground(tmp_gc, &color);
-  pixmap = GTK_BIN(combo->button[combo->row*combo->ncols+combo->column])->child;
-  gdk_draw_rectangle(GTK_PIXMAP(pixmap)->pixmap,
-                     tmp_gc, TRUE, 2,2,14,14);
-  gtk_widget_draw(pixmap, NULL);
-  gdk_gc_unref(tmp_gc);
-*/
 
   combo->selection = color;
-  gtk_signal_emit (GTK_OBJECT(combo), color_combo_signals[CHANGED],
+  g_signal_emit (GTK_OBJECT(combo), color_combo_signals[CHANGED], 0,
                    -1, &color);
   return FALSE;
 }
@@ -334,31 +315,28 @@ gtk_color_combo_customize(GtkButton *button, gpointer data)
 {
   GtkColorCombo *combo = GTK_COLOR_COMBO(data);
   GdkColor color;
-  gdouble values[4];
 
   if(combo->row == -1 || combo->column == -1) return FALSE;
 
   dialog = gtk_color_selection_dialog_new("Pick a color");
   color = gtk_color_combo_get_color_at(combo, combo->row, combo->column);
-  values[0] = color.red / (gdouble)0xffff;
-  values[1] = color.green / (gdouble)0xffff;
-  values[2] = color.blue / (gdouble)0xffff;
 
   gtk_color_selection_set_has_palette (GTK_COLOR_SELECTION (GTK_COLOR_SELECTION_DIALOG (dialog)->colorsel), TRUE);
-  gtk_color_selection_set_color(GTK_COLOR_SELECTION(GTK_COLOR_SELECTION_DIALOG(dialog)->colorsel), values);
+  gtk_color_selection_set_current_color(GTK_COLOR_SELECTION(GTK_COLOR_SELECTION_DIALOG(dialog)->colorsel), &color);
   gtk_window_set_modal (GTK_WINDOW(dialog),TRUE);
 
   gtk_widget_show(dialog);
 
-  gtk_signal_connect (GTK_OBJECT(GTK_COLOR_SELECTION_DIALOG(dialog)->ok_button),
-                      "clicked", GTK_SIGNAL_FUNC(pick_color), combo);
+  g_signal_connect (GTK_OBJECT(GTK_COLOR_SELECTION_DIALOG(dialog)->ok_button),
+                      "clicked", (void *)pick_color, combo);
 
-  gtk_signal_connect_object (GTK_OBJECT(GTK_COLOR_SELECTION_DIALOG(dialog)->ok_button),
-                             "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy),
-                             GTK_OBJECT (dialog));
-  gtk_signal_connect_object (GTK_OBJECT(GTK_COLOR_SELECTION_DIALOG(dialog)->cancel_button),
-                             "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy),
-                             GTK_OBJECT (dialog));
+  g_signal_connect_swapped (
+	GTK_OBJECT(GTK_COLOR_SELECTION_DIALOG(dialog)->ok_button),
+        "clicked", (void *)gtk_widget_destroy, 
+         GTK_OBJECT (dialog));
+  g_signal_connect_swapped (
+	GTK_OBJECT(GTK_COLOR_SELECTION_DIALOG(dialog)->cancel_button),
+        "clicked", (void *)gtk_widget_destroy, GTK_OBJECT (dialog));
 
  return FALSE;
 }
@@ -397,10 +375,10 @@ gtk_color_combo_realize(GtkWidget *widget)
                           color_combo->button[index],
                           j, j+1, i, i+1, GTK_SHRINK, GTK_SHRINK, 0, 0);
 
-        gtk_widget_set_usize(color_combo->button[index], 24, 24);
+        gtk_widget_set_size_request(color_combo->button[index], 24, 24);
         gtk_widget_show(color_combo->button[index]);
-        gtk_signal_connect (GTK_OBJECT (color_combo->button[index]), "toggled",
-                            (GtkSignalFunc) gtk_color_combo_update,
+        g_signal_connect (GTK_OBJECT (color_combo->button[index]), "toggled",
+                            (void *) gtk_color_combo_update,
                             color_combo);
 
     }
@@ -420,8 +398,8 @@ gtk_color_combo_realize(GtkWidget *widget)
                     GTK_FILL, GTK_FILL, 0, 0);
   gtk_widget_show(color_combo->custom_button); 
 
-  gtk_signal_connect (GTK_OBJECT(color_combo->custom_button),"clicked",
-                      (GtkSignalFunc) gtk_color_combo_customize, color_combo);
+  g_signal_connect (GTK_OBJECT(color_combo->custom_button),"clicked",
+                      (void *) gtk_color_combo_customize, color_combo);
 
   n=0;
 
@@ -440,7 +418,7 @@ gtk_color_combo_realize(GtkWidget *widget)
                              NULL,
                              &(widget->style->bg[GTK_STATE_NORMAL]),
                              xpm_color);
-       pixmap=gtk_pixmap_new(color_pixmap, NULL);
+       pixmap=gtk_image_new_from_pixmap(color_pixmap, NULL);
        gtk_container_add(GTK_CONTAINER(color_combo->button[n]), pixmap);
        gtk_widget_show(pixmap);
        gdk_pixmap_unref(color_pixmap);
@@ -448,8 +426,8 @@ gtk_color_combo_realize(GtkWidget *widget)
        n++;
     }
 
-  gtk_signal_connect (GTK_OBJECT (combo->button), "clicked",
-	              (GtkSignalFunc) gtk_color_combo_update, 
+  g_signal_connect (GTK_OBJECT (combo->button), "clicked",
+	              (void *) gtk_color_combo_update, 
                       color_combo);
 
   gtk_color_combo_update(NULL, color_combo);
@@ -486,25 +464,21 @@ color_to_hex(gint color, gchar string[5])
   string[4]='\0';
 }     
 
-GtkType
+GType
 gtk_color_combo_get_type ()
 {
-  static GtkType color_combo_type = 0;
+  static GType color_combo_type = 0;
 
   if (!color_combo_type)
     {
-      GtkTypeInfo color_combo_info =
-      {
-	"GtkColorCombo",
-	sizeof (GtkColorCombo),
-	sizeof (GtkColorComboClass),
-	(GtkClassInitFunc) gtk_color_combo_class_init,
-	(GtkObjectInitFunc) gtk_color_combo_init,
-	NULL,
-	NULL,
-	(GtkClassInitFunc) NULL,
-      };
-      color_combo_type = gtk_type_unique (gtk_combo_button_get_type (), &color_combo_info);
+      color_combo_type = g_type_register_static_simple (
+		gtk_combo_button_get_type (),
+		"GtkColorCombo",
+		sizeof (GtkColorComboClass),
+        	(GClassInitFunc) gtk_color_combo_class_init,
+		sizeof (GtkColorCombo),
+		(GInstanceInitFunc) gtk_color_combo_init,
+		0 );
     }
   return color_combo_type;
 }
@@ -512,12 +486,13 @@ gtk_color_combo_get_type ()
 GtkWidget *
 gtk_color_combo_new ()
 {
-  GtkColorCombo *color_combo;
-  color_combo = gtk_type_new (gtk_color_combo_get_type ());
+  GtkWidget * color_combo;
 
-  gtk_color_combo_construct(color_combo);
+  color_combo = gtk_widget_new (gtk_color_combo_get_type (), NULL);
 
-  return(GTK_WIDGET(color_combo));
+  gtk_color_combo_construct((GtkColorCombo *)color_combo);
+
+  return(color_combo);
 }
 
 /**
@@ -564,12 +539,12 @@ gtk_color_combo_construct(GtkColorCombo *color_combo)
 GtkWidget *
 gtk_color_combo_new_with_values (gint nrows, gint ncols, GdkColor *colors)
 {
-  GtkColorCombo *color_combo;
+  GtkWidget * color_combo;
 
-  color_combo = gtk_type_new(gtk_color_combo_get_type());
+  color_combo = gtk_widget_new(gtk_color_combo_get_type(), NULL);
 
-  gtk_color_combo_construct_with_values(color_combo, nrows, ncols, colors);
-  return(GTK_WIDGET(color_combo));
+  gtk_color_combo_construct_with_values((GtkColorCombo *)color_combo, nrows, ncols, colors);
+  return(color_combo);
 }
 
 /**
@@ -586,7 +561,6 @@ gtk_color_combo_construct_with_values(GtkColorCombo *color_combo,
 				      gint nrows, gint ncols, 
                                       GdkColor *colors)
 {
-  GdkColor color;
   gint i,j,n;
 
   color_combo->nrows = nrows;
@@ -598,7 +572,7 @@ gtk_color_combo_construct_with_values(GtkColorCombo *color_combo,
   
   for(i=0; i<color_combo->nrows; i++)
     for(j=0; j<color_combo->ncols; j++)
-       color_combo->colors[n-1] = color;
+       color_combo->colors[n-1] = *colors; // RRR color to colors
 
 }
 

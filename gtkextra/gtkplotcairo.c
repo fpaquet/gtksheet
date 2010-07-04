@@ -24,6 +24,7 @@
  * FIXME:: need long description
  */
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -122,26 +123,22 @@ extern inline gint roundint                         (gdouble x);
 
 static GtkPlotPCClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot_cairo_get_type (void)
 {
-  static GtkType pc_type = 0;
+  static GType pc_type = 0;
 
   if (!pc_type)
     {
-      GtkTypeInfo pc_info =
-        {
-          "GtkPlotCairo",
-          sizeof (GtkPlotCairo),
-          sizeof (GtkPlotCairoClass),
-          (GtkClassInitFunc) gtk_plot_cairo_class_init,
-          (GtkObjectInitFunc) gtk_plot_cairo_init,
-          /* reserved 1*/ NULL,
-          /* reserved 2 */ NULL,
-          (GtkClassInitFunc) NULL,
-        };
+      pc_type = g_type_register_static_simple (
+		gtk_plot_pc_get_type(),
+		"GtkPlotCairo",
+		sizeof (GtkPlotCairoClass),
+		(GClassInitFunc) gtk_plot_cairo_class_init,
+		sizeof (GtkPlotCairo),
+		(GInstanceInitFunc) gtk_plot_cairo_init,
+		0);
 
-      pc_type = gtk_type_unique (GTK_TYPE_PLOT_PC, &pc_info);
     }
   return pc_type;
 }
@@ -193,7 +190,7 @@ gtk_plot_cairo_class_init (GtkPlotCairoClass *klass)
   GtkPlotPCClass *pc_class;
   GtkPlotCairoClass *cairo_class;
 
-  parent_class = gtk_type_class (gtk_plot_pc_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_pc_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   gobject_class = (GObjectClass *) klass;
@@ -238,7 +235,7 @@ gtk_plot_cairo_new (cairo_t *cairo)
 {
   GtkObject *object;
 
-  object = gtk_type_new(gtk_plot_cairo_get_type());
+  object = g_object_new(gtk_plot_cairo_get_type(), NULL);
   gtk_plot_cairo_construct(GTK_PLOT_CAIRO(object), cairo, NULL);
   GTK_PLOT_CAIRO(object)->destroy_cairo = FALSE;
 
@@ -259,7 +256,7 @@ gtk_plot_cairo_new_with_drawable (GdkDrawable *drawable)
   GtkObject *object;
   cairo_t *cairo = NULL;
 
-  object = gtk_type_new(gtk_plot_cairo_get_type());
+  object = g_object_new(gtk_plot_cairo_get_type(), NULL);
   if(drawable) cairo = gdk_cairo_create(drawable);
   gtk_plot_cairo_construct(GTK_PLOT_CAIRO(object), cairo, NULL);
   GTK_PLOT_CAIRO(object)->destroy_cairo = TRUE;

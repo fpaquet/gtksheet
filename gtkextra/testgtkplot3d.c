@@ -65,7 +65,7 @@ new_layer(GtkWidget *canvas)
 */
  gtk_widget_size_request(buttons[nlayers-1], &req);
  size = MAX(req.width,req.height);
- gtk_widget_set_usize(buttons[nlayers-1], size, size);
+ gtk_widget_set_size_request(buttons[nlayers-1], size, size);
  gtk_fixed_put(GTK_FIXED(canvas), buttons[nlayers-1], (nlayers-1)*20, 0);
  gtk_widget_show(buttons[nlayers-1]);
 
@@ -137,10 +137,10 @@ int main(int argc, char *argv[]){
 
  window1=gtk_window_new(GTK_WINDOW_TOPLEVEL);
  gtk_window_set_title(GTK_WINDOW(window1), "GtkPlot3D Demo");
- gtk_widget_set_usize(window1,550,650);
+ gtk_widget_set_size_request(window1,550,650);
  gtk_container_border_width(GTK_CONTAINER(window1),0);
 
- gtk_signal_connect (GTK_OBJECT (window1), "destroy",
+ g_signal_connect (GTK_OBJECT (window1), "destroy",
 		     GTK_SIGNAL_FUNC (quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);
@@ -308,13 +308,13 @@ int main(int argc, char *argv[]){
  button = gtk_button_new_with_label("Rotate X");
  gtk_fixed_put(GTK_FIXED(canvas), button, 80, 0);
 
- gtk_signal_connect(GTK_OBJECT(button), "clicked",
+ g_signal_connect(GTK_OBJECT(button), "clicked",
                     GTK_SIGNAL_FUNC(rotate_x), canvas);
 
  button = gtk_button_new_with_label("Rotate Y");
  gtk_fixed_put(GTK_FIXED(canvas), button, 160, 0);
 
- gtk_signal_connect(GTK_OBJECT(button), "clicked",
+ g_signal_connect(GTK_OBJECT(button), "clicked",
                     GTK_SIGNAL_FUNC(rotate_y), canvas);
 
  button = gtk_button_new_with_label("Rotate Z");
@@ -327,7 +327,7 @@ int main(int argc, char *argv[]){
  gtk_plot3d_set_xrange(GTK_PLOT3D(active_plot), 0., 2.0);
 */
 
- gtk_signal_connect(GTK_OBJECT(button), "clicked",
+ g_signal_connect(GTK_OBJECT(button), "clicked",
                     GTK_SIGNAL_FUNC(rotate_z), canvas);
 
  gtk_widget_show_all(window1);

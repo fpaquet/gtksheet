@@ -20,10 +20,10 @@
 #ifndef __GTK_PLOT_CANVAS_PIXMAP_H__
 #define __GTK_PLOT_CANVAS_PIXMAP_H__
 
-#define GTK_PLOT_CANVAS_PIXMAP(obj)        GTK_CHECK_CAST (obj, gtk_plot_canvas_pixmap_get_type (), GtkPlotCanvasPixmap)
-#define GTK_PLOT_CANVAS_PIXMAP_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_canvas_pixmap_get_type(), GtkPlotCanvasPixmapClass)
-#define GTK_IS_PLOT_CANVAS_PIXMAP(obj)     GTK_CHECK_TYPE (obj, gtk_plot_canvas_pixmap_get_type ())
-#define GTK_TYPE_PLOT_CANVAS_PIXMAP (gtk_plot_canvas_pixmap_get_type ())
+#define GTK_PLOT_CANVAS_PIXMAP(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_canvas_pixmap_get_type (), GtkPlotCanvasPixmap)
+#define GTK_PLOT_CANVAS_PIXMAP_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_canvas_pixmap_get_type(), GtkPlotCanvasPixmapClass)
+#define GTK_IS_PLOT_CANVAS_PIXMAP(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_canvas_pixmap_get_type ())
+#define G_TYPE_PLOT_CANVAS_PIXMAP (gtk_plot_canvas_pixmap_get_type ())
 
 
 #include <gdk/gdk.h>
@@ -55,7 +55,7 @@ struct _GtkPlotCanvasPixmapClass
   GtkPlotCanvasChildClass parent_class;
 };
 
-GtkType 	gtk_plot_canvas_pixmap_get_type	(void);
+GType 		gtk_plot_canvas_pixmap_get_type	(void);
 GtkPlotCanvasChild * 
 		gtk_plot_canvas_pixmap_new(GdkPixmap *_pixmap, GdkBitmap *mask);
 

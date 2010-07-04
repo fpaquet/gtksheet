@@ -31,11 +31,11 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#define GTK_PLOT_PS(obj)        GTK_CHECK_CAST (obj, gtk_plot_ps_get_type (), GtkPlotPS)
-#define GTK_TYPE_PLOT_PS   (gtk_plot_ps_get_type ())
+#define GTK_PLOT_PS(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_ps_get_type (), GtkPlotPS)
+#define G_TYPE_PLOT_PS   (gtk_plot_ps_get_type ())
 
-#define GTK_PLOT_PS_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_ps_get_type(), GtkPlotPSClass)
-#define GTK_IS_PLOT_PS(obj)     GTK_CHECK_TYPE (obj, gtk_plot_ps_get_type ())
+#define GTK_PLOT_PS_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_ps_get_type(), GtkPlotPSClass)
+#define GTK_IS_PLOT_PS(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_ps_get_type ())
 
 
 typedef struct _GtkPlotPS GtkPlotPS;
@@ -68,7 +68,7 @@ struct _GtkPlotPSClass
    GtkPlotPCClass parent_class;
 };
 
-GtkType    gtk_plot_ps_get_type                        (void);
+GType      gtk_plot_ps_get_type                        (void);
 GtkObject *gtk_plot_ps_new                             (const gchar *psname,
                                                         gint orientation,
                                                         gint epsflag,

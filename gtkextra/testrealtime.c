@@ -105,12 +105,12 @@ int main(int argc, char *argv[]){
 
  window1=gtk_window_new(GTK_WINDOW_TOPLEVEL);
  gtk_window_set_title(GTK_WINDOW(window1), "GtkPlot Real Time Demo");
- gtk_widget_set_usize(window1,550,600);
+ gtk_widget_set_size_request(window1,550,600);
  gtk_container_border_width(GTK_CONTAINER(window1),0);
 
  gtk_widget_show(window1);
 
- gtk_signal_connect (GTK_OBJECT (window1), "destroy",
+ g_signal_connect (GTK_OBJECT (window1), "destroy",
 		     GTK_SIGNAL_FUNC (quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);

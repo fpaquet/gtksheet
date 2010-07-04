@@ -20,10 +20,10 @@
 #ifndef __GTK_PLOT_CANVAS_ELLIPSE_H__
 #define __GTK_PLOT_CANVAS_ELLIPSE_H__
 
-#define GTK_PLOT_CANVAS_ELLIPSE(obj)        GTK_CHECK_CAST (obj, gtk_plot_canvas_ellipse_get_type (), GtkPlotCanvasEllipse)
-#define GTK_PLOT_CANVAS_ELLIPSE_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_canvas_ellipse_get_type(), GtkPlotCanvasEllipseClass)
-#define GTK_IS_PLOT_CANVAS_ELLIPSE(obj)     GTK_CHECK_TYPE (obj, gtk_plot_canvas_ellipse_get_type ())
-#define GTK_TYPE_PLOT_CANVAS_ELLIPSE (gtk_plot_canvas_ellipse_get_type ())
+#define GTK_PLOT_CANVAS_ELLIPSE(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_canvas_ellipse_get_type (), GtkPlotCanvasEllipse)
+#define GTK_PLOT_CANVAS_ELLIPSE_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_canvas_ellipse_get_type(), GtkPlotCanvasEllipseClass)
+#define GTK_IS_PLOT_CANVAS_ELLIPSE(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_canvas_ellipse_get_type ())
+#define G_TYPE_PLOT_CANVAS_ELLIPSE (gtk_plot_canvas_ellipse_get_type ())
 
 
 #include <gdk/gdk.h>
@@ -57,7 +57,7 @@ struct _GtkPlotCanvasEllipseClass
   GtkPlotCanvasChildClass parent_class;
 };
 
-GtkType 	gtk_plot_canvas_ellipse_get_type	(void);
+GType 	gtk_plot_canvas_ellipse_get_type	(void);
 GtkPlotCanvasChild * 
 		gtk_plot_canvas_ellipse_new	(GtkPlotLineStyle style,
                               			 gfloat width,

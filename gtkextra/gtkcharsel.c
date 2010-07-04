@@ -32,6 +32,7 @@
  * It should only be accessed through the functions described below.
  */
 
+
 #include <gtk/gtk.h>
 #include <glib/gunicode.h>
 
@@ -50,26 +51,21 @@ static void new_selection			   (GtkButton *button,
 static GtkWindowClass *parent_class = NULL;
 
 
-GtkType
+GType
 gtk_char_selection_get_type (void)
 {
-  static GtkType charsel_type = 0;
+  static GType charsel_type = 0;
   
   if (!charsel_type)
     {
-      GtkTypeInfo charsel_info =
-      {
-	"GtkCharSelection",
-	sizeof (GtkCharSelection),
-	sizeof (GtkCharSelectionClass),
-	(GtkClassInitFunc) gtk_char_selection_class_init,
-	(GtkObjectInitFunc) gtk_char_selection_init,
-	/* reserved_1 */ NULL,
-        /* reserved_2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-      
-      charsel_type = gtk_type_unique (gtk_window_get_type(), &charsel_info);
+      charsel_type =  g_type_register_static_simple (
+		gtk_window_get_type(),
+		"GtkCharSelection",
+		sizeof (GtkCharSelectionClass),
+		(GClassInitFunc) gtk_char_selection_class_init,
+		sizeof (GtkCharSelection),
+		(GInstanceInitFunc) gtk_char_selection_init,
+		0);
     }
   
   return charsel_type;
@@ -91,7 +87,7 @@ gtk_char_selection_class_init (GtkCharSelectionClass *klass)
   GtkWidgetClass *widget_class;
   
   widget_class = (GtkWidgetClass*) klass;
-  parent_class = gtk_type_class (gtk_window_get_type ());
+  parent_class = g_type_class_ref (gtk_window_get_type ());
 
   widget_class->realize = gtk_char_selection_realize;
   widget_class->map = gtk_char_selection_map;
@@ -109,7 +105,7 @@ gtk_char_selection_init (GtkCharSelection *charsel)
 
   charsel->selection = -1;
 
-  gtk_window_set_policy(GTK_WINDOW(charsel), FALSE, FALSE, FALSE);
+  gtk_window_set_resizable(GTK_WINDOW(charsel), FALSE);
   gtk_window_set_title(GTK_WINDOW(charsel), "Select Character");
   gtk_container_set_border_width (GTK_CONTAINER (charsel), 10);
 
@@ -121,11 +117,6 @@ gtk_char_selection_init (GtkCharSelection *charsel)
   charsel->font_combo = GTK_FONT_COMBO(gtk_font_combo_new());
   gtk_box_pack_start(GTK_BOX(main_vbox), GTK_WIDGET(charsel->font_combo), TRUE, TRUE, 0);
   label = gtk_label_new("Font:   ");
-  gtk_toolbar_prepend_element(GTK_TOOLBAR(charsel->font_combo),
-                              GTK_TOOLBAR_CHILD_WIDGET,
-                              label,
-                              "Font", "Font", "Font",
-                              NULL, NULL, NULL);
   gtk_widget_show(label);
   gtk_widget_show(GTK_WIDGET(charsel->font_combo));
 
@@ -153,12 +144,12 @@ gtk_char_selection_init (GtkCharSelection *charsel)
 /*
     gtk_button_set_relief(GTK_BUTTON(charsel->button[i]), GTK_RELIEF_NONE);
 */
-    gtk_widget_set_usize(GTK_WIDGET(charsel->button[i]), 18, 18);
+    gtk_widget_set_size_request(GTK_WIDGET(charsel->button[i]), 18, 18);
 
     gtk_widget_show(GTK_WIDGET(charsel->button[i]));
 
-    gtk_signal_connect(GTK_OBJECT(charsel->button[i]), "clicked",
-                       GTK_SIGNAL_FUNC(new_selection),
+    g_signal_connect(GTK_OBJECT(charsel->button[i]), "clicked",
+                       (void *)new_selection,
                        charsel);
   }
 
@@ -171,7 +162,7 @@ gtk_char_selection_init (GtkCharSelection *charsel)
 
   charsel->action_area = action_area = gtk_hbutton_box_new ();
   gtk_button_box_set_layout(GTK_BUTTON_BOX(action_area), GTK_BUTTONBOX_END);
-  gtk_button_box_set_spacing(GTK_BUTTON_BOX(action_area), 5);
+  gtk_box_set_spacing(GTK_BOX(action_area), 5);
   gtk_box_pack_end (GTK_BOX (main_vbox), action_area, FALSE, FALSE, 0);
   gtk_widget_show (action_area);
 
@@ -185,8 +176,8 @@ gtk_char_selection_init (GtkCharSelection *charsel)
 
   /* Signals */
 
-  gtk_signal_connect(GTK_OBJECT(charsel->font_combo), "changed",
-                     GTK_SIGNAL_FUNC(new_font), charsel);
+  g_signal_connect(GTK_OBJECT(charsel->font_combo), "changed",
+                     (void *)new_font, charsel);
 
   new_font(charsel->font_combo, charsel); 
 }
@@ -265,17 +256,17 @@ new_font(GtkFontCombo *font_combo, gpointer data)
     req.width = width + 2 * widget->style->xthickness;
     req.height = PANGO_PIXELS(rect.height);
 
-    if(GTK_WIDGET_MAPPED(widget)){
+    if(gtk_widget_get_mapped(widget)){
       pixmap = gdk_pixmap_new(widget->window, width, width, -1);
       gdk_draw_rectangle(pixmap, widget->style->white_gc, TRUE, 0, 0, width, width);
       gdk_draw_layout(pixmap, widget->style->fg_gc[0], width/2 - PANGO_PIXELS(rect.width)/2, descent, layout);
-      wpixmap = gtk_pixmap_new(pixmap, NULL);
+      wpixmap = gtk_image_new_from_pixmap(pixmap, NULL);
       gtk_container_add (GTK_CONTAINER (charsel->button[i]), wpixmap);
       gtk_widget_show(wpixmap);
       gdk_pixmap_unref(pixmap);
     }
 
-    gtk_widget_set_usize(widget, req.width, req.width);
+    gtk_widget_set_size_request(widget, req.width, req.width);
 
     if(charsel->selection == i)
       gtk_toggle_button_set_active(charsel->button[i], TRUE);
@@ -341,7 +332,7 @@ gtk_char_selection_set_selection(GtkCharSelection *charsel, gint selection)
 
   if(charsel->selection >= 0){
       gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(charsel->button[charsel->selection]), FALSE);
-      if(GTK_WIDGET_MAPPED(GTK_WIDGET(charsel)))
+      if(gtk_widget_get_mapped(GTK_WIDGET(charsel)))
          gtk_widget_queue_draw(GTK_WIDGET(charsel->button[charsel->selection]));
   }
 
@@ -350,7 +341,7 @@ gtk_char_selection_set_selection(GtkCharSelection *charsel, gint selection)
   if(charsel->selection >= 0){
       gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(charsel->button[selection]), TRUE);
 
-      if(GTK_WIDGET_MAPPED(GTK_WIDGET(charsel)))
+      if(gtk_widget_get_mapped(GTK_WIDGET(charsel)))
          gtk_widget_queue_draw(GTK_WIDGET(charsel->button[selection]));
   }
 }

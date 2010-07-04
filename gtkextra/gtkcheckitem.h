@@ -38,12 +38,12 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-#define GTK_TYPE_CHECK_ITEM                  (gtk_check_item_get_type ())
-#define GTK_CHECK_ITEM(obj)                  (GTK_CHECK_CAST ((obj), GTK_TYPE_CHECK_ITEM, GtkCheckItem))
-#define GTK_CHECK_ITEM_CLASS(klass)          (GTK_CHECK_CLASS_CAST ((klass), GTK_TYPE_CHECK_ITEM, GtkCheckItemClass))
-#define GTK_IS_CHECK_ITEM(obj)               (GTK_CHECK_TYPE ((obj), GTK_TYPE_CHECK_ITEM))
-#define GTK_IS_CHECK_ITEM_CLASS(klass)       (GTK_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CHECK_ITEM))
-#define GTK_CHECK_ITEM_GET_CLASS(obj)        (GTK_CHECK_GET_CLASS ((obj), GTK_TYPE_CHECK_ITEM, GtkCheckItemClass))
+#define G_TYPE_CHECK_ITEM                  (gtk_check_item_get_type ())
+#define GTK_CHECK_ITEM(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_CHECK_ITEM, GtkCheckItem))
+#define GTK_CHECK_ITEM_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_CHECK_ITEM, GtkCheckItemClass))
+#define GTK_IS_CHECK_ITEM(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_CHECK_ITEM))
+#define GTK_IS_CHECK_ITEM_CLASS(klass)       (GTK_CHECK_CLASS_TYPE ((klass), G_TYPE_CHECK_ITEM))
+#define GTK_CHECK_ITEM_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), G_TYPE_CHECK_ITEM, GtkCheckItemClass))
 
 
 
@@ -68,7 +68,7 @@ struct _GtkCheckItemClass
 };
 
 
-GtkType    gtk_check_item_get_type       (void);
+GType      gtk_check_item_get_type       (void);
 GtkWidget* gtk_check_item_new            (void);
 GtkWidget* gtk_check_item_new_with_label (const gchar *label);
 void       gtk_check_item_construct_with_label (GtkCheckItem* check_item, const gchar *label);

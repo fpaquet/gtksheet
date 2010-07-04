@@ -84,10 +84,10 @@ typedef enum
 #define GTK_PLOT_CANVAS_DND_FLAGS      (GTK_PLOT_CANVAS_CAN_SELECT_ITEM |  \
                                         GTK_PLOT_CANVAS_CAN_DND ) 
 
-#define GTK_PLOT_CANVAS(obj)        GTK_CHECK_CAST (obj, gtk_plot_canvas_get_type (), GtkPlotCanvas)
-#define GTK_PLOT_CANVAS_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_canvas_get_type(), GtkPlotCanvasClass)
-#define GTK_IS_PLOT_CANVAS(obj)     GTK_CHECK_TYPE (obj, gtk_plot_canvas_get_type ())
-#define GTK_TYPE_PLOT_CANVAS (gtk_plot_canvas_get_type ())
+#define GTK_PLOT_CANVAS(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_canvas_get_type (), GtkPlotCanvas)
+#define GTK_PLOT_CANVAS_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_canvas_get_type(), GtkPlotCanvasClass)
+#define GTK_IS_PLOT_CANVAS(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_canvas_get_type ())
+#define G_TYPE_PLOT_CANVAS (gtk_plot_canvas_get_type ())
 
 #define GTK_PLOT_CANVAS_FLAGS(canvas)	  (GTK_PLOT_CANVAS(canvas)->flags)
 #define GTK_PLOT_CANVAS_SET_FLAGS(canvas, flags)  (GTK_PLOT_CANVAS_FLAGS(canvas) |= (flags))
@@ -98,10 +98,10 @@ typedef enum
 #define GTK_PLOT_CANVAS_CAN_SELECT_ITEM(canvas)  (GTK_PLOT_CANVAS_FLAGS(canvas) & GTK_PLOT_CANVAS_CAN_SELECT_ITEM)
 #define GTK_PLOT_CANVAS_CAN_SELECT(canvas)  (GTK_PLOT_CANVAS_FLAGS(canvas) & GTK_PLOT_CANVAS_CAN_SELECT)
 
-#define GTK_PLOT_CANVAS_CHILD(obj)        GTK_CHECK_CAST (obj, gtk_plot_canvas_child_get_type (), GtkPlotCanvasChild)
-#define GTK_PLOT_CANVAS_CHILD_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_canvas_child_get_type(), GtkPlotCanvasChildClass)
-#define GTK_IS_PLOT_CANVAS_CHILD(obj)     GTK_CHECK_TYPE (obj, gtk_plot_canvas_child_get_type ())
-#define GTK_TYPE_PLOT_CANVAS_CHILD (gtk_plot_canvas_child_get_type ())
+#define GTK_PLOT_CANVAS_CHILD(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_canvas_child_get_type (), GtkPlotCanvasChild)
+#define GTK_PLOT_CANVAS_CHILD_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_canvas_child_get_type(), GtkPlotCanvasChildClass)
+#define GTK_IS_PLOT_CANVAS_CHILD(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_canvas_child_get_type ())
+#define G_TYPE_PLOT_CANVAS_CHILD (gtk_plot_canvas_child_get_type ())
 
 
 typedef struct _GtkPlotCanvas	GtkPlotCanvas;
@@ -230,8 +230,8 @@ struct _GtkPlotCanvasClass
 };
 
 
-GtkType		gtk_plot_canvas_get_type	(void);
-GtkType		gtk_plot_canvas_child_get_type	(void);
+GType		gtk_plot_canvas_get_type	(void);
+GType		gtk_plot_canvas_child_get_type	(void);
 GtkWidget*	gtk_plot_canvas_new		(gint width, gint height,
                                                  gdouble magnification);
 void		gtk_plot_canvas_construct       (GtkPlotCanvas *canvas,

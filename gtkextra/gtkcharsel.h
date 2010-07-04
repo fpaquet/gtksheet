@@ -33,11 +33,11 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-#define GTK_TYPE_CHAR_SELECTION                  (gtk_char_selection_get_type ())
-#define GTK_CHAR_SELECTION(obj)                  (GTK_CHECK_CAST ((obj), GTK_TYPE_CHAR_SELECTION, GtkCharSelection))
-#define GTK_CHAR_SELECTION_CLASS(klass)          (GTK_CHECK_CLASS_CAST ((klass), GTK_TYPE_CHAR_SELECTION, GtkCharSelectionClass))
-#define GTK_IS_CHAR_SELECTION(obj)               (GTK_CHECK_TYPE ((obj), GTK_TYPE_CHAR_SELECTION))
-#define GTK_IS_CHAR_SELECTION_CLASS(klass)       (GTK_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CHAR_SELECTION))
+#define G_TYPE_CHAR_SELECTION                  (gtk_char_selection_get_type ())
+#define GTK_CHAR_SELECTION(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_CHAR_SELECTION, GtkCharSelection))
+#define GTK_CHAR_SELECTION_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_CHAR_SELECTION, GtkCharSelectionClass))
+#define GTK_IS_CHAR_SELECTION(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_CHAR_SELECTION))
+#define GTK_IS_CHAR_SELECTION_CLASS(klass)       (GTK_CHECK_CLASS_TYPE ((klass), G_TYPE_CHAR_SELECTION))
 
 typedef struct _GtkCharSelection       GtkCharSelection;
 typedef struct _GtkCharSelectionClass  GtkCharSelectionClass;
@@ -67,7 +67,7 @@ struct _GtkCharSelectionClass
 };
 
 
-GtkType    gtk_char_selection_get_type       	(void);
+GType      gtk_char_selection_get_type       	(void);
 GtkWidget* gtk_char_selection_new            	(void);
 
 void 	   gtk_char_selection_set_selection	(GtkCharSelection *charsel, 

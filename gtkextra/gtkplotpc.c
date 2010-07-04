@@ -43,26 +43,22 @@ static void gtk_plot_pc_real_init                  (GtkPlotPC *pc);
 
 static GtkObjectClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot_pc_get_type (void)
 {
-  static GtkType pc_type = 0;
+  static GType pc_type = 0;
 
   if (!pc_type)
     {
-      GtkTypeInfo pc_info =
-      {
-        "GtkPlotPC",
-        sizeof (GtkPlotPC),
-        sizeof (GtkPlotPCClass),
-        (GtkClassInitFunc) gtk_plot_pc_class_init,
-        (GtkObjectInitFunc) gtk_plot_pc_real_init,
-        /* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
 
-      pc_type = gtk_type_unique (GTK_TYPE_OBJECT, &pc_info);
+      pc_type = g_type_register_static_simple (
+		gtk_object_get_type(),
+		"GtkPlotPC",
+		sizeof (GtkPlotPCClass),
+		(GClassInitFunc) gtk_plot_pc_class_init,
+		sizeof (GtkPlotPC),
+		(GInstanceInitFunc) gtk_plot_pc_real_init,
+		0);
     }
   return pc_type;
 }
@@ -73,7 +69,7 @@ gtk_plot_pc_class_init (GtkPlotPCClass *klass)
   GtkObjectClass *object_class;
   GtkPlotPCClass *pc_class;
 
-  parent_class = gtk_type_class (gtk_object_get_type ());
+  parent_class = g_type_class_ref (gtk_object_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   pc_class = (GtkPlotPCClass *) klass;
@@ -96,7 +92,7 @@ gtk_plot_pc_new				(void)
 {
   GtkObject *object;
 
-  object = gtk_type_new (gtk_plot_pc_get_type());
+  object = g_object_new (gtk_plot_pc_get_type(), NULL);
         
   return (object);
 }

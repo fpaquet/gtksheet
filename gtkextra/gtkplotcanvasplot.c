@@ -24,6 +24,7 @@
  * FIXME:: need long description
  */
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -72,26 +73,21 @@ static GtkPlotCanvasChildClass *parent_class = NULL;
 extern GtkPlotCanvasPos possible_selection	(GtkAllocation area, 
 						 gint x, gint y);
 
-GtkType
+GType
 gtk_plot_canvas_plot_get_type (void)
 {
-  static GtkType plot_canvas_plot_type = 0;
+  static GType plot_canvas_plot_type = 0;
 
   if (!plot_canvas_plot_type)
     {
-      GtkTypeInfo plot_canvas_plot_info =
-      {
-	"GtkPlotCanvasPlot",
-	sizeof (GtkPlotCanvasPlot),
-	sizeof (GtkPlotCanvasPlotClass),
-	(GtkClassInitFunc) gtk_plot_canvas_plot_class_init,
-	(GtkObjectInitFunc) gtk_plot_canvas_plot_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      plot_canvas_plot_type = gtk_type_unique (gtk_plot_canvas_child_get_type(), &plot_canvas_plot_info);
+      plot_canvas_plot_type = g_type_register_static_simple (
+		gtk_plot_canvas_child_get_type(),
+		"GtkPlotCanvasPlot",
+		sizeof (GtkPlotCanvasPlotClass),
+		(GClassInitFunc) gtk_plot_canvas_plot_class_init,
+		sizeof (GtkPlotCanvasPlot),
+		(GInstanceInitFunc) gtk_plot_canvas_plot_init,
+		0);
     }
   return plot_canvas_plot_type;
 }
@@ -109,7 +105,7 @@ gtk_plot_canvas_plot_new (GtkPlot *plot)
 {
   GtkPlotCanvasPlot *child;
                                                                                 
-  child = gtk_type_new (gtk_plot_canvas_plot_get_type ());
+  child = g_object_new (gtk_plot_canvas_plot_get_type (), NULL);
   child->plot = plot;
                                  
   return GTK_PLOT_CANVAS_CHILD (child);
@@ -132,7 +128,7 @@ gtk_plot_canvas_plot_class_init (GtkPlotCanvasChildClass *klass)
 {
   GtkObjectClass *object_class = (GtkObjectClass *)klass;
 
-  parent_class = gtk_type_class (gtk_plot_canvas_child_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_canvas_child_get_type ());
 
   klass->draw = gtk_plot_canvas_plot_draw; 
   klass->move = gtk_plot_canvas_plot_move; 
@@ -150,7 +146,7 @@ static void
 gtk_plot_canvas_plot_destroy(GtkObject *object)
 {
   GtkWidget *widget = GTK_WIDGET(GTK_PLOT_CANVAS_PLOT(object)->plot);
-  gtk_widget_unref(widget);
+  g_object_unref(widget);
   widget->parent = NULL;
 }
 

@@ -17,6 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -66,26 +67,21 @@ static void gtk_plot_canvas_pixmap_set_property(GObject      *object,
 
 static GtkPlotCanvasChildClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot_canvas_pixmap_get_type (void)
 {
-  static GtkType plot_canvas_pixmap_type = 0;
+  static GType plot_canvas_pixmap_type = 0;
 
   if (!plot_canvas_pixmap_type)
     {
-      GtkTypeInfo plot_canvas_pixmap_info =
-      {
-	"GtkPlotCanvasPixmap",
-	sizeof (GtkPlotCanvasPixmap),
-	sizeof (GtkPlotCanvasPixmapClass),
-	(GtkClassInitFunc) gtk_plot_canvas_pixmap_class_init,
-	(GtkObjectInitFunc) gtk_plot_canvas_pixmap_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      plot_canvas_pixmap_type = gtk_type_unique (gtk_plot_canvas_child_get_type(), &plot_canvas_pixmap_info);
+      plot_canvas_pixmap_type = g_type_register_static_simple (
+		gtk_plot_canvas_child_get_type(),
+		"GtkPlotCanvasPixmap",
+		sizeof (GtkPlotCanvasPixmapClass),
+		(GClassInitFunc) gtk_plot_canvas_pixmap_class_init,
+		sizeof (GtkPlotCanvasPixmap),
+		(GInstanceInitFunc) gtk_plot_canvas_pixmap_init,
+		0);
     }
   return plot_canvas_pixmap_type;
 }
@@ -104,7 +100,7 @@ gtk_plot_canvas_pixmap_new (GdkPixmap *_pixmap, GdkBitmap *mask)
 {
   GtkPlotCanvasPixmap *pixmap;
                                                                                 
-  pixmap = gtk_type_new (gtk_plot_canvas_pixmap_get_type ());
+  pixmap = g_object_new (gtk_plot_canvas_pixmap_get_type (), NULL);
 
   pixmap->pixmap = _pixmap;
   pixmap->mask = mask;
@@ -139,7 +135,7 @@ gtk_plot_canvas_pixmap_class_init (GtkPlotCanvasChildClass *klass)
   GtkObjectClass *object_class = (GtkObjectClass *)klass;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-  parent_class = gtk_type_class (gtk_plot_canvas_child_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_canvas_child_get_type ());
 
   object_class->destroy = gtk_plot_canvas_pixmap_destroy;
 
@@ -210,7 +206,7 @@ gtk_plot_canvas_pixmap_draw 		(GtkPlotCanvas *canvas,
 {
   GtkPlotCanvasPixmap *pixmap = GTK_PLOT_CANVAS_PIXMAP(child);
  
-  g_return_if_fail(GTK_WIDGET_VISIBLE(GTK_WIDGET(canvas)));
+  g_return_if_fail(gtk_widget_get_visible(GTK_WIDGET(canvas)));
  
   if(pixmap->pixmap){
     gdouble scale_x, scale_y;

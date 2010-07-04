@@ -40,6 +40,7 @@
  */
 
 
+
 #include "gtkcheckitem.h"
 
 
@@ -66,26 +67,21 @@ static void gtk_real_check_item_draw_indicator (GtkCheckItem      *check_item,
 static GtkToggleButtonClass *parent_class = NULL;
 
 
-GtkType
+GType
 gtk_check_item_get_type (void)
 {
-  static GtkType check_item_type = 0;
+  static GType check_item_type = 0;
   
   if (!check_item_type)
     {
-      static const GtkTypeInfo check_item_info =
-      {
-	"GtkCheckItem",
-	sizeof (GtkCheckItem),
-	sizeof (GtkCheckItemClass),
-	(GtkClassInitFunc) gtk_check_item_class_init,
-	(GtkObjectInitFunc) gtk_check_item_init,
-	/* reserved_1 */ NULL,
-        /* reserved_2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-      
-      check_item_type = gtk_type_unique (GTK_TYPE_TOGGLE_BUTTON, &check_item_info);
+      check_item_type = g_type_register_static_simple(
+		gtk_toggle_button_get_type (),
+		"GtkCheckItem",
+		sizeof (GtkCheckItemClass),
+	        (GClassInitFunc) gtk_check_item_class_init,
+		sizeof (GtkCheckItem),
+		(GInstanceInitFunc) gtk_check_item_init,
+		0);
     }
   
   return check_item_type;
@@ -97,7 +93,7 @@ gtk_check_item_class_init (GtkCheckItemClass *klass)
   GtkWidgetClass *widget_class;
   
   widget_class = (GtkWidgetClass*) klass;
-  parent_class = gtk_type_class (gtk_toggle_button_get_type ());
+  parent_class = g_type_class_ref (gtk_toggle_button_get_type ());
   
   widget_class->size_request = gtk_check_item_size_request;
   widget_class->size_allocate = gtk_check_item_size_allocate;
@@ -126,7 +122,7 @@ gtk_check_item_init (GtkCheckItem *check_item)
 GtkWidget*
 gtk_check_item_new (void)
 {
-  return gtk_widget_new (GTK_TYPE_CHECK_ITEM, NULL);
+  return gtk_widget_new (G_TYPE_CHECK_ITEM, NULL);
 }
 
 /**
@@ -180,16 +176,16 @@ gtk_check_item_paint (GtkWidget    *widget,
   
   check_item = GTK_CHECK_ITEM (widget);
   
-  if (GTK_WIDGET_DRAWABLE (widget))
+  if (gtk_widget_is_drawable (widget))
     {
       gint border_width;
 	  
       gtk_check_item_draw_indicator (check_item, area);
       
       border_width = GTK_CONTAINER (widget)->border_width;
-      if (GTK_WIDGET_HAS_FOCUS (widget))
+      if (gtk_widget_has_focus (widget))
 	gtk_paint_focus (widget->style, widget->window,
-			 GTK_WIDGET_STATE(widget), area, widget, "checkitem",
+			 gtk_widget_get_state(widget), area, widget, "checkitem",
 			 border_width + widget->allocation.x,
 			 border_width + widget->allocation.y,
 			 widget->allocation.width - 2 * border_width - 1,
@@ -244,13 +240,13 @@ gtk_check_item_size_allocate (GtkWidget     *widget,
   if (toggle_button->draw_indicator)
     {
       widget->allocation = *allocation;
-      if (GTK_WIDGET_REALIZED (widget))
+      if (gtk_widget_get_realized (widget))
 	gdk_window_move_resize (button->event_window,
 				allocation->x, allocation->y,
 				allocation->width, allocation->height);
       
       
-      if (GTK_BIN (button)->child && GTK_WIDGET_VISIBLE (GTK_BIN (button)->child))
+      if (GTK_BIN (button)->child && gtk_widget_get_visible (GTK_BIN (button)->child))
 	{
 	  child_allocation.x = (GTK_CONTAINER (widget)->border_width +
 				GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_size +
@@ -291,7 +287,7 @@ gtk_check_item_expose (GtkWidget      *widget,
   toggle_button = GTK_TOGGLE_BUTTON (widget);
   bin = GTK_BIN (widget);
   
-  if (GTK_WIDGET_DRAWABLE (widget))
+  if (gtk_widget_is_drawable (widget))
     {
       if (toggle_button->draw_indicator)
         {
@@ -347,11 +343,11 @@ gtk_real_check_item_draw_indicator (GtkCheckItem *check_item,
   widget = GTK_WIDGET (check_item);
   toggle_button = GTK_TOGGLE_BUTTON (check_item);
 
-  if (GTK_WIDGET_DRAWABLE (check_item))
+  if (gtk_widget_is_drawable (widget))
     {
       window = widget->window;
       
-      state_type = GTK_WIDGET_STATE (widget);
+      state_type = gtk_widget_get_state (widget);
       if (state_type != GTK_STATE_NORMAL &&
 	  state_type != GTK_STATE_PRELIGHT)
 	state_type = GTK_STATE_NORMAL;
@@ -398,8 +394,10 @@ gtk_real_check_item_draw_indicator (GtkCheckItem *check_item,
                          TRUE,
                          x, y, width, height);
 
-      gtk_draw_shadow (widget->style, window, GTK_STATE_NORMAL,
-                       GTK_SHADOW_IN, x, y, width, height);
+      gtk_paint_shadow (widget->style, window, GTK_STATE_NORMAL,
+                       GTK_SHADOW_IN, 
+			NULL, NULL, NULL,
+			x, y, width, height);
 
       if(state_type == GTK_STATE_ACTIVE){
          GdkPoint points[3];

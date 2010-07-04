@@ -17,6 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -87,26 +88,21 @@ static void gtk_plot_canvas_line_set_property(GObject      *object,
 
 static GtkPlotCanvasChildClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot_canvas_line_get_type (void)
 {
-  static GtkType plot_canvas_line_type = 0;
+  static GType plot_canvas_line_type = 0;
 
   if (!plot_canvas_line_type)
     {
-      GtkTypeInfo plot_canvas_line_info =
-      {
-	"GtkPlotCanvasLine",
-	sizeof (GtkPlotCanvasLine),
-	sizeof (GtkPlotCanvasLineClass),
-	(GtkClassInitFunc) gtk_plot_canvas_line_class_init,
-	(GtkObjectInitFunc) gtk_plot_canvas_line_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      plot_canvas_line_type = gtk_type_unique (gtk_plot_canvas_child_get_type(), &plot_canvas_line_info);
+      plot_canvas_line_type = g_type_register_static_simple (
+		gtk_plot_canvas_child_get_type(),
+		"GtkPlotCanvasLine",
+		sizeof (GtkPlotCanvasLineClass),
+		(GClassInitFunc) gtk_plot_canvas_line_class_init,
+		sizeof (GtkPlotCanvasLine),
+		(GInstanceInitFunc) gtk_plot_canvas_line_init,
+		0);
     }
   return plot_canvas_line_type;
 }
@@ -119,7 +115,7 @@ gtk_plot_canvas_line_new (GtkPlotLineStyle style,
 {
   GtkPlotCanvasLine *line;
                                                                                 
-  line = gtk_type_new (gtk_plot_canvas_line_get_type ());
+  line = g_object_new (gtk_plot_canvas_line_get_type (), NULL);
                                    
   line->line.line_width = width;                                             
   if(color) line->line.color = *color;
@@ -148,7 +144,7 @@ gtk_plot_canvas_line_class_init (GtkPlotCanvasChildClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-  parent_class = gtk_type_class (gtk_plot_canvas_child_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_canvas_child_get_type ());
 
   klass->draw = gtk_plot_canvas_line_draw; 
   klass->draw_selection = gtk_plot_canvas_line_draw_selection; 

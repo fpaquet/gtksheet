@@ -26,10 +26,10 @@ extern "C" {
 
 #include "gtkplot.h"
 
-#define GTK_PLOT_BUBBLE(obj)        GTK_CHECK_CAST (obj, gtk_plot_bubble_get_type (), GtkPlotBubble)
-#define GTK_TYPE_PLOT_BUBBLE        (gtk_plot_bubble_get_type ())
-#define GTK_PLOT_BUBBLE_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_bubble_get_type(), GtkPlotBubbleClass)
-#define GTK_IS_PLOT_BUBBLE(obj)     GTK_CHECK_TYPE (obj, gtk_plot_bubble_get_type ())
+#define GTK_PLOT_BUBBLE(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_bubble_get_type (), GtkPlotBubble)
+#define G_TYPE_PLOT_BUBBLE        (gtk_plot_bubble_get_type ())
+#define GTK_PLOT_BUBBLE_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_bubble_get_type(), GtkPlotBubbleClass)
+#define GTK_IS_PLOT_BUBBLE(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_bubble_get_type ())
 
 typedef struct _GtkPlotBubble             GtkPlotBubble;
 typedef struct _GtkPlotBubbleClass        GtkPlotBubbleClass;
@@ -63,7 +63,7 @@ struct _GtkPlotBubbleClass
 };
 
 
-GtkType		gtk_plot_bubble_get_type		(void);
+GType		gtk_plot_bubble_get_type		(void);
 GtkWidget*	gtk_plot_bubble_new		(void);
 void		gtk_plot_bubble_show_scale	(GtkPlotBubble *bubble,
 						 gboolean show);

@@ -17,6 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -73,26 +74,21 @@ static void gtk_plot_canvas_ellipse_set_property(GObject      *object,
 extern inline gint roundint                     (gdouble x);
 static GtkPlotCanvasChildClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot_canvas_ellipse_get_type (void)
 {
-  static GtkType plot_canvas_ellipse_type = 0;
+  static GType plot_canvas_ellipse_type = 0;
 
   if (!plot_canvas_ellipse_type)
     {
-      GtkTypeInfo plot_canvas_ellipse_info =
-      {
-	"GtkPlotCanvasEllipse",
-	sizeof (GtkPlotCanvasEllipse),
-	sizeof (GtkPlotCanvasEllipseClass),
-	(GtkClassInitFunc) gtk_plot_canvas_ellipse_class_init,
-	(GtkObjectInitFunc) gtk_plot_canvas_ellipse_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      plot_canvas_ellipse_type = gtk_type_unique (gtk_plot_canvas_child_get_type(), &plot_canvas_ellipse_info);
+      plot_canvas_ellipse_type = g_type_register_static_simple (
+		gtk_plot_canvas_child_get_type(), 
+		"GtkPlotCanvasEllipse",
+		sizeof (GtkPlotCanvasEllipseClass),
+		(GClassInitFunc) gtk_plot_canvas_ellipse_class_init,
+		sizeof (GtkPlotCanvasEllipse),
+		(GInstanceInitFunc) gtk_plot_canvas_ellipse_init,
+		0);
     }
   return plot_canvas_ellipse_type;
 }
@@ -106,7 +102,7 @@ gtk_plot_canvas_ellipse_new (GtkPlotLineStyle style,
 {
   GtkPlotCanvasEllipse *ellipse;
                                                                                 
-  ellipse = gtk_type_new (gtk_plot_canvas_ellipse_get_type ());
+  ellipse = g_object_new (gtk_plot_canvas_ellipse_get_type (), NULL);
                                    
   ellipse->line.line_width = width;                                             
   if(fg) ellipse->line.color = *fg;
@@ -132,7 +128,7 @@ gtk_plot_canvas_ellipse_class_init (GtkPlotCanvasChildClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-  parent_class = gtk_type_class (gtk_plot_canvas_child_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_canvas_child_get_type ());
 
   klass->draw = gtk_plot_canvas_ellipse_draw; 
   klass->move = gtk_plot_canvas_ellipse_move; 

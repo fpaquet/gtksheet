@@ -120,26 +120,21 @@ inline gulong _sqrt(register gulong arg)
    return val;
 } 
 
-GtkType
+GType
 gtk_plot_surface_get_type (void)
 {
-  static GtkType data_type = 0;
+  static GType data_type = 0;
 
   if (!data_type)
     {
-      GtkTypeInfo data_info =
-      {
-	"GtkPlotSurface",
-	sizeof (GtkPlotSurface),
-	sizeof (GtkPlotSurfaceClass),
-	(GtkClassInitFunc) gtk_plot_surface_class_init,
-	(GtkObjectInitFunc) gtk_plot_surface_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      data_type = gtk_type_unique (gtk_plot_data_get_type(), &data_info);
+      data_type = g_type_register_static_simple (
+		gtk_plot_data_get_type(),
+		"GtkPlotSurface",
+		sizeof (GtkPlotSurfaceClass),
+		(GClassInitFunc) gtk_plot_surface_class_init,
+		sizeof (GtkPlotSurface),
+		(GInstanceInitFunc) gtk_plot_surface_init,
+		0);
     }
   return data_type;
 }
@@ -153,7 +148,7 @@ gtk_plot_surface_class_init (GtkPlotSurfaceClass *klass)
   GtkPlotSurfaceClass *surface_class;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-  parent_class = gtk_type_class (gtk_plot_data_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_data_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
@@ -651,7 +646,7 @@ gtk_plot_surface_new (void)
 {
   GtkPlotData *data;
 
-  data = gtk_type_new (gtk_plot_surface_get_type ());
+  data = g_object_new (gtk_plot_surface_get_type (), NULL);
 
   return GTK_WIDGET (data);
 }
@@ -669,7 +664,7 @@ gtk_plot_surface_new_function (GtkPlotFunc3D function)
 {
   GtkWidget *dataset;
 
-  dataset = gtk_type_new (gtk_plot_surface_get_type ());
+  dataset = g_object_new (gtk_plot_surface_get_type (), NULL);
 
   gtk_plot_surface_construct_function(GTK_PLOT_SURFACE(dataset), function);
 
@@ -771,7 +766,7 @@ gtk_plot_surface_draw_private   (GtkPlotData *data)
 
   g_return_if_fail(GTK_PLOT_DATA(data)->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(GTK_PLOT_DATA(data)->plot));
-  if(!GTK_WIDGET_VISIBLE(GTK_WIDGET(data))) return;
+  if(!gtk_widget_get_visible(GTK_WIDGET(data))) return;
 
   plot = GTK_PLOT(data->plot);
 

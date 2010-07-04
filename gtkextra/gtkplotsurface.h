@@ -27,10 +27,10 @@ extern "C" {
 #include "gtkplot.h"
 #include "gtkplotdt.h"
 
-#define GTK_PLOT_SURFACE(obj)        GTK_CHECK_CAST (obj, gtk_plot_surface_get_type (), GtkPlotSurface)
-#define GTK_TYPE_PLOT_SURFACE        (gtk_plot_surface_get_type ())
-#define GTK_PLOT_SURFACE_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_surface_get_type(), GtkPlotSurfaceClass)
-#define GTK_IS_PLOT_SURFACE(obj)     GTK_CHECK_TYPE (obj, gtk_plot_surface_get_type ())
+#define GTK_PLOT_SURFACE(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_surface_get_type (), GtkPlotSurface)
+#define G_TYPE_PLOT_SURFACE        (gtk_plot_surface_get_type ())
+#define GTK_PLOT_SURFACE_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_surface_get_type(), GtkPlotSurfaceClass)
+#define GTK_IS_PLOT_SURFACE(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_surface_get_type ())
 
 typedef struct _GtkPlotPolygon             GtkPlotPolygon;
 typedef struct _GtkPlotSurface             GtkPlotSurface;
@@ -100,7 +100,7 @@ struct _GtkPlotSurfaceClass
 };
 
 
-GtkType		gtk_plot_surface_get_type	(void);
+GType		gtk_plot_surface_get_type	(void);
 GtkWidget*	gtk_plot_surface_new		(void);
 GtkWidget*	gtk_plot_surface_new_function	(GtkPlotFunc3D function);
 

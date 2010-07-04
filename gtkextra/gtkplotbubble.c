@@ -25,6 +25,7 @@
  */
 
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -83,26 +84,21 @@ enum {
 
 static GtkPlotDataClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot_bubble_get_type (void)
 {
-  static GtkType data_type = 0;
+  static GType data_type = 0;
 
   if (!data_type)
     {
-      GtkTypeInfo data_info =
-      {
-	"GtkPlotBubble",
-	sizeof (GtkPlotBubble),
-	sizeof (GtkPlotBubbleClass),
-	(GtkClassInitFunc) gtk_plot_bubble_class_init,
-	(GtkObjectInitFunc) gtk_plot_bubble_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      data_type = gtk_type_unique (gtk_plot_data_get_type(), &data_info);
+      data_type = g_type_register_static_simple (
+		gtk_plot_data_get_type(),
+		"GtkPlotBubble",
+		sizeof (GtkPlotBubbleClass),
+		(GClassInitFunc) gtk_plot_bubble_class_init,
+		sizeof (GtkPlotBubble),
+		(GInstanceInitFunc) gtk_plot_bubble_init,
+		0);
     }
   return data_type;
 }
@@ -115,7 +111,7 @@ gtk_plot_bubble_class_init (GtkPlotBubbleClass *klass)
   GtkPlotDataClass *data_class;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-  parent_class = gtk_type_class (gtk_plot_data_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_data_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
@@ -340,7 +336,7 @@ gtk_plot_bubble_new ()
 {
   GtkWidget *widget;
 
-  widget = gtk_type_new (gtk_plot_bubble_get_type ());
+  widget = gtk_widget_new (gtk_plot_bubble_get_type (), NULL);
 
   return (widget);
 }
@@ -376,7 +372,7 @@ gtk_plot_bubble_draw_symbol(GtkPlotData *dataset,
   bubble = GTK_PLOT_BUBBLE(dataset);
 
   g_return_if_fail(dataset->plot != NULL);
-  g_return_if_fail(GTK_WIDGET_VISIBLE(dataset->plot));
+  g_return_if_fail(gtk_widget_get_visible(GTK_WIDGET(dataset->plot)));
 
   plot = dataset->plot;
 
@@ -494,7 +490,7 @@ gtk_plot_bubble_draw_legend(GtkPlotData *data, gint x, gint y)
 
   g_return_if_fail(data->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(data->plot));
-  g_return_if_fail(GTK_WIDGET_VISIBLE(data->plot));
+  g_return_if_fail(gtk_widget_get_visible(GTK_WIDGET(data->plot)));
 
   plot = data->plot;
   area.x = GTK_WIDGET(plot)->allocation.x;

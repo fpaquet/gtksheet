@@ -1,3 +1,6 @@
+2010-07-05 Roy Rankin <rrankin AT ihug DOT com DOT au>
+	* gtkextra/* : start remove depreciated GTK calls
+
 2010-06-26 Roy Rankin <rrankin AT ihug DOT com DOT au>
 	* configure.in : link with math lib required by Fedora 13
 

@@ -1,3 +1,4 @@
+
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <glib.h>
@@ -27,11 +28,11 @@ int main(int argc, char *argv[])
   charsel=gtk_char_selection_new();
 
 
-  gtk_signal_connect (GTK_OBJECT (charsel), "destroy",
-		      GTK_SIGNAL_FUNC (quit), NULL);
+  g_signal_connect (GTK_OBJECT (charsel), "destroy",
+		      (void *)quit, NULL);
 
 /*
-  gtk_signal_connect (GTK_OBJECT (GTK_CHAR_SELECTION(charsel)->ok_button), 
+  g_signal_connect (GTK_OBJECT (GTK_CHAR_SELECTION(charsel)->ok_button), 
                      "clicked",
 		      GTK_SIGNAL_FUNC (ok_clicked), charsel);
 */

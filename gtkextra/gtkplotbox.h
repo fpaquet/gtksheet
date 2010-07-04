@@ -26,10 +26,10 @@ extern "C" {
 
 #include "gtkplot.h"
 
-#define GTK_PLOT_BOX(obj)        GTK_CHECK_CAST (obj, gtk_plot_box_get_type (), GtkPlotBox)
-#define GTK_TYPE_PLOT_BOX        (gtk_plot_box_get_type ())
-#define GTK_PLOT_BOX_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_box_get_type(), GtkPlotBoxClass)
-#define GTK_IS_PLOT_BOX(obj)     GTK_CHECK_TYPE (obj, gtk_plot_box_get_type ())
+#define GTK_PLOT_BOX(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_box_get_type (), GtkPlotBox)
+#define G_TYPE_PLOT_BOX        (gtk_plot_box_get_type ())
+#define GTK_PLOT_BOX_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_box_get_type(), GtkPlotBoxClass)
+#define GTK_IS_PLOT_BOX(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_box_get_type ())
 
 typedef struct _GtkPlotBox             GtkPlotBox;
 typedef struct _GtkPlotBoxClass        GtkPlotBoxClass;
@@ -53,7 +53,7 @@ struct _GtkPlotBoxClass
 };
 
 
-GtkType		gtk_plot_box_get_type		(void);
+GType		gtk_plot_box_get_type		(void);
 GtkWidget*	gtk_plot_box_new		(GtkOrientation orientation);
 void		gtk_plot_box_construct		(GtkPlotBox *box,
 						 GtkOrientation orientation);

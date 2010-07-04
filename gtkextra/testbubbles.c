@@ -1,3 +1,4 @@
+
 #include <math.h>
 #include <stdio.h>
 #include <gtk/gtk.h>
@@ -123,14 +124,16 @@ activate_plot(GtkWidget *widget, gpointer data)
   
   while(n < nlayers)
     {
-      gtk_signal_handler_block_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
+      g_signal_handlers_block_by_func(GTK_OBJECT(buttons[n]), 
+		(void *)activate_plot, data);
       if(widget_list[n] == active_widget){
             active_plot = plots[n];
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[n]), TRUE);
       }else{
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[n]), FALSE);
       }
-      gtk_signal_handler_unblock_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
+      g_signal_handlers_unblock_by_func(GTK_OBJECT(buttons[n]),
+		(void *)activate_plot, data);
                                                                                 
       n++;
     }
@@ -158,12 +161,12 @@ new_layer(GtkWidget *canvas)
 */
  gtk_widget_size_request(buttons[nlayers-1], &req);
  size = MAX(req.width,req.height);
- gtk_widget_set_usize(buttons[nlayers-1], size, size);
+ gtk_widget_set_size_request(buttons[nlayers-1], size, size);
  gtk_fixed_put(GTK_FIXED(canvas), buttons[nlayers-1], (nlayers-1)*20, 0);
  gtk_widget_show(buttons[nlayers-1]);
 
- gtk_signal_connect(GTK_OBJECT(buttons[nlayers-1]), "toggled",
-                    (GtkSignalFunc) activate_plot, canvas);
+ g_signal_connect(GTK_OBJECT(buttons[nlayers-1]), "toggled",
+                    (void *) activate_plot, canvas);
 
  plots[nlayers-1] = gtk_plot_new_with_size(NULL, .5, .25);
  gtk_widget_show(plots[nlayers-1]);
@@ -235,18 +238,18 @@ int main(int argc, char *argv[]){
 
  window1=gtk_window_new(GTK_WINDOW_TOPLEVEL);
  gtk_window_set_title(GTK_WINDOW(window1), "GtkPlotBubble Demo");
- gtk_widget_set_usize(window1,550,650);
- gtk_container_border_width(GTK_CONTAINER(window1),0);
+ gtk_widget_set_size_request(window1,550,650);
+ gtk_container_set_border_width(GTK_CONTAINER(window1),0);
 
- gtk_signal_connect (GTK_OBJECT (window1), "destroy",
-		     GTK_SIGNAL_FUNC (quit), NULL);
+ g_signal_connect (GTK_OBJECT (window1), "destroy",
+		     (void *)quit, NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);
  gtk_container_add(GTK_CONTAINER(window1),vbox1);
  gtk_widget_show(vbox1);
 
  scrollw1=gtk_scrolled_window_new(NULL, NULL);
- gtk_container_border_width(GTK_CONTAINER(scrollw1),0);
+ gtk_container_set_border_width(GTK_CONTAINER(scrollw1),0);
  gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollw1),
 				GTK_POLICY_ALWAYS,GTK_POLICY_ALWAYS);
  gtk_box_pack_start(GTK_BOX(vbox1),scrollw1, TRUE, TRUE,0);
@@ -280,8 +283,8 @@ int main(int argc, char *argv[]){
 
  gtk_widget_show(active_plot);
 
- gtk_signal_connect(GTK_OBJECT(canvas), "select_item",
-                    (GtkSignalFunc) select_item, NULL);
+ g_signal_connect(GTK_OBJECT(canvas), "select_item",
+                    (void *) select_item, NULL);
 
  gtk_widget_show(window1);
 

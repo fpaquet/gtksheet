@@ -202,29 +202,17 @@ struct _GtkEntryPrivate
 
 };
 
-#define GTK_ENTRY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_ENTRY, GtkEntryPrivate))
+#define GTK_ENTRY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), gtk_entry_get_type(), GtkEntryPrivate))
 
 #endif
 
-GtkType
+GType
 gtk_item_entry_get_type (void)
 {
-  static GtkType item_entry_type = 0;
+  static GType item_entry_type = 0;
 
   if (!item_entry_type)
     {
-      static const GtkTypeInfo item_entry_info =
-      {
-	"GtkItemEntry",
-	sizeof (GtkItemEntry),
-	sizeof (GtkItemEntryClass),
-	(GtkClassInitFunc) gtk_item_entry_class_init,
-	(GtkObjectInitFunc) gtk_item_entry_init,
-	/* reserved_1 */ NULL,
-	/* reserved_2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
       static const GInterfaceInfo item_editable_info =
       {
         (GInterfaceInitFunc) gtk_item_entry_editable_init,    /* interface_init */
@@ -233,10 +221,18 @@ gtk_item_entry_get_type (void)
       };
 
 
-      item_entry_type = gtk_type_unique (GTK_TYPE_ENTRY, &item_entry_info);
+      item_entry_type = g_type_register_static_simple (
+		gtk_entry_get_type(),
+		"GtkItemEntry",
+		sizeof (GtkItemEntryClass),
+		(GClassInitFunc) gtk_item_entry_class_init,
+		sizeof (GtkItemEntry),
+		(GInstanceInitFunc) gtk_item_entry_init,
+		0);
+		
 
       g_type_add_interface_static (item_entry_type,
-                                   GTK_TYPE_EDITABLE,
+                                   gtk_editable_get_type (),
                                    &item_editable_info);
 
     }
@@ -253,7 +249,7 @@ gtk_item_entry_class_init (GtkItemEntryClass *class)
 
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
-  parent_class = gtk_type_class (GTK_TYPE_ENTRY);
+  parent_class = g_type_class_ref (gtk_entry_get_type());
   entry_class = (GtkEntryClass *) class;
 
   widget_class->realize = gtk_entry_realize;
@@ -352,8 +348,8 @@ gtk_entry_realize (GtkWidget *widget)
 
   widget->style = gtk_style_attach (widget->style, widget->window);
 
-  gdk_window_set_background (widget->window, &widget->style->bg[GTK_WIDGET_STATE(widget)]);
-  gdk_window_set_background (entry->text_area, &widget->style->bg[GTK_WIDGET_STATE (widget)]);
+  gdk_window_set_background (widget->window, &widget->style->bg[gtk_widget_get_state(widget)]);
+  gdk_window_set_background (entry->text_area, &widget->style->bg[gtk_widget_get_state (widget)]);
 
   gdk_window_show (entry->text_area);
 
@@ -505,7 +501,7 @@ gtk_entry_size_allocate (GtkWidget     *widget,
  
   widget->allocation = *allocation;
  
-  if (GTK_WIDGET_REALIZED (widget))
+  if (gtk_widget_get_realized (widget))
     {
       /* We call gtk_widget_get_child_requisition, since we want (for
        * backwards compatibility reasons) the realization here to
@@ -547,12 +543,12 @@ gtk_entry_expose (GtkWidget      *widget,
       get_text_area_size (entry, NULL, NULL, &area_width, &area_height);
 
       gdk_draw_rectangle (entry->text_area,
-                          widget->style->bg_gc[GTK_WIDGET_STATE(widget)],
+                          widget->style->bg_gc[gtk_widget_get_state(widget)],
                           TRUE,
                           0, 0, area_width, area_height);
 
       if ((entry->visible || entry->invisible_char != 0) &&
-	  GTK_WIDGET_HAS_FOCUS (widget) &&
+	  gtk_widget_has_focus (GTK_WIDGET(widget)) &&
 	  entry->selection_bound == entry->current_pos && entry->cursor_visible)
 	gtk_entry_draw_cursor (GTK_ENTRY (widget), CURSOR_STANDARD);
 
@@ -599,19 +595,19 @@ gtk_entry_state_changed (GtkWidget      *widget,
 {
   GtkEntry *entry = GTK_ENTRY (widget);
   
-  if (GTK_WIDGET_REALIZED (widget))
+  if (gtk_widget_get_realized (widget))
     {
-      gdk_window_set_background (widget->window, &widget->style->bg[GTK_WIDGET_STATE (widget)]);
-      gdk_window_set_background (entry->text_area, &widget->style->bg[GTK_WIDGET_STATE (widget)]);
+      gdk_window_set_background (widget->window, &widget->style->bg[gtk_widget_get_state (widget)]);
+      gdk_window_set_background (entry->text_area, &widget->style->bg[gtk_widget_get_state (widget)]);
     }
 
-  if (!GTK_WIDGET_IS_SENSITIVE (widget))
+  if (!gtk_widget_is_sensitive (widget))
     {
       /* Clear any selection */
       gtk_editable_select_region (GTK_EDITABLE (entry), entry->current_pos, entry->current_pos);      
     }
   
-  gtk_widget_queue_clear (widget);
+  gtk_widget_queue_draw (widget);
 }
 
 /* GtkEditable method implementations
@@ -674,12 +670,12 @@ gtk_entry_style_set	(GtkWidget      *widget,
 {
   GtkEntry *entry = GTK_ENTRY (widget);
 
-  if (previous_style && GTK_WIDGET_REALIZED (widget))
+  if (previous_style && gtk_widget_get_realized (widget))
     {
       gtk_entry_recompute (entry);
 
-      gdk_window_set_background (widget->window, &widget->style->bg[GTK_WIDGET_STATE(widget)]);
-      gdk_window_set_background (entry->text_area, &widget->style->bg[GTK_WIDGET_STATE (widget)]);
+      gdk_window_set_background (widget->window, &widget->style->bg[gtk_widget_get_state(widget)]);
+      gdk_window_set_background (entry->text_area, &widget->style->bg[gtk_widget_get_state (widget)]);
     }
 }
 
@@ -1448,7 +1444,7 @@ gtk_entry_draw_text (GtkEntry *entry)
   if (!entry->visible && entry->invisible_char == 0)
     return;
   
-  if (GTK_WIDGET_DRAWABLE (entry))
+  if (gtk_widget_is_drawable (GTK_WIDGET(entry)))
     {
       PangoLayout *layout = gtk_entry_ensure_layout (entry, TRUE);
       gint area_width, area_height;
@@ -1486,7 +1482,7 @@ gtk_entry_draw_text (GtkEntry *entry)
 
           pango_layout_get_extents (layout, NULL, &logical_rect);
           
-	  if (GTK_WIDGET_HAS_FOCUS (entry))
+	  if (gtk_widget_has_focus (GTK_WIDGET(entry)))
 	    {
 	      selection_gc = widget->style->base_gc [GTK_STATE_SELECTED];
 	      text_gc = widget->style->text_gc [GTK_STATE_SELECTED];
@@ -1697,7 +1693,7 @@ gtk_entry_draw_cursor (GtkEntry  *entry,
     GTK_TEXT_DIR_LTR : GTK_TEXT_DIR_RTL;
   GtkTextDirection widget_direction = gtk_widget_get_direction (GTK_WIDGET (entry));
  
-  if (GTK_WIDGET_DRAWABLE (entry) && GTK_ENTRY(entry)->cursor_visible)
+  if (gtk_widget_is_drawable (GTK_WIDGET(entry)) && GTK_ENTRY(entry)->cursor_visible)
     {
       GtkWidget *widget = GTK_WIDGET (entry);
       GdkRectangle cursor_location;
@@ -1766,7 +1762,7 @@ gtk_entry_draw_cursor (GtkEntry  *entry,
 static void
 gtk_entry_queue_draw (GtkEntry *entry)
 {
-  if (GTK_WIDGET_REALIZED (entry))
+  if (gtk_widget_get_realized (GTK_WIDGET(entry)))
     gdk_window_invalidate_rect (entry->text_area, NULL, FALSE);
 }
 
@@ -1826,7 +1822,7 @@ gtk_entry_adjust_scroll (GtkEntry *entry)
   GtkItemEntry *item_entry;
   gint text_width;
 
-  if (!GTK_WIDGET_REALIZED (entry))
+  if (!gtk_widget_get_realized (GTK_WIDGET(entry)))
     return;
 
   item_entry = GTK_ITEM_ENTRY(entry);
@@ -2214,10 +2210,7 @@ gtk_entry_update_primary_selection (GtkEntry *entry)
 GtkWidget*
 gtk_item_entry_new (void)
 {
-  GtkWidget *widget;
-
-  widget = GTK_WIDGET (gtk_type_new (GTK_TYPE_ITEM_ENTRY));
-  return widget;
+  return gtk_widget_new(G_TYPE_ITEM_ENTRY, NULL);
 }
 
 /**
@@ -2234,7 +2227,7 @@ gtk_item_entry_new_with_max_length (gint max)
 {
   GtkItemEntry *entry;
 
-  entry = gtk_type_new (GTK_TYPE_ITEM_ENTRY);
+  entry = g_object_new (G_TYPE_ITEM_ENTRY, NULL);
   gtk_entry_set_max_length(GTK_ENTRY(entry), max);
 
   return GTK_WIDGET (entry);
@@ -2363,7 +2356,7 @@ cursor_blinks (GtkEntry *entry)
   GtkSettings *settings = gtk_widget_get_settings (GTK_WIDGET (entry));
   gboolean blink;
 
-  if (GTK_WIDGET_HAS_FOCUS (entry) &&
+  if (gtk_widget_has_focus (GTK_WIDGET(entry)) &&
       entry->selection_bound == entry->current_pos)
     {
       g_object_get (G_OBJECT (settings), "gtk-cursor-blink", &blink, NULL);
@@ -2391,7 +2384,7 @@ show_cursor (GtkEntry *entry)
     {
       entry->cursor_visible = TRUE;
 
-      if (GTK_WIDGET_HAS_FOCUS (entry) && entry->selection_bound == entry->current_pos)
+      if (gtk_widget_has_focus (GTK_WIDGET(entry)) && entry->selection_bound == entry->current_pos)
 	gtk_widget_queue_draw (GTK_WIDGET (entry));
     }
 }
@@ -2403,7 +2396,7 @@ hide_cursor (GtkEntry *entry)
     {
       entry->cursor_visible = FALSE;
 
-      if (GTK_WIDGET_HAS_FOCUS (entry) && entry->selection_bound == entry->current_pos)
+      if (gtk_widget_has_focus (GTK_WIDGET(entry)) && entry->selection_bound == entry->current_pos)
 	gtk_widget_queue_draw (GTK_WIDGET (entry));
     }
 }
@@ -2420,22 +2413,28 @@ blink_cb (gpointer data)
 
   entry = GTK_ENTRY (data);
   
-  g_assert (GTK_WIDGET_HAS_FOCUS (entry));
+  g_assert (gtk_widget_has_focus (GTK_WIDGET(entry)));
   g_assert (entry->selection_bound == entry->current_pos);
 
   if (entry->cursor_visible)
     {
       hide_cursor (entry);
-      entry->blink_timeout = gtk_timeout_add (get_cursor_time (entry) * CURSOR_OFF_MULTIPLIER,
-					      blink_cb,
-					      entry);
+      entry->blink_timeout = g_timeout_add_full (
+		0, 
+		get_cursor_time (entry) * CURSOR_OFF_MULTIPLIER,
+	 	blink_cb,
+		entry,
+		NULL);
     }
   else
     {
       show_cursor (entry);
-      entry->blink_timeout = gtk_timeout_add (get_cursor_time (entry) * CURSOR_ON_MULTIPLIER,
-					      blink_cb,
-					      entry);
+      entry->blink_timeout = g_timeout_add_full (
+		0,
+		get_cursor_time (entry) * CURSOR_ON_MULTIPLIER,
+		blink_cb,
+		entry,
+		NULL);
     }
 
   GDK_THREADS_LEAVE ();
@@ -2451,9 +2450,12 @@ gtk_entry_check_cursor_blink (GtkEntry *entry)
     {
       if (!entry->blink_timeout)
 	{
-	  entry->blink_timeout = gtk_timeout_add (get_cursor_time (entry) * CURSOR_ON_MULTIPLIER,
-						  blink_cb,
-						  entry);
+	  entry->blink_timeout = g_timeout_add_full (
+		0,
+		get_cursor_time (entry) * CURSOR_ON_MULTIPLIER,
+		blink_cb,
+		entry,
+		NULL);
 	  show_cursor (entry);
 	}
     }
@@ -2461,7 +2463,7 @@ gtk_entry_check_cursor_blink (GtkEntry *entry)
     {
       if (entry->blink_timeout)  
 	{ 
-	  gtk_timeout_remove (entry->blink_timeout);
+	  g_source_remove (entry->blink_timeout);
 	  entry->blink_timeout = 0;
 	}
       
@@ -2476,11 +2478,14 @@ gtk_entry_pend_cursor_blink (GtkEntry *entry)
   if (cursor_blinks (entry))
     {
       if (entry->blink_timeout != 0)
-	gtk_timeout_remove (entry->blink_timeout);
+	g_source_remove (entry->blink_timeout);
       
-      entry->blink_timeout = gtk_timeout_add (get_cursor_time (entry) * CURSOR_PEND_MULTIPLIER,
-					      blink_cb,
-					      entry);
+      entry->blink_timeout = g_timeout_add_full (
+		0,
+		get_cursor_time (entry) * CURSOR_PEND_MULTIPLIER,
+		blink_cb,
+		entry,
+		NULL);
       show_cursor (entry);
     }
 }

@@ -133,26 +133,21 @@ static void color_to_hex                        (GdkColor color,
 static GtkPlotPCClass *parent_class = NULL;
 static gchar *locale = NULL;
 
-GtkType
+GType
 gtk_plot_ps_get_type (void)
 {
-  static GtkType pc_type = 0;
+  static GType pc_type = 0;
 
   if (!pc_type)
     {
-      GtkTypeInfo pc_info =
-      {
-        "GtkPlotPS",
-        sizeof (GtkPlotPS),
-        sizeof (GtkPlotPSClass),
-        (GtkClassInitFunc) gtk_plot_ps_class_init,
-        (GtkObjectInitFunc) gtk_plot_ps_init,
-        /* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      pc_type = gtk_type_unique (GTK_TYPE_PLOT_PC, &pc_info);
+      pc_type = g_type_register_static_simple (
+		GTK_TYPE_PLOT_PC,
+		"GtkPlotPS",
+		sizeof (GtkPlotPSClass),
+		(GClassInitFunc) gtk_plot_ps_class_init,
+		sizeof (GtkPlotPS),
+		(GInstanceInitFunc) gtk_plot_ps_init,
+		0);
     }
   return pc_type;
 }
@@ -173,7 +168,7 @@ gtk_plot_ps_class_init (GtkPlotPSClass *klass)
   GObjectClass *gobject_class;
   GtkPlotPCClass *pc_class;
 
-  parent_class = gtk_type_class (gtk_plot_pc_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_pc_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   gobject_class = (GObjectClass *) klass;
@@ -241,7 +236,7 @@ gtk_plot_ps_new                         (const gchar *psname,
   GtkObject *object;
   GtkPlotPS *ps;
 
-  object = gtk_type_new(gtk_plot_ps_get_type());
+  object = g_object_new(gtk_plot_ps_get_type(), NULL);
 
   ps = GTK_PLOT_PS(object);
 
@@ -327,7 +322,7 @@ gtk_plot_ps_new_with_size                       (const gchar *psname,
   GtkObject *object;
   GtkPlotPS *ps;
 
-  object = gtk_type_new(gtk_plot_ps_get_type());
+  object = g_object_new(gtk_plot_ps_get_type(), NULL);
 
   ps = GTK_PLOT_PS(object);
 

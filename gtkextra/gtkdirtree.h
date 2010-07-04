@@ -31,11 +31,11 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-#define GTK_TYPE_DIR_TREE                  (gtk_dir_tree_get_type ())
-#define GTK_DIR_TREE(obj)                  (GTK_CHECK_CAST ((obj), GTK_TYPE_DIR_TREE, GtkDirTree))
-#define GTK_DIR_TREE_CLASS(klass)          (GTK_CHECK_CLASS_CAST ((klass), GTK_TYPE_DIR_TREE, GtkDirTreeClass))
-#define GTK_IS_DIR_TREE(obj)               (GTK_CHECK_TYPE ((obj), GTK_TYPE_DIR_TREE))
-#define GTK_IS_DIR_TREE_CLASS(klass)       (GTK_CHECK_CLASS_TYPE ((klass), GTK_TYPE_DIR_TREE))
+#define G_TYPE_DIR_TREE                  (gtk_dir_tree_get_type ())
+#define GTK_DIR_TREE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_DIR_TREE, GtkDirTree))
+#define GTK_DIR_TREE_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_DIR_TREE, GtkDirTreeClass))
+#define GTK_IS_DIR_TREE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_DIR_TREE))
+#define GTK_IS_DIR_TREE_CLASS(klass)       (GTK_CHECK_CLASS_TYPE ((klass), G_TYPE_DIR_TREE))
 
 typedef struct _GtkDirTree       GtkDirTree;
 typedef struct _GtkDirTreeNode   GtkDirTreeNode;
@@ -75,7 +75,7 @@ struct _GtkDirTreeClass
 };
 
 
-GtkType    gtk_dir_tree_get_type       (void);
+GType      gtk_dir_tree_get_type       (void);
 GtkWidget* gtk_dir_tree_new            (void);
 
 gint       gtk_dir_tree_open_dir(GtkDirTree *dir_tree, const gchar *path);

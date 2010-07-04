@@ -26,10 +26,10 @@ extern "C" {
 
 #include "gtkplot.h"
 
-#define GTK_PLOT_PIXMAP(obj)        GTK_CHECK_CAST (obj, gtk_plot_pixmap_get_type (), GtkPlotPixmap)
-#define GTK_TYPE_PLOT_PIXMAP        (gtk_plot_pixmap_get_type ())
-#define GTK_PLOT_PIXMAP_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_pixmap_get_type(), GtkPlotPixmapClass)
-#define GTK_IS_PLOT_PIXMAP(obj)     GTK_CHECK_TYPE (obj, gtk_plot_pixmap_get_type ())
+#define GTK_PLOT_PIXMAP(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_pixmap_get_type (), GtkPlotPixmap)
+#define G_TYPE_PLOT_PIXMAP        (gtk_plot_pixmap_get_type ())
+#define GTK_PLOT_PIXMAP_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_pixmap_get_type(), GtkPlotPixmapClass)
+#define GTK_IS_PLOT_PIXMAP(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_pixmap_get_type ())
 
 typedef struct _GtkPlotPixmap             GtkPlotPixmap;
 typedef struct _GtkPlotPixmapClass        GtkPlotPixmapClass;
@@ -54,7 +54,7 @@ struct _GtkPlotPixmapClass
 };
 
 
-GtkType		gtk_plot_pixmap_get_type	(void);
+GType		gtk_plot_pixmap_get_type	(void);
 GtkWidget*	gtk_plot_pixmap_new		(GdkPixmap *pixmap,
 						 GdkBitmap *mask);
 

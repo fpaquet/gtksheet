@@ -27,10 +27,10 @@ extern "C" {
 #include "gtkplot.h"
 
 
-#define GTK_PLOT3D(obj)        GTK_CHECK_CAST (obj, gtk_plot3d_get_type (), GtkPlot3D)
-#define GTK_TYPE_PLOT3D        (gtk_plot3d_get_type ())
-#define GTK_PLOT3D_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot3d_get_type(), GtkPlot3DClass)
-#define GTK_IS_PLOT3D(obj)     GTK_CHECK_TYPE (obj, gtk_plot3d_get_type ())
+#define GTK_PLOT3D(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot3d_get_type (), GtkPlot3D)
+#define G_TYPE_PLOT3D        (gtk_plot3d_get_type ())
+#define GTK_PLOT3D_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot3d_get_type(), GtkPlot3DClass)
+#define GTK_IS_PLOT3D(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot3d_get_type ())
 #define GTK_PLOT3D_FLAGS(plot)         (GTK_PLOT3D(plot)->flags)
 #define GTK_PLOT3D_SET_FLAGS(plot,flag) (GTK_PLOT3D_FLAGS(plot) |= (flag))
 #define GTK_PLOT3D_UNSET_FLAGS(plot,flag) (GTK_PLOT3D_FLAGS(plot) &= ~(flag))
@@ -116,7 +116,7 @@ struct _GtkPlot3DClass
 
 /* Plot3D */
 
-GtkType		gtk_plot3d_get_type		(void);
+GType		gtk_plot3d_get_type		(void);
 GtkWidget*	gtk_plot3d_new			(GdkDrawable *drawable);
 GtkWidget*	gtk_plot3d_new_with_size	(GdkDrawable *drawable,
                                                  gdouble width, gdouble height);

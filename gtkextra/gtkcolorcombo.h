@@ -27,9 +27,9 @@ extern "C" {
 
 #include "gtkcombobutton.h"
 
-#define GTK_COLOR_COMBO(obj)			GTK_CHECK_CAST (obj, gtk_color_combo_get_type (), GtkColorCombo)
-#define GTK_COLOR_COMBO_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, gtk_color_combo_get_type (), GtkColorComboClass)
-#define GTK_IS_COLOR_COMBO(obj)       GTK_CHECK_TYPE (obj, gtk_color_combo_get_type ())
+#define GTK_COLOR_COMBO(obj)			G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_color_combo_get_type (), GtkColorCombo)
+#define GTK_COLOR_COMBO_CLASS(klass)	G_TYPE_CHECK_CLASS_CAST (klass, gtk_color_combo_get_type (), GtkColorComboClass)
+#define GTK_IS_COLOR_COMBO(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_color_combo_get_type ())
 
 typedef struct _GtkColorCombo		GtkColorCombo;
 typedef struct _GtkColorComboClass	GtkColorComboClass;
@@ -58,7 +58,7 @@ struct _GtkColorComboClass {
                          gint selection, GdkColor *color);
 };
 
-GtkType   gtk_color_combo_get_type           (void);
+GType     gtk_color_combo_get_type           (void);
 
 GtkWidget *gtk_color_combo_new                  (void);
 

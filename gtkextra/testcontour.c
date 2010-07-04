@@ -116,20 +116,20 @@ activate_plot(GtkWidget *widget, gpointer data)
 
   while(n < nlayers)
     {
-      gtk_signal_handler_block_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
+      g_signal_handlers_block_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
       if(widget_list[n] == active_widget){
             active_plot = plots[n];
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[n]), TRUE);
       }else{
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[n]), FALSE);
       }
-      gtk_signal_handler_unblock_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
+      g_signal_handlers_unblock_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
       n++;
     }
 }
 
 GtkWidget *
-new_layer(GtkWidget *canvas, GtkType type)
+new_layer(GtkWidget *canvas, GType type)
 {
  gchar label[10];
  GtkRequisition req;
@@ -147,18 +147,18 @@ new_layer(GtkWidget *canvas, GtkType type)
 */
  gtk_widget_size_request(buttons[nlayers-1], &req);
  size = MAX(req.width,req.height);
- gtk_widget_set_usize(buttons[nlayers-1], size, size);
+ gtk_widget_set_size_request(buttons[nlayers-1], size, size);
  gtk_fixed_put(GTK_FIXED(canvas), buttons[nlayers-1], (nlayers-1)*size, 0);
  gtk_widget_show(buttons[nlayers-1]);
 
 
- if(type == GTK_TYPE_PLOT3D)
+ if(type == G_TYPE_PLOT3D)
    plots[nlayers-1] = gtk_plot3d_new_with_size(NULL, .50, .50);
  else
    plots[nlayers-1] = gtk_plot_new_with_size(NULL, .40, .40);
 
  gtk_widget_show(plots[nlayers-1]);
- gtk_signal_connect(GTK_OBJECT(buttons[nlayers-1]), "toggled", GTK_SIGNAL_FUNC(activate_plot), NULL);
+ g_signal_connect(GTK_OBJECT(buttons[nlayers-1]), "toggled", GTK_SIGNAL_FUNC(activate_plot), NULL);
 
  return plots[nlayers-1];
 }
@@ -218,10 +218,10 @@ int main(int argc, char *argv[]){
 
  window1=gtk_window_new(GTK_WINDOW_TOPLEVEL);
  gtk_window_set_title(GTK_WINDOW(window1), "GtkPlot3D Demo");
- gtk_widget_set_usize(window1,550,650);
+ gtk_widget_set_size_request(window1,550,650);
  gtk_container_border_width(GTK_CONTAINER(window1),0);
 
- gtk_signal_connect (GTK_OBJECT (window1), "destroy",
+ g_signal_connect (GTK_OBJECT (window1), "destroy",
 		     GTK_SIGNAL_FUNC (quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);
@@ -247,7 +247,7 @@ int main(int argc, char *argv[]){
 
  gtk_widget_show(canvas);
 
- plot3d = GTK_PLOT3D(new_layer(canvas, GTK_TYPE_PLOT3D));
+ plot3d = GTK_PLOT3D(new_layer(canvas, G_TYPE_PLOT3D));
  child = gtk_plot_canvas_plot_new(GTK_PLOT(plot3d));
  gtk_plot_canvas_put_child(GTK_PLOT_CANVAS(canvas), child, .16, .05, .65, .45);
  gtk_widget_show(GTK_WIDGET(plot3d));
@@ -315,7 +315,7 @@ int main(int argc, char *argv[]){
  GTK_PLOT_CSURFACE(surface)->levels_line.line_style = GTK_PLOT_LINE_NONE;
  GTK_PLOT_CSURFACE(surface)->sublevels_line.line_style = GTK_PLOT_LINE_NONE;
 /*******************/
- active_plot = new_layer(canvas, GTK_TYPE_PLOT);
+ active_plot = new_layer(canvas, G_TYPE_PLOT);
  child = gtk_plot_canvas_plot_new(GTK_PLOT(active_plot));
  gtk_plot_canvas_put_child(GTK_PLOT_CANVAS(canvas), child, .26, .54, .65, .90);
 
@@ -346,25 +346,25 @@ int main(int argc, char *argv[]){
  gtk_fixed_put(GTK_FIXED(canvas), button, 80, 0);
  gtk_widget_show(button);
 
- gtk_signal_connect(GTK_OBJECT(button), "clicked",
+ g_signal_connect(GTK_OBJECT(button), "clicked",
                     GTK_SIGNAL_FUNC(rotate_x), canvas);
 
  button = gtk_button_new_with_label("Rotate Y");
  gtk_fixed_put(GTK_FIXED(canvas), button, 160, 0);
  gtk_widget_show(button);
 
- gtk_signal_connect(GTK_OBJECT(button), "clicked",
+ g_signal_connect(GTK_OBJECT(button), "clicked",
                     GTK_SIGNAL_FUNC(rotate_y), canvas);
 
  button = gtk_button_new_with_label("Rotate Z");
  gtk_fixed_put(GTK_FIXED(canvas), button, 240, 0);
  gtk_widget_show(button);
 
- gtk_signal_connect(GTK_OBJECT(button), "clicked",
+ g_signal_connect(GTK_OBJECT(button), "clicked",
                     GTK_SIGNAL_FUNC(rotate_z), canvas);
 
- gtk_signal_connect(GTK_OBJECT(canvas), "select_item",
-                    (GtkSignalFunc) select_item, NULL);
+ g_signal_connect(GTK_OBJECT(canvas), "select_item",
+                    (void *) select_item, NULL);
                                                                                 
  gtk_widget_show(window1);
 

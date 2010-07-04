@@ -86,26 +86,21 @@ enum {
 
 static GtkPlotDataClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot_flux_get_type (void)
 {
-  static GtkType data_type = 0;
+  static GType data_type = 0;
 
   if (!data_type)
     {
-      GtkTypeInfo data_info =
-      {
-	"GtkPlotFlux",
-	sizeof (GtkPlotFlux),
-	sizeof (GtkPlotFluxClass),
-	(GtkClassInitFunc) gtk_plot_flux_class_init,
-	(GtkObjectInitFunc) gtk_plot_flux_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      data_type = gtk_type_unique (gtk_plot_data_get_type(), &data_info);
+      data_type = g_type_register_static_simple (
+		gtk_plot_data_get_type(),
+		"GtkPlotFlux",
+		sizeof (GtkPlotFluxClass),
+		(GClassInitFunc) gtk_plot_flux_class_init,
+		sizeof (GtkPlotFlux),
+		(GInstanceInitFunc) gtk_plot_flux_init,
+		0);
     }
   return data_type;
 }
@@ -118,7 +113,7 @@ gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
   GtkPlotDataClass *data_class;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-  parent_class = gtk_type_class (gtk_plot_data_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_data_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
@@ -441,7 +436,7 @@ gtk_plot_flux_new ()
 {
   GtkWidget *widget;
 
-  widget = gtk_type_new (gtk_plot_flux_get_type ());
+  widget = gtk_widget_new (gtk_plot_flux_get_type (), NULL);
 
   return (widget);
 }
@@ -477,7 +472,7 @@ gtk_plot_flux_draw_symbol(GtkPlotData *dataset,
   flux = GTK_PLOT_FLUX(dataset);
 
   g_return_if_fail(dataset->plot != NULL);
-  g_return_if_fail(GTK_WIDGET_VISIBLE(dataset->plot));
+  g_return_if_fail(gtk_widget_get_visible(GTK_WIDGET(dataset->plot)));
 
   plot = dataset->plot;
 
@@ -603,7 +598,7 @@ gtk_plot_flux_draw_legend(GtkPlotData *data, gint x, gint y)
 
   g_return_if_fail(data->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(data->plot));
-  g_return_if_fail(GTK_WIDGET_VISIBLE(data->plot));
+  g_return_if_fail(gtk_widget_get_visible(GTK_WIDGET(data->plot)));
 
   plot = data->plot;
   area.x = GTK_WIDGET(plot)->allocation.x;

@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
  gtk_window_set_title(GTK_WINDOW(window1), "GtkFontCombo Demo");
  gtk_container_border_width(GTK_CONTAINER(window1),0);
 
- gtk_signal_connect (GTK_OBJECT (window1), "destroy",
+ g_signal_connect (GTK_OBJECT (window1), "destroy",
 		     GTK_SIGNAL_FUNC (quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
  new_font(GTK_FONT_COMBO(font_combo), preview_entry); 
 /*********** SIGNALS ************/
 
- gtk_signal_connect(GTK_OBJECT(font_combo),
+ g_signal_connect(GTK_OBJECT(font_combo),
                     "changed",
                     GTK_SIGNAL_FUNC(new_font), preview_entry);
 

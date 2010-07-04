@@ -78,26 +78,21 @@ extern inline gint roundint 			(gdouble x);
 
 static GtkPlotDataClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot_pixmap_get_type (void)
 {
-  static GtkType data_type = 0;
+  static GType data_type = 0;
 
   if (!data_type)
     {
-      GtkTypeInfo data_info =
-      {
-	"GtkPlotPixmap",
-	sizeof (GtkPlotPixmap),
-	sizeof (GtkPlotPixmapClass),
-	(GtkClassInitFunc) gtk_plot_pixmap_class_init,
-	(GtkObjectInitFunc) gtk_plot_pixmap_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      data_type = gtk_type_unique (gtk_plot_data_get_type(), &data_info);
+      data_type = g_type_register_static_simple (
+		gtk_plot_data_get_type(),
+		"GtkPlotPixmap",
+		sizeof (GtkPlotPixmapClass),
+		(GClassInitFunc) gtk_plot_pixmap_class_init,
+		sizeof (GtkPlotPixmap),
+		(GInstanceInitFunc) gtk_plot_pixmap_init,
+		0);
     }
   return data_type;
 }
@@ -110,7 +105,7 @@ gtk_plot_pixmap_class_init (GtkPlotPixmapClass *klass)
   GtkPlotDataClass *data_class;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-  parent_class = gtk_type_class (gtk_plot_data_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_data_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
@@ -199,7 +194,7 @@ gtk_plot_pixmap_new (GdkPixmap *pixmap, GdkBitmap *mask)
 {
   GtkWidget *widget;
 
-  widget = gtk_type_new (gtk_plot_pixmap_get_type ());
+  widget = gtk_widget_new (gtk_plot_pixmap_get_type (), NULL);
 
   gtk_plot_pixmap_construct(GTK_PLOT_PIXMAP(widget), pixmap, mask);
 

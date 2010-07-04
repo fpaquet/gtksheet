@@ -26,10 +26,10 @@ extern "C" {
 
 #include "gtkplot.h"
 
-#define GTK_PLOT_CANDLE(obj)        GTK_CHECK_CAST (obj, gtk_plot_candle_get_type (), GtkPlotCandle)
-#define GTK_TYPE_PLOT_CANDLE        (gtk_plot_candle_get_type ())
-#define GTK_PLOT_CANDLE_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_candle_get_type(), GtkPlotCandleClass)
-#define GTK_IS_PLOT_CANDLE(obj)     GTK_CHECK_TYPE (obj, gtk_plot_candle_get_type ())
+#define GTK_PLOT_CANDLE(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_candle_get_type (), GtkPlotCandle)
+#define G_TYPE_PLOT_CANDLE        (gtk_plot_candle_get_type ())
+#define GTK_PLOT_CANDLE_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_candle_get_type(), GtkPlotCandleClass)
+#define GTK_IS_PLOT_CANDLE(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_candle_get_type ())
 
 typedef struct _GtkPlotCandle             GtkPlotCandle;
 typedef struct _GtkPlotCandleClass        GtkPlotCandleClass;
@@ -51,7 +51,7 @@ struct _GtkPlotCandleClass
 };
 
 
-GtkType		gtk_plot_candle_get_type	(void);
+GType		gtk_plot_candle_get_type	(void);
 GtkWidget*	gtk_plot_candle_new		(void);
 
 #ifdef __cplusplus

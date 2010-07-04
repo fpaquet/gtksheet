@@ -32,11 +32,11 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-#define GTK_TYPE_FILE_LIST                  (gtk_file_list_get_type ())
-#define GTK_FILE_LIST(obj)                  (GTK_CHECK_CAST ((obj), GTK_TYPE_FILE_LIST, GtkFileList))
-#define GTK_FILE_LIST_CLASS(klass)          (GTK_CHECK_CLASS_CAST ((klass), GTK_TYPE_FILE_LIST, GtkFileListClass))
-#define GTK_IS_FILE_LIST(obj)               (GTK_CHECK_TYPE ((obj), GTK_TYPE_FILE_LIST))
-#define GTK_IS_FILE_LIST_CLASS(klass)       (GTK_CHECK_CLASS_TYPE ((klass), GTK_TYPE_FILE_LIST))
+#define G_TYPE_FILE_LIST                  (gtk_file_list_get_type ())
+#define GTK_FILE_LIST(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_FILE_LIST, GtkFileList))
+#define GTK_FILE_LIST_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_FILE_LIST, GtkFileListClass))
+#define GTK_IS_FILE_LIST(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_FILE_LIST))
+#define GTK_IS_FILE_LIST_CLASS(klass)       (GTK_CHECK_CLASS_TYPE ((klass), G_TYPE_FILE_LIST))
 
 enum 
 {
@@ -135,7 +135,7 @@ struct _GtkFileListClass
 };
 
 
-GtkType    	gtk_file_list_get_type       (void);
+GType    	gtk_file_list_get_type       (void);
 GtkWidget* 	gtk_file_list_new            (guint icon_width, 
                                               gint mode,
                                               const gchar *path);

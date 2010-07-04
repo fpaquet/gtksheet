@@ -29,11 +29,11 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-#define GTK_PLOT_GDK(obj)        GTK_CHECK_CAST (obj, gtk_plot_gdk_get_type (), GtkPlotGdk)
-#define GTK_TYPE_PLOT_GDK   (gtk_plot_gdk_get_type ())
+#define GTK_PLOT_GDK(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_gdk_get_type (), GtkPlotGdk)
+#define G_TYPE_PLOT_GDK   (gtk_plot_gdk_get_type ())
 
-#define GTK_PLOT_GDK_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_gdk_get_type(), GtkPlotGdkClass)
-#define GTK_IS_PLOT_GDK(obj)     GTK_CHECK_TYPE (obj, gtk_plot_gdk_get_type ())
+#define GTK_PLOT_GDK_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_gdk_get_type(), GtkPlotGdkClass)
+#define GTK_IS_PLOT_GDK(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_gdk_get_type ())
 
 
 typedef struct _GtkPlotGdk GtkPlotGdk;
@@ -69,7 +69,7 @@ struct _GtkPlotGdkClass
    void (* set_drawable) 	(GtkPlotGdk *gdk, GdkDrawable *drawable);
 };
 
-GtkType    gtk_plot_gdk_get_type			(void);
+GType      gtk_plot_gdk_get_type			(void);
 GtkObject *gtk_plot_gdk_new				(GtkWidget *widget);
 void	   gtk_plot_gdk_construct			(GtkPlotGdk *pc,
 							 GtkWidget *widget);					 

@@ -24,6 +24,7 @@
  * It is a GtkIconList subclass that displays the contents of a given directory using fancy icons for different types of files
  */
 
+
 #include "config.h"
 #include <gtk/gtk.h>
 #include <sys/types.h>
@@ -144,26 +145,21 @@ static GtkFileListType default_types[] = {
                              };
 
 
-GtkType
+GType
 gtk_file_list_get_type (void)
 {
-  static GtkType file_list_type = 0;
+  static GType file_list_type = 0;
   
   if (!file_list_type)
     {
-      GtkTypeInfo file_list_info =
-      {
-	"GtkFileList",
-	sizeof (GtkFileList),
-	sizeof (GtkFileListClass),
-	(GtkClassInitFunc) gtk_file_list_class_init,
-	(GtkObjectInitFunc) gtk_file_list_init,
-	/* reserved_1 */ NULL,
-        /* reserved_2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-      
-      file_list_type = gtk_type_unique (gtk_icon_list_get_type(), &file_list_info);
+      file_list_type = g_type_register_static_simple(
+		gtk_icon_list_get_type(),
+		"GtkFileList",
+		sizeof (GtkFileListClass),
+	        (GClassInitFunc) gtk_file_list_class_init,
+		sizeof (GtkFileList),
+		(GInstanceInitFunc) gtk_file_list_init,
+		0);
     }
   
   return file_list_type;
@@ -185,7 +181,7 @@ gtk_file_list_new (guint icon_width, gint mode, const gchar *path)
   GtkWidget *widget;
   GtkFileList *file_list;
 
-  widget = gtk_type_new (gtk_file_list_get_type());
+  widget = gtk_widget_new (gtk_file_list_get_type(), NULL);
 
   file_list = GTK_FILE_LIST(widget);
 
@@ -230,7 +226,7 @@ gtk_file_list_class_init (GtkFileListClass *klass)
   
   widget_class = (GtkWidgetClass*) klass;
   object_class = (GtkObjectClass*) klass;
-  parent_class = gtk_type_class (gtk_icon_list_get_type ());
+  parent_class = g_type_class_ref (gtk_icon_list_get_type ());
 
   widget_class->realize = gtk_file_list_realize; 
   object_class->destroy = gtk_file_list_destroy; 
@@ -417,7 +413,9 @@ gtk_file_list_open_dir(GtkFileList *file_list, const gchar *dir_path)
   gchar *real_path;
   GdkPixmap *pixmap;
   GdkBitmap *mask;
-  GtkPixmap *icon;
+  GdkPixmap *l_pixmap;
+  GdkBitmap *l_mask;
+  GtkImage *icon;
   gint width, height;
   GdkGC *gc;
   GList *types, *files, *list;
@@ -625,25 +623,29 @@ gtk_file_list_open_dir(GtkFileList *file_list, const gchar *dir_path)
          types = types->next;
        }
 
-       icon = GTK_PIXMAP(g_list_nth_data(file_list->pixmaps, type));
+       icon = (g_list_nth_data(file_list->pixmaps, type));
        file_item->type = type;
 
-       gdk_pixmap_ref(icon->pixmap);
-       gdk_bitmap_ref(icon->mask);
+       gtk_image_get_pixmap(icon, &l_pixmap, &l_mask);
+       gdk_pixmap_ref(l_pixmap);
+       gdk_bitmap_ref(l_mask);
        item = gtk_icon_list_add_from_pixmap(icon_list,
-                                            icon->pixmap,
-                                            icon->mask,
-                                            file_item->file_name, file_item);
+                        l_pixmap,
+                        l_mask,
+                        file_item->file_name, file_item);
 
        if(file_item->is_link){
                pixmap = gdk_pixmap_colormap_create_from_xpm_d(NULL, 
-                                                      gdk_colormap_get_system(),
-                                                      &mask, NULL,
-                                                      symlink_xpm);
-               gdk_window_get_size(GTK_PIXMAP(item->pixmap)->pixmap,
-                                   &width, &height);
+                           gdk_colormap_get_system(),
+                           &mask, NULL,
+                           symlink_xpm);
+
+       	       gtk_image_get_pixmap((GtkImage *)(item->pixmap), &l_pixmap, &l_mask);
+               gdk_window_get_size(l_pixmap,
+                            &width, &height);
+
                gc = gdk_gc_new(pixmap);
-               gdk_draw_pixmap(GTK_PIXMAP(item->pixmap)->pixmap,
+               gdk_draw_pixmap(l_pixmap,
                                gc,
                                pixmap,
                                0, 0,
@@ -651,7 +653,7 @@ gtk_file_list_open_dir(GtkFileList *file_list, const gchar *dir_path)
                                7, 7); 
                gdk_gc_unref(gc);
                gc = gdk_gc_new(mask);
-               gdk_draw_pixmap(GTK_PIXMAP(item->pixmap)->mask,
+               gdk_draw_pixmap(l_mask,
                                gc,
                                mask,
                                0, 0,
@@ -817,7 +819,7 @@ gtk_file_list_add_type_with_pixmap (GtkFileList *file_list,
                               GdkPixmap *pixmap, GdkBitmap *mask)
 {
   GtkWidget *wpixmap;
-  wpixmap = gtk_pixmap_new(pixmap, mask);
+  wpixmap = gtk_image_new_from_pixmap(pixmap, mask);
 
   file_list->pixmaps = g_list_append(file_list->pixmaps, wpixmap);
   file_list->ntypes++;

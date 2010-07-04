@@ -101,7 +101,8 @@ gtk_border_combo_class_init (GtkBorderComboClass * klass)
   GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
 
-  parent_class = gtk_type_class (gtk_hbox_get_type ());
+
+  parent_class = g_type_class_ref (gtk_hbox_get_type ());
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
 
@@ -116,13 +117,13 @@ gtk_border_combo_class_init (GtkBorderComboClass * klass)
    *
    * Emmited when the GtkBorderCombo's state is changed
    */ 
-  border_combo_signals[CHANGED]=gtk_signal_new("changed",
-                                      GTK_RUN_FIRST,
-                                      GTK_CLASS_TYPE(object_class),
-                                      GTK_SIGNAL_OFFSET(GtkBorderComboClass,
-                                      changed),
-                                      gtkextra_VOID__INT,
-                                      GTK_TYPE_NONE, 1, GTK_TYPE_INT);
+  border_combo_signals[CHANGED]=g_signal_new("changed",
+ 			  G_OBJECT_CLASS_TYPE (object_class),
+                          G_SIGNAL_RUN_FIRST,
+                          G_STRUCT_OFFSET(GtkBorderComboClass, changed),
+			  NULL, NULL,
+                          gtkextra_VOID__INT,
+                          G_TYPE_NONE, 1, G_TYPE_INT);
 
   klass->changed = NULL;
                                                         
@@ -136,12 +137,14 @@ gtk_border_combo_destroy (GtkObject * border_combo)
   GtkBorderCombo *combo;
   combo=GTK_BORDER_COMBO(border_combo);
 
+  if (combo->button) {
   for(i=0; i<combo->nrows; i++)
    for(j=0; j<combo->ncols; j++){
      if(combo->button[i][j]){
        gtk_widget_destroy(combo->button[i][j]);
        combo->button[i][j] = NULL;
      }
+   }
    }
   
   if(GTK_BORDER_COMBO(border_combo)->table){ 
@@ -154,7 +157,6 @@ gtk_border_combo_destroy (GtkObject * border_combo)
 }
 
 
-
 static void
 gtk_border_combo_update (GtkWidget * widget, GtkBorderCombo * border_combo)
 {
@@ -164,13 +166,16 @@ gtk_border_combo_update (GtkWidget * widget, GtkBorderCombo * border_combo)
   gint new_selection=FALSE;
   gint row,column;
   GdkPixmap *window;
+  GdkPixmap *button;
+  GtkImage *image;
+  GdkBitmap *mask;
 
   row=border_combo->row;
   column=border_combo->column;
 
   for(i=0 ; i<border_combo->nrows; i++)
     for(j=0; j<border_combo->ncols; j++){    
-      if(GTK_WIDGET_HAS_FOCUS(border_combo->button[i][j])){
+      if(gtk_widget_has_focus(border_combo->button[i][j])){
             focus_row=i;
             focus_col=j;
       }
@@ -198,27 +203,34 @@ gtk_border_combo_update (GtkWidget * widget, GtkBorderCombo * border_combo)
       }
       border_combo->row=new_row;
       border_combo->column=new_col;
-      window=GTK_PIXMAP(GTK_BIN(GTK_COMBO_BUTTON(border_combo)->button)
-                                                         ->child)->pixmap;
-      gdk_window_copy_area(window,
+      image = GTK_IMAGE( GTK_BIN( GTK_COMBO_BUTTON(border_combo)->button)->child);
+      gtk_image_get_pixmap(image, &window, &mask);
+      gtk_image_get_pixmap ( 
+        GTK_IMAGE(GTK_BIN(border_combo->button[new_row][new_col])->child),
+	&button, &mask);
+	
+      gdk_draw_drawable(window,
                            widget->style->fg_gc[GTK_STATE_NORMAL],
+			   button,
                            0,0,
- GTK_PIXMAP(GTK_BIN(border_combo->button[new_row][new_col])->child)->pixmap,
                            0,0,16,16);
 
       gtk_widget_queue_draw(GTK_COMBO_BUTTON(border_combo)->button);
       
-      gtk_signal_emit (GTK_OBJECT(border_combo), border_combo_signals[CHANGED],
-                       new_row * border_combo->ncols + new_col);
+      g_signal_emit (GTK_OBJECT(border_combo), 
+		border_combo_signals[CHANGED],
+		0,
+                new_row * border_combo->ncols + new_col);
   }
 
   if(!new_selection && row >= 0 && column >= 0){
           gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(border_combo->button[row][column]), TRUE);
           gtk_widget_queue_draw(border_combo->button[row][column]);
 
-          gtk_signal_emit (GTK_OBJECT(border_combo),                     
-                           border_combo_signals[CHANGED],
-                           row * border_combo->ncols + column);
+          g_signal_emit (GTK_OBJECT(border_combo),                     
+                     border_combo_signals[CHANGED],
+		     0,
+                     row * border_combo->ncols + column);
   }
 
 
@@ -260,32 +272,28 @@ create_border_pixmap(GtkBorderCombo *border_combo, gchar *border[18])
                              NULL,
                              &(widget->style->bg[GTK_STATE_NORMAL]),
                              border);    
-
-  pixmap=gtk_pixmap_new(border_pixmap, NULL);
+  pixmap=gtk_image_new_from_pixmap(border_pixmap, NULL);
   return pixmap;  
  
 }
 
 
-GtkType
+GType
 gtk_border_combo_get_type ()
 {
-  static GtkType border_combo_type = 0;
+  static GType border_combo_type = 0;
 
   if (!border_combo_type)
     {
-      GtkTypeInfo border_combo_info =
-      {
-	"GtkBorderCombo",
-	sizeof (GtkBorderCombo),
-	sizeof (GtkBorderComboClass),
-	(GtkClassInitFunc) gtk_border_combo_class_init,
-	(GtkObjectInitFunc) gtk_border_combo_init,
-	NULL,
-	NULL,
-	(GtkClassInitFunc) NULL,
-      };
-      border_combo_type = gtk_type_unique (gtk_combo_button_get_type (), &border_combo_info);
+      border_combo_type = g_type_register_static_simple(
+		gtk_combo_button_get_type (),
+		"GtkBorderCombo",
+		sizeof (GtkBorderComboClass),
+        	(GClassInitFunc) gtk_border_combo_class_init,
+		sizeof (GtkBorderCombo),
+		(GInstanceInitFunc) gtk_border_combo_init,
+		0);
+
     }
   return border_combo_type;
 }
@@ -293,12 +301,7 @@ gtk_border_combo_get_type ()
 GtkWidget *
 gtk_border_combo_new ()
 {
-  GtkBorderCombo *border_combo;
-
-  border_combo = gtk_type_new (gtk_border_combo_get_type ());
-
-  return(GTK_WIDGET(border_combo));
-
+  return(gtk_widget_new(gtk_border_combo_get_type (), NULL));
 }
 
 
@@ -325,6 +328,7 @@ gtk_border_combo_realize(GtkWidget *widget)
 
   border_combo->button = (GtkWidget ***)g_malloc(border_combo->nrows*sizeof(GtkWidget **));
 
+
   for(i = 0; i < border_combo->nrows; i++){
 
     border_combo->button[i] = (GtkWidget **)g_malloc(border_combo->ncols*sizeof(GtkWidget *));
@@ -338,11 +342,12 @@ gtk_border_combo_realize(GtkWidget *widget)
                           border_combo->button[i][j],
                           j, j+1, i, i+1, GTK_SHRINK, GTK_SHRINK, 0, 0);
 
-        gtk_widget_set_usize(border_combo->button[i][j], 24, 24);
+        gtk_widget_set_size_request(border_combo->button[i][j], 24, 24);
         gtk_widget_show(border_combo->button[i][j]); 
-        gtk_signal_connect (GTK_OBJECT (border_combo->button[i][j]), "toggled",
-		            (GtkSignalFunc) gtk_border_combo_update, 
-                            border_combo);
+        g_signal_connect (GTK_OBJECT (border_combo->button[i][j]), 
+			"toggled",
+		        (void *) gtk_border_combo_update, 
+                        border_combo);
 
     }
   }
@@ -358,7 +363,7 @@ gtk_border_combo_realize(GtkWidget *widget)
                              &(combo->button->style->bg[GTK_STATE_NORMAL]),
                              xpm_border);    
 
-       pixmap=gtk_pixmap_new(border_pixmap, NULL);
+       pixmap = gtk_image_new_from_pixmap(border_pixmap, NULL);
        gtk_container_add(GTK_CONTAINER(combo->button), pixmap);
        gtk_widget_show(pixmap);
   }
@@ -470,7 +475,7 @@ gtk_border_combo_realize(GtkWidget *widget)
   gtk_container_add(GTK_CONTAINER(border_combo->button[2][3]), pixmap);
   gtk_widget_show(pixmap);
 
-  gtk_signal_connect (GTK_OBJECT (combo->button), "clicked",
-		      (GtkSignalFunc) gtk_border_combo_update, 
+  g_signal_connect (GTK_OBJECT (combo->button), "clicked",
+		      (void*) gtk_border_combo_update, 
                        border_combo);
 }

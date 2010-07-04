@@ -25,9 +25,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#define GTK_COMBO_BUTTON(obj)			GTK_CHECK_CAST (obj, gtk_combo_button_get_type (), GtkComboButton)
-#define GTK_COMBO_BUTTON_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, gtk_combo_button_get_type (), GtkComboButtonClass)
-#define GTK_IS_COMBO_BUTTON(obj)       GTK_CHECK_TYPE (obj, gtk_combo_button_get_type ())
+#define GTK_COMBO_BUTTON(obj)			G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_combo_button_get_type (), GtkComboButton)
+#define GTK_COMBO_BUTTON_CLASS(klass)	G_TYPE_CHECK_CLASS_CAST (klass, gtk_combo_button_get_type (), GtkComboButtonClass)
+#define GTK_IS_COMBO_BUTTON(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_combo_button_get_type ())
 
 typedef struct _GtkComboButton		GtkComboButton;
 typedef struct _GtkComboButtonClass	GtkComboButtonClass;
@@ -47,7 +47,7 @@ struct _GtkComboButtonClass {
 	GtkHBoxClass parent_class;
 };
 
-GtkType      gtk_combo_button_get_type              (void);
+GType      gtk_combo_button_get_type              (void);
 
 GtkWidget *gtk_combo_button_new                   (void);
 

@@ -30,9 +30,9 @@ extern "C" {
 #include "gtkpsfont.h"
 
 
-#define GTK_FONT_COMBO(obj)			GTK_CHECK_CAST (obj, gtk_font_combo_get_type (), GtkFontCombo)
-#define GTK_FONT_COMBO_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, gtk_font_combo_get_type (), GtkFontComboClass)
-#define GTK_IS_FONT_COMBO(obj)       GTK_CHECK_TYPE (obj, gtk_font_combo_get_type ())
+#define GTK_FONT_COMBO(obj)			G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_font_combo_get_type (), GtkFontCombo)
+#define GTK_FONT_COMBO_CLASS(klass)	G_TYPE_CHECK_CLASS_CAST (klass, gtk_font_combo_get_type (), GtkFontComboClass)
+#define GTK_IS_FONT_COMBO(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_font_combo_get_type ())
 
 typedef struct _GtkFontCombo		GtkFontCombo;
 typedef struct _GtkFontComboClass	GtkFontComboClass;
@@ -53,7 +53,7 @@ struct _GtkFontComboClass {
         void (* changed)      (GtkFontCombo *font_combo);
 };
 
-GtkType      gtk_font_combo_get_type              (void);
+GType      gtk_font_combo_get_type              (void);
 
 GtkWidget *gtk_font_combo_new                   (void);
 

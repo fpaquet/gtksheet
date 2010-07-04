@@ -17,6 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -122,26 +123,21 @@ enum {
 
 static GtkPlotSurfaceClass *parent_class = NULL;
 
-GtkType
+GType
 gtk_plot_csurface_get_type (void)
 {
-  static GtkType data_type = 0;
+  static GType data_type = 0;
 
   if (!data_type)
     {
-      GtkTypeInfo data_info =
-      {
-	"GtkPlotCSurface",
-	sizeof (GtkPlotCSurface),
-	sizeof (GtkPlotCSurfaceClass),
-	(GtkClassInitFunc) gtk_plot_csurface_class_init,
-	(GtkObjectInitFunc) gtk_plot_csurface_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      data_type = gtk_type_unique (gtk_plot_surface_get_type(), &data_info);
+      data_type = g_type_register_static_simple (
+		gtk_plot_surface_get_type(),
+		"GtkPlotCSurface",
+		sizeof (GtkPlotCSurfaceClass),
+		(GClassInitFunc) gtk_plot_csurface_class_init,
+		sizeof (GtkPlotCSurface),
+		(GInstanceInitFunc) gtk_plot_csurface_init,
+		0);
     }
   return data_type;
 }
@@ -155,7 +151,7 @@ gtk_plot_csurface_class_init (GtkPlotCSurfaceClass *klass)
   GtkPlotSurfaceClass *surface_class;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-  parent_class = gtk_type_class (gtk_plot_surface_get_type ());
+  parent_class = g_type_class_ref (gtk_plot_surface_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
@@ -424,7 +420,7 @@ gtk_plot_csurface_new (void)
 {
   GtkPlotData *data;
 
-  data = gtk_type_new (gtk_plot_csurface_get_type ());
+  data = g_object_new (gtk_plot_csurface_get_type (), NULL);
 
   return GTK_WIDGET (data);
 }
@@ -440,7 +436,7 @@ gtk_plot_csurface_new_function (GtkPlotFunc3D function)
 {
   GtkWidget *data;
 
-  data = gtk_type_new (gtk_plot_csurface_get_type ());
+  data = gtk_widget_new (gtk_plot_csurface_get_type (), NULL);
 
   gtk_plot_csurface_construct_function(GTK_PLOT_CSURFACE(data), function);
 
@@ -479,7 +475,7 @@ gtk_plot_csurface_draw_private 	(GtkPlotData *data)
   GtkPlotSurface *surface;
   GtkPlotCSurface *csurface;
 
-  if(!GTK_WIDGET_VISIBLE(GTK_WIDGET(data))) return;
+  if(!gtk_widget_get_visible(GTK_WIDGET(data))) return;
 
   surface = GTK_PLOT_SURFACE(data);
   csurface = GTK_PLOT_CSURFACE(data);

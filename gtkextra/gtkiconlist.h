@@ -34,11 +34,11 @@ typedef enum
   GTK_ICON_LIST_TEXT_BELOW,
 } GtkIconListMode;
 
-#define GTK_ICON_LIST(obj)        GTK_CHECK_CAST (obj, gtk_icon_list_get_type (), GtkIconList)
-#define GTK_ICON_LIST_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_icon_list_get_type, GtkIconListClass)
-#define GTK_IS_ICON_LIST(obj)     GTK_CHECK_TYPE (obj, gtk_icon_list_get_type ())
-#define GTK_TYPE_ICON_LIST (gtk_icon_list_get_type ())
-#define GTK_TYPE_ICON_LIST_ITEM (gtk_icon_list_item_get_type ())
+#define GTK_ICON_LIST(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_icon_list_get_type (), GtkIconList)
+#define GTK_ICON_LIST_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_icon_list_get_type, GtkIconListClass)
+#define GTK_IS_ICON_LIST(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_icon_list_get_type ())
+#define G_TYPE_ICON_LIST (gtk_icon_list_get_type ())
+#define G_TYPE_ICON_LIST_ITEM (gtk_icon_list_item_get_type ())
 
 
 typedef struct _GtkIconList	GtkIconList;
@@ -126,8 +126,8 @@ struct _GtkIconListClass
 };
 
 
-GtkType		gtk_icon_list_get_type	(void);
-GtkType		gtk_icon_list_item_get_type	(void);
+GType		gtk_icon_list_get_type	(void);
+GType		gtk_icon_list_item_get_type	(void);
 GtkWidget*	gtk_icon_list_new		(guint icon_width,
 						 GtkIconListMode mode);
 void		gtk_icon_list_construct		(GtkIconList *iconlist,

@@ -27,6 +27,7 @@
  * You can also plot functions, add error bars, edit legends, rotate and move axis titles, change axis properties, etc. 
  */
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -238,26 +239,21 @@ static guint plot_signals[LAST_SIGNAL] = {0};
 static guint axis_signals[LAST_AXIS_SIGNAL] = {0};
 
 
-GtkType
+GType
 gtk_plot_get_type (void)
 {
-  static GtkType plot_type = 0;
+  static GType plot_type = 0;
 
   if (!plot_type)
     {
-      GtkTypeInfo plot_info =
-      {
-	"GtkPlot",
-	sizeof (GtkPlot),
-	sizeof (GtkPlotClass),
-	(GtkClassInitFunc) gtk_plot_class_init,
-	(GtkObjectInitFunc) gtk_plot_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      plot_type = gtk_type_unique (GTK_TYPE_MISC, &plot_info);
+      plot_type = g_type_register_static_simple (
+		gtk_misc_get_type (),
+		"GtkPlot",
+		sizeof (GtkPlotClass),
+		(GClassInitFunc) gtk_plot_class_init,
+		sizeof (GtkPlot),
+		(GInstanceInitFunc) gtk_plot_init,
+		0);
     }
   return plot_type;
 }
@@ -270,7 +266,7 @@ gtk_plot_class_init (GtkPlotClass *klass)
   GtkPlotClass *plot_class;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-  parent_class = gtk_type_class (gtk_widget_get_type ());
+  parent_class = g_type_class_ref (gtk_widget_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
@@ -291,12 +287,13 @@ gtk_plot_class_init (GtkPlotClass *klass)
    * Return value: 
    */
   plot_signals[ADD_DATA] = 
-    gtk_signal_new("add_data",
-                   GTK_RUN_LAST,
-                   GTK_CLASS_TYPE(object_class),
-                   GTK_SIGNAL_OFFSET (GtkPlotClass, add_data),
+    g_signal_new("add_data",
+                   G_TYPE_FROM_CLASS(object_class),
+                   G_SIGNAL_RUN_LAST,
+                   G_STRUCT_OFFSET (GtkPlotClass, add_data),
+		   NULL, NULL, 
                    gtkextra_BOOL__POINTER,
-                   GTK_TYPE_BOOL, 1, GTK_TYPE_PLOT_DATA); 
+                   G_TYPE_BOOLEAN, 1, G_TYPE_PLOT_DATA); 
 
   /**
    * GtkPlot::changed:
@@ -305,12 +302,13 @@ gtk_plot_class_init (GtkPlotClass *klass)
    *
    */
   plot_signals[CHANGED] = 
-    gtk_signal_new("changed",
-                   GTK_RUN_LAST,
-                   GTK_CLASS_TYPE(object_class),
-                   GTK_SIGNAL_OFFSET (GtkPlotClass, changed),
+    g_signal_new("changed",
+                   G_TYPE_FROM_CLASS(object_class),
+                   G_SIGNAL_RUN_LAST,
+                   G_STRUCT_OFFSET (GtkPlotClass, changed),
+		   NULL, NULL,
                    gtkextra_VOID__VOID,
-                   GTK_TYPE_NONE, 0); 
+                   G_TYPE_NONE, 0); 
 
   
   /**
@@ -321,12 +319,13 @@ gtk_plot_class_init (GtkPlotClass *klass)
    *
    */
   plot_signals[UPDATE] = 
-    gtk_signal_new("update",
-                   GTK_RUN_LAST,
-                   GTK_CLASS_TYPE(object_class),
-                   GTK_SIGNAL_OFFSET (GtkPlotClass, update),
+    g_signal_new("update",
+                   G_TYPE_FROM_CLASS(object_class),
+                   G_SIGNAL_RUN_LAST,
+                   G_STRUCT_OFFSET (GtkPlotClass, update),
+		   NULL, NULL,
                    gtkextra_VOID__BOOL,
-                   GTK_TYPE_NONE, 1, GTK_TYPE_BOOL); 
+                   G_TYPE_NONE, 1, G_TYPE_BOOLEAN); 
 
   /**
    * GtkPlot::moved:
@@ -339,12 +338,13 @@ gtk_plot_class_init (GtkPlotClass *klass)
    * Return value: 
    */
   plot_signals[MOVED] = 
-    gtk_signal_new("moved",
-                   GTK_RUN_LAST,
-                   GTK_CLASS_TYPE(object_class),
-                   GTK_SIGNAL_OFFSET (GtkPlotClass, moved),
+    g_signal_new("moved",
+                   G_TYPE_FROM_CLASS(object_class),
+                   G_SIGNAL_RUN_LAST,
+                   G_STRUCT_OFFSET (GtkPlotClass, moved),
+		   NULL, NULL,
                    gtkextra_BOOL__POINTER_POINTER,
-                   GTK_TYPE_BOOL, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER); 
+                   G_TYPE_BOOLEAN, 2, G_TYPE_POINTER, G_TYPE_POINTER); 
 
   /**
    * GtkPlot::resized:
@@ -357,20 +357,22 @@ gtk_plot_class_init (GtkPlotClass *klass)
    * Return value: 
    */
   plot_signals[RESIZED] = 
-    gtk_signal_new("resized",
-                   GTK_RUN_LAST,
-                   GTK_CLASS_TYPE(object_class),
-                   GTK_SIGNAL_OFFSET (GtkPlotClass, resized),
+    g_signal_new("resized",
+                   G_TYPE_FROM_CLASS(object_class),
+                   G_SIGNAL_RUN_LAST,
+                   G_STRUCT_OFFSET (GtkPlotClass, resized),
+		   NULL, NULL,
                    gtkextra_BOOL__POINTER_POINTER,
-                   GTK_TYPE_BOOL, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER); 
+                   G_TYPE_BOOLEAN, 2, G_TYPE_POINTER, G_TYPE_POINTER); 
 
   plot_signals[PLOT_AXIS_CHANGED] = 
-    gtk_signal_new("axis_changed",
-                   GTK_RUN_LAST,
-                   GTK_CLASS_TYPE(object_class),
-                   GTK_SIGNAL_OFFSET (GtkPlotClass, moved),
+    g_signal_new("axis_changed",
+                   G_TYPE_FROM_CLASS(object_class),
+                   G_SIGNAL_RUN_LAST,
+                   G_STRUCT_OFFSET (GtkPlotClass, moved),
+		   NULL, NULL,
                    gtkextra_BOOL__POINTER,
-                   GTK_TYPE_BOOL, 1, GTK_TYPE_PLOT_AXIS); 
+                   G_TYPE_BOOLEAN, 1, G_TYPE_PLOT_AXIS); 
 
   object_class->destroy = gtk_plot_destroy;
   gobject_class->set_property = gtk_plot_set_property;
@@ -400,7 +402,7 @@ gtk_plot_class_init (GtkPlotClass *klass)
   g_param_spec_object ("bottom_axis",
                            P_(""),
                            P_(""),
-                           GTK_TYPE_PLOT_AXIS,
+                           G_TYPE_PLOT_AXIS,
                            G_PARAM_READABLE));
 
   /**
@@ -413,7 +415,7 @@ gtk_plot_class_init (GtkPlotClass *klass)
   g_param_spec_object ("top_axis",
                            P_(""),
                            P_(""),
-                           GTK_TYPE_PLOT_AXIS,
+                           G_TYPE_PLOT_AXIS,
                            G_PARAM_READABLE));
 
   /**
@@ -426,7 +428,7 @@ gtk_plot_class_init (GtkPlotClass *klass)
   g_param_spec_object ("left_axis",
                            P_(""),
                            P_(""),
-                           GTK_TYPE_PLOT_AXIS,
+                           G_TYPE_PLOT_AXIS,
                            G_PARAM_READABLE));
 
   /**
@@ -439,7 +441,7 @@ gtk_plot_class_init (GtkPlotClass *klass)
   g_param_spec_object ("right_axis",
                            P_(""),
                            P_(""),
-                           GTK_TYPE_PLOT_AXIS,
+                           G_TYPE_PLOT_AXIS,
                            G_PARAM_READABLE));
 
   /**
@@ -988,26 +990,21 @@ gtk_plot_class_init (GtkPlotClass *klass)
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
 }
 
-GtkType
+GType
 gtk_plot_axis_get_type (void)
 {
-  static GtkType axis_type = 0;
+  static GType axis_type = 0;
 
   if (!axis_type)
     {
-      GtkTypeInfo axis_info =
-      {
-	"GtkPlotAxis",
-	sizeof (GtkPlotAxis),
-	sizeof (GtkPlotAxisClass),
-	(GtkClassInitFunc) gtk_plot_axis_class_init,
-	(GtkObjectInitFunc) gtk_plot_axis_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      axis_type = gtk_type_unique (GTK_TYPE_OBJECT, &axis_info);
+      axis_type = g_type_register_static_simple (
+		gtk_object_get_type(),
+		"GtkPlotAxis",
+		sizeof (GtkPlotAxisClass),
+		(GClassInitFunc) gtk_plot_axis_class_init,
+		sizeof (GtkPlotAxis),
+		(GInstanceInitFunc) gtk_plot_axis_init,
+		0);
     }
   return axis_type;
 }
@@ -1034,12 +1031,13 @@ gtk_plot_axis_class_init (GtkPlotAxisClass *klass)
    * Return value: 
    */
   axis_signals[TICK_LABEL] = 
-    gtk_signal_new("tick_label",
-                   GTK_RUN_LAST,
-                   GTK_CLASS_TYPE(object_class),
-                   GTK_SIGNAL_OFFSET (GtkPlotAxisClass, tick_label),
+    g_signal_new("tick_label",
+                   G_TYPE_FROM_CLASS(object_class),
+                   G_SIGNAL_RUN_LAST,
+                   G_STRUCT_OFFSET (GtkPlotAxisClass, tick_label),
+		   NULL, NULL,
                    gtkextra_BOOL__POINTER_POINTER,
-                   GTK_TYPE_BOOL, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER); 
+                   G_TYPE_BOOLEAN, 2, G_TYPE_POINTER, G_TYPE_POINTER); 
 
 
   /**
@@ -1051,12 +1049,13 @@ gtk_plot_axis_class_init (GtkPlotAxisClass *klass)
    * Return value: 
    */
   axis_signals[AXIS_CHANGED] = 
-    gtk_signal_new("changed",
-                   GTK_RUN_LAST,
-                   GTK_CLASS_TYPE(object_class),
-                   GTK_SIGNAL_OFFSET (GtkPlotAxisClass, changed),
+    g_signal_new("changed",
+                   G_TYPE_FROM_CLASS(object_class),
+                   G_SIGNAL_RUN_LAST,
+                   G_STRUCT_OFFSET (GtkPlotAxisClass, changed),
+		   NULL, NULL,
                    gtkextra_VOID__VOID,
-                   GTK_TYPE_NONE, 0); 
+                   G_TYPE_NONE, 0); 
 
   object_class->destroy = gtk_plot_axis_destroy;
   gobject_class->set_property = gtk_plot_axis_set_property;
@@ -1229,7 +1228,7 @@ gtk_plot_axis_class_init (GtkPlotAxisClass *klass)
   g_param_spec_object ("labels_array",
                            P_(""),
                            P_(""),
-                           GTK_TYPE_PLOT_ARRAY,
+                           G_TYPE_PLOT_ARRAY,
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
 
   /**
@@ -1586,7 +1585,7 @@ gtk_plot_axis_class_init (GtkPlotAxisClass *klass)
 static void
 axis_changed(GtkPlotAxis *axis, GtkPlot *plot)
 {
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 static void
@@ -1618,25 +1617,29 @@ gtk_plot_init (GtkPlot *plot)
   plot->show_y0 = FALSE;
 
   plot->right = GTK_PLOT_AXIS(gtk_plot_axis_new(GTK_PLOT_AXIS_Y));  
-  gtk_object_ref(GTK_OBJECT(plot->right));
-  gtk_object_sink(GTK_OBJECT(plot->right));
-  gtk_signal_connect(GTK_OBJECT(plot->right), "changed", 
-                     GTK_SIGNAL_FUNC(axis_changed), plot);
+  g_object_ref(GTK_OBJECT(plot->right));
+  g_object_ref_sink(GTK_OBJECT(plot->right));
+  g_object_unref(GTK_OBJECT(plot->right));
+  g_signal_connect(GTK_OBJECT(plot->right), "changed", 
+                     (void *)axis_changed, plot);
   plot->left = GTK_PLOT_AXIS(gtk_plot_axis_new(GTK_PLOT_AXIS_Y));  
-  gtk_object_ref(GTK_OBJECT(plot->left));
-  gtk_object_sink(GTK_OBJECT(plot->left));
-  gtk_signal_connect(GTK_OBJECT(plot->left), "changed", 
-                     GTK_SIGNAL_FUNC(axis_changed), plot);
+  g_object_ref(GTK_OBJECT(plot->left));
+  g_object_ref_sink(GTK_OBJECT(plot->left));
+  g_object_unref(GTK_OBJECT(plot->left));
+  g_signal_connect(GTK_OBJECT(plot->left), "changed", 
+                     (void *)axis_changed, plot);
   plot->top = GTK_PLOT_AXIS(gtk_plot_axis_new(GTK_PLOT_AXIS_X));  
-  gtk_object_ref(GTK_OBJECT(plot->top));
-  gtk_object_sink(GTK_OBJECT(plot->top));
-  gtk_signal_connect(GTK_OBJECT(plot->top), "changed", 
-                     GTK_SIGNAL_FUNC(axis_changed), plot);
+  g_object_ref(GTK_OBJECT(plot->top));
+  g_object_ref_sink(GTK_OBJECT(plot->top));
+  g_object_unref(GTK_OBJECT(plot->top));
+  g_signal_connect(GTK_OBJECT(plot->top), "changed", 
+                     (void *)axis_changed, plot);
   plot->bottom = GTK_PLOT_AXIS(gtk_plot_axis_new(GTK_PLOT_AXIS_X));  
-  gtk_object_ref(GTK_OBJECT(plot->bottom));
-  gtk_object_sink(GTK_OBJECT(plot->bottom));
-  gtk_signal_connect(GTK_OBJECT(plot->bottom), "changed", 
-                     GTK_SIGNAL_FUNC(axis_changed), plot);
+  g_object_ref(GTK_OBJECT(plot->bottom));
+  g_object_ref_sink(GTK_OBJECT(plot->bottom));
+  g_object_unref(GTK_OBJECT(plot->bottom));
+  g_signal_connect(GTK_OBJECT(plot->bottom), "changed", 
+                     (void *)axis_changed, plot);
 
   plot->left->labels_attr.justification = GTK_JUSTIFY_RIGHT;
   plot->right->labels_attr.justification = GTK_JUSTIFY_LEFT;
@@ -2018,16 +2021,18 @@ static void
 gtk_plot_real_set_pc(GtkPlot *plot, GtkPlotPC *pc)
 {
   if(plot->pc)
-    gtk_object_unref(GTK_OBJECT(plot->pc));
+    g_object_unref(GTK_OBJECT(plot->pc));
 
   if(!pc){
     plot->pc = (GtkPlotPC *)gtk_plot_cairo_new(NULL);
-    gtk_object_ref(GTK_OBJECT(plot->pc));
-    gtk_object_sink(GTK_OBJECT(plot->pc));
+    g_object_ref(GTK_OBJECT(plot->pc));
+    g_object_ref_sink(GTK_OBJECT(plot->pc));
+    g_object_unref(GTK_OBJECT(plot->pc));
   } else {
     plot->pc = pc;
-    gtk_object_ref(GTK_OBJECT(plot->pc));
-    gtk_object_sink(GTK_OBJECT(plot->pc));
+    g_object_ref(GTK_OBJECT(plot->pc));
+    g_object_ref_sink(GTK_OBJECT(plot->pc));
+    g_object_unref(GTK_OBJECT(plot->pc));
   }
 }
 
@@ -2423,13 +2428,13 @@ gtk_plot_destroy (GtkObject *object)
   plot = GTK_PLOT (object);
 
   if (plot->top)
-    gtk_object_unref(GTK_OBJECT(plot->top));
+    g_object_unref(GTK_OBJECT(plot->top));
   if (plot->bottom)
-    gtk_object_unref(GTK_OBJECT(plot->bottom));
+    g_object_unref(GTK_OBJECT(plot->bottom));
   if (plot->left)
-    gtk_object_unref(GTK_OBJECT(plot->left));
+    g_object_unref(GTK_OBJECT(plot->left));
   if (plot->right)
-    gtk_object_unref(GTK_OBJECT(plot->right));
+    g_object_unref(GTK_OBJECT(plot->right));
   plot->top = plot->bottom = plot->left = plot->right = NULL;
 
   if(plot->legends_attr.font) g_free (plot->legends_attr.font);
@@ -2454,7 +2459,7 @@ gtk_plot_destroy (GtkObject *object)
 
   list = plot->data_sets;
   while(list){
-    gtk_widget_unref(GTK_WIDGET(list->data));
+    g_object_unref(GTK_WIDGET(list->data));
 
     plot->data_sets = g_list_remove_link(plot->data_sets, list);
     g_list_free_1(list);
@@ -2466,7 +2471,7 @@ gtk_plot_destroy (GtkObject *object)
     (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 
   if(plot->pc)
-    gtk_object_unref(GTK_OBJECT(plot->pc));
+    g_object_unref(GTK_OBJECT(plot->pc));
   plot->pc = NULL;
 
   gtk_psfont_unref();
@@ -2721,7 +2726,7 @@ gtk_plot_refresh (GtkPlot *plot, GdkRectangle *drawing_area)
   GdkRectangle area;
 
   widget = GTK_WIDGET(plot);
-  if(!GTK_WIDGET_VISIBLE(widget)) return;
+  if(!gtk_widget_get_visible(widget)) return;
 
   if(!plot->drawable) return;
   pixmap = plot->drawable;
@@ -2772,7 +2777,7 @@ gtk_plot_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
   plot->internal_allocation.width = roundint(plot->width * GTK_WIDGET(plot)->allocation.width);
   plot->internal_allocation.height = roundint(plot->height * GTK_WIDGET(plot)->allocation.height);
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], FALSE);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], 0, FALSE);
 }
 
 /**
@@ -2788,7 +2793,7 @@ gtk_plot_axis_new (GtkPlotOrientation orientation)
 {
   GtkObject *axis;
 
-  axis = gtk_type_new (gtk_plot_axis_get_type ());
+  axis = g_object_new (gtk_plot_axis_get_type (), NULL);
 
   gtk_plot_axis_construct(GTK_PLOT_AXIS(axis), orientation);
 
@@ -2858,9 +2863,9 @@ gtk_plot_axis_construct(GtkPlotAxis *axis, GtkPlotOrientation orientation)
 GtkWidget*
 gtk_plot_new (GdkDrawable *drawable)
 {
-  GtkPlot *plot;
+  GtkWidget *plot;
 
-  plot = gtk_type_new (gtk_plot_get_type ());
+  plot = gtk_widget_new (gtk_plot_get_type (), NULL);
 
   gtk_plot_construct(GTK_PLOT(plot), drawable);
 
@@ -2919,7 +2924,7 @@ gtk_plot_new_with_size (GdkDrawable *drawable, gdouble width, gdouble height)
 {
   GtkWidget *plot; 
 
-  plot = gtk_type_new (gtk_plot_get_type ());
+  plot = gtk_widget_new (gtk_plot_get_type (), NULL);
 
   gtk_plot_construct_with_size(GTK_PLOT(plot), drawable, width, height);
 
@@ -3493,7 +3498,7 @@ gtk_plot_draw_legends (GtkWidget *widget)
      {
        dataset = GTK_PLOT_DATA(datasets->data);
   
-       if(GTK_WIDGET_VISIBLE(GTK_WIDGET(dataset)) && dataset->show_legend)
+       if(gtk_widget_get_visible(GTK_WIDGET(dataset)) && dataset->show_legend)
          {
            GTK_PLOT_DATA_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(dataset)))->get_legend_size(dataset, &lwidth, &lheight);
            GTK_PLOT_DATA_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(dataset)))->draw_legend(dataset, x, y); 
@@ -3539,7 +3544,7 @@ gtk_plot_draw_legends (GtkWidget *widget)
    {
      dataset = GTK_PLOT_DATA(datasets->data);
 
-     if(GTK_WIDGET_VISIBLE(GTK_WIDGET(dataset)) && dataset->show_gradient)
+     if(gtk_widget_get_visible(GTK_WIDGET(dataset)) && dataset->show_gradient)
        {
          GTK_PLOT_DATA_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(dataset)))->draw_gradient(dataset); 
        }
@@ -3857,7 +3862,7 @@ gtk_plot_paint_text(GtkPlot *plot,
 			 text.justification,
 			 text.text);
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED],0);
 }
 
 /**
@@ -4323,7 +4328,7 @@ gtk_plot_set_background(GtkPlot *plot, const GdkColor *bg_color)
 
   gtk_plot_paint(plot);
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED],0);
 }
 
 /**
@@ -4360,7 +4365,7 @@ gtk_plot_move (GtkPlot *plot, gdouble x, gdouble y)
   plot->internal_allocation.width = roundint(plot->width * GTK_WIDGET(plot)->allocation.width);
   plot->internal_allocation.height = roundint(plot->height * GTK_WIDGET(plot)->allocation.height);
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -4396,8 +4401,8 @@ gtk_plot_resize (GtkPlot *plot, gdouble width, gdouble height)
   plot->internal_allocation.width = roundint(plot->width * GTK_WIDGET(plot)->allocation.width);
   plot->internal_allocation.height = roundint(plot->height * GTK_WIDGET(plot)->allocation.height);
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], FALSE);
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], 0, FALSE);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -4420,8 +4425,8 @@ gtk_plot_set_magnification (GtkPlot *plot, gdouble magnification)
   plot->internal_allocation.width = roundint(plot->width * GTK_WIDGET(plot)->allocation.width);
   plot->internal_allocation.height = roundint(plot->height * GTK_WIDGET(plot)->allocation.height);
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], FALSE);
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], 0, FALSE);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
  
 /**
@@ -4442,7 +4447,7 @@ gtk_plot_move_resize (GtkPlot *plot,
   gtk_plot_move(plot, x, y);
   gtk_plot_resize(plot, width, height);
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -4561,8 +4566,8 @@ gtk_plot_set_xrange (GtkPlot *plot,
   plot->top->ticks.min = xmin;
   plot->top->ticks.max = xmax;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], TRUE);
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], 0, TRUE);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -4587,8 +4592,8 @@ gtk_plot_set_yrange (GtkPlot *plot,
   plot->right->ticks.min = ymin;
   plot->right->ticks.max = ymax;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], TRUE);
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], 0, TRUE);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 
@@ -4627,8 +4632,8 @@ gtk_plot_set_range (GtkPlot *plot,
   gtk_plot_axis_ticks_recalc(plot->top);
   gtk_plot_axis_ticks_recalc(plot->left);
   gtk_plot_axis_ticks_recalc(plot->right);
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], TRUE);
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], 0, TRUE);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -4765,8 +4770,8 @@ gtk_plot_autoscale(GtkPlot *plot)
   plot->ymin = plot->left->ticks.min;
   plot->ymax = plot->left->ticks.max;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], TRUE);
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], 0, TRUE);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -4815,8 +4820,8 @@ gtk_plot_set_xscale (GtkPlot *plot, GtkPlotScale scale_type)
   plot->bottom->ticks.scale = scale_type;
   plot->top->ticks.scale = scale_type;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], FALSE);
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], 0, FALSE);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -4833,8 +4838,8 @@ gtk_plot_set_yscale (GtkPlot *plot, GtkPlotScale scale_type)
   plot->left->ticks.scale = scale_type;
   plot->right->ticks.scale = scale_type;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], FALSE);
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], 0, FALSE);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -4988,7 +4993,7 @@ gtk_plot_put_text (GtkPlot *plot, gdouble x, gdouble y,
   plot->text = g_list_append(plot->text, text_attr);
   gtk_plot_draw_text(plot, *text_attr);
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
   return text_attr;
 }
 
@@ -5297,7 +5302,7 @@ gtk_plot_axis_set_visible (GtkPlotAxis *axis, gboolean visible)
 
   aux->is_visible = visible;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5334,7 +5339,7 @@ gtk_plot_axis_set_title (GtkPlotAxis *axis, const gchar *title)
 
   aux->title.text = g_strdup(title);
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5350,7 +5355,7 @@ gtk_plot_axis_show_title (GtkPlotAxis *axis)
 
   aux->title_visible = TRUE;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5366,7 +5371,7 @@ gtk_plot_axis_hide_title (GtkPlotAxis *axis)
 
   aux->title_visible = FALSE;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5387,7 +5392,7 @@ gtk_plot_axis_move_title (GtkPlotAxis *axis, gint angle, gdouble x, gdouble y)
   aux->title.x = x;
   aux->title.y = y;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5404,7 +5409,7 @@ gtk_plot_axis_justify_title (GtkPlotAxis *axis, GtkJustification justification)
 
   aux->title.justification = justification;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5425,7 +5430,7 @@ gtk_plot_axis_set_attributes (GtkPlotAxis *axis,
 
   aux->line.color = *color;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5462,7 +5467,7 @@ gtk_plot_axis_set_ticks (GtkPlotAxis *axis,
   axis->ticks.step = major_step;
   axis->ticks.nminor = nminor;
   gtk_plot_axis_ticks_recalc(axis);
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5478,7 +5483,7 @@ gtk_plot_axis_set_major_ticks (GtkPlotAxis *axis,
 {
   axis->ticks.step = major_step;
   gtk_plot_axis_ticks_recalc(axis);
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5494,7 +5499,7 @@ gtk_plot_axis_set_minor_ticks (GtkPlotAxis *axis,
 {
   axis->ticks.nminor = nminor;
   gtk_plot_axis_ticks_recalc(axis);
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5509,7 +5514,7 @@ gtk_plot_axis_set_ticks_length (GtkPlotAxis *axis, gint length)
 {
   GtkPlotAxis *aux = axis;
   aux->ticks_length = length;
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5525,7 +5530,7 @@ gtk_plot_axis_set_ticks_width (GtkPlotAxis *axis, gfloat width)
   GtkPlotAxis *aux = axis;
 
   aux->ticks_width = width;
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5546,7 +5551,7 @@ gtk_plot_axis_show_ticks (GtkPlotAxis *axis,
   aux->major_mask = major_mask;
   aux->minor_mask = minor_mask;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5568,7 +5573,7 @@ gtk_plot_axis_set_ticks_limits (GtkPlotAxis *axis,
   axis->ticks.set_limits = TRUE;
   gtk_plot_axis_ticks_recalc(axis);
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5583,7 +5588,7 @@ gtk_plot_axis_unset_ticks_limits (GtkPlotAxis *axis)
   axis->ticks.set_limits = FALSE;
   gtk_plot_axis_ticks_recalc(axis);
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5635,7 +5640,7 @@ gtk_plot_axis_set_break         (GtkPlotAxis *axis,
   axis->ticks.break_scale = scale_after;
      
   gtk_plot_axis_ticks_recalc(axis);
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5648,7 +5653,7 @@ void
 gtk_plot_axis_remove_break      (GtkPlotAxis *axis)
 {
   axis->ticks.apply_break = FALSE;
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5665,7 +5670,7 @@ gtk_plot_axis_show_labels (GtkPlotAxis *axis, gint labels_mask)
 
   aux->label_mask = labels_mask;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 
@@ -5715,7 +5720,7 @@ gtk_plot_axis_title_set_attributes (GtkPlotAxis *axis,
   aux->title.transparent = transparent;
   aux->title.justification = justification;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5732,7 +5737,7 @@ gtk_plot_axis_set_labels_offset	    (GtkPlotAxis *axis,
   GtkPlotAxis *aux = axis;
 
   aux->labels_offset = offset;
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5798,7 +5803,7 @@ gtk_plot_axis_set_labels_attributes (GtkPlotAxis *axis,
   aux->labels_attr.transparent = transparent;
   aux->labels_attr.justification = justification;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5819,7 +5824,7 @@ gtk_plot_axis_set_labels_style   (GtkPlotAxis *axis,
   aux->label_style = style;
   aux->label_precision = precision;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5835,7 +5840,7 @@ gtk_plot_axis_use_custom_tick_labels (GtkPlotAxis *axis,
 {
   axis->custom_labels = use;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5856,7 +5861,7 @@ gtk_plot_axis_set_labels_prefix (GtkPlotAxis *axis,
   else 
     axis->labels_prefix = NULL;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5877,7 +5882,7 @@ gtk_plot_axis_set_labels_suffix (GtkPlotAxis *axis,
   else 
     axis->labels_suffix = NULL;
 
-  gtk_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED]);
+  g_signal_emit (GTK_OBJECT(axis), axis_signals[AXIS_CHANGED], 0);
 }
 
 /**
@@ -5929,7 +5934,7 @@ gtk_plot_x0_set_visible(GtkPlot *plot, gboolean visible)
 {
   plot->show_x0 = visible;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -5958,7 +5963,7 @@ gtk_plot_y0_set_visible(GtkPlot *plot, gboolean visible)
 {
   plot->show_y0 = visible;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6022,7 +6027,7 @@ gtk_plot_grids_set_visible(GtkPlot *plot,
   plot->left->show_major_grid = hmajor;
   plot->left->show_minor_grid = hminor;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6065,7 +6070,7 @@ gtk_plot_x0line_set_attributes(GtkPlot *plot,
   plot->x0_line.line_width = width;
   if(color) plot->x0_line.color = *color;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6087,7 +6092,7 @@ gtk_plot_y0line_set_attributes(GtkPlot *plot,
   plot->y0_line.line_width = width;
   if(color) plot->y0_line.color = *color;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6109,7 +6114,7 @@ gtk_plot_major_vgrid_set_attributes(GtkPlot *plot,
   plot->bottom->major_grid.line_width = width;
   if(color) plot->bottom->major_grid.color = *color;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6131,7 +6136,7 @@ gtk_plot_minor_vgrid_set_attributes(GtkPlot *plot,
   plot->bottom->minor_grid.line_width = width;
   if(color) plot->bottom->minor_grid.color = *color;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6153,7 +6158,7 @@ gtk_plot_major_hgrid_set_attributes(GtkPlot *plot,
   plot->left->major_grid.line_width = width;
   if(color) plot->left->major_grid.color = *color;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6175,7 +6180,7 @@ gtk_plot_minor_hgrid_set_attributes(GtkPlot *plot,
   plot->left->minor_grid.line_width = width;
   if(color) plot->left->minor_grid.color = *color;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /******************************************
@@ -6200,7 +6205,7 @@ gtk_plot_show_legends(GtkPlot *plot)
 {
   plot->show_legends = TRUE;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6214,7 +6219,7 @@ gtk_plot_hide_legends(GtkPlot *plot)
 {
   plot->show_legends = FALSE;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6233,7 +6238,7 @@ gtk_plot_set_legends_border(GtkPlot *plot,
   plot->legends_border = legends_border;
   plot->legends_shadow_width = shadow_width;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6250,7 +6255,7 @@ gtk_plot_legends_move(GtkPlot *plot, gdouble x, gdouble y)
   plot->legends_x = x;
   plot->legends_y = y;
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6303,7 +6308,7 @@ gtk_plot_legends_get_allocation(GtkPlot *plot)
 
      dataset = GTK_PLOT_DATA(datasets->data);
  
-     if(GTK_WIDGET_VISIBLE(GTK_WIDGET(dataset)) && dataset->show_legend)
+     if(gtk_widget_get_visible(GTK_WIDGET(dataset)) && dataset->show_legend)
        { 
          GTK_PLOT_DATA_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(dataset)))->get_legend_size(dataset, &lwidth, &lheight);
          width = MAX(width, lwidth); 
@@ -6357,7 +6362,7 @@ gtk_plot_legends_set_attributes(GtkPlot *plot, const gchar *font, gint height,
     plot->legends_attr.transparent = FALSE;
   }
 
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6375,13 +6380,14 @@ gtk_plot_add_data(GtkPlot *plot,
 
   _gtkextra_signal_emit (GTK_OBJECT(plot), plot_signals[ADD_DATA], dataset, &veto);
   plot->data_sets = g_list_append(plot->data_sets, dataset);
-  gtk_widget_ref(GTK_WIDGET(dataset));
-  gtk_object_sink(GTK_OBJECT(dataset));
+  g_object_ref(GTK_WIDGET(dataset));
+  g_object_ref_sink(GTK_OBJECT(dataset));
+  g_object_unref(GTK_OBJECT(dataset));
 
   dataset->plot = plot;
 
-  gtk_signal_emit_by_name (GTK_OBJECT(dataset), "add_to_plot", plot, &veto);
-  gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+  g_signal_emit_by_name (GTK_OBJECT(dataset), "add_to_plot", plot, &veto);
+  g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
 
 /**
@@ -6428,10 +6434,10 @@ gtk_plot_remove_data(GtkPlot *plot, GtkPlotData *dataset)
      data = datasets->data;
      
      if(GTK_PLOT_DATA(data) == dataset){
-          gtk_widget_unref(GTK_WIDGET(dataset));
+          g_object_unref(GTK_WIDGET(dataset));
           plot->data_sets = g_list_remove_link(plot->data_sets, datasets);
           g_list_free_1(datasets);
-          gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+          g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 	  return TRUE;
      }
      datasets = datasets->next;
@@ -6464,7 +6470,7 @@ gtk_plot_remove_text(GtkPlot *plot, GtkPlotText *text)
      if((GtkPlotText *)data == text){
               plot->text = g_list_remove_link(plot->text, list);
               g_list_free_1(list);
-              gtk_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED]);
+              g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 	      return TRUE;
      }
      list = list->next;
@@ -6712,7 +6718,7 @@ update_datasets(GtkPlot *plot, gboolean new_range)
 
   list = plot->data_sets;
   while(list) {
-    gtk_signal_emit_by_name(GTK_OBJECT(list->data), "update", new_range);
+    g_signal_emit_by_name(GTK_OBJECT(list->data), "update", new_range);
 
     list = list->next;
   }

@@ -28,10 +28,10 @@ extern "C" {
 #include "gtkplotpc.h"
 
 
-#define GTK_PLOT_POLAR(obj)        GTK_CHECK_CAST (obj, gtk_plot_polar_get_type (), GtkPlotPolar)
-#define GTK_TYPE_PLOT_POLAR        (gtk_plot_polar_get_type ())
-#define GTK_PLOT_POLAR_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_polar_get_type, GtkPlotPolarClass)
-#define GTK_IS_PLOT_POLAR(obj)     GTK_CHECK_TYPE (obj, gtk_plot_polar_get_type ())
+#define GTK_PLOT_POLAR(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_polar_get_type (), GtkPlotPolar)
+#define G_TYPE_PLOT_POLAR        (gtk_plot_polar_get_type ())
+#define GTK_PLOT_POLAR_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_polar_get_type, GtkPlotPolarClass)
+#define GTK_IS_PLOT_POLAR(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_polar_get_type ())
 #define GTK_PLOT_POLAR_FLAGS(plot)         (GTK_PLOT_POLAR(plot)->flags)
 #define GTK_PLOT_POLAR_SET_FLAGS(plot,flag) (GTK_PLOT_POLAR_FLAGS(plot) |= (flag))
 #define GTK_PLOT_POLAR_UNSET_FLAGS(plot,flag) (GTK_PLOT_POLAR_FLAGS(plot) &= ~(flag))
@@ -64,7 +64,7 @@ struct _GtkPlotPolarClass
 
 /* PlotPolar */
 
-GtkType		gtk_plot_polar_get_type		(void);
+GType		gtk_plot_polar_get_type		(void);
 GtkWidget*	gtk_plot_polar_new		(GdkDrawable *drawable);
 GtkWidget*	gtk_plot_polar_new_with_size	(GdkDrawable *drawable,
                                                  gdouble width, gdouble height);

@@ -65,7 +65,7 @@ _gtkextra_signal_test(GtkObject *object, guint signal_id, gint arg1, gint arg2, 
   g_value_init(instance_and_param + 2, G_TYPE_INT);
   g_value_set_int(instance_and_param + 2, arg2);
 
-  g_value_init(&ret, G_TYPE_BOOLEAN);
+  g_value_init(&ret, G_TYPE_BOOLEANEAN);
   g_value_set_boolean(&ret, *default_ret);
 
   g_signal_emitv(instance_and_param, signal_id, 0, &ret);
@@ -90,7 +90,7 @@ _gtkextra_signal_emit(GtkObject *object, guint signal_id, ...)
 
   va_start (var_args, signal_id);
 
-  g_value_init(instance_and_params + 0, GTK_OBJECT_TYPE(object));
+  g_value_init(instance_and_params + 0, G_OBJECT_TYPE(object));
   g_value_set_instance (instance_and_params + 0, G_OBJECT(object));
 
   g_signal_query(signal_id, &query);

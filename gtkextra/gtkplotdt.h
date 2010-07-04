@@ -25,11 +25,11 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#define GTK_PLOT_DT(obj)        GTK_CHECK_CAST (obj, gtk_plot_dt_get_type (), GtkPlotDT)
-#define GTK_TYPE_PLOT_DT   (gtk_plot_dt_get_type ())
+#define GTK_PLOT_DT(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_dt_get_type (), GtkPlotDT)
+#define G_TYPE_PLOT_DT   (gtk_plot_dt_get_type ())
 
-#define GTK_PLOT_DT_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_dt_get_type(), GtkPlotDTClass)
-#define GTK_IS_PLOT_DT(obj)     GTK_CHECK_TYPE (obj, gtk_plot_dt_get_type ())
+#define GTK_PLOT_DT_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_dt_get_type(), GtkPlotDTClass)
+#define GTK_IS_PLOT_DT(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_dt_get_type ())
 
 
 typedef struct _GtkPlotDTnode GtkPlotDTnode;
@@ -118,7 +118,7 @@ struct _GtkPlotDTClass
   void		(* clear)			(GtkPlotDT *data);
 };
 
-GtkType         gtk_plot_dt_get_type               	(void);
+GType   	gtk_plot_dt_get_type               	(void);
 GtkObject*	gtk_plot_dt_new 			(gint num);
 void		gtk_plot_dt_set_quadrilateral		(GtkPlotDT *dt, 
 							 gboolean set);

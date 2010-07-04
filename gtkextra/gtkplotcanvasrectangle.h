@@ -20,10 +20,10 @@
 #ifndef __GTK_PLOT_CANVAS_RECTANGLE_H__
 #define __GTK_PLOT_CANVAS_RECTANGLE_H__
 
-#define GTK_PLOT_CANVAS_RECTANGLE(obj)        GTK_CHECK_CAST (obj, gtk_plot_canvas_rectangle_get_type (), GtkPlotCanvasRectangle)
-#define GTK_PLOT_CANVAS_RECTANGLE_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_canvas_rectangle_get_type(), GtkPlotCanvasRectangleClass)
-#define GTK_IS_PLOT_CANVAS_RECTANGLE(obj)     GTK_CHECK_TYPE (obj, gtk_plot_canvas_rectangle_get_type ())
-#define GTK_TYPE_PLOT_CANVAS_RECTANGLE (gtk_plot_canvas_rectangle_get_type ())
+#define GTK_PLOT_CANVAS_RECTANGLE(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_canvas_rectangle_get_type (), GtkPlotCanvasRectangle)
+#define GTK_PLOT_CANVAS_RECTANGLE_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_canvas_rectangle_get_type(), GtkPlotCanvasRectangleClass)
+#define GTK_IS_PLOT_CANVAS_RECTANGLE(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_canvas_rectangle_get_type ())
+#define G_TYPE_PLOT_CANVAS_RECTANGLE (gtk_plot_canvas_rectangle_get_type ())
 
 
 #include <gdk/gdk.h>
@@ -60,7 +60,7 @@ struct _GtkPlotCanvasRectangleClass
   GtkPlotCanvasChildClass parent_class;
 };
 
-GtkType 	gtk_plot_canvas_rectangle_get_type	(void);
+GType 		gtk_plot_canvas_rectangle_get_type	(void);
 GtkPlotCanvasChild * 
 		gtk_plot_canvas_rectangle_new	(GtkPlotLineStyle style,
                               			 gfloat width,

@@ -200,14 +200,14 @@ activate_plot(GtkWidget *widget, gpointer data)
 
   while(n < nlayers)
     {
-      gtk_signal_handler_block_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
+      g_signal_handlers_block_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
       if(widget_list[n] == active_widget){
             active_plot = plots[n];  
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[n]), TRUE);
       }else{
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[n]), FALSE);
       }
-      gtk_signal_handler_unblock_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
+      g_signal_handlers_unblock_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
       
       n++;
     }
@@ -235,12 +235,12 @@ new_layer(GtkWidget *canvas)
 */
  gtk_widget_size_request(buttons[nlayers-1], &req);
  size = MAX(req.width,req.height);
- gtk_widget_set_usize(buttons[nlayers-1], size, size); 
+ gtk_widget_set_size_request(buttons[nlayers-1], size, size); 
  gtk_fixed_put(GTK_FIXED(canvas), buttons[nlayers-1], (nlayers-1)*size, 0);
  gtk_widget_show(buttons[nlayers-1]);
 
- gtk_signal_connect(GTK_OBJECT(buttons[nlayers-1]), "toggled",
-                    (GtkSignalFunc) activate_plot, canvas);
+ g_signal_connect(GTK_OBJECT(buttons[nlayers-1]), "toggled",
+                    (void *) activate_plot, canvas);
 
  plots[nlayers-1] = gtk_plot_new_with_size(NULL, .5, .25);
  gtk_widget_show(plots[nlayers-1]);
@@ -282,7 +282,7 @@ build_example1(GtkWidget *plot)
 
  gtk_plot_axis_use_custom_tick_labels(gtk_plot_get_axis(GTK_PLOT(plot), GTK_PLOT_AXIS_RIGHT), TRUE);
  axis = gtk_plot_get_axis(GTK_PLOT(plot), GTK_PLOT_AXIS_RIGHT);
- gtk_signal_connect(GTK_OBJECT(axis), "tick_label", 
+ g_signal_connect(GTK_OBJECT(axis), "tick_label", 
                     GTK_SIGNAL_FUNC(my_tick_label), NULL);
 
  dataset[0] = GTK_PLOT_DATA(gtk_plot_data_new());
@@ -410,10 +410,10 @@ int main(int argc, char *argv[]){
 
  window1=gtk_window_new(GTK_WINDOW_TOPLEVEL);
  gtk_window_set_title(GTK_WINDOW(window1), "GtkPlot Demo");
- gtk_widget_set_usize(window1,550,650);
+ gtk_widget_set_size_request(window1,550,650);
  gtk_container_border_width(GTK_CONTAINER(window1),0);
 
- gtk_signal_connect (GTK_OBJECT (window1), "destroy",
+ g_signal_connect (GTK_OBJECT (window1), "destroy",
 		     GTK_SIGNAL_FUNC (quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);
@@ -497,12 +497,12 @@ int main(int argc, char *argv[]){
 
  build_example2(active_plot);
 
- gtk_signal_connect(GTK_OBJECT(canvas), "select_item",
-                    (GtkSignalFunc) select_item, NULL);
+ g_signal_connect(GTK_OBJECT(canvas), "select_item",
+                    (void *) select_item, NULL);
 
 /*
- gtk_signal_connect(GTK_OBJECT(canvas), "move_item",
-                    (GtkSignalFunc) move_item, NULL);
+ g_signal_connect(GTK_OBJECT(canvas), "move_item",
+                    (void ) move_item, NULL);
 */
 
  child = gtk_plot_canvas_text_new("Times-BoldItalic", 16, 0, NULL, NULL, TRUE,
@@ -522,7 +522,7 @@ int main(int argc, char *argv[]){
  gtk_plot_text_set_border(&GTK_PLOT_CANVAS_TEXT(child)->text, 
                           GTK_PLOT_BORDER_SHADOW, 2, 0, 2);
 
- array = GTK_PLOT_ARRAY(gtk_plot_array_new(NULL, custom_labels, 12, GTK_TYPE_STRING, FALSE)); 
+ array = GTK_PLOT_ARRAY(gtk_plot_array_new(NULL, custom_labels, 12, G_TYPE_STRING, FALSE)); 
  gtk_plot_axis_set_tick_labels(gtk_plot_get_axis(GTK_PLOT(active_plot), GTK_PLOT_AXIS_BOTTOM), array); 
  gtk_plot_axis_use_custom_tick_labels(gtk_plot_get_axis(GTK_PLOT(active_plot), GTK_PLOT_AXIS_BOTTOM), TRUE);
 

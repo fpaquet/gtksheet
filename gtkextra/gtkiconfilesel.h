@@ -34,11 +34,11 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-#define GTK_TYPE_ICON_FILESEL                  (gtk_icon_file_selection_get_type ())
-#define GTK_ICON_FILESEL(obj)                  (GTK_CHECK_CAST ((obj), GTK_TYPE_ICON_FILESEL, GtkIconFileSel))
-#define GTK_ICON_FILESEL_CLASS(klass)          (GTK_CHECK_CLASS_CAST ((klass), GTK_TYPE_ICON_FILESEL, GtkIconFileSelClass))
-#define GTK_IS_ICON_FILESEL(obj)               (GTK_CHECK_TYPE ((obj), GTK_TYPE_ICON_FILESEL))
-#define GTK_IS_ICON_FILESEL_CLASS(klass)       (GTK_CHECK_CLASS_TYPE ((klass), GTK_TYPE_ICON_FILESEL))
+#define G_TYPE_ICON_FILESEL                  (gtk_icon_file_selection_get_type ())
+#define GTK_ICON_FILESEL(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_ICON_FILESEL, GtkIconFileSel))
+#define GTK_ICON_FILESEL_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_ICON_FILESEL, GtkIconFileSelClass))
+#define GTK_IS_ICON_FILESEL(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_ICON_FILESEL))
+#define GTK_IS_ICON_FILESEL_CLASS(klass)       (GTK_CHECK_CLASS_TYPE ((klass), G_TYPE_ICON_FILESEL))
 
 typedef struct _GtkIconFileSel       GtkIconFileSel;
 typedef struct _GtkIconFileSelClass  GtkIconFileSelClass;
@@ -83,7 +83,7 @@ struct _GtkIconFileSelClass
 };
 
 
-GtkType    gtk_icon_file_selection_get_type       (void);
+GType      gtk_icon_file_selection_get_type       (void);
 GtkWidget* gtk_icon_file_selection_new            (const gchar *title);
 void 	   gtk_icon_file_selection_construct      (GtkIconFileSel *filesel,
 						   const gchar *title);

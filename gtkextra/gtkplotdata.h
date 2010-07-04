@@ -26,14 +26,14 @@ extern "C" {
 
 #include "gtkplot.h"
 
-#define GTK_PLOT_DATA(obj)        GTK_CHECK_CAST (obj, gtk_plot_data_get_type (), GtkPlotData)
-#define GTK_TYPE_PLOT_DATA   (gtk_plot_data_get_type ())
-#define GTK_PLOT_DATA_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_plot_data_get_type(), GtkPlotDataClass)
-#define GTK_IS_PLOT_DATA(obj)     GTK_CHECK_TYPE (obj, gtk_plot_data_get_type ())
+#define GTK_PLOT_DATA(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_data_get_type (), GtkPlotData)
+#define G_TYPE_PLOT_DATA   (gtk_plot_data_get_type ())
+#define GTK_PLOT_DATA_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_data_get_type(), GtkPlotDataClass)
+#define GTK_IS_PLOT_DATA(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_data_get_type ())
 
 
-GtkType		gtk_plot_data_get_type		(void);
-GtkType         gtk_plot_marker_get_type        (void);
+GType		gtk_plot_data_get_type		(void);
+GType   	gtk_plot_marker_get_type        (void);
 
 GtkWidget*	gtk_plot_data_new		(void);
 GtkWidget* 	gtk_plot_data_new_function 	(GtkPlotFunc function);
@@ -53,7 +53,7 @@ void		gtk_plot_data_add_dimension	(GtkPlotData *data,
 						 const gchar *name,
 						 const gchar *label,
 						 const gchar *desc,
-						 GtkType value_type,
+						 GType value_type,
 						 gboolean required,
 						 gboolean independent);
 void		gtk_plot_data_remove_dimension	(GtkPlotData *data,

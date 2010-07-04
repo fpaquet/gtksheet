@@ -83,8 +83,9 @@ gtk_plot_array_get_type (void)
         NULL,
       };
                                                                                 
-      array_type = g_type_register_static (G_TYPE_OBJECT, "GtkPlotArray",
-                                               &array_info, 0);
+      array_type = g_type_register_static (G_TYPE_OBJECT,
+				"GtkPlotArray",
+                                 &array_info, 0);
     }
                                                                                 
   return array_type;
@@ -278,7 +279,7 @@ gtk_plot_array_init (GtkPlotArray *array)
   array->name = NULL;
   array->label = NULL;
   array->description = NULL;
-  array->type = GTK_TYPE_DOUBLE;
+  array->type = G_TYPE_DOUBLE;
   array->own_data = FALSE;
   array->required = FALSE;
   array->independent = FALSE;
@@ -287,7 +288,7 @@ gtk_plot_array_init (GtkPlotArray *array)
 }
 
 GObject*
-gtk_plot_array_new (const gchar *name, gpointer data, gint size, GtkType type, gboolean own_data)
+gtk_plot_array_new (const gchar *name, gpointer data, gint size, GType type, gboolean own_data)
 {
   GObject *object;
 
@@ -352,25 +353,25 @@ gtk_plot_array_set_required(GtkPlotArray *array, gboolean required)
 }
 
 void
-gtk_plot_array_set(GtkPlotArray *array, gpointer data, gint size, GtkType type)
+gtk_plot_array_set(GtkPlotArray *array, gpointer data, gint size, GType type)
 {
   if(array->own_data) gtk_plot_array_free(array);
   array->type = type;
   array->size = size;
   switch(type){
-    case GTK_TYPE_DOUBLE:
+    case G_TYPE_DOUBLE:
       array->data.data_double = (gdouble *)data;
       break;
-    case GTK_TYPE_FLOAT:
+    case G_TYPE_FLOAT:
       array->data.data_float = (gfloat *)data;
       break;
-    case GTK_TYPE_INT:
+    case G_TYPE_INT:
       array->data.data_int = (gint *)data;
       break;
-    case GTK_TYPE_BOOL:
+    case G_TYPE_BOOLEAN:
       array->data.data_bool = (gboolean *)data;
       break;
-    case GTK_TYPE_STRING:
+    case G_TYPE_STRING:
       array->data.data_string = (gchar **)data;
       break;
     default:
@@ -384,23 +385,23 @@ gtk_plot_array_free(GtkPlotArray *array)
   gint i = 0;
 
   switch(array->type){
-    case GTK_TYPE_DOUBLE:
+    case G_TYPE_DOUBLE:
       g_free(array->data.data_double);
       array->data.data_double = NULL;
       break;
-    case GTK_TYPE_FLOAT:
+    case G_TYPE_FLOAT:
       g_free(array->data.data_float);
       array->data.data_float = NULL;
       break;
-    case GTK_TYPE_INT:
+    case G_TYPE_INT:
       g_free(array->data.data_int);
       array->data.data_int = NULL;
       break;
-    case GTK_TYPE_BOOL:
+    case G_TYPE_BOOLEAN:
       g_free(array->data.data_bool);
       array->data.data_bool = NULL;
       break;
-    case GTK_TYPE_STRING:
+    case G_TYPE_STRING:
       for(i = 0; i < array->size; i++)
         if(array->data.data_string && array->data.data_string[i]) 
           g_free(array->data.data_string[i]);
@@ -436,7 +437,7 @@ gtk_plot_array_independent(GtkPlotArray *array)
   return array->independent;
 }
 
-GtkType
+GType
 gtk_plot_array_get_data_type(GtkPlotArray *array)
 {
   return array->type;
@@ -463,42 +464,42 @@ gtk_plot_array_get_description(GtkPlotArray *array)
 gboolean *
 gtk_plot_array_get_bool(GtkPlotArray *array)
 {
-  if(array->type != GTK_TYPE_BOOL) return NULL;
+  if(array->type != G_TYPE_BOOLEAN) return NULL;
   return array->data.data_bool;
 }
 
 gdouble *
 gtk_plot_array_get_double(GtkPlotArray *array)
 {
-  if(array->type != GTK_TYPE_DOUBLE) return NULL;
+  if(array->type != G_TYPE_DOUBLE) return NULL;
   return array->data.data_double;
 }
 
 gfloat *
 gtk_plot_array_get_float(GtkPlotArray *array)
 {
-  if(array->type != GTK_TYPE_FLOAT) return NULL;
+  if(array->type != G_TYPE_FLOAT) return NULL;
   return array->data.data_float;
 }
 
 gint *
 gtk_plot_array_get_int(GtkPlotArray *array)
 {
-  if(array->type != GTK_TYPE_INT) return NULL;
+  if(array->type != G_TYPE_INT) return NULL;
   return array->data.data_int;
 }
 
 gchar **
 gtk_plot_array_get_string(GtkPlotArray *array)
 {
-  if(array->type != GTK_TYPE_STRING) return NULL;
+  if(array->type != G_TYPE_STRING) return NULL;
   return array->data.data_string;
 }
 
 gpointer *
 gtk_plot_array_get_pointer(GtkPlotArray *array)
 {
-  if(array->type != GTK_TYPE_POINTER) return NULL;
+  if(array->type != G_TYPE_POINTER) return NULL;
   return array->data.data_pointer;
 }
 
@@ -523,8 +524,9 @@ gtk_plot_array_list_get_type (void)
         NULL
       };
                                                                                 
-      array_list_type = g_type_register_static (G_TYPE_OBJECT, "GtkPlotArrayList",
-                                               &data_info, 0);
+      array_list_type = g_type_register_static (G_TYPE_OBJECT, 
+					"GtkPlotArrayList",
+                                         &data_info, 0);
     }
   return array_list_type;
 }

@@ -263,50 +263,40 @@ enum {
 static GtkWidgetClass *parent_class = NULL;
 static guint data_signals[LAST_SIGNAL] = { 0 };
 
-GtkType
+GType
 gtk_plot_marker_get_type (void)
 {
-  static GtkType marker_type = 0;
+  static GType marker_type = 0;
 
   if (!marker_type)
     {
-      GtkTypeInfo data_info =
-      {
-        "GtkPlotMarker",
-        0,
-        0,
-        (GtkClassInitFunc) NULL,
-        (GtkObjectInitFunc) NULL,
-        /* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      marker_type = gtk_type_unique (GTK_TYPE_BOXED, &data_info);
+      marker_type = g_type_register_static_simple (
+		G_TYPE_BOXED,
+		"GtkPlotMarker",
+		0,
+		(GClassInitFunc) NULL,
+		0,
+		(GInstanceInitFunc) NULL,
+		0);
     }
   return marker_type;
 }
 
-GtkType
+GType
 gtk_plot_data_get_type (void)
 {
-  static GtkType data_type = 0;
+  static GType data_type = 0;
 
   if (!data_type)
     {
-      GtkTypeInfo data_info =
-      {
-	"GtkPlotData",
-	sizeof (GtkPlotData),
-	sizeof (GtkPlotDataClass),
-	(GtkClassInitFunc) gtk_plot_data_class_init,
-	(GtkObjectInitFunc) gtk_plot_data_init,
-	/* reserved 1*/ NULL,
-        /* reserved 2 */ NULL,
-        (GtkClassInitFunc) NULL,
-      };
-
-      data_type = gtk_type_unique (GTK_TYPE_WIDGET, &data_info);
+      data_type = g_type_register_static_simple (
+		gtk_widget_get_type (),
+		"GtkPlotData",
+		sizeof (GtkPlotDataClass),
+		(GClassInitFunc) gtk_plot_data_class_init,
+		sizeof (GtkPlotData),
+		(GInstanceInitFunc) gtk_plot_data_init,
+		0);
     }
   return data_type;
 }
@@ -319,7 +309,7 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
   GtkPlotDataClass *data_class;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-  parent_class = gtk_type_class (gtk_widget_get_type ());
+  parent_class = g_type_class_ref (gtk_widget_get_type ());
 
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
@@ -1407,7 +1397,7 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
   g_param_spec_object ("bottom_axis",
                            P_(""),
                            P_(""),
-                           GTK_TYPE_PLOT_AXIS,
+                           G_TYPE_PLOT_AXIS,
                            G_PARAM_READABLE));
 
   data_class->clone = gtk_plot_data_real_clone;
@@ -1432,12 +1422,13 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
    * Return value: 
    */
   data_signals[ADD_TO_PLOT] =
-    gtk_signal_new ("add_to_plot",
-                    GTK_RUN_LAST,
-                    GTK_CLASS_TYPE(object_class),
-                    GTK_SIGNAL_OFFSET (GtkPlotDataClass, add_to_plot),
+    g_signal_new ("add_to_plot",
+                    G_TYPE_FROM_CLASS(object_class),
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GtkPlotDataClass, add_to_plot),
+		    NULL, NULL,
                     gtkextra_BOOL__POINTER,
-                    GTK_TYPE_BOOL, 1, GTK_TYPE_PLOT);
+                    G_TYPE_BOOLEAN, 1, G_TYPE_PLOT);
 
   /**
    * GtkPlotData::update:
@@ -1447,12 +1438,13 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
    *
    */
   data_signals[UPDATE] =
-    gtk_signal_new ("update",
-                    GTK_RUN_LAST,
-                    GTK_CLASS_TYPE(object_class),
-                    GTK_SIGNAL_OFFSET (GtkPlotDataClass, update),
+    g_signal_new ("update",
+                    G_TYPE_FROM_CLASS(object_class),
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GtkPlotDataClass, update),
+		    NULL, NULL,
                     gtkextra_VOID__BOOL,
-                    GTK_TYPE_NONE, 1, GTK_TYPE_BOOL);
+                    G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
 
   /**
    * GtkPlotData::draw_data:
@@ -1461,12 +1453,13 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
    *
    */
   data_signals[DRAW_DATA] =
-    gtk_signal_new ("draw_data",
-                    GTK_RUN_FIRST,
-                    GTK_CLASS_TYPE(object_class),
-                    GTK_SIGNAL_OFFSET (GtkPlotDataClass, draw_data),
+    g_signal_new ("draw_data",
+                    G_TYPE_FROM_CLASS(object_class),
+                    G_SIGNAL_RUN_FIRST,
+                    G_STRUCT_OFFSET (GtkPlotDataClass, draw_data),
+		    NULL, NULL,
                     gtkextra_VOID__VOID,
-                    GTK_TYPE_NONE, 0, GTK_TYPE_NONE);
+                    G_TYPE_NONE, 0, G_TYPE_NONE);
 
   /**
    * GtkPlotData::gradient_changed:
@@ -1475,12 +1468,13 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
    *
    */
   data_signals[GRADIENT_CHANGED] =
-    gtk_signal_new ("gradient_changed",
-                    GTK_RUN_LAST,
-                    GTK_CLASS_TYPE(object_class),
-                    GTK_SIGNAL_OFFSET (GtkPlotDataClass, gradient_changed),
+    g_signal_new ("gradient_changed",
+                    G_TYPE_FROM_CLASS(object_class),
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GtkPlotDataClass, gradient_changed),
+		    NULL, NULL,
                     gtkextra_VOID__VOID,
-                    GTK_TYPE_NONE, 0);
+                    G_TYPE_NONE, 0);
  
   /**
    * GtkPlotData::gradient_colors_changed:
@@ -1489,12 +1483,13 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
    *
    */
   data_signals[GRADIENT_COLORS_CHANGED] =
-    gtk_signal_new ("gradient_colors_changed",
-                    GTK_RUN_LAST,
-                    GTK_CLASS_TYPE(object_class),
-                    GTK_SIGNAL_OFFSET (GtkPlotDataClass, gradient_colors_changed),
+    g_signal_new ("gradient_colors_changed",
+                    G_TYPE_FROM_CLASS(object_class),
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GtkPlotDataClass, gradient_colors_changed),
+		    NULL, NULL,
                     gtkextra_VOID__VOID,
-                    GTK_TYPE_NONE, 0);
+                    G_TYPE_NONE, 0);
 
 }
 
@@ -1514,7 +1509,7 @@ gtk_plot_data_init (GtkPlotData *dataset)
   gdk_color_white(colormap, &white);
 
   dataset->gradient = GTK_PLOT_AXIS(gtk_plot_axis_new(GTK_PLOT_AXIS_Y));
-  gtk_object_ref(GTK_OBJECT(dataset->gradient));
+  g_object_ref(GTK_OBJECT(dataset->gradient));
   gtk_object_sink(GTK_OBJECT(dataset->gradient));
 
   dataset->color_lt_min = white;
@@ -1662,15 +1657,15 @@ gtk_plot_data_init (GtkPlotData *dataset)
   dataset->data = GTK_PLOT_ARRAY_LIST(gtk_plot_array_list_new());
   g_object_ref(G_OBJECT(dataset->data));
 
-  gtk_plot_data_add_dimension(dataset, "x", "X" , "X points", GTK_TYPE_DOUBLE, TRUE, TRUE);
-  gtk_plot_data_add_dimension(dataset, "y", "Y" , "Y points", GTK_TYPE_DOUBLE, TRUE, FALSE);
-  gtk_plot_data_add_dimension(dataset, "z", "Z" , "Z points", GTK_TYPE_DOUBLE, TRUE, FALSE);
-  gtk_plot_data_add_dimension(dataset, "a", "Size" , "Symbol size", GTK_TYPE_DOUBLE, FALSE, FALSE);
-  gtk_plot_data_add_dimension(dataset, "da", "Amp" , "Amplitude", GTK_TYPE_DOUBLE, FALSE, FALSE);
-  gtk_plot_data_add_dimension(dataset, "dx", "ErrX" , "Error in X", GTK_TYPE_DOUBLE, FALSE, FALSE);
-  gtk_plot_data_add_dimension(dataset, "dy", "ErrY" , "Error in Y", GTK_TYPE_DOUBLE, FALSE, FALSE);
-  gtk_plot_data_add_dimension(dataset, "dz", "ErrZ" , "Error in Z", GTK_TYPE_DOUBLE, FALSE, FALSE);
-  gtk_plot_data_add_dimension(dataset, "labels", "Labels" , "Data labels", GTK_TYPE_STRING, FALSE, FALSE);
+  gtk_plot_data_add_dimension(dataset, "x", "X" , "X points", G_TYPE_DOUBLE, TRUE, TRUE);
+  gtk_plot_data_add_dimension(dataset, "y", "Y" , "Y points", G_TYPE_DOUBLE, TRUE, FALSE);
+  gtk_plot_data_add_dimension(dataset, "z", "Z" , "Z points", G_TYPE_DOUBLE, TRUE, FALSE);
+  gtk_plot_data_add_dimension(dataset, "a", "Size" , "Symbol size", G_TYPE_DOUBLE, FALSE, FALSE);
+  gtk_plot_data_add_dimension(dataset, "da", "Amp" , "Amplitude", G_TYPE_DOUBLE, FALSE, FALSE);
+  gtk_plot_data_add_dimension(dataset, "dx", "ErrX" , "Error in X", G_TYPE_DOUBLE, FALSE, FALSE);
+  gtk_plot_data_add_dimension(dataset, "dy", "ErrY" , "Error in Y", G_TYPE_DOUBLE, FALSE, FALSE);
+  gtk_plot_data_add_dimension(dataset, "dz", "ErrZ" , "Error in Z", G_TYPE_DOUBLE, FALSE, FALSE);
+  gtk_plot_data_add_dimension(dataset, "labels", "Labels" , "Data labels", G_TYPE_STRING, FALSE, FALSE);
 }
 
 static void
@@ -1692,7 +1687,7 @@ gtk_plot_data_destroy (GtkObject *object)
   if(data->name) g_free(data->name);
   data->name = NULL;
 
-  if(data->gradient) gtk_object_unref(GTK_OBJECT(data->gradient));
+  if(data->gradient) g_object_unref(GTK_OBJECT(data->gradient));
   data->gradient = NULL;
 
   if(data->gradient_colors){
@@ -2295,7 +2290,7 @@ gtk_plot_data_new (void)
 {
   GtkWidget *widget;
 
-  widget = gtk_type_new (gtk_plot_data_get_type ());
+  widget = gtk_widget_new (gtk_plot_data_get_type (), NULL);
 
   return (widget);
 }
@@ -2313,7 +2308,7 @@ gtk_plot_data_new_function (GtkPlotFunc function)
 {
   GtkWidget *dataset;
 
-  dataset = gtk_type_new (gtk_plot_data_get_type ());
+  dataset = gtk_widget_new (gtk_plot_data_get_type (), NULL);
 
   gtk_plot_data_construct_function (GTK_PLOT_DATA(dataset), function);
 
@@ -2349,7 +2344,7 @@ gtk_plot_data_new_iterator (GtkPlotIterator iterator, gint npoints, guint16 mask
 {
   GtkWidget *dataset;
 
-  dataset = gtk_type_new (gtk_plot_data_get_type ());
+  dataset = gtk_widget_new (gtk_plot_data_get_type (), NULL);
 
   gtk_plot_data_construct_iterator (GTK_PLOT_DATA(dataset), iterator, npoints, mask);
 
@@ -2416,8 +2411,8 @@ update_gradient(GtkPlotData *data)
 static void
 gtk_plot_data_draw (GtkWidget *widget, GdkRectangle *area)
 {
-  if(!GTK_WIDGET_VISIBLE(widget)) return;
-  gtk_signal_emit(GTK_OBJECT(widget), data_signals[DRAW_DATA], NULL);
+  if(!gtk_widget_get_visible(widget)) return;
+  g_signal_emit(GTK_OBJECT(widget), data_signals[DRAW_DATA], 0, NULL);
   GTK_PLOT_DATA_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(widget)))->draw_data(GTK_PLOT_DATA(widget));
 
   GTK_PLOT_DATA(widget)->redraw_pending = FALSE;
@@ -2476,7 +2471,7 @@ draw_marker(GtkPlotData *data, GtkPlotMarker *marker)
 void
 gtk_plot_data_paint (GtkPlotData *data)
 {
-  gtk_signal_emit(GTK_OBJECT(data), data_signals[DRAW_DATA], NULL);
+  g_signal_emit(GTK_OBJECT(data), data_signals[DRAW_DATA], 0, NULL);
 
   data->redraw_pending = FALSE;
 }
@@ -2526,7 +2521,7 @@ gtk_plot_data_real_draw   (GtkPlotData *dataset,
   g_return_if_fail(GTK_IS_PLOT_DATA(dataset));
   g_return_if_fail(dataset->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(dataset->plot));
-  if(!GTK_WIDGET_VISIBLE(dataset)) return;
+  if(!gtk_widget_get_visible(GTK_WIDGET(dataset))) return;
 
   plot = dataset->plot;
   widget = GTK_WIDGET(plot);
@@ -2803,8 +2798,8 @@ gtk_plot_data_draw_legend(GtkPlotData *data, gint x, gint y)
 
   g_return_if_fail(data->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(data->plot));
-  if(!GTK_WIDGET_VISIBLE(data->plot)) return;
-  if(!GTK_WIDGET_VISIBLE(data)) return;
+  if(!gtk_widget_get_visible(GTK_WIDGET(data->plot))) return;
+  if(!gtk_widget_get_visible(GTK_WIDGET(data))) return;
 
   plot = data->plot;
   area.x = GTK_WIDGET(plot)->allocation.x;
@@ -2917,8 +2912,8 @@ draw_gradient_vertical(GtkPlotData *data, gdouble px, gdouble py)
 
   g_return_if_fail(data->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(data->plot));
-  if(!GTK_WIDGET_VISIBLE(data->plot)) return;
-  if(!GTK_WIDGET_VISIBLE(data)) return;
+  if(!gtk_widget_get_visible(GTK_WIDGET(data->plot))) return;
+  if(!gtk_widget_get_visible(GTK_WIDGET(data))) return;
 
   if(!data->show_gradient) return;
 
@@ -3258,8 +3253,8 @@ draw_gradient_horizontal(GtkPlotData *data, gdouble px, gdouble py)
 
   g_return_if_fail(data->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(data->plot));
-  if(!GTK_WIDGET_VISIBLE(data->plot)) return;
-  if(!GTK_WIDGET_VISIBLE(data)) return;
+  if(!gtk_widget_get_visible(GTK_WIDGET(data->plot))) return;
+  if(!gtk_widget_get_visible(GTK_WIDGET(data))) return;
 
   if(!data->show_gradient) return;
 
@@ -3633,7 +3628,7 @@ gtk_plot_data_move_gradient(GtkPlotData *data, gdouble x, gdouble y)
 {
   data->gradient_x = x;
   data->gradient_y = y;
-  gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_CHANGED]);
+  g_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_CHANGED], 0);
 }
 
 /**
@@ -4764,7 +4759,7 @@ gtk_plot_data_add_dimension(GtkPlotData *data,
                             const gchar *name,
                             const gchar *label,
                             const gchar *desc,
-                            GtkType value_type,
+                            GType value_type,
 			    gboolean required,
 			    gboolean independent)
 {
@@ -4845,7 +4840,7 @@ gtk_plot_data_dimension_set_points(GtkPlotData *data,
 {
   GtkPlotArray *dim;
   dim = gtk_plot_data_find_dimension(data, name);
-  if(dim && dim->type == GTK_TYPE_DOUBLE){
+  if(dim && dim->type == G_TYPE_DOUBLE){
     dim->data.data_double = points;
     dim->own_data = FALSE;
   }
@@ -6002,7 +5997,7 @@ void
 gtk_plot_data_set_gradient_show_lt_gt (GtkPlotData *data, gboolean show)
 {
   data->gradient_show_lt_gt = show;
-  gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED]);
+  g_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED], 0);
 }
 
 /**
@@ -6030,7 +6025,7 @@ void
 gtk_plot_data_set_gradient_mask (GtkPlotData *data, gint mask)
 {
   data->gradient_mask = mask;
-  gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED]);
+  g_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED], 0);
 }
 
 /**
@@ -6199,7 +6194,7 @@ gtk_plot_data_set_gradient_colors (GtkPlotData *data,
 {
   data->color_min= *min;
   data->color_max = *max;
-  gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED]);
+  g_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED], 0);
 }
 
 /**
@@ -6236,7 +6231,7 @@ gtk_plot_data_set_gradient_nth_color (GtkPlotData *data,
 
   if(level > data->gradient->ticks.nticks) return;
   data->gradient_colors[level] = *color;
-  gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED]);
+  g_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED], 0);
 }
 
 /**
@@ -6271,7 +6266,7 @@ gtk_plot_data_set_gradient_outer_colors (GtkPlotData *data,
 {
   data->color_lt_min = *min;
   data->color_gt_max = *max;
-  gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED]);
+  g_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED], 0);
 }
 
 /**
@@ -6645,7 +6640,7 @@ gtk_plot_data_reset_gradient(GtkPlotData *data)
   data->gradient->ticks.values[0].value = min;
   data->gradient->ticks.values[data->gradient->ticks.nticks-1].value = max;
 */
-  gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_CHANGED]);
+  g_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_CHANGED], 0);
   gtk_plot_data_reset_gradient_colors(data);
 }
 
@@ -6698,7 +6693,7 @@ gtk_plot_data_reset_gradient_colors(GtkPlotData *data)
   data->gradient->ticks.min = min;
   data->gradient_custom = custom;
   data->gradient->ticks.nminor = nminor;
-  gtk_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED]);
+  g_signal_emit(GTK_OBJECT(data), data_signals[GRADIENT_COLORS_CHANGED], 0);
 }
 
 /**

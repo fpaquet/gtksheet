@@ -35,6 +35,7 @@
  * It should only be accessed through the functions described below.
  */
 
+
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
@@ -78,7 +79,7 @@ gtk_toggle_combo_class_init (GtkToggleComboClass * klass)
   GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
 
-  parent_class = gtk_type_class (gtk_hbox_get_type ());
+  parent_class = g_type_class_ref (gtk_hbox_get_type ());
   object_class = (GtkObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
 
@@ -92,14 +93,14 @@ gtk_toggle_combo_class_init (GtkToggleComboClass * klass)
    *
    * Emmited when the @row,@col are selected in #GtkToggleCombo
    */ 
-  toggle_combo_signals[CHANGED]=gtk_signal_new("changed",
-                                      GTK_RUN_FIRST,
-                                      GTK_CLASS_TYPE(object_class),
-                                      GTK_SIGNAL_OFFSET(GtkToggleComboClass,
-                                      changed),
-                                      gtkextra_VOID__INT_INT,
-                                      GTK_TYPE_NONE,  
-                                      2, GTK_TYPE_INT, GTK_TYPE_INT);
+  toggle_combo_signals[CHANGED]=g_signal_new("changed",
+                                 G_TYPE_FROM_CLASS(object_class),
+                                 G_SIGNAL_RUN_FIRST,
+                                 G_STRUCT_OFFSET(GtkToggleComboClass, changed),
+				 NULL, NULL,
+                                 gtkextra_VOID__INT_INT,
+                                 G_TYPE_NONE,  
+                                 2, G_TYPE_INT, G_TYPE_INT);
 
   klass->changed = NULL;
 }
@@ -145,7 +146,7 @@ gtk_toggle_combo_update (GtkWidget * widget, GtkToggleCombo * toggle_combo)
 
   for(i=0 ; i<toggle_combo->nrows; i++)
     for(j=0; j<toggle_combo->ncols; j++){    
-      if(GTK_WIDGET_HAS_FOCUS(toggle_combo->button[i][j])){
+      if(gtk_widget_has_focus(toggle_combo->button[i][j])){
             focus_row=i;
             focus_col=j;
       }
@@ -174,7 +175,7 @@ gtk_toggle_combo_update (GtkWidget * widget, GtkToggleCombo * toggle_combo)
       toggle_combo->row = new_row;
       toggle_combo->column = new_col;
       
-      gtk_signal_emit (GTK_OBJECT(toggle_combo), toggle_combo_signals[CHANGED],
+      g_signal_emit (GTK_OBJECT(toggle_combo), toggle_combo_signals[CHANGED], 0,
                        new_row, new_col);
 
   }
@@ -183,8 +184,8 @@ gtk_toggle_combo_update (GtkWidget * widget, GtkToggleCombo * toggle_combo)
           gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle_combo->button[row][column]), TRUE);
           gtk_widget_queue_draw(toggle_combo->button[row][column]);
 
-          gtk_signal_emit (GTK_OBJECT(toggle_combo), 
-                           toggle_combo_signals[CHANGED],
+          g_signal_emit (GTK_OBJECT(toggle_combo), 
+                           toggle_combo_signals[CHANGED], 0,
                            row, column);
 
   }
@@ -236,10 +237,10 @@ gtk_toggle_combo_create_buttons(GtkWidget *widget)
                           toggle_combo->button[i][j],
                           j, j+1, i, i+1, GTK_SHRINK, GTK_SHRINK, 0, 0);
 
-        gtk_widget_set_usize(toggle_combo->button[i][j], 24, 24);
+        gtk_widget_set_size_request(toggle_combo->button[i][j], 24, 24);
         gtk_widget_show(toggle_combo->button[i][j]); 
-        gtk_signal_connect (GTK_OBJECT (toggle_combo->button[i][j]), "toggled",
-		            (GtkSignalFunc) gtk_toggle_combo_update, 
+        g_signal_connect (GTK_OBJECT (toggle_combo->button[i][j]), "toggled",
+		            (void *) gtk_toggle_combo_update, 
                             toggle_combo);
 
     }
@@ -249,8 +250,8 @@ gtk_toggle_combo_create_buttons(GtkWidget *widget)
                     toggle_combo->table);
   gtk_widget_show(toggle_combo->table);
 
-  gtk_signal_connect (GTK_OBJECT (combo->button), "clicked",
-	              (GtkSignalFunc) gtk_toggle_combo_update, 
+  g_signal_connect (GTK_OBJECT (combo->button), "clicked",
+	              (void *) gtk_toggle_combo_update, 
                       toggle_combo);
 
   gtk_toggle_combo_update(NULL, toggle_combo);
@@ -258,25 +259,20 @@ gtk_toggle_combo_create_buttons(GtkWidget *widget)
 }
 
 
-GtkType
+GType
 gtk_toggle_combo_get_type ()
 {
-  static GtkType toggle_combo_type = 0;
+  static GType toggle_combo_type = 0;
 
   if (!toggle_combo_type)
     {
-      GtkTypeInfo toggle_combo_info =
-      {
-	"GtkToggleCombo",
-	sizeof (GtkToggleCombo),
-	sizeof (GtkToggleComboClass),
-	(GtkClassInitFunc) gtk_toggle_combo_class_init,
-	(GtkObjectInitFunc) gtk_toggle_combo_init,
-	NULL,
-	NULL,
-	(GtkClassInitFunc) NULL,
-      };
-      toggle_combo_type = gtk_type_unique (gtk_combo_button_get_type (), &toggle_combo_info);
+      toggle_combo_type = g_type_register_static_simple (
+		gtk_combo_button_get_type (),
+		"GtkToggleCombo",sizeof (GtkToggleComboClass),
+		(GClassInitFunc) gtk_toggle_combo_class_init,
+		sizeof (GtkToggleCombo),
+		(GInstanceInitFunc) gtk_toggle_combo_init,
+		0);
     }
   return toggle_combo_type;
 }
@@ -294,7 +290,7 @@ gtk_toggle_combo_new (gint nrows, gint ncols)
 {
   GtkWidget *widget;
 
-  widget = gtk_type_new (gtk_toggle_combo_get_type ());
+  widget = gtk_widget_new (gtk_toggle_combo_get_type (), NULL);
 
   gtk_toggle_combo_construct(GTK_TOGGLE_COMBO(widget), nrows, ncols);
 
@@ -391,7 +387,7 @@ gtk_toggle_combo_select (GtkToggleCombo *toggle_combo,
      gtk_widget_queue_draw(toggle_combo->button[new_row][new_col]);
   }
 
-  gtk_signal_emit (GTK_OBJECT(toggle_combo), 
-                   toggle_combo_signals[CHANGED],
+  g_signal_emit (GTK_OBJECT(toggle_combo), 
+                   toggle_combo_signals[CHANGED], 0,
                    new_row, new_col);
 }

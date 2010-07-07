@@ -23,7 +23,7 @@ new_font(GtkFontCombo *font_combo, gpointer data)
 
  preview_entry = GTK_WIDGET(data);
 
- previous_style = preview_entry->style;
+ previous_style = gtk_widget_get_style(preview_entry);
  style = gtk_style_copy (previous_style);
 
  pango_font_description_free(style->font_desc);

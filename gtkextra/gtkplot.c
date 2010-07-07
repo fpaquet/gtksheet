@@ -1595,8 +1595,10 @@ gtk_plot_init (GtkPlot *plot)
   GTK_WIDGET_SET_FLAGS(plot, GTK_NO_WINDOW);
 
   widget = GTK_WIDGET(plot);
-  gdk_color_black(gtk_widget_get_colormap(widget), &widget->style->black);
-  gdk_color_white(gtk_widget_get_colormap(widget), &widget->style->white);
+  gdk_color_black(gtk_widget_get_colormap(widget), 
+		   &gtk_widget_get_style(widget)->black);
+  gdk_color_white(gtk_widget_get_colormap(widget), 
+		   &gtk_widget_get_style(widget)->white);
 
   plot->bg_pixmap = NULL;
   plot->transparent = FALSE;
@@ -1659,13 +1661,13 @@ gtk_plot_init (GtkPlot *plot)
   plot->x0_line.cap_style = 0;
   plot->x0_line.join_style = 0;
   plot->x0_line.line_width = 0;
-  plot->x0_line.color = widget->style->black; 
+  plot->x0_line.color = gtk_widget_get_style(widget)->black; 
 
   plot->y0_line.line_style = GTK_PLOT_LINE_SOLID;
   plot->y0_line.line_width = 0;
   plot->y0_line.cap_style = 0;
   plot->y0_line.join_style = 0;
-  plot->y0_line.color = widget->style->black; 
+  plot->y0_line.color = gtk_widget_get_style(widget)->black; 
 
   plot->legends_x = .6;
   plot->legends_y = .1;
@@ -1679,14 +1681,14 @@ gtk_plot_init (GtkPlot *plot)
   plot->legends_attr.text = NULL;
   plot->legends_attr.font = g_strdup(DEFAULT_FONT);
   plot->legends_attr.height = DEFAULT_FONT_HEIGHT;
-  plot->legends_attr.fg = widget->style->black;
-  plot->legends_attr.bg = widget->style->white;
+  plot->legends_attr.fg = gtk_widget_get_style(widget)->black;
+  plot->legends_attr.bg = gtk_widget_get_style(widget)->white;
   plot->legends_attr.transparent = FALSE;
   plot->legends_attr.border = 0;
   plot->legends_attr.border_width = 0;
   plot->legends_attr.shadow_width = 0;
   
-  plot->background = widget->style->white;
+  plot->background = gtk_widget_get_style(widget)->white;
 
   plot->xscale = GTK_PLOT_SCALE_LINEAR;
   plot->yscale = GTK_PLOT_SCALE_LINEAR;
@@ -2724,6 +2726,7 @@ gtk_plot_refresh (GtkPlot *plot, GdkRectangle *drawing_area)
   GtkWidget *widget;
   GdkPixmap *pixmap;
   GdkRectangle area;
+  GtkAllocation  allocation;
 
   widget = GTK_WIDGET(plot);
   if(!gtk_widget_get_visible(widget)) return;
@@ -2731,24 +2734,25 @@ gtk_plot_refresh (GtkPlot *plot, GdkRectangle *drawing_area)
   if(!plot->drawable) return;
   pixmap = plot->drawable;
 
+  gtk_widget_get_allocation(widget, &allocation);
   if(drawing_area == NULL){
-     area.x = widget->allocation.x;
-     area.y = widget->allocation.y;
-     area.width = widget->allocation.width;
-     area.height = widget->allocation.height;
+     area.x = allocation.x;
+     area.y = allocation.y;
+     area.width = allocation.width;
+     area.height = allocation.height;
   } else {
      area = *drawing_area;
   }
 
-  gdk_draw_pixmap(widget->window,
-                  widget->style->fg_gc[GTK_STATE_NORMAL],
+  gdk_draw_pixmap(gtk_widget_get_window(widget),
+                  gtk_widget_get_style(widget)->fg_gc[GTK_STATE_NORMAL],
                   pixmap,
                   area.x, 
                   area.y, 
-                  widget->allocation.x, 
-                  widget->allocation.y, 
-                  widget->allocation.width, 
-                  widget->allocation.height);  
+                  allocation.x, 
+                  allocation.y, 
+                  allocation.width, 
+                  allocation.height);  
   
 }
 
@@ -2764,18 +2768,20 @@ gtk_plot_size_request (GtkWidget *widget, GtkRequisition *requisition)
 }
 
 static void
-gtk_plot_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
+gtk_plot_size_allocate (GtkWidget *widget, GtkAllocation *arg_allocation)
 {
   GtkPlot *plot;
+  GtkAllocation  allocation;
 
   plot = GTK_PLOT(widget);
 
-  widget->allocation = *allocation;
+  gtk_widget_set_allocation(widget, arg_allocation);
 
-  plot->internal_allocation.x = GTK_WIDGET(plot)->allocation.x + roundint(plot->x * GTK_WIDGET(plot)->allocation.width);
-  plot->internal_allocation.y = GTK_WIDGET(plot)->allocation.y + roundint(plot->y * GTK_WIDGET(plot)->allocation.height);
-  plot->internal_allocation.width = roundint(plot->width * GTK_WIDGET(plot)->allocation.width);
-  plot->internal_allocation.height = roundint(plot->height * GTK_WIDGET(plot)->allocation.height);
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  plot->internal_allocation.x = allocation.x + roundint(plot->x * allocation.width);
+  plot->internal_allocation.y = allocation.y + roundint(plot->y * allocation.height);
+  plot->internal_allocation.width = roundint(plot->width * allocation.width);
+  plot->internal_allocation.height = roundint(plot->height * allocation.height);
 
   g_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], 0, FALSE);
 }
@@ -2882,6 +2888,7 @@ gtk_plot_new (GdkDrawable *drawable)
 void
 gtk_plot_construct(GtkPlot *plot, GdkDrawable *drawable)
 {
+  GtkAllocation  allocation;
   gtk_plot_set_drawable(plot, drawable);
 
   plot->x = .15;
@@ -2889,10 +2896,11 @@ gtk_plot_construct(GtkPlot *plot, GdkDrawable *drawable)
   plot->width = .6;
   plot->height = .6;
 
-  plot->internal_allocation.x = GTK_WIDGET(plot)->allocation.x + roundint(plot->x * GTK_WIDGET(plot)->allocation.width);
-  plot->internal_allocation.y = GTK_WIDGET(plot)->allocation.y + roundint(plot->y * GTK_WIDGET(plot)->allocation.height);
-  plot->internal_allocation.width = roundint(plot->width * GTK_WIDGET(plot)->allocation.width);
-  plot->internal_allocation.height = roundint(plot->height * GTK_WIDGET(plot)->allocation.height);
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  plot->internal_allocation.x = allocation.x + roundint(plot->x * allocation.width);
+  plot->internal_allocation.y = allocation.y + roundint(plot->y * allocation.height);
+  plot->internal_allocation.width = roundint(plot->width * allocation.width);
+  plot->internal_allocation.height = roundint(plot->height * allocation.height);
 
   plot->left->title.x = plot->x;  
   plot->left->title.y = plot->y + plot->height / 2.;
@@ -2969,7 +2977,7 @@ gtk_plot_real_set_drawable (GtkPlot *plot, GdkDrawable *drawable)
   plot->drawable = drawable;
 
   if(GTK_IS_PLOT_CAIRO(plot->pc)) {
-    if (GTK_WIDGET(plot)->window) {
+    if (gtk_widget_get_window(GTK_WIDGET(plot))) {
       gtk_plot_set_pc(plot,GTK_PLOT_PC(gtk_plot_cairo_new_with_drawable(drawable)));
     }
   }
@@ -3271,6 +3279,7 @@ gtk_plot_draw_labels(GtkPlot *plot,
   gdouble px, py;
   gdouble y;
   gint n = 0;
+  GtkAllocation  allocation;
 
   widget = GTK_WIDGET(plot); 
   xp = plot->internal_allocation.x;
@@ -3342,18 +3351,19 @@ gtk_plot_draw_labels(GtkPlot *plot,
         tick.x = px;
         tick.y = py + y;
   
+        gtk_widget_get_allocation(widget, &allocation);
         if(axis->label_mask & GTK_PLOT_LABEL_IN){
            tick.x = tick.x + tick_direction.x*roundint(axis->labels_offset * m);
            tick.y = tick.y + tick_direction.y*roundint(axis->labels_offset * m);
-           tick.x = (gdouble)tick.x / (gdouble)widget->allocation.width;
-           tick.y = (gdouble)tick.y / (gdouble)widget->allocation.height;
+           tick.x = (gdouble)tick.x / (gdouble)allocation.width;
+           tick.y = (gdouble)tick.y / (gdouble)allocation.height;
            gtk_plot_draw_text(plot, tick);
         }
         if(axis->label_mask & GTK_PLOT_LABEL_OUT){
            tick.x = tick.x - tick_direction.x*roundint(axis->labels_offset * m);
            tick.y = tick.y - tick_direction.y*roundint(axis->labels_offset * m);
-           tick.x = (gdouble)tick.x / (gdouble)widget->allocation.width;
-           tick.y = (gdouble)tick.y / (gdouble)widget->allocation.height;
+           tick.x = (gdouble)tick.x / (gdouble)allocation.width;
+           tick.y = (gdouble)tick.y / (gdouble)allocation.height;
            gtk_plot_draw_text(plot, tick);
         }
       }
@@ -3825,13 +3835,15 @@ gtk_plot_draw_text(GtkPlot *plot,
                    GtkPlotText text) 
 {
   gint x, y;
+  GtkAllocation  allocation;
 
   if(!text.text) return;
   if(strlen(text.text) == 0) return;
   if(plot->drawable == NULL) return;
 
-  x = text.x * GTK_WIDGET(plot)->allocation.width;
-  y = text.y * GTK_WIDGET(plot)->allocation.height;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  x = text.x * allocation.width;
+  y = text.y * allocation.height;
 
   gtk_plot_paint_text(plot, x, y, text);
 }
@@ -4342,6 +4354,7 @@ void
 gtk_plot_move (GtkPlot *plot, gdouble x, gdouble y)
 {
   gboolean veto = TRUE;
+  GtkAllocation  allocation;
 
   _gtkextra_signal_emit (GTK_OBJECT(plot), plot_signals[MOVED],
                    &x, &y, &veto);
@@ -4360,10 +4373,11 @@ gtk_plot_move (GtkPlot *plot, gdouble x, gdouble y)
   plot->x = x;
   plot->y = y;
 
-  plot->internal_allocation.x = GTK_WIDGET(plot)->allocation.x + roundint(plot->x * GTK_WIDGET(plot)->allocation.width);
-  plot->internal_allocation.y = GTK_WIDGET(plot)->allocation.y + roundint(plot->y * GTK_WIDGET(plot)->allocation.height);
-  plot->internal_allocation.width = roundint(plot->width * GTK_WIDGET(plot)->allocation.width);
-  plot->internal_allocation.height = roundint(plot->height * GTK_WIDGET(plot)->allocation.height);
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  plot->internal_allocation.x = allocation.x + roundint(plot->x * allocation.width);
+  plot->internal_allocation.y = allocation.y + roundint(plot->y * allocation.height);
+  plot->internal_allocation.width = roundint(plot->width * allocation.width);
+  plot->internal_allocation.height = roundint(plot->height * allocation.height);
 
   g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
 }
@@ -4380,6 +4394,7 @@ void
 gtk_plot_resize (GtkPlot *plot, gdouble width, gdouble height)
 {
   gboolean veto = TRUE;
+  GtkAllocation  allocation;
 
   _gtkextra_signal_emit (GTK_OBJECT(plot), plot_signals[RESIZED],
                    &width, &height, &veto);
@@ -4396,10 +4411,11 @@ gtk_plot_resize (GtkPlot *plot, gdouble width, gdouble height)
   plot->width = width;
   plot->height = height;
 
-  plot->internal_allocation.x = GTK_WIDGET(plot)->allocation.x + roundint(plot->x * GTK_WIDGET(plot)->allocation.width);
-  plot->internal_allocation.y = GTK_WIDGET(plot)->allocation.y + roundint(plot->y * GTK_WIDGET(plot)->allocation.height);
-  plot->internal_allocation.width = roundint(plot->width * GTK_WIDGET(plot)->allocation.width);
-  plot->internal_allocation.height = roundint(plot->height * GTK_WIDGET(plot)->allocation.height);
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  plot->internal_allocation.x = allocation.x + roundint(plot->x * allocation.width);
+  plot->internal_allocation.y = allocation.y + roundint(plot->y * allocation.height);
+  plot->internal_allocation.width = roundint(plot->width * allocation.width);
+  plot->internal_allocation.height = roundint(plot->height * allocation.height);
 
   g_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], 0, FALSE);
   g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
@@ -4416,14 +4432,16 @@ void
 gtk_plot_set_magnification (GtkPlot *plot, gdouble magnification)
 {
   GtkWidget *widget;
+  GtkAllocation allocation;
  
   widget = GTK_WIDGET(plot); 
   plot->magnification = magnification;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
 
-  plot->internal_allocation.x = GTK_WIDGET(plot)->allocation.x + roundint(plot->x * GTK_WIDGET(plot)->allocation.width);
-  plot->internal_allocation.y = GTK_WIDGET(plot)->allocation.y + roundint(plot->y * GTK_WIDGET(plot)->allocation.height);
-  plot->internal_allocation.width = roundint(plot->width * GTK_WIDGET(plot)->allocation.width);
-  plot->internal_allocation.height = roundint(plot->height * GTK_WIDGET(plot)->allocation.height);
+  plot->internal_allocation.x = allocation.x + roundint(plot->x * allocation.width);
+  plot->internal_allocation.y = allocation.y + roundint(plot->y * allocation.height);
+  plot->internal_allocation.width = roundint(plot->width * allocation.width);
+  plot->internal_allocation.height = roundint(plot->height * allocation.height);
 
   g_signal_emit (GTK_OBJECT(plot), plot_signals[UPDATE], 0, FALSE);
   g_signal_emit (GTK_OBJECT(plot), plot_signals[CHANGED], 0);
@@ -4490,6 +4508,7 @@ gtk_plot_real_get_pixel(GtkWidget *widget,
 {
     GtkPlot *plot;
     gint xp, yp, width, height;
+    GtkAllocation allocation;
 
     plot = GTK_PLOT(widget); 
     xp = plot->internal_allocation.x;
@@ -4500,15 +4519,16 @@ gtk_plot_real_get_pixel(GtkWidget *widget,
     *y = gtk_plot_ticks_transform(plot->left, yy)*height;
     *x = gtk_plot_ticks_transform(plot->bottom, xx)*width;
 
+    gtk_widget_get_allocation(widget, &allocation);
     if(!plot->reflect_x)
-      *x = widget->allocation.x + xp + *x;
+      *x = allocation.x + xp + *x;
     else
-      *x = widget->allocation.x + xp + width - *x;
+      *x = allocation.x + xp + width - *x;
 
     if(!plot->reflect_y)
-      *y = widget->allocation.y + yp + height - *y;
+      *y = allocation.y + yp + height - *y;
     else
-      *y = widget->allocation.y + yp + *y;
+      *y = allocation.y + yp + *y;
 }
 
 static void 
@@ -4520,6 +4540,8 @@ gtk_plot_real_get_point(GtkWidget *widget,
     gdouble xx, yy;
     gdouble xp, yp, width, height;
     gdouble rx, ry;
+    GtkAllocation allocation;
+
 
     plot = GTK_PLOT(widget); 
     xp = plot->internal_allocation.x;
@@ -4527,15 +4549,16 @@ gtk_plot_real_get_point(GtkWidget *widget,
     width = plot->internal_allocation.width;
     height = plot->internal_allocation.height;
 
+    gtk_widget_get_allocation(widget, &allocation);
     if(!plot->reflect_x)
-      xx = x - widget->allocation.x - xp;
+      xx = x - allocation.x - xp;
     else
-      xx = width - (x - widget->allocation.x - xp);
+      xx = width - (x - allocation.x - xp);
 
     if(!plot->reflect_y)
-      yy = widget->allocation.y + yp + height - y;
+      yy = allocation.y + yp + height - y;
     else
-      yy = y - widget->allocation.y - yp;
+      yy = y - allocation.y - yp;
 
     rx = plot->bottom->ticks.max - plot->bottom->ticks.min;
     ry = plot->left->ticks.max - plot->left->ticks.min;
@@ -4953,20 +4976,23 @@ gtk_plot_put_text (GtkPlot *plot, gdouble x, gdouble y,
   GtkWidget *widget;
   GtkPlotText *text_attr;
   GdkRectangle area;
+  GtkAllocation allocation;
+
 
   widget = GTK_WIDGET(plot);
 
   text_attr = g_new0(GtkPlotText, 1);
 
-  area.x = widget->allocation.x;
-  area.y = widget->allocation.y;
+  gtk_widget_get_allocation(widget, &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
 
   text_attr->x = x;
   text_attr->y = y;
   text_attr->angle = angle;
   text_attr->justification = justification;
-  text_attr->fg = widget->style->black;
-  text_attr->bg = widget->style->white;
+  text_attr->fg = gtk_widget_get_style(widget)->black;
+  text_attr->bg = gtk_widget_get_style(widget)->white;
   text_attr->transparent = transparent;
   text_attr->border = 0;
   text_attr->border_space = 2;
@@ -6292,10 +6318,11 @@ gtk_plot_legends_get_allocation(GtkPlot *plot)
   widget = GTK_WIDGET(plot);
   m = plot->magnification;
 
-  x = widget->allocation.x + plot->x * widget->allocation.width +
-      plot->legends_x * plot->width * widget->allocation.width; 
-  y = widget->allocation.y + plot->y * widget->allocation.height +
-      plot->legends_y * plot->height * widget->allocation.height; 
+  gtk_widget_get_allocation(widget, &allocation);
+  x = allocation.x + plot->x * allocation.width +
+      plot->legends_x * plot->width * allocation.width; 
+  y = allocation.y + plot->y * allocation.height +
+      plot->legends_y * plot->height * allocation.height; 
 
   width = 24 * m;
   height = 8 * m;
@@ -6350,8 +6377,8 @@ gtk_plot_legends_set_attributes(GtkPlot *plot, const gchar *font, gint height,
     plot->legends_attr.font = g_strdup(font);
     plot->legends_attr.height = height;
   }
-  plot->legends_attr.fg = GTK_WIDGET(plot)->style->black;
-  plot->legends_attr.bg = GTK_WIDGET(plot)->style->white;
+  plot->legends_attr.fg = gtk_widget_get_style(GTK_WIDGET(plot))->black;
+  plot->legends_attr.bg = gtk_widget_get_style(GTK_WIDGET(plot))->white;
 
   if(foreground != NULL)
     plot->legends_attr.fg = *foreground;

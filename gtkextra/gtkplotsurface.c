@@ -983,6 +983,7 @@ gtk_plot_surface_draw_legend(GtkPlotData *data, gint x, gint y)
   GdkRectangle area;
   gint lascent, ldescent, lheight, lwidth;
   gdouble m;
+  GtkAllocation allocation;
 
   surface = GTK_PLOT_SURFACE(data);
 
@@ -990,10 +991,11 @@ gtk_plot_surface_draw_legend(GtkPlotData *data, gint x, gint y)
   g_return_if_fail(GTK_IS_PLOT(data->plot));
 
   plot = data->plot;
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
-  area.width = GTK_WIDGET(plot)->allocation.width;
-  area.height = GTK_WIDGET(plot)->allocation.height;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
   m = plot->magnification;
   legend = plot->legends_attr;

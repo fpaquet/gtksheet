@@ -257,14 +257,16 @@ gtk_plot_bar_draw_symbol(GtkPlotData *dataset,
   gdouble px, py, px0, py0;
   gdouble x1 = 0.0, y1 = 0.0, width = 0.0, height = 0.0;
   gdouble ex, ey;
+  GtkAllocation allocation;
 
   bar = GTK_PLOT_BAR(dataset);
   plot = dataset->plot;
 
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
-  area.width = GTK_WIDGET(plot)->allocation.width;
-  area.height = GTK_WIDGET(plot)->allocation.height;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
   clip_area.x = area.x + roundint(plot->x * area.width);
   clip_area.y = area.y + roundint(plot->y * area.height);
@@ -347,6 +349,7 @@ gtk_plot_bar_draw_legend(GtkPlotData *data, gint x, gint y)
   GdkRectangle area;
   gint lascent, ldescent, lheight, lwidth;
   gdouble m;
+  GtkAllocation allocation;
 
   bar = GTK_PLOT_BAR(data);
 
@@ -356,10 +359,11 @@ gtk_plot_bar_draw_legend(GtkPlotData *data, gint x, gint y)
   g_return_if_fail(gtk_widget_get_visible(GTK_WIDGET(data->plot)));
 
   plot = data->plot;
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
-  area.width = GTK_WIDGET(plot)->allocation.width;
-  area.height = GTK_WIDGET(plot)->allocation.height;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
   m = plot->magnification;
   legend = plot->legends_attr;

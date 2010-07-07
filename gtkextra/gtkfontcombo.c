@@ -334,7 +334,7 @@ gtk_font_combo_select (GtkFontCombo *combo,
 
   while(children){
     item = GTK_ITEM(children->data);
-    text = GTK_LABEL(GTK_BIN(item)->child)->label;
+    text = GTK_LABEL(gtk_bin_get_child(GTK_BIN(item)))->label;
     if(strcmp(text, family) == 0) break;
     n++;
     children = children->next;

@@ -1547,8 +1547,8 @@ gtk_plot_data_init (GtkPlotData *dataset)
   dataset->gradient_y = .05;
   dataset->gradient->orientation = GTK_ORIENTATION_VERTICAL;
   dataset->gradient->label_mask = GTK_PLOT_LABEL_OUT;
-  dataset->gradient->labels_attr.fg = widget->style->black;
-  dataset->gradient->labels_attr.bg = widget->style->white;
+  dataset->gradient->labels_attr.fg = gtk_widget_get_style(widget)->black;
+  dataset->gradient->labels_attr.bg = gtk_widget_get_style(widget)->white;
   dataset->gradient->labels_attr.transparent = FALSE;
   dataset->gradient->labels_attr.border = 0;
   dataset->gradient->labels_attr.border_width = 0;
@@ -2517,6 +2517,7 @@ gtk_plot_data_real_draw   (GtkPlotData *dataset,
   gchar **fl = NULL;
   gboolean error;
   gdouble m;
+  GtkAllocation allocation;
 
   g_return_if_fail(GTK_IS_PLOT_DATA(dataset));
   g_return_if_fail(dataset->plot != NULL);
@@ -2531,10 +2532,11 @@ gtk_plot_data_real_draw   (GtkPlotData *dataset,
 
   m = plot->magnification;
 
-  area.x = widget->allocation.x;
-  area.y = widget->allocation.y;
-  area.width = widget->allocation.width;
-  area.height = widget->allocation.height;
+  gtk_widget_get_allocation(widget, &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
   clip_area.x = area.x + roundint(plot->x * area.width);
   clip_area.y = area.y + roundint(plot->y * area.height);
@@ -2687,6 +2689,7 @@ gtk_plot_data_real_real_draw   (GtkPlotData *dataset,
   gdouble a_scale = 1., y_scale = 1., z_scale = 1.;
   gint n;
   gdouble m;
+  GtkAllocation allocation;
 
   g_return_if_fail(GTK_IS_PLOT_DATA(dataset));
   g_return_if_fail(dataset->plot != NULL);
@@ -2696,10 +2699,11 @@ gtk_plot_data_real_real_draw   (GtkPlotData *dataset,
   widget = GTK_WIDGET(plot);
   colormap = gdk_colormap_get_system();
 
-  area.x = widget->allocation.x;
-  area.y = widget->allocation.y;
-  area.width = widget->allocation.width;
-  area.height = widget->allocation.height;
+  gtk_widget_get_allocation(widget, &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
   gtk_plot_pc_gsave(plot->pc);
 
@@ -2795,6 +2799,7 @@ gtk_plot_data_draw_legend(GtkPlotData *data, gint x, gint y)
   GdkRectangle area;
   gint lascent = 0, ldescent = 0, lheight = 0, lwidth = 0;
   gdouble m;
+  GtkAllocation allocation;
 
   g_return_if_fail(data->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(data->plot));
@@ -2802,10 +2807,11 @@ gtk_plot_data_draw_legend(GtkPlotData *data, gint x, gint y)
   if(!gtk_widget_get_visible(GTK_WIDGET(data))) return;
 
   plot = data->plot;
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
-  area.width = GTK_WIDGET(plot)->allocation.width;
-  area.height = GTK_WIDGET(plot)->allocation.height;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
   m = plot->magnification;
   legend = plot->legends_attr;
@@ -2909,6 +2915,7 @@ draw_gradient_vertical(GtkPlotData *data, gdouble px, gdouble py)
   gint width = 0, height = 0;
   gint nmajor = 0;
   gint y_max = 0;
+  GtkAllocation allocation;
 
   g_return_if_fail(data->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(data->plot));
@@ -2918,10 +2925,11 @@ draw_gradient_vertical(GtkPlotData *data, gdouble px, gdouble py)
   if(!data->show_gradient) return;
 
   plot = data->plot;
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
-  area.width = GTK_WIDGET(plot)->allocation.width;
-  area.height = GTK_WIDGET(plot)->allocation.height;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
   x = x_orig = roundint(plot->internal_allocation.x + plot->internal_allocation.width * px);
   y = y_orig = roundint(plot->internal_allocation.y + plot->internal_allocation.height * py);
@@ -3250,6 +3258,7 @@ draw_gradient_horizontal(GtkPlotData *data, gdouble px, gdouble py)
   gint nmajor = 0;
   gint ncolors = 0;
   gint x_max = 0;
+  GtkAllocation allocation;
 
   g_return_if_fail(data->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(data->plot));
@@ -3259,10 +3268,11 @@ draw_gradient_horizontal(GtkPlotData *data, gdouble px, gdouble py)
   if(!data->show_gradient) return;
 
   plot = data->plot;
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
-  area.width = GTK_WIDGET(plot)->allocation.width;
-  area.height = GTK_WIDGET(plot)->allocation.height;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
   x = x_orig = roundint(plot->internal_allocation.x + plot->internal_allocation.width * px);
   y = y_orig = roundint(plot->internal_allocation.y + plot->internal_allocation.height * py);
@@ -3646,10 +3656,12 @@ gtk_plot_data_get_gradient_allocation(GtkPlotData *data)
   GtkAllocation allocation;
   GtkPlot *plot = NULL;
   gint width, height;
+  GtkAllocation plot_allocation;
 
   plot = data->plot;
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &plot_allocation);
+  area.x = plot_allocation.x;
+  area.y = plot_allocation.y;
 
   allocation.x = roundint(area.x + plot->internal_allocation.x + plot->internal_allocation.width * data->gradient_x);
   allocation.y = roundint(area.y + plot->internal_allocation.y + plot->internal_allocation.height * data->gradient_y);
@@ -4112,6 +4124,7 @@ gtk_plot_data_draw_xyz (GtkPlotData *dataset, gint npoints)
   gdouble px, py;
   gdouble x0, y0;
   gdouble *array_x = NULL, *array_y = NULL, *array_z = NULL;
+  GtkAllocation allocation;
 
   plot = dataset->plot;
   widget = GTK_WIDGET(plot);
@@ -4128,15 +4141,16 @@ gtk_plot_data_draw_xyz (GtkPlotData *dataset, gint npoints)
 
   widget = GTK_WIDGET(plot);
 
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
-  area.width = GTK_WIDGET(plot)->allocation.width;
-  area.height = GTK_WIDGET(plot)->allocation.height;
+  gtk_widget_get_allocation(widget, &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
-  clip_area.x = area.x + roundint(plot->x * widget->allocation.width);
-  clip_area.y = area.y + roundint(plot->y * widget->allocation.height);
-  clip_area.width = roundint(plot->width * widget->allocation.width);
-  clip_area.height = roundint(plot->height * widget->allocation.height);
+  clip_area.x = area.x + roundint(plot->x * allocation.width);
+  clip_area.y = area.y + roundint(plot->y * allocation.height);
+  clip_area.width = roundint(plot->width * allocation.width);
+  clip_area.height = roundint(plot->height * allocation.height);
 
   if(plot->clip_data && !GTK_IS_PLOT3D(plot)) gtk_plot_pc_clip(plot->pc, &clip_area);
 
@@ -4493,19 +4507,20 @@ gtk_plot_data_connect_points(GtkPlotData *dataset, gint npoints)
   gdouble xmin, xmax;
   gint num_points = dataset->num_points;
   gint first = 0, last = num_points;
+  GtkAllocation allocation;
 
   plot = dataset->plot;
   widget = GTK_WIDGET(plot);
+  gtk_widget_get_allocation(widget, &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
-  area.width = GTK_WIDGET(plot)->allocation.width;
-  area.height = GTK_WIDGET(plot)->allocation.height;
-
-  clip_area.x = area.x + roundint(plot->x * widget->allocation.width);
-  clip_area.y = area.y + roundint(plot->y * widget->allocation.height);
-  clip_area.width = roundint(plot->width * widget->allocation.width);
-  clip_area.height = roundint(plot->height * widget->allocation.height);
+  clip_area.x = area.x + roundint(plot->x * allocation.width);
+  clip_area.y = area.y + roundint(plot->y * allocation.height);
+  clip_area.width = roundint(plot->width * allocation.width);
+  clip_area.height = roundint(plot->height * allocation.height);
 
   if(dataset->line.line_style == GTK_PLOT_LINE_NONE) return;
   npoints = MIN(npoints, dataset->num_points);

@@ -319,8 +319,8 @@ build_example1(GtkWidget *plot)
                              GTK_PLOT_SYMBOL_SQUARE,
 			     GTK_PLOT_SYMBOL_OPAQUE,
                              8, 2, 
-                             &plot->style->black,
-                             &plot->style->black);
+                             &gtk_widget_get_style(plot)->black,
+                             &gtk_widget_get_style(plot)->black);
  gtk_plot_data_set_line_attributes(dataset[3],
                                    GTK_PLOT_LINE_SOLID,
                                    0, 0, 4, &color);
@@ -328,10 +328,10 @@ build_example1(GtkWidget *plot)
 
  gtk_plot_data_set_x_attributes(dataset[3], 
                                 GTK_PLOT_LINE_SOLID,
-                                0, 0, 0, &plot->style->black);
+                                0, 0, 0, &gtk_widget_get_style(plot)->black);
  gtk_plot_data_set_y_attributes(dataset[3], 
                                 GTK_PLOT_LINE_SOLID,
-                                0, 0, 0, &plot->style->black);
+                                0, 0, 0, &gtk_widget_get_style(plot)->black);
 
  gtk_plot_data_set_legend(dataset[3], "Line + Symbol");
 

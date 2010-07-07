@@ -150,7 +150,7 @@ gtk_toggle_combo_update (GtkWidget * widget, GtkToggleCombo * toggle_combo)
             focus_row=i;
             focus_col=j;
       }
-      if(toggle_combo->button[i][j]->state==GTK_STATE_ACTIVE){
+      if(gtk_widget_get_state(toggle_combo->button[i][j])==GTK_STATE_ACTIVE){
         if(i != row || j != column){
             new_selection=TRUE;
             new_row=i;

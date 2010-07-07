@@ -303,6 +303,7 @@ gtk_plot_pixmap_draw_legend(GtkPlotData *data, gint x, gint y)
   gint lascent, ldescent, lheight, lwidth;
   gdouble m;
   gint width, height;
+  GtkAllocation allocation;
 
   g_return_if_fail(data->plot != NULL);
   g_return_if_fail(GTK_IS_PLOT(data->plot));
@@ -310,10 +311,11 @@ gtk_plot_pixmap_draw_legend(GtkPlotData *data, gint x, gint y)
   pixmap = GTK_PLOT_PIXMAP(data);
 
   plot = data->plot;
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
-  area.width = GTK_WIDGET(plot)->allocation.width;
-  area.height = GTK_WIDGET(plot)->allocation.height;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
   m = plot->magnification;
   legend = plot->legends_attr;

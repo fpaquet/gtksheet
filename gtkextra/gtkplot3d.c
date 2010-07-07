@@ -815,8 +815,10 @@ gtk_plot3d_init (GtkPlot3D *plot)
   }
 
   widget = GTK_WIDGET(plot);
-  gdk_color_black(gtk_widget_get_colormap(widget), &widget->style->black);
-  gdk_color_white(gtk_widget_get_colormap(widget), &widget->style->white);
+  gdk_color_black(gtk_widget_get_colormap(widget), 
+			&gtk_widget_get_style(widget)->black);
+  gdk_color_white(gtk_widget_get_colormap(widget), 
+			&gtk_widget_get_style(widget)->white);
 
   GTK_PLOT(plot)->legends_x = .8;
 
@@ -924,11 +926,11 @@ gtk_plot3d_init (GtkPlot3D *plot)
 
   plot->az->line.line_style = GTK_PLOT_LINE_SOLID;
   plot->az->line.line_width = 2;
-  plot->az->line.color = widget->style->black; 
+  plot->az->line.color = gtk_widget_get_style(widget)->black; 
   plot->az->labels_attr.text = NULL;
   plot->az->labels_attr.height = DEFAULT_FONT_HEIGHT;
-  plot->az->labels_attr.fg = widget->style->black;
-  plot->az->labels_attr.bg = widget->style->white;
+  plot->az->labels_attr.fg = gtk_widget_get_style(widget)->black;
+  plot->az->labels_attr.bg = gtk_widget_get_style(widget)->white;
   plot->az->labels_attr.transparent = TRUE;
   plot->az->labels_attr.justification = GTK_JUSTIFY_CENTER;
   plot->az->labels_attr.angle = 0;
@@ -938,18 +940,18 @@ gtk_plot3d_init (GtkPlot3D *plot)
   plot->az->title.angle = 90;
   plot->az->title.justification = GTK_JUSTIFY_CENTER;
   plot->az->title.height = DEFAULT_FONT_HEIGHT;
-  plot->az->title.fg = widget->style->black;
-  plot->az->title.bg = widget->style->white;
+  plot->az->title.fg = gtk_widget_get_style(widget)->black;
+  plot->az->title.bg = gtk_widget_get_style(widget)->white;
   plot->az->title.transparent = TRUE;
   plot->az->title_visible = TRUE;
 
   plot->ax->line.line_style = GTK_PLOT_LINE_SOLID;
   plot->ax->line.line_width = 2;
-  plot->ax->line.color = widget->style->black; 
+  plot->ax->line.color = gtk_widget_get_style(widget)->black; 
   plot->ax->labels_attr.text = NULL;
   plot->ax->labels_attr.height = DEFAULT_FONT_HEIGHT;
-  plot->ax->labels_attr.fg = widget->style->black;
-  plot->ax->labels_attr.bg = widget->style->white;
+  plot->ax->labels_attr.fg = gtk_widget_get_style(widget)->black;
+  plot->ax->labels_attr.bg = gtk_widget_get_style(widget)->white;
   plot->ax->labels_attr.transparent = TRUE;
   plot->ax->labels_attr.justification = GTK_JUSTIFY_CENTER;
   plot->ax->labels_attr.angle = 0;
@@ -959,18 +961,18 @@ gtk_plot3d_init (GtkPlot3D *plot)
   plot->ax->title.angle = 0;
   plot->ax->title.justification = GTK_JUSTIFY_CENTER;
   plot->ax->title.height = DEFAULT_FONT_HEIGHT;
-  plot->ax->title.fg = widget->style->black;
-  plot->ax->title.bg = widget->style->white;
+  plot->ax->title.fg = gtk_widget_get_style(widget)->black;
+  plot->ax->title.bg = gtk_widget_get_style(widget)->white;
   plot->ax->title.transparent = TRUE;
   plot->ax->title_visible = TRUE;
 
   plot->ay->line.line_style = GTK_PLOT_LINE_SOLID;
   plot->ay->line.line_width = 2;
-  plot->ay->line.color = widget->style->black; 
+  plot->ay->line.color = gtk_widget_get_style(widget)->black; 
   plot->ay->labels_attr.text = NULL;
   plot->ay->labels_attr.height = DEFAULT_FONT_HEIGHT;
-  plot->ay->labels_attr.fg = widget->style->black;
-  plot->ay->labels_attr.bg = widget->style->white;
+  plot->ay->labels_attr.fg = gtk_widget_get_style(widget)->black;
+  plot->ay->labels_attr.bg = gtk_widget_get_style(widget)->white;
   plot->ay->labels_attr.transparent = TRUE;
   plot->ay->labels_attr.angle = 0;
   plot->ay->label_mask = GTK_PLOT_LABEL_OUT;
@@ -980,8 +982,8 @@ gtk_plot3d_init (GtkPlot3D *plot)
   plot->ay->title.angle = 0;
   plot->ay->title.justification = GTK_JUSTIFY_CENTER;
   plot->ay->title.height = DEFAULT_FONT_HEIGHT;
-  plot->ay->title.fg = widget->style->black;
-  plot->ay->title.bg = widget->style->white;
+  plot->ay->title.fg = gtk_widget_get_style(widget)->black;
+  plot->ay->title.bg = gtk_widget_get_style(widget)->white;
   plot->ay->title.transparent = TRUE;
   plot->ay->title_visible = TRUE;
 
@@ -1019,14 +1021,14 @@ gtk_plot3d_init (GtkPlot3D *plot)
   plot->zx.title_visible = plot->az->title_visible;
   plot->zy.title_visible = plot->az->title_visible;
 
-  plot->frame.color = widget->style->black;
+  plot->frame.color = gtk_widget_get_style(widget)->black;
   plot->frame.line_width = 1;
   plot->frame.line_style = GTK_PLOT_LINE_SOLID;
 
   plot->corner_visible = FALSE;
   plot->corner.line_style = GTK_PLOT_LINE_SOLID;
   plot->corner.line_width = 0;
-  plot->corner.color = widget->style->black;
+  plot->corner.color = gtk_widget_get_style(widget)->black;
 
   plot->ax->direction = plot->e1;
   plot->ay->direction = plot->e2;
@@ -1427,7 +1429,7 @@ gtk_plot3d_real_paint (GtkWidget *widget)
 
   /* draw frame to guide the eyes*/
 /*
-  gdk_draw_rectangle (pixmap, widget->style->black_gc, FALSE,
+  gdk_draw_rectangle (pixmap, gtk_widget_get_style(widget)->black_gc, FALSE,
 		      xoffset, yoffset,
 		      width , height);
 */
@@ -2025,6 +2027,7 @@ gtk_plot3d_draw_labels(GtkPlot3D *plot,
   GtkPlotVector ticks_direction, center, aux;
   gdouble proj;
   gboolean veto = FALSE;
+  GtkAllocation allocation;
 
   widget = GTK_WIDGET(plot); 
   pc = GTK_PLOT(plot)->pc;
@@ -2113,9 +2116,10 @@ gtk_plot3d_draw_labels(GtkPlot3D *plot,
       }
       tick.text = label;
 
+      gtk_widget_get_allocation(widget, &allocation);
       if(axis->label_mask == GTK_PLOT_LABEL_OUT){
-         tick.x = (gdouble)tick.x / (gdouble)widget->allocation.width;
-         tick.y = (gdouble)tick.y / (gdouble)widget->allocation.height;
+         tick.x = (gdouble)tick.x / (gdouble)allocation.width;
+         tick.y = (gdouble)tick.y / (gdouble)allocation.height;
          gtk_plot_draw_text(GTK_PLOT(plot), tick);
       }
     }
@@ -2134,8 +2138,8 @@ gtk_plot3d_draw_labels(GtkPlot3D *plot,
          title.x = ox + plot->titles_offset * ticks_direction.x; 
          title.y = oy + plot->titles_offset * ticks_direction.y; 
 
-         title.x = title.x / (gdouble)widget->allocation.width;
-         title.y = title.y / (gdouble)widget->allocation.height;
+         title.x = title.x / (gdouble)allocation.width;
+         title.y = title.y / (gdouble)allocation.height;
 
          gtk_plot_draw_text(GTK_PLOT(plot), title); 
        }

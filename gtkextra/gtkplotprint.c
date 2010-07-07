@@ -71,22 +71,25 @@ gtk_plot_export_ps                              (GtkPlot *plot,
   GtkPlotPS *ps;
   gdouble scalex, scaley;
   gdouble m;
+  GtkAllocation allocation;
 
 
   m = plot->magnification;
 
   ps = GTK_PLOT_PS(gtk_plot_ps_new(file_name, orient, epsflag, page_size, 1.0, 1.0));
 
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+
   if(orient == GTK_PLOT_PORTRAIT){
     scalex = (gfloat)ps->page_width /
-                                (gfloat)GTK_WIDGET(plot)->allocation.width;
+                                (gfloat)allocation.width;
     scaley = (gfloat)ps->page_height /
-                                (gfloat)GTK_WIDGET(plot)->allocation.height;
+                                (gfloat)allocation.height;
   }else{
     scalex = (gfloat)ps->page_width /
-                                (gfloat)GTK_WIDGET(plot)->allocation.height;
+                                (gfloat)allocation.height;
     scaley = (gfloat)ps->page_height /
-                                (gfloat)GTK_WIDGET(plot)->allocation.width;
+                                (gfloat)allocation.width;
   }
 
   gtk_plot_ps_set_scale(ps, scalex, scaley);
@@ -134,6 +137,7 @@ gtk_plot_export_ps_with_size                    (GtkPlot *plot,
   GtkPlotPS *ps;
   gdouble scalex, scaley;
   gdouble m;
+  GtkAllocation allocation;
 
   m = plot->magnification;
 
@@ -142,16 +146,17 @@ gtk_plot_export_ps_with_size                    (GtkPlot *plot,
                                              width, height, 
                                              1.0 , 1.0));
 
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
   if(orient == GTK_PLOT_PORTRAIT){
     scalex = (gfloat)ps->page_width /
-                                (gfloat)GTK_WIDGET(plot)->allocation.width;
+                                (gfloat)allocation.width;
     scaley = (gfloat)ps->page_height /
-                                (gfloat)GTK_WIDGET(plot)->allocation.height;
+                                (gfloat)allocation.height;
   }else{
     scalex = (gfloat)ps->page_width /
-                                (gfloat)GTK_WIDGET(plot)->allocation.height;
+                                (gfloat)allocation.height;
     scaley = (gfloat)ps->page_height /
-                                (gfloat)GTK_WIDGET(plot)->allocation.width;
+                                (gfloat)allocation.width;
   }
 
   gtk_plot_ps_set_scale(ps, scalex, scaley);

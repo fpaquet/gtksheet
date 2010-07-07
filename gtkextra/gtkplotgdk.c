@@ -265,7 +265,7 @@ gtk_plot_gdk_new                                (GtkWidget *widget)
 void
 gtk_plot_gdk_construct(GtkPlotGdk *pc, GtkWidget *widget)
 {
-  pc->window = widget->window;
+  pc->window = gtk_widget_get_window(widget);
   pc->context = gtk_widget_get_pango_context (widget);
   g_object_ref(G_OBJECT(pc->context));
   pc->layout = pango_layout_new(pc->context);

@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
   gtk_icon_list_set_selection_mode(GTK_ICON_LIST(GTK_ICON_FILESEL(filesel)->file_list), GTK_SELECTION_MULTIPLE);
 
   box = gtk_hbox_new(FALSE, 1);
-  gtk_box_pack_start(GTK_BOX(GTK_BIN(filesel)->child), box, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(gtk_bin_get_child(GTK_BIN(filesel))), box, TRUE, TRUE, 0);
   gtk_widget_show(box);
 
   show_button = gtk_button_new_with_label("Show Tree");

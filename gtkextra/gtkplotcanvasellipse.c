@@ -249,7 +249,7 @@ draw_marker(GtkPlotCanvas *canvas, GdkGC *gc, gint x, gint y)
 {
   GdkDrawable *darea;
                                                                                 
-  darea = GTK_WIDGET(canvas)->window;
+  darea = gtk_widget_get_window(GTK_WIDGET(canvas));
                                                                                 
   gdk_draw_rectangle(darea, gc, TRUE,
                      x - DEFAULT_MARKER_SIZE / 2, y - DEFAULT_MARKER_SIZE / 2,
@@ -262,17 +262,17 @@ gtk_plot_canvas_ellipse_select(GtkPlotCanvas *canvas, GtkPlotCanvasChild *child,
   GdkGC *xor_gc = NULL;
   GdkGCValues values;
   
-  gdk_gc_get_values(GTK_WIDGET(canvas)->style->fg_gc[0], &values);
+  gdk_gc_get_values(gtk_widget_get_style(GTK_WIDGET(canvas))->fg_gc[0], &values);
   values.function = GDK_INVERT;
-  values.foreground = GTK_WIDGET(canvas)->style->white;
+  values.foreground = gtk_widget_get_style(GTK_WIDGET(canvas))->white;
   values.subwindow_mode = GDK_INCLUDE_INFERIORS;
-  xor_gc = gdk_gc_new_with_values(GTK_WIDGET(canvas)->window,
+  xor_gc = gdk_gc_new_with_values(gtk_widget_get_window(GTK_WIDGET(canvas)),
                                   &values,
                                   GDK_GC_FOREGROUND |
                                   GDK_GC_FUNCTION |
                                   GDK_GC_SUBWINDOW);
 
-  gdk_draw_rectangle (GTK_WIDGET(canvas)->window,
+  gdk_draw_rectangle (gtk_widget_get_window(GTK_WIDGET(canvas)),
                       xor_gc,
                       FALSE,
                       area.x, area.y,
@@ -293,7 +293,7 @@ gtk_plot_canvas_ellipse_select(GtkPlotCanvas *canvas, GtkPlotCanvasChild *child,
   }
 
   gdk_gc_set_line_attributes(xor_gc, 1, 1, 0, 0);
-  gdk_draw_arc (GTK_WIDGET(canvas)->window, xor_gc,
+  gdk_draw_arc (gtk_widget_get_window(GTK_WIDGET(canvas)), xor_gc,
                 FALSE,
                 roundint(area.x), roundint(area.y),
                 roundint(area.width), roundint(area.height), 0, 25000);

@@ -226,7 +226,7 @@ gtk_color_combo_update (GtkWidget * widget, GtkColorCombo * color_combo)
             focus_row=i;
             focus_col=j;
       }
-      if(color_combo->button[index]->state==GTK_STATE_ACTIVE){
+      if(gtk_widget_get_state(color_combo->button[index])==GTK_STATE_ACTIVE){
         if(i != row || j != column){
             new_selection=TRUE;
             new_row=i;
@@ -414,10 +414,10 @@ gtk_color_combo_realize(GtkWidget *widget)
        xpm_color[3]=color_string;
 
        color_pixmap=gdk_pixmap_create_from_xpm_d(
-                             widget->window,
-                             NULL,
-                             &(widget->style->bg[GTK_STATE_NORMAL]),
-                             xpm_color);
+                          gtk_widget_get_window(widget),
+                          NULL,
+                          &(gtk_widget_get_style(widget)->bg[GTK_STATE_NORMAL]),
+                          xpm_color);
        pixmap=gtk_image_new_from_pixmap(color_pixmap, NULL);
        gtk_container_add(GTK_CONTAINER(color_combo->button[n]), pixmap);
        gtk_widget_show(pixmap);

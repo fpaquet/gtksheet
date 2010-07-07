@@ -461,11 +461,11 @@ gtk_plot_canvas_line_draw_selection 	(GtkPlotCanvas *canvas,
   dx = canvas->pointer_x - canvas->drag_x;
   dy = canvas->pointer_y - canvas->drag_y;
   
-  gdk_gc_get_values(GTK_WIDGET(canvas)->style->fg_gc[0], &values);
+  gdk_gc_get_values(gtk_widget_get_style(GTK_WIDGET(canvas))->fg_gc[0], &values);
   values.function = GDK_INVERT;
-  values.foreground = GTK_WIDGET(canvas)->style->white;
+  values.foreground = gtk_widget_get_style(GTK_WIDGET(canvas))->white;
   values.subwindow_mode = GDK_INCLUDE_INFERIORS;
-  xor_gc = gdk_gc_new_with_values(GTK_WIDGET(canvas)->window,
+  xor_gc = gdk_gc_new_with_values(gtk_widget_get_window(GTK_WIDGET(canvas)),
                                   &values,
                                   GDK_GC_FOREGROUND |
                                   GDK_GC_FUNCTION |
@@ -475,47 +475,55 @@ gtk_plot_canvas_line_draw_selection 	(GtkPlotCanvas *canvas,
   gtk_plot_canvas_get_pixel(canvas, line->x2, line->y2, &x2, &y2);
 
   if(line->pos == GTK_PLOT_CANVAS_TOP_LEFT){ 
-    gdk_draw_rectangle(GTK_WIDGET(canvas)->window, xor_gc, TRUE,
-                       x2 - DEFAULT_MARKER_SIZE / 2, 
-                       y2 - DEFAULT_MARKER_SIZE / 2,
-                       DEFAULT_MARKER_SIZE + 1, DEFAULT_MARKER_SIZE + 1);
+    gdk_draw_rectangle(gtk_widget_get_window(GTK_WIDGET(canvas)), 
+			xor_gc, TRUE,
+                        x2 - DEFAULT_MARKER_SIZE / 2, 
+                        y2 - DEFAULT_MARKER_SIZE / 2,
+                        DEFAULT_MARKER_SIZE + 1, DEFAULT_MARKER_SIZE + 1);
 
-    gdk_draw_rectangle(GTK_WIDGET(canvas)->window, xor_gc, TRUE,
+    gdk_draw_rectangle(gtk_widget_get_window(GTK_WIDGET(canvas)), 
+		       xor_gc, TRUE,
                        x1 + dx - DEFAULT_MARKER_SIZE / 2, 
                        y1 + dy - DEFAULT_MARKER_SIZE / 2,
                        DEFAULT_MARKER_SIZE + 1, DEFAULT_MARKER_SIZE + 1);
 
     gdk_gc_set_line_attributes(xor_gc, 1, 1, 0, 0);
-    gdk_draw_line(GTK_WIDGET(canvas)->window, xor_gc, x2, y2, x1 + dx, y1 + dy);
+    gdk_draw_line(gtk_widget_get_window(GTK_WIDGET(canvas)), 
+			xor_gc, x2, y2, x1 + dx, y1 + dy);
  
   } else if(line->pos == GTK_PLOT_CANVAS_BOTTOM_RIGHT){ 
-    gdk_draw_rectangle(GTK_WIDGET(canvas)->window, xor_gc, TRUE,
+    gdk_draw_rectangle(gtk_widget_get_window(GTK_WIDGET(canvas)), 
+		       xor_gc, TRUE,
                        x1 - DEFAULT_MARKER_SIZE / 2, 
                        y1 - DEFAULT_MARKER_SIZE / 2,
                        DEFAULT_MARKER_SIZE + 1, DEFAULT_MARKER_SIZE + 1);
 
-    gdk_draw_rectangle(GTK_WIDGET(canvas)->window, xor_gc, TRUE,
+    gdk_draw_rectangle(gtk_widget_get_window(GTK_WIDGET(canvas)), 
+		       xor_gc, TRUE,
                        x2 + dx - DEFAULT_MARKER_SIZE / 2, 
                        y2 + dy - DEFAULT_MARKER_SIZE / 2,
                        DEFAULT_MARKER_SIZE + 1, DEFAULT_MARKER_SIZE + 1);
 
     gdk_gc_set_line_attributes(xor_gc, 1, 1, 0, 0);
-    gdk_draw_line(GTK_WIDGET(canvas)->window, xor_gc, x1, y1, x2 + dx, y2 + dy);
+    gdk_draw_line(gtk_widget_get_window(GTK_WIDGET(canvas)), 
+			xor_gc, x1, y1, x2 + dx, y2 + dy);
  
   } else { 
     
-    gdk_draw_rectangle(GTK_WIDGET(canvas)->window, xor_gc, TRUE,
+    gdk_draw_rectangle(gtk_widget_get_window(GTK_WIDGET(canvas)),
+		        xor_gc, TRUE,
                        x1 + dx - DEFAULT_MARKER_SIZE / 2, 
                        y1 + dy - DEFAULT_MARKER_SIZE / 2,
                        DEFAULT_MARKER_SIZE + 1, DEFAULT_MARKER_SIZE + 1);
 
-    gdk_draw_rectangle(GTK_WIDGET(canvas)->window, xor_gc, TRUE,
+    gdk_draw_rectangle(gtk_widget_get_window(GTK_WIDGET(canvas)), 
+		       xor_gc, TRUE,
                        x2 + dx - DEFAULT_MARKER_SIZE / 2, 
                        y2 + dy - DEFAULT_MARKER_SIZE / 2,
                        DEFAULT_MARKER_SIZE + 1, DEFAULT_MARKER_SIZE + 1);
 
     gdk_gc_set_line_attributes(xor_gc, 1, 1, 0, 0);
-    gdk_draw_line(GTK_WIDGET(canvas)->window, xor_gc, 
+    gdk_draw_line(gtk_widget_get_window(GTK_WIDGET(canvas)), xor_gc, 
                  x1 + dx, y1 + dy, x2 + dx, y2 + dy);
   }
   

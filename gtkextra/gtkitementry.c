@@ -333,23 +333,30 @@ gtk_entry_realize (GtkWidget *widget)
                             GDK_LEAVE_NOTIFY_MASK);
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
 
-  widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, attributes_mask);
-  gdk_window_set_user_data (widget->window, entry);
+  gtk_widget_set_window(widget ,
+		gdk_window_new (gtk_widget_get_parent_window (widget), 
+				&attributes, attributes_mask));
+  gdk_window_set_user_data (gtk_widget_get_window(widget), entry);
 
   get_text_area_size (entry, &attributes.x, &attributes.y, &attributes.width, &attributes.height);
 
   attributes.cursor = gdk_cursor_new (GDK_XTERM);
   attributes_mask |= GDK_WA_CURSOR;
 
-  entry->text_area = gdk_window_new (widget->window, &attributes, attributes_mask);
+  entry->text_area = gdk_window_new (gtk_widget_get_window(widget), 
+					&attributes, attributes_mask);
   gdk_window_set_user_data (entry->text_area, entry);
 
   gdk_cursor_unref (attributes.cursor);
 
-  widget->style = gtk_style_attach (widget->style, widget->window);
+  gtk_widget_set_style(widget, gtk_style_attach (
+				     gtk_widget_get_style(widget), 
+				     gtk_widget_get_window(widget)));
 
-  gdk_window_set_background (widget->window, &widget->style->bg[gtk_widget_get_state(widget)]);
-  gdk_window_set_background (entry->text_area, &widget->style->bg[gtk_widget_get_state (widget)]);
+  gdk_window_set_background (gtk_widget_get_window(widget), 
+	    &(gtk_widget_get_style(widget)->bg[gtk_widget_get_state(widget)]));
+  gdk_window_set_background (entry->text_area, 
+	    &(gtk_widget_get_style(widget)->bg[gtk_widget_get_state(widget)]));
 
   gdk_window_show (entry->text_area);
 
@@ -374,8 +381,8 @@ get_borders (GtkEntry *entry,
 
   if (entry->has_frame)
     {
-      *xborder = widget->style->xthickness;
-      *yborder = widget->style->ythickness;
+      *xborder = gtk_widget_get_style(widget)->xthickness;
+      *yborder = gtk_widget_get_style(widget)->ythickness;
     }
   else
     {
@@ -402,7 +409,7 @@ gtk_entry_size_request (GtkWidget      *widget,
   
   context = gtk_widget_get_pango_context (widget);
   metrics = pango_context_get_metrics (context,
-				       widget->style->font_desc,
+				       gtk_widget_get_style(widget)->font_desc,
 				       pango_context_get_language (context));
 
   entry->ascent = pango_font_metrics_get_ascent (metrics);
@@ -435,6 +442,8 @@ get_text_area_size (GtkEntry *entry,
 {
   gint xborder, yborder;
   GtkRequisition requisition;
+  GtkAllocation allocation;
+
   GtkWidget *widget = GTK_WIDGET (entry);
 
   gtk_widget_get_child_requisition (widget, &requisition);
@@ -448,7 +457,10 @@ get_text_area_size (GtkEntry *entry,
     *y = yborder;
   
   if (width)
-    *width = GTK_WIDGET (entry)->allocation.width - xborder * 2;
+  {
+      gtk_widget_get_allocation(widget, &allocation);
+      *width = allocation.width - xborder * 2;
+  }
 
   if (height)
     *height = requisition.height - yborder * 2;
@@ -462,28 +474,30 @@ get_widget_window_size (GtkEntry *entry,
                         gint     *height)
 {
   GtkRequisition requisition;
+  GtkAllocation allocation;
   GtkWidget *widget = GTK_WIDGET (entry);
       
   gtk_widget_get_child_requisition (widget, &requisition);
+  gtk_widget_get_allocation(widget, &allocation);
 
   if (x)
-    *x = widget->allocation.x;
+    *x = allocation.x;
 
   if (y)
     {
       if (entry->is_cell_renderer)
-	*y = widget->allocation.y;
+	*y = allocation.y;
       else
-	*y = widget->allocation.y + (widget->allocation.height - requisition.height) / 2;
+	*y = allocation.y + (allocation.height - requisition.height) / 2;
     }
 
   if (width)
-    *width = widget->allocation.width;
+    *width = allocation.width;
 
   if (height)
     {
       if (entry->is_cell_renderer)
-	*height = widget->allocation.height;
+	*height = allocation.height;
       else
 	*height = requisition.height;
     }
@@ -499,7 +513,7 @@ gtk_entry_size_allocate (GtkWidget     *widget,
   if(ientry->text_max_size > 0)
     allocation->width = MIN(ientry->text_max_size, allocation->width);
  
-  widget->allocation = *allocation;
+  gtk_widget_set_allocation(widget, allocation);
  
   if (gtk_widget_get_realized (widget))
     {
@@ -511,8 +525,9 @@ gtk_entry_size_allocate (GtkWidget     *widget,
 
       get_widget_window_size (entry, &x, &y, &width, &height);
      
-      gdk_window_move_resize (widget->window,
-                              allocation->x, allocation->y, allocation->width, allocation->height);   
+      gdk_window_move_resize (gtk_widget_get_window(widget),
+                              allocation->x, allocation->y, 
+				allocation->width, allocation->height);   
 
       get_text_area_size (entry, &x, &y, &width, &height);
       
@@ -534,7 +549,7 @@ gtk_entry_expose (GtkWidget      *widget,
 {
   GtkEntry *entry = GTK_ENTRY (widget);
 
-  if (widget->window == event->window)
+  if (gtk_widget_get_window(widget) == event->window)
     gtk_entry_draw_frame (widget);
   else if (entry->text_area == event->window)
     {
@@ -543,9 +558,9 @@ gtk_entry_expose (GtkWidget      *widget,
       get_text_area_size (entry, NULL, NULL, &area_width, &area_height);
 
       gdk_draw_rectangle (entry->text_area,
-                          widget->style->bg_gc[gtk_widget_get_state(widget)],
-                          TRUE,
-                          0, 0, area_width, area_height);
+              gtk_widget_get_style(widget)->bg_gc[gtk_widget_get_state(widget)],
+              TRUE,
+              0, 0, area_width, area_height);
 
       if ((entry->visible || entry->invisible_char != 0) &&
 	  gtk_widget_has_focus (GTK_WIDGET(widget)) &&
@@ -597,8 +612,10 @@ gtk_entry_state_changed (GtkWidget      *widget,
   
   if (gtk_widget_get_realized (widget))
     {
-      gdk_window_set_background (widget->window, &widget->style->bg[gtk_widget_get_state (widget)]);
-      gdk_window_set_background (entry->text_area, &widget->style->bg[gtk_widget_get_state (widget)]);
+      gdk_window_set_background (gtk_widget_get_window(widget), 
+	      &gtk_widget_get_style(widget)->bg[gtk_widget_get_state (widget)]);
+      gdk_window_set_background (entry->text_area, 
+	      &gtk_widget_get_style(widget)->bg[gtk_widget_get_state (widget)]);
     }
 
   if (!gtk_widget_is_sensitive (widget))
@@ -674,8 +691,10 @@ gtk_entry_style_set	(GtkWidget      *widget,
     {
       gtk_entry_recompute (entry);
 
-      gdk_window_set_background (widget->window, &widget->style->bg[gtk_widget_get_state(widget)]);
-      gdk_window_set_background (entry->text_area, &widget->style->bg[gtk_widget_get_state (widget)]);
+      gdk_window_set_background (gtk_widget_get_window(widget), 
+	&gtk_widget_get_style(widget)->bg[gtk_widget_get_state(widget)]);
+      gdk_window_set_background (entry->text_area, 
+	&gtk_widget_get_style(widget)->bg[gtk_widget_get_state (widget)]);
     }
 }
 
@@ -1459,9 +1478,10 @@ gtk_entry_draw_text (GtkEntry *entry)
       get_text_area_size (entry, NULL, NULL, &area_width, &area_height);
 
 
-      gdk_draw_layout (entry->text_area, widget->style->text_gc [widget->state],       
-                       x, y,
-		       layout);
+      gdk_draw_layout (entry->text_area, 
+	       gtk_widget_get_style(widget)->text_gc [gtk_widget_get_state(widget)],
+               x, y,
+	       layout);
      
  
       if (gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &start_pos, &end_pos))
@@ -1484,13 +1504,17 @@ gtk_entry_draw_text (GtkEntry *entry)
           
 	  if (gtk_widget_has_focus (GTK_WIDGET(entry)))
 	    {
-	      selection_gc = widget->style->base_gc [GTK_STATE_SELECTED];
-	      text_gc = widget->style->text_gc [GTK_STATE_SELECTED];
+	      selection_gc = 
+		   gtk_widget_get_style(widget)->base_gc [GTK_STATE_SELECTED];
+	      text_gc = 
+		   gtk_widget_get_style(widget)->text_gc [GTK_STATE_SELECTED];
 	    }
 	  else
 	    {
-	      selection_gc = widget->style->base_gc [GTK_STATE_ACTIVE];
-	      text_gc = widget->style->text_gc [GTK_STATE_ACTIVE];
+	      selection_gc = 
+		   gtk_widget_get_style(widget)->base_gc [GTK_STATE_ACTIVE];
+	      text_gc = 
+		   gtk_widget_get_style(widget)->text_gc [GTK_STATE_ACTIVE];
 	    }
 	  
 	  for (i=0; i < n_ranges; i++)
@@ -1553,9 +1577,11 @@ make_cursor_gc (GtkWidget *widget,
   else
     gc_values.foreground = *fallback;
   
-  gdk_rgb_find_color (widget->style->colormap, &gc_values.foreground);
-  return gtk_gc_get (widget->style->depth, widget->style->colormap,
-    &gc_values, gc_values_mask);
+  gdk_rgb_find_color (gtk_widget_get_style(widget)->colormap, 
+		      &gc_values.foreground);
+  return gtk_gc_get (gtk_widget_get_style(widget)->depth, 
+		     gtk_widget_get_style(widget)->colormap,
+    		     &gc_values, gc_values_mask);
 }
 
 static GdkGC *
@@ -1564,11 +1590,13 @@ _gtkextra_get_insertion_cursor_gc (GtkWidget *widget,
 {
   CursorInfo *cursor_info;
 
-  cursor_info = g_object_get_data (G_OBJECT (widget->style), "gtk-style-cursor-info");
+  cursor_info = g_object_get_data (G_OBJECT (gtk_widget_get_style(widget)), 
+				   "gtk-style-cursor-info");
   if (!cursor_info)
     {
       cursor_info = g_new (CursorInfo, 1);
-      g_object_set_data (G_OBJECT (widget->style), "gtk-style-cursor-info", cursor_info);
+      g_object_set_data (G_OBJECT (gtk_widget_get_style(widget)), 
+			 "gtk-style-cursor-info", cursor_info);
       cursor_info->primary_gc = NULL;
       cursor_info->secondary_gc = NULL;
       cursor_info->for_type = G_TYPE_INVALID;
@@ -1599,8 +1627,8 @@ _gtkextra_get_insertion_cursor_gc (GtkWidget *widget,
     {
       if (!cursor_info->primary_gc)
 	cursor_info->primary_gc = make_cursor_gc (widget,
-						  "cursor-color",
-						  &widget->style->black);
+					  "cursor-color",
+					  &gtk_widget_get_style(widget)->black);
 	
       return g_object_ref (cursor_info->primary_gc);
     }
@@ -1857,7 +1885,7 @@ gtk_entry_adjust_scroll (GtkEntry *entry)
             if(item_entry->text_max_size != 0 &&
                text_area_width + 2 <= item_entry->text_max_size){
                GtkAllocation allocation;
-               allocation = GTK_WIDGET(entry)->allocation;
+	       gtk_widget_get_allocation(GTK_WIDGET(entry), &allocation);
                allocation.width += text_width - text_area_width;
                entry->scroll_offset = 0;
                gtk_entry_size_allocate(GTK_WIDGET(entry), &allocation);
@@ -1878,7 +1906,7 @@ gtk_entry_adjust_scroll (GtkEntry *entry)
               if(item_entry->text_max_size != 0 &&
                 text_area_width + 2 <= item_entry->text_max_size){
                 GtkAllocation allocation;
-                allocation = GTK_WIDGET(entry)->allocation;
+	       gtk_widget_get_allocation(GTK_WIDGET(entry), &allocation);
                 allocation.x -= text_width - text_area_width;
                 allocation.width += text_width - text_area_width;
                 entry->scroll_offset = 0;
@@ -1904,7 +1932,7 @@ gtk_entry_adjust_scroll (GtkEntry *entry)
               if(item_entry->text_max_size != 0 &&
                           text_area_width+1<=item_entry->text_max_size){
                 GtkAllocation allocation;
-                allocation = GTK_WIDGET(entry)->allocation;
+	        gtk_widget_get_allocation(GTK_WIDGET(entry), &allocation);
                 allocation.x += (text_area_width/2 - text_width/2);
                 allocation.width += text_width - text_area_width;
                 entry->scroll_offset = 0;

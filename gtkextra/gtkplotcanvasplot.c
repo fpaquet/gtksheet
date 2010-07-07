@@ -160,14 +160,16 @@ gtk_plot_canvas_plot_draw 		(GtkPlotCanvas *canvas,
   gint height = child->allocation.height;
   gdouble m = canvas->magnification;
   GtkPlotPC *pc;
+  GtkAllocation allocation;
 
   if(width == 0 && height == 0) return;
 
   gtk_plot_set_drawable(plot, canvas->pixmap);
-  GTK_WIDGET(plot)->allocation.x = 0;
-  GTK_WIDGET(plot)->allocation.y = 0;
-  GTK_WIDGET(plot)->allocation.width = canvas->pixmap_width;
-  GTK_WIDGET(plot)->allocation.height = canvas->pixmap_height;
+  allocation.x = 0;
+  allocation.y = 0;
+  allocation.width = canvas->pixmap_width;
+  allocation.height = canvas->pixmap_height;
+  gtk_widget_set_allocation(GTK_WIDGET(plot), &allocation);
   gtk_plot_set_magnification(plot, m);
   reset_plot_allocation(canvas, plot_child);
 
@@ -385,16 +387,18 @@ static void
 gtk_plot_canvas_plot_size_allocate	(GtkPlotCanvas *canvas,
 					 GtkPlotCanvasChild *child)
 {
+  GtkAllocation allocation;
   GtkPlot *plot = GTK_PLOT_CANVAS_PLOT(child)->plot;
   if(!plot) return;
 
   switch(GTK_PLOT_CANVAS_PLOT(child)->pos){
     case GTK_PLOT_CANVAS_PLOT_IN_PLOT:
     case GTK_PLOT_CANVAS_PLOT_OUT:
-      GTK_WIDGET(plot)->allocation.x = 0;
-      GTK_WIDGET(plot)->allocation.y = 0;
-      GTK_WIDGET(plot)->allocation.width = canvas->pixmap_width;
-      GTK_WIDGET(plot)->allocation.height = canvas->pixmap_height;
+      allocation.x = 0;
+      allocation.y = 0;
+      allocation.width = canvas->pixmap_width;
+      allocation.height = canvas->pixmap_height;
+      gtk_widget_set_allocation(GTK_WIDGET(plot), &allocation);
 
       if(!GTK_WIDGET(plot)->parent) 
         gtk_widget_set_parent(GTK_WIDGET(plot), GTK_WIDGET(canvas));

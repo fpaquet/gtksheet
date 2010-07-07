@@ -246,20 +246,22 @@ new_font(GtkFontCombo *font_combo, gpointer data)
 
     widget = GTK_WIDGET(charsel->button[i]);
 
-    if(GTK_BIN(widget)->child)
-      gtk_container_remove(GTK_CONTAINER(widget), GTK_BIN(widget)->child);
+    if(gtk_bin_get_child(GTK_BIN(widget)))
+      gtk_container_remove(GTK_CONTAINER(widget), 
+		gtk_bin_get_child(GTK_BIN(widget)));
 
     pango_layout_set_text(layout, s2, -1);
     g_free(s2);
     pango_layout_get_extents(layout, NULL, &rect);
 
-    req.width = width + 2 * widget->style->xthickness;
+    req.width = width + 2 * gtk_widget_get_style(widget)->xthickness;
     req.height = PANGO_PIXELS(rect.height);
 
     if(gtk_widget_get_mapped(widget)){
-      pixmap = gdk_pixmap_new(widget->window, width, width, -1);
-      gdk_draw_rectangle(pixmap, widget->style->white_gc, TRUE, 0, 0, width, width);
-      gdk_draw_layout(pixmap, widget->style->fg_gc[0], width/2 - PANGO_PIXELS(rect.width)/2, descent, layout);
+      pixmap = gdk_pixmap_new(gtk_widget_get_window(widget), width, width, -1);
+      gdk_draw_rectangle(pixmap, gtk_widget_get_style(widget)->white_gc, 
+			TRUE, 0, 0, width, width);
+      gdk_draw_layout(pixmap, gtk_widget_get_style(widget)->fg_gc[0], width/2 - PANGO_PIXELS(rect.width)/2, descent, layout);
       wpixmap = gtk_image_new_from_pixmap(pixmap, NULL);
       gtk_container_add (GTK_CONTAINER (charsel->button[i]), wpixmap);
       gtk_widget_show(wpixmap);

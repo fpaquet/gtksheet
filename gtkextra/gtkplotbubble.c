@@ -366,6 +366,7 @@ gtk_plot_bubble_draw_symbol(GtkPlotData *dataset,
   gdouble m;
   gdouble x1 = 0.0, y1 = 0.0;
   gdouble r;
+  GtkAllocation allocation;
 
   g_return_if_fail(GTK_IS_PLOT_BUBBLE(dataset));
 
@@ -377,10 +378,11 @@ gtk_plot_bubble_draw_symbol(GtkPlotData *dataset,
   plot = dataset->plot;
 
   m = plot->magnification;
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
-  area.width = GTK_WIDGET(plot)->allocation.width;
-  area.height = GTK_WIDGET(plot)->allocation.height;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
   clip_area.x = area.x + roundint(plot->x * area.width);
   clip_area.y = area.y + roundint(plot->y * area.height);
@@ -484,6 +486,7 @@ gtk_plot_bubble_draw_legend(GtkPlotData *data, gint x, gint y)
   gdouble m;
   gint line_width;
   GtkPlotSymbolStyle style;
+  GtkAllocation allocation;
 
   bubble = GTK_PLOT_BUBBLE(data);
   style = data->symbol.symbol_style;
@@ -493,10 +496,11 @@ gtk_plot_bubble_draw_legend(GtkPlotData *data, gint x, gint y)
   g_return_if_fail(gtk_widget_get_visible(GTK_WIDGET(data->plot)));
 
   plot = data->plot;
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
-  area.width = GTK_WIDGET(plot)->allocation.width;
-  area.height = GTK_WIDGET(plot)->allocation.height;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
   m = plot->magnification;
   legend = plot->legends_attr;

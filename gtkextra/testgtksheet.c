@@ -167,7 +167,7 @@ gint
     GdkModifierType mods;
     GtkWidget *sheet = GTK_WIDGET(widget);
 
-    gdk_window_get_pointer (sheet->window, NULL, NULL, &mods);
+    gdk_window_get_pointer (gtk_widget_get_window(sheet), NULL, NULL, &mods);
 
     if (mods&GDK_BUTTON3_MASK)
     {
@@ -203,7 +203,9 @@ format_text (GtkSheet *sheet, const gchar *text, gint *justification, char *labe
   enum {EMPTY, TEXT, NUMERIC};
 
   context = gtk_widget_get_pango_context(GTK_WIDGET(sheet));
-  metrics = pango_context_get_metrics(context, GTK_WIDGET(sheet)->style->font_desc, pango_context_get_language(context));
+  metrics = pango_context_get_metrics(context, 
+		gtk_widget_get_style(GTK_WIDGET(sheet))->font_desc, 
+		pango_context_get_language(context));
   char_width = pango_font_metrics_get_approximate_char_width(metrics);
   pango_font_metrics_unref(metrics);
 
@@ -1112,7 +1114,7 @@ change_fg(GtkWidget *widget, gint i, GdkColor *color)
 
    gtk_sheet_range_set_foreground(current, &current->range, color);
 
-   tmp_gc=gdk_gc_new(window->window);
+   tmp_gc=gdk_gc_new(gtk_widget_get_window(window));
    gdk_gc_set_foreground(tmp_gc,color);
    gdk_draw_rectangle(GTK_PIXMAP(fg_pixmap)->pixmap,
 		      tmp_gc, TRUE, 5,20,16,4);
@@ -1132,7 +1134,7 @@ change_bg(GtkWidget *widget, gint i, GdkColor *color)
 
    gtk_sheet_range_set_background(current, &current->range, color);
 
-   tmp_gc=gdk_gc_new(window->window);
+   tmp_gc=gdk_gc_new(gtk_widget_get_window(window));
    gdk_gc_set_foreground(tmp_gc,color);
    gdk_draw_rectangle(GTK_PIXMAP(bg_pixmap)->pixmap,
 		      tmp_gc, TRUE, 4,20,18,4);

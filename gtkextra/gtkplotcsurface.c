@@ -826,14 +826,16 @@ gtk_plot_csurface_draw_lines(GtkPlotData *data)
             }
 
             if(!overlap){
+              GtkAllocation allocation;
+              gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
               prev = pos;
               new_bb = g_new0(GtkAllocation, 1);
               *new_bb = bb;
               labels = g_list_append(labels, new_bb);
-              label.x = GTK_WIDGET(plot)->allocation.x + x;
-              label.y = GTK_WIDGET(plot)->allocation.y + y;
-              label.x /= GTK_WIDGET(plot)->allocation.width;
-              label.y /= GTK_WIDGET(plot)->allocation.height;
+              label.x = allocation.x + x;
+              label.y = allocation.y + y;
+              label.x /= allocation.width;
+              label.y /= allocation.height;
               gtk_plot_draw_text(plot, label);
               if(i != 0) break;
             }
@@ -1667,6 +1669,7 @@ gtk_plot_csurface_draw_legend(GtkPlotData *data, gint x, gint y)
   GdkRectangle area;
   gint lascent = 0, ldescent = 0, lheight = 0, lwidth = 0;
   gdouble m;
+  GtkAllocation allocation;
 
   surface = GTK_PLOT_SURFACE(data);
   csurface = GTK_PLOT_CSURFACE(data);
@@ -1675,10 +1678,11 @@ gtk_plot_csurface_draw_legend(GtkPlotData *data, gint x, gint y)
   g_return_if_fail(GTK_IS_PLOT(data->plot));
 
   plot = data->plot;
-  area.x = GTK_WIDGET(plot)->allocation.x;
-  area.y = GTK_WIDGET(plot)->allocation.y;
-  area.width = GTK_WIDGET(plot)->allocation.width;
-  area.height = GTK_WIDGET(plot)->allocation.height;
+  gtk_widget_get_allocation(GTK_WIDGET(plot), &allocation);
+  area.x = allocation.x;
+  area.y = allocation.y;
+  area.width = allocation.width;
+  area.height = allocation.height;
 
   m = plot->magnification;
   legend = plot->legends_attr;

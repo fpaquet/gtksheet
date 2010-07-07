@@ -647,6 +647,8 @@ gtk_plot_polar_draw_labels(GtkPlotPolar *polar,
   gdouble m;
   gboolean veto = FALSE;
   gdouble x0, y0;
+  GtkAllocation allocation;
+
 
   widget = GTK_WIDGET(polar);
   plot = GTK_PLOT(polar);
@@ -709,21 +711,21 @@ gtk_plot_polar_draw_labels(GtkPlotPolar *polar,
           gtk_plot_axis_parse_label(axis, x_tick, axis->label_precision, axis->label_style, label);
       }
       tick.text = label;
-
+      gtk_widget_get_allocation (widget, &allocation);
       if(axis->label_mask & GTK_PLOT_LABEL_IN){
          tick.x = x + xx;
          tick.y = y + yy;
          tick.x = tick.x + tick_direction.x*roundint(axis->labels_offset * m);
          tick.y = tick.y + tick_direction.y*roundint(axis->labels_offset * m);
-         tick.x = (gdouble)tick.x / (gdouble)widget->allocation.width;
-         tick.y = (gdouble)tick.y / (gdouble)widget->allocation.height;
+         tick.x = (gdouble)tick.x / (gdouble)allocation.width;
+         tick.y = (gdouble)tick.y / (gdouble)allocation.height;
          gtk_plot_draw_text(plot, tick);
          tick.x = x - xx;
          tick.y = y - yy;
          tick.x = tick.x + tick_direction.x*roundint(axis->labels_offset * m);
          tick.y = tick.y + tick_direction.y*roundint(axis->labels_offset * m);
-         tick.x = (gdouble)tick.x / (gdouble)widget->allocation.width;
-         tick.y = (gdouble)tick.y / (gdouble)widget->allocation.height;
+         tick.x = (gdouble)tick.x / (gdouble)allocation.width;
+         tick.y = (gdouble)tick.y / (gdouble)allocation.height;
          gtk_plot_draw_text(plot, tick);
       }
       if(axis->label_mask & GTK_PLOT_LABEL_OUT){
@@ -731,15 +733,15 @@ gtk_plot_polar_draw_labels(GtkPlotPolar *polar,
          tick.y = y + yy;
          tick.x = tick.x - tick_direction.x*roundint(axis->labels_offset * m);
          tick.y = tick.y - tick_direction.y*roundint(axis->labels_offset * m);
-         tick.x = (gdouble)tick.x / (gdouble)widget->allocation.width;
-         tick.y = (gdouble)tick.y / (gdouble)widget->allocation.height;
+         tick.x = (gdouble)tick.x / (gdouble)allocation.width;
+         tick.y = (gdouble)tick.y / (gdouble)allocation.height;
          gtk_plot_draw_text(plot, tick);
          tick.x = x - xx;
          tick.y = y - yy;
          tick.x = tick.x - tick_direction.x*roundint(axis->labels_offset * m);
          tick.y = tick.y - tick_direction.y*roundint(axis->labels_offset * m);
-         tick.x = (gdouble)tick.x / (gdouble)widget->allocation.width;
-         tick.y = (gdouble)tick.y / (gdouble)widget->allocation.height;
+         tick.x = (gdouble)tick.x / (gdouble)allocation.width;
+         tick.y = (gdouble)tick.y / (gdouble)allocation.height;
          gtk_plot_draw_text(plot, tick);
       }
     }
@@ -771,6 +773,7 @@ gtk_plot_polar_draw_circle(GtkPlotPolar *polar)
   gdouble rotation;
   gboolean veto = FALSE;
   gint sign = 1;
+  GtkAllocation allocation;
 
   widget = GTK_WIDGET(polar);
   plot = GTK_PLOT(polar);
@@ -864,14 +867,15 @@ gtk_plot_polar_draw_circle(GtkPlotPolar *polar)
       y1 += text_height / 2;
 
       if((x_tick - rotation) != 360.0 && axis->label_mask != 0){
+         gtk_widget_get_allocation (widget, &allocation);
          perp.direction.x = -cos(x_tick * PI / 180. * sign);
          perp.direction.y = sin(x_tick * PI / 180. * sign);
          tick.x = x1;
          tick.y = y1;
          tick.x -= roundint(perp.direction.x*axis->labels_offset * m);
          tick.y -= roundint(perp.direction.y*axis->labels_offset * m);
-         tick.x = (gdouble)tick.x / (gdouble)widget->allocation.width;
-         tick.y = (gdouble)tick.y / (gdouble)widget->allocation.height;
+         tick.x = (gdouble)tick.x / (gdouble)allocation.width;
+         tick.y = (gdouble)tick.y / (gdouble)allocation.height;
          gtk_plot_draw_text(plot, tick);
       }
 

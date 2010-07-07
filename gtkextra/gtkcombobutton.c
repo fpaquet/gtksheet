@@ -98,6 +98,8 @@ gtk_combo_button_get_pos (GtkComboButton * combo_button, gint * x, gint * y, gin
 {
   GtkBin *popwin;
   GtkWidget *widget;
+  GtkAllocation allocation;
+  GtkAllocation arrow_allocation;
 
   gint real_height, real_width;
   GtkRequisition child_requisition;
@@ -108,13 +110,15 @@ gtk_combo_button_get_pos (GtkComboButton * combo_button, gint * x, gint * y, gin
 
   widget = GTK_WIDGET(combo_button);
   popwin = GTK_BIN (combo_button->popwin);
+  gtk_widget_get_allocation(combo_button->button, &allocation);
+  gtk_widget_get_allocation(combo_button->arrow, &arrow_allocation);
 
-  gdk_window_get_origin (combo_button->button->window, x, y);
-  *x += combo_button->button->allocation.x;
-  *y += combo_button->button->allocation.y;
+  gdk_window_get_origin (gtk_widget_get_window(combo_button->button), x, y);
+  *x += allocation.x;
+  *y += allocation.y;
 
-  real_height = combo_button->button->allocation.height;
-  real_width = combo_button->button->allocation.width + combo_button->arrow->allocation.width;
+  real_height = allocation.height;
+  real_width = allocation.width + arrow_allocation.width;
 
   *y += real_height;
   avail_height = gdk_screen_height () - *y;
@@ -155,7 +159,7 @@ gtk_combo_button_popup_display (GtkComboButton * combo_button)
   gtk_widget_show (combo_button->popwin);
 
   gtk_grab_add (combo_button->popwin);
-  gdk_pointer_grab (combo_button->popwin->window, TRUE,
+  gdk_pointer_grab (gtk_widget_get_window(combo_button->popwin), TRUE,
 		    GDK_BUTTON_PRESS_MASK | 
 		    GDK_BUTTON_RELEASE_MASK |
 		    GDK_POINTER_MOTION_MASK, 
@@ -238,7 +242,7 @@ gtk_combo_button_init (GtkComboButton * combo_button)
 
   gtk_widget_realize (event_box);
   cursor = gdk_cursor_new (GDK_TOP_LEFT_ARROW);
-  gdk_window_set_cursor (event_box->window, cursor);
+  gdk_window_set_cursor (gtk_widget_get_window(event_box), cursor);
   gdk_cursor_destroy (cursor);
 
   combo_button->frame = gtk_frame_new (NULL);
@@ -330,8 +334,8 @@ gtk_combo_button_size_request (GtkWidget *widget,
   widget->requisition.height = size;
   widget->requisition.width = size + combo_button->arrow->requisition.width;
 */
-  widget->requisition.height = box_requisition.height;
-  widget->requisition.width = box_requisition.width;
+  gtk_widget_set_size_request(widget, box_requisition.width, 
+					box_requisition.height);
 }
 
 
@@ -341,6 +345,7 @@ gtk_combo_button_size_allocate (GtkWidget     *widget,
 {
   GtkComboButton *combo_button;
   GtkAllocation button_allocation;
+  GtkRequisition arrow_requisition;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (GTK_IS_COMBO_BUTTON (widget));
@@ -350,7 +355,7 @@ gtk_combo_button_size_allocate (GtkWidget     *widget,
 
   combo_button = GTK_COMBO_BUTTON (widget);
 
-  button_allocation = combo_button->button->allocation;
+  gtk_widget_get_allocation(combo_button->button, &button_allocation);
 /*
   button_allocation.width = MIN(button_allocation.width, 
                                 combo_button->button->requisition.width);
@@ -363,10 +368,10 @@ gtk_combo_button_size_allocate (GtkWidget     *widget,
 */
 
   gtk_widget_size_allocate (combo_button->button, &button_allocation);
+  gtk_widget_get_requisition(combo_button->arrow, &arrow_requisition);
 
-  button_allocation.x=combo_button->button->allocation.x +
-                      combo_button->button->allocation.width;
-  button_allocation.width=combo_button->arrow->requisition.width;
+  button_allocation.x= button_allocation.x + button_allocation.width;
+  button_allocation.width = arrow_requisition.width;
   gtk_widget_size_allocate (combo_button->arrow, &button_allocation);
 
 }

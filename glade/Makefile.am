@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-#SUBDIRS = pixmaps
+SUBDIRS = pixmaps
 
 glademoduledir = @GLADE_MODULE_DIR@
 gladecatalogdir = @GLADE_CATALOG_DIR@
@@ -42,5 +42,3 @@ endif
 gladecatalog_DATA = gtk+extra-catalog.xml
 
 EXTRA_DIST = gtk+extra-catalog.xml
-
-

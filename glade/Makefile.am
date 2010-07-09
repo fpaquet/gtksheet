@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-#SUBDIRS = icons
+#SUBDIRS = pixmaps
 
 glademoduledir = @GLADE_MODULE_DIR@
 gladecatalogdir = @GLADE_CATALOG_DIR@

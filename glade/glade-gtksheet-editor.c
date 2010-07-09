@@ -340,7 +340,7 @@ static void
 
     /* Editor */
     editor = glade_base_editor_new (sheet, sheet_editor,
-                                    _("Column"), GTK_TYPE_SHEET_COLUMN,
+                                    _("Column"), G_TYPE_SHEET_COLUMN,
                                     NULL);
 
 /*

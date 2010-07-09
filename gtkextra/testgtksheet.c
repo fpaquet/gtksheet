@@ -5,6 +5,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <glib.h>
 #include <string.h>
+#include "gtkextra-compat.h"
 #include "gtkcombobutton.h"
 #include "gtkbordercombo.h"
 #include "gtkcolorcombo.h"

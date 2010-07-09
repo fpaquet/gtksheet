@@ -23,6 +23,7 @@
 #include <string.h>
 #include <math.h>
 #include <gtk/gtk.h>
+#include "gtkextra-compat.h"
 #include "gtkplot.h"
 #include "gtkplot3d.h"
 #include "gtkplotdata.h"

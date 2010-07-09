@@ -40,7 +40,7 @@
  */
 
 
-
+#include "gtkextra-compat.h"
 #include "gtkcheckitem.h"
 
 

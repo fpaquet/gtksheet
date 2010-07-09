@@ -44,6 +44,7 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
+#include "gtkextra-compat.h"
 #include "gtkitementry.h"
 
 #define MIN_ENTRY_WIDTH  150

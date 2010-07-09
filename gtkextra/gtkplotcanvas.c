@@ -23,6 +23,7 @@
 #include <math.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+#include "gtkextra-compat.h"
 #include "gtkplotcairo.h"
 #include "gtkplotcanvas.h"
 #include "gtkplotgdk.h"

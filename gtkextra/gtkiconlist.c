@@ -36,6 +36,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <pango/pango.h>
+#include "gtkextra-compat.h"
 #include "gtkitementry.h"
 #include "gtkiconlist.h"
 #include "gtkextra-marshal.h"

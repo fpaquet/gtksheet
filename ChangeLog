@@ -1,3 +1,9 @@
+2010-07-09 Fredy Paquet <mailbox AT opag.ch>
+        * new include file gtkextra-compat.h to maintain backward compatibility for older gtk releases
+	* added Pixmaps for Glade-3 integration: glade/pixmaps/hicolor
+	* GtkSheet: fixed SEGV when extending cell selection beyond sheet boundaries
+	* GtkSheet: double click between column titles will now always fit column width, not only enlarge
+
 2010-07-07 Roy Rankin <rrankin AT ihug DOT com DOT au>
 	* gtkextra/*.c : Remove instances of direct bin, widget usage
 
@@ -9,6 +15,71 @@
 
 2010-06-12 Roy Rankin <rrankin AT ihug DOT com DOT au>
         * gtkextra/gtkitementry.c : patch to allow build with gtk2-21
+
+2010-05-22 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: glade column editor implemented
+	* GtkSheet: still more SEGV fixed, concerning empty sheets (no cols, no rows)
+
+2010-05-21 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed sheet_editor size request
+	* GtkSheet: reworked resizing a cell selection range (better, but still not very good)
+
+2010-05-20 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed lots of SEGV in empty sheets (no rows, no cols)
+	* GtkSheet: moved all glade integration procs into glade-gtksheet-editor.c
+	* GtkSheet: removed all sheet debug output ifndef DEBUG
+	* GtkSheet: reworked selection range dragging code (more failsafe)
+
+2010-05-19 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed several SEGV in glade gtkextra integration
+	* GtkSheet: adding/removing columns from within glade works now
+	* GtkSheet: setting column property 'label' now works with GtkBuilder 
+	* GtkSheet: moved column visibility flag from GtkSheetColumn into the embedded GtkWidget
+	* GtkSheet: SEGV in keyboard processing fixed
+	* added new ./configure option --enable-glade
+	* GtkSheet: added glade sheet editor source (not yet finished)
+	* GtkSheet: added po directory (glade support needs gettext installed)                    
+
+2010-05-18 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: changed GtkSheetColumn into an object, subtype of GtkWidget
+	* GtkSheet: fixed several SEGV errors, most of them incorrect boundary handling
+	* GtkSheet: fixed scrollbar behaviour near the end of the sheet
+	* GtkSheet: experimental integration into GtkBuilder - not yet finished
+
+2010-05-14 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed gtk_sheet_get_child_at(): returned wrong child under certain conditions
+	* GtkSheet: fixed some function declarations
+	* GtkSheet: fixed some +1/-1 problems that caused SEGV
+	* GtkSheet: fixed some doc tags
+
+2010-05-12 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed doc generation - there is still a problem with gtk_plot_marker_get_type
+	* GtkSheet: fixed redraw problems on sheets with 0 rows or 0 columns
+	* GtkSheet: fixed doc comments in gtksheet
+
+2010-05-11 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet properties completed
+	* GtkSheet: bugfix: default grid color is now uniq
+	* GtkSheet: replaced obsolete function gdk_color_alloc()
+	* GtkSheet: fixed gtk_sheet_set_selection_mode() parameter type
+
+2010-05-09 Fredy Paquet <mailbox AT opag.ch>
+	* changed --enable-debug option to non destructive behaviour
+	* Added initial Glade support to GtkSheet
+	  * properties "title", "n-rows", "n-cols"
+	  * class initialisation code adapted
+	* GtkSheet: some drawing problems need fixing when the sheet gets 0 rows/cols
+
+2010-05-08 Fredy Paquet <mailbox AT opag.ch>
+	* added --enable-debug option to the configure script, default is off (-O2).
+	* GtkSheet: Fixed a crash when double clicking between column headers
+
+2010-05-04 Fredy Paquet <mailbox AT opag.ch>
+	* Fixed some minor portability issues:
+	  * test -e is not available in /bin/sh
+	  * echo -n doesn't work with all versions of 'echo'
+	* Added some portability checks to configure.in (using autoscan)
+	* Fixed spaces in front of two make commandlines (@GLIB_GENMARSHAL@)
 
 2010-04-20 Roy Rankin <rrankin AT ihug DOT com DOT au>
 	* gtkitementry.h gtkitementry.c gtksheet.c gtkplotbox.c:

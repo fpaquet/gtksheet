@@ -42,6 +42,7 @@
 #include <gtk/gtkwindow.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkframe.h>
+#include "gtkextra-compat.h"
 #include "gtkcombobutton.h"
 
 static void         gtk_combo_button_class_init      (GtkComboButtonClass *klass);

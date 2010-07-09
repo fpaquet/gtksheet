@@ -37,6 +37,7 @@
 #include <glib/gunicode.h>
 
 #include <string.h>
+#include "gtkextra-compat.h"
 #include "gtkcharsel.h"
 
 static void gtk_char_selection_class_init          (GtkCharSelectionClass *klass);

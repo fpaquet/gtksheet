@@ -284,6 +284,7 @@ AM_CONDITIONAL(ENABLE_GLADE, test x$enable_glade != xno)
 AC_OUTPUT(
 Makefile
 glade/Makefile
+glade/pixmaps/Makefile
 gtkextra/Makefile
 gtkextra/gtkextrafeatures.h
 docs/Makefile

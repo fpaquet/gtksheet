@@ -268,8 +268,6 @@ struct _GtkSheetColumn
     gint right_text_column;    /* max right column displaying text on this column */
 
     GtkJustification justification;
-    gboolean is_sensitive;
-    gboolean is_visible;
 };
 
 struct _GtkSheetColumnClass
@@ -659,55 +657,43 @@ gtk_sheet_column_titles_visible		(GtkSheet *sheet);
 gboolean
 gtk_sheet_row_titles_visible		(GtkSheet *sheet);
 
-/* set column button sensitivity. If sensitivity is TRUE it can be toggled,  
- *  otherwise it acts as a title */
-void 
-gtk_sheet_column_set_sensitivity	(GtkSheet *sheet, 
-					gint column, gboolean sensitive);
+/* column button sensitivity */
 
-/* set sensitivity for all column buttons */
-void
-gtk_sheet_columns_set_sensitivity	(GtkSheet *sheet, gboolean sensitive);
-void
-gtk_sheet_columns_set_resizable	 	(GtkSheet *sheet, gboolean resizable);
-gboolean
-gtk_sheet_columns_resizable	 	(GtkSheet *sheet);
+gboolean gtk_sheet_column_sensitive (GtkSheet *sheet, gint column);
+void gtk_sheet_column_set_sensitivity (GtkSheet *sheet, gint column, gboolean sensitive);
+void gtk_sheet_columns_set_sensitivity (GtkSheet *sheet, gboolean sensitive);
 
-/* set row button sensitivity. If sensitivity is TRUE can be toggled, 
- * otherwise it acts as a title */
-void 
-gtk_sheet_row_set_sensitivity		(GtkSheet *sheet, 
-					gint row,  gboolean sensitive);
+/* column resizeability */
 
-/* set sensitivity for all row buttons */
-void
-gtk_sheet_rows_set_sensitivity		(GtkSheet *sheet, gboolean sensitive);
-void
-gtk_sheet_rows_set_resizable	 	(GtkSheet *sheet, gboolean resizable);
-gboolean
-gtk_sheet_rows_resizable		(GtkSheet *sheet);
+gboolean gtk_sheet_columns_resizable (GtkSheet *sheet);
+void gtk_sheet_columns_set_resizable (GtkSheet *sheet, gboolean resizable);
 
-/* set column visibility. The default value is TRUE. If FALSE, the 
- * column is hidden */
-void
-gtk_sheet_column_set_visibility		(GtkSheet *sheet, 
-					gint column, gboolean visible);
-void
-gtk_sheet_column_label_set_visibility	(GtkSheet *sheet, 
-					gint col, gboolean visible);
-void
-gtk_sheet_columns_labels_set_visibility	(GtkSheet *sheet, gboolean visible);
+/* row button sensitivity */
 
-/* set row visibility. The default value is TRUE. If FALSE, the 
- * row is hidden */
-void
-gtk_sheet_row_set_visibility		(GtkSheet *sheet, 
-					 gint row, gboolean visible);
-void
-gtk_sheet_row_label_set_visibility	(GtkSheet *sheet, 
-					 gint row, gboolean visible);
-void
-gtk_sheet_rows_labels_set_visibility	(GtkSheet *sheet, gboolean visible);
+gboolean gtk_sheet_row_sensitive (GtkSheet *sheet, gint row);
+void gtk_sheet_row_set_sensitivity (GtkSheet *sheet, gint row,  gboolean sensitive);
+void gtk_sheet_rows_set_sensitivity (GtkSheet *sheet, gboolean sensitive);
+
+/* row resizeability */
+
+gboolean gtk_sheet_rows_resizable (GtkSheet *sheet);
+void gtk_sheet_rows_set_resizable (GtkSheet *sheet, gboolean resizable);
+
+/* column visibility */
+
+gboolean gtk_sheet_column_visible (GtkSheet *sheet, gint column);
+void gtk_sheet_column_set_visibility (GtkSheet *sheet, gint column, gboolean visible);
+
+void gtk_sheet_column_label_set_visibility (GtkSheet *sheet, gint col, gboolean visible);
+void gtk_sheet_columns_labels_set_visibility (GtkSheet *sheet, gboolean visible);
+
+/* row visibility */
+
+gboolean gtk_sheet_row_visible (GtkSheet *sheet, gint row);
+void gtk_sheet_row_set_visibility (GtkSheet *sheet, gint row, gboolean visible);
+
+void gtk_sheet_row_label_set_visibility	(GtkSheet *sheet, gint row, gboolean visible);
+void gtk_sheet_rows_labels_set_visibility (GtkSheet *sheet, gboolean visible);
 
 
 /* select the row. The range is then highlighted, and the bounds are stored

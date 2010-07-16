@@ -1,3 +1,16 @@
+2010-07-16 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed: placement of the cell editor when clicking into empty cells
+	* GtkSheetColumn: defintively using visibility property of the underlying GtkWidget now
+	* GtkSheetColumn: using sensitivity property of the underlying GtkWidget now
+        * GtkSheet: new interface functions:
+		gtk_sheet_column_visible() 
+		gtk_sheet_row_visible()
+		gtk_sheet_column_sensitive()
+		gtk_sheet_row_sensitive()
+	* GtkSheet: resizeability of rows/cols was coupled to the sensitive property, 
+		rows/cols can now always be resized, independent of the sensitive property
+	* GtkSheet: fixed: the last row of the sheet could not be resized
+
 2010-07-09 Fredy Paquet <mailbox AT opag.ch>
         * new include file gtkextra-compat.h to maintain backward compatibility for older gtk releases
 	* added Pixmaps for Glade-3 integration: glade/pixmaps/hicolor

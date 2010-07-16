@@ -68,14 +68,14 @@
 /* sheet flags */
 enum _GtkSheetFlags
 {
-  GTK_SHEET_IS_LOCKED       = 1 << 0,
-  GTK_SHEET_IS_FROZEN       = 1 << 1,
-  GTK_SHEET_IN_XDRAG        = 1 << 2,
-  GTK_SHEET_IN_YDRAG        = 1 << 3,
-  GTK_SHEET_IN_DRAG         = 1 << 4,
-  GTK_SHEET_IN_SELECTION    = 1 << 5,
-  GTK_SHEET_IN_RESIZE       = 1 << 6,
-  GTK_SHEET_IN_CLIP         = 1 << 7,
+  GTK_SHEET_IS_LOCKED  = 1 << 0,    /* sheet is not editable */
+  GTK_SHEET_IS_FROZEN  = 1 << 1,    /* frontend updates temporarily disabled */
+  GTK_SHEET_IN_XDRAG  = 1 << 2,    /* column being resized */
+  GTK_SHEET_IN_YDRAG  = 1 << 3,    /* row being resized */
+  GTK_SHEET_IN_DRAG  = 1 << 4,    /* cell selection being moved */
+  GTK_SHEET_IN_SELECTION  = 1 << 5,   /* cell selection being created */
+  GTK_SHEET_IN_RESIZE  = 1 << 6,  /* cell selection being resized */
+  GTK_SHEET_IN_CLIP  = 1 << 7,    /* cell selection in clipboard */
   GTK_SHEET_REDRAW_PENDING  = 1 << 8,
 };
 
@@ -153,17 +153,17 @@ static guint sheet_signals[LAST_SIGNAL] = {0};
 
 #define COLPTR(sheet, colidx) (sheet->column[colidx])
 
-#if 1
 #define GTK_SHEET_COLUMN_IS_VISIBLE(colptr)  (gtk_widget_get_visible(GTK_WIDGET(colptr)))
 #define GTK_SHEET_COLUMN_SET_VISIBLE(colptr, value) (gtk_widget_set_visible(GTK_WIDGET(colptr), value))
-#else
-#define GTK_SHEET_COLUMN_IS_VISIBLE(colptr)  ((colptr)->is_visible)
-#define GTK_SHEET_COLUMN_SET_VISIBLE(colptr, value) ((colptr)->is_visible = (value))
-#endif
+#define GTK_SHEET_COLUMN_IS_SENSITIVE(colptr)  (gtk_widget_is_sensitive(GTK_WIDGET(colptr)))
+#define GTK_SHEET_COLUMN_SET_SENSITIVE(colptr, value) (gtk_widget_set_sensitive(GTK_WIDGET(colptr), value))
 
 #define ROWPTR(sheet, rowidx) (&sheet->row[rowidx])
+
 #define GTK_SHEET_ROW_IS_VISIBLE(rowptr)  ((rowptr)->is_visible)
 #define GTK_SHEET_ROW_SET_VISIBLE(rowptr, value) ((rowptr)->is_visible = (value))
+#define GTK_SHEET_ROW_IS_SENSITIVE(rowptr)  ((rowptr)->is_sensitive)
+#define GTK_SHEET_ROW_SET_SENSITIVE(rowptr, value) ((rowptr)->is_sensitive = (value))
 
 /* defaults */
 
@@ -277,7 +277,9 @@ static inline gint
 
 
 /* returns the row index from a y pixel location in the
- * context of the sheet's voffset */
+ * context of the sheet's voffset
+ * beware: the top border belongs to the row, the bottom border to the next */
+
 static inline gint
     ROW_FROM_YPIXEL(GtkSheet *sheet, gint y)
 {
@@ -292,7 +294,7 @@ static inline gint
     {
         if (GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)))
         {
-            if (cy <= y  && y <= (cy + sheet->row[i].height)) return i;
+            if (cy <= y  && y < (cy + sheet->row[i].height)) return i;
             cy += sheet->row[i].height;
         }
     }
@@ -321,7 +323,8 @@ static inline gint
 
 
 /* returns the column index from a x pixel location in the
- * context of the sheet's hoffset */
+ * context of the sheet's hoffset
+ * beware: the left border belongs to the column, the right border to the next  */
 
 static inline gint
     COLUMN_FROM_XPIXEL (GtkSheet * sheet, gint x)
@@ -337,7 +340,7 @@ static inline gint
     {
         if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, i)))
         {
-            if (cx <= x  && x <= (cx + sheet->column[i]->width)) return i;
+            if (cx <= x  && x < (cx + sheet->column[i]->width)) return i;
             cx += sheet->column[i]->width;
         }
     }
@@ -440,7 +443,10 @@ static inline gint
         if (column < 0 || column > sheet->maxcol) return(FALSE);
 
         *drag_column = column;
-        return(sheet->column[column]->is_sensitive);
+        return(TRUE);
+#if 0
+        return(GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, column)));
+#endif
     }
 
     xdrag = COLUMN_RIGHT_XPIXEL(sheet, column);
@@ -448,7 +454,10 @@ static inline gint
     if (xdrag-DRAG_WIDTH/2 <= x && x <= xdrag+DRAG_WIDTH/2)
     {
         *drag_column=column;
-        return(sheet->column[column]->is_sensitive);
+        return(TRUE);
+#if 0
+        return(GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, column)));
+#endif
     }
 
     return(FALSE);
@@ -484,15 +493,21 @@ static inline gint
         if (row < 0 || row > sheet->maxrow) return(FALSE);
 
         *drag_row=row;
-        return(sheet->row[row].is_sensitive);
+        return(TRUE);
+#if 0
+        return(GTK_SHEET_ROW_IS_SENSITIVE(ROWPTR(sheet, row)));
+#endif
     }
 
-    ydrag += ROW_BOTTOM_YPIXEL(sheet, row);
+    ydrag = ROW_BOTTOM_YPIXEL(sheet, row);
 
     if (ydrag-DRAG_WIDTH/2 <= y && y <= ydrag+DRAG_WIDTH/2)
     {
         *drag_row=row;
-        return(sheet->row[row].is_sensitive);
+        return(TRUE);
+#if 0
+        return(GTK_SHEET_ROW_IS_SENSITIVE(ROWPTR(sheet, row)));
+#endif
     }
 
     return(FALSE);
@@ -2170,7 +2185,7 @@ static void
     column->justification = GTK_JUSTIFY_FILL;
 
     GTK_SHEET_COLUMN_SET_VISIBLE(column, TRUE);
-    column->is_sensitive = TRUE;
+    GTK_SHEET_COLUMN_SET_SENSITIVE(column, TRUE);
 }
 
 static void
@@ -2187,8 +2202,8 @@ static void
     row->button.child = NULL;
     row->button.justification = GTK_JUSTIFY_CENTER;
 
-    row->is_sensitive = TRUE;
     GTK_SHEET_ROW_SET_VISIBLE(row, TRUE);
+    GTK_SHEET_ROW_SET_SENSITIVE(row, TRUE);
 }
 
 /**
@@ -3536,6 +3551,11 @@ void
     g_return_if_fail (sheet->hadjustment != NULL);
     g_return_if_fail (sheet->vadjustment != NULL);
 
+#ifdef GTK_SHEET_DEBUG
+      g_debug("gtk_sheet_moveto: row %d column %d row_align %g col_align %g", 
+              row, column, row_align, col_align);
+#endif
+
     if (row < 0 || row > sheet->maxrow) return;
     if (column < 0 || column > sheet->maxcol) return;
 
@@ -3628,6 +3648,29 @@ void
     }
 }
 
+
+/**
+ * gtk_sheet_column_sensitive:
+ * @sheet: a #GtkSheet.
+ * @column: column number
+ *
+ * Set column button sensitivity. If sensitivity is TRUE it can be toggled, otherwise it acts as a title. 
+ *  
+ * Returns: 
+ * TRUE - the column is sensitive 
+ * FALSE - insensitive or not existant
+ */
+gboolean 
+    gtk_sheet_column_sensitive (GtkSheet *sheet, gint column)
+{
+    g_return_val_if_fail (sheet != NULL, FALSE);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
+
+    if (column < 0 || column > sheet->maxcol) return(FALSE);
+
+    return(GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, column)));
+}
+
 /**
  * gtk_sheet_column_set_sensitivity:
  * @sheet: a #GtkSheet.
@@ -3637,21 +3680,22 @@ void
  * Set column button sensitivity. If sensitivity is TRUE it can be toggled, otherwise it acts as a title.
  */
 void
-gtk_sheet_column_set_sensitivity(GtkSheet *sheet, gint column, gboolean sensitive)
+    gtk_sheet_column_set_sensitivity(GtkSheet *sheet, gint column, gboolean sensitive)
 {
-  g_return_if_fail (sheet != NULL);
-  g_return_if_fail (GTK_IS_SHEET (sheet));
+    g_return_if_fail (sheet != NULL);
+    g_return_if_fail (GTK_IS_SHEET (sheet));
 
-  if(column < 0 || column > sheet->maxcol) return;
+    if (column < 0 || column > sheet->maxcol) return;
 
-  sheet->column[column]->is_sensitive=sensitive;
-  if(!sensitive)
-     sheet->column[column]->button.state=GTK_STATE_INSENSITIVE;
-  else
-     sheet->column[column]->button.state=GTK_STATE_NORMAL;
+    GTK_SHEET_COLUMN_SET_SENSITIVE(COLPTR(sheet, column), sensitive);
 
-  if(gtk_widget_get_realized(GTK_WIDGET(sheet)) && !GTK_SHEET_IS_FROZEN(sheet))
-      gtk_sheet_button_draw(sheet, -1, column);
+    if (!sensitive)
+        sheet->column[column]->button.state=GTK_STATE_INSENSITIVE;
+    else
+        sheet->column[column]->button.state=GTK_STATE_NORMAL;
+
+    if (gtk_widget_get_realized(GTK_WIDGET(sheet)) && !GTK_SHEET_IS_FROZEN(sheet))
+        gtk_sheet_button_draw(sheet, -1, column);
 }
 
 /**
@@ -3665,15 +3709,15 @@ gtk_sheet_column_set_sensitivity(GtkSheet *sheet, gint column, gboolean sensitiv
  * property for all existing columns.
  */
 void
-gtk_sheet_columns_set_sensitivity(GtkSheet *sheet, gboolean sensitive)
+    gtk_sheet_columns_set_sensitivity(GtkSheet *sheet, gboolean sensitive)
 {
-  gint i;
+    gint i;
 
-  g_return_if_fail (sheet != NULL);
-  g_return_if_fail (GTK_IS_SHEET (sheet));
+    g_return_if_fail (sheet != NULL);
+    g_return_if_fail (GTK_IS_SHEET (sheet));
 
-  for(i=0; i<=sheet->maxcol; i++)
-     gtk_sheet_column_set_sensitivity(sheet, i, sensitive);
+    for(i=0; i<=sheet->maxcol; i++)
+        gtk_sheet_column_set_sensitivity(sheet, i, sensitive);
 }
 
 /**
@@ -3684,12 +3728,12 @@ gtk_sheet_columns_set_sensitivity(GtkSheet *sheet, gboolean sensitive)
  * Set columns resizable status.
  */
 void
-gtk_sheet_columns_set_resizable (GtkSheet *sheet, gboolean resizable)
+    gtk_sheet_columns_set_resizable (GtkSheet *sheet, gboolean resizable)
 {
-  g_return_if_fail (sheet != NULL);
-  g_return_if_fail (GTK_IS_SHEET (sheet));
+    g_return_if_fail (sheet != NULL);
+    g_return_if_fail (GTK_IS_SHEET (sheet));
 
-  sheet->columns_resizable = resizable;
+    sheet->columns_resizable = resizable;
 }
 
 /**
@@ -3701,12 +3745,34 @@ gtk_sheet_columns_set_resizable (GtkSheet *sheet, gboolean resizable)
  * Returns: TRUE or FALSE
  */
 gboolean
-gtk_sheet_columns_resizable (GtkSheet *sheet)
+    gtk_sheet_columns_resizable (GtkSheet *sheet)
 {
-  g_return_val_if_fail (sheet != NULL, FALSE);
-  g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
+    g_return_val_if_fail (sheet != NULL, FALSE);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
 
-  return sheet->columns_resizable;
+    return(sheet->columns_resizable);
+}
+
+/**
+ * gtk_sheet_row_sensitive:
+ * @sheet: a #GtkSheet.
+ * @row: row number
+ *
+ * Set row button sensitivity. If sensitivity is TRUE can be toggled, otherwise it acts as a title . 
+ *  
+ * Returns: 
+ * TRUE - is sensitive 
+ * FALSE - insensitive or not existant 
+ */
+gboolean 
+    gtk_sheet_row_sensitive (GtkSheet *sheet, gint row)
+{
+    g_return_val_if_fail (sheet != NULL, FALSE);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
+
+    if (row < 0 || row > sheet->maxrow) return(FALSE);
+
+    return(GTK_SHEET_ROW_IS_SENSITIVE(ROWPTR(sheet, row)));
 }
 
 /**
@@ -3718,22 +3784,22 @@ gtk_sheet_columns_resizable (GtkSheet *sheet)
  * Set row button sensitivity. If sensitivity is TRUE can be toggled, otherwise it acts as a title .
  */
 void
-gtk_sheet_row_set_sensitivity(GtkSheet *sheet, gint row,  gboolean sensitive)
+    gtk_sheet_row_set_sensitivity(GtkSheet *sheet, gint row,  gboolean sensitive)
 {
+    g_return_if_fail (sheet != NULL);
+    g_return_if_fail (GTK_IS_SHEET (sheet));
 
-  g_return_if_fail (sheet != NULL);
-  g_return_if_fail (GTK_IS_SHEET (sheet));
+    if (row < 0 || row > sheet->maxrow) return;
 
-  if(row < 0 || row > sheet->maxrow) return;
+    GTK_SHEET_ROW_SET_SENSITIVE(ROWPTR(sheet, row), sensitive);
 
-  sheet->row[row].is_sensitive=sensitive;
-  if(!sensitive)
-     sheet->row[row].button.state=GTK_STATE_INSENSITIVE;
-  else
-     sheet->row[row].button.state=GTK_STATE_NORMAL;
+    if (!sensitive)
+        sheet->row[row].button.state=GTK_STATE_INSENSITIVE;
+    else
+        sheet->row[row].button.state=GTK_STATE_NORMAL;
 
-  if(gtk_widget_get_realized(GTK_WIDGET(sheet)) && !GTK_SHEET_IS_FROZEN(sheet))
-      gtk_sheet_button_draw(sheet, row, -1);
+    if (gtk_widget_get_realized(GTK_WIDGET(sheet)) && !GTK_SHEET_IS_FROZEN(sheet))
+        gtk_sheet_button_draw(sheet, row, -1);
 }
 
 /**
@@ -3747,15 +3813,15 @@ gtk_sheet_row_set_sensitivity(GtkSheet *sheet, gint row,  gboolean sensitive)
  * property for all existing rows.
  */
 void
-gtk_sheet_rows_set_sensitivity(GtkSheet *sheet, gboolean sensitive)
+    gtk_sheet_rows_set_sensitivity(GtkSheet *sheet, gboolean sensitive)
 {
-  gint i;
+    gint i;
 
-  g_return_if_fail (sheet != NULL);
-  g_return_if_fail (GTK_IS_SHEET (sheet));
+    g_return_if_fail (sheet != NULL);
+    g_return_if_fail (GTK_IS_SHEET (sheet));
 
-  for(i=0; i<=sheet->maxrow; i++)
-     gtk_sheet_row_set_sensitivity(sheet, i, sensitive);
+    for(i=0; i<=sheet->maxrow; i++)
+        gtk_sheet_row_set_sensitivity(sheet, i, sensitive);
 }
 
 /**
@@ -3766,12 +3832,12 @@ gtk_sheet_rows_set_sensitivity(GtkSheet *sheet, gboolean sensitive)
  * Set rows resizable status.
  */
 void
-gtk_sheet_rows_set_resizable (GtkSheet *sheet, gboolean resizable)
+    gtk_sheet_rows_set_resizable (GtkSheet *sheet, gboolean resizable)
 {
-  g_return_if_fail (sheet != NULL);
-  g_return_if_fail (GTK_IS_SHEET (sheet));
+    g_return_if_fail (sheet != NULL);
+    g_return_if_fail (GTK_IS_SHEET (sheet));
 
-  sheet->rows_resizable = resizable;
+    sheet->rows_resizable = resizable;
 }
 
 /**
@@ -3783,12 +3849,35 @@ gtk_sheet_rows_set_resizable (GtkSheet *sheet, gboolean resizable)
  * Returns: TRUE or FALSE
  */
 gboolean
-gtk_sheet_rows_resizable (GtkSheet *sheet)
+    gtk_sheet_rows_resizable (GtkSheet *sheet)
 {
-  g_return_val_if_fail (sheet != NULL, FALSE);
-  g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
+    g_return_val_if_fail (sheet != NULL, FALSE);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
 
-  return sheet->rows_resizable;
+    return(sheet->rows_resizable);
+}
+
+
+/**
+ * gtk_sheet_column_visible:
+ * @sheet: a #GtkSheet.
+ * @column: column number
+ *
+ * Set column visibility. The default value is TRUE. If FALSE, the column is hidden. 
+ *  
+ * Returns: 
+ * TRUE if the column is visible, 
+ * FALSE if it is hidden or not existant
+ */
+gboolean 
+    gtk_sheet_column_visible (GtkSheet *sheet, gint column)
+{
+    g_return_val_if_fail (sheet != NULL, FALSE);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
+
+    if (column < 0 || column > sheet->maxcol) return(FALSE);
+
+    return(GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, column)));
 }
 
 /**
@@ -3800,7 +3889,7 @@ gtk_sheet_rows_resizable (GtkSheet *sheet)
  * Set column visibility. The default value is TRUE. If FALSE, the column is hidden.
  */
 void
-gtk_sheet_column_set_visibility(GtkSheet *sheet, gint column, gboolean visible)
+    gtk_sheet_column_set_visibility(GtkSheet *sheet, gint column, gboolean visible)
 {
     g_return_if_fail (sheet != NULL);
     g_return_if_fail (GTK_IS_SHEET (sheet));
@@ -3818,6 +3907,28 @@ gtk_sheet_column_set_visibility(GtkSheet *sheet, gint column, gboolean visible)
         gtk_sheet_range_draw(sheet, NULL);
         size_allocate_column_title_buttons(sheet);
     }
+}
+
+/**
+ * gtk_sheet_row_visible:
+ * @sheet: a #GtkSheet.
+ * @row: row number
+ *
+ * Set row visibility. The default value is TRUE. If FALSE, the row is hidden. 
+ *  
+ * Returns: 
+ * TRUE - is visible 
+ * FALSE - invisible or not existant 
+ */
+gboolean 
+    gtk_sheet_row_visible (GtkSheet *sheet, gint row)
+{
+    g_return_val_if_fail (sheet != NULL, FALSE);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
+
+    if (row < 0 || row > sheet->maxrow) return(FALSE);
+
+    return(GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)));
 }
 
 /**
@@ -5224,9 +5335,6 @@ static void
         area.y=0;
 
         gdk_gc_set_foreground(sheet->fg_gc, &sheet->bg_color);
-#ifdef GTK_SHEET_DEBUG
-        gdk_gc_set_foreground(sheet->fg_gc, &debug_color);
-#endif
 
         gdk_draw_rectangle (sheet->pixmap,
                             sheet->fg_gc,
@@ -7189,7 +7297,7 @@ static gint
         column = COLUMN_FROM_XPIXEL(sheet, x);
         if (column < 0 || column > sheet->maxcol) return(FALSE);
 
-        if (sheet->column[column]->is_sensitive)
+        if (GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, column)))
         {
             gtk_sheet_click_cell(sheet, -1, column, &veto);
             gtk_grab_add(GTK_WIDGET(sheet));
@@ -7205,7 +7313,7 @@ static gint
         row = ROW_FROM_YPIXEL(sheet, y);
         if (row < 0 || row > sheet->maxrow) return(FALSE);
 
-        if (sheet->row[row].is_sensitive)
+        if (GTK_SHEET_ROW_IS_SENSITIVE(ROWPTR(sheet, row)))
         {
             gtk_sheet_click_cell(sheet, row, -1, &veto);
             gtk_grab_add(GTK_WIDGET(sheet));
@@ -7708,6 +7816,13 @@ static gint
     column_move=FALSE;
     row_align=-1.;
     col_align=-1.;
+
+#ifdef GTK_SHEET_DEBUG
+      g_debug("gtk_sheet_move_query: row %d column %d visrow(%d,%d) viscol(%d,%d)", 
+              row, column,
+              MIN_VISIBLE_ROW(sheet), MAX_VISIBLE_ROW(sheet), 
+              MIN_VISIBLE_COLUMN(sheet), MAX_VISIBLE_COLUMN(sheet));
+#endif
 
     height = sheet->sheet_window_height;
     width = sheet->sheet_window_width;
@@ -8453,7 +8568,7 @@ static void
 
     sheet_entry = GTK_ENTRY(gtk_sheet_get_entry(sheet));
 
-    if (!gtk_sheet_get_attributes(sheet, sheet->active_cell.row, sheet->active_cell.col, &attributes)) return;
+    gtk_sheet_get_attributes(sheet, sheet->active_cell.row, sheet->active_cell.col, &attributes);
 
     if (gtk_widget_get_realized(sheet->sheet_entry))
     {
@@ -8853,7 +8968,7 @@ static void
     GtkSheetButton *button = NULL;
     GtkSheetChild *child = NULL;
     GdkRectangle allocation;
-    gboolean is_sensitive = FALSE;
+    gboolean sensitive = FALSE;
     gint state = 0;
     gint len = 0;
     gchar *line = 0;
@@ -8897,7 +9012,7 @@ static void
         y = 0;
         width = sheet->column[column]->width;
         height = sheet->column_title_area.height;
-        is_sensitive=sheet->column[column]->is_sensitive;
+        sensitive = GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, column));
     }
     else if (column==-1)
     {
@@ -8909,7 +9024,7 @@ static void
         if (sheet->column_titles_visible) y-=sheet->column_title_area.height;
         width = sheet->row_title_area.width;
         height = sheet->row[row].height;
-        is_sensitive=sheet->row[row].is_sensitive;
+        sensitive = GTK_SHEET_ROW_IS_SENSITIVE(ROWPTR(sheet, row));
     }
 
     allocation.x = x;
@@ -8927,7 +9042,7 @@ static void
                    "button", x, y, width, height);
 
     state = button->state;
-    if (!is_sensitive) state=GTK_STATE_INSENSITIVE;
+    if (!sensitive) state=GTK_STATE_INSENSITIVE;
 
     if (state == GTK_STATE_ACTIVE)
         shadow_type = GTK_SHADOW_IN;

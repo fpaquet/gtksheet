@@ -3654,11 +3654,11 @@ void
  * @sheet: a #GtkSheet.
  * @column: column number
  *
- * Set column button sensitivity. If sensitivity is TRUE it can be toggled, otherwise it acts as a title. 
+ * Get column button sensitivity. 
  *  
  * Returns: 
- * TRUE - the column is sensitive 
- * FALSE - insensitive or not existant
+ * TRUE - the column is sensitive, FALSE - insensitive or not 
+ * existant 
  */
 gboolean 
     gtk_sheet_column_sensitive (GtkSheet *sheet, gint column)
@@ -3758,10 +3758,10 @@ gboolean
  * @sheet: a #GtkSheet.
  * @row: row number
  *
- * Set row button sensitivity. If sensitivity is TRUE can be toggled, otherwise it acts as a title . 
+ * Get row button sensitivity. 
  *  
  * Returns: 
- * TRUE - is sensitive 
+ * TRUE - is sensitive,  
  * FALSE - insensitive or not existant 
  */
 gboolean 
@@ -3863,11 +3863,9 @@ gboolean
  * @sheet: a #GtkSheet.
  * @column: column number
  *
- * Set column visibility. The default value is TRUE. If FALSE, the column is hidden. 
+ * Get column visibility. 
  *  
- * Returns: 
- * TRUE if the column is visible, 
- * FALSE if it is hidden or not existant
+ * Returns: TRUE - visible, FALSE - hidden or not existant 
  */
 gboolean 
     gtk_sheet_column_visible (GtkSheet *sheet, gint column)
@@ -3914,7 +3912,7 @@ void
  * @sheet: a #GtkSheet.
  * @row: row number
  *
- * Set row visibility. The default value is TRUE. If FALSE, the row is hidden. 
+ * Get row visibility. 
  *  
  * Returns: 
  * TRUE - is visible 

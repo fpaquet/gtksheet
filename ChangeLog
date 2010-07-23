@@ -1,3 +1,8 @@
+2010-07-23 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed SEGV when resizing columns and there is no scrolled window below
+	* GtkSheet: fixed SEGV when resizing columns and there is no active cell
+	* GtkSheet: fixed redraw of visible cell area when row or column titles are switched off
+
 2010-07-16 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed: placement of the cell editor when clicking into empty cells
 	* GtkSheetColumn: defintively using visibility property of the underlying GtkWidget now

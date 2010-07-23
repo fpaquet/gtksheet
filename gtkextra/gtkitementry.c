@@ -400,38 +400,37 @@ get_borders (GtkEntry *entry,
 }
 
 static void
-gtk_entry_size_request (GtkWidget      *widget,
-			GtkRequisition *requisition)
+    gtk_entry_size_request (GtkWidget *widget, GtkRequisition *requisition)
 {
-  GtkEntry *entry = GTK_ENTRY (widget);
-  PangoFontMetrics *metrics;
-  gint xborder, yborder;
-  PangoContext *context;
-  
-  context = gtk_widget_get_pango_context (widget);
-  metrics = pango_context_get_metrics (context,
-				       gtk_widget_get_style(widget)->font_desc,
-				       pango_context_get_language (context));
+    GtkEntry *entry = GTK_ENTRY (widget);
+    PangoFontMetrics *metrics;
+    gint xborder, yborder;
+    PangoContext *context;
 
-  entry->ascent = pango_font_metrics_get_ascent (metrics);
-  entry->descent = pango_font_metrics_get_descent (metrics);
+    context = gtk_widget_get_pango_context (widget);
+    metrics = pango_context_get_metrics (context,
+                                         gtk_widget_get_style(widget)->font_desc,
+                                         pango_context_get_language (context));
 
-  get_borders (entry, &xborder, &yborder);
-  
-  xborder += INNER_BORDER;
-  yborder += INNER_BORDER;
-  
-  if (entry->width_chars < 0)
-    requisition->width = MIN_ENTRY_WIDTH + xborder * 2;
-  else
+    entry->ascent = pango_font_metrics_get_ascent (metrics);
+    entry->descent = pango_font_metrics_get_descent (metrics);
+
+    get_borders (entry, &xborder, &yborder);
+
+    xborder += INNER_BORDER;
+    yborder += INNER_BORDER;
+
+    if (entry->width_chars < 0)
+        requisition->width = MIN_ENTRY_WIDTH + xborder * 2;
+    else
     {
-      gint char_width = pango_font_metrics_get_approximate_char_width (metrics);
-      requisition->width = PANGO_PIXELS (char_width) * entry->width_chars + xborder * 2;
+        gint char_width = pango_font_metrics_get_approximate_char_width (metrics);
+        requisition->width = PANGO_PIXELS (char_width) * entry->width_chars + xborder * 2;
     }
-    
-  requisition->height = PANGO_PIXELS (entry->ascent + entry->descent) + yborder * 2;
 
-  pango_font_metrics_unref (metrics);
+    requisition->height = PANGO_PIXELS (entry->ascent + entry->descent) + yborder * 2;
+
+    pango_font_metrics_unref (metrics);
 }
 
 static void

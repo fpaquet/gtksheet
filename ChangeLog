@@ -1,4 +1,8 @@
 2010-07-30 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed cursor key handling in rightmost column
+	* GtkSheet: fixed deactivation of active cell on row deletion
+
+2010-07-30 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed cell editor width
 	* GtkSheet: fixed active cell redraw conditions
 

@@ -50,9 +50,12 @@ glade-3
         </glade-widget-class>
 
         <glade-widget-class name="GtkSheetColumn" libglade-unsupported="True" generic-name="gtksheetcolumn" title="GtkSheetColumn - a Sheet Column" >
+<!--        <set-property-function>glade_gtk_sheet_column_set_property</set-property-function>-->
+<!--        <get-property-function>glade_gtk_sheet_column_set_property</get-property-function>-->
             <properties>
                 <property id="visible" save-always="True" default="True"/>
                 <property id="position" visible="False" name="Position"/>
+<!--        <property id="width-request" needs-sync="True" />-->
             </properties>
         </glade-widget-class>
 

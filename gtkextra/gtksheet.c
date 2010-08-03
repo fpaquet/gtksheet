@@ -112,6 +112,8 @@ enum _GtkSheetColumnProperties
     PROP_GTK_SHEET_COLUMN_0,  /* dummy */
     PROP_GTK_SHEET_COLUMN_POSITION,  /* position of the column */
     PROP_GTK_SHEET_COLUMN_LABEL,  /* gtk_sheet_column_button_add_label() */
+    PROP_GTK_SHEET_COLUMN_WIDTH,  /* gtk_sheet_set_column_width() */
+    PROP_GTK_SHEET_COLUMN_JUSTIFICATION,  /* gtk_sheet_column_set_justification() */
 };
 
 /* Signals */
@@ -178,6 +180,7 @@ static guint sheet_signals[LAST_SIGNAL] = {0};
 #define MAXLENGTH 30
 #define CELLOFFSET 4
 #define GTK_SHEET_DEFAULT_COLUMN_WIDTH 80
+#define GTK_SHEET_DEFAULT_COLUMN_JUSTIFICATION GTK_JUSTIFY_LEFT
 #define GTK_SHEET_DEFAULT_ROW_HEIGHT 24
 #define GTK_SHEET_DEFAULT_BG_COLOR      "white"
 #define GTK_SHEET_DEFAULT_GRID_COLOR  "gray"
@@ -987,6 +990,16 @@ gtk_sheet_column_set_buildable_property(GtkBuildable  *buildable,
     {
         GTK_SHEET_COLUMN_SET_VISIBLE(buildable, g_value_get_boolean(value));
     }
+#if 0
+    else if (strcmp(name, "width-request") == 0)
+    {
+#ifdef GTK_SHEET_DEBUG
+        g_debug("gtk_sheet_column_set_buildable_property: width-request = %d", 
+                GTK_SHEET_COLUMN(buildable)->width);
+#endif
+        GTK_SHEET_COLUMN(buildable)->width = g_value_get_int(value);
+    }
+#endif
     else
         g_object_set_property(G_OBJECT(buildable), name, value);
 }
@@ -1334,7 +1347,7 @@ static void gtk_sheet_class_init_properties(GObjectClass *gobject_class)
                                  G_PARAM_READWRITE);
     g_object_class_install_property (gobject_class, PROP_GTK_SHEET_TITLE, pspec);
 
-#if 1
+#if 0
     /**
      * GtkSheet:n-cols:
      *
@@ -2049,7 +2062,8 @@ static void
                 col = gtk_sheet_column_find(colobj);
 
 #ifdef GTK_SHEET_DEBUG
-                g_debug("gtk_sheet_column_set_property: col=%d label=%s", col, label);
+                g_debug("gtk_sheet_column_set_property: col=%d label=%s", 
+                        col, label ? label : "");
 #endif
                 if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
@@ -2060,6 +2074,49 @@ static void
                 else
                 {
                     gtk_sheet_column_button_add_label(sheet, col, label);
+                }
+            }
+            break;
+
+        case PROP_GTK_SHEET_COLUMN_WIDTH:
+            {
+                gint width = g_value_get_int(value);
+                col = gtk_sheet_column_find(colobj);
+
+#ifdef GTK_SHEET_DEBUG
+                g_debug("gtk_sheet_column_set_property: col=%d width=%d", 
+                        col, width);
+#endif
+                if (width < 0) return;
+                if (width < COLUMN_MIN_WIDTH) width = GTK_SHEET_DEFAULT_COLUMN_WIDTH;
+
+                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                {
+                    colobj->width = width;
+                }
+                else
+                {
+                    gtk_sheet_set_column_width(sheet, col, width);
+                }
+            }
+            break;
+
+        case PROP_GTK_SHEET_COLUMN_JUSTIFICATION:
+            {
+                gint justification = g_value_get_enum(value);
+                col = gtk_sheet_column_find(colobj);
+
+#ifdef GTK_SHEET_DEBUG
+                g_debug("gtk_sheet_column_set_property: col=%d justification=%d", 
+                        col, justification);
+#endif
+                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                {
+                    colobj->justification = justification;
+                }
+                else
+                {
+                    gtk_sheet_column_set_justification(sheet, col, justification);
                 }
             }
             break;
@@ -2095,15 +2152,19 @@ static void
                 if (!sheet) return;
 
                 if (pos >= 0) g_value_set_int (value, pos);
-
-#ifdef GTK_SHEET_DEBUG
-                g_debug("gtk_sheet_column_get_property: got %d", pos);
-#endif
             }
             break;
 
         case PROP_GTK_SHEET_COLUMN_LABEL:
             g_value_set_string(value, colobj->button.label);
+            break;
+
+        case PROP_GTK_SHEET_COLUMN_WIDTH:
+            g_value_set_int(value, colobj->width);
+            break;
+
+        case PROP_GTK_SHEET_COLUMN_JUSTIFICATION:
+            g_value_set_enum(value, colobj->justification);
             break;
 
         default:
@@ -2150,7 +2211,8 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                               "Packing position",
                               0, 1024, 0,
                               G_PARAM_READWRITE);
-    g_object_class_install_property (gobject_class, PROP_GTK_SHEET_COLUMN_POSITION, pspec);
+    g_object_class_install_property (gobject_class, 
+                                     PROP_GTK_SHEET_COLUMN_POSITION, pspec);
 
     /**
      * GtkSheetColumn:label:
@@ -2161,7 +2223,33 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                                  "Label of the column button",
                                  "" /* default value */,
                                  G_PARAM_READWRITE);
-    g_object_class_install_property (gobject_class, PROP_GTK_SHEET_COLUMN_LABEL, pspec);
+    g_object_class_install_property (gobject_class, 
+                                     PROP_GTK_SHEET_COLUMN_LABEL, pspec);
+
+    /**
+     * GtkSheetColumn:width:
+     *
+     * Width of the column
+     */
+    pspec = g_param_spec_int ("width", "Width",
+                              "Width of the column",
+                              -1, 8192, -1,
+                              G_PARAM_READWRITE);
+    g_object_class_install_property (gobject_class, 
+                                     PROP_GTK_SHEET_COLUMN_WIDTH, pspec);
+
+    /**
+     * GtkSheetColumn:justification:
+     *
+     * Justification of the column
+     */
+    pspec = g_param_spec_enum ("justification", "Justification",
+                              "Column justification (GTK_JUSTIFY_LEFT, RIGHT, CENTER)",
+                               GTK_TYPE_JUSTIFICATION,
+                               GTK_SHEET_DEFAULT_COLUMN_JUSTIFICATION,
+                              G_PARAM_READWRITE);
+    g_object_class_install_property (gobject_class, 
+                                     PROP_GTK_SHEET_COLUMN_JUSTIFICATION, pspec);
 }
 
 static void
@@ -2193,7 +2281,7 @@ static void
 
     column->left_text_column = 0;
     column->right_text_column = 0;
-    column->justification = GTK_JUSTIFY_FILL;
+    column->justification = GTK_SHEET_DEFAULT_COLUMN_JUSTIFICATION;
 
     GTK_SHEET_COLUMN_SET_VISIBLE(column, TRUE);
     GTK_SHEET_COLUMN_SET_SENSITIVE(column, TRUE);
@@ -10675,7 +10763,7 @@ gboolean
         else
         {
             *attributes = *(sheet->data[row][col]->attributes);
-            if (sheet->column[col]->justification != GTK_JUSTIFY_FILL)
+            if (sheet->column[col]->justification != GTK_SHEET_DEFAULT_COLUMN_JUSTIFICATION)
                 attributes->justification = sheet->column[col]->justification;
         }
     }
@@ -10699,7 +10787,7 @@ static void
     }
 
     if (col < 0 || col > sheet->maxcol)
-        attributes->justification = GTK_JUSTIFY_FILL;
+        attributes->justification = GTK_SHEET_DEFAULT_COLUMN_JUSTIFICATION;
     else
         attributes->justification = sheet->column[col]->justification;
 
@@ -11459,32 +11547,39 @@ gtk_sheet_row_size_request      (GtkSheet *sheet,
 }
 
 static void
-gtk_sheet_column_size_request   (GtkSheet *sheet,
-                                 gint col,
-                                 guint *requisition)
+    gtk_sheet_column_size_request (GtkSheet *sheet,
+                                     gint col,
+                                     guint *requisition)
 {
-  GtkRequisition button_requisition;
-  GList *children;
+    GtkRequisition button_requisition;
+    GList *children;
 
-  gtk_sheet_button_size_request(sheet, &sheet->column[col]->button, &button_requisition);
+    gtk_sheet_button_size_request(sheet, &sheet->column[col]->button, &button_requisition);
 
-  *requisition = button_requisition.width;
+    *requisition = button_requisition.width;
 
-  children = sheet->children;
-  while(children){
-    GtkSheetChild *child = (GtkSheetChild *)children->data;
-    GtkRequisition child_requisition;
+    children = sheet->children;
+    while (children)
+    {
+        GtkSheetChild *child = (GtkSheetChild *)children->data;
+        GtkRequisition child_requisition;
 
-    if(child->attached_to_cell && child->col == col && child->row != -1 && !child->floating && !child->xshrink){
-      gtk_widget_get_child_requisition(child->widget, &child_requisition);
+        if (child->attached_to_cell && child->col == col && 
+            child->row != -1 && !child->floating && !child->xshrink)
+        {
+            gtk_widget_get_child_requisition(child->widget, &child_requisition);
 
-      if(child_requisition.width + 2 * child->xpadding > *requisition)
-        *requisition = child_requisition.width + 2 * child->xpadding;
+            if (child_requisition.width + 2 * child->xpadding > *requisition)
+                *requisition = child_requisition.width + 2 * child->xpadding;
+        }
+        children = children->next;
     }
-    children = children->next;
-  }
 
-  sheet->column[col]->requisition = *requisition;
+    sheet->column[col]->requisition = *requisition;
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_column_size_request: col %d = %d", col, *requisition);
+#endif
 }
 
 /**

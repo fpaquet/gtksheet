@@ -486,10 +486,11 @@ void
 }
 
 void
-    glade_gtk_sheet_replace_child(GladeWidgetAdaptor *adaptor,
-                               GObject *object,
-                               GObject *old_obj,
-                               GObject *new_obj)
+    glade_gtk_sheet_replace_child(
+        GladeWidgetAdaptor *adaptor,
+        GObject *object,
+        GObject *old_obj,
+        GObject *new_obj)
 {
     gint col;
     GtkSheet *sheet;
@@ -526,4 +527,26 @@ void
     g_warning("glade_gtk_sheet_replace_child: couldn't replace child %p by %p", old_obj, new_obj);
 }
 
+#if 0
+void glade_gtk_sheet_column_set_property(
+    GladeWidgetAdaptor *adaptor,
+    GObject *object,
+    const gchar *property_name,
+    const GValue *value)
+{
+#ifdef GTK_SHEET_DEBUG
+    g_debug("glade_gtk_sheet_column_set_property: called %p %s", object, property_name);
+#endif
+}
 
+void glade_gtk_sheet_column_get_property(
+    GladeWidgetAdaptor *adaptor,
+    GObject *object,
+    const gchar *property_name,
+    GValue *value)
+{
+#ifdef GTK_SHEET_DEBUG
+    g_debug("glade_gtk_sheet_column_get_property: called %p %s", object, property_name);
+#endif
+}
+#endif

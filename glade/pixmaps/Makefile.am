@@ -24,6 +24,7 @@ PIXMAPS_16 = \
     $(P16DIR)/widget-gtkextra-gtkplotcanvas.png \
     $(P16DIR)/widget-gtkextra-gtkplotpolar.png \
     $(P16DIR)/widget-gtkextra-gtksheet.png \
+    $(P16DIR)/widget-gtkextra-gtksheetcolumn.png \
     $(P16DIR)/widget-gtkextra-gtktogglecombo.png
 
 PIXMAPS_22 = \
@@ -46,6 +47,7 @@ PIXMAPS_22 = \
     $(P22DIR)/widget-gtkextra-gtkplotpixmap.png \
     $(P22DIR)/widget-gtkextra-gtkplotpolar.png \
     $(P22DIR)/widget-gtkextra-gtksheet.png \
+    $(P22DIR)/widget-gtkextra-gtksheetcolumn.png \
     $(P22DIR)/widget-gtkextra-gtktogglecombo.png
 
 gladepixmap16_DATA = $(PIXMAPS_16)

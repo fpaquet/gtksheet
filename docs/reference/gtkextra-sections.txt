@@ -1361,6 +1361,7 @@ GtkSheetClass
 GtkSheetColumnClass
 <SUBSECTION Private>
 gtk_sheet_get_type
+gtk_sheet_column_get_type
 gtk_sheet_range_get_type
 </SECTION>
 

@@ -1,3 +1,8 @@
+2010-08-03 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: Glade-3: cut/paste of sheets now works without dropping all columns
+	* GtkSheetColumn: new properties 'width', 'justification', also working with glade-3
+	* GtkSheetColumn: added column icons
+
 2010-07-30 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed cursor key handling in rightmost column
 	* GtkSheet: fixed deactivation of active cell on row deletion

@@ -1,3 +1,15 @@
+2010-08-04 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: new tooltip feature, added to sheet, column, row and cell
+	* GtkSheet: new public interface functions to get/set tooltips on sheet, column, row and cell
+	* GtkSheet: added a small red triangle in the top right cell corner, if there is a tooltip attached
+	* gtksheettest: added some tooltips to the first sheet
+	* GtkSheet: fixed a bug in AddRow() which was destroying column data
+	* GtkSheet: reworked cell data allocation and deallocation
+	* GtkSheet: the cell is no longer cleared, when the text is deleted manually, 
+	    so attributes, tooltips, links remain in the cell, when you press the delete key
+	* GtkSheet: Calling gtk_sheet_cell_clear() function erases all data in the cells,
+	    to remove only the text, call gtk_sheet_set_cell_text() with NULL
+
 2010-08-03 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: Glade-3: cut/paste of sheets now works without dropping all columns
 	* GtkSheetColumn: new properties 'width', 'justification', also working with glade-3

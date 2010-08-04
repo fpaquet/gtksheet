@@ -209,6 +209,9 @@ struct _GtkSheetCell
 
   gchar *text;
   gpointer link;
+
+  gchar *tooltip_markup; /* tooltip, which is marked up with the Pango text markup language */
+  gchar *tooltip_text;  /* tooltip, without markup */
 };
 
 /**
@@ -242,6 +245,9 @@ struct _GtkSheetRow
     GtkSheetButton button;
     gboolean is_sensitive;
     gboolean is_visible;
+
+    gchar *tooltip_markup; /* tooltip, which is marked up with the Pango text markup language */
+    gchar *tooltip_text;  /* tooltip, without markup */
 };
 
 /**
@@ -298,9 +304,9 @@ struct _GtkSheet{
 
   guint freeze_count;
 
-  /* Background colors */
-  GdkColor bg_color;
-  GdkColor grid_color;
+  GdkColor bg_color;    /* cell background color */
+  GdkColor grid_color;  /* grid color */
+  GdkColor ctm_color;  /* cell tooltip marker color */
   gboolean show_grid;
 
   /* sheet children */
@@ -680,7 +686,6 @@ gboolean gtk_sheet_rows_resizable (GtkSheet *sheet);
 void gtk_sheet_rows_set_resizable (GtkSheet *sheet, gboolean resizable);
 
 /* column visibility */
-
 gboolean gtk_sheet_column_visible (GtkSheet *sheet, gint column);
 void gtk_sheet_column_set_visibility (GtkSheet *sheet, gint column, gboolean visible);
 
@@ -688,7 +693,6 @@ void gtk_sheet_column_label_set_visibility (GtkSheet *sheet, gint col, gboolean 
 void gtk_sheet_columns_labels_set_visibility (GtkSheet *sheet, gboolean visible);
 
 /* row visibility */
-
 gboolean gtk_sheet_row_visible (GtkSheet *sheet, gint row);
 void gtk_sheet_row_set_visibility (GtkSheet *sheet, gint row, gboolean visible);
 
@@ -696,40 +700,47 @@ void gtk_sheet_row_label_set_visibility	(GtkSheet *sheet, gint row, gboolean vis
 void gtk_sheet_rows_labels_set_visibility (GtkSheet *sheet, gboolean visible);
 
 
-/* select the row. The range is then highlighted, and the bounds are stored
- * in sheet->range  */
-void
-gtk_sheet_select_row 			(GtkSheet * sheet,
-		      			gint row);
+/* sheet tooltips */
+gchar *gtk_sheet_get_tooltip_markup(GtkSheet *sheet);
+void gtk_sheet_set_tooltip_markup(GtkSheet *sheet, const gchar *markup);
+gchar *gtk_sheet_get_tooltip_text(GtkSheet *sheet);
+void gtk_sheet_set_tooltip_text(GtkSheet *sheet, const gchar *text);
 
-/* select the column. The range is then highlighted, and the bounds are stored
- * in sheet->range  */
-void
-gtk_sheet_select_column 		(GtkSheet * sheet,
-		         		gint column);
+/* column tooltips */
+gchar *gtk_sheet_column_get_tooltip_markup(GtkSheet *sheet, const gint col);
+void gtk_sheet_column_set_tooltip_markup(GtkSheet *sheet, const gint col, const gchar *markup);
+gchar *gtk_sheet_column_get_tooltip_text(GtkSheet *sheet, const gint col);
+void gtk_sheet_column_set_tooltip_text(GtkSheet *sheet, const gint col, const gchar *text);
 
-/* save selected range to "clipboard" */
-void
-gtk_sheet_clip_range 			(GtkSheet *sheet, const GtkSheetRange *range);
-/* free clipboard */
-void
-gtk_sheet_unclip_range			(GtkSheet *sheet);
+/* row tooltips */
+gchar *gtk_sheet_row_get_tooltip_markup(GtkSheet *sheet, const gint row);
+void gtk_sheet_row_set_tooltip_markup(GtkSheet *sheet, const gint row, const gchar *markup);
+gchar *gtk_sheet_row_get_tooltip_text(GtkSheet *sheet, const gint row);
+void gtk_sheet_row_set_tooltip_text(GtkSheet *sheet, const gint row, const gchar *text);
 
-gboolean
-gtk_sheet_in_clip			(GtkSheet *sheet);
+/* cell tooltips */
+gchar *gtk_sheet_cell_get_tooltip_markup(GtkSheet *sheet, const gint row, const gint col);
+void gtk_sheet_cell_set_tooltip_markup(GtkSheet *sheet, const gint row, const gint col, const gchar *markup);
+gchar *gtk_sheet_cell_get_tooltip_text(GtkSheet *sheet, const gint row, const gint col);
+void gtk_sheet_cell_set_tooltip_text(GtkSheet *sheet, const gint row, const gint col, const gchar *text);
+
+
+/* selection range. The range gets highlighted, and its bounds are stored in sheet->range  */
+void gtk_sheet_select_row(GtkSheet *sheet, gint row);
+void gtk_sheet_select_column(GtkSheet *sheet, gint column);
+void gtk_sheet_select_range(GtkSheet *sheet, const GtkSheetRange *range); 
+
+/* clipboard */
+void gtk_sheet_clip_range(GtkSheet *sheet, const GtkSheetRange *range);
+void gtk_sheet_unclip_range(GtkSheet *sheet);
+gboolean gtk_sheet_in_clip(GtkSheet *sheet);
 
 /* get scrollbars adjustment */
-GtkAdjustment *
-gtk_sheet_get_vadjustment 		(GtkSheet * sheet);
-GtkAdjustment *
-gtk_sheet_get_hadjustment 		(GtkSheet * sheet);
-
-/* highlight the selected range and store bounds in sheet->range */
-void gtk_sheet_select_range		(GtkSheet *sheet, 
-					 const GtkSheetRange *range); 
+GtkAdjustment *gtk_sheet_get_vadjustment(GtkSheet * sheet);
+GtkAdjustment *gtk_sheet_get_hadjustment(GtkSheet * sheet);
 
 /* obvious */
-void gtk_sheet_unselect_range		(GtkSheet *sheet); 
+void gtk_sheet_unselect_range(GtkSheet *sheet); 
 
 /* set active cell where the entry will be displayed 
  * returns FALSE if current cell can't be deactivated or

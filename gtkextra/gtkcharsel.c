@@ -311,9 +311,11 @@ new_selection(GtkButton *button, gpointer data)
 /**
  * gtk_char_selection_get_selection:
  * @charsel: Char Selection widget.
- * Return value: . The current selection(a character from the list).0 is left,upper corner;256 is right, down corner.
  *
  * Gets the current selection
+ *  
+ * Returns: The current selection(a character from the list).0 
+ * is left,upper corner;256 is right, down corner. 
  */
 gint
 gtk_char_selection_get_selection(GtkCharSelection *charsel)

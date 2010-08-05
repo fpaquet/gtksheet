@@ -1207,6 +1207,7 @@ GtkSheetCellAttr
 GtkSheetCellBorder
 GtkSheetAttrType
 GtkSheetState
+GtkSheetDataType
 gtk_sheet_new
 gtk_sheet_construct
 gtk_sheet_new_browser
@@ -1282,6 +1283,18 @@ gtk_sheet_column_get_tooltip_markup
 gtk_sheet_column_set_tooltip_markup
 gtk_sheet_column_get_tooltip_text
 gtk_sheet_column_set_tooltip_text
+gtk_sheet_column_get_datatype
+gtk_sheet_column_set_datatype
+gtk_sheet_column_get_description
+gtk_sheet_column_set_description
+gtk_sheet_column_get_format
+gtk_sheet_column_set_format
+gtk_sheet_column_get_iskey
+gtk_sheet_column_set_iskey
+gtk_sheet_column_get_multiline
+gtk_sheet_column_set_multiline
+gtk_sheet_column_get_readonly
+gtk_sheet_column_set_readonly
 
 gtk_sheet_set_row_title
 gtk_sheet_get_row_title

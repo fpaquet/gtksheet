@@ -281,9 +281,10 @@ gtk_toggle_combo_get_type ()
  * gtk_toggle_combo_new:
  * @nrows: number of rows
  * @ncols: number of columns
- * Return Value: the newly-created #GtkToggleCombo widget.
  * 
  * Creates a new #GtkToggleCombo widget with @nrows rows and @ncols columns.
+ *  
+ * Returns: the newly-created #GtkToggleCombo widget.
  */
 GtkWidget *
 gtk_toggle_combo_new (gint nrows, gint ncols)
@@ -319,9 +320,10 @@ gtk_toggle_combo_construct(GtkToggleCombo *toggle_combo, gint nrows, gint ncols)
 /**
  * gtk_toggle_combo_get_nrows:
  * @combo: a #GtkToggleCombo
- * Return value: number of rows
  * 
  * Get the number of rows in #GtkToggleCombo.
+ *  
+ * Returns: number of rows
  */
 gint
 gtk_toggle_combo_get_nrows(GtkToggleCombo *combo)
@@ -332,9 +334,10 @@ gtk_toggle_combo_get_nrows(GtkToggleCombo *combo)
 /**
  * gtk_toggle_combo_get_ncols:
  * @combo: a #GtkToggleCombo
- * Return value: number of columns
  * 
  * Get the number of columns in #GtkToggleCombo.
+ *  
+ * Returns: number of columns
  */
 gint
 gtk_toggle_combo_get_ncols(GtkToggleCombo *combo)

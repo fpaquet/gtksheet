@@ -51,6 +51,7 @@ typedef enum
  */
 struct _GtkPlotCanvasLine
 {
+    /*< private >*/
   GtkPlotCanvasChild parent;
 
   GtkPlotLine line;

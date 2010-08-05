@@ -512,9 +512,10 @@ expand_tree(GtkCTree *ctree,GtkCTreeNode *parent_node, gpointer data)
  * gtk_dir_tree_open_dir:
  * @dir_tree: #GtkDirTree widget.
  * @path: #gchar path to the dir to be opened.
- * Return value: TRUE(succes) or FALSE(failure).
  * 
  * Open files from directory path in dir_tree widget.
+ *  
+ * Returns: TRUE(succes) or FALSE(failure).
  */
 
 gint

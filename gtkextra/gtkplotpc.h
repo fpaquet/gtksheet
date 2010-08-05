@@ -85,6 +85,7 @@ typedef struct _GtkPlotPoint         GtkPlotPoint;
  */
 struct _GtkPlotPoint
 {
+    /*< private >*/
   gdouble x, y;
 };
 

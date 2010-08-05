@@ -128,9 +128,10 @@ gtk_check_item_new (void)
 /**
  * gtk_check_item_new_with_label:
  * @label: text near the check item
- * Return Value: the newly-created #GtkCheckItem.
  *
  * Create a #GtkCheckItem widget with a specified label.
+ *  
+ * Returns: the newly-created #GtkCheckItem.
  */
 GtkWidget*
 gtk_check_item_new_with_label (const gchar *label)

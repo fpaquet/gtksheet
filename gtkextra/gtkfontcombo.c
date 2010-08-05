@@ -310,8 +310,9 @@ new_font(GtkWidget *widget, gpointer data)
 }
 
 /**
- * gtk_font_combo_select:
- * @family:font family
+ * gtk_font_combo_select: 
+ * @font_combo: a #GtkFontCombo 
+ * @family: font family
  * @bold: TRUE or FALSE
  * @italic: TRUE or FALSE
  * @height: height of the font
@@ -345,6 +346,7 @@ gtk_font_combo_select (GtkFontCombo *combo,
 
 /**
  * gtk_font_combo_select_nth:
+ * @font_combo: a #GtkFontCombo 
  * @n: nth font
  * @bold: TRUE or FALSE
  * @italic: TRUE or FALSE

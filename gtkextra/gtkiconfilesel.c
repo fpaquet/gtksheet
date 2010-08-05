@@ -710,7 +710,9 @@ open_dir(GtkWidget *widget, GtkCTreeNode *node, gint n, gpointer data)
  * @filesel: the #GtkIconFileSelection widget.
  * @path: directory path.
  * 
- * Show the file from path directory in filesel widget.
+ * Show the file from path directory in filesel widget. 
+ *  
+ * Returns: TRUE or FALSE depending on success 
  */
 gint
 gtk_icon_file_selection_open_dir(GtkIconFileSel *filesel, const gchar *path)
@@ -940,11 +942,12 @@ entry_key_press(GtkWidget *widget,
 } 
 
 /**
- * gtk_icon_file_selection_set_filter:
+ * gtk_icon_file_selection_get_selection:
  * @filesel: the #GtkIconFileSelection widget.
- * Return value: the current selection.
  *  
  * Gets the current selection applied on #GtkIconFileSelection.
+ *  
+ * Returns: the current selection.
  */
 const gchar *
 gtk_icon_file_selection_get_selection(GtkIconFileSel *filesel)

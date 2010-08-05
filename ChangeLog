@@ -1,3 +1,11 @@
+2010-08-06 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: added row and column tooltip markers
+	* GtkSheetColumn: new properties is_key, is_readonly, is_multiline, data_format, data_type, description
+	    is_key, description have only informational character for the application
+	    is_readonly is implemented, others not yet
+	* GtkSheet: new public interface function to get/set the new properties
+	* gtkextra/*.c: documentation fixes - no more warnings by docgen
+
 2010-08-04 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: new tooltip feature, added to sheet, column, row and cell
 	* GtkSheet: new public interface functions to get/set tooltips on sheet, column, row and cell

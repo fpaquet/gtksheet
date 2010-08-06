@@ -1,4 +1,10 @@
 2010-08-06 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: created a new GtkSheetEntryType in order to control it from glade-3
+	* GtkSheet: replaced column is_multiline property with entry_type
+	* GtkSheet: new public interface function gtk_sheet_get_entry_type()
+	* GtkSheet: re-activated sheet entry justification property, it works
+
+2010-08-05 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: added row and column tooltip markers
 	* GtkSheetColumn: new properties is_key, is_readonly, is_multiline, data_format, data_type, description
 	    is_key, description have only informational character for the application

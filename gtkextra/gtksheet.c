@@ -80,8 +80,6 @@ enum _GtkSheetFlags
     GTK_SHEET_REDRAW_PENDING  = 1 << 8,
 };
 
-#define JUSTIFY_ENTRY_OBSOLETE  /* sheet->justify_entry seams not to be used at all */
-
 enum _GtkSheetProperties
 {
     PROP_GTK_SHEET_0,  /* dummy */
@@ -93,9 +91,7 @@ enum _GtkSheetProperties
     PROP_GTK_SHEET_AUTO_RESIZE,  /* gtk_sheet_set_autoresize() */
     PROP_GTK_SHEET_AUTO_SCROLL,  /* gtk_sheet_set_autoscroll() */
     PROP_GTK_SHEET_CLIP_TEXT,  /* gtk_sheet_set_clip_text() */
-#ifndef JUSTIFY_ENTRY_OBSOLETE
     PROP_GTK_SHEET_JUSTIFY_ENTRY,  /* gtk_sheet_set_justify_entry() */
-#endif
     PROP_GTK_SHEET_BG_COLOR,  /* gtk_sheet_set_background() */
     PROP_GTK_SHEET_GRID_VISIBLE,  /* gtk_sheet_show_grid() */
     PROP_GTK_SHEET_GRID_COLOR,  /* gtk_sheet_set_grid() */
@@ -105,6 +101,7 @@ enum _GtkSheetProperties
     PROP_GTK_SHEET_ROW_TITLES_VISIBLE,  /* gtk_sheet_show_row_titles() */
     PROP_GTK_SHEET_ROWS_RESIZABLE,  /* gtk_sheet_rows_set_resizable() */
     PROP_GTK_SHEET_ROW_TITLES_WIDTH,  /* gtk_sheet_set_row_titles_width() */
+    PROP_GTK_SHEET_ENTRY_TYPE,  /* gtk_sheet_change_entry() */
 };
 
 enum _GtkSheetColumnProperties
@@ -115,12 +112,12 @@ enum _GtkSheetColumnProperties
     PROP_GTK_SHEET_COLUMN_LABEL,  /* gtk_sheet_column_button_add_label() */
     PROP_GTK_SHEET_COLUMN_WIDTH,  /* gtk_sheet_set_column_width() */
     PROP_GTK_SHEET_COLUMN_JUSTIFICATION,  /* gtk_sheet_column_set_justification() */
-    PROP_GTK_SHEET_COLUMN_ISKEY,  /* is key column */
-    PROP_GTK_SHEET_COLUMN_READONLY,  /* column data is readonly */
-    PROP_GTK_SHEET_COLUMN_MULTILINE,  /* column allows multiline text */
-    PROP_GTK_SHEET_COLUMN_DATAFMT,  /* cell data format */
-    PROP_GTK_SHEET_COLUMN_DATATYPE,  /* cell validation type */
-    PROP_GTK_SHEET_COLUMN_DESCRIPTION,  /* column data description */
+    PROP_GTK_SHEET_COLUMN_ISKEY,  /* gtk_sheet_column_set_iskey() */
+    PROP_GTK_SHEET_COLUMN_READONLY,  /* gtk_sheet_column_set_readonly() */
+    PROP_GTK_SHEET_COLUMN_DATAFMT,  /* gtk_sheet_column_set_format() */
+    PROP_GTK_SHEET_COLUMN_DATATYPE,  /* gtk_sheet_column_set_datatype() */
+    PROP_GTK_SHEET_COLUMN_DESCRIPTION,  /* gtk_sheet_column_set_description() */
+    PROP_GTK_SHEET_COLUMN_ENTRY_TYPE,  /* gtk_sheet_column_set_entry_type() */
 };
 
 /* Signals */
@@ -1208,6 +1205,63 @@ GType
     return(sheet_range_type);
 }
 
+static GtkSheetEntryType
+    map_gtype_2_sheet_entry_type(GType entry_type)
+{
+    if (entry_type == G_TYPE_ITEM_ENTRY)
+        return(GTK_SHEET_ENTRY_TYPE_GTK_ITEM_ENTRY);
+
+    else if (entry_type == GTK_TYPE_ENTRY)
+        return(GTK_SHEET_ENTRY_TYPE_GTK_ITEM_ENTRY);
+
+    else if (entry_type == GTK_TYPE_TEXT_VIEW)
+        return(GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW);
+
+    else if (entry_type == GTK_TYPE_SPIN_BUTTON)
+        return(GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON);
+
+    else if (entry_type == GTK_TYPE_COMBO_BOX)
+        return(GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX);
+
+    else if (entry_type == GTK_TYPE_COMBO_BOX_ENTRY)
+        return(GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX_ENTRY);
+
+    else if (entry_type == GTK_TYPE_COMBO)
+        return(GTK_SHEET_ENTRY_TYPE_GTK_COMBO);
+
+    return(GTK_SHEET_ENTRY_TYPE_DEFAULT);
+}
+
+static GType
+    map_sheet_entry_type_2_gtype(GtkSheetEntryType ety)
+{
+    switch(ety)
+    {
+        case GTK_SHEET_ENTRY_TYPE_GTK_ITEM_ENTRY:
+            return(G_TYPE_ITEM_ENTRY);
+
+        case GTK_SHEET_ENTRY_TYPE_GTK_ENTRY:
+            return(GTK_TYPE_ENTRY);
+
+        case GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW:
+            return(GTK_TYPE_TEXT_VIEW);
+
+        case GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON:
+            return(GTK_TYPE_SPIN_BUTTON);
+
+        case GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX:
+            return(GTK_TYPE_COMBO_BOX);
+
+        case GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX_ENTRY:
+            return(GTK_TYPE_COMBO_BOX_ENTRY);
+
+        case GTK_SHEET_ENTRY_TYPE_GTK_COMBO:
+            return(GTK_TYPE_COMBO);
+
+        default: break;
+    }
+    return(G_TYPE_NONE);
+}
 
 /*
  * gtk_sheet_set_property - set sheet property
@@ -1297,11 +1351,9 @@ static void
             gtk_sheet_set_clip_text(sheet, g_value_get_boolean(value));
             break;
 
-#ifndef JUSTIFY_ENTRY_OBSOLETE
         case PROP_GTK_SHEET_JUSTIFY_ENTRY:
             gtk_sheet_set_justify_entry(sheet, g_value_get_boolean(value));
             break;
-#endif
 
         case PROP_GTK_SHEET_BG_COLOR:
             gtk_sheet_set_background(sheet, g_value_get_boxed (value));
@@ -1342,7 +1394,15 @@ static void
             break;
 
         case PROP_GTK_SHEET_ROW_TITLES_WIDTH:
-            gtk_sheet_set_row_titles_width(sheet, g_value_get_uint (value));
+            gtk_sheet_set_row_titles_width(sheet, g_value_get_uint(value));
+            break;
+
+        case PROP_GTK_SHEET_ENTRY_TYPE:
+            {
+                GType entry_type = map_sheet_entry_type_2_gtype(g_value_get_enum(value));
+                if (entry_type == G_TYPE_NONE) entry_type = 0;
+                gtk_sheet_change_entry(sheet, entry_type);
+            }
             break;
 
         default:
@@ -1398,11 +1458,9 @@ static void
             g_value_set_boolean (value, sheet->clip_text);
             break;
 
-#ifndef JUSTIFY_ENTRY_OBSOLETE
         case PROP_GTK_SHEET_JUSTIFY_ENTRY:
             g_value_set_boolean (value, sheet->justify_entry);
             break;
-#endif
 
         case PROP_GTK_SHEET_BG_COLOR:
             g_value_set_boxed (value, &sheet->bg_color);
@@ -1438,6 +1496,10 @@ static void
 
         case PROP_GTK_SHEET_ROW_TITLES_WIDTH:
             g_value_set_uint (value, sheet->row_title_area.width);
+            break;
+
+        case PROP_GTK_SHEET_ENTRY_TYPE:
+            g_value_set_enum(value, map_gtype_2_sheet_entry_type(sheet->entry_type));
             break;
 
         default:
@@ -1547,13 +1609,11 @@ static void gtk_sheet_class_init_properties(GObjectClass *gobject_class)
                                   G_PARAM_READWRITE);
     g_object_class_install_property (gobject_class, PROP_GTK_SHEET_CLIP_TEXT, pspec);
 
-#ifndef JUSTIFY_ENTRY_OBSOLETE
-    pspec = g_param_spec_boolean ("justify-entry", "Justify cell text",
-                                  "Justify text in cells",
+    pspec = g_param_spec_boolean ("justify-entry", "Justify cell entry",
+                                  "Adapt cell entry editor to the cell justification",
                                   TRUE,
                                   G_PARAM_READWRITE);
     g_object_class_install_property (gobject_class, PROP_GTK_SHEET_JUSTIFY_ENTRY, pspec);
-#endif
 
     /**
      * GtkSheet:bgcolor:
@@ -1653,6 +1713,19 @@ static void gtk_sheet_class_init_properties(GObjectClass *gobject_class)
                                0, 2048, GTK_SHEET_DEFAULT_COLUMN_WIDTH,
                                G_PARAM_READWRITE);
     g_object_class_install_property (gobject_class, PROP_GTK_SHEET_ROW_TITLES_WIDTH, pspec);
+
+    /**
+     * GtkSheet:entry-type:
+     *
+     * Sheet cell entry widget type
+     */
+    pspec = g_param_spec_enum ("entry-type", "Entry Type",
+                                  "Sheet entry type, if not default",
+                                  gtk_sheet_entry_type_get_type(),
+                                  GTK_SHEET_ENTRY_TYPE_DEFAULT,
+                                  G_PARAM_READWRITE);
+    g_object_class_install_property (gobject_class, 
+                                     PROP_GTK_SHEET_ENTRY_TYPE, pspec);
 }
 
 static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidgetClass *widget_class)
@@ -2237,56 +2310,28 @@ static void
             {
                 gint is_key = g_value_get_boolean(value);
 
-#ifdef GTK_SHEET_DEBUG
-                g_debug("gtk_sheet_column_set_property: col=%d is_key=%d", 
-                        col, is_key);
-#endif
                 if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     colobj->is_key = is_key;
                 }
                 else
                 {
-                    colobj->is_key = is_key;
+                    gtk_sheet_column_set_iskey(sheet, col, is_key);
                 }
             }
             break;
-
 
         case PROP_GTK_SHEET_COLUMN_READONLY:
             {
                 gint is_readonly = g_value_get_boolean(value);
 
-#ifdef GTK_SHEET_DEBUG
-                g_debug("gtk_sheet_column_set_property: col=%d is_readonly=%d", 
-                        col, is_readonly);
-#endif
                 if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     colobj->is_readonly = is_readonly;
                 }
                 else
                 {
-                    colobj->is_readonly = is_readonly;
-                }
-            }
-            break;
-
-        case PROP_GTK_SHEET_COLUMN_MULTILINE:
-            {
-                gint is_multiline = g_value_get_boolean(value);
-
-#ifdef GTK_SHEET_DEBUG
-                g_debug("gtk_sheet_column_set_property: col=%d is_multiline=%d", 
-                        col, is_multiline);
-#endif
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
-                {
-                    colobj->is_multiline = is_multiline;
-                }
-                else
-                {
-                    colobj->is_multiline = is_multiline;
+                    gtk_sheet_column_set_readonly(sheet, col, is_readonly);
                 }
             }
             break;
@@ -2295,39 +2340,29 @@ static void
             {
                 const gchar *data_format = g_value_get_string(value);
 
-#ifdef GTK_SHEET_DEBUG
-                g_debug("gtk_sheet_column_set_property: col=%d data_format=%s", 
-                        col, data_format);
-#endif
-
                 if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
-                    if (colobj->data_format) g_free (colobj->data_format);
-                    colobj->data_format = g_strdup (data_format);
+                    if (colobj->data_format) g_free(colobj->data_format);
+                    colobj->data_format = g_strdup(data_format);
                 }
                 else
                 {
-                    if (colobj->data_format) g_free (colobj->data_format);
-                    colobj->data_format = g_strdup (data_format);
+                    gtk_sheet_column_set_format(sheet, col, data_format);
                 }
             }
             break;
 
         case PROP_GTK_SHEET_COLUMN_DATATYPE:
             {
-                gint justification = g_value_get_enum(value);
+                GtkSheetDataType data_type = g_value_get_enum(value);
 
-#ifdef GTK_SHEET_DEBUG
-                g_debug("gtk_sheet_column_set_property: col=%d justification=%d", 
-                        col, justification);
-#endif
                 if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
-                    colobj->justification = justification;
+                    colobj->data_type = data_type;
                 }
                 else
                 {
-                    gtk_sheet_column_set_justification(sheet, col, justification);
+                    gtk_sheet_column_set_datatype(sheet, col, data_type);
                 }
             }
             break;
@@ -2336,20 +2371,29 @@ static void
             {
                 const gchar *description = g_value_get_string(value);
 
-#ifdef GTK_SHEET_DEBUG
-                g_debug("gtk_sheet_column_set_property: col=%d description=%s", 
-                        col, description);
-#endif
-
                 if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
-                    if (colobj->description) g_free (colobj->description);
-                    colobj->description = g_strdup (description);
+                    if (colobj->description) g_free(colobj->description);
+                    colobj->description = g_strdup(description);
                 }
                 else
                 {
-                    if (colobj->description) g_free (colobj->description);
-                    colobj->description = g_strdup (description);
+                    gtk_sheet_column_set_description(sheet, col, description);
+                }
+            }
+            break;
+
+        case PROP_GTK_SHEET_COLUMN_ENTRY_TYPE:
+            {
+                GType entry_type = map_sheet_entry_type_2_gtype(g_value_get_enum(value));
+
+                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                {
+                    colobj->entry_type = entry_type;
+                }
+                else
+                {
+                    gtk_sheet_column_set_entry_type(sheet, col, entry_type);
                 }
             }
             break;
@@ -2360,8 +2404,7 @@ static void
             break;
     }
 
-    if (sheet 
-        && gtk_widget_get_realized(GTK_WIDGET(sheet))
+    if (sheet && gtk_widget_get_realized(GTK_WIDGET(sheet)) 
         && !GTK_SHEET_IS_FROZEN(sheet))
     {
         gtk_sheet_range_draw (sheet, NULL);
@@ -2369,24 +2412,21 @@ static void
 }
 
 static void 
-    gtk_sheet_column_get_property (GObject    *object,
-                                   guint       property_id,
-                                   GValue     *value,
+    gtk_sheet_column_get_property(GObject *object,
+                                   guint property_id,
+                                   GValue *value,
                                    GParamSpec *pspec)
 {
     GtkSheetColumn *colobj = GTK_SHEET_COLUMN(object);
     GtkSheet *sheet = colobj->sheet;
-    gint pos;
+    gint col = gtk_sheet_column_find(colobj);
 
     switch (property_id)
     {
         case PROP_GTK_SHEET_COLUMN_POSITION:
             {
-                pos = gtk_sheet_column_find(colobj);
-
                 if (!sheet) return;
-
-                if (pos >= 0) g_value_set_int (value, pos);
+                if (col >= 0) g_value_set_int (value, col);
             }
             break;
 
@@ -2410,10 +2450,6 @@ static void
             g_value_set_boolean(value, colobj->is_readonly);
             break;
 
-        case PROP_GTK_SHEET_COLUMN_MULTILINE:
-            g_value_set_enum(value, colobj->is_multiline);
-            break;
-
         case PROP_GTK_SHEET_COLUMN_DATAFMT:
             g_value_set_string(value, colobj->data_format);
             break;
@@ -2424,6 +2460,13 @@ static void
 
         case PROP_GTK_SHEET_COLUMN_DESCRIPTION:
             g_value_set_string(value, colobj->description);
+            break;
+
+        case PROP_GTK_SHEET_COLUMN_ENTRY_TYPE:
+            {
+                GtkSheetEntryType et = map_gtype_2_sheet_entry_type(colobj->entry_type);
+                g_value_set_enum(value, et);
+            }
             break;
 
         default:
@@ -2514,18 +2557,6 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                                      PROP_GTK_SHEET_COLUMN_READONLY, pspec);
 
     /**
-     * GtkSheetColumn:multiline:
-     *
-     * Column allows multiline entry
-     */
-    pspec = g_param_spec_boolean ("multiline", "Multiline",
-                               "Column allows multiline cell entry (supported by default cell entry)",
-                               FALSE,
-                               G_PARAM_READWRITE);
-    g_object_class_install_property (gobject_class, 
-                                     PROP_GTK_SHEET_COLUMN_MULTILINE, pspec);
-
-    /**
      * GtkSheetColumn:dataformat:
      *
      * Format pattern for cell contents
@@ -2561,6 +2592,19 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                                G_PARAM_READWRITE);
     g_object_class_install_property (gobject_class, 
                                      PROP_GTK_SHEET_COLUMN_DESCRIPTION, pspec);
+
+    /**
+     * GtkSheetColumn:entry-type:
+     *
+     * Column cell entry widget type
+     */
+    pspec = g_param_spec_enum ("entry-type", "Entry Type",
+                                  "Supersedes sheet entry type, if not default",
+                                  gtk_sheet_entry_type_get_type(),
+                                  GTK_SHEET_ENTRY_TYPE_DEFAULT,
+                                  G_PARAM_READWRITE);
+    g_object_class_install_property (gobject_class, 
+                                     PROP_GTK_SHEET_COLUMN_ENTRY_TYPE, pspec);
 }
 
 static void
@@ -2584,10 +2628,10 @@ static void
 
     column->is_key = FALSE;
     column->is_readonly = FALSE;
-    column->is_multiline = FALSE;
     column->data_format = NULL;
     column->data_type = GTK_SHEET_DATA_TYPE_NONE;
     column->description = NULL;
+    column->entry_type = GTK_SHEET_ENTRY_TYPE_DEFAULT;
 
     GTK_SHEET_COLUMN_SET_VISIBLE(column, TRUE);
     GTK_SHEET_COLUMN_SET_SENSITIVE(column, TRUE);
@@ -3181,7 +3225,7 @@ gboolean
  * @sheet: a #GtkSheet
  * @justify: TRUE or FALSE
  *
- * Justify cell text in #GtkSheet.
+ * Justify cell entry editor in #GtkSheet.
  */
 void
     gtk_sheet_set_justify_entry (GtkSheet *sheet, gboolean justify)
@@ -3196,7 +3240,8 @@ void
  * gtk_sheet_justify_entry:
  * @sheet: a #GtkSheet
  *
- * Get the cell text justification status in #GtkSheet.
+ * Get the cell entry editor justification setting from 
+ * #GtkSheet. 
  *
  * Returns: TRUE or FALSE
  */
@@ -4904,47 +4949,6 @@ void gtk_sheet_column_set_readonly(GtkSheet *sheet, const gint col,
 }
 
 /**
- * gtk_sheet_column_get_multiline: 
- * @sheet:  a #GtkSheet. 
- * @col: column index 
- *  
- * Gets the column multiline flag 
- * 
- * Returns:	the multiline flag
- */
-gboolean gtk_sheet_column_get_multiline(GtkSheet *sheet, const gint col)
-{
-    g_return_val_if_fail (sheet != NULL, FALSE);
-    g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
-
-    if (col < 0 || col > sheet->maxcol) return(FALSE);
-
-    return(COLPTR(sheet, col)->is_multiline);
-}
-
-/**
- * gtk_sheet_column_set_multiline: 
- * @sheet:  a #GtkSheet.
- * @col: column index 
- * @is_multiline:  the column is_multiline flag 
- *  
- * Sets the column multiline  flag for editing cell contents. 
- * This setting is only applicable to the default item entry 
- * editor (#GtkItemEntry). 
- *  
- */
-void gtk_sheet_column_set_multiline(GtkSheet *sheet, const gint col, 
-                                    const gboolean is_multiline)
-{
-    g_return_if_fail (sheet != NULL);
-    g_return_if_fail (GTK_IS_SHEET (sheet));
-
-    if (col < 0 || col > sheet->maxcol) return;
-
-    COLPTR(sheet, col)->is_multiline = is_multiline;
-}
-
-/**
  * gtk_sheet_column_get_format: 
  * @sheet:  a #GtkSheet. 
  * @col: column index 
@@ -5070,6 +5074,47 @@ void gtk_sheet_column_set_description(GtkSheet *sheet, const gint col,
 
     if (colp->description) g_free(colp->description);
     colp->description = g_strdup(description);
+}
+
+/**
+ * gtk_sheet_column_get_entry_type: 
+ * @sheet:  a #GtkSheet. 
+ * @col: column index 
+ *  
+ * Gets the column entry type if known 
+ * 
+ * Returns:	the entry type or GTK_SHEET_ENTRY_TYPE_DEFAULT
+ */
+GType 
+    gtk_sheet_column_get_entry_type(GtkSheet *sheet, const gint col)
+{
+    g_return_val_if_fail (sheet != NULL, GTK_SHEET_ENTRY_TYPE_DEFAULT);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), GTK_SHEET_ENTRY_TYPE_DEFAULT);
+
+    if (col < 0 || col > sheet->maxcol) return(GTK_SHEET_ENTRY_TYPE_DEFAULT);
+
+    return(COLPTR(sheet, col)->entry_type);
+}
+
+/**
+ * gtk_sheet_column_set_entry_type: 
+ * @sheet:  a #GtkSheet.
+ * @col: column index 
+ * @entry_type:  the entry type or G_TYPE_NONE 
+ *  
+ * Supersedes the sheet entry type for this column. Pass 
+ * G_TYPE_NONE to reset the column to the sheet entry type.
+ */
+void 
+    gtk_sheet_column_set_entry_type(GtkSheet *sheet, const gint col, 
+                                         const GType entry_type)
+{
+    g_return_if_fail (sheet != NULL);
+    g_return_if_fail (GTK_IS_SHEET (sheet));
+
+    if (col < 0 || col > sheet->maxcol) return;
+
+    COLPTR(sheet, col)->entry_type = entry_type;
 }
 
 
@@ -10341,6 +10386,24 @@ GtkWidget *
 
     return(sheet->sheet_entry);
 }
+
+/**
+ * gtk_sheet_get_entry_type:
+ * @sheet: a #GtkSheet
+ *
+ * Get sheets entry type, if known
+ *
+ * Returns: a #GtkSheetEntryType or GTK_SHEET_ENTRY_TYPE_DEFAULT
+ */
+GType 
+    gtk_sheet_get_entry_type(GtkSheet *sheet)
+{
+    g_return_val_if_fail (sheet, GTK_SHEET_ENTRY_TYPE_DEFAULT);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), GTK_SHEET_ENTRY_TYPE_DEFAULT);
+
+    return(sheet->entry_type);
+}
+
 
 /* BUTTONS */
 static void

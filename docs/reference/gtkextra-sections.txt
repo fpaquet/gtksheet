@@ -1220,6 +1220,11 @@ gtk_sheet_change_entry
 gtk_sheet_get_entry_type
 gtk_sheet_get_entry
 gtk_sheet_get_entry_widget
+gtk_sheet_get_entry_text
+gtk_sheet_set_entry_text
+gtk_sheet_set_entry_editable
+gtk_sheet_entry_signal_connect_changed
+gtk_sheet_entry_signal_disconnect_by_func
 
 gtk_sheet_get_state
 gtk_sheet_get_attributes

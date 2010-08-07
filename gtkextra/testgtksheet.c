@@ -367,6 +367,25 @@ gint
 }
 
 void 
+    sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
+{
+    char *text; 
+    GtkSheet *sheet;
+    gint cur_page;
+
+    cur_page = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+    sheet = GTK_SHEET(sheets[cur_page]);
+
+    if (!gtk_widget_has_focus(gtk_sheet_get_entry_widget(sheet))) return;
+
+    if ((text = gtk_sheet_get_entry_text(sheet)))
+    {
+        gtk_entry_set_text(GTK_ENTRY(entry), text);
+        g_free(text);
+    }
+}
+
+void 
     resize_handler(GtkWidget *widget, GtkSheetRange *old_range, 
                    GtkSheetRange *new_range, 
                    gpointer data)
@@ -406,13 +425,21 @@ gboolean
     if (*new_col == 2 && (col != 2 || sheet->state != GTK_STATE_NORMAL))
         gtk_sheet_change_entry(sheet, gtk_spin_button_get_type ());
 
-    if (*new_col >= 3 && (col < 3 || sheet->state != GTK_STATE_NORMAL))
+    if (*new_col == 3 && (col != 3 || sheet->state != GTK_STATE_NORMAL))
+        gtk_sheet_change_entry(sheet, GTK_TYPE_TEXT_VIEW);
+
+    if (*new_col >= 4 && (col < 4 || sheet->state != GTK_STATE_NORMAL))
         gtk_sheet_change_entry(sheet, G_TYPE_ITEM_ENTRY);
 
 /* this one crashes with SEGV in GLib
    GLib-GObject-WARNING **: cannot retrieve class for invalid (unclassed) type `GtkCellEditable'
            gtk_sheet_change_entry(sheet, G_TYPE_CELL_EDITABLE);
            */
+
+    /* need to reconnect the signal everytime the entry changes */
+
+    gtk_sheet_entry_signal_connect_changed(sheet, 
+                                           (GtkSignalFunc) sheet_entry_changed_handler);
 
     return (TRUE);
 }
@@ -820,12 +847,13 @@ void
 
     gtk_sheet_change_entry(sheet, gtk_combo_get_type());
 
+    gtk_sheet_entry_signal_connect_changed(sheet,
+                                           (GtkSignalFunc) sheet_entry_changed_handler);
 
     g_signal_connect(GTK_OBJECT(sheet),
                      "traverse",
                      (void *) change_entry, 
                      NULL);
-
 }
 
 /*
@@ -843,39 +871,37 @@ build_example4(GtkWidget *widget)
 */
 
 void
-    set_cell(GtkWidget *widget, gchar *insert, gint text_legth, gint position, 
-             gpointer data)
+    set_cell(GtkWidget *widget, gchar *insert, gint text_legth, gint position, gpointer data)
 {
-    const char *text;
-    GtkEntry *sheet_entry;
+    char *text;
+    GtkSheet *sheet = GTK_SHEET(widget);
+    GtkWidget *sheet_entry = gtk_sheet_get_entry(sheet);
 
-    sheet_entry = GTK_ENTRY(gtk_sheet_get_entry(GTK_SHEET(widget)));
-
-    if ((text = gtk_entry_get_text (sheet_entry)))
+    if ((text = gtk_sheet_get_entry_text(sheet)))
     {
         gtk_entry_set_text(GTK_ENTRY(entry), text);
+        g_free(text);
     }
+
     GTK_WIDGET_UNSET_FLAGS(entry, GTK_HAS_FOCUS);
-    GTK_WIDGET_SET_FLAGS(GTK_SHEET(widget)->sheet_entry, GTK_HAS_FOCUS);
+    GTK_WIDGET_SET_FLAGS(sheet_entry, GTK_HAS_FOCUS);
 } 
 
 void
-    show_sheet_entry(GtkWidget *widget, gpointer data)
+    entry_changed_handler(GtkWidget *widget, gpointer data)
 {
     const char *text;
     GtkSheet *sheet;
-    GtkEntry *sheet_entry;
     gint cur_page;
 
     if (!gtk_widget_has_focus(widget)) return;
 
     cur_page = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
-    sheet=GTK_SHEET(sheets[cur_page]);
-    sheet_entry = GTK_ENTRY(gtk_sheet_get_entry(sheet));
+    sheet = GTK_SHEET(sheets[cur_page]);
 
-    if ((text=gtk_entry_get_text (GTK_ENTRY(entry))))
+    if ((text = gtk_entry_get_text(GTK_ENTRY(entry))))
     {
-        gtk_entry_set_text(sheet_entry, text);
+        gtk_sheet_set_entry_text(sheet, text);
     }
 }
 
@@ -883,42 +909,13 @@ void
     activate_sheet_entry(GtkWidget *widget, gpointer data)
 {
     GtkSheet *sheet;
-    GtkEntry *sheet_entry;
     gint cur_page, row, col;
-    gint justification=GTK_JUSTIFY_LEFT;
 
     cur_page = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
     sheet=GTK_SHEET(sheets[cur_page]);
     row=sheet->active_cell.row; col=sheet->active_cell.col;
 
-    sheet_entry = GTK_ENTRY(gtk_sheet_get_entry(sheet));
-
-    if (GTK_IS_ITEM_ENTRY(sheet_entry))
-        justification = GTK_ITEM_ENTRY(sheet_entry)->justification;
-
-    gtk_sheet_set_cell(sheet, row, col,
-                       justification,
-                       gtk_entry_get_text (sheet_entry));
-
-}
-
-void 
-    show_entry(GtkWidget *widget, gpointer data)
-{
-    const char *text; 
-    GtkSheet *sheet;
-    GtkWidget * sheet_entry;
-    gint cur_page;
-
-    if (!gtk_widget_has_focus(widget)) return;
-
-    cur_page = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
-    sheet=GTK_SHEET(sheets[cur_page]);
-    sheet_entry = gtk_sheet_get_entry(sheet);
-
-    if ((text=gtk_entry_get_text (GTK_ENTRY(sheet_entry))))
-        gtk_entry_set_text(GTK_ENTRY(entry), text);
-
+    gtk_sheet_set_cell_text(sheet, row, col, gtk_sheet_get_entry_text(sheet));
 }
 
 void 
@@ -985,13 +982,13 @@ gint
     activate_sheet_cell(GtkWidget *widget, gint row, gint column, gpointer data) 
 {
     GtkSheet *sheet;
-    GtkEntry *sheet_entry;
+    GtkWidget *sheet_entry;
     char cell[100];
     const char *text;
     GtkSheetCellAttr attributes;
 
     sheet=GTK_SHEET(widget);
-    sheet_entry = GTK_ENTRY(gtk_sheet_get_entry(sheet));
+    sheet_entry = gtk_sheet_get_entry(sheet);
 
     if (gtk_sheet_get_column_title(GTK_SHEET(widget), column))
         sprintf(cell,"  %s:%d  ", gtk_sheet_get_column_title(GTK_SHEET(widget), column), row);
@@ -1003,10 +1000,10 @@ gint
     gtk_entry_set_max_length(GTK_ENTRY(entry),
                              GTK_ENTRY(sheet_entry)->text_max_length);
 
-    if ((text=gtk_entry_get_text(GTK_ENTRY(gtk_sheet_get_entry(sheet)))))
+    if ((text = gtk_sheet_get_entry_text(sheet)))
+    {
         gtk_entry_set_text(GTK_ENTRY(entry), text);
-    else
-        gtk_entry_set_text(GTK_ENTRY(entry), "");
+    }
 
     gtk_sheet_get_attributes(sheet,sheet->active_cell.row,
                              sheet->active_cell.col, &attributes);
@@ -1452,8 +1449,8 @@ int main(int argc, char *argv[])
         gtk_notebook_append_page(GTK_NOTEBOOK(notebook), GTK_WIDGET(scrolled_windows[i]),
                                  label);
 
-        g_signal_connect(GTK_OBJECT(gtk_sheet_get_entry(GTK_SHEET(sheets[i]))),
-                         "changed", (void *)show_entry, NULL);
+        gtk_sheet_entry_signal_connect_changed(GTK_SHEET(sheets[i]),
+                                               (GtkSignalFunc) sheet_entry_changed_handler);
 
         g_signal_connect(GTK_OBJECT(sheets[i]),
                          "activate", (void *)activate_sheet_cell,
@@ -1462,7 +1459,7 @@ int main(int argc, char *argv[])
 
 
     g_signal_connect(GTK_OBJECT(entry),
-                     "changed", (void *)show_sheet_entry, NULL);
+                     "changed", (void *)entry_changed_handler, NULL);
 
     g_signal_connect(GTK_OBJECT(entry),
                      "activate", (void *)activate_sheet_entry,
@@ -1473,8 +1470,6 @@ int main(int argc, char *argv[])
     build_example2(sheets[1]);
     build_example3(sheets[2]);
 
-    g_signal_connect(GTK_OBJECT(gtk_sheet_get_entry(GTK_SHEET(sheets[2]))),
-                     "changed", (void *)show_entry, NULL);
 
 
     pixmap=gdk_pixmap_colormap_create_from_xpm_d(NULL, colormap, &mask, NULL,

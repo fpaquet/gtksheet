@@ -1,3 +1,10 @@
+2010-08-07 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: replaced deprecated signal "pressed" on the global sheet button
+	* GtkSheet: new feature: entry of multiline text via GtkTextView as sheet_entry
+	* GtkSheet: reworked sheet_entry widget processing
+	* GtkSheet: new public interface functions gtk_sheet_*entry* to access 
+	* testgtksheet.c: use GtkTextView for editing of column 3 in sheet 2
+
 2010-08-06 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: created a new GtkSheetEntryType in order to control it from glade-3
 	* GtkSheet: replaced column is_multiline property with entry_type

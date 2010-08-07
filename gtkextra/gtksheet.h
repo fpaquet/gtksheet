@@ -570,18 +570,24 @@ struct _GtkSheetClass
     void gtk_sheet_set_hadjustment(GtkSheet *sheet, GtkAdjustment *adjustment); 
     void gtk_sheet_set_vadjustment(GtkSheet *sheet, GtkAdjustment *adjustment); 
 
-/* Sheet EntryType */
+/* sheet entry */
     void gtk_sheet_change_entry(GtkSheet *sheet, GType entry_type);
 
     GType gtk_sheet_get_entry_type(GtkSheet *sheet);
     GtkWidget *gtk_sheet_get_entry(GtkSheet *sheet);
     GtkWidget *gtk_sheet_get_entry_widget(GtkSheet *sheet);
 
+    gchar *gtk_sheet_get_entry_text(GtkSheet *sheet);
+    void gtk_sheet_set_entry_text(GtkSheet *sheet, const gchar *text);
+    void gtk_sheet_set_entry_editable(GtkSheet *sheet, const gboolean editable);
+
+    gulong gtk_sheet_entry_signal_connect_changed(GtkSheet *sheet, GtkSignalFunc handler);
+    void gtk_sheet_entry_signal_disconnect_by_func(GtkSheet *sheet, GtkSignalFunc handler);
+
 /* Added by Steven Rostedt <steven.rostedt@lmco.com> */
     GtkSheetState gtk_sheet_get_state(GtkSheet *sheet);
 
-/* Returns sheet's ranges 
- * Added by Murray Cumming */
+/* sheet's ranges - Added by Murray Cumming */
     guint gtk_sheet_get_columns_count(GtkSheet *sheet);
     guint gtk_sheet_get_rows_count(GtkSheet *sheet);
     void gtk_sheet_get_visible_range(GtkSheet *sheet, GtkSheetRange *range);

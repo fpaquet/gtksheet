@@ -2902,7 +2902,10 @@ void
  * @sheet: a #GtkSheet
  * @entry_type: a #GType
  *
- * Changes the current entry of the cell in #GtkSheet.
+ * Changes the current entry of the cell in #GtkSheet. The old 
+ * sheet entry widget gets dropped and a new entry widget is 
+ * created. Beware: You will have to reconnect all your signal 
+ * handlers after changing an entry.
  */
 void
     gtk_sheet_change_entry(GtkSheet *sheet, GType entry_type)
@@ -2924,8 +2927,12 @@ void
     {
         gtk_sheet_show_active_cell(sheet);
 
+        /* if the application changes the entry during emission of the TRAVERSE signal
+           an initialisation of the new entry can fire the "changed" signal and
+           the text will be written into the old active cell (which is WRONG)
         gtk_sheet_entry_signal_connect_changed(sheet, 
                                                (GtkSignalFunc) gtk_sheet_entry_changed_handler);
+           */
     }
 }
 
@@ -6355,9 +6362,11 @@ static void
         gdk_gc_set_foreground (sheet->bg_gc, &sheet->grid_color);
 
 #ifdef GTK_SHEET_DEBUG
+#if 0
         g_debug("gtk_sheet_cell_draw_default(%d,%d): x %d y %d w %d h %d",
                 row, col,
                 area.x, area.y, area.width, area.height);
+#endif
 #endif
 
         /* draw grid rectangle */
@@ -6662,6 +6671,11 @@ static void
         drawing_range.coli = MAX_VISIBLE_COLUMN(sheet);
     }
 
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_range_draw: row %d - %d col %d - %d", 
+            drawing_range.row0, drawing_range.rowi, drawing_range.col0, drawing_range.coli);
+#endif
+
 /*  
    gdk_draw_rectangle (sheet->pixmap,
                    GTK_WIDGET(sheet)->style->white_gc,
@@ -6949,8 +6963,10 @@ static void
     if (range.rowi >= sheet->maxrow) height=sheet->sheet_window_height-y;
 
 #ifdef GTK_SHEET_DEBUG
+#if 0
     g_debug("gtk_sheet_draw_backing_pixmap: x %d y %d w %d h %d",
             x, y, width+1, height+1);
+#endif
 #endif
 
     gdk_draw_pixmap(sheet->sheet_window,
@@ -7081,7 +7097,7 @@ void
     gtk_sheet_set_cell_attributes(sheet, row, col, attributes);
 
 #ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_set_cell: text = %s", text ? text : "");
+    g_debug("gtk_sheet_set_cell: row %d col %d text = %s", row, col, text ? text : "");
 #endif
 
     if (cell->text)
@@ -7090,7 +7106,7 @@ void
         cell->text = NULL;
     }
 
-    if (text) cell->text=g_strdup(text);
+    if (text) cell->text = g_strdup(text);
 
     if (attributes.is_visible)
     {
@@ -7613,20 +7629,21 @@ static void
 
     sheet = GTK_SHEET(data);
 
-#ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_entry_changed_handler: called");
-#endif
-
     if (!gtk_widget_get_visible(gtk_sheet_get_entry_widget(sheet))) return;
     if (sheet->state != GTK_STATE_NORMAL) return;
 
-    row=sheet->active_cell.row;
-    col=sheet->active_cell.col;
+    row = sheet->active_cell.row;
+    col = sheet->active_cell.col;
 
-    if (row<0 || col<0) return;
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_entry_changed_handler: called on %s row %d col %d", 
+            g_type_name(G_TYPE_FROM_INSTANCE(gtk_sheet_get_entry(sheet))), row, col);
+#endif
 
-    sheet->active_cell.row=-1;
-    sheet->active_cell.col=-1;
+    if (row < 0 || col < 0) return;
+
+    sheet->active_cell.row = -1;
+    sheet->active_cell.col = -1;
 
     GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IS_FROZEN);
 
@@ -7637,9 +7654,12 @@ static void
     if (sheet->freeze_count == 0)
         GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IS_FROZEN);
 
-    sheet->active_cell.row=row;;
-    sheet->active_cell.col=col;
+    sheet->active_cell.row = row;;
+    sheet->active_cell.col = col;
 
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_entry_changed_handler: done row %d col %d", row, col);
+#endif
 }
 
 
@@ -7654,6 +7674,10 @@ static gboolean
 
     row = sheet->active_cell.row;
     col = sheet->active_cell.col;
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_deactivate_cell: called, row %d col %d", row, col);
+#endif
 
     if (row < 0 || row > sheet->maxrow) return(TRUE);
     if (col < 0 || col > sheet->maxcol) return(TRUE);
@@ -7673,7 +7697,7 @@ static gboolean
     }
 
 #ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_deactivate_cell: called");
+    g_debug("gtk_sheet_deactivate_cell: running");
 #endif
 
     gtk_sheet_entry_signal_disconnect_by_func(sheet, 
@@ -7691,13 +7715,16 @@ static gboolean
         gtk_sheet_range_draw(sheet, NULL);
     }
 
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_deactivate_cell: done row %d col %d", row, col);
+#endif
+
     return (TRUE);
 }
 
 static void
     gtk_sheet_hide_active_cell(GtkSheet *sheet)
 {
-    const char *text;
     gint row,col;
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
@@ -7705,31 +7732,52 @@ static void
     row = sheet->active_cell.row;
     col = sheet->active_cell.col;
 
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_hide_active_cell: called row %d col %d", row, col);
+#endif
+
     if (row < 0 || row > sheet->maxrow) return;
     if (col < 0 || col > sheet->maxcol) return;
 
     if (sheet->freeze_count == 0)
         GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IS_FROZEN);
 
-    text = gtk_sheet_get_entry_text(sheet);
+#if 0
+    /* transferring entry text to the cell gives problems when gtk_sheet_change_entry()
+       is called during TRAVERSE signal emission. The text of the already changed
+       entry gets written into the deactivated cell */
+    {
+        char *text = gtk_sheet_get_entry_text(sheet);
+    
+        /* todo: compare with existing text, only notify if text changes */
+        gtk_sheet_set_cell_text(sheet, row, col, text);
+        g_signal_emit(GTK_OBJECT(sheet),sheet_signals[SET_CELL], 0, row, col);
+    
+        g_free(text);
+    }
+#endif
 
-    /* todo: compare with existing text, only notify if text changes */
-    gtk_sheet_set_cell_text(sheet, row, col, text);
-    g_signal_emit(GTK_OBJECT(sheet),sheet_signals[SET_CELL], 0, row, col);
+    {
+        GtkSheetRange range;
+
+        range.row0 = range.rowi = row;
+        range.col0 = range.coli = col;
+
+        if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range);
+    }
 
     column_button_release(sheet, col);
     row_button_release(sheet, row);
 
 #ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_hide_active_cell: called, text = %s", text ? text : "");
+    g_debug("gtk_sheet_hide_active_cell: unmap, row %d col %d", row, col);
 #endif
 
-    /* Problem: unmap a GtkSpinButton will fire "changed" with value "0" 
-    gtk_sheet_entry_signal_disconnect_by_func(sheet, 
-                                              (GtkSignalFunc) gtk_sheet_entry_changed_handler);
-    */
-
     gtk_widget_unmap(sheet->sheet_entry);
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_hide_active_cell: unmapped, row %d col %d", row, col);
+#endif
 
     gdk_draw_pixmap(sheet->sheet_window,
                     gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
@@ -7741,11 +7789,21 @@ static void
                     sheet->column[col]->width+4,
                     sheet->row[row].height+4);
 
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_hide_active_cell: grab, row %d col %d", row, col);
+#endif
+
     gtk_widget_grab_focus(GTK_WIDGET(sheet));
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_hide_active_cell: unvisible, row %d col %d", row, col);
+#endif
 
     GTK_WIDGET_UNSET_FLAGS(GTK_WIDGET(sheet->sheet_entry), GTK_VISIBLE);
 
-    g_free(text);
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_hide_active_cell: done");
+#endif
 }
 
 static gboolean
@@ -7826,7 +7884,7 @@ static void
     if (GTK_SHEET_IN_SELECTION(sheet)) return;
 
 #ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_show_active_cell: called");
+    g_debug("gtk_sheet_show_active_cell: called row %d col %d", row, col);
 #endif
 
     GTK_WIDGET_SET_FLAGS(GTK_WIDGET(sheet->sheet_entry), GTK_VISIBLE);
@@ -7853,6 +7911,10 @@ static void
 
     if (!text) text = g_strdup("");
 
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_show_active_cell: cell text is %s", text ? text : "NULL");
+#endif
+
     sheet_entry = gtk_sheet_get_entry(sheet);
 
     if (GTK_IS_ENTRY(sheet_entry))
@@ -7862,11 +7924,19 @@ static void
 
     editable = !(gtk_sheet_locked(sheet) || !attributes.is_editable || COLPTR(sheet, col)->is_readonly);
     gtk_sheet_set_entry_editable(sheet, editable);
-    g_debug("activate: set to %s", text ? text : "NULL");
 
     old_text = gtk_sheet_get_entry_text(sheet);
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_show_active_cell: old_text is %s", old_text ? old_text : "NULL");
+#endif
+
     if (old_text && strcmp(old_text, text) != 0)
     {
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_show_active_cell: setting entry text to %s", text ? text : "NULL");
+#endif
+
         gtk_sheet_set_entry_text(sheet, text);
     }
     else
@@ -8635,6 +8705,10 @@ static gboolean
     if(event->type != GDK_BUTTON_PRESS) return(TRUE);
 */
 
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_button_press_handler: called");
+#endif
+
     gdk_window_get_pointer(gtk_widget_get_window(widget), 
                            NULL, NULL, &mods);
     if (!(mods & GDK_BUTTON1_MASK)) return(TRUE);
@@ -8693,8 +8767,15 @@ static gboolean
     /* selections on the sheet */
     if (event->window == sheet->sheet_window)
     {
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_button_press_handler: on sheet");
+#endif
+
         gtk_widget_get_pointer (widget, &x, &y);
         gtk_sheet_get_pixel_info (sheet, x, y, &row, &column);
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_button_press_handler: pointer grab");
+#endif
         gdk_pointer_grab (sheet->sheet_window, FALSE,
                           GDK_POINTER_MOTION_HINT_MASK |
                           GDK_BUTTON1_MOTION_MASK |
@@ -8702,6 +8783,9 @@ static gboolean
                           NULL, NULL, event->time);
         gtk_grab_add(GTK_WIDGET(sheet));
         sheet->timer=g_timeout_add_full(0, TIMEOUT_SCROLL, gtk_sheet_scroll, sheet, NULL);
+#ifdef GTK_SHEET_DEBUG
+        g_debug("gtk_sheet_button_press_handler: grab focus");
+#endif
         gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
         if (sheet->selection_mode != GTK_SELECTION_SINGLE &&
@@ -8757,6 +8841,10 @@ static gboolean
         }
         else
         {
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_button_press_handler: on click cell");
+#endif
+
             gtk_sheet_click_cell(sheet, row, column, &veto);
             if (veto) GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
         }
@@ -8829,19 +8917,24 @@ static gint
 }
 
 static void
-    gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint column, gboolean *veto)
+    gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 {
     *veto = TRUE;
 
-    if (row > sheet->maxrow || column > sheet->maxcol)
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_click_cell: called, row %d col %d", row, col);
+#endif
+
+
+    if (row > sheet->maxrow || col > sheet->maxcol)
     {
         *veto = FALSE;
         return;
     }
 
-    if (column >= 0 && row >= 0)
+    if (col >= 0 && row >= 0)
     {
-        if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, column)) || 
+        if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) || 
             !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)))
         {
             *veto = FALSE;
@@ -8849,38 +8942,43 @@ static void
         }
     }
 
+    /* if we do not grab focus here, some entry widgets (i.e. GtkSpinButton)
+       will not format contents correctly on field exit */
+
+    gtk_widget_grab_focus(GTK_WIDGET(sheet));
+
     _gtkextra_signal_emit(GTK_OBJECT(sheet), sheet_signals[TRAVERSE],
                           sheet->active_cell.row, sheet->active_cell.col,
-                          &row, &column, veto);
+                          &row, &col, veto);
 
     if (!*veto)
     {
         if (sheet->state == GTK_STATE_NORMAL) return;
 
         row = sheet->active_cell.row;
-        column = sheet->active_cell.col;
-        gtk_sheet_activate_cell(sheet, row, column);
+        col = sheet->active_cell.col;
+        gtk_sheet_activate_cell(sheet, row, col);
         return;
     }
 
-    if (row == -1 && column >= 0)
+    if (row == -1 && col >= 0)
     {
         if (gtk_sheet_autoscroll(sheet))
-            gtk_sheet_move_query(sheet, row, column);
+            gtk_sheet_move_query(sheet, row, col);
 
-        gtk_sheet_select_column(sheet, column);
+        gtk_sheet_select_column(sheet, col);
         return;
     }
-    if (column == -1 && row >= 0)
+    if (col == -1 && row >= 0)
     {
         if (gtk_sheet_autoscroll(sheet))
-            gtk_sheet_move_query(sheet, row, column);
+            gtk_sheet_move_query(sheet, row, col);
 
         gtk_sheet_select_row(sheet, row);
         return;
     }
 
-    if (row==-1 && column ==-1)
+    if (row==-1 && col ==-1)
     {
         sheet->range.row0=0;
         sheet->range.col0=0;
@@ -8894,7 +8992,7 @@ static void
         return;
     }
 
-    if (row!=-1 && column !=-1)
+    if (row!=-1 && col !=-1)
     {
         if (sheet->state != GTK_SHEET_NORMAL)
         {
@@ -8911,18 +9009,18 @@ static void
         }
 
         if (gtk_sheet_autoscroll(sheet))
-            gtk_sheet_move_query(sheet, row, column);
+            gtk_sheet_move_query(sheet, row, col);
 
         sheet->active_cell.row=row;
-        sheet->active_cell.col=column;
+        sheet->active_cell.col=col;
 
         sheet->selection_cell.row=row;
-        sheet->selection_cell.col=column;
+        sheet->selection_cell.col=col;
 
         sheet->range.row0=row;
-        sheet->range.col0=column;
+        sheet->range.col0=col;
         sheet->range.rowi=row;
-        sheet->range.coli=column;
+        sheet->range.coli=col;
 
         sheet->state=GTK_SHEET_NORMAL;
 
@@ -9520,7 +9618,17 @@ static gboolean
 {
     gboolean stop_emission;
 
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_entry_key_press_handler: called, key %d state %x", 
+            key->keyval, key->state);
+#endif
+
     g_signal_emit_by_name(GTK_OBJECT(widget), "key_press_event", key, &stop_emission);
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_entry_key_press_handler: done, key %d state %x stop %d", 
+            key->keyval, key->state, stop_emission);
+#endif
 
     return (stop_emission);
 }
@@ -9571,6 +9679,10 @@ static gboolean
     state=sheet->state;
     in_selection = GTK_SHEET_IN_SELECTION(sheet);
     GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_key_press_handler: key %d state %x", key->keyval, key->state);
+#endif
 
     switch (key->keyval)
     {
@@ -10291,7 +10403,23 @@ static void
         shentry_allocation.height -= MIN(shentry_allocation.height, 3);
     }
 
+#if 0
+    /* the following works with most widgets, but looks funny */
+    gtk_widget_set_size_request(sheet->sheet_entry, 
+                               shentry_allocation.width, shentry_allocation.height);
+#endif
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_size_allocate_entry: allocate (%d,%d,%d,%d)",
+            shentry_allocation.x, shentry_allocation.y, shentry_allocation.width, shentry_allocation.height);
+#endif
+
     gtk_widget_size_allocate(sheet->sheet_entry, &shentry_allocation);
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_size_allocate_entry: returned (%d,%d,%d,%d)",
+            shentry_allocation.x, shentry_allocation.y, shentry_allocation.width, shentry_allocation.height);
+#endif
 
     if (previous_style == style) g_object_unref(previous_style);
 }

@@ -1,4 +1,8 @@
 2010-08-07 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: reworked "changed" signal emission, cell data updates and cell redraw
+	* testgtksheet.c: reworked sheet_entry change, GtkSpinButton works now
+
+2010-08-07 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: replaced deprecated signal "pressed" on the global sheet button
 	* GtkSheet: new feature: entry of multiline text via GtkTextView as sheet_entry
 	* GtkSheet: reworked sheet_entry widget processing

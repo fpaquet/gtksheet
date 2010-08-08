@@ -326,6 +326,7 @@ void
     char label[400];
     gint justification;
     GtkSheetCellAttr attr;
+    gchar *text;
 
     sheet=GTK_SHEET(widget);
 
@@ -334,12 +335,16 @@ void
                              &attr); 
 
     justification = attr.justification; 
-    format_text(sheet, gtk_entry_get_text(GTK_ENTRY(sheet->sheet_entry)), 
-                &justification, label);
+
+    text = gtk_sheet_get_entry_text(sheet);
+
+    format_text(sheet, text, &justification, label);
 
     gtk_sheet_set_cell(sheet, sheet->active_cell.row,
                        sheet->active_cell.col,
                        justification, label); 
+
+    g_free(text);
 }
 
 gint 
@@ -412,34 +417,65 @@ gboolean
                  gint row, gint col, gint *new_row, gint *new_col,
                  gpointer data)
 {
-    GtkSheet *sheet;
-
-    sheet = GTK_SHEET(widget);
+    gboolean changed = FALSE;
+    GtkSheet *sheet = GTK_SHEET(widget);
 
     if (*new_col == 0 && (col != 0 || sheet->state != GTK_STATE_NORMAL))
+    {
         gtk_sheet_change_entry(sheet, gtk_combo_get_type());
+        changed = TRUE;
+    }
 
     if (*new_col == 1 && (col != 1 || sheet->state != GTK_STATE_NORMAL))
+    {
         gtk_sheet_change_entry(sheet, gtk_entry_get_type());
+        changed = TRUE;
+    }
 
     if (*new_col == 2 && (col != 2 || sheet->state != GTK_STATE_NORMAL))
+    {
+        GtkSpinButton *spin_button;
+        GtkAdjustment *adjustment;
+        gdouble value = 0.0;
+        gchar *text;
+
         gtk_sheet_change_entry(sheet, gtk_spin_button_get_type ());
+        changed = TRUE;
+
+        text = gtk_sheet_cell_get_text(sheet, *new_row, *new_col);
+        if (text) value = atof(text);
+
+        adjustment = gtk_adjustment_new(value, 0.0, 100.0, 1.0, 10.0, 0.0);
+
+        spin_button = gtk_sheet_get_entry(sheet);
+        gtk_spin_button_configure(spin_button, adjustment, 0.0, 3);
+    }
 
     if (*new_col == 3 && (col != 3 || sheet->state != GTK_STATE_NORMAL))
+    {
         gtk_sheet_change_entry(sheet, GTK_TYPE_TEXT_VIEW);
+        changed = TRUE;
+    }
 
     if (*new_col >= 4 && (col < 4 || sheet->state != GTK_STATE_NORMAL))
+    {
         gtk_sheet_change_entry(sheet, G_TYPE_ITEM_ENTRY);
+        changed = TRUE;
+    }
 
 /* this one crashes with SEGV in GLib
    GLib-GObject-WARNING **: cannot retrieve class for invalid (unclassed) type `GtkCellEditable'
            gtk_sheet_change_entry(sheet, G_TYPE_CELL_EDITABLE);
            */
 
-    /* need to reconnect the signal everytime the entry changes */
+    if (changed)
+    {
+        /* Beware: you need to reconnect the "changed" signal
+           after every call to gtk_sheet_change_entry()! */
 
-    gtk_sheet_entry_signal_connect_changed(sheet, 
-                                           (GtkSignalFunc) sheet_entry_changed_handler);
+        gtk_sheet_entry_signal_connect_changed(sheet, 
+                                               (GtkSignalFunc) sheet_entry_changed_handler);
+    }
 
     return (TRUE);
 }
@@ -997,8 +1033,11 @@ gint
 
     gtk_label_set(GTK_LABEL(location), cell);
 
-    gtk_entry_set_max_length(GTK_ENTRY(entry),
-                             GTK_ENTRY(sheet_entry)->text_max_length);
+    if (GTK_IS_ENTRY(sheet_entry) || GTK_IS_ITEM_ENTRY(sheet_entry))
+    {
+        gtk_entry_set_max_length(GTK_ENTRY(entry),
+                                 GTK_ENTRY(sheet_entry)->text_max_length);
+    }
 
     if ((text = gtk_sheet_get_entry_text(sheet)))
     {

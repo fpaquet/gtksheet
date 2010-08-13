@@ -102,6 +102,7 @@ enum _GtkSheetProperties
     PROP_GTK_SHEET_ROWS_RESIZABLE,  /* gtk_sheet_rows_set_resizable() */
     PROP_GTK_SHEET_ROW_TITLES_WIDTH,  /* gtk_sheet_set_row_titles_width() */
     PROP_GTK_SHEET_ENTRY_TYPE,  /* gtk_sheet_change_entry() */
+    PROP_GTK_SHEET_VJUST,  /* gtk_sheet_set_vjustification() */
 };
 
 enum _GtkSheetColumnProperties
@@ -118,6 +119,7 @@ enum _GtkSheetColumnProperties
     PROP_GTK_SHEET_COLUMN_DATATYPE,  /* gtk_sheet_column_set_datatype() */
     PROP_GTK_SHEET_COLUMN_DESCRIPTION,  /* gtk_sheet_column_set_description() */
     PROP_GTK_SHEET_COLUMN_ENTRY_TYPE,  /* gtk_sheet_column_set_entry_type() */
+    PROP_GTK_SHEET_COLUMN_VJUST,  /* gtk_sheet_column_set_vjustification() */
 };
 
 /* Signals */
@@ -283,8 +285,8 @@ static inline guint
     return(PANGO_PIXELS(rect.width));
 }
 
-static inline 
-    guint DEFAULT_FONT_DESCENT(GtkWidget *widget)
+static inline guint 
+    DEFAULT_FONT_DESCENT(GtkWidget *widget)
 {
     if (!gtk_widget_get_style(widget)->font_desc) return(12);
 
@@ -757,7 +759,7 @@ static guint new_row_height(GtkSheet *sheet, gint row, gint *y);
 /* Sheet Button */
 
 static void create_global_button(GtkSheet *sheet);
-static void global_button_press_handler(GtkWidget *widget, gpointer data);
+
 /* Sheet Entry */
 
 static void create_sheet_entry(GtkSheet *sheet);
@@ -1411,6 +1413,10 @@ static void
             }
             break;
 
+        case PROP_GTK_SHEET_VJUST:
+            gtk_sheet_set_vjustification(sheet, g_value_get_enum(value));
+            break;
+
         default:
             /* We don't have any other property... */
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -1506,6 +1512,10 @@ static void
 
         case PROP_GTK_SHEET_ENTRY_TYPE:
             g_value_set_enum(value, map_gtype_2_sheet_entry_type(sheet->entry_type));
+            break;
+
+        case PROP_GTK_SHEET_VJUST:
+            g_value_set_enum(value, sheet->vjust);
             break;
 
         default:
@@ -1732,6 +1742,19 @@ static void gtk_sheet_class_init_properties(GObjectClass *gobject_class)
                                   G_PARAM_READWRITE);
     g_object_class_install_property (gobject_class, 
                                      PROP_GTK_SHEET_ENTRY_TYPE, pspec);
+
+    /**
+     * GtkSheet:vjust:
+     *
+     * Default vertical cell text justification
+     */
+    pspec = g_param_spec_enum ("vjust", "Vertical justification",
+                                  "Default sheet vertical cell text justification",
+                                  gtk_sheet_vertical_justification_get_type(),
+                                  GTK_SHEET_VERTICAL_JUSTIFICATION_TOP,
+                                  G_PARAM_READWRITE);
+    g_object_class_install_property (gobject_class, 
+                                     PROP_GTK_SHEET_VJUST, pspec);
 }
 
 static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidgetClass *widget_class)
@@ -2146,6 +2169,7 @@ static void
     sheet->vadjustment = NULL;
 
     sheet->shadow_type =   GTK_SHADOW_NONE;
+    sheet->vjust = GTK_SHEET_VERTICAL_JUSTIFICATION_TOP;
 
     sheet->column_title_area.x=0;
     sheet->column_title_area.y=0;
@@ -2404,6 +2428,21 @@ static void
             }
             break;
 
+        case PROP_GTK_SHEET_COLUMN_VJUST:
+            {
+                GtkSheetVerticalJustification vjust = g_value_get_enum(value);
+
+                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                {
+                    colobj->vjust = vjust;
+                }
+                else
+                {
+                    gtk_sheet_column_set_vjustification(sheet, col, vjust);
+                }
+            }
+            break;
+
         default:
             /* We don't have any other property... */
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -2473,6 +2512,10 @@ static void
                 GtkSheetEntryType et = map_gtype_2_sheet_entry_type(colobj->entry_type);
                 g_value_set_enum(value, et);
             }
+            break;
+
+        case PROP_GTK_SHEET_COLUMN_VJUST:
+            g_value_set_enum(value, colobj->vjust);
             break;
 
         default:
@@ -2611,6 +2654,19 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                                   G_PARAM_READWRITE);
     g_object_class_install_property (gobject_class, 
                                      PROP_GTK_SHEET_COLUMN_ENTRY_TYPE, pspec);
+
+    /**
+     * GtkSheetColumn:vjust:
+     *
+     * Column vertical cell text justification
+     */
+    pspec = g_param_spec_enum ("vjust", "Vertical justification",
+                                  "Supersedes sheet vertical cell text justification",
+                                  gtk_sheet_vertical_justification_get_type(),
+                                  GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT,
+                                  G_PARAM_READWRITE);
+    g_object_class_install_property (gobject_class, 
+                                     PROP_GTK_SHEET_COLUMN_VJUST, pspec);
 }
 
 static void
@@ -2631,6 +2687,7 @@ static void
     column->left_text_column = column->right_text_column = 0;
 
     column->justification = GTK_SHEET_DEFAULT_COLUMN_JUSTIFICATION;
+    column->vjust = GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT;
 
     column->is_key = FALSE;
     column->is_readonly = FALSE;
@@ -3210,7 +3267,9 @@ gboolean
  * @sheet: a #GtkSheet
  * @clip_text: TRUE or FALSE
  *
- * Clip text in cell.
+ * Clip text in cell. When clip text mode is turned off, cell 
+ * text is written over neighbour columns, as long as their 
+ * contents are empty. 
  */
 void
     gtk_sheet_set_clip_text  (GtkSheet *sheet, gboolean clip_text)
@@ -3225,7 +3284,7 @@ void
  * gtk_sheet_clip_text:
  * @sheet: a #GtkSheet
  *
- * Get clip text mode in #GtkSheet.
+ * Get clip text mode in #GtkSheet. 
  *
  * Returns: TRUE or FALSE
  */
@@ -3271,6 +3330,43 @@ gboolean
 
     return(sheet->justify_entry);
 }
+
+/**
+ * gtk_sheet_set_justify_entry:
+ * @sheet: a #GtkSheet
+ * @vjust: a #GtkSheetVerticalJustification
+ *
+ * Set the default vertical cell text justification for 
+ * #GtkSheet. 
+ */
+void
+    gtk_sheet_set_vjustification(GtkSheet *sheet, GtkSheetVerticalJustification vjust)
+{
+    g_return_if_fail (sheet != NULL);
+    g_return_if_fail (GTK_IS_SHEET (sheet));
+
+    sheet->vjust = vjust;
+}
+
+/**
+ * gtk_sheet_get_vjustification:
+ * @sheet: a #GtkSheet
+ *
+ * Get the default vertical cell text justification from 
+ * #GtkSheet. 
+ *
+ * Returns: the default #GtkSheetVerticalJustification
+ */
+GtkSheetVerticalJustification
+    gtk_sheet_get_vjustification(GtkSheet *sheet)
+{
+    g_return_val_if_fail (sheet != NULL, FALSE);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
+
+    return(sheet->vjust);
+}
+
+
 
 /**
  * gtk_sheet_set_locked:
@@ -5967,6 +6063,25 @@ static void
     }
 }
 
+/*
+ * global_button_clicked_handler:
+ * this is the #GtkSheet global button "button-press-event" handler
+ * 
+ * @param widget the global sheet button that received the signal 
+ * @param event  the GdkEventButton which triggered this signal
+ * @param data   the #GtkSheet passed on signal connection
+ */
+static void
+    global_button_press_handler(GtkWidget *widget,
+                                GdkEventButton *event,
+                                gpointer data)
+{
+    gboolean veto;
+
+    gtk_sheet_click_cell(GTK_SHEET(data), -1, -1, &veto);
+    gtk_widget_grab_focus(GTK_WIDGET(data));
+}
+
 static void
     create_global_button(GtkSheet *sheet)
 {
@@ -5995,22 +6110,6 @@ static void
 
     gtk_widget_size_allocate(sheet->button, &allocation);
     gtk_widget_show(sheet->button);
-}
-
-/*
- * global_button_clicked_handler:<p>
- * this is the #GtkSheet global button "button-press-event" handler
- * 
- * @param widget the global sheet button that received the signal
- * @param data   the #GtkSheet passed on signal connection
- */
-static void
-    global_button_press_handler(GtkWidget *widget, gpointer data)
-{
-    gboolean veto;
-
-    gtk_sheet_click_cell(GTK_SHEET(data), -1, -1, &veto);
-    gtk_widget_grab_focus(GTK_WIDGET(data));
 }
 
 
@@ -6463,11 +6562,10 @@ static void
     GtkSheetCellAttr attributes;
     PangoLayout *layout;
     PangoRectangle rect;
-    PangoRectangle logical_rect;
-    PangoLayoutLine *line;
     PangoFontMetrics *metrics;
     PangoContext *context = gtk_widget_get_pango_context(GTK_WIDGET(sheet));
-    gint ascent, descent, y_pos;
+    gint ascent, descent, spacing, y_pos;
+    GtkSheetVerticalJustification vjust;
 
     char *label;
 
@@ -6505,8 +6603,8 @@ static void
 
     area.x=COLUMN_LEFT_XPIXEL(sheet,col);
     area.y=ROW_TOP_YPIXEL(sheet,row);
-    area.width = sheet->column[col]->width;
-    area.height=sheet->row[row].height;
+    area.width = COLPTR(sheet, col)->width;
+    area.height = ROWPTR(sheet, row)->height;
 
     clip_area = area;
 
@@ -6515,34 +6613,65 @@ static void
 
     pango_layout_get_pixel_extents (layout, NULL, &rect);
 
-    line = pango_layout_get_lines (layout)->data;
-    pango_layout_line_get_extents (line, NULL, &logical_rect);
-
     metrics = pango_context_get_metrics(context,
                                         attributes.font_desc,
                                         pango_context_get_language(context));
 
     ascent = pango_font_metrics_get_ascent(metrics) / PANGO_SCALE;
     descent = pango_font_metrics_get_descent(metrics) / PANGO_SCALE;
+    spacing = pango_layout_get_spacing(layout) / PANGO_SCALE;
 
     pango_font_metrics_unref(metrics);
 
     /* Align primarily for locale's ascent/descent */
 
-    logical_rect.height /= PANGO_SCALE;
-    logical_rect.y /= PANGO_SCALE;
-    y_pos =  area.height - logical_rect.height;
+    /* vertical cell text justification */
+    {
+        /* column->vjust overrides sheet->vjust */
 
-    if (logical_rect.height > area.height)
-        y_pos = (logical_rect.height - area.height - 2*CELLOFFSET) / 2;
-    else if (y_pos < 0)
-        y_pos = 0;
-    else if (y_pos + logical_rect.height > area.height)
-        y_pos = area.height - logical_rect.height;
+        vjust = COLPTR(sheet, col)->vjust;
+        if (vjust == GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT) vjust = sheet->vjust;
+    
+        /* Vertical justification is quantisized, so that all text lines using the
+           same font appear vertically aligned, even if adjacent columns have
+           different vjust settings.
+           */
+        switch(vjust)
+        {
+            case GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT:
+            case GTK_SHEET_VERTICAL_JUSTIFICATION_TOP:
+                y_pos = CELLOFFSET;
+                break;
+    
+            case GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE:
+                {
+                    /* the following works only if the whole text is set with same metrics */
+                    register gint line_height = ascent + descent + spacing;
+                    register gint area_lines = area.height / line_height;
+                    register gint text_lines = rect.height / line_height;
+
+                    y_pos = CELLOFFSET - ((text_lines - area_lines) / 2) * line_height;
+                }
+                break;
+    
+            case GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM:
+                {
+                    /* the following works only if the whole text is set with same metrics */
+                    register gint line_height = ascent + descent + spacing;
+                    register gint area_lines = area.height / line_height;
+                    register gint area_height_quant = area_lines * line_height;
+
+                    y_pos = CELLOFFSET + area_height_quant - rect.height;
+                }
+                break;
+        }
+
+        y = area.y + y_pos;
+    }
 
     text_width = rect.width;
     text_height = rect.height;
-    y = area.y + y_pos - CELLOFFSET;
+
 
     switch (attributes.justification)
     {
@@ -6632,12 +6761,9 @@ static void
     gdk_draw_pixmap(sheet->sheet_window,
                     gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
                     sheet->pixmap,
-                    area.x,
-                    area.y,
-                    area.x,
-                    area.y,
-                    area.width,
-                    area.height);
+                    area.x, area.y,
+                    area.x, area.y,
+                    area.width, area.height);
 }
 
 
@@ -10748,7 +10874,12 @@ void gtk_sheet_set_entry_text(GtkSheet *sheet, const gchar *text)
     else if (GTK_IS_TEXT_VIEW(entry))
     {
         GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
+        GtkTextIter iter;
+
         gtk_text_buffer_set_text(buffer, text, -1);
+
+        gtk_text_buffer_get_start_iter(buffer, &iter);
+        gtk_text_buffer_place_cursor(buffer, &iter);
     }
     else
     {
@@ -11764,9 +11895,7 @@ static guint
  * Set column width.
  */
 void
-    gtk_sheet_set_column_width (GtkSheet * sheet,
-                                gint column,
-                                guint width)
+    gtk_sheet_set_column_width (GtkSheet * sheet, gint column, guint width)
 {
     guint min_width;
 
@@ -11807,9 +11936,7 @@ void
  * Set row height.
  */
 void
-    gtk_sheet_set_row_height (GtkSheet * sheet,
-                              gint row,
-                              guint height)
+    gtk_sheet_set_row_height (GtkSheet * sheet, gint row, guint height)
 {
     guint min_height;
 
@@ -12147,7 +12274,9 @@ void
  * Set background color of the given range.
  */
 void
-    gtk_sheet_range_set_background(GtkSheet *sheet, const GtkSheetRange *urange, const GdkColor *color)
+    gtk_sheet_range_set_background(GtkSheet *sheet, 
+                                   const GtkSheetRange *urange, 
+                                   const GdkColor *color)
 {
     gint i, j;
     GtkSheetCellAttr attributes;
@@ -12190,7 +12319,9 @@ void
  * Set foreground color of the given range.
  */
 void
-    gtk_sheet_range_set_foreground(GtkSheet *sheet, const GtkSheetRange *urange, const GdkColor *color)
+    gtk_sheet_range_set_foreground(GtkSheet *sheet, 
+                                   const GtkSheetRange *urange, 
+                                   const GdkColor *color)
 {
     gint i, j;
     GtkSheetCellAttr attributes;
@@ -12218,7 +12349,6 @@ void
         }
 
     if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range);
-
 }
 
 /**
@@ -12278,9 +12408,9 @@ void
     g_return_if_fail (sheet != NULL);
     g_return_if_fail (GTK_IS_SHEET (sheet));
 
-    if (col > sheet->maxcol) return;
+    if (col < 0 || col > sheet->maxcol) return;
 
-    sheet->column[col]->justification = justification;
+    COLPTR(sheet, col)->justification = justification;
 
     if (gtk_widget_get_realized(GTK_WIDGET(sheet)) && !GTK_SHEET_IS_FROZEN(sheet) &&
         col >= MIN_VISIBLE_COLUMN(sheet) && col <= MAX_VISIBLE_COLUMN(sheet))
@@ -12288,6 +12418,72 @@ void
         gtk_sheet_range_draw(sheet, NULL);
     }
 }
+
+/**
+ * gtk_sheet_column_get_justification:
+ * @sheet: a #GtkSheet.
+ * @col: column number
+ *
+ * Get the column justification. 
+ *  
+ * Returns: a #GtkJustification
+ */
+GtkJustification
+    gtk_sheet_column_get_justification(GtkSheet *sheet, gint col)
+{
+    g_return_val_if_fail (sheet != NULL, GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT);
+    if (col < 0 || col > sheet->maxcol) return (GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT);
+
+    return(COLPTR(sheet, col)->justification);
+}
+
+/**
+ * gtk_sheet_column_set_vjustification:
+ * @sheet: a #GtkSheet.
+ * @col: column number
+ * @vjust: a #GtkSheetVerticalJustification
+ *
+ * Set vertical cell text jjustification
+ */
+void
+    gtk_sheet_column_set_vjustification(GtkSheet *sheet, gint col, 
+                                        GtkSheetVerticalJustification vjust)
+{
+    g_return_if_fail (sheet != NULL);
+    g_return_if_fail (GTK_IS_SHEET (sheet));
+
+    if (col < 0 || col > sheet->maxcol) return;
+
+    COLPTR(sheet, col)->vjust = vjust;
+
+    if (gtk_widget_get_realized(GTK_WIDGET(sheet)) && !GTK_SHEET_IS_FROZEN(sheet) &&
+        col >= MIN_VISIBLE_COLUMN(sheet) && col <= MAX_VISIBLE_COLUMN(sheet))
+    {
+        gtk_sheet_range_draw(sheet, NULL);
+    }
+}
+
+/**
+ * gtk_sheet_column_get_vjustification:
+ * @sheet: a #GtkSheet.
+ * @col: column number
+ *
+ * Get the vertical cell text justification. This overrides the 
+ * default vertical cell text justification of the #GtkSheet. 
+ *  
+ * Returns: a #GtkSheetVerticalJustification
+ */
+GtkSheetVerticalJustification
+    gtk_sheet_column_get_vjustification(GtkSheet *sheet, gint col)
+{
+    g_return_val_if_fail (sheet != NULL, GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT);
+    if (col < 0 || col > sheet->maxcol) return (GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT);
+
+    return(COLPTR(sheet, col)->vjust);
+}
+
 
 /**
  * gtk_sheet_range_set_editable:
@@ -13608,8 +13804,10 @@ static void
 
         (* callback) (child->widget, callback_data);
     }
+
     if (sheet->button)
         (* callback) (sheet->button, callback_data);
+
     if (sheet->sheet_entry)
         (* callback) (sheet->sheet_entry, callback_data);
 }

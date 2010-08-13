@@ -31,7 +31,7 @@ extern "C" {
     G_BEGIN_DECLS
 
 
-        typedef enum
+    typedef enum
     {
         GTK_SHEET_FOREGROUND,
         GTK_SHEET_BACKGROUND,
@@ -111,6 +111,24 @@ extern "C" {
         GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX_ENTRY,
         GTK_SHEET_ENTRY_TYPE_GTK_COMBO,
     } GtkSheetEntryType;
+
+/**
+ * GtkSheetEntryType:
+ * @GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT: default 
+ * @GTK_SHEET_VERTICAL_JUSTIFICATION_TOP: top aligned
+ * @GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE: middle aligned
+ * @GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM: bottom aligned
+ *
+ * Vertical text alignment. 
+ *
+ **/
+    typedef enum
+    {
+        GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT,
+        GTK_SHEET_VERTICAL_JUSTIFICATION_TOP,
+        GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE,
+        GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM,
+    } GtkSheetVerticalJustification;
 
 
 #define G_TYPE_SHEET \
@@ -339,7 +357,8 @@ struct _GtkSheetColumn
     gint left_text_column;      /* min left column displaying text on this column */
     gint right_text_column;    /* max right column displaying text on this column */
 
-    GtkJustification justification;  /* content justification */
+    GtkJustification justification;    /* horizontal text justification */
+    GtkSheetVerticalJustification vjust;   /* vertical text justification */
 
     gboolean is_key;             /* marker for key columns */
     gboolean is_readonly;    /* flag to supersede cell.attributes.is_editable */
@@ -384,8 +403,7 @@ struct _GtkSheet
     GdkColor tm_color;    /* tooltip marker color */
     gboolean show_grid;
 
-    /* sheet children */
-    GList *children;
+    GList *children;    /* sheet children */
 
     /* allocation rectangle after the container_border_width
        and the width of the shadow border */
@@ -455,6 +473,8 @@ struct _GtkSheet
 
     /* border shadow style */
     GtkShadowType shadow_type;
+
+    GtkSheetVerticalJustification vjust;   /* default vertical text justification */
 
     /* Column Titles */
     GdkRectangle column_title_area;
@@ -600,6 +620,8 @@ struct _GtkSheetClass
     gboolean gtk_sheet_clip_text(GtkSheet *sheet);
     void gtk_sheet_set_justify_entry(GtkSheet *sheet, gboolean justify);
     gboolean gtk_sheet_justify_entry(GtkSheet *sheet);
+    void gtk_sheet_set_vjustification(GtkSheet *sheet, GtkSheetVerticalJustification vjust);
+    GtkSheetVerticalJustification gtk_sheet_get_vjustification(GtkSheet *sheet);
     void gtk_sheet_set_locked(GtkSheet *sheet, gboolean locked);
     gboolean gtk_sheet_locked(GtkSheet *sheet);
 
@@ -831,6 +853,9 @@ struct _GtkSheetClass
     void gtk_sheet_range_set_justification(GtkSheet *sheet, 
                                            const GtkSheetRange *urange, GtkJustification just);
     void gtk_sheet_column_set_justification(GtkSheet *sheet, gint col, GtkJustification just);
+    GtkJustification gtk_sheet_column_get_justification(GtkSheet *sheet, gint col);
+    void gtk_sheet_column_set_vjustification(GtkSheet *sheet, gint col, GtkSheetVerticalJustification vjust);
+    GtkSheetVerticalJustification gtk_sheet_column_get_vjustification(GtkSheet *sheet, gint col);
 
 /* set if cell contents can be edited or not in the given range:
  * accepted values are TRUE or FALSE. */

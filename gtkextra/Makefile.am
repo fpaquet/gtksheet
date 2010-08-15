@@ -171,7 +171,7 @@ gtkextra_extra_sources = \
 	gtkextrafeatures.h.in	\
 	gtkextra-marshal.list 	
 
-INCLUDES = -I$(top_buildir) -I$(top_srcdir) $(GTK_CFLAGS) 
+INCLUDES = -I$(top_builddir) -I$(top_srcdir) $(GTK_CFLAGS) 
 
 # target platform:
 lib_LTLIBRARIES = $(gtkextratargetlib)

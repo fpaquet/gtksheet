@@ -113,7 +113,7 @@ extern "C" {
     } GtkSheetEntryType;
 
 /**
- * GtkSheetEntryType:
+ * GtkSheetVerticalJustification:
  * @GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT: default 
  * @GTK_SHEET_VERTICAL_JUSTIFICATION_TOP: top aligned
  * @GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE: middle aligned
@@ -436,7 +436,8 @@ struct _GtkSheet
     GtkSheetCell active_cell;
     GtkWidget *sheet_entry;
 
-    GType entry_type;
+    GType entry_type;  /* wanted entry type */
+    GType installed_entry_type;  /* installed entry type */
 
     /* expanding selection */
     GtkSheetCell selection_cell;
@@ -591,7 +592,7 @@ struct _GtkSheetClass
     void gtk_sheet_set_vadjustment(GtkSheet *sheet, GtkAdjustment *adjustment); 
 
 /* sheet entry */
-    void gtk_sheet_change_entry(GtkSheet *sheet, GType entry_type);
+    void gtk_sheet_change_entry(GtkSheet *sheet, const GType entry_type);
 
     GType gtk_sheet_get_entry_type(GtkSheet *sheet);
     GtkWidget *gtk_sheet_get_entry(GtkSheet *sheet);
@@ -652,11 +653,11 @@ struct _GtkSheetClass
 
 /* set/get button label */
     void gtk_sheet_row_button_add_label(GtkSheet *sheet,  gint row, const gchar *label);
-    void gtk_sheet_column_button_add_label(GtkSheet *sheet,  gint column, const gchar *label);
+    void gtk_sheet_column_button_add_label(GtkSheet *sheet,  gint col, const gchar *label);
     const gchar *gtk_sheet_row_button_get_label(GtkSheet *sheet,  gint row);
-    const gchar *gtk_sheet_column_button_get_label(GtkSheet *sheet, gint column);
+    const gchar *gtk_sheet_column_button_get_label(GtkSheet *sheet, gint col);
     void gtk_sheet_row_button_justify(GtkSheet *sheet, gint row, GtkJustification justification);
-    void gtk_sheet_column_button_justify(GtkSheet *sheet, gint column, GtkJustification justification);
+    void gtk_sheet_column_button_justify(GtkSheet *sheet, gint col, GtkJustification justification);
 
 /* scroll the viewing area of the sheet to the given column
  * and row; row_align and col_align are between 0-1 representing the

@@ -1,3 +1,10 @@
+2010-08-14 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: auto switch column sheet entry, if defined
+	   auto-switching will only take place, if the column or sheet entry_type is explicitly set
+	* GtkSheet: fixed GtkTextView positioning
+	* GtkSheet: fixed set-cell signal
+	* gtkextra/Makefile.am: fixed Bug ID 3021754
+
 2010-08-13 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet, GtkSheetColumn: new properties: vertical cell text justification
 	* GtkSheet: fixed SEGV on global button press

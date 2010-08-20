@@ -299,14 +299,17 @@ struct _GtkSheetCell
 };
 
 /**
- * GtkSheetCellRange:
- *
- * The GtkSheetCellRange struct contains only private data.
- * It should only be accessed through the functions described below.
+ * GtkSheetRange:
+ * @row0: upper left cell
+ * @col0: upper left cell 
+ * @rowi:  lower right cell 
+ * @coli: lower right cell 
+ *  
+ * Defines a rectangular range of cells.
  */
 struct _GtkSheetRange
 {
-    /*< private >*/
+    /*< public >*/
     gint row0,col0; /* upper-left cell */
     gint rowi,coli; /* lower-right cell */
 };

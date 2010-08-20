@@ -64,7 +64,9 @@
     #  define GTK_SHEET_DEBUG 1  /* define to activate debug output */
 #endif
 
-
+#ifdef GTK_SHEET_DEBUG
+#  undef GTK_SHEET_DEBUG_SIGNALS
+#endif
 
 /* sheet flags */
 enum _GtkSheetFlags
@@ -712,7 +714,8 @@ static void gtk_sheet_cell_draw_border(GtkSheet *sheet,
 static void gtk_sheet_cell_draw_label(GtkSheet *sheet, gint row, gint column);
 
 /* draw visible part of range. If range==NULL then draw the whole screen */
-static void gtk_sheet_range_draw(GtkSheet *sheet, const GtkSheetRange *range);
+static void gtk_sheet_range_draw(GtkSheet *sheet, const GtkSheetRange *range, 
+                                 gboolean restore_decorations);
 
 /* highlight the visible part of the selected range */
 static void gtk_sheet_range_draw_selection(GtkSheet *sheet, GtkSheetRange range);
@@ -721,7 +724,7 @@ static void gtk_sheet_range_draw_selection(GtkSheet *sheet, GtkSheetRange range)
 
 static gint gtk_sheet_move_query(GtkSheet *sheet, gint row, gint column);
 static void gtk_sheet_real_select_range(GtkSheet *sheet, GtkSheetRange *range);
-static void gtk_sheet_real_unselect_range(GtkSheet *sheet, const GtkSheetRange *range);
+static void gtk_sheet_real_unselect_range(GtkSheet *sheet, GtkSheetRange *range);
 static void gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column);
 static void gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range);
 static void gtk_sheet_draw_border(GtkSheet *sheet, GtkSheetRange range);
@@ -1423,7 +1426,7 @@ static void
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
             break;
     }
-    gtk_sheet_range_draw (sheet, NULL);
+    gtk_sheet_range_draw (sheet, NULL, TRUE);
 
     /* this one will not work, it simply does noop
    gtk_widget_queue_draw(GTK_WIDGET(sheet));*/
@@ -1758,6 +1761,93 @@ static void gtk_sheet_class_init_properties(GObjectClass *gobject_class)
                                      PROP_GTK_SHEET_VJUST, pspec);
 }
 
+#ifdef GTK_SHEET_DEBUG_SIGNALS
+
+    static void gtk_sheet_debug_select_row(GtkSheet *sheet, gint row)
+    {
+        g_debug("SIGNAL select-row %p row %d", sheet, row);
+    }
+
+    static void gtk_sheet_debug_select_column(GtkSheet *sheet, gint column)
+    {
+        g_debug("SIGNAL select-column %p col %d", sheet, column);
+    }
+
+    static void gtk_sheet_debug_select_range(GtkSheet *sheet, GtkSheetRange *range)
+    {
+        g_debug("SIGNAL select-range %p {%d, %d, %d, %d}", sheet, 
+                range->row0, range->col0, range->rowi, range->coli);
+    }
+
+    static void gtk_sheet_debug_clip_range(GtkSheet *sheet, GtkSheetRange *range)
+    {
+        g_debug("SIGNAL clip-range %p {%d, %d, %d, %d}", sheet, 
+                range->row0, range->col0, range->rowi, range->coli);
+    }
+
+    static void gtk_sheet_debug_resize_range(GtkSheet *sheet, 
+                                             GtkSheetRange *old_range, GtkSheetRange *new_range)
+    {
+        g_debug("SIGNAL resize-range %p {%d, %d, %d, %d} -> {%d, %d, %d, %d}", sheet, 
+                old_range->row0, old_range->col0, old_range->rowi, old_range->coli,
+                new_range->row0, new_range->col0, new_range->rowi, new_range->coli);
+    }
+
+    static void gtk_sheet_debug_move_range(GtkSheet *sheet, 
+                                           GtkSheetRange *old_range, GtkSheetRange *new_range)
+    {
+        g_debug("SIGNAL move-range %p {%d, %d, %d, %d} -> {%d, %d, %d, %d}", sheet, 
+                old_range->row0, old_range->col0, old_range->rowi, old_range->coli,
+                new_range->row0, new_range->col0, new_range->rowi, new_range->coli);
+    }
+
+    static gboolean gtk_sheet_debug_traverse(GtkSheet *sheet, 
+                                             gint row, gint column, gint *new_row, gint *new_column)
+    {
+        g_debug("SIGNAL traverse %p row %d col %d nrow %d ncol %d", sheet, 
+                row, column, *new_row, *new_column);
+        return(TRUE);
+    }
+
+    static gboolean gtk_sheet_debug_deactivate(GtkSheet *sheet, gint row, gint column)
+    {
+        g_debug("SIGNAL deactivate %p row %d col %d", sheet, row, column);
+        return(TRUE);
+    }
+
+    static gboolean gtk_sheet_debug_activate(GtkSheet *sheet, gint row, gint column)
+    {
+        g_debug("SIGNAL activate %p row %d col %d", sheet, row, column);
+        return(TRUE);
+    }
+
+    static void gtk_sheet_debug_set_cell(GtkSheet *sheet, gint row, gint column)
+    {
+        g_debug("SIGNAL set-cell %p row %d col %d", sheet, row, column);
+    }
+
+    static void gtk_sheet_debug_clear_cell(GtkSheet *sheet, gint row, gint column)
+    {
+        g_debug("SIGNAL clear-cell %p row %d col %d", sheet, row, column);
+    }
+
+    static void gtk_sheet_debug_changed(GtkSheet *sheet, gint row, gint column)
+    {
+        g_debug("SIGNAL changed %p row %d col %d", sheet, row, column);
+    }
+
+    static void gtk_sheet_debug_new_column_width(GtkSheet *sheet, gint col, guint width)
+    {
+        g_debug("SIGNAL new-column-width %p col %d width %d", sheet, col, width);
+    }
+
+    static void gtk_sheet_debug_new_row_height(GtkSheet *sheet, gint row, guint height)
+    {
+        g_debug("SIGNAL new-row-height %p row %d height %d", sheet, row, height);
+    }
+
+#endif
+
 static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidgetClass *widget_class)
 {
     /**
@@ -1859,13 +1949,17 @@ static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidget
     /**
      * GtkSheet::traverse:
      * @sheet: the sheet widget that emitted the signal.
-     * @row: row number.
-     * @column: column number.
-     * @*new_row: FIXME:: What is this for?
-     * @*new_column: FIXME:: What is this for?
+     * @row: row number of old cell
+     * @column: column number of old cell
+     * @*new_row: row number of target cell, may be changed 
+     * @*new_column: column number of target cell, may be changed
      *
-     * The "traverse" is emited before "deactivate_cell" and allows to veto the movement.
-     * In such case, the entry will remain in the site and the other signals will not be emited.
+     * The "traverse" is emited before "deactivate" and allows to 
+     * veto the movement. In such case, the entry will remain in the
+     * site and the other signals will not be emited. 
+     *  
+     * The signal handler must return TRUE to allow the movement, 
+     * FALSE to veto the movement.
      */
     sheet_signals[TRAVERSE] =
         g_signal_new ("traverse",
@@ -1883,7 +1977,11 @@ static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidget
      * @row: row number of deactivated cell.
      * @column: column number of deactivated cell.
      *
-     * Emmited whenever a cell is deactivated(you click on other cell or start a new selection)
+     * Emmited whenever a cell is deactivated(you click on other 
+     * cell or start a new selection). 
+     *  
+     * The signal handler must return TRUE in order to allow 
+     * deactivation, FALSE to deny deactivation. 
      */
     sheet_signals[DEACTIVATE] =
         g_signal_new ("deactivate",
@@ -1900,7 +1998,9 @@ static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidget
      * @row: row number of activated cell.
      * @column: column number of activated cell.
      *
-     * Emmited whenever a cell is activated(you click on it),
+     * Emmited whenever a cell is activated(you click on it). 
+     *  
+     * FIXME:: The return value is ignored (not yet implemented).
      */
     sheet_signals[ACTIVATE] =
         g_signal_new ("activate",
@@ -2062,7 +2162,6 @@ static void
     widget_class->focus_in_event = NULL;
     widget_class->focus_out_event = NULL;
 
-    klass->set_scroll_adjustments = gtk_sheet_set_scroll_adjustments;
     klass->select_row = NULL;
     klass->select_column = NULL;
     klass->select_range = NULL;
@@ -2075,6 +2174,27 @@ static void
     klass->set_cell = NULL;
     klass->clear_cell = NULL;
     klass->changed = NULL;
+    klass->new_column_width = NULL;
+    klass->new_row_height = NULL;
+
+#ifdef GTK_SHEET_DEBUG_SIGNALS
+    klass->select_row = gtk_sheet_debug_select_row;
+    klass->select_column = gtk_sheet_debug_select_column;
+    klass->select_range = gtk_sheet_debug_select_range;
+    klass->clip_range = gtk_sheet_debug_clip_range;
+    klass->resize_range = gtk_sheet_debug_resize_range;
+    klass->move_range = gtk_sheet_debug_move_range;
+    klass->traverse = gtk_sheet_debug_traverse;
+    klass->deactivate = gtk_sheet_debug_deactivate;
+    klass->activate = gtk_sheet_debug_activate;
+    klass->set_cell = gtk_sheet_debug_set_cell;
+    klass->clear_cell = gtk_sheet_debug_clear_cell;
+    klass->changed = gtk_sheet_debug_changed;
+    klass->new_column_width = gtk_sheet_debug_new_column_width;
+    klass->new_row_height = gtk_sheet_debug_new_row_height;
+#endif
+
+    klass->set_scroll_adjustments = gtk_sheet_set_scroll_adjustments;
 }
 
 static void
@@ -2454,7 +2574,7 @@ static void
     if (sheet && gtk_widget_get_realized(GTK_WIDGET(sheet)) 
         && !GTK_SHEET_IS_FROZEN(sheet))
     {
-        gtk_sheet_range_draw (sheet, NULL);
+        gtk_sheet_range_draw (sheet, NULL, TRUE);
     }
 }
 
@@ -3010,7 +3130,7 @@ void
 
     sheet->show_grid = show;
 
-    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, NULL);
+    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, NULL, TRUE);
 }
 
 /**
@@ -3054,7 +3174,7 @@ void
     }
     gdk_colormap_alloc_color(gdk_colormap_get_system(), &sheet->bg_color, FALSE, TRUE);
 
-    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, NULL);
+    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, NULL, TRUE);
 }
 
 /**
@@ -3081,7 +3201,7 @@ void
     }
     gdk_colormap_alloc_color(gdk_colormap_get_system(), &sheet->grid_color, FALSE, TRUE);
 
-    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, NULL);
+    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, NULL, TRUE);
 }
 
 /**
@@ -4564,7 +4684,7 @@ void
     if (!GTK_SHEET_IS_FROZEN(sheet) &&
         gtk_sheet_cell_isvisible(sheet, MIN_VISIBLE_ROW(sheet), col))
     {
-        gtk_sheet_range_draw(sheet, NULL);
+        gtk_sheet_range_draw(sheet, NULL, TRUE);
         size_allocate_column_title_buttons(sheet);
     }
 }
@@ -4615,7 +4735,7 @@ void
     if (!GTK_SHEET_IS_FROZEN(sheet) &&
         gtk_sheet_cell_isvisible(sheet, row, MIN_VISIBLE_COLUMN(sheet)))
     {
-        gtk_sheet_range_draw(sheet, NULL);
+        gtk_sheet_range_draw(sheet, NULL, TRUE);
         size_allocate_row_title_buttons(sheet);
     }
 }
@@ -5257,10 +5377,12 @@ void
     }
 
     sheet->state=GTK_SHEET_ROW_SELECTED;
+
     sheet->range.row0=row;
     sheet->range.col0=0;
     sheet->range.rowi=row;
     sheet->range.coli=sheet->maxcol;
+
     sheet->active_cell.row=row;
     sheet->active_cell.col=0;
 
@@ -5295,10 +5417,12 @@ void
     }
 
     sheet->state=GTK_SHEET_COLUMN_SELECTED;
+
     sheet->range.row0=0;
     sheet->range.col0=column;
     sheet->range.rowi=sheet->maxrow;
     sheet->range.coli=column;
+
     sheet->active_cell.row=0;
     sheet->active_cell.col=column;
 
@@ -5350,10 +5474,10 @@ void
 
     GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_CLIP);
     g_source_remove(sheet->clip_timer);
-    gtk_sheet_range_draw(sheet, &sheet->clip_range);
+    gtk_sheet_range_draw(sheet, &sheet->clip_range, TRUE);
 
     if (gtk_sheet_range_isvisible(sheet, sheet->range))
-        gtk_sheet_range_draw(sheet, &sheet->range);
+        gtk_sheet_range_draw(sheet, &sheet->range, TRUE);
 }
 
 /**
@@ -5514,6 +5638,10 @@ static gint
 
     if (range.col0 > MAX_VISIBLE_COLUMN (sheet)) return (FALSE);
     if (range.coli < MIN_VISIBLE_COLUMN (sheet)) return (FALSE);
+
+#ifdef GTK_SHEET_DEBUG_SIGNALS
+    g_debug("gtk_sheet_range_isvisible: returns TRUE");
+#endif
 
     return (TRUE);
 }
@@ -5709,7 +5837,11 @@ static void
                                       GtkAdjustment *hadjustment, 
                                       GtkAdjustment *vadjustment)
 {
-    if (sheet->hadjustment != hadjustment)
+#ifdef GTK_SHEET_DEBUG_SIGNALS
+    g_debug("SIGNAL set-scroll-adjustments %p", sheet);
+#endif
+
+    if (sheet->hadjustment != hadjustment) 
         gtk_sheet_set_hadjustment (sheet, hadjustment);
 
     if (sheet->vadjustment != vadjustment)
@@ -6224,7 +6356,7 @@ static void
             }
         }
 
-        gtk_sheet_range_draw(sheet, NULL);
+        gtk_sheet_range_draw(sheet, NULL, TRUE);
 
         gtk_sheet_activate_cell(sheet, 
                                 sheet->active_cell.row, 
@@ -6769,7 +6901,9 @@ static void
 
 
 static void
-    gtk_sheet_range_draw(GtkSheet *sheet, const GtkSheetRange *range)
+    gtk_sheet_range_draw(GtkSheet *sheet, 
+                         const GtkSheetRange *range, 
+                         gboolean restore_decorations)
 {
     gint i,j;
     GtkSheetRange drawing_range;
@@ -7253,7 +7387,7 @@ void
         }
         else
         {
-            if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range);
+            if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range, TRUE);
         }
     }
     g_signal_emit(GTK_OBJECT(sheet),sheet_signals[CHANGED], 0, row, col);
@@ -7287,7 +7421,7 @@ void
 
     if (!GTK_SHEET_IS_FROZEN(sheet))
     {
-        gtk_sheet_range_draw(sheet, &range);
+        gtk_sheet_range_draw(sheet, &range, TRUE);
     }
 }
 
@@ -7317,10 +7451,7 @@ void
 
     gtk_sheet_real_cell_clear(sheet, row, column, TRUE);
 
-    if (!GTK_SHEET_IS_FROZEN(sheet))
-    {
-        gtk_sheet_range_draw(sheet, &range);
-    }
+    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range, TRUE);
 }
 
 static void
@@ -7437,7 +7568,7 @@ static void
         }
     }
 
-    gtk_sheet_range_draw(sheet, NULL);
+    gtk_sheet_range_draw(sheet, NULL, TRUE);
 }
 
 /**
@@ -7844,7 +7975,7 @@ static gboolean
     if (GTK_SHEET_REDRAW_PENDING(sheet))
     {
         GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_REDRAW_PENDING);
-        gtk_sheet_range_draw(sheet, NULL);
+        gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
 
 #ifdef GTK_SHEET_DEBUG
@@ -7860,6 +7991,7 @@ static void
     gint row,col;
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
+    if (!gtk_widget_get_visible(sheet->sheet_entry)) return;
 
     row = sheet->active_cell.row;
     col = sheet->active_cell.col;
@@ -7890,13 +8022,14 @@ static void
 
     g_signal_emit(GTK_OBJECT(sheet),sheet_signals[SET_CELL], 0, row, col);
 
+    if (!GTK_SHEET_IS_FROZEN(sheet)) 
     {
         GtkSheetRange range;
 
         range.row0 = range.rowi = row;
         range.col0 = range.coli = col;
 
-        if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range);
+        gtk_sheet_range_draw(sheet, &range, FALSE);  /* do not reactivate active cell!!! */
     }
 
     column_button_release(sheet, col);
@@ -8110,7 +8243,7 @@ static void
         sheet->pixmap = gdk_pixmap_new (sheet->sheet_window,
                                         width, height,
                                         -1);
-        if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, NULL);
+        if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
     else
     {
@@ -8123,7 +8256,7 @@ static void
             sheet->pixmap = gdk_pixmap_new (sheet->sheet_window,
                                             width, height,
                                             -1);
-            if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, NULL);
+            if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, NULL, TRUE);
         }
     }
 }
@@ -8545,8 +8678,7 @@ static void
 
 
 static void
-    gtk_sheet_real_select_range (GtkSheet * sheet,
-                                 GtkSheetRange * range)
+    gtk_sheet_real_select_range (GtkSheet *sheet, GtkSheetRange *range)
 {
     gint i;
     gint state;
@@ -8559,8 +8691,8 @@ static void
     if (range->col0 < 0 || range->coli < 0) return;
 
 #ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_real_select_range: r %d-%d c %d-%d", 
-            range->row0, range->rowi, range->col0, range->coli);
+    g_debug("gtk_sheet_real_select_range: {%d, %d, %d, %d}", 
+            range->row0, range->col0, range->rowi, range->coli);
 #endif
 
     state=sheet->state;
@@ -8569,8 +8701,10 @@ static void
     {
         for (i=sheet->range.col0; i< range->col0; i++)
             column_button_release(sheet, i);
+
         for (i=range->coli+1; i<= sheet->range.coli; i++)
             column_button_release(sheet, i);
+
         for (i=range->col0; i<=range->coli; i++)
         {
             column_button_set(sheet, i);
@@ -8581,8 +8715,10 @@ static void
     {
         for (i=sheet->range.row0; i< range->row0; i++)
             row_button_release(sheet, i);
+
         for (i=range->rowi+1; i<= sheet->range.rowi; i++)
             row_button_release(sheet, i);
+
         for (i=range->row0; i<=range->rowi; i++)
         {
             row_button_set(sheet, i);
@@ -8592,14 +8728,12 @@ static void
     if (range->coli != sheet->range.coli || range->col0 != sheet->range.col0 ||
         range->rowi != sheet->range.rowi || range->row0 != sheet->range.row0)
     {
-
         gtk_sheet_new_selection(sheet, range);
 
         sheet->range.col0=range->col0;
         sheet->range.coli=range->coli;
         sheet->range.row0=range->row0;
         sheet->range.rowi=range->rowi;
-
     }
     else
     {
@@ -8620,15 +8754,22 @@ static void
 void
     gtk_sheet_select_range(GtkSheet * sheet, const GtkSheetRange *range)
 {
+    GtkSheetRange new_range;  /* buffer needed because gtk_sheet_real_unselect_range() will clear it */
+
     g_return_if_fail (sheet != NULL);
 
-    if (range==NULL) range=&sheet->range;
+    if (!range) range = &sheet->range;
 
-    if (range->row0 < 0 || range->rowi < 0) return;
-    if (range->col0 < 0 || range->coli < 0) return;
+    new_range = *range;
+
+    if (new_range.row0 < 0 || new_range.rowi < 0) return;
+    if (new_range.col0 < 0 || new_range.coli < 0) return;
 
     if (sheet->state != GTK_SHEET_NORMAL)
+    {
+        /* this will clear sheet->range */
         gtk_sheet_real_unselect_range(sheet, NULL);
+    }
     else
     {
         gboolean veto = TRUE;
@@ -8636,14 +8777,16 @@ void
         if (!veto) return;
     }
 
-    sheet->range.row0=range->row0;
-    sheet->range.rowi=range->rowi;
-    sheet->range.col0=range->col0;
-    sheet->range.coli=range->coli;
-    sheet->active_cell.row=range->row0;
-    sheet->active_cell.col=range->col0;
-    sheet->selection_cell.row=range->rowi;
-    sheet->selection_cell.col=range->coli;
+    sheet->range.row0 = new_range.row0;
+    sheet->range.rowi = new_range.rowi;
+    sheet->range.col0 = new_range.col0;
+    sheet->range.coli = new_range.coli;
+
+    sheet->active_cell.row = new_range.row0;
+    sheet->active_cell.col = new_range.col0;
+
+    sheet->selection_cell.row = new_range.rowi;
+    sheet->selection_cell.col = new_range.coli;
 
     sheet->state = GTK_SHEET_RANGE_SELECTED;
     gtk_sheet_real_select_range(sheet, NULL);
@@ -8665,34 +8808,54 @@ void
 
 
 static void
-    gtk_sheet_real_unselect_range (GtkSheet * sheet, const GtkSheetRange *range)
+    gtk_sheet_real_unselect_range (GtkSheet * sheet, GtkSheetRange *range)
 {
     gint i;
 
     g_return_if_fail (sheet != NULL);
     g_return_if_fail (gtk_widget_get_realized(GTK_WIDGET(sheet)));
 
-    if (!range) range=&sheet->range;
+    if (!range) range = &sheet->range;
+
+#ifdef GTK_SHEET_DEBUG
+            g_debug("gtk_sheet_real_unselect_range: called {%d, %d, %d, %d}",
+                    range->row0, range->col0, range->rowi, range->coli);
+#endif
 
     if (range->row0 < 0 || range->rowi < 0) return;
     if (range->col0 < 0 || range->coli < 0) return;
 
     if (gtk_sheet_range_isvisible (sheet, *range))
     {
+#ifdef GTK_SHEET_DEBUG
+            g_debug("gtk_sheet_real_unselect_range: gtk_sheet_draw_backing_pixmap");
+#endif
         gtk_sheet_draw_backing_pixmap(sheet, *range);
     }
 
     for (i=range->col0; i<=range->coli; i++)
     {
+#ifdef GTK_SHEET_DEBUG
+        g_debug("gtk_sheet_real_unselect_range: column_button_release(%d)", i);
+#endif
         column_button_release(sheet, i);
     }
 
     for (i=range->row0; i<=range->rowi; i++)
     {
+#ifdef GTK_SHEET_DEBUG
+        g_debug("gtk_sheet_real_unselect_range: row_button_release(%d)", i);
+#endif
         row_button_release(sheet, i);
     }
 
+#ifdef GTK_SHEET_DEBUG
+        g_debug("gtk_sheet_real_unselect_range: gtk_sheet_position_children()");
+#endif
     gtk_sheet_position_children(sheet);
+
+    /* reset range */
+    range->row0 = range->rowi = range->col0 = range->coli = -1;
 }
 
 
@@ -9126,7 +9289,10 @@ static void
 
             if (wanted_type != G_TYPE_NONE && installed_entry_type != wanted_type)
             {
-                gtk_sheet_change_entry(sheet, wanted_type);
+                if (sheet->state == GTK_SHEET_NORMAL)
+                    gtk_sheet_hide_active_cell(sheet);
+
+                create_sheet_entry(sheet, wanted_type ? wanted_type : G_TYPE_NONE);
             }
         }
 
@@ -11572,7 +11738,7 @@ static void
 
     gtk_sheet_position_children(sheet);
 
-    gtk_sheet_range_draw(sheet, NULL);
+    gtk_sheet_range_draw(sheet, NULL, TRUE);
     size_allocate_row_title_buttons(sheet);
     size_allocate_global_button(sheet);
 }
@@ -11704,7 +11870,7 @@ static void
     }
 
     gtk_sheet_position_children(sheet);
-    gtk_sheet_range_draw(sheet, NULL);
+    gtk_sheet_range_draw(sheet, NULL, TRUE);
     size_allocate_column_title_buttons(sheet);
 }
 
@@ -11917,7 +12083,7 @@ void
         size_allocate_column_title_buttons (sheet);
         adjust_scrollbars (sheet);
         gtk_sheet_size_allocate_entry(sheet);
-        gtk_sheet_range_draw (sheet, NULL);
+        gtk_sheet_range_draw (sheet, NULL, TRUE);
     }
     else
     {
@@ -11958,7 +12124,7 @@ void
         size_allocate_row_title_buttons (sheet);
         adjust_scrollbars (sheet);
         gtk_sheet_size_allocate_entry(sheet);
-        gtk_sheet_range_draw (sheet, NULL);
+        gtk_sheet_range_draw (sheet, NULL, TRUE);
     }
 
     g_signal_emit(GTK_OBJECT(sheet), sheet_signals[CHANGED], 0, row, -1);
@@ -12307,7 +12473,7 @@ void
     range.rowi++;
     range.coli++;
 
-    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range);
+    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range, TRUE);
 }
 
 /**
@@ -12348,7 +12514,7 @@ void
             gtk_sheet_set_cell_attributes(sheet, i, j, attributes);
         }
 
-    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range);
+    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range, TRUE);
 }
 
 /**
@@ -12389,7 +12555,7 @@ void
     range.col0 = sheet->view.col0;
     range.coli = sheet->view.coli;
 
-    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range);
+    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range, TRUE);
 }
 
 /**
@@ -12415,7 +12581,7 @@ void
     if (gtk_widget_get_realized(GTK_WIDGET(sheet)) && !GTK_SHEET_IS_FROZEN(sheet) &&
         col >= MIN_VISIBLE_COLUMN(sheet) && col <= MAX_VISIBLE_COLUMN(sheet))
     {
-        gtk_sheet_range_draw(sheet, NULL);
+        gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
 }
 
@@ -12460,7 +12626,7 @@ void
     if (gtk_widget_get_realized(GTK_WIDGET(sheet)) && !GTK_SHEET_IS_FROZEN(sheet) &&
         col >= MIN_VISIBLE_COLUMN(sheet) && col <= MAX_VISIBLE_COLUMN(sheet))
     {
-        gtk_sheet_range_draw(sheet, NULL);
+        gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
 }
 
@@ -12518,7 +12684,7 @@ void
         }
     }
 
-    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range);
+    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range, TRUE);
 }
 
 /**
@@ -12554,7 +12720,7 @@ void
         }
     }
 
-    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range);
+    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range, TRUE);
 }
 
 /**
@@ -12602,7 +12768,7 @@ void
     range.rowi++;
     range.coli++;
 
-    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range);
+    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range, TRUE);
 }
 
 /**
@@ -12640,7 +12806,7 @@ void
         }
     }
 
-    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range);
+    if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range, TRUE);
 }
 
 /**

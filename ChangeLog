@@ -1,5 +1,10 @@
 2010-08-14 Fredy Paquet <mailbox AT opag.ch>
-	* GtkSheet: auto switch column sheet entry, if defined
+	* GtkSheet: eliminated recursive call to from hide/show active cell (SEGV)
+	* GtkSheet: fixed auto-switch entry with active sheet range selections
+	* GtkSheet: added a set of signal debugging functions (GTK_SHEET_DEBUG_SIGNALS)
+
+2010-08-14 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: auto-switch column sheet entry, if defined
 	   auto-switching will only take place, if the column or sheet entry_type is explicitly set
 	* GtkSheet: fixed GtkTextView positioning
 	* GtkSheet: fixed set-cell signal

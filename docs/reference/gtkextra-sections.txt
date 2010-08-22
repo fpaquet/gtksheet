@@ -1264,6 +1264,7 @@ gtk_sheet_unclip_range
 
 gtk_sheet_get_active_cell
 gtk_sheet_set_active_cell
+gtk_sheet_get_selection
 gtk_sheet_select_row
 gtk_sheet_select_column
 gtk_sheet_select_range
@@ -1355,8 +1356,8 @@ gtk_sheet_cell_get_tooltip_markup
 gtk_sheet_cell_set_tooltip_markup
 gtk_sheet_cell_get_tooltip_text
 gtk_sheet_cell_set_tooltip_text
-gtk_sheet_get_pixel_info
 gtk_sheet_get_cell_area
+gtk_sheet_get_pixel_info
 
 gtk_sheet_get_link
 gtk_sheet_link_cell

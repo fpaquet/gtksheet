@@ -2189,7 +2189,7 @@ static void
     klass->activate = gtk_sheet_debug_activate;
     klass->set_cell = gtk_sheet_debug_set_cell;
     klass->clear_cell = gtk_sheet_debug_clear_cell;
-    klass->changed = gtk_sheet_debug_changed;
+    /*klass->changed = gtk_sheet_debug_changed;*/
     klass->new_column_width = gtk_sheet_debug_new_column_width;
     klass->new_row_height = gtk_sheet_debug_new_row_height;
 #endif
@@ -3254,6 +3254,30 @@ GtkSheetState
     g_return_val_if_fail (GTK_IS_SHEET (sheet), 0);
 
     return(sheet->state);
+}
+
+/**
+ * gtk_sheet_get_selection:
+ * @sheet: a #GtkSheet 
+ * @state: where to store the #GtkSheetState, may be NULL 
+ * @range: where to store the #GtkSheetRange
+ *  
+ * Inquire current cell selection state and range. 
+ *  
+ * Returns: TRUE: there is a selection, FALSE: no selection or error 
+ */
+gboolean 
+    gtk_sheet_get_selection(GtkSheet *sheet, GtkSheetState *state, GtkSheetRange *range)
+{
+    g_return_val_if_fail (sheet != NULL, FALSE);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
+    g_return_val_if_fail (range != NULL, FALSE);
+
+    if (state) *state = sheet->state;
+
+    *range = sheet->range;
+
+    return(TRUE);
 }
 
 /**
@@ -5639,10 +5663,6 @@ static gint
     if (range.col0 > MAX_VISIBLE_COLUMN (sheet)) return (FALSE);
     if (range.coli < MIN_VISIBLE_COLUMN (sheet)) return (FALSE);
 
-#ifdef GTK_SHEET_DEBUG_SIGNALS
-    g_debug("gtk_sheet_range_isvisible: returns TRUE");
-#endif
-
     return (TRUE);
 }
 
@@ -7968,9 +7988,16 @@ static gboolean
 
     gtk_sheet_hide_active_cell(sheet);
 
-    sheet->active_cell.row = -1;  /* reset before signal emission, to prevent recursion */
-    sheet->active_cell.col = -1;
-
+    /* DEACTIVATE handler might have called gtk_sheet_set_active_cell(),
+       so wie leave it, if it was changed
+       */
+#if 0
+    if (sheet->active_cell.row == row && sheet->active_cell.col == col)
+    {
+        sheet->active_cell.row = -1;  /* reset before signal emission, to prevent recursion */
+        sheet->active_cell.col = -1;
+    }
+#endif
 
     if (GTK_SHEET_REDRAW_PENDING(sheet))
     {
@@ -9295,6 +9322,23 @@ static void
                 create_sheet_entry(sheet, wanted_type ? wanted_type : G_TYPE_NONE);
             }
         }
+
+        /* DEACTIVATE handler might have called gtk_sheet_set_active_cell(),
+           so wie leave it, if it was changed
+           */
+#if 0
+        {
+            gint act_row = sheet->active_cell.row;
+            gint act_col = sheet->active_cell.col;
+
+            if (act_row != -1 && act_col != -1 &&
+                (sheet->active_cell.row != row || sheet->active_cell.col != col))
+            {
+                row = sheet->active_cell.row;
+                col = sheet->active_cell.col;
+            }
+        }
+#endif
 
         if (gtk_sheet_autoscroll(sheet))
             gtk_sheet_move_query(sheet, row, col);

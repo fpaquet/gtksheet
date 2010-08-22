@@ -1,4 +1,7 @@
-2010-08-14 Fredy Paquet <mailbox AT opag.ch>
+2010-08-21 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: new public interface function gtk_sheet_get_selection()
+
+2010-08-20 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: eliminated recursive call to from hide/show active cell (SEGV)
 	* GtkSheet: fixed auto-switch entry with active sheet range selections
 	* GtkSheet: added a set of signal debugging functions (GTK_SHEET_DEBUG_SIGNALS)

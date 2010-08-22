@@ -615,6 +615,7 @@ struct _GtkSheetClass
     guint gtk_sheet_get_columns_count(GtkSheet *sheet);
     guint gtk_sheet_get_rows_count(GtkSheet *sheet);
     void gtk_sheet_get_visible_range(GtkSheet *sheet, GtkSheetRange *range);
+    gboolean gtk_sheet_get_selection(GtkSheet *sheet, GtkSheetState *state, GtkSheetRange *range);
     void gtk_sheet_set_selection_mode(GtkSheet *sheet, GtkSelectionMode mode);
     void gtk_sheet_set_autoresize(GtkSheet *sheet, gboolean autoresize);
     gboolean gtk_sheet_autoresize(GtkSheet *sheet);

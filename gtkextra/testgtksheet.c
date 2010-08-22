@@ -445,9 +445,9 @@ gboolean
         text = gtk_sheet_cell_get_text(sheet, *new_row, *new_col);
         if (text) value = atof(text);
 
-        adjustment = gtk_adjustment_new(value, 0.0, 100.0, 1.0, 10.0, 0.0);
+        adjustment = (GtkAdjustment *) gtk_adjustment_new(value, 0.0, 100.0, 1.0, 10.0, 0.0);
 
-        spin_button = gtk_sheet_get_entry(sheet);
+        spin_button = (GtkSpinButton *) gtk_sheet_get_entry(sheet);
         gtk_spin_button_configure(spin_button, adjustment, 0.0, 3);
     }
 

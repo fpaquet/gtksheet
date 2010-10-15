@@ -6967,10 +6967,15 @@ static void
     /* clear outer area beyond rightmost column */
     if (drawing_range.coli == MAX_VISIBLE_COLUMN(sheet))
     {
-        if (sheet->maxcol >= 0)
+        gint maxcol = sheet->maxcol;  /* might not be visible */
+
+        while (maxcol >= 0 
+               && !GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, maxcol))) --maxcol;
+
+        if (maxcol >= 0)
         {
-            area.x = COLUMN_LEFT_XPIXEL(sheet,sheet->maxcol)+
-                COLPTR(sheet, sheet->maxcol)->width+1;
+            area.x = COLUMN_LEFT_XPIXEL(sheet, maxcol) + 
+                COLPTR(sheet, maxcol)->width+1;
         }
         else
         {
@@ -7000,11 +7005,16 @@ static void
     /* clear outer area beyond last row */
     if (drawing_range.rowi == MAX_VISIBLE_ROW(sheet))
     {
+        gint maxrow = sheet->maxrow;  /* might not be visible */
+
+        while (maxrow >= 0 
+               && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, maxrow))) --maxrow;
+
         area.x=0;
-        if (sheet->maxrow >= 0)
+        if (maxrow >= 0)
         {
-            area.y = ROW_TOP_YPIXEL(sheet,sheet->maxrow)+
-                sheet->row[sheet->maxrow].height+1;
+            area.y = ROW_TOP_YPIXEL(sheet, maxrow) + 
+                ROWPTR(sheet, maxrow)->height + 1;
         }
         else
         {
@@ -7968,6 +7978,17 @@ static gboolean
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return (FALSE);
     if (sheet->state != GTK_SHEET_NORMAL) return (FALSE);
 
+    gtk_sheet_entry_signal_disconnect_by_func(sheet, 
+                                              (GtkSignalFunc) gtk_sheet_entry_changed_handler);
+
+    gtk_sheet_hide_active_cell(sheet);
+
+    sheet->active_cell.row = -1;  /* reset before signal emission, to prevent recursion */
+    sheet->active_cell.col = -1;
+
+    /* beware: DEACTIVATE handler may call gtk_sheet_set_active_cell()
+       */
+
     _gtkextra_signal_emit(GTK_OBJECT(sheet),sheet_signals[DEACTIVATE],
                           row, col, &veto);
 
@@ -7983,21 +8004,6 @@ static gboolean
     g_debug("gtk_sheet_deactivate_cell: running");
 #endif
 
-    gtk_sheet_entry_signal_disconnect_by_func(sheet, 
-                                              (GtkSignalFunc) gtk_sheet_entry_changed_handler);
-
-    gtk_sheet_hide_active_cell(sheet);
-
-    /* DEACTIVATE handler might have called gtk_sheet_set_active_cell(),
-       so wie leave it, if it was changed
-       */
-#if 0
-    if (sheet->active_cell.row == row && sheet->active_cell.col == col)
-    {
-        sheet->active_cell.row = -1;  /* reset before signal emission, to prevent recursion */
-        sheet->active_cell.col = -1;
-    }
-#endif
 
     if (GTK_SHEET_REDRAW_PENDING(sheet))
     {

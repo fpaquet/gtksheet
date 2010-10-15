@@ -1,3 +1,7 @@
+2010-10-15 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed cell and row/column deactivation while paging around
+	* GtkSheet: fixed background redraw when outmost column is invisible
+
 2010-08-21 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: new public interface function gtk_sheet_get_selection()
 

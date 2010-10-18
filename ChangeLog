@@ -1,3 +1,6 @@
+2010-10-18 Fredy Paquet <mailbox AT opag.ch>
+	* GtkItemEntry: fixed major crash source in item entry buffer handling
+
 2010-10-15 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed cell and row/column deactivation while paging around
 	* GtkSheet: fixed background redraw when outmost column is invisible

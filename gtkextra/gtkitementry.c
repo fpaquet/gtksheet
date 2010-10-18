@@ -747,84 +747,96 @@ get_buffer (GtkEntry *entry)
  */
 static void
 gtk_entry_real_insert_text (GtkEditable *editable,
-			    const gchar *new_text,
-			    gint         new_text_length,
-			    gint        *position)
+                            const gchar *new_text,
+                            gint         new_text_length,
+                            gint        *position)
 {
-  gint n_chars;
+    gint n_chars;
 
-  GtkItemEntry *ientry = GTK_ITEM_ENTRY (editable);
-  GtkEntry *entry = GTK_ENTRY (editable);
+    GtkItemEntry *ientry = GTK_ITEM_ENTRY (editable);
+    GtkEntry *entry = GTK_ENTRY (editable);
 
-  if (new_text_length < 0)
-    new_text_length = strlen (new_text);
+    if (new_text_length < 0)
+        new_text_length = strlen (new_text);
 
-  n_chars = g_utf8_strlen (new_text, new_text_length);
-  if (entry->text_max_length > 0 && n_chars + entry->text_length > entry->text_max_length)
+    n_chars = g_utf8_strlen (new_text, new_text_length);
+    if (entry->text_max_length > 0 && n_chars + entry->text_length > entry->text_max_length)
     {
-      gdk_beep ();
-      n_chars = entry->text_max_length - entry->text_length;
-      new_text_length = g_utf8_offset_to_pointer (new_text, n_chars) - new_text;
+        gdk_beep ();
+        n_chars = entry->text_max_length - entry->text_length;
+        new_text_length = g_utf8_offset_to_pointer (new_text, n_chars) - new_text;
     }
 
 #ifdef GTK_TYPE_ENTRY_BUFFER
-   GtkEntryBuffer *buffer = get_buffer(entry);
-   n_chars  = gtk_entry_buffer_insert_text(buffer, *position, new_text, new_text_length);
-#else
 
-  if (new_text_length + ientry->item_n_bytes + 1 > ientry->item_text_size)
     {
-      while (new_text_length + ientry->item_n_bytes + 1 > ientry->item_text_size)
-	{
-	  if (ientry->item_text_size == 0)
-	    ientry->item_text_size = MIN_SIZE;
-	  else
-	    {
-	      if (2 * (guint)ientry->item_text_size < MAX_SIZE &&
-		  2 * (guint)ientry->item_text_size > ientry->item_text_size)
-		ientry->item_text_size *= 2;
-	      else
-		{
-		  ientry->item_text_size = MAX_SIZE;
-		  if (new_text_length > (gint)ientry->item_text_size - (gint)ientry->item_n_bytes - 1)
-		    {
-		      new_text_length = (gint)ientry->item_text_size - (gint)ientry->item_n_bytes - 1;
-		      new_text_length = g_utf8_find_prev_char (new_text, new_text + new_text_length + 1) - new_text;
-		      n_chars = g_utf8_strlen (new_text, new_text_length);
-		    }
-		  break;
-		}
-	    }
-	}
+        guint n_inserted;
+        GtkEntryBuffer *buffer = get_buffer(entry);
 
-      entry->text = g_realloc (entry->text, ientry->item_text_size);
+        n_inserted  = gtk_entry_buffer_insert_text(buffer, *position, new_text, new_text_length);
+
+        if (n_inserted != n_chars)
+        {
+            gtk_widget_error_bell (GTK_WIDGET (editable));
+            n_chars = n_inserted;
+        }
     }
 
-  gint index;
-  index = g_utf8_offset_to_pointer (entry->text, *position) - entry->text;
+#else
 
-  g_memmove (entry->text + index + new_text_length, entry->text + index, ientry->item_n_bytes - index);
-  memcpy (entry->text + index, new_text, new_text_length);
+    if (new_text_length + ientry->item_n_bytes + 1 > ientry->item_text_size)
+    {
+        while (new_text_length + ientry->item_n_bytes + 1 > ientry->item_text_size)
+        {
+            if (ientry->item_text_size == 0)
+                ientry->item_text_size = MIN_SIZE;
+            else
+            {
+                if (2 * (guint)ientry->item_text_size < MAX_SIZE &&
+                    2 * (guint)ientry->item_text_size > ientry->item_text_size)
+                    ientry->item_text_size *= 2;
+                else
+                {
+                    ientry->item_text_size = MAX_SIZE;
+                    if (new_text_length > (gint)ientry->item_text_size - (gint)ientry->item_n_bytes - 1)
+                    {
+                        new_text_length = (gint)ientry->item_text_size - (gint)ientry->item_n_bytes - 1;
+                        new_text_length = g_utf8_find_prev_char (new_text, new_text + new_text_length + 1) - new_text;
+                        n_chars = g_utf8_strlen (new_text, new_text_length);
+                    }
+                    break;
+                }
+            }
+        }
+
+        entry->text = g_realloc (entry->text, ientry->item_text_size);
+    }
+
+    gint index;
+    index = g_utf8_offset_to_pointer (entry->text, *position) - entry->text;
+
+    g_memmove (entry->text + index + new_text_length, entry->text + index, ientry->item_n_bytes - index);
+    memcpy (entry->text + index, new_text, new_text_length);
+
+    ientry->item_n_bytes += new_text_length;
+
+    /* NUL terminate for safety and convenience */
+    entry->text[ientry->item_n_bytes] = '\0';
+    entry->text_length += n_chars;
+
+    if (entry->current_pos > *position)
+        entry->current_pos += n_chars;
+
+    if (entry->selection_bound > *position)
+        entry->selection_bound += n_chars;
 #endif //GTK_TYPE_ENTRY_BUFFER
 
-  ientry->item_n_bytes += new_text_length;
-  entry->text_length += n_chars;
+    *position += n_chars;
 
-  /* NUL terminate for safety and convenience */
-  entry->text[ientry->item_n_bytes] = '\0';
-  
-  if (entry->current_pos > *position)
-    entry->current_pos += n_chars;
-  
-  if (entry->selection_bound > *position)
-    entry->selection_bound += n_chars;
+    gtk_entry_recompute (entry);
 
-  *position += n_chars;
-
-  gtk_entry_recompute (entry);
-
-  g_signal_emit_by_name (editable, "changed");
-  g_object_notify (G_OBJECT (editable), "text");
+    g_signal_emit_by_name (editable, "changed");
+    g_object_notify (G_OBJECT (editable), "text");
 }
 
 static void
@@ -850,8 +862,8 @@ gtk_entry_real_delete_text (GtkEditable *editable,
       gint end_index = g_utf8_offset_to_pointer (entry->text, end_pos) - entry->text;
 
       g_memmove (entry->text + start_index, entry->text + end_index, ientry->item_n_bytes + 1 - end_index);
-      entry->text_length -= (end_pos - start_pos);
       ientry->item_n_bytes -= (end_index - start_index);
+      entry->text_length -= (end_pos - start_pos);
       
       if (entry->current_pos > start_pos)
 	entry->current_pos -= MIN (entry->current_pos, end_pos) - start_pos;
@@ -859,6 +871,8 @@ gtk_entry_real_delete_text (GtkEditable *editable,
       if (entry->selection_bound > start_pos)
 	entry->selection_bound -= MIN (entry->selection_bound, end_pos) - start_pos;
 #endif // GTK_TYPE_ENTRY_BUFFER
+
+
       /* We might have deleted the selection
        */
       gtk_entry_update_primary_selection (entry);
@@ -1116,9 +1130,11 @@ gtk_entry_retrieve_surrounding_cb (GtkIMContext *context,
                                GtkEntry     *entry)
 {
   GtkItemEntry *ientry = GTK_ITEM_ENTRY (entry);
+  GtkEntryBuffer *buffer = get_buffer(entry);
+
   gtk_im_context_set_surrounding (context,
                                   entry->text,
-                                  ientry->item_n_bytes,
+                                  gtk_entry_buffer_get_bytes(buffer),
                                   g_utf8_offset_to_pointer (entry->text, entry->current_pos) - entry->text);
 
   return TRUE;
@@ -1315,12 +1331,14 @@ gtk_entry_create_layout (GtkEntry *entry,
   if (preedit_length)
     {
       GString *tmp_string = g_string_new (NULL);
+      GtkEntryBuffer *buffer = get_buffer(entry);
       
       gint cursor_index = g_utf8_offset_to_pointer (entry->text, entry->current_pos) - entry->text;
       
       if (entry->visible)
         {
-          g_string_prepend_len (tmp_string, entry->text, ientry->item_n_bytes);
+
+          g_string_prepend_len (tmp_string, entry->text, gtk_entry_buffer_get_bytes(buffer));
           g_string_insert (tmp_string, cursor_index, preedit_string);
         }
       else
@@ -1329,7 +1347,7 @@ gtk_entry_create_layout (GtkEntry *entry,
           gint preedit_len_chars;
           gunichar invisible_char;
           
-          ch_len = g_utf8_strlen (entry->text, ientry->item_n_bytes);
+          ch_len = g_utf8_strlen (entry->text, gtk_entry_buffer_get_bytes(buffer));
           preedit_len_chars = g_utf8_strlen (preedit_string, -1);
           ch_len += preedit_len_chars;
 
@@ -1363,7 +1381,8 @@ gtk_entry_create_layout (GtkEntry *entry,
     {
       if (entry->visible)
         {
-          pango_layout_set_text (layout, entry->text, ientry->item_n_bytes);
+          GtkEntryBuffer *buffer = get_buffer(entry);
+          pango_layout_set_text (layout, entry->text, gtk_entry_buffer_get_bytes(buffer));
         }
       else
         {

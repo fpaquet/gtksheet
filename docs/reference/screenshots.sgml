@@ -2,7 +2,7 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 ]>
-<refentry id="compiling" revision="16 Jun 2009">
+<refentry id="screenshots" revision="16 Jun 2009">
 <refmeta>
 <refentrytitle>GtkSheet Screenshots</refentrytitle>
 <manvolnum>3</manvolnum>

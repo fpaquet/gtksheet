@@ -22,7 +22,7 @@ gtksheet-2.0.spec
 install-sh
 libtool
 ltmain.sh
-missingg
+missing
 autom4te.cache/*
 gtksheet/Makefile
 gtksheet/Makefile.in

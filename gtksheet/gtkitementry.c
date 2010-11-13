@@ -791,7 +791,7 @@ gtk_entry_real_insert_text (GtkEditable * editable,
 
   length_inserted = gtk_entry_buffer_insert_text (buffer,
 						  *position, new_text,
-						  new_text_length);
+						  g_utf8_strlen(new_text, new_text_length));
 
   *position += length_inserted;
 #endif
@@ -1215,8 +1215,7 @@ update_im_cursor_location (GtkEntry *entry)
   gint strong_xoffset;
   gint x, y, area_width, area_height;
 
-  gtk_entry_get_cursor_locations (entry, CURSOR_STANDARD, &strong_x, NULL)
-;
+  gtk_entry_get_cursor_locations (entry, CURSOR_STANDARD, &strong_x, NULL);
   get_text_area_size (entry, &x, &y, &area_width, &area_height);
 
   strong_xoffset = strong_x - entry->scroll_offset;

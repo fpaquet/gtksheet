@@ -66,11 +66,28 @@ improved. Please see the section on <link linkend="ch-Contributing">Contributing
 <chapter id="ch-GettingGtkSheet">
 <title>Getting GtkSheet</title>
 
-<para>The first thing to do, of course, is download the GtkSheet source and
-install it. You can always get the latest version from <ulink 
-url="http://github.com/vhernandez/gtksheet">http://github.com/vhernandez/gtksheet</ulink>. 
-GtkSheet uses GNU autoconf for configuration. Once untar'd, type 
-<literal>./configure --help</literal> to see a list of options.</para>
+<para>The first thing to do is download the GtkSheet source and
+install it. Tarballs from the latest released versions can be obtained at gtksheet <ulink 
+url="http://vhernandez.github.com/gtksheet/">home</ulink>.<para>
+
+<para>You can also download the source code directly from git versioning system. To do this you need to install git and clone the git repository:<para>
+
+<programlisting role="C">
+$ git clone git://github.com/vhernandez/gtksheet.git
+</programlisting>
+
+<para>GtkSheet uses GNU autoconf for configuration. To compile GtkSheet, browse to the directory were you have untared the source package and use these commands:
+</para>
+
+<programlisting role="C">
+$ ./configure
+$ make
+</programlisting>
+
+<para> You can actually type <literal>./configure --help</literal> to see a list of configuration options, for example to enable the generation of docs type <literal>./configure --enable-gtk-doc</literal>.</para>
+
+<para><emphasis role="bold">If you have downloaded the source from git you have to generate
+autotools files with <literal>./autogen.sh</literal> before configuring and building GtkSheet.</emphasis></para>
 
 </chapter>
 

@@ -1,12 +1,13 @@
 .deps
 .libs
-Makefile
-Makefile.in
-*.ps
+*.la
 *.lo
+*.ps
+GtkExtra-3.0.gir
 gtkextratypebuiltins.c
 gtkextratypebuiltins.h
-*.la
+Makefile
+Makefile.in
 testboxes
 testbubbles
 testcandles
@@ -19,6 +20,7 @@ testgtkfont
 testgtkiconlist
 testgtkplot
 testgtkplot3d
+testgtkplotcanvas
 testgtkplotdt
 testgtksheet
 testimage
@@ -26,5 +28,4 @@ testiterator
 testpixmap
 testpolar
 testrealtime
-testgtkplotcanvas
 testsegment

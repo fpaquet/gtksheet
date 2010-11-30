@@ -1,5 +1,12 @@
+2010-11-30 Fredy Paquet <mailbox AT opag.ch>
+	* doc/tutorial/Makefile.am: fixed automake warnings
+	*** GtkSheet: new feature: added optional GObject-Introspection
+	   Reference: http://live.gnome.org/GObjectIntrospection
+	* added new ./configure option --enable-introspection
+	   to build GtkExtra-3.0.gir: cd gtkextra ; make GtkExtra-3.0.gir
+
 2010-10-18 Fredy Paquet <mailbox AT opag.ch>
-	* GtkItemEntry: fixed major crash source in item entry buffer handling
+	*** GtkItemEntry: fixed major crash source in item entry buffer handling
 
 2010-10-15 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed cell and row/column deactivation while paging around
@@ -14,14 +21,14 @@
 	* GtkSheet: added a set of signal debugging functions (GTK_SHEET_DEBUG_SIGNALS)
 
 2010-08-14 Fredy Paquet <mailbox AT opag.ch>
-	* GtkSheet: auto-switch column sheet entry, if defined
+	*** GtkSheet: auto-switch column sheet entry, if defined
 	   auto-switching will only take place, if the column or sheet entry_type is explicitly set
 	* GtkSheet: fixed GtkTextView positioning
 	* GtkSheet: fixed set-cell signal
 	* gtkextra/Makefile.am: fixed Bug ID 3021754
 
 2010-08-13 Fredy Paquet <mailbox AT opag.ch>
-	* GtkSheet, GtkSheetColumn: new properties: vertical cell text justification
+	*** GtkSheetColumn: new properties: vertical cell text justification
 	* GtkSheet: fixed SEGV on global button press
 
 2010-08-07 Fredy Paquet <mailbox AT opag.ch>
@@ -30,7 +37,7 @@
 
 2010-08-07 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: replaced deprecated signal "pressed" on the global sheet button
-	* GtkSheet: new feature: entry of multiline text via GtkTextView as sheet_entry
+	*** GtkSheet: new feature: entry of multiline text via GtkTextView as sheet_entry
 	* GtkSheet: reworked sheet_entry widget processing
 	* GtkSheet: new public interface functions gtk_sheet_*entry* to access 
 	* testgtksheet.c: use GtkTextView for editing of column 3 in sheet 2
@@ -43,7 +50,7 @@
 
 2010-08-05 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: added row and column tooltip markers
-	* GtkSheetColumn: new properties is_key, is_readonly, is_multiline, data_format, data_type, description
+	*** GtkSheetColumn: new properties is_key, is_readonly, is_multiline, data_format, data_type, description
 	    is_key, description have only informational character for the application
 	    is_readonly is implemented, others not yet
 	* GtkSheet: new public interface function to get/set the new properties
@@ -112,7 +119,7 @@
         * gtkextra/gtkitementry.c : patch to allow build with gtk2-21
 
 2010-05-22 Fredy Paquet <mailbox AT opag.ch>
-	* GtkSheet: glade column editor implemented
+	*** GtkSheet: glade column editor implemented
 	* GtkSheet: still more SEGV fixed, concerning empty sheets (no cols, no rows)
 
 2010-05-21 Fredy Paquet <mailbox AT opag.ch>
@@ -131,12 +138,12 @@
 	* GtkSheet: setting column property 'label' now works with GtkBuilder 
 	* GtkSheet: moved column visibility flag from GtkSheetColumn into the embedded GtkWidget
 	* GtkSheet: SEGV in keyboard processing fixed
-	* added new ./configure option --enable-glade
+	*** added new ./configure option --enable-glade
 	* GtkSheet: added glade sheet editor source (not yet finished)
 	* GtkSheet: added po directory (glade support needs gettext installed)                    
 
 2010-05-18 Fredy Paquet <mailbox AT opag.ch>
-	* GtkSheet: changed GtkSheetColumn into an object, subtype of GtkWidget
+	*** GtkSheet: changed GtkSheetColumn into an object, subtype of GtkWidget
 	* GtkSheet: fixed several SEGV errors, most of them incorrect boundary handling
 	* GtkSheet: fixed scrollbar behaviour near the end of the sheet
 	* GtkSheet: experimental integration into GtkBuilder - not yet finished
@@ -160,13 +167,13 @@
 
 2010-05-09 Fredy Paquet <mailbox AT opag.ch>
 	* changed --enable-debug option to non destructive behaviour
-	* Added initial Glade support to GtkSheet
+	*** Added initial Glade support to GtkSheet
 	  * properties "title", "n-rows", "n-cols"
 	  * class initialisation code adapted
 	* GtkSheet: some drawing problems need fixing when the sheet gets 0 rows/cols
 
 2010-05-08 Fredy Paquet <mailbox AT opag.ch>
-	* added --enable-debug option to the configure script, default is off (-O2).
+	*** added --enable-debug option to the configure script, default is off (-O2).
 	* GtkSheet: Fixed a crash when double clicking between column headers
 
 2010-05-04 Fredy Paquet <mailbox AT opag.ch>

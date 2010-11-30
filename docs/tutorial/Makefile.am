@@ -28,16 +28,6 @@ dist-hook: html
 	cp -Rp $(srcdir)/html $(distdir)
 
 else
-html:
-	echo "***"
-	echo "*** Warning: Tutorial not built"
-	echo "***"
-
-pdf:
-	echo "***"
-	echo "*** Warning: Tutorial not built"
-	echo "***"
-
 dist-hook:
 	echo "***"
 	echo "*** Warning: Tutorial not built"

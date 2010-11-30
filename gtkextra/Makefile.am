@@ -192,9 +192,41 @@ endif
 EXTRA_LTLIBRARIES = libgtkextra-x11-2.0.la libgtkextra-linux-fb-2.0.la libgtkextra-win32-2.0.la
 
 MAINTAINERCLEANFILES = $(gtkextra_built_sources) 
+CLEANFILES = $(gtkextra_built_sources) 
+
 EXTRA_DIST = $(gtkextra_private_h_sources) $(gtkextra_extra_sources)
 EXTRA_DIST += $(gtkextra_built_sources)
 EXTRA_DIST += gtkextra.def Makefile.win32 makefile.msc sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
+
+# gobject-introspection (begin)
+if HAVE_INTROSPECTION
+  include $(INTROSPECTION_MAKEFILE)
+
+  INTROSPECTION_GIRS = GtkExtra-3.0.gir
+
+  INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
+  INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
+
+  introspection_sources = $(gtkextra_c_sources) $(gtkextra_public_h_sources)
+
+  GtkExtra_3_0_gir: $(gtkextratargetlib)
+  GtkExtra_3_0_gir_NAMESPACE = GtkExtra
+  GtkExtra_3_0_gir_VERSION = $(GTK_EXTRA_VERSION)
+  GtkExtra_3_0_gir_INCLUDES = GLib-2.0 GObject-2.0
+  GtkExtra_3_0_gir_CFLAGS = $(INCLUDES)
+  GtkExtra_3_0_gir_LIBS = $(gtkextratargetlib)
+  GtkExtra_3_0_gir_FILES = $(introspection_sources)
+
+  girdir = $(datadir)/gir-1.0
+#gir_DATA = $(INTROSPECTION_GIRS)
+
+#typelibdir = $(libdir)/girepository-1.0
+#typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+  CLEANFILES += $(gir_DATA) # $(typelib_DATA)
+endif
+# gobject-introspection (end)
+
 
 $(libgtkextra_x11_2_0_la_OBJECTS) $(libgtkextra_linux_fb_2_0_la_OBJECTS) $(libgtkextra_win32_2_0_la_OBJECTS): ${gtkextra_built_public_sources} ${gtkextra_built_private_headers}
 

@@ -129,7 +129,15 @@ extern void gtkextra_VOID__INT_STRING (GClosure     *closure,
 /* VOID:POINTER (gtkextra-marshal.list:17) */
 #define gtkextra_VOID__POINTER	g_cclosure_marshal_VOID__POINTER
 
-/* VOID:INT,INT (gtkextra-marshal.list:18) */
+/* VOID:INT,BOXED (gtkextra-marshal.list:18) */
+extern void gtkextra_VOID__INT_BOXED (GClosure     *closure,
+                                      GValue       *return_value,
+                                      guint         n_param_values,
+                                      const GValue *param_values,
+                                      gpointer      invocation_hint,
+                                      gpointer      marshal_data);
+
+/* VOID:INT,INT (gtkextra-marshal.list:19) */
 extern void gtkextra_VOID__INT_INT (GClosure     *closure,
                                     GValue       *return_value,
                                     guint         n_param_values,
@@ -137,21 +145,13 @@ extern void gtkextra_VOID__INT_INT (GClosure     *closure,
                                     gpointer      invocation_hint,
                                     gpointer      marshal_data);
 
-/* VOID:INT,POINTER (gtkextra-marshal.list:19) */
+/* VOID:INT,POINTER (gtkextra-marshal.list:20) */
 extern void gtkextra_VOID__INT_POINTER (GClosure     *closure,
                                         GValue       *return_value,
                                         guint         n_param_values,
                                         const GValue *param_values,
                                         gpointer      invocation_hint,
                                         gpointer      marshal_data);
-
-/* VOID:INT,BOXED (gtkextra-marshal.list:20) */
-extern void gtkextra_VOID__INT_BOXED (GClosure     *closure,
-                                      GValue       *return_value,
-                                      guint         n_param_values,
-                                      const GValue *param_values,
-                                      gpointer      invocation_hint,
-                                      gpointer      marshal_data);
 
 /* VOID:POINTER,POINTER (gtkextra-marshal.list:21) */
 extern void gtkextra_VOID__POINTER_POINTER (GClosure     *closure,

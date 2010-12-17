@@ -1,6 +1,8 @@
 2010-12-17 Fredy Paquet <mailbox AT opag.ch>
 	* fixed library naming, now corresponding to V3.0 and the content of gtkextra-3.0.pc
 	* fixed gobject-introspection to include Gtk-2.0.gir
+	* fixed missing GLIB_GENMARSHAL in configure.in
+	* added missing VOID:INT,BOXED to gtkextra-marshal.list
 
 2010-11-30 Fredy Paquet <mailbox AT opag.ch>
 	* doc/tutorial/Makefile.am: fixed automake warnings

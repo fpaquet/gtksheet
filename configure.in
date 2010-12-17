@@ -51,7 +51,7 @@ AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
 
 # Specify a configuration file
 AM_CONFIG_HEADER(config.h)
-AC_CONFIG_MACRO_DIR(m4)
+AC_CONFIG_MACRO_DIR([m4])
 AC_DEFINE([ENABLE_NLS],1,undef)
 AC_DEFINE([HAVE_GETTEXT],1,undef)
 
@@ -263,6 +263,7 @@ PKG_PROG_PKG_CONFIG
 #PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.12.0 fontconfig])
 PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.12.0])
 
+AC_SUBST(GLIB_GENMARSHAL, `$PKG_CONFIG --variable=glib_genmarshal glib-2.0`)
 
 # --enable-glade option
 

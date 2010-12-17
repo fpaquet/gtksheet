@@ -48,3 +48,4 @@ ChangeLog.cvs:
 	cvs log | perl mkchlog > ChangeLog.cvs
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-man --disable-rebuilds
+

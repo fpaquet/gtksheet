@@ -1,3 +1,6 @@
+2011-01-07 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheetColumn: setup correct parent widget
+
 2010-12-17 Fredy Paquet <mailbox AT opag.ch>
 	* fixed library naming, now corresponding to V3.0 and the content of gtkextra-3.0.pc
 	* fixed gobject-introspection to include Gtk-2.0.gir

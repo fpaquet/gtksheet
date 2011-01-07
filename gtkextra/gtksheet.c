@@ -857,6 +857,7 @@ void
 
     child->sheet = sheet;
     sheet->column[col] = child;
+    gtk_widget_set_parent(GTK_WIDGET(child), GTK_WIDGET(sheet));
     g_object_ref_sink(G_OBJECT(child));
 
     if (name) gtk_widget_set_name(GTK_WIDGET(child), name);
@@ -13063,6 +13064,13 @@ static void
 
             newobj->sheet = sheet;
             sheet->column[newidx] = newobj;
+            gtk_widget_set_parent(GTK_WIDGET(newobj), GTK_WIDGET(sheet));
+
+#ifdef GTK_SHEET_DEBUG
+            g_debug("Setting Column %p Parent to GtkSheet %p - got %p",
+                    newobj, sheet, gtk_widget_get_parent(GTK_WIDGET(newobj)));
+#endif
+
             g_object_ref_sink(newobj);
         }
 

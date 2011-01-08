@@ -1,3 +1,6 @@
+2011-01-08 Fredy Paquet <mailbox AT opag.ch>
+	* fixed library naming in docs
+
 2011-01-07 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheetColumn: setup correct parent widget
 

@@ -23,10 +23,35 @@
 #include <gtk/gtk.h>
 
 #if !GTK_CHECK_VERSION(2,20,0)
+
+    /* before V2.20 */
+
 #  define gtk_widget_get_realized GTK_WIDGET_REALIZED
 #  define gtk_widget_get_mapped GTK_WIDGET_MAPPED
+
 #  define gtk_widget_get_requisition(widget, requisitionptr) \
         *(requisitionptr) = GTK_WIDGET(widget)->requisition
+
+#   define gtk_widget_set_realized_true(widget)  \
+        GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED)
+#   define gtk_widget_set_realized_false(widget)  \
+        GTK_WIDGET_UNSET_FLAGS(widget, GTK_REALIZED)
+
+#   define gtk_widget_set_mapped_true(widget)  \
+        GTK_WIDGET_SET_FLAGS(widget, GTK_MAPPED)
+#   define gtk_widget_set_mapped_false(widget)  \
+        GTK_WIDGET_UNSET_FLAGS(widget, GTK_MAPPED)
+
+#else
+
+    /* from V2.20 */
+
+#   define gtk_widget_set_realized_true(widget)  gtk_widget_set_realized(widget, TRUE)
+#   define gtk_widget_set_realized_false(widget)  gtk_widget_set_realized(widget, FALSE)
+
+#   define gtk_widget_set_mapped_true(widget)  gtk_widget_set_mapped(widget, TRUE)
+#   define gtk_widget_set_mapped_false(widget)  gtk_widget_set_mapped(widget, FALSE)
+
 #endif
 
 #endif /* GTK_EXTRA_COMPAT_H */

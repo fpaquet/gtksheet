@@ -807,7 +807,7 @@ gtk_plot3d_init (GtkPlot3D *plot)
   GdkColor color;
   gint i;
 
-  GTK_WIDGET_SET_FLAGS(plot, GTK_NO_WINDOW);
+  gtk_widget_set_has_window(GTK_WIDGET(plot), FALSE);
 
   for(i = 0; i < 360; i++){
     plot->ncos[i] = cos(i*PI/180.);

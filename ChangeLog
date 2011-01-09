@@ -1,3 +1,7 @@
+2011-01-09 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheetColumn: fixed abort() during gtk_widget_set_parent()
+	* replaced some deprecated GtkWidget macros
+
 2011-01-08 Fredy Paquet <mailbox AT opag.ch>
 	* fixed library naming in docs
 

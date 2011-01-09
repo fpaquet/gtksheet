@@ -375,7 +375,7 @@ gtk_plot_csurface_init (GtkPlotCSurface *dataset)
   GdkColormap *colormap;
   GtkPlotArray *dim;
 
-  GTK_WIDGET_SET_FLAGS(dataset, GTK_NO_WINDOW);
+  gtk_widget_set_has_window(GTK_WIDGET(dataset), FALSE);
 
   widget = GTK_WIDGET(dataset);
   colormap = gtk_widget_get_colormap(widget);

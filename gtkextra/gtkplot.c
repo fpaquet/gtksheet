@@ -1592,7 +1592,8 @@ static void
 gtk_plot_init (GtkPlot *plot)
 {
   GtkWidget *widget;
-  GTK_WIDGET_SET_FLAGS(plot, GTK_NO_WINDOW);
+
+  gtk_widget_set_has_window(GTK_WIDGET(plot), FALSE);
 
   widget = GTK_WIDGET(plot);
   gdk_color_black(gtk_widget_get_colormap(widget), 

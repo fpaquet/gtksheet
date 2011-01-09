@@ -2322,8 +2322,8 @@ static void
     sheet->clip_range;
        */
 
-    GTK_WIDGET_UNSET_FLAGS (sheet, GTK_NO_WINDOW);
-    GTK_WIDGET_SET_FLAGS (sheet, GTK_CAN_FOCUS);
+    gtk_widget_set_has_window(GTK_WIDGET(sheet), TRUE);
+    gtk_widget_set_can_focus(GTK_WIDGET(sheet), TRUE);
 
     /* for glade to be able to construct the object, we need to complete initialisation here */
     gtk_sheet_construct(sheet, 0, 0, "GtkSheet");
@@ -2821,6 +2821,8 @@ static void
 
     GTK_SHEET_COLUMN_SET_VISIBLE(column, TRUE);
     GTK_SHEET_COLUMN_SET_SENSITIVE(column, TRUE);
+
+    gtk_widget_set_has_window(GTK_WIDGET(column), FALSE);
 }
 
 /*
@@ -6056,7 +6058,7 @@ static void
     g_debug("gtk_sheet_realize: called (%p)", sheet->sheet_entry);
 #endif
 
-    GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+    gtk_widget_set_realized_true(GTK_WIDGET(widget));
 
     gtk_widget_get_allocation(widget, &allocation);
     attributes.window_type = GDK_WINDOW_CHILD;
@@ -6336,7 +6338,7 @@ static void
 
     if (!gtk_widget_get_mapped (widget))
     {
-        GTK_WIDGET_SET_FLAGS (widget, GTK_MAPPED);
+        gtk_widget_set_mapped_true(GTK_WIDGET(widget));
 
         if (!sheet->cursor_drag) sheet->cursor_drag=gdk_cursor_new(GDK_PLUS);
 
@@ -6424,7 +6426,7 @@ static void
 
     if (gtk_widget_get_mapped (widget))
     {
-        GTK_WIDGET_UNSET_FLAGS (widget, GTK_MAPPED);
+        gtk_widget_set_mapped_false(GTK_WIDGET(widget));
 
         gdk_window_hide (sheet->sheet_window);
 
@@ -8083,7 +8085,7 @@ static void
 
     gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
-    GTK_WIDGET_UNSET_FLAGS(GTK_WIDGET(sheet->sheet_entry), GTK_VISIBLE);
+    gtk_widget_set_visible(GTK_WIDGET(sheet->sheet_entry), FALSE);
 }
 
 static gboolean
@@ -8165,7 +8167,7 @@ static void
 
     /* we should send a ENTRY_CHANGE_REQUEST signal here */
 
-    GTK_WIDGET_SET_FLAGS(GTK_WIDGET(sheet->sheet_entry), GTK_VISIBLE);
+    gtk_widget_set_visible(GTK_WIDGET(sheet->sheet_entry), TRUE);
 
     gtk_sheet_get_attributes(sheet, row, col, &attributes);
 

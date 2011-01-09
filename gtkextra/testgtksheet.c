@@ -157,27 +157,41 @@ static GtkWidget *
                          (void *) popup_activated,
                          items[i]);
 
-        GTK_WIDGET_SET_FLAGS (item, GTK_SENSITIVE | GTK_CAN_FOCUS);
+        gtk_widget_set_sensitive(GTK_WIDGET(item), TRUE);
+        gtk_widget_set_can_focus(GTK_WIDGET(item), TRUE);
+
         switch (i)
         {
             case 2:
                 if (GTK_SHEET(sheet)->state!=GTK_SHEET_ROW_SELECTED)
-                    GTK_WIDGET_UNSET_FLAGS (item, GTK_SENSITIVE | GTK_CAN_FOCUS);
+                {
+                    gtk_widget_set_sensitive(GTK_WIDGET(item), FALSE);
+                    gtk_widget_set_can_focus(GTK_WIDGET(item), FALSE);
+                }
                 break;
 
             case 3:
                 if (GTK_SHEET(sheet)->state!=GTK_SHEET_COLUMN_SELECTED)
-                    GTK_WIDGET_UNSET_FLAGS (item, GTK_SENSITIVE | GTK_CAN_FOCUS);
+                {
+                    gtk_widget_set_sensitive(GTK_WIDGET(item), FALSE);
+                    gtk_widget_set_can_focus(GTK_WIDGET(item), FALSE);
+                }
                 break;
 
             case 4:
                 if (GTK_SHEET(sheet)->state!=GTK_SHEET_ROW_SELECTED)
-                    GTK_WIDGET_UNSET_FLAGS (item, GTK_SENSITIVE | GTK_CAN_FOCUS);
+                {
+                    gtk_widget_set_sensitive(GTK_WIDGET(item), FALSE);
+                    gtk_widget_set_can_focus(GTK_WIDGET(item), FALSE);
+                }
                 break;
 
             case 5:
                 if (GTK_SHEET(sheet)->state!=GTK_SHEET_COLUMN_SELECTED)
-                    GTK_WIDGET_UNSET_FLAGS (item, GTK_SENSITIVE | GTK_CAN_FOCUS);
+                {
+                    gtk_widget_set_sensitive(GTK_WIDGET(item), FALSE);
+                    gtk_widget_set_can_focus(GTK_WIDGET(item), FALSE);
+                }
                 break;
         } 
 

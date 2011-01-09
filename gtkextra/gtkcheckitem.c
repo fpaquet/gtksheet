@@ -114,8 +114,8 @@ gtk_check_item_class_init (GtkCheckItemClass *klass)
 static void
 gtk_check_item_init (GtkCheckItem *check_item)
 {
-  GTK_WIDGET_SET_FLAGS (check_item, GTK_NO_WINDOW);
-  GTK_WIDGET_UNSET_FLAGS (check_item, GTK_RECEIVES_DEFAULT);
+  gtk_widget_set_has_window(GTK_WIDGET(check_item), FALSE);
+  gtk_widget_set_receives_default(GTK_WIDGET(check_item), FALSE);
   GTK_TOGGLE_BUTTON (check_item)->draw_indicator = TRUE;
 }
 

@@ -864,7 +864,8 @@ gtk_plot_canvas_init (GtkPlotCanvas *plot_canvas)
   GdkColor color;
 
   widget = GTK_WIDGET(plot_canvas);
-  GTK_WIDGET_SET_FLAGS(widget, GTK_CAN_FOCUS);
+
+  gtk_widget_set_can_focus(GTK_WIDGET(widget), TRUE);
 
   gdk_color_black(gtk_widget_get_colormap(widget), 
 		  &gtk_widget_get_style(widget)->black);

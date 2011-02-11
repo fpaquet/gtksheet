@@ -1,0 +1,125 @@
+###########################################################################
+#
+# Makefile for MinGW environment (native win32 no cygwin dll dependencies). 
+#
+# Requires:
+# - MinGW and MSYS
+#    Binaries at:  http://www.mingw.org (mingw-get-inst-20101030.exe)
+#
+# - gtk+-bundle_2.22.1-20101227_win32.zip
+#    Binaries at: http://www.gtk.org/download-windows.html
+#
+###########################################################################
+# Build Instructions:
+# - build the gtkextra package from source on unix/linux
+# - in a MinGW shell, type: cd ./gtkextra ; make -f Makefile.mingw
+###########################################################################
+
+#
+# User variables, change for your local system
+#
+
+# comment out for no debugging 
+#APP_DEBUG = true
+
+# Put the path to where your gtk libraries are kept
+GTK_PATH = c:/mingw
+
+LIBDIR = .libs_mingw
+
+################## Try not to edit ############################
+
+CC = gcc
+
+CFLAGS += -DMinGW -DHAVE_CONFIG_H -I..
+
+CFLAGS += `pkg-config --cflags gtk+-2.0 gmodule-2.0`
+GTK_LIBS = `pkg-config --libs gtk+-2.0 gmodule-2.0`
+
+WIN_LIBS = -lm -luser32 -ladvapi32 -lwsock32  
+
+ifdef APP_DEBUG
+  CFLAGS += -g -Wall 
+  LFLAGS += -g
+else
+  CFLAGS += -O2
+endif
+
+EXEEXT = .exe
+OBJEXT = .o
+
+#
+# Various targets to build.
+#
+BASE_NAME = libgtkextra-win32-3.0
+
+STATIC_LIB = $(LIBDIR)/$(BASE_NAME).a
+DLL_LIB = $(LIBDIR)/$(BASE_NAME).dll
+DLL_EXP_LIB = $(LIBDIR)/$(BASE_NAME).dll.a
+#DLL_EXP_DEF = $(LIBDIR)/gtkextra.def
+
+#
+# sources, testapps (copy this from Makefile)
+#
+
+GTKEXTRA_LOs = \
+        gtkbordercombo.lo gtkcharsel.lo gtkcheckitem.lo \
+        gtkcolorcombo.lo gtkcombobutton.lo gtkdirtree.lo gtkextra.lo \
+        gtkextra-marshal.lo gtkextratypebuiltins.lo gtkfilelist.lo \
+        gtkfontcombo.lo gtkiconlist.lo gtkitementry.lo \
+        gtkiconfilesel.lo gtkplot.lo gtkplotarray.lo gtkplot3d.lo \
+        gtkplotdt.lo gtkplotpolar.lo gtkplotdata.lo gtkplotpixmap.lo \
+        gtkplotbar.lo gtkplotbox.lo gtkplotbubble.lo gtkplotcandle.lo \
+        gtkplotflux.lo gtkplotsurface.lo gtkplotcsurface.lo \
+        gtkplotcairo.lo gtkplotcanvas.lo gtkplotpc.lo gtkplotgdk.lo \
+        gtkplotps.lo gtkplotprint.lo gtkplotsegment.lo gtkpsfont.lo \
+        gtksheet.lo gtktogglecombo.lo gtkplotcanvasline.lo \
+        gtkplotcanvasrectangle.lo gtkplotcanvasellipse.lo \
+        gtkplotcanvastext.lo gtkplotcanvaspixmap.lo \
+        gtkplotcanvasplot.lo
+
+TESTAPPS = \
+	testgtksheet$(EXEEXT) #testgtkiconlist$(EXEEXT) \
+#        testgtkfilesel$(EXEEXT) testgtkplot$(EXEEXT) \
+#        testgtkfont$(EXEEXT) testgtkplotcanvas$(EXEEXT) \
+#        testrealtime$(EXEEXT) testiterator$(EXEEXT) testpolar$(EXEEXT) \
+#        testgtkplot3d$(EXEEXT) testcontour$(EXEEXT) \
+#        testbubbles$(EXEEXT) testflux$(EXEEXT) testboxes$(EXEEXT) \
+#        testcandles$(EXEEXT) testimage$(EXEEXT) testpixmap$(EXEEXT) \
+#        testcharsel$(EXEEXT) testdt$(EXEEXT) testgtkplotdt$(EXEEXT) \
+#        testsegment$(EXEEXT)
+
+
+GTKEXTRA_SRCS = $(GTKEXTRA_LOs:.lo=.c)
+GTKEXTRA_OBJS = $(GTKEXTRA_SRCS:.c=$(OBJEXT))
+
+DLL_SRCS  = $(GTKEXTRA_SRCS)
+DLL_OBJS = $(GTKEXTRA_SRCS:%.c=$(LIBDIR)/%$(OBJEXT))
+
+TESTEXE = $(TESTAPPS:%=$(LIBDIR)/%)
+
+all: $(LIBDIR) $(STATIC_LIB) $(DLL_LIB) $(TESTEXE)
+
+$(LIBDIR):
+	$(shell mkdir $(LIBDIR))
+
+static: $(STATIC_LIB)
+
+dll: $(DLL_LIB) 
+
+$(STATIC_LIB): $(DLL_OBJS)
+	ar rc $@ $^
+
+$(DLL_LIB): $(DLL_OBJS)
+	$(CC) --shared $(DLL_OBJS) $(GTK_LIBS) $(WIN_LIBS) -o$@ -Wl,--out-implib,$(DLL_EXP_LIB)
+
+$(LIBDIR)/%$(EXEEXT): %.c
+	$(CC) $(CFLAGS) -o $@ $*.c $(DLL_LIB) $(GTK_LIBS) $(WIN_LIBS)
+
+$(LIBDIR)/%$(OBJEXT): %.c
+	$(CC) $(CFLAGS) $(INC) -o $@ -c $*.c
+
+
+clean:
+	rm -f $(DLL_OBJS) $(STATIC_LIB) $(DLL_LIB) $(DLL_EXP_LIB) $(TESTEXE)
+

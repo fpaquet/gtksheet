@@ -2385,7 +2385,7 @@ static void
         case PROP_GTK_SHEET_COLUMN_POSITION:
             {
                 GtkSheetColumn *swapcol;
-                uint newcol = g_value_get_int(value);
+                guint newcol = g_value_get_int(value);
 
                 if (!sheet) return;
                 if (newcol < 0 || newcol > sheet->maxcol) return;

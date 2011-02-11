@@ -24,8 +24,11 @@
  * It is a GtkIconList subclass that displays the contents of a given directory using fancy icons for different types of files
  */
 
-
-#include "config.h"
+#ifdef _WIN32
+#  include "config.h.win32"
+#else
+#  include "config.h"
+#endif
 #include <gtk/gtk.h>
 #include <sys/types.h>
 #include <sys/stat.h>

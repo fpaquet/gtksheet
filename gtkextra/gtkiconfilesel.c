@@ -33,7 +33,11 @@
  * It should only be accessed through the functions described below.
  */
 
-#include "config.h"
+#ifdef _WIN32
+#  include "config.h.win32"
+#else
+#  include "config.h"
+#endif
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <sys/types.h>

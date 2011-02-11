@@ -1,3 +1,9 @@
+2011-02-1 Fredy Paquet <mailbox AT opag.ch>
+	* fixed Windows build environment
+	   tested on a fresh MinGW installation
+	   see build instructions in Makefile.mingw
+	* replaced Makefile.win32 by Makefile.mingw
+
 2011-01-09 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheetColumn: fixed abort() during gtk_widget_set_parent()
 	* replaced some deprecated GtkWidget macros

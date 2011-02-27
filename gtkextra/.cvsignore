@@ -5,8 +5,6 @@
 *.lo
 *.ps
 GtkExtra-3.0.gir
-gtkextratypebuiltins.c
-gtkextratypebuiltins.h
 Makefile
 Makefile.in
 testboxes

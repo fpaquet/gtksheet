@@ -10,7 +10,6 @@ config.h.in
 config.log
 config.status
 config.sub
-configure
 compile
 gtkextra-2.0.pc
 gtkextra.spec

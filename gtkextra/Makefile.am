@@ -196,7 +196,7 @@ CLEANFILES = $(gtkextra_built_sources)
 
 EXTRA_DIST = $(gtkextra_private_h_sources) $(gtkextra_extra_sources)
 EXTRA_DIST += $(gtkextra_built_sources)
-EXTRA_DIST += gtkextra.def Makefile.win32 makefile.msc sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
+EXTRA_DIST += gtkextra.def Makefile.mingw sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
 
 # gobject-introspection (begin)
 if HAVE_INTROSPECTION

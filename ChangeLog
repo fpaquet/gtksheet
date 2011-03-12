@@ -1,4 +1,7 @@
 2011-02-1 Fredy Paquet <mailbox AT opag.ch>
+	* added Makefile.mingw install target
+
+2011-02-1 Fredy Paquet <mailbox AT opag.ch>
 	* fixed Windows build environment
 	   tested on a fresh MinGW installation
 	   see build instructions in Makefile.mingw

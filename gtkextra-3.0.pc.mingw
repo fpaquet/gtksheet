@@ -1,0 +1,13 @@
+prefix=c:/MinGW
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+target=win32
+
+Name: GtkExtra
+Description: Extra widget set for for GTK+
+Requires: glib-2.0 gtk+-2.0
+Version: 3.0.0
+Libs: -L${libdir} -lgtkextra-${target}-3.0
+Cflags: -I${includedir}/gtkextra-3.0
+

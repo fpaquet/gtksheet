@@ -12,7 +12,10 @@
 ###########################################################################
 # Build Instructions:
 # - build the gtkextra package from source on unix/linux
-# - in a MinGW shell, type: cd ./gtkextra ; make -f Makefile.mingw
+# - in a MinGW shell, type:
+#       cd ./gtkextra
+#       make -f Makefile.mingw
+#       make -f Makefile.mingw install
 ###########################################################################
 
 #
@@ -28,6 +31,14 @@ GTK_PATH = c:/mingw
 LIBDIR = .libs_mingw
 
 ################## Try not to edit ############################
+
+module = gtkextra
+target = win32
+version = 3.0
+
+#
+# compiler definitions
+#
 
 CC = gcc
 
@@ -49,9 +60,27 @@ EXEEXT = .exe
 OBJEXT = .o
 
 #
+# standard vars, install directories
+#
+
+prefix = $(GTK_PATH)
+
+datarootdir = $(prefix)/share
+datadir = $(datarootdir)
+infodir = $(datarootdir)/info
+includedir = $(prefix)/include
+exec_prefix = $(prefix)
+bindir = $(exec_prefix)/bin
+libexecdir = $(exec_prefix)/libexec
+libdir = $(exec_prefix)/lib
+libpkgconfdir = $(exec_prefix)/pkgconfig
+
+IDIR_INCLUDE = $(includedir)/$(module)-$(version)
+
+#
 # Various targets to build.
 #
-BASE_NAME = libgtkextra-win32-3.0
+BASE_NAME = lib$(module)-$(target)-$(version)
 
 STATIC_LIB = $(LIBDIR)/$(BASE_NAME).a
 DLL_LIB = $(LIBDIR)/$(BASE_NAME).dll
@@ -89,6 +118,24 @@ TESTAPPS = \
 #        testcharsel$(EXEEXT) testdt$(EXEEXT) testgtkplotdt$(EXEEXT) \
 #        testsegment$(EXEEXT)
 
+#
+# setup source file variables
+#
+gtkextra_public_h_sources = \
+        gtkbordercombo.h gtkcharsel.h gtkcheckitem.h gtkcolorcombo.h \
+        gtkcombobutton.h gtkdirtree.h gtkextra.h gtkextrafeatures.h gtkextraicons.h \
+        gtkextra-marshal.h gtkextratypebuiltins.h \
+        gtkfilelist.h gtkfileicons.h gtkfontcombo.h gtkiconfilesel.h gtkiconlist.h \
+        gtkitementry.h gtkplot.h gtkplotarray.h gtkplot3d.h gtkplotdt.h gtkplotpolar.h \
+        gtkplotdata.h gtkplotpixmap.h gtkplotbar.h gtkplotbox.h gtkplotbubble.h \
+        gtkplotcandle.h gtkplotflux.h gtkplotsurface.h gtkplotcairo.h gtkplotcanvas.h \
+        gtkplotcsurface.h gtkplotpc.h gtkplotgdk.h gtkplotps.h gtkplotprint.h \
+        gtkplotsegment.h gtkpsfont.h gtksheet.h gtktogglecombo.h \
+        gtkplotcanvasline.h gtkplotcanvasrectangle.h gtkplotcanvasellipse.h \
+        gtkplotcanvastext.h gtkplotcanvaspixmap.h gtkplotcanvasplot.h 
+
+gtkextra_mingw_pkgconf_file = \
+	../$(module)-$(version).pc.mingw
 
 GTKEXTRA_SRCS = $(GTKEXTRA_LOs:.lo=.c)
 GTKEXTRA_OBJS = $(GTKEXTRA_SRCS:.c=$(OBJEXT))
@@ -119,6 +166,13 @@ $(LIBDIR)/%$(EXEEXT): %.c
 $(LIBDIR)/%$(OBJEXT): %.c
 	$(CC) $(CFLAGS) $(INC) -o $@ -c $*.c
 
+install: $(gtkextra_public_h_sources) $(IDIR_INCLUDE) $(STATIC_LIB) $(DLL_LIB) $(DLL_EXP_LIB) $(gtkextra_mingw_pkgconf_file)
+	install $(gtkextra_public_h_sources) $(IDIR_INCLUDE)/
+	install $(STATIC_LIB) $(DLL_LIB) $(DLL_EXP_LIB) $(libdir)/
+	install $(gtkextra_mingw_pkgconf_file) $(libpkgconfdir)/
+
+$(IDIR_INCLUDE):
+	$(shell mkdir $(IDIR_INCLUDE))
 
 clean:
 	rm -f $(DLL_OBJS) $(STATIC_LIB) $(DLL_LIB) $(DLL_EXP_LIB) $(TESTEXE)

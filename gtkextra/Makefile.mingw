@@ -73,7 +73,7 @@ exec_prefix = $(prefix)
 bindir = $(exec_prefix)/bin
 libexecdir = $(exec_prefix)/libexec
 libdir = $(exec_prefix)/lib
-libpkgconfdir = $(exec_prefix)/pkgconfig
+libpkgconfdir = $(libdir)/pkgconfig
 
 IDIR_INCLUDE = $(includedir)/$(module)-$(version)
 

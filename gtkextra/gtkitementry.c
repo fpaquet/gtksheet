@@ -768,19 +768,17 @@ gtk_entry_real_insert_text (GtkEditable *editable,
         new_text_length = g_utf8_offset_to_pointer (new_text, n_chars) - new_text;
     }
 
+    g_debug("gtk_entry_real_insert_text: n_chars %d %d", n_chars, *position);
+
 #ifdef GTK_TYPE_ENTRY_BUFFER
 
     {
-        guint n_inserted;
+        guint n_bytes_inserted;
         GtkEntryBuffer *buffer = get_buffer(entry);
 
-        n_inserted  = gtk_entry_buffer_insert_text(buffer, *position, new_text, new_text_length);
+        n_bytes_inserted  = gtk_entry_buffer_insert_text(buffer, *position, new_text, new_text_length);
 
-        if (n_inserted != n_chars)
-        {
-            gtk_widget_error_bell (GTK_WIDGET (editable));
-            n_chars = n_inserted;
-        }
+        g_debug("gtk_entry_real_insert_text: GTK_TYPE_ENTRY_BUFFER n_chars %d %d", n_chars, *position);
     }
 
 #else
@@ -819,11 +817,13 @@ gtk_entry_real_insert_text (GtkEditable *editable,
     g_memmove (entry->text + index + new_text_length, entry->text + index, ientry->item_n_bytes - index);
     memcpy (entry->text + index, new_text, new_text_length);
 
-    ientry->item_n_bytes += new_text_length;
+    if (new_text_length + *position > ientry->item_n_bytes)
+        ientry->item_n_bytes = new_text_length + *position;
 
     /* NUL terminate for safety and convenience */
     entry->text[ientry->item_n_bytes] = '\0';
-    entry->text_length += n_chars;
+
+    entry->text_length = strlen(entry->text);
 
     if (entry->current_pos > *position)
         entry->current_pos += n_chars;
@@ -831,6 +831,8 @@ gtk_entry_real_insert_text (GtkEditable *editable,
     if (entry->selection_bound > *position)
         entry->selection_bound += n_chars;
 #endif //GTK_TYPE_ENTRY_BUFFER
+
+    g_debug("gtk_entry_real_insert_text: n_chars %d %d", n_chars, *position);
 
     *position += n_chars;
 

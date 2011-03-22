@@ -523,52 +523,34 @@ struct _GtkSheetClass
 {
     GtkContainerClass parent_class;
 
-    void (*set_scroll_adjustments) (GtkSheet *sheet,
-                                    GtkAdjustment *hadjustment,
-                                    GtkAdjustment *vadjustment);
+    void (*set_scroll_adjustments) (GtkSheet *sheet, 
+                                    GtkAdjustment *hadjustment, GtkAdjustment *vadjustment);
 
-    void (*select_row)         (GtkSheet *sheet, gint row);
+    void (*select_row) (GtkSheet *sheet, gint row);
+    void (*select_column) (GtkSheet *sheet, gint column);
+    void (*select_range) (GtkSheet *sheet, GtkSheetRange *range);
+    void (*clip_range) (GtkSheet *sheet, GtkSheetRange *clip_range);
 
-    void (*select_column)      (GtkSheet *sheet, gint column);
+    void (*resize_range) (GtkSheet *sheet, 
+                          GtkSheetRange *old_range, GtkSheetRange *new_range);
 
-    void (*select_range)       (GtkSheet *sheet, GtkSheetRange *range);
+    void (*move_range) (GtkSheet *sheet, 
+                        GtkSheetRange *old_range, GtkSheetRange *new_range);
 
-    void (*clip_range)         (GtkSheet *sheet, GtkSheetRange *clip_range);
+    gboolean (*traverse) (GtkSheet *sheet, 
+                          gint row, gint column, gint *new_row, gint *new_column);
 
-    void (*resize_range)       (GtkSheet *sheet,
-                                GtkSheetRange *old_range,
-                                GtkSheetRange *new_range);
+    gboolean (*deactivate) (GtkSheet *sheet, gint row, gint column);
+    gboolean (*activate) (GtkSheet *sheet, gint row, gint column);
 
-    void (*move_range)         (GtkSheet *sheet,
-                                GtkSheetRange *old_range,
-                                GtkSheetRange *new_range);
+    void (*set_cell) (GtkSheet *sheet, gint row, gint column);
+    void (*clear_cell) (GtkSheet *sheet, gint row, gint column);
+    void (*changed) (GtkSheet *sheet, gint row, gint column);
+    void (*new_column_width) (GtkSheet *sheet, gint col, guint width);
+    void (*new_row_height) (GtkSheet *sheet, gint row, guint height);
 
-    gboolean (*traverse)           (GtkSheet *sheet,
-                                    gint row, gint column,
-                                    gint *new_row, gint *new_column);
-
-    gboolean (*deactivate)     (GtkSheet *sheet,
-                                gint row, gint column);
-
-    gboolean (*activate)       (GtkSheet *sheet,
-                                gint row, gint column);
-
-    void (*set_cell)       (GtkSheet *sheet,
-                            gint row, gint column);
-
-    void (*clear_cell)         (GtkSheet *sheet,
-                                gint row, gint column);
-
-    void (*changed)        (GtkSheet *sheet,
-                            gint row, gint column);
-
-    void (*new_column_width)       (GtkSheet *sheet,
-                                    gint col,
-                                    guint width);
-
-    void (*new_row_height)         (GtkSheet *sheet,
-                                    gint row,
-                                    guint height);
+    gboolean (*focus_in_event)     (GtkSheet *sheet, GdkEventFocus *event);
+    gboolean (*focus_out_event)     (GtkSheet *sheet, GdkEventFocus *event);
 
 };
 

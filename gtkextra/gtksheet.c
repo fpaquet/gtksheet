@@ -66,6 +66,7 @@
 
 #ifdef GTK_SHEET_DEBUG
 #  undef GTK_SHEET_DEBUG_SIGNALS
+#  define GTK_SHEET_DEBUG_SIGNALS
 #endif
 
 /* sheet flags */
@@ -142,6 +143,8 @@ enum _GtkSheetSignals
     CHANGED,
     NEW_COL_WIDTH,
     NEW_ROW_HEIGHT,
+    ENTRY_FOCUS_IN,
+    ENTRY_FOCUS_OUT,
     LAST_SIGNAL
 };
 static guint sheet_signals[LAST_SIGNAL] = {0};
@@ -1847,6 +1850,18 @@ static void gtk_sheet_class_init_properties(GObjectClass *gobject_class)
         g_debug("SIGNAL new-row-height %p row %d height %d", sheet, row, height);
     }
 
+    static gboolean gtk_sheet_debug_focus_in_event(GtkSheet *sheet, GdkEventFocus *event)
+    {
+        g_debug("SIGNAL focus-in-event %p event %p", sheet, event);
+        return(FALSE);
+    }
+
+    static gboolean gtk_sheet_debug_focus_out_event(GtkSheet *sheet, GdkEventFocus *event)
+    {
+        g_debug("SIGNAL focus-out-event %p event %p", sheet, event);
+        return(FALSE);
+    }
+
 #endif
 
 static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidgetClass *widget_class)
@@ -2099,6 +2114,53 @@ static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidget
                       G_TYPE_NONE, 2, G_TYPE_INT, G_TYPE_INT);
 
     /**
+     * GtkWidget::entry-focus-in:
+     * @sheet: the sheet widget that emitted the signal
+     * @event: the #GdkEventFocus which triggered this signal
+     *
+     * The ::entry-focus-in signal will be emitted when the keyboard 
+     * focus enters the @sheet entry editor. 
+     *
+     * Returns: %TRUE to stop other handlers from being invoked for the event.
+     *   %FALSE to propagate the event further.
+     *  
+     * Since: 3.0.1
+     */
+    sheet_signals[ENTRY_FOCUS_IN] =
+      g_signal_new ("entry-focus-in",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GtkSheetClass, focus_in_event),
+                    NULL, NULL,
+                    gtkextra_BOOLEAN__BOXED,
+                    G_TYPE_BOOLEAN, 1,
+                    GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+    
+    /**
+     * GtkWidget::entry-focus-out:
+     * @sheet: the sheet widget that emitted the signal
+     * @event: the #GdkEventFocus which triggered this signal
+     *
+     * The ::entry-focus-out signal will be emitted when the 
+     * keyboard focus leaves the @sheet entry editor. 
+     *
+     * Returns: %TRUE to stop other handlers from being invoked for the event.
+     *   %FALSE to propagate the event further.
+     *  
+     * Since: 3.0.1
+     */
+    sheet_signals[ENTRY_FOCUS_OUT] =
+      g_signal_new ("entry-focus-out",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_LAST,
+                    G_STRUCT_OFFSET (GtkSheetClass, focus_out_event),
+                    NULL, NULL,
+                    gtkextra_BOOLEAN__BOXED,
+                    G_TYPE_BOOLEAN, 1,
+                    GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+
+
+    /**
      * GtkSheet::set-scroll-adjustments:
      * @sheet: the sheet widget that emitted the signal
      * @hadjustment: horizontal #GtkAdjustment.
@@ -2177,6 +2239,8 @@ static void
     klass->changed = NULL;
     klass->new_column_width = NULL;
     klass->new_row_height = NULL;
+    klass->focus_in_event = NULL;
+    klass->focus_out_event = NULL;
 
 #ifdef GTK_SHEET_DEBUG_SIGNALS
     klass->select_row = gtk_sheet_debug_select_row;
@@ -2193,6 +2257,8 @@ static void
     /*klass->changed = gtk_sheet_debug_changed;*/
     klass->new_column_width = gtk_sheet_debug_new_column_width;
     klass->new_row_height = gtk_sheet_debug_new_row_height;
+    klass->focus_in_event = gtk_sheet_debug_focus_in_event;
+    klass->focus_out_event = gtk_sheet_debug_focus_out_event;
 #endif
 
     klass->set_scroll_adjustments = gtk_sheet_set_scroll_adjustments;
@@ -7862,8 +7928,10 @@ gboolean
 
     if (gtk_widget_get_realized(GTK_WIDGET(sheet)))
     {
+#if 0
         gint old_row = sheet->active_cell.row;
         gint old_col = sheet->active_cell.col;
+#endif
 
         if (!gtk_sheet_deactivate_cell(sheet)) return (FALSE);
 
@@ -10863,6 +10931,24 @@ static void
     GTK_ITEM_ENTRY(sheet->sheet_entry)->text_max_size=size;
 }
 
+static gboolean sheet_entry_focus_in_handler(GtkWidget *widget,
+                                             GdkEventFocus *event, gpointer user_data)
+{
+    gboolean retval = FALSE;
+    g_debug("sheet_entry_focus_in_handler: called %p %p %p", widget, event, user_data);
+    g_signal_emit(GTK_OBJECT(widget), sheet_signals[ENTRY_FOCUS_IN], event, user_data, &retval);
+    return(retval);
+}
+
+static gboolean sheet_entry_focus_out_handler(GtkWidget *widget,
+                                       GdkEventFocus *event, gpointer user_data)
+{
+    gboolean retval = FALSE;
+    g_debug("sheet_entry_focus_out_handler: called %p %p %p", widget, event, user_data);
+    g_signal_emit(GTK_OBJECT(widget), sheet_signals[ENTRY_FOCUS_OUT], event, user_data, &retval);
+    return(retval);
+}
+
 static void
     create_sheet_entry(GtkSheet *sheet, GType new_entry_type)
 {
@@ -10892,6 +10978,12 @@ static void
 
     new_entry = gtk_widget_new(
         new_entry_type != G_TYPE_NONE ? new_entry_type : G_TYPE_ITEM_ENTRY, NULL);
+
+    /* connect focus signal propagation handlers */
+    g_signal_connect_swapped(new_entry, "focus-in-event", 
+                             G_CALLBACK(sheet_entry_focus_in_handler), sheet);
+    g_signal_connect_swapped(new_entry, "focus-out-event", 
+                             G_CALLBACK(sheet_entry_focus_out_handler), sheet);
 
     sheet->installed_entry_type = new_entry_type;
     sheet->sheet_entry = new_entry;

@@ -1,3 +1,10 @@
+2011-03-22 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: new signals entry-focus-in, entry-focus-out 
+		in order to be able to track focus on the underlying sheet-entry
+
+2011-03-20 Fredy Paquet <mailbox AT opag.ch>
+	* gtkitementry.c: fixed bug ID: 3170287 in gtkextra-3
+
 2011-02-1 Fredy Paquet <mailbox AT opag.ch>
 	* added Makefile.mingw install target
 

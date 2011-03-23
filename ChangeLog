@@ -1,3 +1,7 @@
+2011-03-23 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed unwanted entry activation during hide_active_cell()
+		which lead to multiple focus signal emissions
+
 2011-03-22 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: new signals entry-focus-in, entry-focus-out 
 		in order to be able to track focus on the underlying sheet-entry

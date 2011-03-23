@@ -6992,7 +6992,7 @@ static void
 static void
     gtk_sheet_range_draw(GtkSheet *sheet, 
                          const GtkSheetRange *range, 
-                         gboolean restore_decorations)
+                         gboolean activate_active_cell)
 {
     gint i,j;
     GtkSheetRange drawing_range;
@@ -7181,7 +7181,8 @@ static void
         gtk_sheet_range_draw_selection(sheet, drawing_range);
     }
 
-    if (sheet->state == GTK_STATE_NORMAL &&
+    if (activate_active_cell &&
+        sheet->state == GTK_STATE_NORMAL &&
         sheet->active_cell.row >= drawing_range.row0 && 
         sheet->active_cell.row <= drawing_range.rowi &&
         sheet->active_cell.col >= drawing_range.col0 &&
@@ -8124,7 +8125,10 @@ static void
     }
 #endif
 
+#if 0
+    /* why shoud we first set the cursor to the cell we want hide ? */
     g_signal_emit(GTK_OBJECT(sheet),sheet_signals[SET_CELL], 0, row, col);
+#endif
 
     if (!GTK_SHEET_IS_FROZEN(sheet)) 
     {
@@ -8135,9 +8139,16 @@ static void
 
         gtk_sheet_range_draw(sheet, &range, FALSE);  /* do not reactivate active cell!!! */
     }
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_hide_active_cell: column_button_release");
+#endif
 
     column_button_release(sheet, col);
     row_button_release(sheet, row);
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_hide_active_cell: gtk_widget_unmap");
+#endif
+
 
     gtk_widget_unmap(sheet->sheet_entry);
 
@@ -8151,9 +8162,20 @@ static void
                     COLPTR(sheet, col)->width+4,
                     sheet->row[row].height+4);
 
+#if 0
+    /* why shoud we first set the cursor to the cell we want hide ? */
     gtk_widget_grab_focus(GTK_WIDGET(sheet));
+#endif
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_hide_active_cell: gtk_widget_set_visible");
+#endif
 
     gtk_widget_set_visible(GTK_WIDGET(sheet->sheet_entry), FALSE);
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_hide_active_cell: done");
+#endif
 }
 
 static gboolean
@@ -10935,8 +10957,10 @@ static gboolean sheet_entry_focus_in_handler(GtkWidget *widget,
                                              GdkEventFocus *event, gpointer user_data)
 {
     gboolean retval = FALSE;
+#ifdef GTK_SHEET_DEBUG
     g_debug("sheet_entry_focus_in_handler: called %p %p %p", widget, event, user_data);
-    g_signal_emit(GTK_OBJECT(widget), sheet_signals[ENTRY_FOCUS_IN], event, user_data, &retval);
+#endif
+    g_signal_emit(GTK_OBJECT(widget), sheet_signals[ENTRY_FOCUS_IN], 0, event, &retval);
     return(retval);
 }
 
@@ -10944,8 +10968,10 @@ static gboolean sheet_entry_focus_out_handler(GtkWidget *widget,
                                        GdkEventFocus *event, gpointer user_data)
 {
     gboolean retval = FALSE;
+#ifdef GTK_SHEET_DEBUG
     g_debug("sheet_entry_focus_out_handler: called %p %p %p", widget, event, user_data);
-    g_signal_emit(GTK_OBJECT(widget), sheet_signals[ENTRY_FOCUS_OUT], event, user_data, &retval);
+#endif
+    g_signal_emit(GTK_OBJECT(widget), sheet_signals[ENTRY_FOCUS_OUT], 0, event, &retval);
     return(retval);
 }
 
@@ -11707,7 +11733,7 @@ static void
                     gdk_window_show(sheet->column_title_window);
         }
 
-        gtk_sheet_range_draw(sheet, NULL);
+        gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
 */
 }

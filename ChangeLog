@@ -1,3 +1,6 @@
+2011-03-24 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: allow gtk_sheet_set_active_cell(sheet, -1, -1) to deactivate current cell
+
 2011-03-23 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed unwanted entry activation during hide_active_cell()
 		which lead to multiple focus signal emissions

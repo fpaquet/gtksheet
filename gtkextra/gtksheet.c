@@ -207,10 +207,11 @@ typedef enum _GtkSheetArea
 #define GTK_SHEET_DEFAULT_TM_SIZE  4  /* pixels, size of tooltip marker */
 
 #ifdef GTK_SHEET_DEBUG
-    #  define GTK_SHEET_DEBUG_COLOR  "green"
+#   define GTK_SHEET_DEBUG_COLOR  "green"
 static GdkColor debug_color;
 
-    #include <stdarg.h>
+#   if 0
+#   include <stdarg.h>
 static void g_debug_popup(char *fmt, ...)  /* used to intercept/debug drawing sequences */
 {
     va_list ap;
@@ -225,6 +226,8 @@ static void g_debug_popup(char *fmt, ...)  /* used to intercept/debug drawing se
     gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_destroy (dialog);
 }
+#   endif
+
 #endif
 
 static inline gint
@@ -6399,7 +6402,7 @@ static void
     sheet = GTK_SHEET (widget);
 
 #ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_map: called");
+    g_debug("gtk_sheet_map_handler: called");
 #endif
 
     if (!gtk_widget_get_mapped (widget))
@@ -6423,11 +6426,16 @@ static void
             gdk_window_show (sheet->row_title_window);
         }
 
+#if 0
+        /* this will be done by gtk_sheet_activate_cell() below,
+           it causes trouble when there is no active cell in the sheet,
+           because sheet_entry will start to process events */
         if (!gtk_widget_get_mapped (sheet->sheet_entry))
         {
             gtk_widget_show (sheet->sheet_entry);
             gtk_widget_map (sheet->sheet_entry);
         }
+#endif
 
         if (gtk_widget_get_visible (sheet->button) &&
             !gtk_widget_get_mapped (sheet->button))
@@ -7907,9 +7915,10 @@ gboolean
  * gtk_sheet_set_active_cell:
  * @sheet: a #GtkSheet
  * @row: row number
- * @column: column number
+ * @col: column number
  *
- * Set active cell where the cell entry will be displayed . 
+ * Set active cell where the cell entry will be displayed. 
+ * Use (row,col) = (-1,-1) to deactivate active cell. 
  *
  * Returns: FALSE if current cell can't be deactivated or
  * requested cell can't be activated
@@ -7920,7 +7929,6 @@ gboolean
     g_return_val_if_fail (sheet != NULL, 0);
     g_return_val_if_fail (GTK_IS_SHEET (sheet), 0);
 
-    if (row < 0 || col < 0) return (FALSE);
     if (row > sheet->maxrow || col > sheet->maxcol) return (FALSE);
 
 #ifdef GTK_SHEET_DEBUG
@@ -7947,6 +7955,16 @@ gboolean
             return(FALSE);
         }
 #endif
+    }
+
+    if (row < 0 || col < 0) 
+    {
+        sheet->range.row0 = -1;
+        sheet->range.rowi = -1;
+        sheet->range.col0 = -1;
+        sheet->range.coli = -1;
+
+        return (TRUE);
     }
 
     sheet->active_cell.row = row;
@@ -10957,9 +10975,6 @@ static gboolean sheet_entry_focus_in_handler(GtkWidget *widget,
                                              GdkEventFocus *event, gpointer user_data)
 {
     gboolean retval = FALSE;
-#ifdef GTK_SHEET_DEBUG
-    g_debug("sheet_entry_focus_in_handler: called %p %p %p", widget, event, user_data);
-#endif
     g_signal_emit(GTK_OBJECT(widget), sheet_signals[ENTRY_FOCUS_IN], 0, event, &retval);
     return(retval);
 }
@@ -10968,9 +10983,6 @@ static gboolean sheet_entry_focus_out_handler(GtkWidget *widget,
                                        GdkEventFocus *event, gpointer user_data)
 {
     gboolean retval = FALSE;
-#ifdef GTK_SHEET_DEBUG
-    g_debug("sheet_entry_focus_out_handler: called %p %p %p", widget, event, user_data);
-#endif
     g_signal_emit(GTK_OBJECT(widget), sheet_signals[ENTRY_FOCUS_OUT], 0, event, &retval);
     return(retval);
 }

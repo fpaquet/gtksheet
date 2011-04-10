@@ -1,3 +1,6 @@
+2011-04-10 Fredy Paquet <mailbox AT opag.ch>
+	* ./configure: better CFLAGS handling, respect environment and do not combine -g -O2 (it kills the debugger)
+
 2011-03-24 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: allow gtk_sheet_set_active_cell(sheet, -1, -1) to deactivate current cell
 

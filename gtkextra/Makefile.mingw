@@ -168,7 +168,8 @@ $(LIBDIR)/%$(OBJEXT): %.c
 
 install: $(gtkextra_public_h_sources) $(IDIR_INCLUDE) $(IDIR_INCLUDE)/$(module) $(STATIC_LIB) $(DLL_LIB) $(DLL_EXP_LIB) $(gtkextra_mingw_pkgconf_file)
 	install $(gtkextra_public_h_sources) $(IDIR_INCLUDE)/$(module)/
-	install $(STATIC_LIB) $(DLL_LIB) $(DLL_EXP_LIB) $(libdir)/
+	install $(STATIC_LIB) $(DLL_EXP_LIB) $(libdir)/
+	install $(DLL_LIB) $(bindir)/
 	install $(gtkextra_mingw_pkgconf_file) $(libpkgconfdir)/$(module)-$(version).pc
 
 $(IDIR_INCLUDE):

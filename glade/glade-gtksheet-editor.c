@@ -19,7 +19,11 @@
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
  */
-#include <config.h>
+#ifdef _WIN32
+#  include "config.h.win32"
+#else
+#  include "config.h"
+#endif
 #include <gladeui/glade.h>
 #include <glib/gi18n-lib.h>
 #include <gdk/gdkkeysyms.h>

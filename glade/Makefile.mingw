@@ -1,0 +1,139 @@
+###########################################################################
+#
+# Makefile for MinGW environment (native win32 no cygwin dll dependencies). 
+#
+# Requires:
+# - MinGW and MSYS
+#    Binaries at:  http://www.mingw.org (mingw-get-inst-20101030.exe)
+#
+# - gtk+-bundle_2.22.1-20101227_win32.zip
+#    Binaries at: http://www.gtk.org/download-windows.html
+#
+###########################################################################
+# Build Instructions:
+# - build the gtkextra package from source on unix/linux
+# - in a MinGW shell, type:
+#       cd ./glade
+#       make -f Makefile.mingw
+#       make -f Makefile.mingw install
+###########################################################################
+
+#
+# User variables, change for your local system
+#
+
+# comment out for no debugging 
+#APP_DEBUG = true
+
+# Put the path to where your gtk libraries are kept
+GTK_PATH = c:/mingw
+GLADE_PATH = $(GTK_PATH)
+
+LIBDIR = .libs_mingw
+
+################## Try not to edit ############################
+
+SUBDIRS = pixmaps
+
+glademoduledir = `pkg-config --variable=moduledir gladeui-1.0`
+gladecatalogdir = `pkg-config --variable=catalogdir gladeui-1.0`
+gladepixmapdir = `pkg-config --variable=pixmapdir gladeui-1.0`
+
+libgladegtkextra = libgladegtkextra.la
+gladegtkextracatalog = gtk+extra-catalog.xml
+
+#
+# compiler definitions
+#
+
+CC = gcc
+
+CFLAGS += -DMinGW -DHAVE_CONFIG_H -I..
+CFLAGS += -DGETTEXT_PACKAGE=\"gtkextra\"
+
+CFLAGS += `pkg-config --cflags gladeui-1.0 gtkextra-3.0`
+GTK_LIBS = `pkg-config --libs gladeui-1.0 gtkextra-3.0`
+
+WIN_LIBS = -lm -luser32 -ladvapi32 -lwsock32  
+
+ifdef APP_DEBUG
+  CFLAGS += -g -Wall 
+  LFLAGS += -g
+else
+  CFLAGS += -O2
+endif
+
+EXEEXT = .exe
+OBJEXT = .o
+
+#
+# standard vars, install directories
+#
+
+prefix = $(GLADE_PATH)
+
+datarootdir = $(prefix)/share
+datadir = $(datarootdir)
+infodir = $(datarootdir)/info
+includedir = $(prefix)/include
+exec_prefix = $(prefix)
+bindir = $(exec_prefix)/bin
+libexecdir = $(exec_prefix)/libexec
+libdir = $(exec_prefix)/lib
+libpkgconfdir = $(libdir)/pkgconfig
+
+IDIR_INCLUDE = $(includedir)/$(module)-$(version)
+
+#
+# Various targets to build.
+#
+BASE_NAME = libgladegtkextra
+
+STATIC_LIB = $(LIBDIR)/$(BASE_NAME).a
+DLL_LIB = $(LIBDIR)/$(BASE_NAME).dll
+DLL_EXP_LIB = $(LIBDIR)/$(BASE_NAME).dll.a
+#DLL_EXP_DEF = $(LIBDIR)/gtkextra.def
+
+#
+# sources, testapps (copy this from Makefile)
+#
+
+LIBGLADEGTKEXTRA_LOs = \
+        glade-gtksheet-editor.lo
+
+LIBGLADEGTKEXTRA_SRCS = $(LIBGLADEGTKEXTRA_LOs:.lo=.c)
+LIBGLADEGTKEXTRA_OBJS = $(LIBGLADEGTKEXTRA_SRCS:.c=$(OBJEXT))
+
+DLL_SRCS  = $(LIBGLADEGTKEXTRA_SRCS)
+DLL_OBJS = $(LIBGLADEGTKEXTRA_SRCS:%.c=$(LIBDIR)/%$(OBJEXT))
+
+TESTEXE = $(TESTAPPS:%=$(LIBDIR)/%)
+
+all: $(LIBDIR) $(DLL_LIB) $(TESTEXE)
+
+$(LIBDIR):
+	$(shell mkdir $(LIBDIR))
+
+static: $(STATIC_LIB)
+
+dll: $(DLL_LIB) 
+
+$(STATIC_LIB): $(DLL_OBJS)
+	ar rc $@ $^
+
+$(DLL_LIB): $(DLL_OBJS)
+	$(CC) --shared $(DLL_OBJS) $(GTK_LIBS) $(WIN_LIBS) -o$@ -Wl,--out-implib,$(DLL_EXP_LIB)
+
+$(LIBDIR)/%$(EXEEXT): %.c
+	$(CC) $(CFLAGS) -o $@ $*.c $(DLL_LIB) $(GTK_LIBS) $(WIN_LIBS)
+
+$(LIBDIR)/%$(OBJEXT): %.c
+	$(CC) $(CFLAGS) $(INC) -o $@ -c $*.c
+
+install: $(gladegtkextracatalog) $(DLL_LIB) $(DLL_EXP_LIB) $(gtkextra_mingw_pkgconf_file)
+	install $(gladegtkextracatalog) $(gladecatalogdir)/
+	install $(DLL_LIB) $(DLL_EXP_LIB) $(glademoduledir)/
+
+clean:
+	rm -f $(DLL_OBJS) $(STATIC_LIB) $(DLL_LIB) $(DLL_EXP_LIB) $(TESTEXE)
+

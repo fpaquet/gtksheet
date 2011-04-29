@@ -92,7 +92,10 @@ BASE_NAME = libgladegtkextra
 STATIC_LIB = $(LIBDIR)/$(BASE_NAME).a
 DLL_LIB = $(LIBDIR)/$(BASE_NAME).dll
 DLL_EXP_LIB = $(LIBDIR)/$(BASE_NAME).dll.a
-#DLL_EXP_DEF = $(LIBDIR)/gtkextra.def
+
+UNIX_LIB_NAME = $(BASE_NAME).so
+MINGW_LIB_NAME = $(BASE_NAME).dll
+MINGW_CATALOG_FILE = $(LIBDIR)/$(gladegtkextracatalog)
 
 #
 # sources, testapps (copy this from Makefile)
@@ -109,7 +112,7 @@ DLL_OBJS = $(LIBGLADEGTKEXTRA_SRCS:%.c=$(LIBDIR)/%$(OBJEXT))
 
 TESTEXE = $(TESTAPPS:%=$(LIBDIR)/%)
 
-all: $(LIBDIR) $(DLL_LIB) $(TESTEXE)
+all: $(LIBDIR) $(DLL_LIB) $(TESTEXE) $(MINGW_CATALOG_FILE)
 
 $(LIBDIR):
 	$(shell mkdir $(LIBDIR))
@@ -130,10 +133,14 @@ $(LIBDIR)/%$(EXEEXT): %.c
 $(LIBDIR)/%$(OBJEXT): %.c
 	$(CC) $(CFLAGS) $(INC) -o $@ -c $*.c
 
-install: $(gladegtkextracatalog) $(DLL_LIB) $(DLL_EXP_LIB) $(gtkextra_mingw_pkgconf_file)
-	install $(gladegtkextracatalog) $(gladecatalogdir)/
+$(MINGW_CATALOG_FILE): $(gladegtkextracatalog)
+	sed s/$(UNIX_LIB_NAME)/$(MINGW_LIB_NAME)/ $(gladegtkextracatalog) > $@
+
+install: $(MINGW_CATALOG_FILE) $(DLL_LIB) $(DLL_EXP_LIB) $(gtkextra_mingw_pkgconf_file)
+	install $(MINGW_CATALOG_FILE) $(gladecatalogdir)/
 	install $(DLL_LIB) $(DLL_EXP_LIB) $(glademoduledir)/
+	$(MAKE) -C $(SUBDIRS) -f Makefile.mingw install
 
 clean:
-	rm -f $(DLL_OBJS) $(STATIC_LIB) $(DLL_LIB) $(DLL_EXP_LIB) $(TESTEXE)
+	rm -f $(DLL_OBJS) $(STATIC_LIB) $(DLL_LIB) $(DLL_EXP_LIB) $(MINGW_CATALOG_FILE) $(TESTEXE)
 

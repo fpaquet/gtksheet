@@ -1,0 +1,93 @@
+###########################################################################
+#
+# Makefile for MinGW environment (native win32 no cygwin dll dependencies). 
+#
+# Requires:
+# - MinGW and MSYS
+#    Binaries at:  http://www.mingw.org (mingw-get-inst-20101030.exe)
+#
+# - gtk+-bundle_2.22.1-20101227_win32.zip
+#    Binaries at: http://www.gtk.org/download-windows.html
+#
+###########################################################################
+# Build Instructions:
+# - build the gtkextra package from source on unix/linux
+# - in a MinGW shell, type:
+#       cd ./glade
+#       make -f Makefile.mingw
+#       make -f Makefile.mingw install
+###########################################################################
+
+#
+# User variables, change for your local system
+#
+
+# comment out for no debugging 
+#APP_DEBUG = true
+
+# Put the path to where your gtk libraries are kept
+GTK_PATH = c:/mingw
+GLADE_PATH = $(GTK_PATH)
+
+################## Try not to edit ############################
+
+gladepixmapdir := `pkg-config --variable=pixmapdir gladeui-1.0`
+
+P16DIR = hicolor/16x16/actions
+P22DIR = hicolor/22x22/actions
+
+gladepixmap16dir = $(gladepixmapdir)/$(P16DIR)
+gladepixmap22dir = $(gladepixmapdir)/$(P22DIR)
+
+
+PIXMAPS_16 = \
+    $(P16DIR)/widget-gtkextra-gtkbordercombo.png \
+    $(P16DIR)/widget-gtkextra-gtkcharselection.png \
+    $(P16DIR)/widget-gtkextra-gtkcheckitem.png \
+    $(P16DIR)/widget-gtkextra-gtkcolorcombo.png \
+    $(P16DIR)/widget-gtkextra-gtkcombobutton.png \
+    $(P16DIR)/widget-gtkextra-gtkfilelist.png \
+    $(P16DIR)/widget-gtkextra-gtkfontcombo.png \
+    $(P16DIR)/widget-gtkextra-gtkiconlist.png \
+    $(P16DIR)/widget-gtkextra-gtkitementry.png \
+    $(P16DIR)/widget-gtkextra-gtkplotbubble.png \
+    $(P16DIR)/widget-gtkextra-gtkplotcandle.png \
+    $(P16DIR)/widget-gtkextra-gtkplotcanvas.png \
+    $(P16DIR)/widget-gtkextra-gtkplotpolar.png \
+    $(P16DIR)/widget-gtkextra-gtksheet.png \
+    $(P16DIR)/widget-gtkextra-gtksheetcolumn.png \
+    $(P16DIR)/widget-gtkextra-gtktogglecombo.png
+
+PIXMAPS_22 = \
+    $(P22DIR)/widget-gtkextra-gtkbordercombo.png \
+    $(P22DIR)/widget-gtkextra-gtkcharselection.png \
+    $(P22DIR)/widget-gtkextra-gtkcheckitem.png \
+    $(P22DIR)/widget-gtkextra-gtkcolorcombo.png \
+    $(P22DIR)/widget-gtkextra-gtkcombobutton.png \
+    $(P22DIR)/widget-gtkextra-gtkfilelist.png \
+    $(P22DIR)/widget-gtkextra-gtkfontcombo.png \
+    $(P22DIR)/widget-gtkextra-gtkiconlist.png \
+    $(P22DIR)/widget-gtkextra-gtkitementry.png \
+    $(P22DIR)/widget-gtkextra-gtkplot.png \
+    $(P22DIR)/widget-gtkextra-gtkplotaxis.png \
+    $(P22DIR)/widget-gtkextra-gtkplotbox.png \
+    $(P22DIR)/widget-gtkextra-gtkplotbubble.png \
+    $(P22DIR)/widget-gtkextra-gtkplotcandle.png \
+    $(P22DIR)/widget-gtkextra-gtkplotcanvas.png \
+    $(P22DIR)/widget-gtkextra-gtkplotflux.png \
+    $(P22DIR)/widget-gtkextra-gtkplotpixmap.png \
+    $(P22DIR)/widget-gtkextra-gtkplotpolar.png \
+    $(P22DIR)/widget-gtkextra-gtksheet.png \
+    $(P22DIR)/widget-gtkextra-gtksheetcolumn.png \
+    $(P22DIR)/widget-gtkextra-gtktogglecombo.png
+
+gladepixmap16_DATA = $(PIXMAPS_16)
+gladepixmap22_DATA = $(PIXMAPS_22)
+
+install: 
+	install $(gladepixmap16_DATA) $(gladepixmap16dir)
+	install $(gladepixmap22_DATA) $(gladepixmap22dir)
+
+
+
+

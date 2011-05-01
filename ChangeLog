@@ -1,3 +1,10 @@
+2011-05-01 Fredy Paquet <mailbox AT opag.ch>
+	* added Makefile.mingw in glade support files
+	   works together with a fresh build of glade3-3.8.0 on MinGW
+	* fixed bug ID 3250296: added gtkextra-compat.h to the gtkextra-3 distribution
+	* eliminated autoconf warnings on LT_CURRENT, LT_REVISION, LT_AGE
+	   ref: http://bugs.gentoo.org/show_bug.cgi?id=230199
+
 2011-04-10 Fredy Paquet <mailbox AT opag.ch>
 	* ./configure: better CFLAGS handling, respect environment and do not combine -g -O2 (it kills the debugger)
 

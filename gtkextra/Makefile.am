@@ -158,6 +158,7 @@ gtkextra_c_sources = 	\
         gtkplotcanvasplot.c 
 
 gtkextra_private_h_sources = \
+	gtkextra-compat.h \
 	icons.h \
 	pixmaps.h 
 gtkextra_built_public_sources =	\

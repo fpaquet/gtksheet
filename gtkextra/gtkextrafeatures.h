@@ -30,7 +30,7 @@ extern "C" {
 
 #define GTKEXTRA_MAJOR_VERSION			(3)
 #define GTKEXTRA_MINOR_VERSION			(0)
-#define GTKEXTRA_MICRO_VERSION			(0)
+#define GTKEXTRA_MICRO_VERSION			(1)
 #define GTKEXTRA_BINARY_AGE			(0)
 #define GTKEXTRA_INTERFACE_AGE			(0)
 #define GTKEXTRA_CHECK_VERSION(major,minor,micro)    \

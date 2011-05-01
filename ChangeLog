@@ -1,4 +1,5 @@
 2011-05-01 Fredy Paquet <mailbox AT opag.ch>
+	* updated gtkextra-3 version to 3.0.1
 	* added Makefile.mingw in glade support files
 	   works together with a fresh build of glade3-3.8.0 on MinGW
 	* fixed bug ID 3250296: added gtkextra-compat.h to the gtkextra-3 distribution

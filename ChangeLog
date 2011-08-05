@@ -1,3 +1,6 @@
+2011-08-05 Fredy Paquet <mailbox AT opag.ch>
+        * gtksheet.c: gtk_sheet_thaw() fixed redraw range and execution
+
 2011-05-01 Fredy Paquet <mailbox AT opag.ch>
 	* updated gtkextra-3 version to 3.0.1
 	* added Makefile.mingw in glade support files

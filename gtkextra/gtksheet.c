@@ -3709,9 +3709,34 @@ void
     if (sheet->freeze_count == 0) return;
 
     sheet->freeze_count--;
-    if (sheet->freeze_count > 0) return;
+    if (sheet->freeze_count > 0) 
+    {
+#ifdef GTK_SHEET_DEBUG
+        g_warning("gtk_sheet_thaw: freeze_count > 0");
+#endif
+        return;
+    }
+#ifdef GTK_SHEET_DEBUG
+    g_warning("gtk_sheet_thaw: freeze_count == %d", sheet->freeze_count);
+#endif
 
     adjust_scrollbars(sheet);
+
+    if(gtk_widget_get_realized(sheet))
+    {
+        if(sheet->row_titles_visible){
+                    size_allocate_row_title_buttons(sheet);
+                    gdk_window_show(sheet->row_title_window);
+        }
+
+        if(sheet->column_titles_visible){
+                    size_allocate_column_title_buttons(sheet);
+                    gdk_window_show(sheet->column_title_window);
+        }
+
+        gtk_sheet_recalc_view_range(sheet);
+        gtk_sheet_range_draw(sheet, NULL, TRUE);
+    }
 
     GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IS_FROZEN);
 

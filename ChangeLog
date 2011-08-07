@@ -1,3 +1,10 @@
+2011-08-07 Fredy Paquet <mailbox AT opag.ch>
+        * documentation update - added own page for GtkSheetColumn and related
+	* updated documentation on sf project web
+	   http://gtkextra.sourceforge.net/docs/reference/index.html
+	* old reference manual moved to a subdirectory:
+	   http://gtkextra.sourceforge.net/docs/reference/gtkextra-2/index.html
+
 2011-08-05 Fredy Paquet <mailbox AT opag.ch>
         * gtksheet.c: gtk_sheet_thaw() fixed redraw range and execution
 

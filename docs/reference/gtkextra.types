@@ -38,6 +38,7 @@ gtk_plot_ps_get_type
 gtk_plot_segment_get_type
 gtk_plot_surface_get_type
 gtk_sheet_get_type
+gtk_sheet_column_get_type
 gtk_sheet_range_get_type
 gtk_toggle_combo_get_type
 

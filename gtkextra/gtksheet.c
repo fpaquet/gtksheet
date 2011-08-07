@@ -22,16 +22,29 @@
 
 /**
  * SECTION: gtksheet
- * @short_description: A spreadsheet widget for Gtk2
+ * @short_description: A spreadsheet widget for Gtk+
  *
  * #GtkSheet is a matrix widget for GTK+. It consists of an scrollable grid of
- * cells where you can allocate text. Cell contents can be edited interactively
- * through a specially designed entry, GtkItemEntry. It is also a container
- * subclass, allowing you to display buttons, curves, pixmaps and any other
- * widget in it. You can also set many attributes as: border, foreground and
- * background color, text justification, and more. The testgtksheet program
- * shows how easy is to create a spreadsheet-like GUI using this widget set.
+ * cells where you can put text or other #GtkWidget's in. Cells
+ * are organized in rows (#GtkSheetRow) and columns 
+ * (#GtkSheetColumn). Cell contents can be edited interactively 
+ * through a specially designed entry (#GtkItemEntry). A 
+ * #GtkSheet is also a container subclass, allowing you to 
+ * display buttons, curves, pixmaps and any other widget in it. 
+ * You can also set many attributes as: border, foreground and 
+ * background color, text justification, and more. The 
+ * testgtksheet program shows how easy is to create a 
+ * spreadsheet-like GUI using this widget set. 
  */
+
+/**
+ * SECTION: gtksheetcolumn
+ * @short_description: A spreadsheet column widget for Gtk+
+ *
+ * #GtkSheetColumn is a column object that can be put into a 
+ * #GtkSheet. 
+ */
+
 
 
 #include <string.h>
@@ -2117,7 +2130,7 @@ static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidget
                       G_TYPE_NONE, 2, G_TYPE_INT, G_TYPE_INT);
 
     /**
-     * GtkWidget::entry-focus-in:
+     * GtkSheet::entry-focus-in:
      * @sheet: the sheet widget that emitted the signal
      * @event: the #GdkEventFocus which triggered this signal
      *
@@ -2140,7 +2153,7 @@ static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidget
                     GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
     
     /**
-     * GtkWidget::entry-focus-out:
+     * GtkSheet::entry-focus-out:
      * @sheet: the sheet widget that emitted the signal
      * @event: the #GdkEventFocus which triggered this signal
      *
@@ -4105,7 +4118,7 @@ const gchar *
 }
 
 /**
- * gtk_sheet_get_col_title:
+ * gtk_sheet_get_column_title:
  * @sheet: a #GtkSheet
  * @column: column number
  *
@@ -4124,7 +4137,7 @@ const gchar *
 }
 
 /**
- * gtk_sheet_get_col_width:
+ * gtk_sheet_get_column_width:
  * @sheet: a #GtkSheet
  * @column: column number
  *
@@ -4253,7 +4266,7 @@ void
 }
 
 /**
- * gtk_sheet_col_button_add_label:
+ * gtk_sheet_column_button_add_label:
  * @sheet: a #GtkSheet
  * @col: column number
  * @label: text label
@@ -4295,9 +4308,9 @@ void
 }
 
 /**
- * gtk_sheet_col_button_get_label:
+ * gtk_sheet_column_button_get_label:
  * @sheet: a #GtkSheet.
- * @column: column number.
+ * @col: column number.
  *
  * Get column button label.
  *
@@ -4315,7 +4328,7 @@ const gchar *
 }
 
 /**
- * gtk_sheet_col_label_set_visibility:
+ * gtk_sheet_column_label_set_visibility:
  * @sheet: a #GtkSheet.
  * @col: column number.
  * @visible: TRUE or FALSE
@@ -4553,7 +4566,7 @@ void
 
 
 /**
- * gtk_sheet_col_sensitive:
+ * gtk_sheet_column_sensitive:
  * @sheet: a #GtkSheet.
  * @column: column number
  *
@@ -4602,7 +4615,7 @@ void
 }
 
 /**
- * gtk_sheet_cols_set_sensitivity:
+ * gtk_sheet_columns_set_sensitivity:
  * @sheet: a #GtkSheet.
  * @sensitive: TRUE or FALSE
  *
@@ -7940,7 +7953,7 @@ gboolean
  * gtk_sheet_set_active_cell:
  * @sheet: a #GtkSheet
  * @row: row number
- * @col: column number
+ * @column: column number
  *
  * Set active cell where the cell entry will be displayed. 
  * Use (row,col) = (-1,-1) to deactivate active cell. 
@@ -12261,7 +12274,7 @@ static guint
 }
 
 /**
- * gtk_sheet_set_col_width:
+ * gtk_sheet_set_column_width:
  * @sheet: a #GtkSheet.
  * @column: column number.
  * @width: the width of the column.
@@ -12341,7 +12354,7 @@ void
 }
 
 /**
- * gtk_sheet_add_col:
+ * gtk_sheet_add_column:
  * @sheet: a #GtkSheet.
  * @ncols: number of columns to be appended.
  *

@@ -68,6 +68,7 @@ gtkextra_public_h_sources = \
         gtkcheckitem.h	\
         gtkcolorcombo.h	\
         gtkcombobutton.h	\
+        gtkdataentry.h	\
         gtkdirtree.h	\
         gtkextra.h	\
         gtkextrafeatures.h	\
@@ -117,6 +118,7 @@ gtkextra_c_sources = 	\
         gtkcheckitem.c	\
         gtkcolorcombo.c	\
         gtkcombobutton.c	\
+        gtkdataentry.c	\
         gtkdirtree.c	\
         gtkextra.c	\
         gtkextra-marshal.c	\

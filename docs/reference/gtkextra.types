@@ -5,6 +5,7 @@ gtk_char_selection_get_type
 gtk_check_item_get_type
 gtk_color_combo_get_type
 gtk_combo_button_get_type
+gtk_data_entry_get_type
 gtk_dir_tree_get_type
 gtk_file_list_get_type
 gtk_font_combo_get_type

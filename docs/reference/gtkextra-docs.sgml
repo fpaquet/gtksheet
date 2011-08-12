@@ -186,6 +186,7 @@ It is a GtkCheckButton hack with the look and feel of the Redmond95 theme.
             <xi:include href="xml/gtkcheckitem.xml" />
             <xi:include href="xml/gtkcolorcombo.xml" />
             <xi:include href="xml/gtkcombobutton.xml" />
+            <xi:include href="xml/gtkdataentry.xml" />
             <xi:include href="xml/gtkdirtree.xml" />
             <xi:include href="xml/gtkfilelist.xml" />
             <xi:include href="xml/gtkfontcombo.xml" />

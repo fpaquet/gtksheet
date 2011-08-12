@@ -29,6 +29,7 @@
 #include <gtkextra/gtkcheckitem.h>
 #include <gtkextra/gtkcolorcombo.h>
 #include <gtkextra/gtkcombobutton.h>
+#include <gtkextra/gtkdataentry.h>
 #include <gtkextra/gtkdirtree.h>
 #include <gtkextra/gtkextrafeatures.h>
 #include <gtkextra/gtkfilelist.h>

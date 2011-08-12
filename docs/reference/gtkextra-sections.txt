@@ -88,6 +88,27 @@ gtk_combo_button_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gtkdataentry</FILE>
+<TITLE>GtkDataEntry</TITLE>
+GtkDataEntry
+gtk_data_entry_new
+gtk_data_entry_set_description
+gtk_data_entry_set_data_type
+gtk_data_entry_set_data_format
+<SUBSECTION Standard>
+GTK_DATA_ENTRY
+GTK_DATA_ENTRY_CLASS
+GTK_DATA_ENTRY_GET_CLASS
+GTK_IS_DATA_ENTRY
+GTK_IS_DATA_ENTRY_CLASS
+GTK_TYPE_DATA_ENTRY
+
+GtkDataEntryClass
+<SUBSECTION Private>
+gtk_data_entry_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gtkdirtree</FILE>
 <TITLE>GtkDirTree</TITLE>
 GtkDirTree
@@ -1430,7 +1451,6 @@ GtkSheetColumnClass
 <SUBSECTION Private>
 gtk_sheet_column_get_type
 </SECTION>
-
 
 
 <SECTION>

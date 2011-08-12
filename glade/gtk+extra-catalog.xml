@@ -59,6 +59,9 @@ glade-3
             </properties>
         </glade-widget-class>
 
+        <glade-widget-class name="GtkDataEntry" libglade-unsupported="True" generic-name="gtkdataentry" title="GtkDataEntry - a Data Entry Widget" >
+        </glade-widget-class>
+
         <glade-widget-class name="GtkCheckItem" generic-name="gtkcheckitem" title="GtkCheckItem - CheckButton-hack with the look and feel of the Redmond95 theme" />
         <glade-widget-class name="GtkItemEntry" generic-name="gtkitementry" title="GtkItemEntry" />
         <glade-widget-class name="GtkToggleCombo" generic-name="gtktogglecombo" title="GtkToggleCombo - toggle combo widget" />
@@ -108,6 +111,7 @@ glade-3
 
         <glade-widget-class-ref name="GtkSheet" />
         <glade-widget-class-ref name="GtkItemEntry" />
+        <glade-widget-class-ref name="GtkDataEntry" />
         <glade-widget-class-ref name="GtkCheckItem" />
 
         <glade-widget-class-ref name="GtkColorCombo" />

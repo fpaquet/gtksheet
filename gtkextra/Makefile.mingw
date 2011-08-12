@@ -93,8 +93,8 @@ DLL_EXP_LIB = $(LIBDIR)/$(BASE_NAME).dll.a
 
 GTKEXTRA_LOs = \
         gtkbordercombo.lo gtkcharsel.lo gtkcheckitem.lo \
-        gtkcolorcombo.lo gtkcombobutton.lo gtkdirtree.lo gtkextra.lo \
-        gtkextra-marshal.lo gtkextratypebuiltins.lo gtkfilelist.lo \
+        gtkcolorcombo.lo gtkcombobutton.lo gtkdataentry.lo gtkdirtree.lo 
+        gtkextra.lo gtkextra-marshal.lo gtkextratypebuiltins.lo gtkfilelist.lo \
         gtkfontcombo.lo gtkiconlist.lo gtkitementry.lo \
         gtkiconfilesel.lo gtkplot.lo gtkplotarray.lo gtkplot3d.lo \
         gtkplotdt.lo gtkplotpolar.lo gtkplotdata.lo gtkplotpixmap.lo \
@@ -123,8 +123,8 @@ TESTAPPS = \
 #
 gtkextra_public_h_sources = \
         gtkbordercombo.h gtkcharsel.h gtkcheckitem.h gtkcolorcombo.h \
-        gtkcombobutton.h gtkdirtree.h gtkextra.h gtkextrafeatures.h gtkextraicons.h \
-        gtkextra-marshal.h gtkextratypebuiltins.h \
+        gtkcombobutton.h gtkdataentry.h gtkdirtree.h gtkextra.h gtkextrafeatures.h \
+        gtkextraicons.h gtkextra-marshal.h gtkextratypebuiltins.h \
         gtkfilelist.h gtkfileicons.h gtkfontcombo.h gtkiconfilesel.h gtkiconlist.h \
         gtkitementry.h gtkplot.h gtkplotarray.h gtkplot3d.h gtkplotdt.h gtkplotpolar.h \
         gtkplotdata.h gtkplotpixmap.h gtkplotbar.h gtkplotbox.h gtkplotbubble.h \

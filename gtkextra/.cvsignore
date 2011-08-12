@@ -4,7 +4,7 @@
 *.la
 *.lo
 *.ps
-GtkExtra-3.0.gir
+
 Makefile
 Makefile.in
 testboxes

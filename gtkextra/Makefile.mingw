@@ -93,7 +93,7 @@ DLL_EXP_LIB = $(LIBDIR)/$(BASE_NAME).dll.a
 
 GTKEXTRA_LOs = \
         gtkbordercombo.lo gtkcharsel.lo gtkcheckitem.lo \
-        gtkcolorcombo.lo gtkcombobutton.lo gtkdataentry.lo gtkdirtree.lo 
+        gtkcolorcombo.lo gtkcombobutton.lo gtkdataentry.lo gtkdirtree.lo \
         gtkextra.lo gtkextra-marshal.lo gtkextratypebuiltins.lo gtkfilelist.lo \
         gtkfontcombo.lo gtkiconlist.lo gtkitementry.lo \
         gtkiconfilesel.lo gtkplot.lo gtkplotarray.lo gtkplot3d.lo \

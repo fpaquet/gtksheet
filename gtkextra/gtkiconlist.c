@@ -72,7 +72,7 @@ enum{
 
 static guint signals[LAST_SIGNAL] = {0};
 
-static void gtk_icon_list_class_init 		(GtkIconListClass *class);
+static void gtk_icon_list_class_init 		(GtkIconListClass *klass);
 static void gtk_icon_list_init 			(GtkIconList *icon_list);
 static void gtk_icon_list_destroy 		(GtkObject *object);
 static void gtk_icon_list_finalize 		(GObject *object);

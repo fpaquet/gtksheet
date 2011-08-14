@@ -18,7 +18,9 @@
  *
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
+ *   Fredy Paquet <fredy@opag.ch> (adopted for GtkSheet)
  */
+
 #ifndef _GLADE_SHEET_EDITOR_H_
 #define _GLADE_SHEET_EDITOR_H_
 

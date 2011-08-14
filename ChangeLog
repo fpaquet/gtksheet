@@ -1,3 +1,7 @@
+2011-08-14 Fredy Paquet <mailbox AT opag.ch>
+	* modified GtkSheetColumn property 'datatype' to match GtkDataEntry definition
+	* replaced 'class' by 'klass' - as class is a registered c++ keyword
+
 2011-08-12 Fredy Paquet <mailbox AT opag.ch>
         * new GtkDataEntry widget with formatting capabilities, not yet finished
 	* added GtkExtra-3.0.gir to the CVS repo

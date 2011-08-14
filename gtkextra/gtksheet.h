@@ -70,22 +70,6 @@ extern "C" {
     }; 
 
 /**
- * GtkSheetDataType:
- * @GTK_SHEET_DATA_TYPE_NONE: string, no validation
- * @GTK_SHEET_DATA_TYPE_INT: signed integer
- * @GTK_SHEET_DATA_TYPE_FLOAT: signed floating point number
- *
- * Data type for cell content entry validation
- *
- **/
-    typedef enum
-    {
-        GTK_SHEET_DATA_TYPE_NONE,
-        GTK_SHEET_DATA_TYPE_INT,
-        GTK_SHEET_DATA_TYPE_FLOAT,
-    } GtkSheetDataType;
-
-/**
  * GtkSheetEntryType:
  * @GTK_SHEET_ENTRY_TYPE_DEFAULT: default, applicat. controlled
  * @GTK_SHEET_ENTRY_TYPE_GTK_ITEM_ENTRY: GtkItemEntry
@@ -365,8 +349,8 @@ struct _GtkSheetColumn
 
     gboolean is_key;             /* marker for key columns */
     gboolean is_readonly;    /* flag to supersede cell.attributes.is_editable */
-    gchar *data_format;        /* cell content formatting pattern */
-    GtkSheetDataType data_type;       /* data type for cell content validation */
+    gchar *data_type;           /* data type for application use */
+    gchar *data_format;        /* cell content formatting template */
     gchar *description;         /* column description and further information about the column */
 
     GType entry_type;     /* Column entry_type or G_TYPE_NONE */
@@ -734,9 +718,8 @@ struct _GtkSheetClass
     void gtk_sheet_column_set_readonly(GtkSheet *sheet, const gint col, const gboolean is_readonly);
     gchar *gtk_sheet_column_get_format(GtkSheet *sheet, const gint col);
     void gtk_sheet_column_set_format(GtkSheet *sheet, const gint col, const gchar *format);
-    GtkSheetDataType gtk_sheet_column_get_datatype(GtkSheet *sheet, const gint col);
-    void gtk_sheet_column_set_datatype(GtkSheet *sheet, 
-                                       const gint col, const GtkSheetDataType data_type);
+    gchar *gtk_sheet_column_get_datatype(GtkSheet *sheet, const gint col);
+    void gtk_sheet_column_set_datatype(GtkSheet *sheet, const gint col, const gchar *data_type);
     gchar *gtk_sheet_column_get_description(GtkSheet *sheet, const gint col);
     void gtk_sheet_column_set_description(GtkSheet *sheet, const gint col, const gchar *description);
     GType gtk_sheet_column_get_entry_type(GtkSheet *sheet, const gint col);

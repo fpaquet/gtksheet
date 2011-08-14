@@ -42,9 +42,9 @@ struct _GtkDataEntry
 {
     GtkEntry entry;
 
-    gchar *description;         /* column description */
-    gchar *data_type;           /* data type for application context */
+    gchar *data_type;           /* data type for application use */
     gchar *data_format;        /* cell content formatting template */
+    gchar *description;         /* column description */
 };
 
 struct _GtkDataEntryClass

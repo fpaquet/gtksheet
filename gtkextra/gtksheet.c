@@ -131,8 +131,8 @@ enum _GtkSheetColumnProperties
     PROP_GTK_SHEET_COLUMN_JUSTIFICATION,  /* gtk_sheet_column_set_justification() */
     PROP_GTK_SHEET_COLUMN_ISKEY,  /* gtk_sheet_column_set_iskey() */
     PROP_GTK_SHEET_COLUMN_READONLY,  /* gtk_sheet_column_set_readonly() */
-    PROP_GTK_SHEET_COLUMN_DATAFMT,  /* gtk_sheet_column_set_format() */
     PROP_GTK_SHEET_COLUMN_DATATYPE,  /* gtk_sheet_column_set_datatype() */
+    PROP_GTK_SHEET_COLUMN_DATAFMT,  /* gtk_sheet_column_set_format() */
     PROP_GTK_SHEET_COLUMN_DESCRIPTION,  /* gtk_sheet_column_set_description() */
     PROP_GTK_SHEET_COLUMN_ENTRY_TYPE,  /* gtk_sheet_column_set_entry_type() */
     PROP_GTK_SHEET_COLUMN_VJUST,  /* gtk_sheet_column_set_vjustification() */
@@ -2571,6 +2571,22 @@ static void
             }
             break;
 
+        case PROP_GTK_SHEET_COLUMN_DATATYPE:
+            {
+                const gchar *data_type = g_value_get_string(value);
+
+                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                {
+                    if (colobj->data_type) g_free(colobj->data_type);
+                    colobj->data_type = g_strdup(data_type);
+                }
+                else
+                {
+                    gtk_sheet_column_set_format(sheet, col, data_type);
+                }
+            }
+            break;
+
         case PROP_GTK_SHEET_COLUMN_DATAFMT:
             {
                 const gchar *data_format = g_value_get_string(value);
@@ -2583,21 +2599,6 @@ static void
                 else
                 {
                     gtk_sheet_column_set_format(sheet, col, data_format);
-                }
-            }
-            break;
-
-        case PROP_GTK_SHEET_COLUMN_DATATYPE:
-            {
-                GtkSheetDataType data_type = g_value_get_enum(value);
-
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
-                {
-                    colobj->data_type = data_type;
-                }
-                else
-                {
-                    gtk_sheet_column_set_datatype(sheet, col, data_type);
                 }
             }
             break;
@@ -2700,12 +2701,12 @@ static void
             g_value_set_boolean(value, colobj->is_readonly);
             break;
 
-        case PROP_GTK_SHEET_COLUMN_DATAFMT:
-            g_value_set_string(value, colobj->data_format);
+        case PROP_GTK_SHEET_COLUMN_DATATYPE:
+            g_value_set_string(value, colobj->data_type);
             break;
 
-        case PROP_GTK_SHEET_COLUMN_DATATYPE:
-            g_value_set_enum(value, colobj->data_type);
+        case PROP_GTK_SHEET_COLUMN_DATAFMT:
+            g_value_set_string(value, colobj->data_format);
             break;
 
         case PROP_GTK_SHEET_COLUMN_DESCRIPTION:
@@ -2811,29 +2812,30 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                                      PROP_GTK_SHEET_COLUMN_READONLY, pspec);
 
     /**
+     * GtkSheetColumn:datatype:
+     *
+     * no functionality, a datatype hint for the application because 
+     * any widget content is text
+     */
+    pspec = g_param_spec_string ("datatype", "Data type",
+                               "Data type for application use",
+                               "",
+                               G_PARAM_READWRITE);
+    g_object_class_install_property (gobject_class, 
+                                     PROP_GTK_SHEET_COLUMN_DATATYPE, pspec);
+
+    /**
      * GtkSheetColumn:dataformat:
      *
-     * Format pattern for cell contents
+     * a formatting string that controls what you see when the 
+     * widget doesn't contain input focus
      */
-    pspec = g_param_spec_string ("dataformat", "Format",
-                               "Formatting pattern for cell contents",
+    pspec = g_param_spec_string ("dataformat", "Data format",
+                               "A formatting string that controls what you see when the widget doesn't contain input focus",
                                "",
                                G_PARAM_READWRITE);
     g_object_class_install_property (gobject_class, 
                                      PROP_GTK_SHEET_COLUMN_DATAFMT, pspec);
-
-    /**
-     * GtkSheetColumn:datatype:
-     *
-     * Data type for cell content validation
-     */
-    pspec = g_param_spec_enum ("datatype", "Data type",
-                               "Data type for cell content validation",
-                               gtk_sheet_data_type_get_type(),
-                               GTK_SHEET_DATA_TYPE_NONE,
-                               G_PARAM_READWRITE);
-    g_object_class_install_property (gobject_class, 
-                                     PROP_GTK_SHEET_COLUMN_DATATYPE, pspec);
 
     /**
      * GtkSheetColumn:description:
@@ -2897,7 +2899,7 @@ static void
     column->is_key = FALSE;
     column->is_readonly = FALSE;
     column->data_format = NULL;
-    column->data_type = GTK_SHEET_DATA_TYPE_NONE;
+    column->data_type = NULL;
     column->description = NULL;
     column->entry_type = G_TYPE_NONE;
 
@@ -3735,7 +3737,7 @@ void
 
     adjust_scrollbars(sheet);
 
-    if(gtk_widget_get_realized(sheet))
+    if(gtk_widget_get_realized(GTK_WIDGET(sheet)))
     {
         if(sheet->row_titles_visible){
                     size_allocate_row_title_buttons(sheet);
@@ -5362,19 +5364,18 @@ void gtk_sheet_column_set_format(GtkSheet *sheet, const gint col,
  * @sheet:  a #GtkSheet. 
  * @col: column index 
  *  
- * Gets the column data type used for content validation in data 
- * entry
+ * Gets the column data_type for application use
  * 
- * Returns:	the datatype
+ * Returns:	the datatype or NULL
  */
-GtkSheetDataType gtk_sheet_column_get_datatype(GtkSheet *sheet, const gint col)
+gchar *gtk_sheet_column_get_datatype(GtkSheet *sheet, const gint col)
 {
-    g_return_val_if_fail (sheet != NULL, GTK_SHEET_DATA_TYPE_NONE);
-    g_return_val_if_fail (GTK_IS_SHEET (sheet), GTK_SHEET_DATA_TYPE_NONE);
+    g_return_val_if_fail (sheet != NULL, NULL);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), NULL);
 
-    if (col < 0 || col > sheet->maxcol) return(GTK_SHEET_DATA_TYPE_NONE);
+    if (col < 0 || col > sheet->maxcol) return(NULL);
 
-    return(COLPTR(sheet, col)->data_type);
+    return(g_strdup(COLPTR(sheet, col)->data_type));
 }
 
 /**
@@ -5383,18 +5384,22 @@ GtkSheetDataType gtk_sheet_column_get_datatype(GtkSheet *sheet, const gint col)
  * @col: column index 
  * @data_type:  the datatype 
  *  
- * Sets the column data type used for content validation in data 
- * entry. 
+ * Sets the column data data_type for application use 
  */
 void gtk_sheet_column_set_datatype(GtkSheet *sheet, const gint col, 
-                                   const GtkSheetDataType data_type)
+                                   const gchar *data_type)
 {
+    GtkSheetColumn *colp;
+
     g_return_if_fail (sheet != NULL);
     g_return_if_fail (GTK_IS_SHEET (sheet));
 
     if (col < 0 || col > sheet->maxcol) return;
 
-    COLPTR(sheet, col)->data_type = data_type;
+    colp = COLPTR(sheet, col);
+
+    if (colp->data_type) g_free(colp->data_type);
+    colp->data_type = g_strdup(data_type);
 }
 
 /**

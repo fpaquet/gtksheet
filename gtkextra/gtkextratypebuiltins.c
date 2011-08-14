@@ -479,21 +479,6 @@ gtk_sheet_state_get_type (void)
   return etype;
 }
 GType
-gtk_sheet_data_type_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { GTK_SHEET_DATA_TYPE_NONE, "GTK_SHEET_DATA_TYPE_NONE", "none" },
-      { GTK_SHEET_DATA_TYPE_INT, "GTK_SHEET_DATA_TYPE_INT", "int" },
-      { GTK_SHEET_DATA_TYPE_FLOAT, "GTK_SHEET_DATA_TYPE_FLOAT", "float" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("GtkSheetDataType", values);
-  }
-  return etype;
-}
-GType
 gtk_sheet_entry_type_get_type (void)
 {
   static GType etype = 0;

@@ -242,16 +242,16 @@ gtk_item_entry_get_type (void)
 }
 
 static void
-gtk_item_entry_class_init (GtkItemEntryClass *class)
+gtk_item_entry_class_init (GtkItemEntryClass *klass)
 {
   GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
   GtkEntryClass *entry_class;
 
-  object_class = (GtkObjectClass*) class;
-  widget_class = (GtkWidgetClass*) class;
+  object_class = (GtkObjectClass*) klass;
+  widget_class = (GtkWidgetClass*) klass;
   parent_class = g_type_class_ref (gtk_entry_get_type());
-  entry_class = (GtkEntryClass *) class;
+  entry_class = (GtkEntryClass *) klass;
 
   widget_class->realize = gtk_entry_realize;
   widget_class->size_request = gtk_entry_size_request;

@@ -18,7 +18,9 @@
  *
  * Authors:
  *   Tristan Van Berkom <tvb@gnome.org>
+ *   Fredy Paquet <fredy@opag.ch> (adopted for GtkSheet)
  */
+
 #ifdef _WIN32
 #  include "config.h.win32"
 #else

@@ -760,13 +760,13 @@ for private information that cannot be put anywhere else.">
       <field name="entry">
         <type name="Gtk.Entry" c:type="GtkEntry"/>
       </field>
-      <field name="description">
-        <type name="utf8" c:type="gchar*"/>
-      </field>
       <field name="data_type">
         <type name="utf8" c:type="gchar*"/>
       </field>
       <field name="data_format">
+        <type name="utf8" c:type="gchar*"/>
+      </field>
+      <field name="description">
         <type name="utf8" c:type="gchar*"/>
       </field>
     </class>
@@ -15566,11 +15566,10 @@ returned string with g_free() when done.">
       </method>
       <method name="column_get_datatype"
               c:identifier="gtk_sheet_column_get_datatype"
-              doc="Gets the column data type used for content validation in data
-entry
-Returns:	the datatype">
+              doc="Gets the column data_type for application use
+Returns:	the datatype or NULL">
         <return-value transfer-ownership="full">
-          <type name="GtkSheetDataType" c:type="GtkSheetDataType"/>
+          <type name="utf8" c:type="gchar*"/>
         </return-value>
         <parameters>
           <parameter name="col" transfer-ownership="none">
@@ -15580,8 +15579,7 @@ Returns:	the datatype">
       </method>
       <method name="column_set_datatype"
               c:identifier="gtk_sheet_column_set_datatype"
-              doc="Sets the column data type used for content validation in data
-entry.">
+              doc="Sets the column data data_type for application use">
         <return-value transfer-ownership="none">
           <type name="none" c:type="void"/>
         </return-value>
@@ -15590,7 +15588,7 @@ entry.">
             <type name="int" c:type="gint"/>
           </parameter>
           <parameter name="data_type" transfer-ownership="none">
-            <type name="GtkSheetDataType" c:type="GtkSheetDataType"/>
+            <type name="utf8" c:type="gchar*"/>
           </parameter>
         </parameters>
       </method>
@@ -17495,13 +17493,15 @@ It should only be accessed through the functions described below."
       <implements name="Gtk.Buildable"/>
       <property name="dataformat"
                 writable="1"
-                doc="Format pattern for cell contents">
+                doc="a formatting string that controls what you see when the
+widget doesn&apos;t contain input focus">
         <type name="utf8" c:type="gchararray"/>
       </property>
       <property name="datatype"
                 writable="1"
-                doc="Data type for cell content validation">
-        <type name="GtkSheetDataType" c:type="GtkSheetDataType"/>
+                doc="no functionality, a datatype hint for the application because
+any widget content is text">
+        <type name="utf8" c:type="gchararray"/>
       </property>
       <property name="description"
                 writable="1"
@@ -17583,11 +17583,11 @@ It should only be accessed through the functions described below."
       <field name="is_readonly">
         <type name="boolean" c:type="gboolean"/>
       </field>
-      <field name="data_format">
+      <field name="data_type">
         <type name="utf8" c:type="gchar*"/>
       </field>
-      <field name="data_type">
-        <type name="GtkSheetDataType" c:type="GtkSheetDataType"/>
+      <field name="data_format">
+        <type name="utf8" c:type="gchar*"/>
       </field>
       <field name="description">
         <type name="utf8" c:type="gchar*"/>
@@ -17603,24 +17603,6 @@ It should only be accessed through the functions described below."
         <type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
       </field>
     </record>
-    <enumeration name="GtkSheetDataType"
-                 doc="Data type for cell content entry validation"
-                 glib:type-name="GtkSheetDataType"
-                 glib:get-type="gtk_sheet_data_type_get_type"
-                 c:type="GtkSheetDataType">
-      <member name="none"
-              value="0"
-              c:identifier="GTK_SHEET_DATA_TYPE_NONE"
-              glib:nick="none"/>
-      <member name="int"
-              value="1"
-              c:identifier="GTK_SHEET_DATA_TYPE_INT"
-              glib:nick="int"/>
-      <member name="float"
-              value="2"
-              c:identifier="GTK_SHEET_DATA_TYPE_FLOAT"
-              glib:nick="float"/>
-    </enumeration>
     <enumeration name="GtkSheetEntryType"
                  doc="Subset of GtkEditable Widgets to allow selecting a widget
 from glade-3"

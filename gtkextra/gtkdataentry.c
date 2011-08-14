@@ -50,9 +50,9 @@
 enum
 {
     PROP_0,
-    PROP_DATA_ENTRY_DESCRIPTION,
     PROP_DATA_ENTRY_DATATYPE,
     PROP_DATA_ENTRY_DATAFORMAT,
+    PROP_DATA_ENTRY_DESCRIPTION,
 } GTK_DATA_ENTRY_PROPERTIES;
 
 enum
@@ -159,22 +159,6 @@ static void
 
     switch (prop_id)
     {
-        case PROP_DATA_ENTRY_DESCRIPTION:
-            {
-                const gchar *description = g_value_get_string(value);
-
-                if (!gtk_widget_get_realized(GTK_WIDGET(data_entry)))
-                {
-                    if (data_entry->description) g_free(data_entry->description);
-                    data_entry->description = g_strdup(description);
-                }
-                else
-                {
-                    gtk_data_entry_set_description(data_entry, description);
-                }
-            }
-            break;
-
         case PROP_DATA_ENTRY_DATATYPE:
             {
                 const gchar *data_type = g_value_get_string(value);
@@ -207,6 +191,22 @@ static void
             }
             break;
 
+        case PROP_DATA_ENTRY_DESCRIPTION:
+            {
+                const gchar *description = g_value_get_string(value);
+
+                if (!gtk_widget_get_realized(GTK_WIDGET(data_entry)))
+                {
+                    if (data_entry->description) g_free(data_entry->description);
+                    data_entry->description = g_strdup(description);
+                }
+                else
+                {
+                    gtk_data_entry_set_description(data_entry, description);
+                }
+            }
+            break;
+
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
             break;
@@ -223,16 +223,16 @@ static void
 
     switch (prop_id)
     {
-        case PROP_DATA_ENTRY_DESCRIPTION:
-            g_value_set_string(value, data_entry->description);
-            break;
-
         case PROP_DATA_ENTRY_DATATYPE:
             g_value_set_string(value, data_entry->data_type);
             break;
 
         case PROP_DATA_ENTRY_DATAFORMAT:
             g_value_set_string(value, data_entry->data_format);
+            break;
+
+        case PROP_DATA_ENTRY_DESCRIPTION:
+            g_value_set_string(value, data_entry->description);
             break;
 
         default:
@@ -244,33 +244,19 @@ static void
 
 
 static void
-    gtk_data_entry_class_init(GtkDataEntryClass *class)
+    gtk_data_entry_class_init(GtkDataEntryClass *klass)
 {
-    GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+    GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 #if 0
-    GtkObjectClass *object_class = GTK_OBJECT_CLASS (class);
-    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (class);
-    GtkEntryClass *entry_class = GTK_ENTRY_CLASS (class);
+    GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
+    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+    GtkEntryClass *entry_class = GTK_ENTRY_CLASS (klass);
 #endif
 
     parent_class = g_type_class_ref (gtk_entry_get_type ());
 
     gobject_class->set_property = gtk_data_entry_set_property;
     gobject_class->get_property = gtk_data_entry_get_property;
-
-    /**
-     * GtkDataEntry:description:
-     *
-     * Description of the GtkDataEntry, no functionality, a place 
-     * for private information that cannot be put anywhere else.
-     */
-    g_object_class_install_property(gobject_class, 
-                                    PROP_DATA_ENTRY_DESCRIPTION, 
-                                    g_param_spec_string ("description", 
-                                                         "Description",
-                                                         "Description of the GtkDataEntry",
-                                                         "" /* default value */,
-                                                         G_PARAM_READWRITE));
 
     /**
      * GtkDataEntry:datatype:
@@ -282,7 +268,7 @@ static void
                                      PROP_DATA_ENTRY_DATATYPE, 
                                      g_param_spec_string ("datatype", 
                                                           "Datatype",
-                                                          "Application-Datatype",
+                                                          "Data type for application use",
                                                           "" /* default value */,
                                                           G_PARAM_READWRITE));
 
@@ -295,10 +281,24 @@ static void
     g_object_class_install_property (gobject_class, 
                                      PROP_DATA_ENTRY_DATAFORMAT, 
                                      g_param_spec_string ("dataformat", 
-                                                          "Data-Format",
+                                                          "Data format",
                                                           "A formatting string that controls what you see when the widget doesn't contain input focus",
                                                           "" /* default value */,
                                                           G_PARAM_READWRITE));
+
+    /**
+     * GtkDataEntry:description:
+     *
+     * Description of the GtkDataEntry, no functionality, a place 
+     * for private information that cannot be put anywhere else.
+     */
+    g_object_class_install_property(gobject_class, 
+                                    PROP_DATA_ENTRY_DESCRIPTION, 
+                                    g_param_spec_string ("description", 
+                                                         "Description",
+                                                         "Description of entry contents",
+                                                         "" /* default value */,
+                                                         G_PARAM_READWRITE));
 }
 
 

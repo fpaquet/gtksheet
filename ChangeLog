@@ -1,3 +1,6 @@
+2011-08-19 Fredy Paquet <mailbox AT opag.ch>
+	* fixed more redraw problems on sheets without scrollbars
+
 2011-08-14 Fredy Paquet <mailbox AT opag.ch>
 	* modified GtkSheetColumn property 'datatype' to match GtkDataEntry definition
 	* replaced 'class' by 'klass' - as class is a registered c++ keyword

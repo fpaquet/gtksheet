@@ -262,7 +262,7 @@ new_font(GtkFontCombo *font_combo, gpointer data)
       pixmap = gdk_pixmap_new(gtk_widget_get_window(widget), width, width, -1);
       gdk_draw_rectangle(pixmap, gtk_widget_get_style(widget)->white_gc, 
 			TRUE, 0, 0, width, width);
-      gdk_draw_layout(pixmap, gtk_widget_get_style(widget)->fg_gc[0], width/2 - PANGO_PIXELS(rect.width)/2, descent, layout);
+      gdk_draw_layout(pixmap, gtk_widget_get_style(widget)->fg_gc[GTK_STATE_NORMAL], width/2 - PANGO_PIXELS(rect.width)/2, descent, layout);
       wpixmap = gtk_image_new_from_pixmap(pixmap, NULL);
       gtk_container_add (GTK_CONTAINER (charsel->button[i]), wpixmap);
       gtk_widget_show(wpixmap);

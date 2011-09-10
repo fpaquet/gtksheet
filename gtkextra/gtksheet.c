@@ -734,7 +734,7 @@ static void gtk_sheet_cell_draw_label(GtkSheet *sheet, gint row, gint column);
 
 /* draw visible part of range. If range==NULL then draw the whole screen */
 static void gtk_sheet_range_draw(GtkSheet *sheet, const GtkSheetRange *range, 
-                                 gboolean restore_decorations);
+                                 gboolean activate_active_cell);
 
 /* highlight the visible part of the selected range */
 static void gtk_sheet_range_draw_selection(GtkSheet *sheet, GtkSheetRange range);
@@ -6717,6 +6717,15 @@ static void
     area.width = COLPTR(sheet, col)->width;
     area.height = ROWPTR(sheet, row)->height;
 
+#ifdef GTK_SHEET_DEBUG
+#if 0
+        g_debug("gtk_sheet_cell_draw_default(%d,%d): cellbg x %d y %d w %d h %d %s",
+                row, col,
+                area.x, area.y, area.width, area.height,
+                gdk_color_to_string(&attributes.background));
+#endif
+#endif
+
     /* fill cell background */
     gdk_draw_rectangle (sheet->pixmap,
                         bg_gc,
@@ -6732,9 +6741,10 @@ static void
 
 #ifdef GTK_SHEET_DEBUG
 #if 0
-        g_debug("gtk_sheet_cell_draw_default(%d,%d): x %d y %d w %d h %d",
+        g_debug("gtk_sheet_cell_draw_default(%d,%d): grid x %d y %d w %d h %d %s",
                 row, col,
-                area.x, area.y, area.width, area.height);
+                area.x, area.y, area.width, area.height,
+                gdk_color_to_string(&attributes.background));
 #endif
 #endif
 
@@ -6828,7 +6838,7 @@ static void
     gint text_width, text_height, y;
     gint xoffset=0;
     gint size, sizel, sizer;
-    GdkGC *fg_gc, *bg_gc;
+    GdkGC *gc;
     GtkSheetCellAttr attributes;
     PangoLayout *layout;
     PangoRectangle rect;
@@ -6866,10 +6876,9 @@ static void
 
     /* select GC for background rectangle */
     gdk_gc_set_foreground (sheet->fg_gc, &attributes.foreground);
-    gdk_gc_set_foreground (sheet->bg_gc, &attributes.background);
+    gdk_gc_set_background (sheet->fg_gc, &attributes.background);
 
-    fg_gc = sheet->fg_gc;
-    bg_gc = sheet->bg_gc;
+    gc = sheet->fg_gc;
 
     area.x=COLUMN_LEFT_XPIXEL(sheet,col);
     area.y=ROW_TOP_YPIXEL(sheet,row);
@@ -7017,23 +7026,44 @@ static void
     }
 
     if (!gtk_sheet_clip_text(sheet)) clip_area = area;
-    gdk_gc_set_clip_rectangle(fg_gc, &clip_area);
+    gdk_gc_set_clip_rectangle(gc, &clip_area);
+
+#ifdef GTK_SHEET_DEBUG
+#if 0
+    g_debug("gtk_sheet_cell_draw_label(%d,%d): clip x %d y %d w %d h %d",
+            row, col,
+            clip_area.x, clip_area.y, clip_area.width, clip_area.height);
+#endif
+#endif
 
 
-    gdk_draw_layout (sheet->pixmap, fg_gc,
-                     area.x + xoffset + CELLOFFSET,
-                     y,
+#ifdef GTK_SHEET_DEBUG
+#if 0
+      g_debug("gtk_sheet_cell_draw_label(%d,%d): x %d y %d fg %s bg %s",
+              row, col,
+              area.x + xoffset + CELLOFFSET, y,
+              gdk_color_to_string(&attributes.foreground),
+              gdk_color_to_string(&attributes.background)
+              );
+#endif
+#endif
+
+    gdk_draw_layout (sheet->pixmap, gc,
+                     area.x + xoffset + CELLOFFSET, y,
                      layout);
 
-    gdk_gc_set_clip_rectangle(fg_gc, NULL);
     g_object_unref(G_OBJECT(layout));
 
+    /* copy sheet->pixmap to window */
+
     gdk_draw_pixmap(sheet->sheet_window,
-                    gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
+                    gc,
                     sheet->pixmap,
                     area.x, area.y,
                     area.x, area.y,
                     area.width, area.height);
+
+    gdk_gc_set_clip_rectangle(gc, NULL);
 }
 
 
@@ -10794,9 +10824,11 @@ static void
         previous_style = gtk_widget_get_style(sheet_entry);
 
         style = gtk_style_copy(previous_style);
+
         style->bg[GTK_STATE_NORMAL] = attributes.background;
         style->fg[GTK_STATE_NORMAL] = attributes.foreground;
         style->text[GTK_STATE_NORMAL] = attributes.foreground;
+
         style->bg[GTK_STATE_ACTIVE] = attributes.background;
         style->fg[GTK_STATE_ACTIVE] = attributes.foreground;
         style->text[GTK_STATE_ACTIVE] = attributes.foreground;
@@ -12657,6 +12689,11 @@ void
     else
         range = *urange;
 
+#ifdef GTK_SHEET_DEBUG
+        g_debug("gtk_sheet_range_set_background: %s row %d-%d col %d-%d)",
+                gdk_color_to_string(color), range.row0, range.rowi, range.col0, range.coli);
+#endif
+
     for (i=range.row0; i<=range.rowi; i++)
         for (j=range.col0; j<=range.coli; j++)
         {
@@ -12666,13 +12703,10 @@ void
             else
                 attributes.background = sheet->bg_color;
 
+            gdk_colormap_alloc_color(gdk_colormap_get_system(), &attributes.background, FALSE, TRUE);
+
             gtk_sheet_set_cell_attributes(sheet, i, j, attributes);
         }
-
-    range.row0--;
-    range.col0--;
-    range.rowi++;
-    range.coli++;
 
     if (!GTK_SHEET_IS_FROZEN(sheet)) gtk_sheet_range_draw(sheet, &range, TRUE);
 }
@@ -12702,6 +12736,11 @@ void
     else
         range = *urange;
 
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_range_set_foreground: %s row %d-%d col %d-%d)",
+            gdk_color_to_string(color), range.row0, range.rowi, range.col0, range.coli);
+#endif
+
     for (i=range.row0; i<=range.rowi; i++)
         for (j=range.col0; j<=range.coli; j++)
         {
@@ -12711,6 +12750,8 @@ void
                 attributes.foreground = *color;
             else
                 gdk_color_black(gdk_colormap_get_system(), &attributes.foreground);
+
+            gdk_colormap_alloc_color(gdk_colormap_get_system(), &attributes.foreground, FALSE, TRUE);
 
             gtk_sheet_set_cell_attributes(sheet, i, j, attributes);
         }

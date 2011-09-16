@@ -1,3 +1,6 @@
+2011-09-16 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed application crash when making hidden sheet columns visible
+
 2011-09-10 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed colormap allocation problem in gtk_sheet_range_set_background, gtk_sheet_range_set_foreground
 	* GtkSheet: optimized pixmap copy in gtk_sheet_cell_draw_label

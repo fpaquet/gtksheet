@@ -136,6 +136,7 @@ enum _GtkSheetColumnProperties
     PROP_GTK_SHEET_COLUMN_DESCRIPTION,  /* gtk_sheet_column_set_description() */
     PROP_GTK_SHEET_COLUMN_ENTRY_TYPE,  /* gtk_sheet_column_set_entry_type() */
     PROP_GTK_SHEET_COLUMN_VJUST,  /* gtk_sheet_column_set_vjustification() */
+    PROP_GTK_SHEET_COLUMN_VISIBLE,  /* gtk_sheet_column_set_visibility() */
 };
 
 /* Signals */
@@ -842,6 +843,7 @@ static void gtk_sheet_row_size_request(GtkSheet *sheet, gint row, guint *requisi
 
 /* GtkBuildableIface */
 
+
 /*
  * gtk_sheet_buildable_add_child_internal
  * 
@@ -876,8 +878,25 @@ void
 
     child->sheet = sheet;
     sheet->column[col] = child;
-    gtk_widget_set_parent(GTK_WIDGET(child), GTK_WIDGET(sheet));
+
     g_object_ref_sink(G_OBJECT(child));
+
+#ifdef GTK_SHEET_DEBUG
+    g_debug("gtk_sheet_buildable_add_child_internal: %s, m %d r %d v %d", 
+            name ? name : "NULL", 
+            gtk_widget_get_mapped(GTK_WIDGET(child)),
+            gtk_widget_get_realized(GTK_WIDGET(child)), 
+            gtk_widget_get_visible(GTK_WIDGET(child))
+            );
+#endif
+
+    /* we always set the parent in order to track into what sheet the column belongs,
+       which leads to problems with invisible columns.
+       When trying to set them visible, Gtk 2.24.5 terminates the application with
+       ? Gtk - gtk_widget_realize: assertion `GTK_WIDGET_ANCHORED (widget) || GTK_IS_INVISIBLE (widget)' failed
+       see also the fix in gtk_sheet_column_set_visibility()
+       */
+    gtk_widget_set_parent(GTK_WIDGET(child), GTK_WIDGET(sheet));
 
     if (name) gtk_widget_set_name(GTK_WIDGET(child), name);
 
@@ -905,16 +924,16 @@ static void
     sheet = GTK_SHEET(buildable);
     newcol = GTK_SHEET_COLUMN(child);
 
+#ifdef GTK_SHEET_DEBUG
     {
         gchar *strval;
 
         g_object_get(G_OBJECT(newcol), "label", &strval, NULL);
-#ifdef GTK_SHEET_DEBUG
         g_debug("gtk_sheet_buildable_add_child: label=%s", strval ? strval : "NULL");
-#endif
 
         g_free(strval);
     }
+#endif
 
     gtk_sheet_buildable_add_child_internal(sheet, newcol, name);
 }
@@ -1121,7 +1140,6 @@ GType
     return(sheet_type);
 }
 
-static void gtk_sheet_column_set_property (GObject *object, guint property_id, const GValue *value, GParamSpec *pspec);
 
 static void
     gtk_sheet_column_set_buildable_property(GtkBuildable  *buildable,
@@ -1133,11 +1151,14 @@ static void
     g_debug("gtk_sheet_column_set_buildable_property: %s", name);
 #endif
 
+#if 0
     if (strcmp(name, "visible") == 0)
     {
-        GTK_SHEET_COLUMN_SET_VISIBLE(buildable, g_value_get_boolean(value));
+        gboolean v = g_value_get_boolean(value);
+        g_debug("gtk_sheet_column_set_buildable_property: %s = %s", name,
+                v ? "true" : "false");
+        GTK_SHEET_COLUMN_SET_VISIBLE(buildable, v);
     }
-#if 0
     else if (strcmp(name, "width-request") == 0)
     {
     #ifdef GTK_SHEET_DEBUG
@@ -1146,8 +1167,8 @@ static void
     #endif
         GTK_SHEET_COLUMN(buildable)->width = g_value_get_int(value);
     }
-#endif
     else
+#endif
         g_object_set_property(G_OBJECT(buildable), name, value);
 }
 
@@ -2649,6 +2670,21 @@ static void
             }
             break;
 
+        case PROP_GTK_SHEET_COLUMN_VISIBLE:
+            {
+                gint visible = g_value_get_boolean(value);
+
+                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                {
+                    GTK_SHEET_COLUMN_SET_VISIBLE(colobj, visible);
+                }
+                else
+                {
+                    gtk_sheet_column_set_visibility(sheet, col, visible);
+                }
+            }
+            break;
+
         default:
             /* We don't have any other property... */
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -2722,6 +2758,10 @@ static void
 
         case PROP_GTK_SHEET_COLUMN_VJUST:
             g_value_set_enum(value, colobj->vjust);
+            break;
+
+        case PROP_GTK_SHEET_COLUMN_VISIBLE:
+            g_value_set_boolean(value, GTK_SHEET_COLUMN_IS_VISIBLE(colobj));
             break;
 
         default:
@@ -2874,6 +2914,20 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                                   G_PARAM_READWRITE);
     g_object_class_install_property (gobject_class, 
                                      PROP_GTK_SHEET_COLUMN_VJUST, pspec);
+
+#if 1
+    /**
+     * GtkSheetColumn:visible:
+     *
+     * Visibility for columns
+     */
+    pspec = g_param_spec_boolean ("visible", "Column is visible",
+                               "Wether the column is visible",
+                               FALSE,
+                               G_PARAM_READWRITE);
+    g_object_class_install_property (gobject_class, 
+                                     PROP_GTK_SHEET_COLUMN_VISIBLE, pspec);
+#endif
 }
 
 static void
@@ -4805,13 +4859,37 @@ gboolean
 void
     gtk_sheet_column_set_visibility(GtkSheet *sheet, gint col, gboolean visible)
 {
+    GtkSheetColumn *colobj;
+
     g_return_if_fail (sheet != NULL);
     g_return_if_fail (GTK_IS_SHEET (sheet));
 
-    if (col < 0 || col > sheet->maxcol) return;
-    if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) == visible) return;
+    colobj = COLPTR(sheet, col);
 
-    GTK_SHEET_COLUMN_SET_VISIBLE(COLPTR(sheet, col), visible);
+    if (col < 0 || col > sheet->maxcol) return;
+    if (GTK_SHEET_COLUMN_IS_VISIBLE(colobj) == visible) return;
+
+#ifdef GTK_SHEET_DEBUG
+    #if 0
+    g_debug("gtk_sheet_column_set_visibility: col %d = %s, m %d r %d v %d parent %p", col, 
+            visible ? "true" : "false", 
+            gtk_widget_get_mapped(GTK_WIDGET(colobj)),
+            gtk_widget_get_realized(GTK_WIDGET(colobj)), 
+            gtk_widget_get_visible(GTK_WIDGET(colobj)),
+            gtk_widget_get_parent(GTK_WIDGET(colobj))
+            );
+    #endif
+#endif
+
+    /* the following is a hack, to get rid of:
+       ? Gtk - gtk_widget_realize: assertion `GTK_WIDGET_ANCHORED (widget) || GTK_IS_INVISIBLE (widget)' failed
+       */
+    if (!gtk_widget_get_visible(GTK_WIDGET(colobj)))
+    {
+        gtk_widget_unparent(GTK_WIDGET(colobj));
+    }
+
+    GTK_SHEET_COLUMN_SET_VISIBLE(colobj, visible);
 
     gtk_sheet_recalc_left_xpixels(sheet);
 
@@ -13255,6 +13333,7 @@ static void
 
             newobj->sheet = sheet;
             sheet->column[newidx] = newobj;
+
             gtk_widget_set_parent(GTK_WIDGET(newobj), GTK_WIDGET(sheet));
 
 #ifdef GTK_SHEET_DEBUG

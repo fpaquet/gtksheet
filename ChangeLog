@@ -1,3 +1,8 @@
+2011-09-17 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed redraw problems when switching row/columns visible on/off
+	* GtkSheet: disable active cell when hiding active row/column
+	* GtkSheet: fixed sheet range when switching row/columns visible on/off
+
 2011-09-16 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed application crash when making hidden sheet columns visible
 

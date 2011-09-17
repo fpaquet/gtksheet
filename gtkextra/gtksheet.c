@@ -3434,8 +3434,7 @@ void
     g_return_if_fail (sheet != NULL);
     g_return_if_fail (GTK_IS_SHEET (sheet));
 
-    if (gtk_widget_get_realized(GTK_WIDGET(sheet)))
-        gtk_sheet_real_unselect_range(sheet, NULL);
+    gtk_sheet_real_unselect_range(sheet, NULL);
 
     sheet->selection_mode = mode;
 }
@@ -3775,7 +3774,7 @@ static void gtk_sheet_redraw_internal(GtkSheet *sheet,
                         gboolean reset_hadjustment, 
                         gboolean reset_vadjustment)
 {
-    gboolean done = FALSE;
+    gboolean done = FALSE;  /* handle sheets with no scrollbars */
 
     if (reset_hadjustment) sheet->old_hadjustment = -1.;  /* causes redraw */
     if (reset_vadjustment) sheet->old_vadjustment = -1.;  /* causes redraw */
@@ -3784,6 +3783,10 @@ static void gtk_sheet_redraw_internal(GtkSheet *sheet,
     if (GTK_SHEET_IS_FROZEN(sheet)) return;
 
     gtk_sheet_recalc_view_range(sheet);
+
+    if (sheet->row_titles_visible || sheet->column_titles_visible) {
+        size_allocate_global_button(sheet);
+    }
 
     if (sheet->row_titles_visible) {
         size_allocate_row_title_buttons(sheet);
@@ -3891,7 +3894,6 @@ void
 
     adjust_scrollbars(sheet);
     gtk_sheet_redraw_internal(sheet, TRUE, FALSE);
-    size_allocate_global_button(sheet);
 }
 
 /**
@@ -3914,7 +3916,6 @@ void
 
     adjust_scrollbars(sheet);
     gtk_sheet_redraw_internal(sheet, FALSE, TRUE);
-    size_allocate_global_button(sheet);
 }
 
 /**
@@ -3955,7 +3956,6 @@ void
     }
     adjust_scrollbars(sheet);
     gtk_sheet_redraw_internal(sheet, FALSE, TRUE);
-    size_allocate_global_button(sheet);
 }
 
 /**
@@ -3996,7 +3996,6 @@ void
     }
     adjust_scrollbars(sheet);
     gtk_sheet_redraw_internal(sheet, TRUE, FALSE);
-    size_allocate_global_button(sheet);
 }
 
 /**
@@ -4860,17 +4859,29 @@ void
     gtk_sheet_column_set_visibility(GtkSheet *sheet, gint col, gboolean visible)
 {
     GtkSheetColumn *colobj;
+    gint act_row, act_col;
 
     g_return_if_fail (sheet != NULL);
     g_return_if_fail (GTK_IS_SHEET (sheet));
 
-    colobj = COLPTR(sheet, col);
-
     if (col < 0 || col > sheet->maxcol) return;
+
+    colobj = COLPTR(sheet, col);
     if (GTK_SHEET_COLUMN_IS_VISIBLE(colobj) == visible) return;
 
+    act_row = sheet->active_cell.row;
+    act_col = sheet->active_cell.col;
+
+    if (act_col == col)   /* hide active column -> disable active cell */
+    {
+        gtk_sheet_hide_active_cell(sheet);
+
+        sheet->active_cell.row = -1;
+        sheet->active_cell.col = -1;
+    }
+
 #ifdef GTK_SHEET_DEBUG
-    #if 0
+    #if 1
     g_debug("gtk_sheet_column_set_visibility: col %d = %s, m %d r %d v %d parent %p", col, 
             visible ? "true" : "false", 
             gtk_widget_get_mapped(GTK_WIDGET(colobj)),
@@ -4891,14 +4902,11 @@ void
 
     GTK_SHEET_COLUMN_SET_VISIBLE(colobj, visible);
 
+    fixup_range(sheet, &sheet->range);
     gtk_sheet_recalc_left_xpixels(sheet);
 
-    if (!GTK_SHEET_IS_FROZEN(sheet) &&
-        gtk_sheet_cell_isvisible(sheet, MIN_VISIBLE_ROW(sheet), col))
-    {
-        gtk_sheet_range_draw(sheet, NULL, TRUE);
-        size_allocate_column_title_buttons(sheet);
-    }
+    adjust_scrollbars(sheet);
+    gtk_sheet_redraw_internal(sheet, TRUE, FALSE);
 }
 
 /**
@@ -4934,22 +4942,38 @@ gboolean
 void
     gtk_sheet_row_set_visibility(GtkSheet *sheet, gint row, gboolean visible)
 {
+    GtkSheetRow *rowobj;
+    gint act_row, act_col;
+
     g_return_if_fail (sheet != NULL);
     g_return_if_fail (GTK_IS_SHEET (sheet));
 
     if (row < 0 || row > sheet->maxrow) return;
-    if (GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) == visible) return;
 
-    GTK_SHEET_ROW_SET_VISIBLE(&sheet->row[row], visible);
+    rowobj = ROWPTR(sheet, row);
+    if (GTK_SHEET_ROW_IS_VISIBLE(rowobj) == visible) return;
 
+    act_row = sheet->active_cell.row;
+    act_col = sheet->active_cell.col;
+
+    if (act_row == row)   /* hide active column -> disable active cell */
+    {
+        gtk_sheet_hide_active_cell(sheet);
+
+        sheet->active_cell.row = -1;
+        sheet->active_cell.col = -1;
+    }
+
+    act_row = sheet->active_cell.row;
+    act_col = sheet->active_cell.col;
+
+    GTK_SHEET_ROW_SET_VISIBLE(rowobj, visible);
+
+    fixup_range(sheet, &sheet->range);
     gtk_sheet_recalc_top_ypixels(sheet);
 
-    if (!GTK_SHEET_IS_FROZEN(sheet) &&
-        gtk_sheet_cell_isvisible(sheet, row, MIN_VISIBLE_COLUMN(sheet)))
-    {
-        gtk_sheet_range_draw(sheet, NULL, TRUE);
-        size_allocate_row_title_buttons(sheet);
-    }
+    adjust_scrollbars(sheet);
+    gtk_sheet_redraw_internal(sheet, FALSE, TRUE);
 }
 
 
@@ -12071,9 +12095,10 @@ static void
 
     gtk_sheet_position_children(sheet);
 
-    gtk_sheet_range_draw(sheet, NULL, TRUE);
-    size_allocate_row_title_buttons(sheet);
     size_allocate_global_button(sheet);
+    size_allocate_row_title_buttons(sheet);
+
+    gtk_sheet_range_draw(sheet, NULL, TRUE);
 }
 
 /*
@@ -12202,8 +12227,11 @@ static void
     }
 
     gtk_sheet_position_children(sheet);
-    gtk_sheet_range_draw(sheet, NULL, TRUE);
+
+    size_allocate_global_button(sheet);
     size_allocate_column_title_buttons(sheet);
+
+    gtk_sheet_range_draw(sheet, NULL, TRUE);
 }
 
 
@@ -12530,8 +12558,7 @@ void
     g_return_if_fail (sheet != NULL);
     g_return_if_fail (GTK_IS_SHEET (sheet));
 
-    if (gtk_widget_get_realized(GTK_WIDGET(sheet)))
-        gtk_sheet_real_unselect_range(sheet, NULL);
+    gtk_sheet_real_unselect_range(sheet, NULL);
 
     InsertRow(sheet, row, nrows);
 
@@ -12571,8 +12598,7 @@ void
     g_return_if_fail (sheet != NULL);
     g_return_if_fail (GTK_IS_SHEET (sheet));
 
-    if (gtk_widget_get_realized(GTK_WIDGET(sheet)))
-        gtk_sheet_real_unselect_range(sheet, NULL);
+    gtk_sheet_real_unselect_range(sheet, NULL);
 
     InsertColumn(sheet, col, ncols);
 
@@ -12620,9 +12646,7 @@ void
     act_col = sheet->active_cell.col;
 
     gtk_sheet_hide_active_cell(sheet);
-
-    if (gtk_widget_get_realized(GTK_WIDGET(sheet)))
-        gtk_sheet_real_unselect_range(sheet, NULL);
+    gtk_sheet_real_unselect_range(sheet, NULL);
 
     DeleteRow(sheet, row, nrows);
 
@@ -12692,8 +12716,7 @@ void
 
     ncols = MIN(ncols, sheet->maxcol-col+1);
 
-    if (gtk_widget_get_realized(GTK_WIDGET (sheet)))
-        gtk_sheet_real_unselect_range(sheet, NULL);
+    gtk_sheet_real_unselect_range(sheet, NULL);
 
     DeleteColumn(sheet, col, ncols);
 

@@ -1,3 +1,11 @@
+2011-08-10 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed gtk_sheet_cell_get_tooltip_text()
+	* GtkSheet: global button press now toggles sheet selection
+	* GtkSheet: optimize: removed double cell activation on map
+	* GtkSheet, GtkSheetColumn: honor can-focus widget properties
+	* GtkSheetColumn: changed can-focus default setting to TRUE
+	* GtkSheet: fixed critical warning upon unmap
+
 2011-09-17 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed redraw problems when switching row/columns visible on/off
 	* GtkSheet: disable active cell when hiding active row/column

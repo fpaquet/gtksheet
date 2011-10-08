@@ -2959,6 +2959,7 @@ static void
 
     GTK_SHEET_COLUMN_SET_VISIBLE(column, TRUE);
     GTK_SHEET_COLUMN_SET_SENSITIVE(column, TRUE);
+    gtk_widget_set_can_focus(GTK_WIDGET(column), TRUE);
 
     gtk_widget_set_has_window(GTK_WIDGET(column), FALSE);
 }
@@ -5332,7 +5333,7 @@ void gtk_sheet_cell_set_tooltip_text(GtkSheet *sheet,
         cell->tooltip_text = NULL;
     }
 
-    cell->tooltip_markup = g_strdup(text);
+    cell->tooltip_text = g_strdup(text);
 }
 
 /**
@@ -6598,9 +6599,11 @@ static void
 
         gtk_sheet_range_draw(sheet, NULL, TRUE);
 
+        /* this was already done above - why again?
         gtk_sheet_activate_cell(sheet, 
                                 sheet->active_cell.row, 
                                 sheet->active_cell.col);
+                                */
 
         children = sheet->children;
         while (children)
@@ -8105,8 +8108,24 @@ gboolean
     if (row > sheet->maxrow || col > sheet->maxcol) return (FALSE);
 
 #ifdef GTK_SHEET_DEBUG
-            g_debug("gtk_sheet_set_active_cell: row %d col %d", row, col);
+    g_debug("gtk_sheet_set_active_cell: row %d col %d", row, col);
 #endif
+
+    if (!gtk_widget_get_can_focus(GTK_WIDGET(sheet)))
+    {
+#ifdef GTK_SHEET_DEBUG
+        g_debug("gtk_sheet_set_active_cell: row %d col %d abort: sheet, can-focus false", row, col);
+#endif
+        return(FALSE); 
+    }
+
+    if (!gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))))
+    {
+#ifdef GTK_SHEET_DEBUG
+        g_debug("gtk_sheet_set_active_cell: row %d col %d abort: sheet column, can-focus false", row, col);
+#endif
+        return(FALSE); 
+    }
 
     if (gtk_widget_get_realized(GTK_WIDGET(sheet)))
     {
@@ -8115,7 +8134,13 @@ gboolean
         gint old_col = sheet->active_cell.col;
 #endif
 
-        if (!gtk_sheet_deactivate_cell(sheet)) return (FALSE);
+        if (!gtk_sheet_deactivate_cell(sheet)) 
+        {
+#ifdef GTK_SHEET_DEBUG
+            g_debug("gtk_sheet_set_active_cell: abort: deactivation false");
+#endif
+            return (FALSE);
+        }
 
         /* the deactivate signal handler may have activated another cell here */
 #if 0
@@ -8379,6 +8404,22 @@ static gboolean
 
     if (row < 0 || col < 0) return (FALSE);
     if (row > sheet->maxrow || col > sheet->maxcol) return (FALSE);
+
+    if (!gtk_widget_get_can_focus(GTK_WIDGET(sheet)))
+    {
+#ifdef GTK_SHEET_DEBUG
+        g_debug("gtk_sheet_activate_cell: row %d col %d abort: sheet, can-focus false", row, col);
+#endif
+        return(FALSE); 
+    }
+
+    if (!gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))))
+    {
+#ifdef GTK_SHEET_DEBUG
+        g_debug("gtk_sheet_activate_cell: row %d col %d abort: sheet column, can-focus false", row, col);
+#endif
+        return(FALSE); 
+    }
 
 /* 
    _gtkextra_signal_emit(GTK_OBJECT(sheet),sheet_signals[ACTIVATE], row, col, &veto);
@@ -9130,7 +9171,7 @@ static void
     gint i;
 
     g_return_if_fail (sheet != NULL);
-    g_return_if_fail (gtk_widget_get_realized(GTK_WIDGET(sheet)));
+    if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
 
     if (!range) range = &sheet->range;
 
@@ -9349,13 +9390,13 @@ static gboolean
     if (event->window == sheet->sheet_window)
     {
 #ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_button_press_handler: on sheet");
+        g_debug("gtk_sheet_button_press_handler: on sheet");
 #endif
 
         gtk_widget_get_pointer (widget, &x, &y);
         gtk_sheet_get_pixel_info (sheet, x, y, &row, &column);
 #ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_button_press_handler: pointer grab");
+        g_debug("gtk_sheet_button_press_handler: pointer grab");
 #endif
         gdk_pointer_grab (sheet->sheet_window, FALSE,
                           GDK_POINTER_MOTION_HINT_MASK |
@@ -9370,7 +9411,7 @@ static gboolean
         gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
         if (sheet->selection_mode != GTK_SELECTION_SINGLE &&
-            sheet->cursor_drag->type==GDK_SIZING &&
+            sheet->cursor_drag->type == GDK_SIZING &&
             !GTK_SHEET_IN_SELECTION(sheet) && !GTK_SHEET_IN_RESIZE(sheet))
         {
             if (sheet->state==GTK_STATE_NORMAL)
@@ -9394,7 +9435,7 @@ static gboolean
             draw_xor_rectangle(sheet, sheet->drag_range);
             GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_RESIZE);
         }
-        else if (sheet->cursor_drag->type==GDK_TOP_LEFT_ARROW &&
+        else if (sheet->cursor_drag->type == GDK_TOP_LEFT_ARROW &&
                  !GTK_SHEET_IN_SELECTION(sheet) && !GTK_SHEET_IN_DRAG(sheet))
         {
             if (sheet->state==GTK_STATE_NORMAL)
@@ -9423,7 +9464,7 @@ static gboolean
         else
         {
 #ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_button_press_handler: on click cell");
+            g_debug("gtk_sheet_button_press_handler: on click cell");
 #endif
 
             gtk_sheet_click_cell(sheet, row, column, &veto);
@@ -9542,7 +9583,7 @@ static void
         return;
     }
 
-    if (row == -1 && col >= 0)
+    if (row == -1 && col >= 0)  /* column button clicked */
     {
         if (gtk_sheet_autoscroll(sheet))
             gtk_sheet_move_query(sheet, row, col);
@@ -9550,7 +9591,7 @@ static void
         gtk_sheet_select_column(sheet, col);
         return;
     }
-    if (col == -1 && row >= 0)
+    if (col == -1 && row >= 0)  /* row button clicked */
     {
         if (gtk_sheet_autoscroll(sheet))
             gtk_sheet_move_query(sheet, row, col);
@@ -9559,7 +9600,7 @@ static void
         return;
     }
 
-    if (row==-1 && col ==-1)
+    if (row==-1 && col ==-1)  /* global button clicked */
     {
         sheet->range.row0=0;
         sheet->range.col0=0;
@@ -9569,13 +9610,35 @@ static void
         sheet->active_cell.row=0;
         sheet->active_cell.col=0;
 
-        gtk_sheet_select_range(sheet, NULL);
+        if (sheet->state != GTK_STATE_NORMAL)   /* if any range is selected, clear it */
+            gtk_sheet_unselect_range(sheet);
+        else
+            gtk_sheet_select_range(sheet, NULL);
+
         return;
     }
 
-    if (row!=-1 && col !=-1)
+    if (row!=-1 && col !=-1)  /* sheet cell clicked */
     {
         GtkSheetColumn *colp = COLPTR(sheet, col);
+
+        if (!gtk_widget_get_can_focus(GTK_WIDGET(sheet)))
+        {
+#ifdef GTK_SHEET_DEBUG
+            g_debug("gtk_sheet_click_cell: row %d col %d VETO: sheet, can-focus false", row, col);
+#endif
+            *veto = FALSE; 
+            return; 
+        }
+
+        if (!gtk_widget_get_can_focus(GTK_WIDGET(colp)))
+        {
+#ifdef GTK_SHEET_DEBUG
+            g_debug("gtk_sheet_click_cell: row %d col %d VETO: sheet column, can-focus false", row, col);
+#endif
+            *veto = FALSE; 
+            return; 
+        }
 
         if (sheet->state != GTK_SHEET_NORMAL)
         {
@@ -9589,6 +9652,9 @@ static void
 #endif
             if (!gtk_sheet_deactivate_cell(sheet))
             {
+#ifdef GTK_SHEET_DEBUG
+                g_debug("gtk_sheet_click_cell: row %d col %d VETO: deactivate false", row, col);
+#endif
                 *veto = FALSE;
                 return;
             }
@@ -10296,7 +10362,7 @@ static gboolean
 */
 
     extend_selection = (key->state & GDK_SHIFT_MASK)
-    || key->keyval==GDK_Shift_L
+        || key->keyval==GDK_Shift_L
         || key->keyval==GDK_Shift_R;
 
     state=sheet->state;
@@ -10345,7 +10411,12 @@ static gboolean
             if (col > 0)
             {
                 col = col - scroll;
-                while (col>0 && !GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))) col--;
+                while (col > 0 
+                       && !(GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))
+                            && gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) )
+                {
+                    col--;
+                }
                 col=MAX(0, col);
             }
 
@@ -10363,7 +10434,12 @@ static gboolean
             if (col < sheet->maxcol)
             {
                 col = col + scroll;
-                while (col<sheet->maxcol && !GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))) col++;
+                while (col < sheet->maxcol 
+                       && !(GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))
+                            && gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) ) 
+                {
+                    col++;
+                }
                 col=MIN(sheet->maxcol, col);
             }
 
@@ -10489,7 +10565,11 @@ static gboolean
                 if (sheet->selection_cell.col < sheet->maxcol)
                 {
                     col = sheet->selection_cell.col + scroll;
-                    while (col < sheet->maxcol && !GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))) col++;
+                    while (col < sheet->maxcol 
+                           && !GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))) 
+                    {
+                        col++;
+                    }
                     col = MIN(sheet->maxcol, col);
                     gtk_sheet_extend_selection(sheet, sheet->selection_cell.row, col);
                 }
@@ -10505,7 +10585,12 @@ static gboolean
                 row = MIN_VISIBLE_ROW(sheet);
 
             col = col + scroll;
-            while (col < sheet->maxcol && !GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))) col++;
+            while (col < sheet->maxcol 
+                   && !(GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))
+                        && gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) )
+            {
+                col++;
+            }
 
             col = MIN(sheet->maxcol, col);
 
@@ -10547,7 +10632,12 @@ static gboolean
                 row = MIN_VISIBLE_ROW(sheet);
 
             col = col - scroll;
-            while (col > 0 && !GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))) col--;
+            while (col > 0 
+                   && !(GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))
+                        && gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) )
+            {
+                col--;
+            }
             col = MAX(0, col);
 
             text = gtk_sheet_get_entry_text(sheet);
@@ -12635,7 +12725,6 @@ void
     GList *children;
     GtkSheetChild *child;
     gint act_row, act_col;
-    gboolean veto;
 
     g_return_if_fail (sheet != NULL);
     g_return_if_fail (GTK_IS_SHEET (sheet));
@@ -12688,11 +12777,7 @@ void
     adjust_scrollbars(sheet);
     gtk_sheet_redraw_internal(sheet, FALSE, TRUE);
 
-#if 0
-    gtk_sheet_click_cell(sheet, act_row, act_col, &veto);
-#else
     gtk_sheet_activate_cell(sheet, sheet->active_cell.row, sheet->active_cell.col); 
-#endif
 }
 
 /**

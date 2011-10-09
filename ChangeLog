@@ -1,4 +1,7 @@
-2011-08-10 Fredy Paquet <mailbox AT opag.ch>
+2011-10-09 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed gtk warning in gtk_sheet_set_active_cell()
+
+2011-10-08 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed gtk_sheet_cell_get_tooltip_text()
 	* GtkSheet: global button press now toggles sheet selection
 	* GtkSheet: optimize: removed double cell activation on map

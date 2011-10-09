@@ -8119,7 +8119,7 @@ gboolean
         return(FALSE); 
     }
 
-    if (!gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))))
+    if (col >= 0 && !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))))
     {
 #ifdef GTK_SHEET_DEBUG
         g_debug("gtk_sheet_set_active_cell: row %d col %d abort: sheet column, can-focus false", row, col);

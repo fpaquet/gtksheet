@@ -6,7 +6,6 @@ and/or use gtk-doc annotations.  -->
             xmlns="http://www.gtk.org/introspection/core/1.0"
             xmlns:c="http://www.gtk.org/introspection/c/1.0"
             xmlns:glib="http://www.gtk.org/introspection/glib/1.0">
-  <include name="lgob" version="1.0"/>
   <include name="Atk" version="1.0"/>
   <include name="GLib" version="2.0"/>
   <include name="GObject" version="2.0"/>
@@ -14709,6 +14708,30 @@ string.">
           </parameter>
         </parameters>
       </method>
+      <method name="set_description"
+              c:identifier="gtk_sheet_set_description"
+              doc="Set  #GtkSheet description for application use.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="description" transfer-ownership="none">
+            <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="get_description"
+              c:identifier="gtk_sheet_get_description"
+              doc="Get sheet description.">
+        <return-value transfer-ownership="none">
+          <type name="utf8" c:type="gchar*"/>
+        </return-value>
+        <parameters>
+          <parameter name="description" transfer-ownership="none">
+            <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
       <method name="freeze"
               c:identifier="gtk_sheet_freeze"
               doc="Freeze all visual updates of the #GtkSheet.
@@ -15472,6 +15495,19 @@ returned string with g_free() when done.">
           </parameter>
           <parameter name="text" transfer-ownership="none">
             <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_get"
+              c:identifier="gtk_sheet_column_get"
+              doc="Get a #GtkSheetColumn
+Returns:	the requested #GtkSheetColumn or NULL">
+        <return-value transfer-ownership="full">
+          <type name="GtkSheetColumn" c:type="GtkSheetColumn*"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
           </parameter>
         </parameters>
       </method>
@@ -16499,6 +16535,12 @@ the last visible row/column">
       <property name="columns-resizable" writable="1" doc="Columns resizable">
         <type name="boolean" c:type="gboolean"/>
       </property>
+      <property name="description"
+                writable="1"
+                doc="The sheets description, a place to store further information
+for application use">
+        <type name="utf8" c:type="gchararray"/>
+      </property>
       <property name="entry-type"
                 writable="1"
                 doc="Sheet cell entry widget type">
@@ -16597,6 +16639,9 @@ cannot be changed by the user.">
         <type name="Gdk.Rectangle" c:type="GdkRectangle"/>
       </field>
       <field name="title">
+        <type name="utf8" c:type="gchar*"/>
+      </field>
+      <field name="description">
         <type name="utf8" c:type="gchar*"/>
       </field>
       <field name="row">
@@ -17532,6 +17577,9 @@ any widget content is text">
       <property name="readonly"
                 writable="1"
                 doc="Lock column contents for editing.">
+        <type name="boolean" c:type="gboolean"/>
+      </property>
+      <property name="visible" writable="1" doc="Visibility for columns">
         <type name="boolean" c:type="gboolean"/>
       </property>
       <property name="vjust"

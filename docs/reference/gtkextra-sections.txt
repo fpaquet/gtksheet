@@ -1227,7 +1227,6 @@ GtkSheetCellAttr
 GtkSheetCellBorder
 GtkSheetAttrType
 GtkSheetState
-GtkSheetDataType
 GtkSheetEntryType
 GtkSheetVerticalJustification
 gtk_sheet_new
@@ -1265,6 +1264,8 @@ gtk_sheet_set_vjustification
 gtk_sheet_locked
 gtk_sheet_set_locked
 gtk_sheet_set_title
+gtk_sheet_get_description
+gtk_sheet_set_description
 gtk_sheet_freeze
 gtk_sheet_thaw
 gtk_sheet_moveto
@@ -1398,6 +1399,7 @@ gtk_sheet_add_column
 gtk_sheet_insert_columns
 gtk_sheet_delete_columns
 gtk_sheet_get_columns_count
+gtk_sheet_column_get
 gtk_sheet_select_column
 gtk_sheet_column_titles_visible
 gtk_sheet_show_column_titles

@@ -1,5 +1,7 @@
 2011-10-09 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed gtk warning in gtk_sheet_set_active_cell()
+	* GtkSheet: new property 'description' for application use
+	* GtkSheetColumn: new method gtk_sheet_column_get() to get GtkSheetColumn objects
 
 2011-10-08 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed gtk_sheet_cell_get_tooltip_text()

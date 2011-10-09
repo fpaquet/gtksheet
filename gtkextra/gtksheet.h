@@ -397,6 +397,7 @@ struct _GtkSheet
     GdkRectangle internal_allocation;
 
     gchar *title;
+    gchar *description;         /* sheet description and further information for application use */
 
     GtkSheetRow *row;
     GtkSheetColumn **column;  /* flexible array of column pointers */
@@ -598,6 +599,8 @@ struct _GtkSheetClass
 
 /* set sheet title */
     void gtk_sheet_set_title(GtkSheet *sheet, const gchar *title);
+    void gtk_sheet_set_description(GtkSheet *sheet, const gchar *description);
+    const gchar *gtk_sheet_get_description(GtkSheet *sheet, const gchar *description);
 
 /* freeze all visual updates of the sheet.
  * Then thaw the sheet after you have made a number of changes.
@@ -712,6 +715,7 @@ struct _GtkSheetClass
                                          const gint row, const gint col, const gchar *text);
 
 /* column properties */
+    GtkSheetColumn *gtk_sheet_column_get(GtkSheet *sheet, gint col);
     gboolean gtk_sheet_column_get_iskey(GtkSheet *sheet, const gint col);
     void gtk_sheet_column_set_iskey(GtkSheet *sheet, const gint col, const gboolean is_key);
     gboolean gtk_sheet_column_get_readonly(GtkSheet *sheet, const gint col);

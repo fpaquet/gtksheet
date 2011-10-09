@@ -100,6 +100,7 @@ enum _GtkSheetProperties
 {
     PROP_GTK_SHEET_0,  /* dummy */
     PROP_GTK_SHEET_TITLE, /* gtk_sheet_set_title() */
+    PROP_GTK_SHEET_DESCRIPTION,  /* gtk_sheet_set_description() */
     PROP_GTK_SHEET_NCOLS, /* number of colunms - necessary for glade object creation */
     PROP_GTK_SHEET_NROWS,  /* number of rows - necessary for glade object creation */
     PROP_GTK_SHEET_LOCKED,  /* gtk_sheet_set_locked() */
@@ -1340,6 +1341,10 @@ static void
             gtk_sheet_set_title(sheet, g_value_get_string(value));
             break;
 
+        case PROP_GTK_SHEET_DESCRIPTION:
+            gtk_sheet_set_description(sheet, g_value_get_string(value));
+            break;
+
         case PROP_GTK_SHEET_NROWS:
             {
                 gint newval = g_value_get_int(value);
@@ -1487,6 +1492,10 @@ static void
             g_value_set_string (value, sheet->title);
             break;
 
+        case PROP_GTK_SHEET_DESCRIPTION:
+            g_value_set_string (value, sheet->description);
+            break;
+
         case PROP_GTK_SHEET_NROWS:
             g_value_set_int (value, sheet->maxrow+1);
             break;
@@ -1587,6 +1596,19 @@ static void gtk_sheet_class_init_properties(GObjectClass *gobject_class)
                                  "GtkSheet" /* default value */,
                                  G_PARAM_READWRITE);
     g_object_class_install_property (gobject_class, PROP_GTK_SHEET_TITLE, pspec);
+
+    /**
+     * GtkSheet:description:
+     *
+     * The sheets description, a place to store further information 
+     * for application use 
+     *  
+     */
+    pspec = g_param_spec_string ("description", "Sheet description",
+                                 "The sheets description and further information for application use",
+                                 "" /* default value */,
+                                 G_PARAM_READWRITE);
+    g_object_class_install_property (gobject_class, PROP_GTK_SHEET_DESCRIPTION, pspec);
 
 #if 0
     /**
@@ -3746,6 +3768,43 @@ void
 }
 
 /**
+ * gtk_sheet_set_description:
+ * @sheet: a #GtkSheet
+ * @description: #GtkSheet description
+ *
+ * Set  #GtkSheet description for application use. 
+ */
+void
+    gtk_sheet_set_description(GtkSheet *sheet, const gchar *description)
+{
+    g_return_if_fail (sheet != NULL);
+    g_return_if_fail (GTK_IS_SHEET (sheet));
+
+    if (sheet->description) g_free (sheet->description);
+    sheet->description = g_strdup (description);
+}
+
+/**
+ * gtk_sheet_get_description:
+ * @sheet: a #GtkSheet
+ * @description: #GtkSheet description
+ *
+ * Get sheet description.
+ *
+ * Returns: sheet description or NULL, do not modify or free it
+ */
+const gchar *
+    gtk_sheet_get_description (GtkSheet * sheet, const gchar *description)
+{
+    g_return_val_if_fail (sheet != NULL, NULL);
+    g_return_val_if_fail (GTK_IS_SHEET (sheet), NULL);
+
+    return(sheet->description);
+}
+
+
+
+/**
  * gtk_sheet_freeze:
  * @sheet: a #GtkSheet
  *
@@ -3764,12 +3823,15 @@ void
 
 
 /**
- * gtk_sheet_redraw_internal - do a complete sheet redraw<p>
- * used after rows/cols have been appended/deleted or after combined operations while the sheet was frozen
- * 
- * @param sheet  to be redrawn
+ * gtk_sheet_redraw_internal: 
+ *  
+ * @param sheet  to be redrawn 
  * @param reset_hadjustment
- * @param reset_vadjustment
+ * @param reset_vadjustment 
+ *  
+ *  do a complete sheet redraw. used after rows/cols have been
+ *  appended/deleted or after combined operations while the
+ *  sheet was frozen
  */
 static void gtk_sheet_redraw_internal(GtkSheet *sheet, 
                         gboolean reset_hadjustment, 
@@ -4178,7 +4240,7 @@ const gchar *
  *
  * Get column title.
  *
- * Returns: column title
+ * Returns: column title, do not modify or free it.
  */
 const gchar *
     gtk_sheet_get_column_title (GtkSheet * sheet,
@@ -5337,6 +5399,26 @@ void gtk_sheet_cell_set_tooltip_text(GtkSheet *sheet,
 }
 
 /**
+ * gtk_sheet_column_get: 
+ * @sheet:  a #GtkSheet. 
+ * @col: column index 
+ *  
+ * Get a #GtkSheetColumn
+ *  
+ * Returns:	the requested #GtkSheetColumn or NULL
+ */
+GtkSheetColumn *gtk_sheet_column_get(GtkSheet *sheet, gint col)
+{
+    g_return_val_if_fail (sheet != NULL, NULL);
+    g_return_val_if_fail (GTK_IS_SHEET(sheet), NULL);
+
+    if (col < 0 || col > sheet->maxcol) return(NULL);
+
+    return(COLPTR(sheet, col));
+}
+
+
+/**
  * gtk_sheet_column_get_iskey: 
  * @sheet:  a #GtkSheet. 
  * @col: column index 
@@ -5348,7 +5430,7 @@ void gtk_sheet_cell_set_tooltip_text(GtkSheet *sheet,
 gboolean gtk_sheet_column_get_iskey(GtkSheet *sheet, const gint col)
 {
     g_return_val_if_fail (sheet != NULL, FALSE);
-    g_return_val_if_fail (GTK_IS_SHEET (sheet), FALSE);
+    g_return_val_if_fail (GTK_IS_SHEET(sheet), FALSE);
 
     if (col < 0 || col > sheet->maxcol) return(FALSE);
 

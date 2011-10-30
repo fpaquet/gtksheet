@@ -1,3 +1,6 @@
+2011-10-30 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: improved column button redraw, reduced flickering
+
 2011-10-29 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed dirty text display w/ clip_text off and ivisible columns
 	* GtkSheet: fixed gtk_sheet_set_active_cell() into invisible columns

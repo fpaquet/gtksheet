@@ -1487,9 +1487,9 @@ Optional Features:
   --disable-libtool-lock  avoid locking (might break parallel builds)
   --enable-maintainer-mode  enable make rules and dependencies not useful
 			  (and sometimes confusing) to the casual installer
-  --enable-debug=no/yes   turn on debugging default=no
+  --enable-debug=no/yes   turn on debugging [default=no]
   --enable-gtk-doc        use gtk-doc to build documentation [[default=no]]
-  --enable-man            regenerate man pages from Docbook [default=no]
+  --enable-man            regenerate man pages from Docbook [default=no]]
   --enable-glade          build glade integration files [default=no]
   --enable-introspection  build gobject-introspection [default=no]
   --enable-introspection=[no/auto/yes]
@@ -12586,14 +12586,15 @@ fi
 
 
 # --enable-debug option
+
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to enable debugging" >&5
 $as_echo_n "checking whether to enable debugging... " >&6; }
-debug_default="no"
+
 # Check whether --enable-debug was given.
 if test "${enable_debug+set}" = set; then :
   enableval=$enable_debug;
 else
-  enable_debug=$debug_default
+  enable_debug=no
 fi
 
 
@@ -13859,16 +13860,22 @@ fi
 
 # --enable-man option
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to enable man pages" >&5
+$as_echo_n "checking whether to enable man pages... " >&6; }
+
 # Check whether --enable-man was given.
 if test "${enable_man+set}" = set; then :
-  enableval=$enable_man; enable_man=yes
+  enableval=$enable_man;
 else
   enable_man=no
 fi
 
 
 if test "${enable_man}" != no; then
-        # Extract the first word of "xsltproc", so it can be a program name with args.
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+    # Extract the first word of "xsltproc", so it can be a program name with args.
 set dummy xsltproc; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -13908,9 +13915,16 @@ $as_echo "no" >&6; }
 fi
 
 
-  if test -z "$XSLTPROC"; then
-    enable_man=no
-  fi
+    if test -z "$XSLTPROC"; then
+	enable_man=no
+    fi
+
+    if test "$enable_man" = "no" ; then
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: xsltproc is missing - disabling man pages" >&5
+$as_echo "$as_me: WARNING: xsltproc is missing - disabling man pages" >&2;}
+    fi
+
+    #check for DocBook DTD and stylesheets in the local catalog
 
 
   # check for the presence of the XML catalog
@@ -14006,6 +14020,12 @@ $as_echo "not found" >&6; }
   fi
 
 
+    if test "$enable_man" = "no" ; then
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: missing DocBook DTD - disabling man pages" >&5
+$as_echo "$as_me: WARNING: missing DocBook DTD - disabling man pages" >&2;}
+    fi
+
+
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for DocBook XSL Stylesheets in XML catalog" >&5
 $as_echo_n "checking for DocBook XSL Stylesheets in XML catalog... " >&6; }
   if $jh_found_xmlcatalog && \
@@ -14022,6 +14042,14 @@ $as_echo "not found" >&6; }
     enable_man=no
   fi
 
+
+    if test "$enable_man" = "no" ; then
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: missing DocBook XML stylesheets - disabling man pages" >&5
+$as_echo "$as_me: WARNING: missing DocBook XML stylesheets - disabling man pages" >&2;}
+    fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
 fi
  if test x$enable_man != xno; then
   ENABLE_MAN_TRUE=
@@ -14032,6 +14060,10 @@ else
 fi
 
 
+
+##################################################
+# Start of pkg-config checks
+##################################################
 
 
 
@@ -14252,15 +14284,21 @@ GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
 
 # --enable-glade option
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to enable glade integration" >&5
+$as_echo_n "checking whether to enable glade integration... " >&6; }
+
 # Check whether --enable-glade was given.
 if test "${enable_glade+set}" = set; then :
-  enableval=$enable_glade; enable_glade=yes
+  enableval=$enable_glade;
 else
   enable_glade=no
 fi
 
 
 if test "x$enable_glade" != xno; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
 
 pkg_failed=no
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for GLADE" >&5
@@ -14951,6 +14989,10 @@ else
 fi
 
 	    ;;
+	    *-*-openbsd*)
+	    CATOBJEXT=.mo
+            DATADIRNAME=share
+	    ;;
 	    *)
 	    CATOBJEXT=.mo
             DATADIRNAME=lib
@@ -15070,6 +15112,9 @@ $as_echo "$LINGUAS" >&6; }
    sed -e "/^#/d" -e "/^\$/d" -e "s,.*,	$posrcprefix& \\\\," -e "\$s/\(.*\) \\\\/\1/" \
 	< $srcdir/po/POTFILES.in > po/POTFILES
 
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
 fi
  if test x$enable_glade != xno; then
   ENABLE_GLADE_TRUE=
@@ -15083,15 +15128,20 @@ fi
 
 # --enable-introspection
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to enable gobject-introspection" >&5
+$as_echo_n "checking whether to enable gobject-introspection... " >&6; }
+
 # Check whether --enable-introspection was given.
 if test "${enable_introspection+set}" = set; then :
-  enableval=$enable_introspection; enable_introspection=yes
+  enableval=$enable_introspection;
 else
   enable_introspection=no
 fi
 
 
 if test "x$enable_introspection" != xno; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
 
 
 
@@ -15186,6 +15236,8 @@ fi
 
 
 else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
      if test 1=0; then
   HAVE_INTROSPECTION_TRUE=
   HAVE_INTROSPECTION_FALSE='#'

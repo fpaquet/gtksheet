@@ -1,3 +1,6 @@
+2011-11-26 Fredy Paquet <mailbox AT opag.ch>
+	* fixed configure options - Bug ID 3414011
+
 2011-10-30 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: improved column button redraw, reduced flickering
 

@@ -1,6 +1,9 @@
 2011-11-26 Fredy Paquet <mailbox AT opag.ch>
 	* fixed configure options - Bug ID 3414011
 
+2011-11-16 Fredy Paquet <mailbox AT opag.ch>
+	* fixed include problem with glib V2.31.0 (only glib.h can be included directly)
+
 2011-10-30 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: improved column button redraw, reduced flickering
 

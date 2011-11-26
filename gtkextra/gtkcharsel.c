@@ -34,7 +34,7 @@
 
 
 #include <gtk/gtk.h>
-#include <glib/gunicode.h>
+#include <glib.h>
 
 #include <string.h>
 #include "gtkextra-compat.h"

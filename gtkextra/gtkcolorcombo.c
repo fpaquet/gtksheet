@@ -163,7 +163,7 @@ gtk_color_combo_class_init (GtkColorComboClass * klass)
                                  G_SIGNAL_RUN_FIRST,
                                  G_STRUCT_OFFSET(GtkColorComboClass, changed),
 				 NULL, NULL,
-                                 gtkextra_VOID__INT_BOXED,
+                                 gtkextra_VOID__BOXED_BOXED,
                                  G_TYPE_NONE,  
                                  2, G_TYPE_INT, GDK_TYPE_COLOR);
 
@@ -349,7 +349,7 @@ gtk_color_combo_realize(GtkWidget *widget)
   GdkPixmap *color_pixmap;
   GtkWidget *pixmap;
   GtkWidget *box;
-  gchar color_string[21];
+  gchar color_string[22];
   gint i,j,n;
 
   g_return_if_fail (widget != NULL);

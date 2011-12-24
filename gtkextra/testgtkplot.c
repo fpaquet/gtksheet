@@ -530,7 +530,7 @@ int main(int argc, char *argv[]){
 
  gtk_widget_show_all(window1);
 
- test_print(GTK_PLOT_CANVAS(canvas),window1);
+ //test_print(GTK_PLOT_CANVAS(canvas),window1);
 /*
  gtk_plot_canvas_export_ps(GTK_PLOT_CANVAS(canvas), "demoplot.ps", GTK_PLOT_PORTRAIT, FALSE, GTK_PLOT_LETTER);
 */

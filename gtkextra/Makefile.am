@@ -69,6 +69,7 @@ gtkextra_public_h_sources = \
         gtkcolorcombo.h	\
         gtkcombobutton.h	\
         gtkdataentry.h	\
+        gtkdataformat.h	\
         gtkdirtree.h	\
         gtkextra.h	\
         gtkextrafeatures.h	\
@@ -104,6 +105,7 @@ gtkextra_public_h_sources = \
         gtkplotsegment.h	\
         gtkpsfont.h	\
         gtksheet.h	\
+        gtksheetcolumn.h	\
         gtktogglecombo.h	\
         gtkplotcanvasline.h \
         gtkplotcanvasrectangle.h \
@@ -119,6 +121,7 @@ gtkextra_c_sources = 	\
         gtkcolorcombo.c	\
         gtkcombobutton.c	\
         gtkdataentry.c	\
+        gtkdataformat.c	\
         gtkdirtree.c	\
         gtkextra.c	\
         gtkextra-marshal.c	\
@@ -151,6 +154,7 @@ gtkextra_c_sources = 	\
         gtkplotsegment.c	\
         gtkpsfont.c	\
         gtksheet.c	\
+        gtksheetcolumn.c	\
         gtktogglecombo.c \
         gtkplotcanvasline.c \
         gtkplotcanvasrectangle.c \

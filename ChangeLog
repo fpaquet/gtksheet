@@ -1,3 +1,8 @@
+2011-11-26 Fredy Paquet <mailbox AT opag.ch>
+	* split gtksheet.[ch] into smaller pieces: gtksheetcolumn.[ch]
+	* added data formatting library (gtkdataformat.[ch])
+	* GtkSheet: new - formatted display of numeric cell data is now possible!
+
 2011-12-18 Roy Rankin <rrankin AT ihug DOT com DOT au>
 	* gtkextra/gtkcolorcombo.c: Fix array overflow - Bug ID 3316408
 

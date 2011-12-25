@@ -92,9 +92,13 @@ gtk_combo_button_get_type
 <TITLE>GtkDataEntry</TITLE>
 GtkDataEntry
 gtk_data_entry_new
+gtk_data_entry_get_description
 gtk_data_entry_set_description
+gtk_data_entry_get_data_type
 gtk_data_entry_set_data_type
 gtk_data_entry_set_data_format
+gtk_data_entry_get_text
+gtk_data_entry_set_text
 <SUBSECTION Standard>
 GTK_DATA_ENTRY
 GTK_DATA_ENTRY_CLASS
@@ -1517,6 +1521,13 @@ gtk_psfont_add_font
 gtk_psfont_add_i18n_font
 gtk_psfont_get_families
 gtk_psfont_get_char_size
+</SECTION>
+
+<SECTION>
+<FILE>gtkdataformat</FILE>
+<TITLE>GtkDataFormat</TITLE>
+gtk_data_format
+gtk_data_format_remove
 </SECTION>
 
 <SECTION>

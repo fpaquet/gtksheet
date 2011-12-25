@@ -747,8 +747,7 @@ GtkSheetColumn *gtk_sheet_column_get(GtkSheet *sheet, gint col)
 
 
 /**
- * gtk_sheet_column_find:
- * 
+ * gtk_sheet_column_get_index:
  * @colobj: #GtkSheetColumn to find
  * 
  * find index of @colobj in GtkSheet

@@ -38,6 +38,12 @@ G_BEGIN_DECLS
 typedef struct _GtkDataEntry        GtkDataEntry;
 typedef struct _GtkDataEntryClass  GtkDataEntryClass;
 
+/**
+ * GtkDataEntry:
+ *
+ * The GtkDataEntry struct contains only private data. It should
+ * only be accessed through the functions described below. 
+ */
 struct _GtkDataEntry
 {
     GtkEntry entry;
@@ -55,14 +61,26 @@ struct _GtkDataEntryClass
 GType gtk_data_entry_get_type(void) G_GNUC_CONST;
 GtkDataEntry *gtk_data_entry_new(void);
 
+G_CONST_RETURN gchar *
+    gtk_data_entry_get_description(GtkDataEntry *data_entry);
+
 void gtk_data_entry_set_description(GtkDataEntry *data_entry, 
                                     const gchar *description);
+
+G_CONST_RETURN gchar*
+    gtk_data_entry_get_data_type(GtkDataEntry *data_entry);
 
 void gtk_data_entry_set_data_type(GtkDataEntry *data_entry, 
                                   const gchar *data_type);
 
 void gtk_data_entry_set_data_format(GtkDataEntry *data_entry, 
                                     const gchar *data_format);
+
+G_CONST_RETURN gchar*
+    gtk_data_entry_get_text(GtkDataEntry *data_entry);
+
+void gtk_data_entry_set_text(GtkDataEntry *data_entry, 
+                                    const gchar *text);
 
 G_END_DECLS
 

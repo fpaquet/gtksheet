@@ -340,17 +340,17 @@ static inline gint
 
 
 
-/**
- * COLUMN_FROM_XPIXEL - get column from x pixel location
- * 
- * returns the column index from a x pixel location in the context of the sheet's hoffset
+/** 
+ * _gtk_sheet_column_from_xpixel: 
+ * @sheet:  the sheet
+ * @x:      the pixel 
+ *  
+ * get column from x pixel location. returns the column index 
+ * from a x pixel location in the context of the sheet's hoffset 
  * 
  * beware: the left border belongs to the column, the right border to the next
- * 
- * @param sheet  the sheet
- * @param x      the pixel
- * 
- * @return column index, or maxcol+1 (beyond right edge)
+ *  
+ * Returns: column index, or maxcol+1 (beyond right edge)
  */
 static inline gint
     _gtk_sheet_column_from_xpixel (GtkSheet * sheet, gint x)
@@ -3099,7 +3099,6 @@ const gchar *
 
 /**
  * gtk_sheet_is_frozen:
- * 
  * @sheet: the #GtkSheet
  * 
  * Returns: TRUE or FALSE wether the sheet is frozen

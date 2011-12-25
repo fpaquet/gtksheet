@@ -228,6 +228,11 @@ It is a GtkCheckButton hack with the look and feel of the Redmond95 theme.
         </chapter>
 
         <chapter>
+            <title>Data Formatter</title>
+            <xi:include href="xml/gtkdataformat.xml" />
+        </chapter>
+
+        <chapter>
             <title>GtkExtra Versioning</title>
             <xi:include href="xml/gtkextrafeatures.xml" />
         </chapter>

@@ -33,6 +33,11 @@
  * instructions for the field contents. Any unrecognized 
  * formatting instruction is silently skipped. 
  *  
+ * The formatting process should always be reversible. Thus 
+ * formatting can be applied when input focus leaves a field and
+ * removed again when the focus enters a field, without the need
+ * of an additional content buffer. 
+ *  
  * the library can be easily extended by adding more 
  * instructions to the list above.
  * 
@@ -80,7 +85,7 @@ static gchar *replace_dot_with_comma(gchar *cp)
     return(buf);
 }
 
-static gchar *insert_num_seps(gchar *cp)
+static gchar *insert_num_seps(const gchar *cp)
 {
     static gchar buf[MAX_NUM_STRLEN];
     gchar *dot, c;
@@ -105,16 +110,17 @@ static gchar *insert_num_seps(gchar *cp)
     return(buf);
 }
 
-#if 0
-static char *remove_num_seps(gchar *src)
+static gchar *remove_num_seps(const gchar *src)
 {
     static gchar buf[MAX_NUM_STRLEN];
     gchar *dst = buf;
     gboolean found=FALSE;
     gint i=0,l = strlen(src);
+
+    if (!src) return((gchar *) src);
     
 #if 1
-    if ((l > 1) && (src[l-1] == '-'))    /* trailing minus sign */
+    if ((l > 1) && (src[l-1] == '-'))    /* handle trailing minus sign */
     {
         if (src[0] == '-')
         {
@@ -140,9 +146,8 @@ static char *remove_num_seps(gchar *src)
     *dst = '\0';
     
     if (found) return(buf);
-    return(NULL);
+    return((gchar *) src);
 }
-#endif
 
 static gchar *format_double(gdouble d, 
     gint comma_digits, gboolean do_numseps, gboolean do_comma)
@@ -172,29 +177,39 @@ static gchar *format_int(gint i, gint num_bytes)
 
 /**
  * gtk_data_format:
- * 
  * @str:        the string to be formatted
  * @dataformat: formatting instructions
  * 
- * format string data according to dataformat
+ * format @str according to @dataformat. 
  *  
- * empty string -  no formatting
+ * formatting instructions: 
  *  
- * int8 - singed 8-bit integer value, optional '-' sign 
- * int16 signed 16-bit integer, optional '-' sign 
- * int32 - signed 32-bit integer, optional '-' sign
+ * '' (the empty string) does no formatting at all.
  *  
- * money - double value, 2 decimal digits, 1000-separators 
- * float,N - double value,  N decimal digits, 1000-separators 
- * bit - boolean value [0,1] 
+ * 'int8' is formatted as a singed 8-bit integer value with 
+ * optional '-' sign. 
+ *  
+ * 'int16' is formatted as a signed 16-bit integer with optional
+ * '-' sign. 
+ *  
+ * 'int32' is formatted as a signed 32-bit integer with optional
+ * '-' sign.
+ *  
+ * 'money' is formatted as a double float value with 2 decimal 
+ * digits and 1000s-separators 
+ *  
+ * 'float,N' is formatted as a double float value with N decimal
+ * digits and 1000s-separators 
+ *  
+ * 'bit' is formatted as a boolean value [0,1].
  *  
  * 
  * Returns: a pointer to an internal static buffer, with the 
  * formatted data 
  */
-gchar *gtk_data_format(gchar *str, gchar *dataformat)
+gchar *gtk_data_format(const gchar *str, const gchar *dataformat)
 {
-    if (!str || !dataformat || !dataformat[0]) return(str);
+    if (!str || !str[0] || !dataformat || !dataformat[0]) return((gchar *) str);
 
     switch (dataformat[0])
     {
@@ -202,18 +217,21 @@ gchar *gtk_data_format(gchar *str, gchar *dataformat)
             if (strcmp(dataformat, "int8") == 0)
             {
                 gint i;
+                str = remove_num_seps(str);
                 if (sscanf(str, "%d", &i) == 1) return(format_int(i, 1));
                 return(INVALID_DATA);
             }
             else if (strcmp(dataformat, "int16") == 0)
             {
                 gint i;
+                str = remove_num_seps(str);
                 if (sscanf(str, "%d", &i) == 1) return(format_int(i, 2));
                 return(INVALID_DATA);
             }
             else if (strcmp(dataformat, "int32") == 0)
             {
                 gint i;
+                str = remove_num_seps(str);
                 if (sscanf(str, "%d", &i) == 1) return(format_int(i, 4));
                 return(INVALID_DATA);
             }
@@ -223,6 +241,8 @@ gchar *gtk_data_format(gchar *str, gchar *dataformat)
             if (strcmp(dataformat, "money") == 0)
             {
                 gdouble d;
+
+                str = remove_num_seps(str);
 
                 if (sscanf(str, "%lg", &d) == 1) 
                     return(format_double(d, 2, TRUE, FALSE));
@@ -239,6 +259,8 @@ gchar *gtk_data_format(gchar *str, gchar *dataformat)
                 if (sscanf(&dataformat[6], "%d", &precision) == 1)
                 {
                     gdouble d;
+
+                    str = remove_num_seps(str);
 
                     if (sscanf(str, "%lg", &d) == 1) 
                         return(format_double(d, precision, TRUE, FALSE));
@@ -261,5 +283,62 @@ gchar *gtk_data_format(gchar *str, gchar *dataformat)
 
         default: break;
     }
-    return(str);
+    return((gchar *) str);
 }
+
+/**
+ * gtk_data_format_remove:
+ * @str:        the string to be unformatted
+ * @dataformat: formatting instructions
+ * 
+ * reverse the effect of #gtk_data_format, i.e. remove all 
+ * formatting characters, apply trailing dash
+ * 
+ * Returns: a pointer to an internal static buffer, with the 
+ * unformatted data 
+ */
+gchar *gtk_data_format_remove(const gchar *str, const gchar *dataformat)
+{
+    if (!str || !dataformat || !dataformat[0]) return((gchar *) str);
+
+    switch (dataformat[0])
+    {
+        case 'i':
+            if (strcmp(dataformat, "int8") == 0)
+            {
+                str = remove_num_seps(str);
+            }
+            else if (strcmp(dataformat, "int16") == 0)
+            {
+                str = remove_num_seps(str);
+            }
+            else if (strcmp(dataformat, "int32") == 0)
+            {
+                str = remove_num_seps(str);
+            }
+            break;
+
+        case 'm':
+            if (strcmp(dataformat, "money") == 0)
+            {
+                str = remove_num_seps(str);
+            }
+            break;
+
+        case 'f':
+            if (strncmp(dataformat, "float,", 6) == 0)
+            {
+                gint precision;
+
+                if (sscanf(&dataformat[6], "%d", &precision) == 1)
+                {
+                    str = remove_num_seps(str);
+                }
+            }
+            break;
+
+        default: break;
+    }
+    return((gchar *) str);
+}
+

@@ -24,6 +24,7 @@
 #include <gtk/gtk.h>
 #include "gtkextra-compat.h"
 #include "gtkdataentry.h"
+#include "gtkdataformat.h"
 
 /**
  * SECTION: gtkdataentry
@@ -34,18 +35,39 @@
  * - description (property): no functionality, a place for 
  *   private information that cannot be put anywhere else
  *  
- * - datatype (property): no functionality, a datatype hint for 
+ * - data_type (property): no functionality, a datatype hint for
  *   the application because any widget content is text
  *  
- * - dataformat (property): a formatting string that controls 
- *   what you see when the widget doesn't contain input focus
+ * - data_format (property): a formatting instruction that 
+ *   controls what you see when the widget doesn't have input
+ *   focus
+ *  
+ * - text (property): set the contents of the widget. if the 
+ *   widget doesn't have input focus text will be formatted
+ *   according to the data_format
  *  
  * The main reason for this widget is to provide a formatting  
  * entry widget for numeric data like integer, float, money 
  * which also supports NULL values (GtkSpinButton is nice but 
  * doesn't support empty field values). Handling of Null values 
- * is supported by all SQL database systems. 
+ * is supported by all SQL database systems. The Null values are
+ * represented by empty field contents. 
+ *  
+ * When editing field contents, all data formatting is removed 
+ * before the focus enters the widget. As soon as the focus 
+ * leaves the widget, data will be nicely formatted again. 
+ *  
+ * As an additional feature, the minus sign (negative numbers) 
+ * can be entered at the end of the data. As soon as you leave 
+ * the field it will be placed properly in front of the number. 
+ *  
  */
+
+#undef GTK_DATA_ENTRY_DEBUG
+
+#ifdef DEBUG
+#  define GTK_DATA_ENTRY_DEBUG 1  /* define to activate debug output */
+#endif
 
 enum
 {
@@ -53,6 +75,7 @@ enum
     PROP_DATA_ENTRY_DATATYPE,
     PROP_DATA_ENTRY_DATAFORMAT,
     PROP_DATA_ENTRY_DESCRIPTION,
+    PROP_DATA_ENTRY_TEXT,
 } GTK_DATA_ENTRY_PROPERTIES;
 
 enum
@@ -64,6 +87,24 @@ static void gtk_data_entry_class_init(GtkDataEntryClass *klass);
 static void gtk_data_entry_init(GtkDataEntry *data);
 
 static GtkEntryClass *parent_class = NULL;
+
+/**
+ * gtk_data_entry_get_description:
+ * @data_entry: a #GtkDataEntry
+ *
+ * Retrieves the #GtkDataEntry description.
+ *
+ * Returns: a pointer to the contents of the widget as a
+ *      string. This string points to internally allocated
+ *      storage in the widget and must not be freed, modified or
+ *      stored.
+ **/
+G_CONST_RETURN gchar*
+    gtk_data_entry_get_description(GtkDataEntry *data_entry)
+{
+    g_return_val_if_fail (GTK_IS_DATA_ENTRY(data_entry), NULL);
+    return data_entry->description;
+}
 
 /**
  * gtk_data_entry_set_description: 
@@ -80,6 +121,24 @@ void gtk_data_entry_set_description(GtkDataEntry *data_entry,
 
     if (data_entry->description) g_free(data_entry->description);
     data_entry->description = g_strdup(description);
+}
+
+/**
+ * gtk_data_entry_get_data_type:
+ * @data_entry: a #GtkDataEntry
+ *
+ * Retrieves the #GtkDataEntry data_type. 
+ *  
+ * Returns: a pointer to the contents of the widget as a
+ *      string. This string points to internally allocated
+ *      storage in the widget and must not be freed, modified or
+ *      stored.
+ **/
+G_CONST_RETURN gchar*
+    gtk_data_entry_get_data_type(GtkDataEntry *data_entry)
+{
+    g_return_val_if_fail (GTK_IS_DATA_ENTRY(data_entry), NULL);
+    return data_entry->data_type;
 }
 
 /**
@@ -100,11 +159,30 @@ void gtk_data_entry_set_data_type(GtkDataEntry *data_entry,
 }
 
 /**
+ * gtk_data_entry_get_data_format:
+ * @data_entry: a #GtkDataEntry
+ *
+ * Retrieves the #GtkDataEntry data_format. 
+ *  
+ * Returns: a pointer to the contents of the widget as a
+ *      string. This string points to internally allocated
+ *      storage in the widget and must not be freed, modified or
+ *      stored.
+ **/
+G_CONST_RETURN gchar*
+    gtk_data_entry_get_data_format(GtkDataEntry *data_entry)
+{
+    g_return_val_if_fail (GTK_IS_DATA_ENTRY(data_entry), NULL);
+    return data_entry->data_format;
+}
+
+/**
  * gtk_data_entry_set_data_format: 
  * @data_entry:  a #GtkDataEntry
  * @data_format:  the data type or NULL 
  *  
- * Sets the GtkDataEntry data type for application use. 
+ * Sets the GtkDataEntry data type for application use. The 
+ * display will not be refreshed upon change. 
  */
 void gtk_data_entry_set_data_format(GtkDataEntry *data_entry, 
                                     const gchar *data_format)
@@ -114,6 +192,64 @@ void gtk_data_entry_set_data_format(GtkDataEntry *data_entry,
 
     if (data_entry->data_format) g_free(data_entry->data_format);
     data_entry->data_format = g_strdup(data_format);
+}
+
+/**
+ * gtk_data_entry_get_text:
+ * @data_entry: a #GtkDataEntry
+ *
+ * Retrieves the #GtkDataEntry contents. All formatting will be 
+ * removed. 
+ *  
+ * Returns: a pointer to the contents of the widget as a
+ *      string. This string points to internally allocated
+ *      storage in the widget and must not be freed, modified or
+ *      stored.
+ **/
+G_CONST_RETURN gchar*
+    gtk_data_entry_get_text(GtkDataEntry *data_entry)
+{
+    gchar *text;
+    g_return_val_if_fail (GTK_IS_DATA_ENTRY(data_entry), NULL);
+
+    text = (gchar *) gtk_entry_get_text(GTK_ENTRY(data_entry));
+
+    if (!gtk_widget_has_focus(GTK_WIDGET(data_entry)))
+    {
+        text = gtk_data_format_remove(text, data_entry->data_format);
+    }
+
+#ifdef GTK_DATA_ENTRY_DEBUG
+    g_debug("gtk_data_entry_get_text: %s", text ? text : "");
+#endif
+
+    return text;
+}
+
+/**
+ * gtk_data_entry_set_text: 
+ * @data_entry:  a #GtkDataEntry
+ * @text:  the contents to be set
+ *  
+ * Sets the GtkDataEntry contents. The contents will be 
+ * formatted due to the current data_format. 
+ */
+void gtk_data_entry_set_text(GtkDataEntry *data_entry, 
+                                    const gchar *text)
+{
+    g_return_if_fail (data_entry != NULL);
+    g_return_if_fail (GTK_IS_DATA_ENTRY(data_entry));
+
+    if (!gtk_widget_has_focus(GTK_WIDGET(data_entry)))
+    {
+        text = gtk_data_format(text, data_entry->data_format);
+    }
+
+#ifdef GTK_DATA_ENTRY_DEBUG
+    g_debug("gtk_data_entry_set_text: %s", text ? text : "");
+#endif
+
+    gtk_entry_set_text(GTK_ENTRY(data_entry), text);
 }
 
 
@@ -207,6 +343,10 @@ static void
             }
             break;
 
+        case PROP_DATA_ENTRY_TEXT:
+            gtk_data_entry_set_text(data_entry, g_value_get_string(value));
+            break;
+
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
             break;
@@ -235,21 +375,60 @@ static void
             g_value_set_string(value, data_entry->description);
             break;
 
+        case PROP_DATA_ENTRY_TEXT:
+            g_value_set_string(value, gtk_data_entry_get_text(data_entry));
+            break;
+
         default:
             G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
             break;
     }
 }
 
+static gint
+    gtk_data_entry_focus_in(GtkWidget *widget, GdkEventFocus *event)
+{
+    const gchar *text = gtk_entry_get_text(GTK_ENTRY(widget));
+    gchar *data_format = GTK_DATA_ENTRY(widget)->data_format;
 
+#ifdef GTK_DATA_ENTRY_DEBUG
+    g_debug("gtk_data_entry_focus_in: called");
+#endif
+    if (data_format && data_format[0])
+    {
+        text = gtk_data_format_remove(text, data_format);
+        gtk_entry_set_text(GTK_ENTRY(widget), text);
+    }
+
+    return((*GTK_WIDGET_CLASS(parent_class)->focus_in_event)(widget, event));
+}
+
+static gint
+    gtk_data_entry_focus_out(GtkWidget *widget, GdkEventFocus *event)
+{
+    const gchar *text = gtk_entry_get_text(GTK_ENTRY(widget));
+    gchar *data_format = GTK_DATA_ENTRY(widget)->data_format;
+
+#ifdef GTK_DATA_ENTRY_DEBUG
+    g_debug("gtk_data_entry_focus_out: called");
+#endif
+
+    if (data_format && data_format[0])
+    {
+        text = gtk_data_format(text, data_format);
+        gtk_entry_set_text(GTK_ENTRY(widget), text);
+    }
+
+    return((*GTK_WIDGET_CLASS(parent_class)->focus_out_event)(widget, event));
+}
 
 static void
     gtk_data_entry_class_init(GtkDataEntryClass *klass)
 {
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 #if 0
     GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
-    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
     GtkEntryClass *entry_class = GTK_ENTRY_CLASS (klass);
 #endif
 
@@ -257,6 +436,9 @@ static void
 
     gobject_class->set_property = gtk_data_entry_set_property;
     gobject_class->get_property = gtk_data_entry_get_property;
+
+    widget_class->focus_in_event = gtk_data_entry_focus_in;
+    widget_class->focus_out_event = gtk_data_entry_focus_out;
 
     /**
      * GtkDataEntry:datatype:
@@ -299,13 +481,29 @@ static void
                                                          "Description of entry contents",
                                                          "" /* default value */,
                                                          G_PARAM_READWRITE));
+
+    /**
+     * GtkDataEntry:text:
+     *
+     * Set the contents of the GtkDataEntry. For details see 
+     * #gtk_data_entry_set_text. 
+     */
+    g_object_class_install_property(gobject_class, 
+                                    PROP_DATA_ENTRY_TEXT, 
+                                    g_param_spec_string ("text", 
+                                                         "Text",
+                                                         "The contents of the data_entry",
+                                                         "" /* default value */,
+                                                         G_PARAM_READWRITE));
 }
 
 
 static void
     gtk_data_entry_init (GtkDataEntry *data_entry)
 {
+#if 0
     GtkWidget *widget = GTK_WIDGET(data_entry);
+#endif
 
     data_entry->description = NULL;
     data_entry->data_type = NULL;

@@ -1,4 +1,8 @@
-2011-11-26 Fredy Paquet <mailbox AT opag.ch>
+2011-12-25 Fredy Paquet <mailbox AT opag.ch>
+	* GtkDataEntry: formatted display of contents is working now
+	* data formatter documented
+
+2011-12-24 Fredy Paquet <mailbox AT opag.ch>
 	* split gtksheet.[ch] into smaller pieces: gtksheetcolumn.[ch]
 	* added data formatting library (gtkdataformat.[ch])
 	* GtkSheet: new - formatted display of numeric cell data is now possible!

@@ -26,7 +26,8 @@
 
 G_BEGIN_DECLS
 
-gchar *gtk_data_format(gchar *str, gchar *dataformat);
+gchar *gtk_data_format(const gchar *str, const gchar *dataformat);
+gchar *gtk_data_format_remove(const gchar *str, const gchar *dataformat);
 
 G_END_DECLS
 

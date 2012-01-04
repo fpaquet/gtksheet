@@ -1,3 +1,6 @@
+2012-01-04 Fredy Paquet <mailbox AT opag.ch>
+	* GtkItemEntry: incorporated patch from Bug ID 3439972
+
 2011-12-25 Fredy Paquet <mailbox AT opag.ch>
 	* GtkDataEntry: formatted display of contents is working now
 	* data formatter documented

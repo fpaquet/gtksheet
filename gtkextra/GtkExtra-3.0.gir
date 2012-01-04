@@ -337,6 +337,12 @@ and/or use gtk-doc annotations.  -->
     <constant name="GTK_PLOT_LETTER_W" value="612">
       <type name="int"/>
     </constant>
+    <constant name="GTK_SHEET_COLUMN_DEFAULT_WIDTH" value="80">
+      <type name="int"/>
+    </constant>
+    <constant name="GTK_SHEET_COLUMN_MIN_WIDTH" value="10">
+      <type name="int"/>
+    </constant>
     <record name="GtkBorderCombo"
             c:type="GtkBorderCombo"
             doc="The GtkBorderCombo struct contains only private data.
@@ -688,6 +694,8 @@ It should only be accessed through the functions described below.">
     </record>
     <class name="GtkDataEntry"
            c:type="GtkDataEntry"
+           doc="The GtkDataEntry struct contains only private data. It should
+only be accessed through the functions described below."
            parent="Gtk.Entry"
            glib:type-name="GtkDataEntry"
            glib:get-type="gtk_data_entry_get_type"
@@ -703,6 +711,16 @@ It should only be accessed through the functions described below.">
           <type name="GtkDataEntry" c:type="GtkDataEntry*"/>
         </return-value>
       </constructor>
+      <method name="get_description"
+              c:identifier="gtk_data_entry_get_description"
+              doc="Retrieves the #GtkDataEntry description.
+string. This string points to internally allocated
+storage in the widget and must not be freed, modified or
+stored.">
+        <return-value transfer-ownership="none">
+          <type name="utf8" c:type="gchar*"/>
+        </return-value>
+      </method>
       <method name="set_description"
               c:identifier="gtk_data_entry_set_description"
               doc="Sets the GtkDataEntry description.">
@@ -714,6 +732,16 @@ It should only be accessed through the functions described below.">
             <type name="utf8" c:type="gchar*"/>
           </parameter>
         </parameters>
+      </method>
+      <method name="get_data_type"
+              c:identifier="gtk_data_entry_get_data_type"
+              doc="Retrieves the #GtkDataEntry data_type.
+string. This string points to internally allocated
+storage in the widget and must not be freed, modified or
+stored.">
+        <return-value transfer-ownership="none">
+          <type name="utf8" c:type="gchar*"/>
+        </return-value>
       </method>
       <method name="set_data_type"
               c:identifier="gtk_data_entry_set_data_type"
@@ -729,12 +757,37 @@ It should only be accessed through the functions described below.">
       </method>
       <method name="set_data_format"
               c:identifier="gtk_data_entry_set_data_format"
-              doc="Sets the GtkDataEntry data type for application use.">
+              doc="Sets the GtkDataEntry data type for application use. The
+display will not be refreshed upon change.">
         <return-value transfer-ownership="none">
           <type name="none" c:type="void"/>
         </return-value>
         <parameters>
           <parameter name="data_format" transfer-ownership="none">
+            <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="get_text"
+              c:identifier="gtk_data_entry_get_text"
+              doc="Retrieves the #GtkDataEntry contents. All formatting will be
+removed.
+string. This string points to internally allocated
+storage in the widget and must not be freed, modified or
+stored.">
+        <return-value transfer-ownership="none">
+          <type name="utf8" c:type="gchar*"/>
+        </return-value>
+      </method>
+      <method name="set_text"
+              c:identifier="gtk_data_entry_set_text"
+              doc="Sets the GtkDataEntry contents. The contents will be
+formatted due to the current data_format.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="text" transfer-ownership="none">
             <type name="utf8" c:type="gchar*"/>
           </parameter>
         </parameters>
@@ -755,6 +808,12 @@ any widget content is text.">
                 writable="1"
                 doc="Description of the GtkDataEntry, no functionality, a place
 for private information that cannot be put anywhere else.">
+        <type name="utf8" c:type="gchararray"/>
+      </property>
+      <property name="text"
+                writable="1"
+                doc="Set the contents of the GtkDataEntry. For details see
+#gtk_data_entry_set_text.">
         <type name="utf8" c:type="gchararray"/>
       </property>
       <field name="entry">
@@ -14308,6 +14367,568 @@ It should only be accessed through the functions described below."
           </parameter>
         </parameters>
       </virtual-method>
+      <method name="column_get"
+              c:identifier="gtk_sheet_column_get"
+              doc="Get a #GtkSheetColumn
+Returns:	the requested #GtkSheetColumn or NULL">
+        <return-value transfer-ownership="full">
+          <type name="GtkSheetColumn" c:type="GtkSheetColumn*"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="set_column_width"
+              c:identifier="gtk_sheet_set_column_width"
+              doc="Set column width.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="column" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="width" transfer-ownership="none">
+            <type name="uint" c:type="guint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="get_column_width"
+              c:identifier="gtk_sheet_get_column_width"
+              doc="Get column width.">
+        <return-value transfer-ownership="none">
+          <type name="int" c:type="gint"/>
+        </return-value>
+        <parameters>
+          <parameter name="column" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_set_justification"
+              c:identifier="gtk_sheet_column_set_justification"
+              doc="Set column justification (GTK_JUSTIFY_LEFT, RIGHT, CENTER).
+The default value is GTK_JUSTIFY_LEFT. If autoformat is on, the default justification for numbers is GTK_JUSTIFY_RIGHT.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="just" transfer-ownership="none">
+            <type name="Gtk.Justification" c:type="GtkJustification"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_get_justification"
+              c:identifier="gtk_sheet_column_get_justification"
+              doc="Get the column justification.">
+        <return-value transfer-ownership="full">
+          <type name="Gtk.Justification" c:type="GtkJustification"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_set_vjustification"
+              c:identifier="gtk_sheet_column_set_vjustification"
+              doc="Set vertical cell text jjustification">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="vjust" transfer-ownership="none">
+            <type name="GtkSheetVerticalJustification"
+                  c:type="GtkSheetVerticalJustification"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_get_vjustification"
+              c:identifier="gtk_sheet_column_get_vjustification"
+              doc="Get the vertical cell text justification. This overrides the
+default vertical cell text justification of the #GtkSheet.">
+        <return-value transfer-ownership="full">
+          <type name="GtkSheetVerticalJustification"
+                c:type="GtkSheetVerticalJustification"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_get_iskey"
+              c:identifier="gtk_sheet_column_get_iskey"
+              doc="Gets the column is_key flag
+Returns:	the is_key flag">
+        <return-value transfer-ownership="none">
+          <type name="boolean" c:type="gboolean"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_set_iskey"
+              c:identifier="gtk_sheet_column_set_iskey"
+              doc="Sets the column is_key flag. This flag has no effect on
+calculation or presentation, it is reserved for application
+usage.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="is_key" transfer-ownership="none">
+            <type name="boolean" c:type="gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_get_readonly"
+              c:identifier="gtk_sheet_column_get_readonly"
+              doc="Gets the column readonly flag
+Returns:	the readonly flag">
+        <return-value transfer-ownership="none">
+          <type name="boolean" c:type="gboolean"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_set_readonly"
+              c:identifier="gtk_sheet_column_set_readonly"
+              doc="Sets the column readonly flag.
+A cell is editable if the sheet is not locked, the column is
+not readonly and the cell (-range) was set to editable.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="is_readonly" transfer-ownership="none">
+            <type name="boolean" c:type="gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_get_format"
+              c:identifier="gtk_sheet_column_get_format"
+              doc="Gets the column data formatting pattern
+Returns:	the formatting pattern or NULL, You should free the
+returned string with g_free() when done.">
+        <return-value transfer-ownership="full">
+          <type name="utf8" c:type="gchar*"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_set_format"
+              c:identifier="gtk_sheet_column_set_format"
+              doc="Sets the column data formatting pattern.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="format" transfer-ownership="none">
+            <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_get_datatype"
+              c:identifier="gtk_sheet_column_get_datatype"
+              doc="Gets the column data_type for application use
+Returns:	the datatype or NULL">
+        <return-value transfer-ownership="full">
+          <type name="utf8" c:type="gchar*"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_set_datatype"
+              c:identifier="gtk_sheet_column_set_datatype"
+              doc="Sets the column data data_type for application use">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="data_type" transfer-ownership="none">
+            <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_get_description"
+              c:identifier="gtk_sheet_column_get_description"
+              doc="Gets the column description
+Returns:	the description or NULL, You should free the
+returned string with g_free() when done.">
+        <return-value transfer-ownership="full">
+          <type name="utf8" c:type="gchar*"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_set_description"
+              c:identifier="gtk_sheet_column_set_description"
+              doc="Sets the column description.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="description" transfer-ownership="none">
+            <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_get_entry_type"
+              c:identifier="gtk_sheet_column_get_entry_type"
+              doc="Gets the column entry type if known
+Returns:	the entry type or GTK_SHEET_ENTRY_TYPE_DEFAULT">
+        <return-value transfer-ownership="none">
+          <type name="GType" c:type="GType"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_set_entry_type"
+              c:identifier="gtk_sheet_column_set_entry_type"
+              doc="Supersedes the sheet entry type for this column. Pass
+G_TYPE_NONE to reset the column to the sheet entry type.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="entry_type" transfer-ownership="none">
+            <type name="GType" c:type="GType"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_get_tooltip_markup"
+              c:identifier="gtk_sheet_column_get_tooltip_markup"
+              doc="Gets the contents of the tooltip (markup) for the column
+Returns:	the tooltip text, or NULL. You should free the
+returned string with g_free() when done.">
+        <return-value transfer-ownership="full">
+          <type name="utf8" c:type="gchar*"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_set_tooltip_markup"
+              c:identifier="gtk_sheet_column_set_tooltip_markup"
+              doc="Sets markup as the contents of the tooltip, which is marked
+up with the Pango text markup language.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="markup" transfer-ownership="none">
+            <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_get_tooltip_text"
+              c:identifier="gtk_sheet_column_get_tooltip_text"
+              doc="Gets the contents of the tooltip for the column
+Returns:	the tooltip text, or NULL. You should free the
+returned string with g_free() when done.">
+        <return-value transfer-ownership="full">
+          <type name="utf8" c:type="gchar*"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_set_tooltip_text"
+              c:identifier="gtk_sheet_column_set_tooltip_text"
+              doc="Sets text as the contents of the tooltip.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="text" transfer-ownership="none">
+            <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_sensitive"
+              c:identifier="gtk_sheet_column_sensitive"
+              doc="Get column button sensitivity.
+Returns:
+TRUE - the column is sensitive, FALSE - insensitive or not
+existant">
+        <return-value transfer-ownership="none">
+          <type name="boolean" c:type="gboolean"/>
+        </return-value>
+        <parameters>
+          <parameter name="column" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_set_sensitivity"
+              c:identifier="gtk_sheet_column_set_sensitivity"
+              doc="Set column button sensitivity. If sensitivity is TRUE it can be toggled, otherwise it acts as a title.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="column" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="sensitive" transfer-ownership="none">
+            <type name="boolean" c:type="gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="columns_set_sensitivity"
+              c:identifier="gtk_sheet_columns_set_sensitivity"
+              doc="Set all columns buttons sensitivity. If sensitivity is TRUE
+button can be toggled, otherwise  act as titles. The sheet itself
+has no such property, it is a convenience function to set the
+property for all existing columns.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="sensitive" transfer-ownership="none">
+            <type name="boolean" c:type="gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="columns_resizable"
+              c:identifier="gtk_sheet_columns_resizable"
+              doc="Get columns resizable status.">
+        <return-value transfer-ownership="none">
+          <type name="boolean" c:type="gboolean"/>
+        </return-value>
+      </method>
+      <method name="columns_set_resizable"
+              c:identifier="gtk_sheet_columns_set_resizable"
+              doc="Set columns resizable status.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="resizable" transfer-ownership="none">
+            <type name="boolean" c:type="gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_visible"
+              c:identifier="gtk_sheet_column_visible"
+              doc="Get column visibility.">
+        <return-value transfer-ownership="none">
+          <type name="boolean" c:type="gboolean"/>
+        </return-value>
+        <parameters>
+          <parameter name="column" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_set_visibility"
+              c:identifier="gtk_sheet_column_set_visibility"
+              doc="Set column visibility. The default value is TRUE. If FALSE, the column is hidden.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="column" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="visible" transfer-ownership="none">
+            <type name="boolean" c:type="gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_button_justify"
+              c:identifier="gtk_sheet_column_button_justify"
+              doc="Set the justification(alignment) of the column buttons.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="justification" transfer-ownership="none">
+            <type name="Gtk.Justification" c:type="GtkJustification"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_button_get_label"
+              c:identifier="gtk_sheet_column_button_get_label"
+              doc="Get column button label.">
+        <return-value transfer-ownership="none">
+          <type name="utf8" c:type="gchar*"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_label_set_visibility"
+              c:identifier="gtk_sheet_column_label_set_visibility"
+              doc="Set column label visibility. The default value is TRUE. If FALSE, the column label is hidden.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="visible" transfer-ownership="none">
+            <type name="boolean" c:type="gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="columns_labels_set_visibility"
+              c:identifier="gtk_sheet_columns_labels_set_visibility"
+              doc="Set all columns labels visibility. The default value is TRUE.
+If FALSE, the columns labels are hidden. The sheet itself
+has no such property, it is a convenience function to set the
+property for all existing columns.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="visible" transfer-ownership="none">
+            <type name="boolean" c:type="gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="column_button_add_label"
+              c:identifier="gtk_sheet_column_button_add_label"
+              doc="Set button label.It is used to set a column title.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="col" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="label" transfer-ownership="none">
+            <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="set_column_titles_height"
+              c:identifier="gtk_sheet_set_column_titles_height"
+              doc="Resize column titles area .">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="height" transfer-ownership="none">
+            <type name="uint" c:type="guint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="show_column_titles"
+              c:identifier="gtk_sheet_show_column_titles"
+              doc="Show column titles .">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+      </method>
+      <method name="hide_column_titles"
+              c:identifier="gtk_sheet_hide_column_titles"
+              doc="Hide column titles .">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+      </method>
+      <method name="column_titles_visible"
+              c:identifier="gtk_sheet_column_titles_visible"
+              doc="Get the visibility of sheet column titles .">
+        <return-value transfer-ownership="none">
+          <type name="boolean" c:type="gboolean"/>
+        </return-value>
+      </method>
+      <method name="get_columns_count"
+              c:identifier="gtk_sheet_get_columns_count"
+              doc="Get the number of the columns of the #GtkSheet.">
+        <return-value transfer-ownership="none">
+          <type name="uint" c:type="guint"/>
+        </return-value>
+      </method>
+      <method name="get_column_title"
+              c:identifier="gtk_sheet_get_column_title"
+              doc="Get column title.">
+        <return-value transfer-ownership="none">
+          <type name="utf8" c:type="gchar*"/>
+        </return-value>
+        <parameters>
+          <parameter name="column" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="set_column_title"
+              c:identifier="gtk_sheet_set_column_title"
+              doc="Set column title.">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="column" transfer-ownership="none">
+            <type name="int" c:type="gint"/>
+          </parameter>
+          <parameter name="title" transfer-ownership="none">
+            <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
       <method name="construct"
               c:identifier="gtk_sheet_construct"
               doc="Initializes an existent #GtkSheet with the given number of rows and columns.">
@@ -14516,13 +15137,6 @@ Returns:
 GTK_SHEET_NORMAL,GTK_SHEET_ROW_SELECTED,GTK_SHEET_COLUMN_SELECTED,GTK_SHEET_RANGE_SELECTED">
         <return-value transfer-ownership="full">
           <type name="GtkSheetState" c:type="GtkSheetState"/>
-        </return-value>
-      </method>
-      <method name="get_columns_count"
-              c:identifier="gtk_sheet_get_columns_count"
-              doc="Get the number of the columns of the #GtkSheet.">
-        <return-value transfer-ownership="none">
-          <type name="uint" c:type="guint"/>
         </return-value>
       </method>
       <method name="get_rows_count"
@@ -14735,6 +15349,11 @@ string.">
           </parameter>
         </parameters>
       </method>
+      <method name="is_frozen" c:identifier="gtk_sheet_is_frozen">
+        <return-value transfer-ownership="none">
+          <type name="boolean" c:type="gboolean"/>
+        </return-value>
+      </method>
       <method name="freeze"
               c:identifier="gtk_sheet_freeze"
               doc="Freeze all visual updates of the #GtkSheet.
@@ -14796,33 +15415,6 @@ If pass NULL, the grid will be reset to the default color.">
           <type name="boolean" c:type="gboolean"/>
         </return-value>
       </method>
-      <method name="set_column_title"
-              c:identifier="gtk_sheet_set_column_title"
-              doc="Set column title.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="column" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="title" transfer-ownership="none">
-            <type name="utf8" c:type="gchar*"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="get_column_title"
-              c:identifier="gtk_sheet_get_column_title"
-              doc="Get column title.">
-        <return-value transfer-ownership="none">
-          <type name="utf8" c:type="gchar*"/>
-        </return-value>
-        <parameters>
-          <parameter name="column" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
       <method name="set_row_title"
               c:identifier="gtk_sheet_set_row_title"
               doc="Set row title.">
@@ -14866,21 +15458,6 @@ Do not modify or free it.">
           </parameter>
         </parameters>
       </method>
-      <method name="column_button_add_label"
-              c:identifier="gtk_sheet_column_button_add_label"
-              doc="Set button label.It is used to set a column title.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="label" transfer-ownership="none">
-            <type name="utf8" c:type="gchar*"/>
-          </parameter>
-        </parameters>
-      </method>
       <method name="row_button_get_label"
               c:identifier="gtk_sheet_row_button_get_label"
               doc="Get a row button label.
@@ -14894,18 +15471,6 @@ text.Otherwise NULL">
           </parameter>
         </parameters>
       </method>
-      <method name="column_button_get_label"
-              c:identifier="gtk_sheet_column_button_get_label"
-              doc="Get column button label.">
-        <return-value transfer-ownership="none">
-          <type name="utf8" c:type="gchar*"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
       <method name="row_button_justify"
               c:identifier="gtk_sheet_row_button_justify"
               doc="Set the justification(alignment) of the row buttons.">
@@ -14914,21 +15479,6 @@ text.Otherwise NULL">
         </return-value>
         <parameters>
           <parameter name="row" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="justification" transfer-ownership="none">
-            <type name="Gtk.Justification" c:type="GtkJustification"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_button_justify"
-              c:identifier="gtk_sheet_column_button_justify"
-              doc="Set the justification(alignment) of the column buttons.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
             <type name="int" c:type="gint"/>
           </parameter>
           <parameter name="justification" transfer-ownership="none">
@@ -14971,35 +15521,9 @@ row_align and col_align are between 0-1 representing the location the row should
           </parameter>
         </parameters>
       </method>
-      <method name="set_column_titles_height"
-              c:identifier="gtk_sheet_set_column_titles_height"
-              doc="Resize column titles area .">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="height" transfer-ownership="none">
-            <type name="uint" c:type="guint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="show_column_titles"
-              c:identifier="gtk_sheet_show_column_titles"
-              doc="Show column titles .">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-      </method>
       <method name="show_row_titles"
               c:identifier="gtk_sheet_show_row_titles"
               doc="Show row titles .">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-      </method>
-      <method name="hide_column_titles"
-              c:identifier="gtk_sheet_hide_column_titles"
-              doc="Hide column titles .">
         <return-value transfer-ownership="none">
           <type name="none" c:type="void"/>
         </return-value>
@@ -15011,83 +15535,12 @@ row_align and col_align are between 0-1 representing the location the row should
           <type name="none" c:type="void"/>
         </return-value>
       </method>
-      <method name="column_titles_visible"
-              c:identifier="gtk_sheet_column_titles_visible"
-              doc="Get the visibility of sheet column titles .">
-        <return-value transfer-ownership="none">
-          <type name="boolean" c:type="gboolean"/>
-        </return-value>
-      </method>
       <method name="row_titles_visible"
               c:identifier="gtk_sheet_row_titles_visible"
               doc="Get the visibility of row column titles .">
         <return-value transfer-ownership="none">
           <type name="boolean" c:type="gboolean"/>
         </return-value>
-      </method>
-      <method name="column_sensitive"
-              c:identifier="gtk_sheet_column_sensitive"
-              doc="Get column button sensitivity.
-Returns:
-TRUE - the column is sensitive, FALSE - insensitive or not
-existant">
-        <return-value transfer-ownership="none">
-          <type name="boolean" c:type="gboolean"/>
-        </return-value>
-        <parameters>
-          <parameter name="column" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_set_sensitivity"
-              c:identifier="gtk_sheet_column_set_sensitivity"
-              doc="Set column button sensitivity. If sensitivity is TRUE it can be toggled, otherwise it acts as a title.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="column" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="sensitive" transfer-ownership="none">
-            <type name="boolean" c:type="gboolean"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="columns_set_sensitivity"
-              c:identifier="gtk_sheet_columns_set_sensitivity"
-              doc="Set all columns buttons sensitivity. If sensitivity is TRUE
-button can be toggled, otherwise  act as titles. The sheet itself
-has no such property, it is a convenience function to set the
-property for all existing columns.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="sensitive" transfer-ownership="none">
-            <type name="boolean" c:type="gboolean"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="columns_resizable"
-              c:identifier="gtk_sheet_columns_resizable"
-              doc="Get columns resizable status.">
-        <return-value transfer-ownership="none">
-          <type name="boolean" c:type="gboolean"/>
-        </return-value>
-      </method>
-      <method name="columns_set_resizable"
-              c:identifier="gtk_sheet_columns_set_resizable"
-              doc="Set columns resizable status.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="resizable" transfer-ownership="none">
-            <type name="boolean" c:type="gboolean"/>
-          </parameter>
-        </parameters>
       </method>
       <method name="row_sensitive"
               c:identifier="gtk_sheet_row_sensitive"
@@ -15149,63 +15602,6 @@ property for all existing rows.">
         </return-value>
         <parameters>
           <parameter name="resizable" transfer-ownership="none">
-            <type name="boolean" c:type="gboolean"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_visible"
-              c:identifier="gtk_sheet_column_visible"
-              doc="Get column visibility.">
-        <return-value transfer-ownership="none">
-          <type name="boolean" c:type="gboolean"/>
-        </return-value>
-        <parameters>
-          <parameter name="column" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_set_visibility"
-              c:identifier="gtk_sheet_column_set_visibility"
-              doc="Set column visibility. The default value is TRUE. If FALSE, the column is hidden.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="column" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="visible" transfer-ownership="none">
-            <type name="boolean" c:type="gboolean"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_label_set_visibility"
-              c:identifier="gtk_sheet_column_label_set_visibility"
-              doc="Set column label visibility. The default value is TRUE. If FALSE, the column label is hidden.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="visible" transfer-ownership="none">
-            <type name="boolean" c:type="gboolean"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="columns_labels_set_visibility"
-              c:identifier="gtk_sheet_columns_labels_set_visibility"
-              doc="Set all columns labels visibility. The default value is TRUE.
-If FALSE, the columns labels are hidden. The sheet itself
-has no such property, it is a convenience function to set the
-property for all existing columns.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="visible" transfer-ownership="none">
             <type name="boolean" c:type="gboolean"/>
           </parameter>
         </parameters>
@@ -15307,65 +15703,6 @@ returned string with g_free() when done.">
           <type name="none" c:type="void"/>
         </return-value>
         <parameters>
-          <parameter name="text" transfer-ownership="none">
-            <type name="utf8" c:type="gchar*"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_get_tooltip_markup"
-              c:identifier="gtk_sheet_column_get_tooltip_markup"
-              doc="Gets the contents of the tooltip (markup) for the column
-Returns:	the tooltip text, or NULL. You should free the
-returned string with g_free() when done.">
-        <return-value transfer-ownership="full">
-          <type name="utf8" c:type="gchar*"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_set_tooltip_markup"
-              c:identifier="gtk_sheet_column_set_tooltip_markup"
-              doc="Sets markup as the contents of the tooltip, which is marked
-up with the Pango text markup language.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="markup" transfer-ownership="none">
-            <type name="utf8" c:type="gchar*"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_get_tooltip_text"
-              c:identifier="gtk_sheet_column_get_tooltip_text"
-              doc="Gets the contents of the tooltip for the column
-Returns:	the tooltip text, or NULL. You should free the
-returned string with g_free() when done.">
-        <return-value transfer-ownership="full">
-          <type name="utf8" c:type="gchar*"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_set_tooltip_text"
-              c:identifier="gtk_sheet_column_set_tooltip_text"
-              doc="Sets text as the contents of the tooltip.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
           <parameter name="text" transfer-ownership="none">
             <type name="utf8" c:type="gchar*"/>
           </parameter>
@@ -15498,194 +15835,6 @@ returned string with g_free() when done.">
           </parameter>
           <parameter name="text" transfer-ownership="none">
             <type name="utf8" c:type="gchar*"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_get"
-              c:identifier="gtk_sheet_column_get"
-              doc="Get a #GtkSheetColumn
-Returns:	the requested #GtkSheetColumn or NULL">
-        <return-value transfer-ownership="full">
-          <type name="GtkSheetColumn" c:type="GtkSheetColumn*"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_get_iskey"
-              c:identifier="gtk_sheet_column_get_iskey"
-              doc="Gets the column is_key flag
-Returns:	the is_key flag">
-        <return-value transfer-ownership="none">
-          <type name="boolean" c:type="gboolean"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_set_iskey"
-              c:identifier="gtk_sheet_column_set_iskey"
-              doc="Sets the column is_key flag. This flag has no effect on
-calculation or presentation, it is reserved for application
-usage.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="is_key" transfer-ownership="none">
-            <type name="boolean" c:type="gboolean"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_get_readonly"
-              c:identifier="gtk_sheet_column_get_readonly"
-              doc="Gets the column readonly flag
-Returns:	the readonly flag">
-        <return-value transfer-ownership="none">
-          <type name="boolean" c:type="gboolean"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_set_readonly"
-              c:identifier="gtk_sheet_column_set_readonly"
-              doc="Sets the column readonly flag.
-A cell is editable if the sheet is not locked, the column is
-not readonly and the cell (-range) was set to editable.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="is_readonly" transfer-ownership="none">
-            <type name="boolean" c:type="gboolean"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_get_format"
-              c:identifier="gtk_sheet_column_get_format"
-              doc="Gets the column data formatting pattern
-Returns:	the formatting pattern or NULL, You should free the
-returned string with g_free() when done.">
-        <return-value transfer-ownership="full">
-          <type name="utf8" c:type="gchar*"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_set_format"
-              c:identifier="gtk_sheet_column_set_format"
-              doc="Sets the column data formatting pattern.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="format" transfer-ownership="none">
-            <type name="utf8" c:type="gchar*"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_get_datatype"
-              c:identifier="gtk_sheet_column_get_datatype"
-              doc="Gets the column data_type for application use
-Returns:	the datatype or NULL">
-        <return-value transfer-ownership="full">
-          <type name="utf8" c:type="gchar*"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_set_datatype"
-              c:identifier="gtk_sheet_column_set_datatype"
-              doc="Sets the column data data_type for application use">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="data_type" transfer-ownership="none">
-            <type name="utf8" c:type="gchar*"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_get_description"
-              c:identifier="gtk_sheet_column_get_description"
-              doc="Gets the column description
-Returns:	the description or NULL, You should free the
-returned string with g_free() when done.">
-        <return-value transfer-ownership="full">
-          <type name="utf8" c:type="gchar*"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_set_description"
-              c:identifier="gtk_sheet_column_set_description"
-              doc="Sets the column description.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="description" transfer-ownership="none">
-            <type name="utf8" c:type="gchar*"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_get_entry_type"
-              c:identifier="gtk_sheet_column_get_entry_type"
-              doc="Gets the column entry type if known
-Returns:	the entry type or GTK_SHEET_ENTRY_TYPE_DEFAULT">
-        <return-value transfer-ownership="none">
-          <type name="GType" c:type="GType"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_set_entry_type"
-              c:identifier="gtk_sheet_column_set_entry_type"
-              doc="Supersedes the sheet entry type for this column. Pass
-G_TYPE_NONE to reset the column to the sheet entry type.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="entry_type" transfer-ownership="none">
-            <type name="GType" c:type="GType"/>
           </parameter>
         </parameters>
       </method>
@@ -16031,33 +16180,6 @@ GTK_SHEET_NORMAL,GTK_SHEET_ROW_SELECTED,GTK_SHEET_COLUMN_SELECTED,GTK_SHEET_RANG
           </parameter>
         </parameters>
       </method>
-      <method name="set_column_width"
-              c:identifier="gtk_sheet_set_column_width"
-              doc="Set column width.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="column" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="width" transfer-ownership="none">
-            <type name="uint" c:type="guint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="get_column_width"
-              c:identifier="gtk_sheet_get_column_width"
-              doc="Get column width.">
-        <return-value transfer-ownership="none">
-          <type name="int" c:type="gint"/>
-        </return-value>
-        <parameters>
-          <parameter name="column" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
       <method name="set_row_height"
               c:identifier="gtk_sheet_set_row_height"
               doc="Set row height.">
@@ -16200,64 +16322,6 @@ The default value is GTK_JUSTIFY_LEFT. If autoformat is on, the default justific
           </parameter>
           <parameter name="just" transfer-ownership="none">
             <type name="Gtk.Justification" c:type="GtkJustification"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_set_justification"
-              c:identifier="gtk_sheet_column_set_justification"
-              doc="Set column justification (GTK_JUSTIFY_LEFT, RIGHT, CENTER).
-The default value is GTK_JUSTIFY_LEFT. If autoformat is on, the default justification for numbers is GTK_JUSTIFY_RIGHT.">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="just" transfer-ownership="none">
-            <type name="Gtk.Justification" c:type="GtkJustification"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_get_justification"
-              c:identifier="gtk_sheet_column_get_justification"
-              doc="Get the column justification.">
-        <return-value transfer-ownership="full">
-          <type name="Gtk.Justification" c:type="GtkJustification"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_set_vjustification"
-              c:identifier="gtk_sheet_column_set_vjustification"
-              doc="Set vertical cell text jjustification">
-        <return-value transfer-ownership="none">
-          <type name="none" c:type="void"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
-          </parameter>
-          <parameter name="vjust" transfer-ownership="none">
-            <type name="GtkSheetVerticalJustification"
-                  c:type="GtkSheetVerticalJustification"/>
-          </parameter>
-        </parameters>
-      </method>
-      <method name="column_get_vjustification"
-              c:identifier="gtk_sheet_column_get_vjustification"
-              doc="Get the vertical cell text justification. This overrides the
-default vertical cell text justification of the #GtkSheet.">
-        <return-value transfer-ownership="full">
-          <type name="GtkSheetVerticalJustification"
-                c:type="GtkSheetVerticalJustification"/>
-        </return-value>
-        <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <type name="int" c:type="gint"/>
           </parameter>
         </parameters>
       </method>
@@ -17539,6 +17603,13 @@ It should only be accessed through the functions described below."
            glib:type-struct="GtkSheetColumnClass">
       <implements name="Atk.ImplementorIface"/>
       <implements name="Gtk.Buildable"/>
+      <method name="get_index"
+              c:identifier="gtk_sheet_column_get_index"
+              doc="find index of @colobj in GtkSheet">
+        <return-value transfer-ownership="none">
+          <type name="int" c:type="gint"/>
+        </return-value>
+      </method>
       <property name="dataformat"
                 writable="1"
                 doc="a formatting string that controls what you see when the
@@ -18201,6 +18272,52 @@ It should only be accessed through the functions described below."
         </parameter>
         <parameter name="required_micro" transfer-ownership="none">
           <type name="uint" c:type="guint"/>
+        </parameter>
+      </parameters>
+    </function>
+    <function name="gtk_data_format"
+              c:identifier="gtk_data_format"
+              doc="format @str according to @dataformat.
+formatting instructions:
+&apos;&apos; (the empty string) does no formatting at all.
+&apos;int8&apos; is formatted as a singed 8-bit integer value with
+optional &apos;-&apos; sign.
+&apos;int16&apos; is formatted as a signed 16-bit integer with optional
+&apos;-&apos; sign.
+&apos;int32&apos; is formatted as a signed 32-bit integer with optional
+&apos;-&apos; sign.
+&apos;money&apos; is formatted as a double float value with 2 decimal
+digits and 1000s-separators
+&apos;float,N&apos; is formatted as a double float value with N decimal
+digits and 1000s-separators
+&apos;bit&apos; is formatted as a boolean value [0,1].
+formatted data">
+      <return-value transfer-ownership="full">
+        <type name="utf8" c:type="gchar*"/>
+      </return-value>
+      <parameters>
+        <parameter name="str" transfer-ownership="none">
+          <type name="utf8" c:type="gchar*"/>
+        </parameter>
+        <parameter name="dataformat" transfer-ownership="none">
+          <type name="utf8" c:type="gchar*"/>
+        </parameter>
+      </parameters>
+    </function>
+    <function name="gtk_data_format_remove"
+              c:identifier="gtk_data_format_remove"
+              doc="reverse the effect of #gtk_data_format, i.e. remove all
+formatting characters, apply trailing dash
+unformatted data">
+      <return-value transfer-ownership="full">
+        <type name="utf8" c:type="gchar*"/>
+      </return-value>
+      <parameters>
+        <parameter name="str" transfer-ownership="none">
+          <type name="utf8" c:type="gchar*"/>
+        </parameter>
+        <parameter name="dataformat" transfer-ownership="none">
+          <type name="utf8" c:type="gchar*"/>
         </parameter>
       </parameters>
     </function>

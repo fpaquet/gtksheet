@@ -2293,36 +2293,43 @@ gtk_item_entry_new_with_max_length (gint max)
  * Sets the text in the widget to the given value, replacing the current contents.
  */
 void
-gtk_item_entry_set_text (GtkItemEntry    *entry,
-	      	         const gchar *text,
-                         GtkJustification justification)
+    gtk_item_entry_set_text (GtkItemEntry    *entry,
+                             const gchar *text,
+                             GtkJustification justification)
 {
-  gint tmp_pos;
+    g_return_if_fail (GTK_IS_ITEM_ENTRY (entry));
+    g_return_if_fail (text != NULL);
 
-  g_return_if_fail (GTK_IS_ITEM_ENTRY (entry));
-  g_return_if_fail (text != NULL);
+    entry->justification = justification;
 
-  entry->justification = justification;
+    /* Actually setting the text will affect the cursor and selection;
+     * if the contents don't actually change, this will look odd to the user.
+     */
+    if (GTK_ENTRY(entry)->text && strcmp (GTK_ENTRY(entry)->text, text) == 0)
+    {
+        return;
+    }
 
-  /* Actually setting the text will affect the cursor and selection;
-   * if the contents don't actually change, this will look odd to the user.
-   */
-  if (GTK_ENTRY(entry)->text && strcmp (GTK_ENTRY(entry)->text, text) == 0)
-    return;
+    if (GTK_ENTRY(entry)->recompute_idle)
+    {
+        g_source_remove (GTK_ENTRY(entry)->recompute_idle);
+        GTK_ENTRY(entry)->recompute_idle = 0;
+    }
+    if (GTK_ENTRY(entry)->blink_timeout)
+    {
+        g_source_remove (GTK_ENTRY(entry)->blink_timeout);
+        GTK_ENTRY(entry)->blink_timeout = 0;
+    }
 
-  if (GTK_ENTRY(entry)->recompute_idle){
-    g_source_remove (GTK_ENTRY(entry)->recompute_idle);
-    GTK_ENTRY(entry)->recompute_idle = 0;
-  }
-  if (GTK_ENTRY(entry)->blink_timeout){
-    g_source_remove (GTK_ENTRY(entry)->blink_timeout);
-    GTK_ENTRY(entry)->blink_timeout = 0;
-  }
+    gtk_editable_delete_text (GTK_EDITABLE (entry), 0, -1);
 
-  gtk_editable_delete_text (GTK_EDITABLE (entry), 0, -1);
+    entry->item_n_bytes=0;    // rraptor edited
 
-  tmp_pos = 0;
-  gtk_editable_insert_text (GTK_EDITABLE (entry), text, strlen (text), &tmp_pos);
+    if (text[0])
+    {
+        gint tmp_pos = 0;
+        gtk_editable_insert_text (GTK_EDITABLE (entry), text, -1, &tmp_pos);
+    }
 }
 
 /**

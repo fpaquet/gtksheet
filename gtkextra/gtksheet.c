@@ -170,9 +170,9 @@ typedef enum _GtkSheetArea
 #define GTK_SHEET_ROW_SET_SENSITIVE(rowptr, value) ((rowptr)->is_sensitive = (value))
 
 #define MIN_VISIBLE_ROW(sheet)  sheet->view.row0
-#define MAX_VISIBLE_ROW(sheet)  sheet->view.rowi
+#define MAX_VISIBLE_ROW(sheet)  sheet->view.rowi  /* beware: MAX_VISIBLE_ROW() can be maxrow+1 */
 #define MIN_VISIBLE_COLUMN(sheet)  sheet->view.col0
-#define MAX_VISIBLE_COLUMN(sheet)  sheet->view.coli
+#define MAX_VISIBLE_COLUMN(sheet)  sheet->view.coli  /* beware: MAX_VISIBLE_COLUMN() can be maxcol+1 */
 
 /* defaults */
 
@@ -5780,6 +5780,9 @@ void
         drawing_range.coli = MAX_VISIBLE_COLUMN(sheet);
     }
 
+    if (drawing_range.row0 > drawing_range.rowi) return;
+    if (drawing_range.col0 > drawing_range.coli) return;
+
 #ifdef GTK_SHEET_DEBUG
     g_debug("gtk_sheet_range_draw: row %d - %d col %d - %d", 
             drawing_range.row0, drawing_range.rowi, drawing_range.col0, drawing_range.coli);
@@ -5796,7 +5799,9 @@ void
     /* clear outer area beyond rightmost column */
     if (drawing_range.coli >= MAX_VISIBLE_COLUMN(sheet))
     {
-        gint maxcol = sheet->maxcol;  /* might not be visible */
+        gint maxcol = MAX_VISIBLE_COLUMN(sheet);  /* might not be visible */
+
+        if (maxcol > sheet->maxcol) maxcol = sheet->maxcol;
 
         while (maxcol >= 0 
                && !GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, maxcol))) --maxcol;
@@ -5811,35 +5816,42 @@ void
             area.x = sheet->hoffset;
             if (sheet->row_titles_visible) area.x += sheet->row_title_area.width;
         }
-        area.y=0;
+        area.width = sheet->sheet_window_width - area.x;
+        area.y = 0;
+        area.height = sheet->sheet_window_height;
 
-        gdk_gc_set_foreground(sheet->fg_gc, &sheet->bg_color);
+        if (area.width > 0) /* beware, rightmost column might be partially visible */
+        {
+            gdk_gc_set_foreground(sheet->fg_gc, &sheet->bg_color);
 
-        gdk_draw_rectangle (sheet->pixmap,
-                            sheet->fg_gc,
-                            TRUE,
+            gdk_draw_rectangle (sheet->pixmap,
+                                sheet->fg_gc,
+                                TRUE,  /* filled */
+                                area.x, area.y,
+                                area.width, area.height);
+
+            gdk_draw_pixmap(sheet->sheet_window,
+                            gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
+                            sheet->pixmap,
                             area.x, area.y,
-                            sheet->sheet_window_width - area.x,
-                            sheet->sheet_window_height);
-
-        gdk_draw_pixmap(sheet->sheet_window,
-                        gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-                        sheet->pixmap,
-                        area.x, area.y,
-                        area.x, area.y,
-                        sheet->sheet_window_width - area.x,
-                        sheet->sheet_window_height);
+                            area.x, area.y,
+                            area.width, area.height);
+        }
     }
 
     /* clear outer area beyond last row */
     if (drawing_range.rowi >= MAX_VISIBLE_ROW(sheet))
     {
-        gint maxrow = sheet->maxrow;  /* might not be visible */
+        gint maxrow = MAX_VISIBLE_ROW(sheet);  /* might not be visible */
+
+        if (maxrow > sheet->maxrow) maxrow = sheet->maxrow;
 
         while (maxrow >= 0 
                && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, maxrow))) --maxrow;
 
-        area.x=0;
+        area.x = 0;
+        area.width = sheet->sheet_window_width;
+
         if (maxrow >= 0)
         {
             area.y = _gtk_sheet_row_top_ypixel(sheet, maxrow) + 
@@ -5850,23 +5862,25 @@ void
             area.y = sheet->voffset;
             if (sheet->column_titles_visible) area.y += sheet->column_title_area.height;
         }
+        area.height = sheet->sheet_window_height - area.y;
 
-        gdk_gc_set_foreground(sheet->fg_gc, &sheet->bg_color);
+        if (area.height > 0) /* beware, last row might be partially visible */
+        {
+            gdk_gc_set_foreground(sheet->fg_gc, &sheet->bg_color);
 
-        gdk_draw_rectangle (sheet->pixmap,
-                            sheet->fg_gc,
-                            TRUE,
+            gdk_draw_rectangle (sheet->pixmap, 
+                                sheet->fg_gc,
+                                TRUE,  /* filled */
+                                area.x, area.y,
+                                area.width, area.height);
+
+            gdk_draw_pixmap(sheet->sheet_window,
+                            gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
+                            sheet->pixmap,
                             area.x, area.y,
-                            sheet->sheet_window_width,
-                            sheet->sheet_window_height - area.y);
-
-        gdk_draw_pixmap(sheet->sheet_window,
-                        gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-                        sheet->pixmap,
-                        area.x, area.y,
-                        area.x, area.y,
-                        sheet->sheet_window_width,
-                        sheet->sheet_window_height - area.y);
+                            area.x, area.y,
+                            area.width, area.height);
+        }
     }
 
     /* draw grid and cells */
@@ -5999,8 +6013,12 @@ static void
 
     for (i=range.row0; i<=range.rowi; i++)
     {
+        if (i > sheet->maxrow) break;
+
         for (j=range.col0; j<=range.coli; j++)
         {
+            if (j > sheet->maxcol) break;
+
             if (gtk_sheet_cell_get_state(sheet, i, j)==GTK_STATE_SELECTED &&
                 GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j)) && 
                 GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)))
@@ -7244,8 +7262,12 @@ static void
 
     for (i=range->row0; i<=range->rowi; i++)
     {
+        if (i > sheet->maxrow) break;
+
         for (j=range->col0; j<=range->coli; j++)
         {
+            if (j > sheet->maxcol) break;
+
             state=gtk_sheet_cell_get_state(sheet, i, j);
             selected=(i<=new_range.rowi && i>=new_range.row0 &&
                       j<=new_range.coli && j>=new_range.col0) ? TRUE : FALSE;
@@ -7849,7 +7871,9 @@ static gboolean
         {
             gint i;
             for (i = MIN_VISIBLE_COLUMN(sheet); i <= MAX_VISIBLE_COLUMN(sheet); i++)
-                _gtk_sheet_draw_button(sheet,-1,i);
+            {
+                _gtk_sheet_draw_button(sheet, -1, i);
+            }
         }
 
         if (event->window == sheet->sheet_window)

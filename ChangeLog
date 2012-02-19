@@ -1,3 +1,6 @@
+2012-02-19 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: prevent drawing outside of sheet area
+
 2012-01-04 Fredy Paquet <mailbox AT opag.ch>
 	* GtkItemEntry: incorporated patch from Bug ID 3439972
 

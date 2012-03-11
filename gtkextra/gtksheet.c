@@ -4960,7 +4960,11 @@ static void
     size_allocate_row_title_buttons(sheet);
     _gtk_sheet_column_buttons_size_allocate(sheet);
 
-    gtk_sheet_set_title(sheet, sheet->title);
+    if (sheet->title) {
+	gchar *title = g_strdup(title);
+	gtk_sheet_set_title(sheet, title);
+	g_free(title);
+    }
 
     children = sheet->children;
     while (children)

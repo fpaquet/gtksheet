@@ -3018,16 +3018,18 @@ gboolean
 void
     gtk_sheet_set_title(GtkSheet *sheet, const gchar *title)
 {
-/*  GtkWidget *old_widget;
-*/  
     GtkWidget *label;
 
-    g_return_if_fail (sheet != NULL);
-    g_return_if_fail (title != NULL);
-    g_return_if_fail (GTK_IS_SHEET (sheet));
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET (sheet));
 
-    if (sheet->title) g_free (sheet->title);
-    sheet->title = g_strdup (title);
+    if (sheet->title) {
+        g_free (sheet->title);
+        sheet->title = NULL;
+    }
+    if (title) {
+        sheet->title = g_strdup(title);
+    }
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet)) || !title) return;
 
@@ -3297,7 +3299,7 @@ void
                             sheet->row_title_area.width,
                             sheet->row_title_area.height);
 
-    for (row = MIN_VISIBLE_ROW(sheet); row <= MAX_VISIBLE_ROW(sheet); row++)
+    for (row = MIN_VISIBLE_ROW(sheet); row <= MAX_VISIBLE_ROW(sheet) && row <= sheet->maxrow; row++)
     {
         GtkSheetChild *child;
         if (row < 0 || row > sheet->maxrow) continue;
@@ -3336,7 +3338,7 @@ void
     if (gtk_widget_get_visible(sheet->button))
         gtk_widget_hide(sheet->button);
 
-    for (row = MIN_VISIBLE_ROW(sheet); row <= MAX_VISIBLE_ROW(sheet); row++)
+    for (row = MIN_VISIBLE_ROW(sheet); row <= MAX_VISIBLE_ROW(sheet) && row <= sheet->maxrow; row++)
     {
         GtkSheetChild *child;
         if (row < 0 || row > sheet->maxrow) continue;
@@ -5641,11 +5643,9 @@ static void
 
             if (!gtk_sheet_clip_text(sheet))
             {
-                for (i=col+1; i<=MAX_VISIBLE_COLUMN(sheet); i++)
+                for (i=col+1; i<=MAX_VISIBLE_COLUMN(sheet) && i <= sheet->maxcol; i++)
                 {
                     GtkSheetColumn *colptr = COLPTR(sheet, i);
-
-                    if (i < 0 || i > sheet->maxcol) break;
 
                     if (!GTK_SHEET_COLUMN_IS_VISIBLE(colptr)) continue;
                     if (gtk_sheet_cell_get_text(sheet, row, i)) break;
@@ -5679,11 +5679,9 @@ static void
 
             if (!gtk_sheet_clip_text(sheet))
             {
-                for (i=col+1; i<=MAX_VISIBLE_COLUMN(sheet); i++)
+                for (i=col+1; i<=MAX_VISIBLE_COLUMN(sheet) && i <= sheet->maxcol; i++)
                 {
                     GtkSheetColumn *colptr = COLPTR(sheet, i);
-
-                    if (i < 0 || i > sheet->maxcol) break;
 
                     if (!GTK_SHEET_COLUMN_IS_VISIBLE(colptr)) continue;
                     if (gtk_sheet_cell_get_text(sheet, row, i)) break;
@@ -7867,14 +7865,14 @@ static gboolean
         if (event->window == sheet->row_title_window && sheet->row_titles_visible)
         {
             gint i;
-            for (i = MIN_VISIBLE_ROW(sheet); i <= MAX_VISIBLE_ROW(sheet); i++)
+            for (i = MIN_VISIBLE_ROW(sheet); i <= MAX_VISIBLE_ROW(sheet) && i <= sheet->maxrow; i++)
                 _gtk_sheet_draw_button(sheet,i,-1);
         }
 
         if (event->window == sheet->column_title_window && sheet->column_titles_visible)
         {
             gint i;
-            for (i = MIN_VISIBLE_COLUMN(sheet); i <= MAX_VISIBLE_COLUMN(sheet); i++)
+            for (i = MIN_VISIBLE_COLUMN(sheet); i <= MAX_VISIBLE_COLUMN(sheet) && i <= sheet->maxcol; i++)
             {
                 _gtk_sheet_draw_button(sheet, -1, i);
             }
@@ -9519,7 +9517,7 @@ static void
 
     if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return;
 
-    for (i = MIN_VISIBLE_ROW(sheet); i <= MAX_VISIBLE_ROW(sheet); i++)
+    for (i = MIN_VISIBLE_ROW(sheet); i <= MAX_VISIBLE_ROW(sheet) && i <= sheet->maxrow; i++)
         _gtk_sheet_draw_button(sheet,i,-1);
 }
 
@@ -9812,11 +9810,10 @@ static void
     {
         case GTK_JUSTIFY_FILL:
         case GTK_JUSTIFY_LEFT:
-            for (i=col+1; i<=MAX_VISIBLE_COLUMN(sheet); i++)
+            for (i=col+1; i<=MAX_VISIBLE_COLUMN(sheet) && i <= sheet->maxcol; i++)
             {
                 if (gtk_sheet_cell_get_text(sheet, row, i)) break;
 
-                if (i < 0 || i > sheet->maxcol) continue;
                 size += COLPTR(sheet, i)->width;
             }
             size = MIN(size, sheet->sheet_window_width - _gtk_sheet_column_left_xpixel(sheet, col));
@@ -9833,11 +9830,10 @@ static void
             break;
 
         case GTK_JUSTIFY_CENTER:
-            for (i=col+1; i<=MAX_VISIBLE_COLUMN(sheet); i++)
+            for (i=col+1; i<=MAX_VISIBLE_COLUMN(sheet) && i <= sheet->maxcol; i++)
             {
                 /* if (gtk_sheet_cell_get_text(sheet, row, i)) break; */
 
-                if (i < 0 || i > sheet->maxcol) continue;
                 sizer += COLPTR(sheet, i)->width;
             }
             for (i=col-1; i>=MIN_VISIBLE_COLUMN(sheet); i--)

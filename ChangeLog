@@ -1,3 +1,6 @@
+2012-03-31 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed uninitialized memory access in gtk_sheet_realize_handler()
+
 2012-03-30 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: eliminated ** CRITICAL **: gtk_sheet_set_title: assertion `title != NULL' failed
 	* GtkSheet: fixed invalid memory access in gtk_sheet_cell_draw_label()

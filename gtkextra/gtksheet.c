@@ -4794,188 +4794,189 @@ static void
  * @param widget the #GtkSheet
  */
 static void
-    gtk_sheet_realize_handler (GtkWidget * widget)
+gtk_sheet_realize_handler (GtkWidget * widget)
 {
-    GtkSheet *sheet;
-    GdkWindowAttr attributes;
-    gint attributes_mask;
-    GdkGCValues values, auxvalues;
-    GdkColormap *colormap;
-    GtkSheetChild *child;
-    GList *children;
-    GtkAllocation allocation;
+	GtkSheet *sheet;
+	GdkWindowAttr attributes;
+	gint attributes_mask;
+	GdkGCValues values, auxvalues;
+	GdkColormap *colormap;
+	GtkSheetChild *child;
+	GList *children;
+	GtkAllocation allocation;
 
-    g_return_if_fail (widget != NULL);
-    g_return_if_fail (GTK_IS_SHEET (widget));
+	g_return_if_fail (widget != NULL);
+	g_return_if_fail (GTK_IS_SHEET (widget));
 
-    sheet = GTK_SHEET (widget);
+	sheet = GTK_SHEET (widget);
 
 #ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_realize_handler: called (%p)", sheet->sheet_entry);
+	g_debug("gtk_sheet_realize_handler: called (%p)", sheet->sheet_entry);
 #endif
 
-    gtk_widget_set_realized_true(GTK_WIDGET(widget));
+	gtk_widget_set_realized_true(GTK_WIDGET(widget));
 
-    gtk_widget_get_allocation(widget, &allocation);
-    attributes.window_type = GDK_WINDOW_CHILD;
-    attributes.x = allocation.x;
-    attributes.y = allocation.y;
-    attributes.width = allocation.width;
-    attributes.height = allocation.height;
-    attributes.wclass = GDK_INPUT_OUTPUT;
+	gtk_widget_get_allocation(widget, &allocation);
+	attributes.window_type = GDK_WINDOW_CHILD;
+	attributes.x = allocation.x;
+	attributes.y = allocation.y;
+	attributes.width = allocation.width;
+	attributes.height = allocation.height;
+	attributes.wclass = GDK_INPUT_OUTPUT;
 
-    attributes.visual = gtk_widget_get_visual (widget);
-    attributes.colormap = gtk_widget_get_colormap (widget);
+	attributes.visual = gtk_widget_get_visual (widget);
+	attributes.colormap = gtk_widget_get_colormap (widget);
 
-    attributes.event_mask = gtk_widget_get_events (widget);
-    attributes.event_mask |= (
-                             GDK_EXPOSURE_MASK |
-                             GDK_BUTTON_PRESS_MASK |
-                             GDK_BUTTON_RELEASE_MASK |
-                             GDK_KEY_PRESS_MASK |
-                             GDK_POINTER_MOTION_MASK |
-                             GDK_POINTER_MOTION_HINT_MASK);
+	attributes.event_mask = gtk_widget_get_events (widget);
+	attributes.event_mask |= (
+							 GDK_EXPOSURE_MASK |
+							 GDK_BUTTON_PRESS_MASK |
+							 GDK_BUTTON_RELEASE_MASK |
+							 GDK_KEY_PRESS_MASK |
+							 GDK_POINTER_MOTION_MASK |
+							 GDK_POINTER_MOTION_HINT_MASK);
 
-    attributes_mask = GDK_WA_X | GDK_WA_Y | 
-        GDK_WA_VISUAL | GDK_WA_COLORMAP | GDK_WA_CURSOR;
+	attributes_mask = GDK_WA_X | GDK_WA_Y | 
+					  GDK_WA_VISUAL | GDK_WA_COLORMAP | GDK_WA_CURSOR;
 
-    attributes.cursor = gdk_cursor_new(GDK_TOP_LEFT_ARROW);
+	attributes.cursor = gdk_cursor_new(GDK_TOP_LEFT_ARROW);
 
-    /* main window */
-    gtk_widget_set_window(widget, 
-                          gdk_window_new (gtk_widget_get_parent_window (widget), 
-                                          &attributes, attributes_mask));
+	/* main window */
+	gtk_widget_set_window(widget, 
+						  gdk_window_new (gtk_widget_get_parent_window (widget), 
+										  &attributes, attributes_mask));
 
-    gdk_window_set_user_data (gtk_widget_get_window(widget), sheet);
+	gdk_window_set_user_data (gtk_widget_get_window(widget), sheet);
 
-    gtk_widget_set_style(widget, 
-                         gtk_style_attach(gtk_widget_get_style(widget),
-                                          gtk_widget_get_window(widget)));
+	gtk_widget_set_style(widget, 
+						 gtk_style_attach(gtk_widget_get_style(widget),
+										  gtk_widget_get_window(widget)));
 
-    gtk_style_set_background (gtk_widget_get_style(widget),     
-                              gtk_widget_get_window(widget), 
-                              GTK_STATE_NORMAL);
+	gtk_style_set_background (gtk_widget_get_style(widget),     
+							  gtk_widget_get_window(widget), 
+							  GTK_STATE_NORMAL);
 
-    attributes.x = 0;
-    if (sheet->row_titles_visible)
-        attributes.x = sheet->row_title_area.width;
-    attributes.y = 0;
-    attributes.width = sheet->column_title_area.width;
-    attributes.height = sheet->column_title_area.height;
+	attributes.x = 0;
+	if (sheet->row_titles_visible)
+		attributes.x = sheet->row_title_area.width;
+	attributes.y = 0;
+	attributes.width = sheet->column_title_area.width;
+	attributes.height = sheet->column_title_area.height;
 
-    /* column-title window */
-    sheet->column_title_window = gdk_window_new (
-                                                gtk_widget_get_window(widget), 
-                                                &attributes, attributes_mask);
-    gdk_window_set_user_data (sheet->column_title_window, sheet);
-    gtk_style_set_background (gtk_widget_get_style(widget),
-                              sheet->column_title_window, GTK_STATE_NORMAL);
+	/* column-title window */
+	sheet->column_title_window = gdk_window_new (
+												gtk_widget_get_window(widget), 
+												&attributes, attributes_mask);
+	gdk_window_set_user_data (sheet->column_title_window, sheet);
+	gtk_style_set_background (gtk_widget_get_style(widget),
+							  sheet->column_title_window, GTK_STATE_NORMAL);
 
-    attributes.x = 0;
-    attributes.y = 0;
-    if (sheet->column_titles_visible)
-        attributes.y = sheet->column_title_area.height;
-    attributes.width = sheet->row_title_area.width;
-    attributes.height = sheet->row_title_area.height;
+	attributes.x = 0;
+	attributes.y = 0;
+	if (sheet->column_titles_visible)
+		attributes.y = sheet->column_title_area.height;
+	attributes.width = sheet->row_title_area.width;
+	attributes.height = sheet->row_title_area.height;
 
-    /* row-title window */
-    sheet->row_title_window = gdk_window_new (
-                                             gtk_widget_get_window(widget), 
-                                             &attributes, attributes_mask);
-    gdk_window_set_user_data (sheet->row_title_window, sheet);
-    gtk_style_set_background (gtk_widget_get_style(widget), 
-                              sheet->row_title_window, GTK_STATE_NORMAL);
+	/* row-title window */
+	sheet->row_title_window = gdk_window_new (
+											 gtk_widget_get_window(widget), 
+											 &attributes, attributes_mask);
+	gdk_window_set_user_data (sheet->row_title_window, sheet);
+	gtk_style_set_background (gtk_widget_get_style(widget), 
+							  sheet->row_title_window, GTK_STATE_NORMAL);
 
-    /* sheet-window */
-    attributes.cursor = gdk_cursor_new(GDK_PLUS);
+	/* sheet-window */
+	attributes.cursor = gdk_cursor_new(GDK_PLUS);
 
-    attributes.x = 0;
-    attributes.y = 0;
-    attributes.width = sheet->sheet_window_width;
-    attributes.height = sheet->sheet_window_height;
+	attributes.x = 0;
+	attributes.y = 0;
+	attributes.width = sheet->sheet_window_width;
+	attributes.height = sheet->sheet_window_height;
 
-    sheet->sheet_window = gdk_window_new (
-                                         gtk_widget_get_window(widget), 
-                                         &attributes, attributes_mask);
-    gdk_window_set_user_data (sheet->sheet_window, sheet);
+	sheet->sheet_window = gdk_window_new (
+										 gtk_widget_get_window(widget), 
+										 &attributes, attributes_mask);
+	gdk_window_set_user_data (sheet->sheet_window, sheet);
 
-    gdk_window_set_background (sheet->sheet_window, 
-                               &(gtk_widget_get_style(widget)->white));
-    gdk_window_show (sheet->sheet_window);
+	gdk_window_set_background (sheet->sheet_window, 
+							   &(gtk_widget_get_style(widget)->white));
+	gdk_window_show (sheet->sheet_window);
 
-    /* backing_pixmap */
-    gtk_sheet_make_backing_pixmap(sheet, 0, 0);
+	/* backing_pixmap */
+	gtk_sheet_make_backing_pixmap(sheet, 0, 0);
 
-    /* GCs */
-    if (sheet->fg_gc) gdk_gc_unref(sheet->fg_gc);
-    sheet->fg_gc = gdk_gc_new (gtk_widget_get_window(widget));
+	/* GCs */
+	if (sheet->fg_gc) gdk_gc_unref(sheet->fg_gc);
+	sheet->fg_gc = gdk_gc_new (gtk_widget_get_window(widget));
 
-    if (sheet->bg_gc) gdk_gc_unref(sheet->bg_gc);
-    sheet->bg_gc = gdk_gc_new (gtk_widget_get_window(widget));
+	if (sheet->bg_gc) gdk_gc_unref(sheet->bg_gc);
+	sheet->bg_gc = gdk_gc_new (gtk_widget_get_window(widget));
 
-    colormap = gtk_widget_get_colormap(widget);
+	colormap = gtk_widget_get_colormap(widget);
 
-    gdk_color_white(colormap, &(gtk_widget_get_style(widget)->white));
-    gdk_color_black(colormap, &(gtk_widget_get_style(widget)->black));
+	gdk_color_white(colormap, &(gtk_widget_get_style(widget)->white));
+	gdk_color_black(colormap, &(gtk_widget_get_style(widget)->black));
 
-    gdk_gc_get_values(sheet->fg_gc, &auxvalues);
+	gdk_gc_get_values(sheet->fg_gc, &auxvalues);
 
-    values.foreground = gtk_widget_get_style(widget)->white;
-    values.function = GDK_INVERT;
-    values.subwindow_mode = GDK_INCLUDE_INFERIORS;
+	values.foreground = gtk_widget_get_style(widget)->white;
+	values.function = GDK_INVERT;
+	values.subwindow_mode = GDK_INCLUDE_INFERIORS;
 
-    if (sheet->xor_gc) gdk_gc_unref(sheet->xor_gc);
-    sheet->xor_gc = gdk_gc_new_with_values(gtk_widget_get_window(widget),
-                                           &values,
-                                           GDK_GC_FOREGROUND |
-                                           GDK_GC_FUNCTION |
-                                           GDK_GC_SUBWINDOW);
+	if (sheet->xor_gc) gdk_gc_unref(sheet->xor_gc);
+	sheet->xor_gc = gdk_gc_new_with_values(gtk_widget_get_window(widget),
+										   &values,
+										   GDK_GC_FOREGROUND |
+										   GDK_GC_FUNCTION |
+										   GDK_GC_SUBWINDOW);
 
-    if (sheet->sheet_entry->parent)
-    {
-        g_object_ref(sheet->sheet_entry);
-        gtk_widget_unparent(sheet->sheet_entry);
-    }
-    gtk_widget_set_parent_window (sheet->sheet_entry, sheet->sheet_window);
-    gtk_widget_set_parent(sheet->sheet_entry, GTK_WIDGET(sheet));
+	if (sheet->sheet_entry->parent)
+	{
+		g_object_ref(sheet->sheet_entry);
+		gtk_widget_unparent(sheet->sheet_entry);
+	}
+	gtk_widget_set_parent_window (sheet->sheet_entry, sheet->sheet_window);
+	gtk_widget_set_parent(sheet->sheet_entry, GTK_WIDGET(sheet));
 
-    if (sheet->button && sheet->button->parent)
-    {
-        g_object_ref(sheet->button);
-        gtk_widget_unparent(sheet->button);
-    }
-    gtk_widget_set_parent_window(sheet->button, sheet->sheet_window);
-    gtk_widget_set_parent(sheet->button, GTK_WIDGET(sheet));
+	if (sheet->button && sheet->button->parent)
+	{
+		g_object_ref(sheet->button);
+		gtk_widget_unparent(sheet->button);
+	}
+	gtk_widget_set_parent_window(sheet->button, sheet->sheet_window);
+	gtk_widget_set_parent(sheet->button, GTK_WIDGET(sheet));
 
 /*
   gtk_sheet_activate_cell(sheet, sheet->active_cell.row, sheet->active_cell.col);
 */
 
-    if (!sheet->cursor_drag)
-        sheet->cursor_drag = gdk_cursor_new(GDK_PLUS);
+	if (!sheet->cursor_drag)
+		sheet->cursor_drag = gdk_cursor_new(GDK_PLUS);
 
-    if (sheet->column_titles_visible)
-        gdk_window_show(sheet->column_title_window);
-    if (sheet->row_titles_visible)
-        gdk_window_show(sheet->row_title_window);
+	if (sheet->column_titles_visible)
+		gdk_window_show(sheet->column_title_window);
+	if (sheet->row_titles_visible)
+		gdk_window_show(sheet->row_title_window);
 
-    size_allocate_row_title_buttons(sheet);
-    _gtk_sheet_column_buttons_size_allocate(sheet);
+	size_allocate_row_title_buttons(sheet);
+	_gtk_sheet_column_buttons_size_allocate(sheet);
 
-    if (sheet->title) {
-	gchar *title = g_strdup(title);
-	gtk_sheet_set_title(sheet, title);
-	g_free(title);
-    }
+	if (sheet->title)  /* re-initialize title to update GUI */
+	{
+		gchar *existing_title = g_strdup(sheet->title);
+		gtk_sheet_set_title(sheet, existing_title);
+		g_free(existing_title);
+	}
 
-    children = sheet->children;
-    while (children)
-    {
-        child = children->data;
-        children = children->next;
+	children = sheet->children;
+	while (children)
+	{
+		child = children->data;
+		children = children->next;
 
-        gtk_sheet_realize_child(sheet, child);
-    }
+		gtk_sheet_realize_child(sheet, child);
+	}
 }
 
 /*

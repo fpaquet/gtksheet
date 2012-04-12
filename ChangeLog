@@ -1,3 +1,16 @@
+2012-04-12 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: rewritten key event processing code to use GtkBindings
+	* GtkSheet: new move-cursor signal to support GtkBindings
+	* GtkSheet: advanced TAB control via gtk_sheet_set_tab_direction()
+	* GtkSheet: documented default bindings 
+	  http://gtkextra.sourceforge.net/cms/index.php?option=com_content&view=article&id=33&Itemid=19
+	* support for gobject-introspection V1.31.20
+	* build with --enable-introspection is broken (g-ir-compiler crashes)
+	* GtkExtra: raised version to 3.0.2
+
+2012-04-06 Fredy Paquet <mailbox AT opag.ch>
+	* replaced all keysyms with new names GDK_KEY_ (from Gtk 2.22, with compatibility support)
+
 2012-03-31 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed uninitialized memory access in gtk_sheet_realize_handler()
 

@@ -167,13 +167,16 @@ gtkextra_private_h_sources = \
 	gtkextra-compat.h \
 	icons.h \
 	pixmaps.h 
+
 gtkextra_built_public_sources =	\
 	gtkextra-marshal.h	\
 	gtkextratypebuiltins.h
+
 gtkextra_built_sources = \
 	gtkextra-marshal.c	\
 	gtkextratypebuiltins.c	\
 	${gtkextra_built_public_sources}            
+
 gtkextra_extra_sources = \
 	gtkextrafeatures.h.in	\
 	gtkextra-marshal.list 	
@@ -211,7 +214,7 @@ if HAVE_INTROSPECTION
 
   INTROSPECTION_GIRS = GtkExtra-3.0.gir
 
-  INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
+  INTROSPECTION_SCANNER_ARGS = --accept-unprefixed --identifier-prefix="Gtk" --symbol-prefix="gtk" --warn-all --add-include-path=$(srcdir)
   INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
   introspection_sources = $(gtkextra_c_sources) $(gtkextra_public_h_sources)
@@ -225,10 +228,10 @@ if HAVE_INTROSPECTION
   GtkExtra_3_0_gir_FILES = $(introspection_sources)
 
   girdir = $(datadir)/gir-1.0
-#gir_DATA = $(INTROSPECTION_GIRS)
+  gir_DATA = $(INTROSPECTION_GIRS)
 
-#typelibdir = $(libdir)/girepository-1.0
-#typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+  typelibdir = $(libdir)/girepository-1.0
+  typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
   CLEANFILES += $(gir_DATA) # $(typelib_DATA)
 endif

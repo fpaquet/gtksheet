@@ -21,6 +21,9 @@
 #ifndef __GTK_COMBO_BUTTON_H__
 #define __GTK_COMBO_BUTTON_H__
 
+#include <gdk/gdk.h>
+#include <gtk/gtk.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

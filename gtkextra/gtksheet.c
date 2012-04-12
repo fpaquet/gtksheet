@@ -70,8 +70,9 @@
 #endif
 
 #ifdef GTK_SHEET_DEBUG
-#  undef GTK_SHEET_DEBUG_SIGNALS
-#  define GTK_SHEET_DEBUG_SIGNALS
+#  define GTK_SHEET_DEBUG_SIGNALS   1
+#  define GTK_SHEET_DEBUG_KEYPRESS   1
+#  define GTK_SHEET_DEBUG_FREEZE   0
 #endif
 
 /* sheet flags */
@@ -134,6 +135,7 @@ enum _GtkSheetSignals
     NEW_ROW_HEIGHT,
     ENTRY_FOCUS_IN,
     ENTRY_FOCUS_OUT,
+    MOVE_CURSOR,
     LAST_SIGNAL
 };
 static guint sheet_signals[LAST_SIGNAL] = {0};
@@ -192,6 +194,8 @@ typedef enum _GtkSheetArea
 #define GTK_SHEET_DEFAULT_GRID_COLOR  "gray"
 #define GTK_SHEET_DEFAULT_TM_COLOR  "red"   /* tooltip marker */
 #define GTK_SHEET_DEFAULT_TM_SIZE  4  /* pixels, size of tooltip marker */
+
+#define GTK_SHEET_PAGE_OVERLAP 1  /* rows to stay visible with PageUp/Dn */
 
 #ifdef GTK_SHEET_DEBUG
 #   define GTK_SHEET_DEBUG_COLOR  "green"
@@ -653,32 +657,48 @@ static void gtk_sheet_class_init(GtkSheetClass *klass);
 static void gtk_sheet_init(GtkSheet *sheet);
 static void gtk_sheet_destroy_handler(GtkObject * object);
 static void gtk_sheet_finalize_handler(GObject * object);
-static void gtk_sheet_style_set_handler(GtkWidget *widget, GtkStyle  *previous_style);
+static void gtk_sheet_style_set_handler(GtkWidget *widget, 
+										GtkStyle  *previous_style);
 static void gtk_sheet_realize_handler(GtkWidget *widget);
 static void gtk_sheet_unrealize_handler(GtkWidget *widget);
 static void gtk_sheet_map_handler(GtkWidget *widget);
 static void gtk_sheet_unmap_handler(GtkWidget *widget);
 
 static gboolean gtk_sheet_expose_handler(GtkWidget *widget, 
-                                         GdkEventExpose *event);
+										 GdkEventExpose *event);
 
 static void gtk_sheet_forall_handler(GtkContainer *container, 
-                             gboolean include_internals, GtkCallback  callback, gpointer callback_data);
+									 gboolean include_internals, 
+									 GtkCallback  callback, 
+									 gpointer callback_data);
 
 static void gtk_sheet_set_scroll_adjustments(GtkSheet *sheet, 
-                                             GtkAdjustment *hadjustment, GtkAdjustment *vadjustment);
+											 GtkAdjustment *hadjustment, 
+											 GtkAdjustment *vadjustment);
 
-static gboolean gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event);
-static gboolean gtk_sheet_button_release_handler(GtkWidget *widget, GdkEventButton *event);
-static gboolean gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event);
+static gboolean gtk_sheet_button_press_handler(GtkWidget *widget,
+											   GdkEventButton *event);
+static gboolean gtk_sheet_button_release_handler(GtkWidget *widget, 
+												 GdkEventButton *event);
+static gboolean gtk_sheet_motion_handler(GtkWidget *widget, 
+										 GdkEventMotion *event);
 
 static gboolean gtk_sheet_entry_key_press_handler(GtkWidget *widget, 
-                                                  GdkEventKey *key, gpointer user_data);
+												  GdkEventKey *key, 
+												  gpointer user_data);
 
-static gboolean gtk_sheet_key_press_handler(GtkWidget *widget, GdkEventKey *key);
+static gboolean gtk_sheet_key_press_handler(GtkWidget *widget, 
+											GdkEventKey *key);
 
-static void gtk_sheet_size_request_handler(GtkWidget *widget, GtkRequisition *requisition);
-static void gtk_sheet_size_allocate_handler(GtkWidget * widget, GtkAllocation *allocation);
+static void gtk_sheet_size_request_handler(GtkWidget *widget, 
+										   GtkRequisition *requisition);
+static void gtk_sheet_size_allocate_handler(GtkWidget * widget, 
+											GtkAllocation *allocation);
+
+static void _gtk_sheet_move_cursor(GtkSheet *sheet,
+								   GtkMovementStep step,
+								   gint count,
+								   gboolean extend_selection);
 
 /* Sheet queries */
 
@@ -1205,6 +1225,7 @@ GType
  * gtk_sheet_get_property - get sheet property
  * gtk_sheet_class_init_properties - initialize class properties
  * gtk_sheet_class_init_signals - initialize class signals
+ * gtk_sheet_class_init_bindings - initialize class key bindings
  */
 
 static void 
@@ -1463,7 +1484,8 @@ static void
     }
 }
 
-static void gtk_sheet_class_init_properties(GObjectClass *gobject_class)
+static void 
+    gtk_sheet_class_init_properties(GObjectClass *gobject_class)
 {
     GParamSpec *pspec;
 
@@ -1708,7 +1730,7 @@ static void gtk_sheet_class_init_properties(GObjectClass *gobject_class)
                                      PROP_GTK_SHEET_VJUST, pspec);
 }
 
-#ifdef GTK_SHEET_DEBUG_SIGNALS
+#if GTK_SHEET_DEBUG_SIGNALS > 0
 
     static void gtk_sheet_debug_select_row(GtkSheet *sheet, gint row)
     {
@@ -1778,10 +1800,12 @@ static void gtk_sheet_class_init_properties(GObjectClass *gobject_class)
         g_debug("SIGNAL clear-cell %p row %d col %d", sheet, row, column);
     }
 
+#if 0
     static void gtk_sheet_debug_changed(GtkSheet *sheet, gint row, gint column)
     {
         g_debug("SIGNAL changed %p row %d col %d", sheet, row, column);
     }
+#endif
 
     static void gtk_sheet_debug_new_column_width(GtkSheet *sheet, gint col, guint width)
     {
@@ -1807,7 +1831,9 @@ static void gtk_sheet_class_init_properties(GObjectClass *gobject_class)
 
 #endif
 
-static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidgetClass *widget_class)
+static void 
+	_gtk_sheet_class_init_signals(GtkObjectClass *object_class, 
+								 GtkWidgetClass *widget_class)
 {
     /**
      * GtkSheet::select-row:
@@ -2120,6 +2146,282 @@ static void gtk_sheet_class_init_signals(GtkObjectClass *object_class, GtkWidget
                       gtkextra_VOID__OBJECT_OBJECT,
                       G_TYPE_NONE, 2, gtk_adjustment_get_type (),
                       gtk_adjustment_get_type () );
+
+    /**
+     * GtkSheet::move-cursor:
+     * @sheet: the sheet widget that emitted the signal
+     * @step: the granularity of the move, as a #GtkMovementStep
+     * @count: the number of @step units to move
+     * @extend_selection: %TRUE if the move should extend the selection
+	 *  
+	 *  The ::move-cursor signal is a keybinding signal which gets
+	 *  emitted when the user initiates a cursor movement.
+	 *  
+	 *  Applications should not connect to it, but may emit it with
+	 * g_signal_emit_by_name() if they need to control the cursor 
+	 * programmatically. 
+	 *  
+     * Since: 3.0.2
+     */
+    sheet_signals[MOVE_CURSOR] =
+      g_signal_new ("move-cursor",
+                    G_TYPE_FROM_CLASS (object_class),
+                    G_SIGNAL_RUN_LAST|G_SIGNAL_ACTION,
+                    G_STRUCT_OFFSET (GtkSheetClass, move_cursor),
+                    NULL, NULL,
+                    gtkextra_VOID__ENUM_INT_BOOLEAN,
+                    G_TYPE_NONE, 3,
+					GTK_TYPE_MOVEMENT_STEP,
+					G_TYPE_INT,
+					G_TYPE_BOOLEAN);
+
+}
+
+static void
+  _add_binding_ext(GtkBindingSet *binding_set,
+						gint key, gint alt_key, GdkModifierType mods, 
+						GtkMovementStep step, gint count, 
+						gboolean extend_selection)
+{
+	gtk_binding_entry_remove(binding_set, key, mods);
+
+	gtk_binding_entry_add_signal (binding_set, 
+								  key, mods,
+								  "move-cursor", 3,
+								  G_TYPE_ENUM, step, 
+								  G_TYPE_INT, count,
+								  G_TYPE_BOOLEAN, extend_selection);
+	if (alt_key)
+	{
+		gtk_binding_entry_remove(binding_set, alt_key, mods);
+
+		gtk_binding_entry_add_signal (binding_set, 
+									  alt_key, mods,
+									  "move-cursor", 3,
+									  G_TYPE_ENUM, step,
+									  G_TYPE_INT, count,
+									  G_TYPE_BOOLEAN, extend_selection);
+	}
+}
+
+static void
+  _add_super_binding(GtkBindingSet *binding_set,
+					 gint key, gint alt_key, GdkModifierType mods, 
+					 GtkMovementStep step, gint count)
+{
+	_add_binding_ext(binding_set, 
+						   key, alt_key, GDK_SUPER_MASK|mods,
+						   step, count, 
+						   FALSE);
+
+	_add_binding_ext(binding_set, 
+						   key, alt_key, GDK_SUPER_MASK|GDK_SHIFT_MASK|mods,
+						   step, count, 
+						   TRUE);
+}
+
+static void
+  _add_normal_binding(GtkBindingSet *binding_set,
+					  gint key, gint alt_key, 
+					  GdkModifierType mods, GtkMovementStep step, gint count)
+{
+	_add_binding_ext(binding_set, 
+					 key, alt_key, mods,
+					 step, count, FALSE);
+
+	_add_binding_ext(binding_set, 
+					 key, alt_key, GDK_SHIFT_MASK|mods,
+					 step, count, TRUE);
+}
+
+static void 
+	_gtk_sheet_class_init_tab_bindings(GtkSheetClass * klass, GtkDirectionType dir)
+{
+	GtkBindingSet *b = gtk_binding_set_by_class (klass);
+	GtkDirectionType prim_forw, prim_back, sec_forw, sec_back;
+
+	switch(dir)
+	{
+		case GTK_DIR_TAB_FORWARD:
+		case GTK_DIR_RIGHT:
+			prim_forw = GTK_DIR_TAB_FORWARD;
+			prim_back = GTK_DIR_TAB_BACKWARD;
+			sec_forw = GTK_DIR_DOWN;
+			sec_back = GTK_DIR_UP;
+			break;
+		case GTK_DIR_TAB_BACKWARD:
+		case GTK_DIR_LEFT:
+			prim_forw = GTK_DIR_TAB_BACKWARD;
+			prim_back = GTK_DIR_TAB_FORWARD;
+			sec_forw = GTK_DIR_UP;
+			sec_back = GTK_DIR_DOWN;
+			break;
+		case GTK_DIR_UP:
+			prim_forw = GTK_DIR_UP;
+			prim_back = GTK_DIR_DOWN;
+			sec_forw = GTK_DIR_TAB_BACKWARD;
+			sec_back = GTK_DIR_TAB_FORWARD;
+			break;
+		case GTK_DIR_DOWN:
+			prim_forw = GTK_DIR_DOWN;
+			prim_back = GTK_DIR_UP;
+			sec_forw = GTK_DIR_TAB_FORWARD;
+			sec_back = GTK_DIR_TAB_BACKWARD;
+			break;
+	}
+
+	/* Tab / Backtab (Normal) */
+	_add_binding_ext(b, GDK_KEY_Tab, 0, 
+						   0,
+						   GTK_MOVEMENT_LOGICAL_POSITIONS, prim_forw, 
+						   FALSE);
+
+	_add_binding_ext(b, GDK_KEY_ISO_Left_Tab, 0, 
+						   GDK_SHIFT_MASK,
+						   GTK_MOVEMENT_LOGICAL_POSITIONS, prim_back, 
+						   FALSE);
+
+	/* Tab / Backtab (Super) */
+	_add_binding_ext(b, GDK_KEY_Tab, 0, 
+						   GDK_SUPER_MASK,
+						   GTK_MOVEMENT_LOGICAL_POSITIONS, sec_forw, 
+						   FALSE);
+
+	_add_binding_ext(b, GDK_KEY_ISO_Left_Tab, 0, 
+						   GDK_SUPER_MASK|GDK_SHIFT_MASK,
+						   GTK_MOVEMENT_LOGICAL_POSITIONS, sec_back, 
+						   FALSE);
+
+	/* Return / Enter (Normal) */
+	_add_binding_ext(b, GDK_KEY_Return, GDK_KEY_KP_Enter, 
+						   0,
+						   GTK_MOVEMENT_LOGICAL_POSITIONS, prim_forw, 
+						   FALSE);
+
+	_add_binding_ext(b, GDK_KEY_Return, GDK_KEY_KP_Enter, 
+						   GDK_SHIFT_MASK,
+						   GTK_MOVEMENT_LOGICAL_POSITIONS, prim_back, 
+						   FALSE);
+
+	/* Return / Enter (Super) */
+	_add_binding_ext(b, GDK_KEY_Return, GDK_KEY_KP_Enter, 
+						   GDK_SUPER_MASK,
+						   GTK_MOVEMENT_LOGICAL_POSITIONS, sec_forw, 
+						   FALSE);
+
+	_add_binding_ext(b, GDK_KEY_Return, GDK_KEY_KP_Enter, 
+						   GDK_SUPER_MASK|GDK_SHIFT_MASK,
+						   GTK_MOVEMENT_LOGICAL_POSITIONS, sec_back, 
+						   FALSE);
+}
+
+static void 
+	_gtk_sheet_class_init_bindings(GtkSheetClass * klass)
+{
+	GtkBindingSet *b = gtk_binding_set_by_class (klass);
+
+	/* Up/Down (Normal) */
+	_add_normal_binding(b, GDK_KEY_Up, GDK_KEY_KP_Up, 
+						0, GTK_MOVEMENT_DISPLAY_LINES, -1);
+
+	_add_normal_binding(b, GDK_KEY_Down, GDK_KEY_KP_Down, 
+						0, GTK_MOVEMENT_DISPLAY_LINES, 1);
+
+	/* Up / Down (Super) */
+	_add_super_binding(b, GDK_KEY_Up, GDK_KEY_KP_Up, 
+					   0, GTK_MOVEMENT_DISPLAY_LINES, -1);
+
+	_add_super_binding(b, GDK_KEY_Down, GDK_KEY_KP_Down, 
+					   0, GTK_MOVEMENT_DISPLAY_LINES, 1);
+
+	/* Up / Down (Super-Ctrl) */
+	_add_super_binding(b, GDK_KEY_Up, GDK_KEY_KP_Up, 
+					   GDK_CONTROL_MASK, GTK_MOVEMENT_PAGES, -1);
+
+	_add_super_binding(b, GDK_KEY_Down, GDK_KEY_KP_Down, 
+					   GDK_CONTROL_MASK, GTK_MOVEMENT_PAGES, 1);
+
+	/* PgUp / PgDn (Normal) */
+	_add_normal_binding(b, GDK_KEY_Page_Up, GDK_KEY_KP_Page_Up, 
+						0, GTK_MOVEMENT_PAGES, -1);
+
+	_add_normal_binding(b, GDK_KEY_Page_Down, GDK_KEY_KP_Page_Down, 
+						0, GTK_MOVEMENT_PAGES, 1);
+
+	/* PgUp / PgDn (Super) */
+	_add_super_binding(b, GDK_KEY_Page_Up, GDK_KEY_KP_Page_Up, 
+					   0, GTK_MOVEMENT_PAGES, -1);
+
+	_add_super_binding(b, GDK_KEY_Page_Down, GDK_KEY_KP_Page_Down, 
+					   0, GTK_MOVEMENT_PAGES, 1);
+
+	/* Left / Right (Super) */
+	_add_super_binding(b, GDK_KEY_Left, GDK_KEY_KP_Left, 
+					   0, GTK_MOVEMENT_VISUAL_POSITIONS, -1);
+
+	_add_super_binding(b, GDK_KEY_Right, GDK_KEY_KP_Right, 
+					   0, GTK_MOVEMENT_VISUAL_POSITIONS, 1);
+
+	/* Left / Right (Super-Ctrl) */
+	_add_super_binding(b, GDK_KEY_Left, GDK_KEY_KP_Left, 
+					   GDK_CONTROL_MASK, GTK_MOVEMENT_HORIZONTAL_PAGES, -1);
+
+	_add_super_binding(b, GDK_KEY_Right, GDK_KEY_KP_Right, 
+					   GDK_CONTROL_MASK, GTK_MOVEMENT_HORIZONTAL_PAGES, 1);
+
+	/* Home / End (Super) */
+	_add_super_binding(b, GDK_KEY_Home, GDK_KEY_KP_Home, 
+					   0, GTK_MOVEMENT_DISPLAY_LINE_ENDS, -1);
+
+	_add_super_binding(b, GDK_KEY_End, GDK_KEY_KP_End, 
+					   0, GTK_MOVEMENT_DISPLAY_LINE_ENDS, 1);
+
+	/* Home / End (Super-Ctrl) */
+	_add_super_binding(b, GDK_KEY_Home, GDK_KEY_KP_Home, 
+					   GDK_CONTROL_MASK, GTK_MOVEMENT_BUFFER_ENDS, -1);
+
+	_add_super_binding(b, GDK_KEY_End, GDK_KEY_KP_End, 
+					   GDK_CONTROL_MASK, GTK_MOVEMENT_BUFFER_ENDS, 1);
+
+	/* Tab, Return, Enter */
+	_gtk_sheet_class_init_tab_bindings(klass, GTK_DIR_TAB_FORWARD);
+}
+
+
+
+/**
+ * gtk_sheet_binding_filter - keypress binding filter
+ * 
+ * Some keypress events (with no MODS) are very convenient for the user to navigate the sheet may be processed by a sheet_entry itself. For example the Up/Down keys are very handy to navigate from row to row are used by GtkTextView to move Up/Down within a multi line text.
+ * 
+ * In order to get most out of both worlds, we generally allow useful bindings for all sheet_entry types and filter out useage collisions depending on the type of the sheet_entry.
+ * 
+ * @param sheet  The #GtkSheet
+ * @param key    The keypress event
+ * 
+ * @return TRUE to activate the binding on the sheet, FALSE to 
+ *  	   let the sheet_entry process the keypress
+ */
+static gboolean _gtk_sheet_binding_filter(GtkSheet *sheet, 
+										 GdkEventKey *key)
+{
+	if (key->state & GDK_SUPER_MASK) return(TRUE);
+
+	if (GTK_IS_TEXT_VIEW(sheet->sheet_entry))
+	{
+		switch (key->keyval)
+		{
+			case GDK_KEY_Return:
+			case GDK_KEY_Up:
+			case GDK_KEY_Down:
+			case GDK_KEY_Page_Up:
+			case GDK_KEY_Page_Down:
+				return(FALSE);
+
+			default: break;
+		}
+	}
+	return(TRUE);
 }
 
 /*
@@ -2142,7 +2444,8 @@ static void
 
     sheet_parent_class = g_type_class_peek_parent (klass);
 
-    gtk_sheet_class_init_signals(object_class, widget_class);
+    _gtk_sheet_class_init_signals(object_class, widget_class);
+    _gtk_sheet_class_init_bindings(klass);
 
     container_class->add = NULL;
     container_class->remove = gtk_sheet_remove_handler;
@@ -2185,7 +2488,7 @@ static void
     klass->focus_in_event = NULL;
     klass->focus_out_event = NULL;
 
-#ifdef GTK_SHEET_DEBUG_SIGNALS
+#if GTK_SHEET_DEBUG_SIGNALS > 0
     klass->select_row = gtk_sheet_debug_select_row;
     klass->select_column = gtk_sheet_debug_select_column;
     klass->select_range = gtk_sheet_debug_select_range;
@@ -2205,6 +2508,7 @@ static void
 #endif
 
     klass->set_scroll_adjustments = gtk_sheet_set_scroll_adjustments;
+    klass->move_cursor = _gtk_sheet_move_cursor;
 }
 
 static void
@@ -2589,7 +2893,7 @@ void
 /**
  * gtk_sheet_show_grid:
  * @sheet: a #GtkSheet
- * @show : TRUE(grid visible) or FALSE(grid invisible)
+ * @show: TRUE(grid visible) or FALSE(grid invisible)
  *
  * Sets the visibility of grid in #GtkSheet.
  */
@@ -3101,7 +3405,9 @@ const gchar *
 
 /**
  * gtk_sheet_is_frozen:
- * @sheet: the #GtkSheet
+ * @sheet: the #GtkSheet 
+ *  
+ * Get freeze status. 
  * 
  * Returns: TRUE or FALSE wether the sheet is frozen
  */
@@ -3126,6 +3432,11 @@ void
 
     sheet->freeze_count++;
     GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IS_FROZEN);
+
+#if GTK_SHEET_DEBUG_FREEZE > 0
+    g_debug("gtk_sheet_freeze: freeze_count == %d", sheet->freeze_count);
+#endif
+
 }
 
 
@@ -3207,13 +3518,13 @@ void
     sheet->freeze_count--;
     if (sheet->freeze_count > 0) 
     {
-#ifdef GTK_SHEET_DEBUG
-        g_warning("gtk_sheet_thaw: freeze_count > 0");
+#if GTK_SHEET_DEBUG_FREEZE > 0
+        g_warning("gtk_sheet_thaw: ignored (freeze_count > 0)");
 #endif
         return;
     }
-#ifdef GTK_SHEET_DEBUG
-    g_warning("gtk_sheet_thaw: freeze_count == %d", sheet->freeze_count);
+#if GTK_SHEET_DEBUG_FREEZE > 0
+    g_debug("gtk_sheet_thaw: freeze_count == %d", sheet->freeze_count);
 #endif
 
     _gtk_sheet_scrollbar_adjust(sheet);
@@ -3526,7 +3837,8 @@ void
  * gtk_sheet_row_button_justify:
  * @sheet: a #GtkSheet.
  * @row: row number
- * @justification : a #GtkJustification :GTK_JUSTIFY_LEFT, RIGHT, CENTER
+ * @justification: a #GtkJustification :GTK_JUSTIFY_LEFT, RIGHT, 
+ *  			 CENTER
  *
  * Set the justification(alignment) of the row buttons.
  */
@@ -4442,7 +4754,7 @@ static gint
 /**
  * gtk_sheet_get_visible_range:
  * @sheet: a #GtkSheet.
- * @range : a selected #GtkSheetRange
+ * @range: a selected #GtkSheetRange
  * struct _GtkSheetRange { gint row0,col0; //  upper-left cell
  * 			  gint rowi,coli;  // lower-right cell  };
  *
@@ -4616,7 +4928,7 @@ static void
                                       GtkAdjustment *hadjustment, 
                                       GtkAdjustment *vadjustment)
 {
-#ifdef GTK_SHEET_DEBUG_SIGNALS
+#if GTK_SHEET_DEBUG_SIGNALS > 0
     g_debug("SIGNAL set-scroll-adjustments %p", sheet);
 #endif
 
@@ -5787,7 +6099,7 @@ void
     if (drawing_range.col0 > drawing_range.coli) return;
 
 #ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_range_draw: row %d - %d col %d - %d", 
+    g_debug("_gtk_sheet_range_draw: row %d - %d col %d - %d", 
             drawing_range.row0, drawing_range.rowi, drawing_range.col0, drawing_range.coli);
 #endif
 
@@ -6800,6 +7112,39 @@ void
     *row = sheet->active_cell.row;
     *column = sheet->active_cell.col;
 }
+
+/**
+ * gtk_sheet_set_tab_direction:
+ * @sheet: a #GtkSheet
+ * @dir: the primary tab direction
+ *
+ * Sets a primary movement direction to the Tab, Return and 
+ * Enter keys, and assigns the opposite direction to the same 
+ * keys with GDK_SHIFT_MOD. 
+ *  
+ * Transposed movement direction can be accessed with 
+ * GDK_SUPER_MOD and GDK_SUPER_MOD|GDK_SHIFT_MOD. 
+ *  
+ * All bindings are defined for the #GtkSheetClass, so all sheet
+ * instances use the same movement directions. 
+ *  
+ * Default: GTK_DIR_TAB_FORWARD.
+ *  
+ * Since: 3.0.2 
+ */
+void
+	gtk_sheet_set_tab_direction(GtkSheet *sheet, GtkDirectionType dir)
+{
+	GtkSheetClass *klass;
+
+    g_return_if_fail (sheet != NULL);
+    g_return_if_fail (GTK_IS_SHEET (sheet));
+
+	klass = GTK_SHEET_GET_CLASS(sheet);
+
+	_gtk_sheet_class_init_tab_bindings(klass, dir);
+}
+
 
 
 /*
@@ -8933,17 +9278,32 @@ static gboolean
     gtk_sheet_entry_key_press_handler(GtkWidget *widget, GdkEventKey *key, gpointer user_data)
 {
     gboolean stop_emission;
+	GtkSheet *sheet = GTK_SHEET(widget);
 
-#ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_entry_key_press_handler: called, key %d state %x", 
-            key->keyval, key->state);
+#if GTK_SHEET_DEBUG_KEYPRESS > 0
+    g_debug("gtk_sheet_entry_key_press_handler: called, key %s", 
+            gtk_accelerator_name(key->keyval, key->state));
 #endif
 
-    g_signal_emit_by_name(GTK_OBJECT(widget), "key_press_event", key, &stop_emission);
+	if (!_gtk_sheet_binding_filter(sheet, key)){
+#if GTK_SHEET_DEBUG_KEYPRESS > 0
+		g_debug("gtk_sheet_entry_key_press_handler: filtered binding");
+#endif
+		return(FALSE);
+	}
+	/* intercept item_entry processing if there exists a key binding on the sheet */
 
-#ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_entry_key_press_handler: done, key %d state %x stop %d", 
-            key->keyval, key->state, stop_emission);
+	if (gtk_bindings_activate_event(GTK_OBJECT(sheet), key)) {
+		stop_emission = TRUE;
+	} else {
+		g_signal_emit_by_name(GTK_OBJECT(widget), 
+							  "key_press_event", key, 
+							  &stop_emission);
+	}
+
+#if GTK_SHEET_DEBUG_KEYPRESS > 0
+    g_debug("gtk_sheet_entry_key_press_handler: done, key %s stop %d", 
+            gtk_accelerator_name(key->keyval, key->state), stop_emission);
 #endif
 
     return (stop_emission);
@@ -8975,341 +9335,419 @@ static gboolean
 
     sheet = GTK_SHEET(widget);
 
-    if (key->state & GDK_CONTROL_MASK || key->keyval==GDK_Control_L ||
-        key->keyval==GDK_Control_R) return(FALSE);
-
-/*
-  {
-    if(key->keyval=='c' || key->keyval == 'C' && sheet->state != GTK_STATE_NORMAL)
-            gtk_sheet_clip_range(sheet, sheet->range);
-    if(key->keyval=='x' || key->keyval == 'X')
-            gtk_sheet_unclip_range(sheet);
-    return FALSE;
-  }
-*/
-
     extend_selection = (key->state & GDK_SHIFT_MASK)
-        || key->keyval==GDK_Shift_L
-        || key->keyval==GDK_Shift_R;
+        || key->keyval == GDK_KEY_Shift_L
+        || key->keyval == GDK_KEY_Shift_R;
 
     state=sheet->state;
     in_selection = GTK_SHEET_IN_SELECTION(sheet);
     GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 
-#ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_key_press_handler: key %d state %x", key->keyval, key->state);
+#if GTK_SHEET_DEBUG_KEYPRESS > 0
+    g_debug("gtk_sheet_key_press_handler: key %s", 
+			gtk_accelerator_name(key->keyval, key->state));
 #endif
 
-    switch (key->keyval)
-    {
-        case GDK_Return:
-            if (GTK_IS_TEXT_VIEW(sheet->sheet_entry)) return(FALSE);
+	/* if there is a key_binding, use implementation from _gtk_sheet_move_cursor() */
+
+	if (_gtk_sheet_binding_filter(sheet, key) 
+		&& gtk_bindings_activate_event(GTK_OBJECT(sheet), key)) {
+#if GTK_SHEET_DEBUG_KEYPRESS > 0
+		g_debug("gtk_sheet_key_press_handler: done %s (binding)", 
+			gtk_accelerator_name(key->keyval, key->state));
+#endif
+		return(TRUE);
+	}
+
+	return(FALSE);
+}
+
+/* _HUNT_() macros find visible row/col into hunting direction */
+
+#define _HUNT_LEFT(col) \
+	while (col > 0 \
+	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
+		  || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) ) \
+		  col--; \
+	if (col < 0) col = 0; \
+	while (col < sheet->maxcol \
+	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
+		  || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) ) \
+		  col++; \
+	if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
+		|| !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))) ) \
+		col = -1;
+
+#define _HUNT_RIGHT(col) \
+	while (col < sheet->maxcol \
+	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
+		  || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) ) \
+		col++; \
+    if (col > sheet->maxcol) col = sheet->maxcol; \
+	while (col > 0 \
+	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
+		  || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) ) \
+		col--; \
+	if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
+		|| !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))) ) \
+		col = -1;
+
+#define _HUNT_UP(row) \
+	while (row > 0 \
+	  && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row--; \
+	if (row < 0) row = 0; \
+	while (row < sheet->maxrow \
+	  && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row++; \
+	if (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row = -1;
+
+#define _HUNT_DOWN(row) \
+	while (row < sheet->maxrow \
+	  && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row++; \
+	if (row > sheet->maxrow) row = sheet->maxrow; \
+	while (row > 0 \
+	  && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row--; \
+	if (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row = -1;
+
+/**
+ * _gtk_sheet_move_cursor - default handler for move-cursor signal
+ * 
+ * @param sheet  the sheet
+ * @param step   type of movement
+ * @param count  number of steps to move
+ * @param extend_selection
+ *               TRUE if the move should extend the selection
+ */
+static void _gtk_sheet_move_cursor(GtkSheet *sheet,
+								   GtkMovementStep step,
+								   gint count,
+								   gboolean extend_selection)
+{
+	gint row, col;
+	gboolean veto = TRUE;
+
+#if GTK_SHEET_DEBUG_SIGNALS > 0
+    g_debug("SIGNAL _gtk_sheet_move_cursor %p step %d count %d extend %d", 
+			sheet, step, count, extend_selection);
+#endif
+
+	row = sheet->active_cell.row;
+	col = sheet->active_cell.col;
+
+	switch (step)
+	{
+		case GTK_MOVEMENT_PAGES:
+            count = count * 
+				(MAX_VISIBLE_ROW(sheet) - MIN_VISIBLE_ROW(sheet) - GTK_SHEET_PAGE_OVERLAP);
             /* FALLTHROUGH */
 
-        case GDK_KP_Enter:
-            if (sheet->state == GTK_SHEET_NORMAL &&
-                !GTK_SHEET_IN_SELECTION(sheet))
-                g_signal_stop_emission_by_name(GTK_OBJECT(gtk_sheet_get_entry(sheet)), 
-                                               "key_press_event");
-            row = sheet->active_cell.row;
-            col = sheet->active_cell.col;
-            if (sheet->state == GTK_SHEET_COLUMN_SELECTED)
-                row = MIN_VISIBLE_ROW(sheet)-1;
-            if (sheet->state == GTK_SHEET_ROW_SELECTED)
-                col = MIN_VISIBLE_COLUMN(sheet);
-            if (row < sheet->maxrow)
-            {
-                row = row + scroll;
-                while (row < sheet->maxrow && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row++;
-                row=MIN(sheet->maxrow, row);
-            }
+		case GTK_MOVEMENT_DISPLAY_LINES:
+			if (count < 0) /* Move Up */
+			{
+				if (extend_selection)
+				{
+					if (sheet->state == GTK_STATE_NORMAL)
+					{
+						gtk_sheet_click_cell(sheet, row, col, &veto);
+						if (!veto) break;
+					}
+					if (sheet->selection_cell.row > 0)
+					{
+						row = sheet->selection_cell.row + count;
+						_HUNT_UP(row);
+						gtk_sheet_extend_selection(sheet, row, sheet->selection_cell.col);
+					}
+					return;
+				}
 
-            gtk_sheet_click_cell(sheet, row, col, &veto);
-            extend_selection = FALSE;
-            break;
+				if (sheet->state == GTK_SHEET_COLUMN_SELECTED)
+					row = MIN_VISIBLE_ROW(sheet);
+				if (sheet->state == GTK_SHEET_ROW_SELECTED)
+					col = MIN_VISIBLE_COLUMN(sheet);
 
-        case GDK_ISO_Left_Tab:
-            row = sheet->active_cell.row;
-            col = sheet->active_cell.col;
-            if (sheet->state == GTK_SHEET_ROW_SELECTED)
-                col = MIN_VISIBLE_COLUMN(sheet)-1;
-            if (sheet->state == GTK_SHEET_COLUMN_SELECTED)
-                row = MIN_VISIBLE_ROW(sheet);
-            if (col > 0)
-            {
-                col = col - scroll;
-                while (col > 0 
-                       && !(GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))
-                            && gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) )
-                {
-                    col--;
-                }
-                col=MAX(0, col);
-            }
+				if (row > 0)
+				{
+					row = row + count;
+					_HUNT_UP(row);
+				}
+			}
+			else if (count > 0) /* Move Down */
+			{
+				if (extend_selection)
+				{
+					if (sheet->state == GTK_STATE_NORMAL)
+					{
+						gtk_sheet_click_cell(sheet, row, col, &veto);
+						if (!veto) break;
+					}
+					if (sheet->selection_cell.row < sheet->maxrow)
+					{
+						row = sheet->selection_cell.row + count;
+						_HUNT_DOWN(row);
+						gtk_sheet_extend_selection(sheet, row, sheet->selection_cell.col);
+					}
+					return;
+				}
 
-            gtk_sheet_click_cell(sheet, row, col, &veto);
-            extend_selection = FALSE;
-            break;
+				if (sheet->state == GTK_SHEET_COLUMN_SELECTED)
+					row = MIN_VISIBLE_ROW(sheet)-1;
+				if (sheet->state == GTK_SHEET_ROW_SELECTED)
+					col = MIN_VISIBLE_COLUMN(sheet);
 
-        case GDK_Tab:
-            row = sheet->active_cell.row;
-            col = sheet->active_cell.col;
-            if (sheet->state == GTK_SHEET_ROW_SELECTED)
-                col = MIN_VISIBLE_COLUMN(sheet)-1;
-            if (sheet->state == GTK_SHEET_COLUMN_SELECTED)
-                row = MIN_VISIBLE_ROW(sheet);
-            if (col < sheet->maxcol)
-            {
-                col = col + scroll;
-                while (col < sheet->maxcol 
-                       && !(GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))
-                            && gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) ) 
-                {
-                    col++;
-                }
-                col=MIN(sheet->maxcol, col);
-            }
+				if (row < sheet->maxrow)
+				{
+					row = row + count;
+					_HUNT_DOWN(row);
+				}
+			}
+			gtk_sheet_click_cell(sheet, row, col, &veto);
+			break;
 
-            gtk_sheet_click_cell(sheet, row, col, &veto);
-            extend_selection = FALSE;
-            break;
-
-/*    case GDK_BackSpace:
-            if(sheet->active_cell.row >= 0 && sheet->active_cell.col >= 0){
-             if(sheet->active_cell.col > 0){
-                  col = sheet->active_cell.col - scroll;
-              row = sheet->active_cell.row;
-                  while(col > 0 && !GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))) col--;
-             }
-            }
-            gtk_sheet_click_cell(sheet, row, col, &veto);
-            extend_selection = FALSE;
-            break;
-*/
-        case GDK_Page_Up:
-            scroll=MAX_VISIBLE_ROW(sheet)-MIN_VISIBLE_ROW(sheet)+1;
+		case GTK_MOVEMENT_HORIZONTAL_PAGES:
+            count = count * 
+				(MAX_VISIBLE_COLUMN(sheet) - MIN_VISIBLE_COLUMN(sheet) - GTK_SHEET_PAGE_OVERLAP);
             /* FALLTHROUGH */
 
-        case GDK_Up:
-            if (extend_selection)
-            {
-                if (state==GTK_STATE_NORMAL)
-                {
-                    row=sheet->active_cell.row;
-                    col=sheet->active_cell.col;
-                    gtk_sheet_click_cell(sheet, row, col, &veto);
-                    if (!veto) break;
-                }
-                if (sheet->selection_cell.row > 0)
-                {
-                    row = sheet->selection_cell.row - scroll;
-                    while (row > 0 && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row--;
-                    row = MAX(0, row);
-                    gtk_sheet_extend_selection(sheet, row, sheet->selection_cell.col);
-                }
-                return(TRUE);
-            }
+		case GTK_MOVEMENT_VISUAL_POSITIONS:
+			if (count < 0)  /* Move Left */
+			{
+				if (extend_selection)
+				{
+					if (sheet->state == GTK_STATE_NORMAL)
+					{
+						gtk_sheet_click_cell(sheet, row, col, &veto);
+						if (!veto) break;
+					}
+					if (sheet->selection_cell.col > 0)
+					{
+						col = sheet->selection_cell.col + count;
+						_HUNT_LEFT(col);
+						gtk_sheet_extend_selection(sheet, sheet->selection_cell.row, col);
+					}
+					return;
+				}
 
-            col = sheet->active_cell.col;
-            row = sheet->active_cell.row;
-            if (state==GTK_SHEET_COLUMN_SELECTED)
-                row = MIN_VISIBLE_ROW(sheet);
-            if (state==GTK_SHEET_ROW_SELECTED)
-                col = MIN_VISIBLE_COLUMN(sheet);
-            row = row - scroll;
-            while (row > 0 && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row--;
-            row = MAX(0,row);
+				if (sheet->state == GTK_SHEET_ROW_SELECTED)
+					col = MIN_VISIBLE_COLUMN(sheet)-1;
+				if (sheet->state == GTK_SHEET_COLUMN_SELECTED)
+					row = MIN_VISIBLE_ROW(sheet);
 
-            text = gtk_sheet_get_entry_text(sheet);
-            text_is_empty = (!text || !text[0]);
-            g_free(text); text = NULL;
+				if (col > 0)
+				{
+					col = col + count;
+					_HUNT_LEFT(col);
+				}
+			}
+			else if (count > 0) /* Move Right */
+			{
+				if (extend_selection)
+				{
+					if (sheet->state == GTK_STATE_NORMAL)
+					{
+						gtk_sheet_click_cell(sheet, row, col, &veto);
+						if (!veto) break;
+					}
+					if (sheet->selection_cell.col < sheet->maxcol)
+					{
+						col = sheet->selection_cell.col + count;
+						_HUNT_RIGHT(col);
+						gtk_sheet_extend_selection(sheet, sheet->selection_cell.row, col);
+					}
+					return;
+				}
 
-            if (!force_move && !text_is_empty && GTK_IS_TEXT_VIEW(sheet->sheet_entry)) 
-                return(FALSE);
+				if (sheet->state == GTK_SHEET_ROW_SELECTED) 
+					col = MIN_VISIBLE_COLUMN(sheet)-1;
+				if (sheet->state == GTK_SHEET_COLUMN_SELECTED)
+					row = MIN_VISIBLE_ROW(sheet);
 
-            gtk_sheet_click_cell(sheet, row, col, &veto);
-            extend_selection = FALSE;
+				if (col < sheet->maxcol)
+				{
+					col = col + count;
+					_HUNT_RIGHT(col);
+				}
+			}
+			gtk_sheet_click_cell(sheet, row, col, &veto);
+			break;
+
+		case GTK_MOVEMENT_BUFFER_ENDS:
+			if (count < 0)  /* Topmost Row */
+			{
+				if (extend_selection)
+				{
+					if (sheet->state == GTK_STATE_NORMAL)
+					{
+						gtk_sheet_click_cell(sheet, row, col, &veto);
+						if (!veto) break;
+					}
+					if (sheet->selection_cell.row > 0)
+					{
+						row = 0;
+						_HUNT_UP(row);
+						gtk_sheet_extend_selection(sheet, row, sheet->selection_cell.col);
+					}
+					return;
+				}
+				row=0;
+				_HUNT_UP(row);
+			}
+			else if (count > 0)  /* Last Row */
+			{
+				if (extend_selection)
+				{
+					if (sheet->state == GTK_STATE_NORMAL)
+					{
+						gtk_sheet_click_cell(sheet, row, col, &veto);
+						if (!veto) break;
+					}
+					if (sheet->selection_cell.row < sheet->maxrow)
+					{
+						row = sheet->maxrow;
+						_HUNT_DOWN(row);
+						gtk_sheet_extend_selection(sheet, row, sheet->selection_cell.col);
+					}
+					return;
+				}
+				row = sheet->maxrow;
+				_HUNT_DOWN(row);
+			}
+			gtk_sheet_click_cell(sheet, row, col, &veto);
+			break;
+
+		case GTK_MOVEMENT_DISPLAY_LINE_ENDS:
+			if (count < 0)  /* First Column */
+			{
+				if (extend_selection)
+				{
+					if (sheet->state == GTK_STATE_NORMAL)
+					{
+						gtk_sheet_click_cell(sheet, row, col, &veto);
+						if (!veto) break;
+					}
+					if (sheet->selection_cell.col > 0)
+					{
+						col = 0;
+						_HUNT_LEFT(col);
+						gtk_sheet_extend_selection(sheet, sheet->selection_cell.row, col);
+					}
+					return;
+				}
+				col = 0;
+				_HUNT_LEFT(col);
+			}
+			else if (count > 0)  /* Last Column */
+			{
+				if (extend_selection)
+				{
+					if (sheet->state == GTK_STATE_NORMAL)
+					{
+						gtk_sheet_click_cell(sheet, row, col, &veto);
+						if (!veto) break;
+					}
+					if (sheet->selection_cell.col < sheet->maxcol)
+					{
+						col = sheet->maxcol;
+						_HUNT_RIGHT(col);
+						gtk_sheet_extend_selection(sheet, sheet->selection_cell.row, col);
+					}
+					return;
+				}
+				col = sheet->maxcol;
+				_HUNT_RIGHT(col);
+			}
+			gtk_sheet_click_cell(sheet, row, col, &veto);
+			break;
+
+		case GTK_MOVEMENT_LOGICAL_POSITIONS:
+			if (sheet->state == GTK_SHEET_ROW_SELECTED)
+				col = MIN_VISIBLE_COLUMN(sheet)-1;
+			if (sheet->state == GTK_SHEET_COLUMN_SELECTED)
+				row = MIN_VISIBLE_ROW(sheet);
+
+			if ((count == GTK_DIR_LEFT)  /* Tab horizontal backward */
+				|| (count == GTK_DIR_TAB_BACKWARD))  /* Tab horizontal backward */
+			{
+				gint old_col = col;
+
+				if (col > 0)  /* move left within line */
+				{
+					col = col - 1;
+					_HUNT_LEFT(col);
+				}
+				if (col == old_col && row > 0) /* wrap at eol */
+				{
+					col = sheet->maxcol;
+					_HUNT_LEFT(col);
+
+					row = row - 1;
+					_HUNT_UP(row);
+				}
+			}
+			else if ((count == GTK_DIR_RIGHT)  /* Tab horizontal forward */
+					 || (count == GTK_DIR_TAB_FORWARD))
+			{
+				gint old_col = col;
+
+				if (col < sheet->maxcol)  /* move right within line */
+				{
+					col = col + 1;
+					_HUNT_RIGHT(col);
+				}
+				if (col == old_col && row < sheet->maxrow) /* wrap at eol */
+				{
+					col = 0;
+					_HUNT_RIGHT(col);
+
+					row = row + 1;
+					_HUNT_DOWN(row);
+				}
+			}
+			else if (count == GTK_DIR_UP)  /* Tab vertical backward */
+			{
+				gint old_row = row;
+
+				if (row > 0)  /* move up within column */
+				{
+					row = row - 1;
+					_HUNT_UP(row);
+				}
+				if (row == old_row && col > 0) /* wrap at eol */
+				{
+					row = sheet->maxrow;
+					_HUNT_UP(row);
+
+					col = col - 1;
+					_HUNT_LEFT(col);
+				}
+			}
+			else if (count == GTK_DIR_DOWN)  /* Tab vertical forward */
+			{
+				gint old_row = row;
+
+				if (row < sheet->maxrow)  /* move down within column */
+				{
+					row = row + 1;
+					_HUNT_DOWN(row);
+				}
+				if (row == old_row && col < sheet->maxcol) /* wrap at eol */
+				{
+					row = 0;
+					_HUNT_DOWN(row);
+
+					col = col + 1;
+					_HUNT_RIGHT(col);
+				}
+			}
+			gtk_sheet_click_cell(sheet, row, col, &veto);
             break;
 
-        case GDK_Page_Down:
-            scroll=MAX_VISIBLE_ROW(sheet)-MIN_VISIBLE_ROW(sheet)+1;
-            /* FALLTHROUGH */
-
-        case GDK_Down:
-            if (extend_selection)
-            {
-                if (state==GTK_STATE_NORMAL)
-                {
-                    row=sheet->active_cell.row;
-                    col=sheet->active_cell.col;
-                    gtk_sheet_click_cell(sheet, row, col, &veto);
-                    if (!veto) break;
-                }
-                if (sheet->selection_cell.row < sheet->maxrow)
-                {
-                    row = sheet->selection_cell.row + scroll;
-                    while (row < sheet->maxrow && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row++;
-                    row = MIN(sheet->maxrow, row);
-                    gtk_sheet_extend_selection(sheet, row, sheet->selection_cell.col);
-                }
-                return(TRUE);
-            }
-
-            col = sheet->active_cell.col;
-            row = sheet->active_cell.row;
-            if (sheet->active_cell.row < sheet->maxrow)
-            {
-                if (state==GTK_SHEET_COLUMN_SELECTED)
-                    row = MIN_VISIBLE_ROW(sheet)-1;
-                if (state==GTK_SHEET_ROW_SELECTED)
-                    col = MIN_VISIBLE_COLUMN(sheet);
-                row = row + scroll;
-                while (row < sheet->maxrow && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row++;
-                row = MIN(sheet->maxrow, row);
-            }
-
-            text = gtk_sheet_get_entry_text(sheet);
-            text_is_empty = (!text || !text[0]);
-            g_free(text); text = NULL;
-
-            if (!force_move && !text_is_empty && GTK_IS_TEXT_VIEW(sheet->sheet_entry)) 
-                return(FALSE);
-
-            gtk_sheet_click_cell(sheet, row, col, &veto);
-            extend_selection = FALSE;
-            break;
-
-        case GDK_Right:
-            if (extend_selection)
-            {
-                if (state==GTK_STATE_NORMAL)
-                {
-                    row=sheet->active_cell.row;
-                    col=sheet->active_cell.col;
-                    gtk_sheet_click_cell(sheet, row, col, &veto);
-                    if (!veto) break;
-                }
-                if (sheet->selection_cell.col < sheet->maxcol)
-                {
-                    col = sheet->selection_cell.col + scroll;
-                    while (col < sheet->maxcol 
-                           && !GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))) 
-                    {
-                        col++;
-                    }
-                    col = MIN(sheet->maxcol, col);
-                    gtk_sheet_extend_selection(sheet, sheet->selection_cell.row, col);
-                }
-                return(TRUE);
-            }
-            col = sheet->active_cell.col;
-            row = sheet->active_cell.row;
-
-            if (state==GTK_SHEET_ROW_SELECTED) 
-                col = MIN_VISIBLE_COLUMN(sheet)-1;
-
-            if (state==GTK_SHEET_COLUMN_SELECTED)
-                row = MIN_VISIBLE_ROW(sheet);
-
-            col = col + scroll;
-            while (col < sheet->maxcol 
-                   && !(GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))
-                        && gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) )
-            {
-                col++;
-            }
-
-            col = MIN(sheet->maxcol, col);
-
-            text = gtk_sheet_get_entry_text(sheet);
-            text_is_empty = (!text || !text[0]);
-            g_free(text); text = NULL;
-            
-            if (!force_move && !text_is_empty) return(FALSE);
-
-            gtk_sheet_click_cell(sheet, row, col, &veto);
-            extend_selection = FALSE;
-            break;
-
-        case GDK_Left:
-            if (extend_selection)
-            {
-                if (state==GTK_STATE_NORMAL)
-                {
-                    row=sheet->active_cell.row;
-                    col=sheet->active_cell.col;
-                    gtk_sheet_click_cell(sheet, row, col, &veto);
-                    if (!veto) break;
-                }
-                if (sheet->selection_cell.col > 0)
-                {
-                    col = sheet->selection_cell.col - scroll;
-                    while (col > 0 && !GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))) col--;
-                    col = MAX(0, col);
-                    gtk_sheet_extend_selection(sheet, sheet->selection_cell.row, col);
-                }
-                return(TRUE);
-            }
-            col = sheet->active_cell.col;
-            row = sheet->active_cell.row;
-
-            if (state==GTK_SHEET_ROW_SELECTED)
-                col = MIN_VISIBLE_COLUMN(sheet)-1;
-            if (state==GTK_SHEET_COLUMN_SELECTED)
-                row = MIN_VISIBLE_ROW(sheet);
-
-            col = col - scroll;
-            while (col > 0 
-                   && !(GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))
-                        && gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) )
-            {
-                col--;
-            }
-            col = MAX(0, col);
-
-            text = gtk_sheet_get_entry_text(sheet);
-            text_is_empty = (!text || !text[0]);
-            g_free(text); text = NULL;
-
-            if (!force_move && !text_is_empty) return(FALSE);
-
-            gtk_sheet_click_cell(sheet, row, col, &veto);
-            extend_selection = FALSE;
-            break;
-
-        case GDK_Home:
-            row=0;
-            while (row < sheet->maxrow && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row++;
-
-            gtk_sheet_click_cell(sheet, row, sheet->active_cell.col, &veto);
-            extend_selection = FALSE;
-            break;
-
-        case GDK_End:
-            row=sheet->maxrow;
-            while (row > 0 && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row--;
-
-            gtk_sheet_click_cell(sheet, row, sheet->active_cell.col, &veto);
-            extend_selection = FALSE;
-            break;
-
-        default:
-            if (in_selection)
-            {
-                GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
-                if (extend_selection) return(TRUE);
-            }
-            if (state == GTK_SHEET_ROW_SELECTED)
-                sheet->active_cell.col = MIN_VISIBLE_COLUMN(sheet);
-            if (state == GTK_SHEET_COLUMN_SELECTED)
-                sheet->active_cell.row = MIN_VISIBLE_ROW(sheet);
-            return(FALSE);
-    }
-
-    if (extend_selection) return(TRUE);
+		default: break;
+	}
 
     gtk_sheet_activate_cell(sheet, sheet->active_cell.row, sheet->active_cell.col);
-    return(TRUE);
+
+#if GTK_SHEET_DEBUG_SIGNALS > 0
+    g_debug("SIGNAL _gtk_sheet_move_cursor %p done", sheet);
+#endif
 }
 
 /*
@@ -10630,7 +11068,7 @@ void
                     gdk_window_show(sheet->column_title_window);
         }
 
-        gtk_sheet_range_draw(sheet, NULL, TRUE);
+        _gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
 */
 }

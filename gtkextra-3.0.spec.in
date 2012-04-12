@@ -17,7 +17,7 @@ Group: System Environment/Libraries
 Source: http://gtkextra.sourceforge.net/src/gtk+extra-%version.tar.gz
 BuildRoot: /var/tmp/glib-%{PACKAGE_VERSION}-root
 URL: http://gtkextra.sourceforge.net
-Requires:        gtk2 >= 2.12.0
+Requires:        gtk2 >= 2.18.9
 Requires:        glib2 >= 2.12.0
 Requires:        pango
 Requires:        atk

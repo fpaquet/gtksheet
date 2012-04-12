@@ -1590,7 +1590,7 @@ icon_key_press(GtkWidget *widget, GdkEventKey *key, gpointer data)
   GtkIconList *iconlist;
 
   iconlist = GTK_ICON_LIST(data);
-  if(key->keyval != GDK_Return) return FALSE;
+  if(key->keyval != GDK_KEY_Return) return FALSE;
 
   if(iconlist->active_icon)
           select_icon(iconlist, iconlist->active_icon, NULL);
@@ -1668,7 +1668,7 @@ gtk_icon_list_get_nth(GtkIconList *iconlist, guint n)
 /**
  * gtk_icon_list_get_index:
  * @iconlist: #GtkIconList widget created with gtk_icon_list_new().
- * @item : a #GtkIconListItem
+ * @item: a #GtkIconListItem
  *
  * Get the index number of the icon specified by its #GtkIconListItem pointer.
  *  
@@ -1744,7 +1744,7 @@ pixmap_destroy( GtkImage* pixmap)
 /**
  * gtk_icon_list_remove:
  * @iconlist: a #GtkIconList widget created with gtk_icon_list_new().
- * @item : a #GtkIconListItem
+ * @item: a #GtkIconListItem
  *
  * Remove the icon from the iconlist. 
  */ 	

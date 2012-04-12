@@ -1731,7 +1731,8 @@ void
  * gtk_sheet_column_button_justify:
  * @sheet: a #GtkSheet.
  * @col: column number
- * @justification : a #GtkJustification :GTK_JUSTIFY_LEFT, RIGHT, CENTER
+ * @justification: a #GtkJustification :GTK_JUSTIFY_LEFT, RIGHT, 
+ *  			 CENTER
  *
  * Set the justification(alignment) of the column buttons.
  */

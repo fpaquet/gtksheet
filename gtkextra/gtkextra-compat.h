@@ -46,12 +46,44 @@
 
     /* from V2.20 */
 
-#   define gtk_widget_set_realized_true(widget)  gtk_widget_set_realized(widget, TRUE)
-#   define gtk_widget_set_realized_false(widget)  gtk_widget_set_realized(widget, FALSE)
+#   define gtk_widget_set_realized_true(widget)  \
+		gtk_widget_set_realized(widget, TRUE)
+#   define gtk_widget_set_realized_false(widget)  \
+		gtk_widget_set_realized(widget, FALSE)
 
-#   define gtk_widget_set_mapped_true(widget)  gtk_widget_set_mapped(widget, TRUE)
-#   define gtk_widget_set_mapped_false(widget)  gtk_widget_set_mapped(widget, FALSE)
+#   define gtk_widget_set_mapped_true(widget)  \
+		gtk_widget_set_mapped(widget, TRUE)
+#   define gtk_widget_set_mapped_false(widget)  \
+		gtk_widget_set_mapped(widget, FALSE)
 
 #endif
+
+#if !GTK_CHECK_VERSION(2,22,0)
+
+    /* before V2.22 */
+
+#   define  GDK_KEY_Return   GDK_Return
+#   define  GDK_KEY_KP_Enter   GDK_KP_Enter
+#   define  GDK_KEY_Escape   GDK_Escape
+#   define  GDK_KEY_Tab   GDK_Tab
+#   define  GDK_KEY_ISO_Left_Tab   GDK_ISO_Left_Tab
+#   define  GDK_KEY_BackSpace   GDK_BackSpace
+
+#   define  GDK_KEY_Up   GDK_Up
+#   define  GDK_KEY_Down   GDK_Down
+#   define  GDK_KEY_Left   GDK_Left
+#   define  GDK_KEY_Right   GDK_Right
+#   define  GDK_KEY_Home   GDK_Home
+#   define  GDK_KEY_End   GDK_End
+#   define  GDK_KEY_Page_Up   GDK_Page_Up
+#   define  GDK_KEY_Page_Down   GDK_Page_Down
+
+#   define  GDK_KEY_Control_L   GDK_Control_L
+#   define  GDK_KEY_Control_R   GDK_Control_R
+#   define  GDK_KEY_Shift_L   GDK_Shift_L
+#   define  GDK_KEY_Shift_R   GDK_Shift_R
+
+#endif
+
 
 #endif /* GTK_EXTRA_COMPAT_H */

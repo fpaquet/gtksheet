@@ -44,26 +44,27 @@
 #include <sys/stat.h>
 
 #ifdef HAVE_UNISTD_H
-#include <unistd.h>
+#  include <unistd.h>
 #endif
 
 #ifdef HAVE_DIRENT_H
-#include <dirent.h>
+#  include <dirent.h>
 #endif
 
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "gtkextra-compat.h"
 #include "gtkiconfilesel.h"
 #include "gtkextraicons.h"
 
 #ifndef MAXHOSTNAMELEN
-#define MAXHOSTNAMELEN 64
+#  define MAXHOSTNAMELEN 64
 #endif
 
 #ifndef MAXPATHLEN
-#define MAXPATHLEN 1024
+#  define MAXPATHLEN 1024
 #endif
 
 static void gtk_icon_file_selection_class_init          (GtkIconFileSelClass *klass);
@@ -583,15 +584,16 @@ select_icon(GtkIconList *iconlist,
 static gboolean 
 entry_set_file(GtkWidget *widget, GdkEventKey *key, gpointer data)
 {
-  GtkIconFileSel *filesel = GTK_ICON_FILESEL(data);
+	GtkIconFileSel *filesel = GTK_ICON_FILESEL(data);
 
-  if(key->keyval != GDK_Return && key->keyval != GDK_KP_Enter) return FALSE;
+	if (key->keyval != GDK_KEY_Return && key->keyval != GDK_KEY_KP_Enter) 
+		return FALSE;
 
-/*  real_set_file(widget, data);
-*/
-  g_signal_emit_by_name(GTK_OBJECT(filesel->ok_button), "clicked", filesel);
+    /*  real_set_file(widget, data); */
 
-  return FALSE;
+	g_signal_emit_by_name(GTK_OBJECT(filesel->ok_button), "clicked", filesel);
+
+	return FALSE;
 }
 
 static void
@@ -660,15 +662,17 @@ real_set_file(GtkWidget *widget, gpointer data)
 static gboolean 
 set_filter(GtkWidget *widget, GdkEventKey *key, gpointer data)
 {
-  GtkIconFileSel *filesel;
+	GtkIconFileSel *filesel;
 
-  if(key->keyval != GDK_Return && key->keyval != GDK_KP_Enter) return FALSE;
+	if (key->keyval != GDK_KEY_Return && key->keyval != GDK_KEY_KP_Enter) 
+		return FALSE;
 
-  filesel = (GtkIconFileSel *)data;
-  gtk_file_list_set_filter(GTK_FILE_LIST(filesel->file_list), 
-                           gtk_entry_get_text(GTK_ENTRY(widget)));
+	filesel = (GtkIconFileSel *)data;
 
-  return TRUE;
+	gtk_file_list_set_filter(GTK_FILE_LIST(filesel->file_list), 
+							 gtk_entry_get_text(GTK_ENTRY(widget)));
+
+	return TRUE;
 }
 
 static void
@@ -929,20 +933,20 @@ combo_changed(GtkWidget *widget, gpointer data)
 
 }
 
-
 static gboolean 
 entry_key_press(GtkWidget *widget, 
-	        GdkEventKey *event, 
-		gpointer data)
+				GdkEventKey *event, 
+				gpointer data)
 {
-  GtkEntry *entry;
-  entry = GTK_ENTRY (widget);
-  if(event->keyval == GDK_Return){
-     g_signal_stop_emission_by_name( GTK_OBJECT(entry), "key_press_event");
-     //RRRgo_to_history(entry, data);
-     return TRUE;
-  }
-  return FALSE;
+	GtkEntry *entry = GTK_ENTRY (widget);
+
+	if (event->keyval == GDK_KEY_Return)
+	{
+		g_signal_stop_emission_by_name( GTK_OBJECT(entry), "key_press_event");
+		//RRRgo_to_history(entry, data);
+		return TRUE;
+	}
+	return FALSE;
 } 
 
 /**

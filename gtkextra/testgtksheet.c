@@ -368,10 +368,12 @@ gint
 
     sheet = GTK_SHEET(widget);
 
-    if (key->state & GDK_CONTROL_MASK || key->keyval==GDK_Control_L ||
-        key->keyval==GDK_Control_R)
+    if (key->state & GDK_CONTROL_MASK 
+		|| key->keyval == GDK_KEY_Control_L 
+		|| key->keyval == GDK_KEY_Control_R)
     {
-        if ((key->keyval=='c' || key->keyval == 'C') && sheet->state != GTK_STATE_NORMAL)
+        if ((key->keyval=='c' || key->keyval == 'C') 
+			&& sheet->state != GTK_STATE_NORMAL)
         {
             if (gtk_sheet_in_clip(sheet)) gtk_sheet_unclip_range(sheet);
             gtk_sheet_clip_range(sheet, &sheet->range);

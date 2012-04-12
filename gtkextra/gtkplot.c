@@ -2920,7 +2920,7 @@ gtk_plot_construct(GtkPlot *plot, GdkDrawable *drawable)
 
 /**
  * gtk_plot_new_with_size:
- * @drawable : a Gdk drawable
+ * @drawable: a Gdk drawable
  * @width: plot widget width
  * @height: plot widget height 
  *

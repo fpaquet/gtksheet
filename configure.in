@@ -8,7 +8,7 @@
 # - http://www.linuxselfhelp.com/gnu/autoconf/html_chapter/autoconf_7.html
 #
 
-AC_INIT(gtkextra,3.0.1)
+AC_INIT(gtkextra,3.0.2)
 AC_LANG([C])
 
 # Save this value here, since automake will set cflags later
@@ -26,7 +26,7 @@ AC_DIVERT_PUSH(NOTICE)dnl
 
 GTK_EXTRA_MAJOR_VERSION=3
 GTK_EXTRA_MINOR_VERSION=0
-GTK_EXTRA_MICRO_VERSION=1
+GTK_EXTRA_MICRO_VERSION=2
 GTK_EXTRA_INTERFACE_AGE=0
 GTK_EXTRA_BINARY_AGE=0
 

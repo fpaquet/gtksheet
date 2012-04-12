@@ -1289,6 +1289,7 @@ gtk_sheet_unclip_range
 
 gtk_sheet_get_active_cell
 gtk_sheet_set_active_cell
+gtk_sheet_set_tab_direction
 gtk_sheet_get_selection
 gtk_sheet_select_row
 gtk_sheet_select_range
@@ -1394,6 +1395,25 @@ gtk_widget_set_mapped_false
 gtk_widget_set_mapped_true
 gtk_widget_set_realized_false
 gtk_widget_set_realized_true
+
+GDK_KEY_BackSpace
+GDK_KEY_Control_L
+GDK_KEY_Control_R
+GDK_KEY_Down
+GDK_KEY_End
+GDK_KEY_Escape
+GDK_KEY_Home
+GDK_KEY_ISO_Left_Tab
+GDK_KEY_KP_Enter
+GDK_KEY_Left
+GDK_KEY_Page_Down
+GDK_KEY_Page_Up
+GDK_KEY_Return
+GDK_KEY_Right
+GDK_KEY_Shift_L
+GDK_KEY_Shift_R
+GDK_KEY_Tab
+GDK_KEY_Up
 </SECTION>
 
 <SECTION>

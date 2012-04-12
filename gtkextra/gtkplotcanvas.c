@@ -1236,17 +1236,17 @@ gtk_plot_canvas_map(GtkWidget *widget)
 static gint
 gtk_plot_canvas_key_press(GtkWidget *widget, GdkEventKey *key)
 {
-  GtkPlotCanvas *canvas = GTK_PLOT_CANVAS(widget);
+	GtkPlotCanvas *canvas = GTK_PLOT_CANVAS(widget);
 
-  switch(key->keyval){
-    case GDK_Escape:
-      gtk_plot_canvas_cancel_action(canvas);
-      break;
-    default:
-      break;
-  }
+	switch (key->keyval)
+	{
+		case GDK_KEY_Escape:
+			gtk_plot_canvas_cancel_action(canvas);
+			break;
 
-  return TRUE;
+		default: break;
+	}
+	return TRUE;
 }
 
 static gint 

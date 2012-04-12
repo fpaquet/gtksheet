@@ -476,9 +476,13 @@ struct _GtkSheetClass
     void (*new_column_width) (GtkSheet *sheet, gint col, guint width);
     void (*new_row_height) (GtkSheet *sheet, gint row, guint height);
 
-    gboolean (*focus_in_event)     (GtkSheet *sheet, GdkEventFocus *event);
-    gboolean (*focus_out_event)     (GtkSheet *sheet, GdkEventFocus *event);
+    gboolean (*focus_in_event) (GtkSheet *sheet, GdkEventFocus *event);
+    gboolean (*focus_out_event) (GtkSheet *sheet, GdkEventFocus *event);
 
+	void (*move_cursor) (GtkSheet *sheet,
+						 GtkMovementStep step,
+						 gint count,
+						 gboolean extend_selection);
 };
 
     GType gtk_sheet_get_type (void);
@@ -644,6 +648,9 @@ struct _GtkSheetClass
  * requested cell can't be activated */
     gboolean gtk_sheet_set_active_cell(GtkSheet *sheet, gint row, gint column);
     void gtk_sheet_get_active_cell(GtkSheet *sheet, gint *row, gint *column);
+
+/* movement */
+	void gtk_sheet_set_tab_direction(GtkSheet *sheet, GtkDirectionType dir);
 
 /* set cell contents and allocate memory if needed */
     void gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col, 

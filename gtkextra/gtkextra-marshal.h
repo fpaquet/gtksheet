@@ -193,6 +193,14 @@ extern void gtkextra_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE (GClosure     *closure,
                                                         gpointer      invocation_hint,
                                                         gpointer      marshal_data);
 
+/* VOID:ENUM,INT,BOOLEAN (gtkextra-marshal.list:26) */
+extern void gtkextra_VOID__ENUM_INT_BOOLEAN (GClosure     *closure,
+                                             GValue       *return_value,
+                                             guint         n_param_values,
+                                             const GValue *param_values,
+                                             gpointer      invocation_hint,
+                                             gpointer      marshal_data);
+
 G_END_DECLS
 
 #endif /* __gtkextra_MARSHAL_H__ */

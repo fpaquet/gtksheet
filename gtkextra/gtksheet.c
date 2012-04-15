@@ -66,13 +66,15 @@
 #undef GTK_SHEET_DEBUG
 
 #ifdef DEBUG
-    #  define GTK_SHEET_DEBUG 1  /* define to activate debug output */
+#  define GTK_SHEET_DEBUG  1  /* define to activate debug output */
 #endif
 
 #ifdef GTK_SHEET_DEBUG
-#  define GTK_SHEET_DEBUG_SIGNALS   1
-#  define GTK_SHEET_DEBUG_KEYPRESS   1
+#  define GTK_SHEET_DEBUG_SIGNALS   0
+#  define GTK_SHEET_DEBUG_KEYPRESS   0
 #  define GTK_SHEET_DEBUG_FREEZE   0
+#  define GTK_SHEET_DEBUG_EXPOSE   0
+#  define GTK_SHEET_DEBUG_DRAW  0
 #endif
 
 /* sheet flags */
@@ -5405,7 +5407,7 @@ static void
 
     sheet = GTK_SHEET (widget);
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_EXPOSE > 0
     g_debug("gtk_sheet_map_handler: called");
 #endif
 
@@ -5457,7 +5459,12 @@ static void
             }
         }
 
-        _gtk_sheet_range_draw(sheet, NULL, TRUE);
+#if GTK_SHEET_DEBUG_EXPOSE > 0
+		g_debug("gtk_sheet_map_handler: calling _gtk_sheet_range_draw");
+#endif
+
+		_gtk_sheet_recalc_view_range(sheet);
+		_gtk_sheet_range_draw(sheet, NULL, TRUE);
 
         /* this was already done above - why again?
         gtk_sheet_activate_cell(sheet, 
@@ -6076,11 +6083,19 @@ void
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_SHEET(sheet));
 
+#if GTK_SHEET_DEBUG_DRAW > 0
+    g_debug("_gtk_sheet_range_draw: called");
+#endif
+
     if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return;
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
     if (!gtk_widget_get_mapped(GTK_WIDGET(sheet))) return;
 
-    if (range)
+#if GTK_SHEET_DEBUG_DRAW > 0
+    g_debug("_gtk_sheet_range_draw: range");
+#endif
+
+	if (range)
     {
         drawing_range.row0 = MAX(range->row0, MIN_VISIBLE_ROW(sheet));
         drawing_range.rowi = MIN(range->rowi, MAX_VISIBLE_ROW(sheet));
@@ -6095,13 +6110,13 @@ void
         drawing_range.coli = MAX_VISIBLE_COLUMN(sheet);
     }
 
-    if (drawing_range.row0 > drawing_range.rowi) return;
-    if (drawing_range.col0 > drawing_range.coli) return;
-
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_DRAW > 0
     g_debug("_gtk_sheet_range_draw: row %d - %d col %d - %d", 
             drawing_range.row0, drawing_range.rowi, drawing_range.col0, drawing_range.coli);
 #endif
+
+    if (drawing_range.row0 > drawing_range.rowi) return;
+    if (drawing_range.col0 > drawing_range.coli) return;
 
 /*  
    gdk_draw_rectangle (sheet->pixmap,
@@ -6418,11 +6433,9 @@ static void
     if (range.coli >= sheet->maxcol) width = sheet->sheet_window_width-x;
     if (range.rowi >= sheet->maxrow) height=sheet->sheet_window_height-y;
 
-#ifdef GTK_SHEET_DEBUG
-#if 0
+#if GTK_SHEET_DEBUG_EXPOSE > 0
     g_debug("gtk_sheet_draw_backing_pixmap: x %d y %d w %d h %d",
             x, y, width+1, height+1);
-#endif
 #endif
 
     gdk_draw_pixmap(sheet->sheet_window,
@@ -8195,6 +8208,7 @@ static gboolean
     gtk_sheet_expose_handler (GtkWidget * widget, GdkEventExpose * event)
 {
     GtkSheet *sheet;
+	gint i;
 
     g_return_val_if_fail (widget != NULL, FALSE);
     g_return_val_if_fail (GTK_IS_SHEET (widget), FALSE);
@@ -8204,20 +8218,26 @@ static gboolean
 
     if (gtk_widget_is_drawable (widget))
     {
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_EXPOSE > 0
         g_debug("gtk_sheet_expose_handler: called");
 #endif
 
         if (event->window == sheet->row_title_window && sheet->row_titles_visible)
         {
-            gint i;
+#if GTK_SHEET_DEBUG_EXPOSE > 0
+			g_debug("gtk_sheet_expose_handler: row buttons");
+#endif
             for (i = MIN_VISIBLE_ROW(sheet); i <= MAX_VISIBLE_ROW(sheet) && i <= sheet->maxrow; i++)
+			{
                 _gtk_sheet_draw_button(sheet,i,-1);
+			}
         }
 
         if (event->window == sheet->column_title_window && sheet->column_titles_visible)
         {
-            gint i;
+#if GTK_SHEET_DEBUG_EXPOSE > 0
+			g_debug("gtk_sheet_expose_handler: column buttons");
+#endif
             for (i = MIN_VISIBLE_COLUMN(sheet); i <= MAX_VISIBLE_COLUMN(sheet) && i <= sheet->maxcol; i++)
             {
                 _gtk_sheet_draw_button(sheet, -1, i);
@@ -8232,6 +8252,11 @@ static gboolean
             range.col0=_gtk_sheet_column_from_xpixel(sheet,event->area.x);
             range.rowi=_gtk_sheet_row_from_ypixel(sheet,event->area.y+event->area.height);
             range.coli=_gtk_sheet_column_from_xpixel(sheet,event->area.x+event->area.width);
+
+#if GTK_SHEET_DEBUG_EXPOSE > 0
+			g_debug("gtk_sheet_expose_handler: backing pixmap (%d,%d) (%d,%d)",
+					range.row0, range.col0, range.rowi, range.coli );
+#endif
 
             gtk_sheet_draw_backing_pixmap(sheet, range);
 
@@ -8257,8 +8282,6 @@ static gboolean
                         gtk_widget_queue_draw(sheet->sheet_entry);
                 }
             }
-
-
         }
 
     }
@@ -10756,8 +10779,8 @@ void
 
     if ((row == -1) && (col == -1)) return;
 
-#ifdef GTK_SHEET_DEBUG
-        g_debug("gtk_sheet_draw_button: row %d col %d", row, col);
+#if GTK_SHEET_DEBUG_DRAW > 0
+        g_debug("_gtk_sheet_draw_button: row %d col %d", row, col);
 #endif
 
     if (row >= 0)

@@ -895,7 +895,7 @@ void
     if (!gtk_widget_get_realized (GTK_WIDGET(sheet))) return;
 
 #ifdef GTK_SHEET_DEBUG
-        g_debug("gtk_sheet_column_buttons_size_allocate: called");
+        g_debug("_gtk_sheet_column_buttons_size_allocate: called");
 #endif
 
     width = sheet->sheet_window_width;
@@ -928,7 +928,7 @@ void
 
 #ifdef GTK_SHEET_DEBUG
 #if 0
-        g_debug("gtk_sheet_column_buttons_size_allocate: mc %d mx %d w %d", 
+        g_debug("_gtk_sheet_column_buttons_size_allocate: mc %d mx %d w %d", 
                 mc, mx, cta->width-mx);
 #endif
 #endif

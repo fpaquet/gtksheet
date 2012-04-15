@@ -1,3 +1,6 @@
+2012-04-15 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed redraw problems when mapping a hidden, modified sheet
+
 2012-04-12 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: rewritten key event processing code to use GtkBindings
 	* GtkSheet: new move-cursor signal to support GtkBindings

@@ -1,3 +1,6 @@
+2012-04-22 Fredy Paquet <mailbox AT opag.ch>
+	* Gtk+3 Migration: Prepare: cleanup single includes
+
 2012-04-15 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed redraw problems when mapping a hidden, modified sheet
 

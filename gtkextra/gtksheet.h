@@ -20,6 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION) && !defined (__GTKEXTRA_H_INSIDE__)
+    #error "Only <gtkextra/gtkextra.h> can be included directly."
+#endif
+
 #ifndef __GTK_SHEET_H__
 #define __GTK_SHEET_H__
 

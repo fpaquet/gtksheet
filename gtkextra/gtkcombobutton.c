@@ -33,15 +33,9 @@
 
 
 #include <string.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtktogglebutton.h>
-#include <gtk/gtkarrow.h>
-#include <gtk/gtkeventbox.h>
-#include <gtk/gtkmain.h>
+#include <gtk/gtk.h>
 #include <gtk/gtksignal.h>
-#include <gtk/gtkwindow.h>
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtkframe.h>
 #include "gtkextra-compat.h"
 #include "gtkcombobutton.h"
 

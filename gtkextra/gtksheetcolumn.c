@@ -30,21 +30,17 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <glib.h>
 #include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtksignal.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkbutton.h>
-#include <gtk/gtkadjustment.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtkbox.h>
-#include <gtk/gtkmain.h>
-#include <gtk/gtktypeutils.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkcontainer.h>
 #include <gtk/gtkpixmap.h>
 #include <pango/pango.h>
+
+#define __GTKEXTRA_H_INSIDE__
+
 #include "gtkextra-compat.h"
 #include "gtkitementry.h"
 #include "gtksheet.h"

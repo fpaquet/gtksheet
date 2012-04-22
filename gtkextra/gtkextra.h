@@ -24,6 +24,8 @@
 #include <gdk/gdk.h>
 #include <glib.h>
 
+#define __GTKEXTRA_H_INSIDE__
+
 #include <gtkextra/gtkbordercombo.h>
 #include <gtkextra/gtkcharsel.h>
 #include <gtkextra/gtkcheckitem.h>
@@ -67,5 +69,7 @@
 #include <gtkextra/gtkpsfont.h>
 #include <gtkextra/gtksheet.h>
 #include <gtkextra/gtktogglecombo.h>
+
+#undef __GTKEXTRA_H_INSIDE__
 
 #endif /* GTK_EXTRA_H */

@@ -27,14 +27,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <glib.h>
 #include <string.h>
-#include "gtkextra-compat.h"
-#include "gtkcombobutton.h"
-#include "gtkbordercombo.h"
-#include "gtkcolorcombo.h"
-#include "gtktogglecombo.h"
-#include "gtksheet.h"
-#include "gtkitementry.h"
-#include "gtkfontcombo.h"
+#include "gtkextra.h"
 #include "pixmaps.h"
 
 #define DEFAULT_PRECISION 3

@@ -32,17 +32,7 @@
  */
 
 #include <string.h>
-#include <gtk/gtkarrow.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtktogglebutton.h>
-//#include <gtk/gtkpixmap.h>
-//#include <gtk/gtksignal.h>
-#include <gtk/gtkeventbox.h>
-#include <gtk/gtkbutton.h>
-#include <gtk/gtkmain.h>
-#include <gtk/gtkwindow.h>
-#include <gtk/gtkframe.h>
+#include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include "gtkcombobutton.h"
 #include "gtkbordercombo.h"

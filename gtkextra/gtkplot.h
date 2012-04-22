@@ -384,7 +384,7 @@ struct _GtkPlotAxis
 
   GtkPlotArray *tick_labels;
 
-  void (*ticks_recalc)   		(GtkPlotAxis *axis);
+  void (* ticks_recalc)   		(GtkPlotAxis *axis);
   void (*ticks_autoscale)   		(GtkPlotAxis *axis, 
 					 gdouble xmin, gdouble xmax,
 			     		 gint *precision);

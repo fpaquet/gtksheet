@@ -22,6 +22,9 @@
 #include <string.h>
 #include <math.h>
 #include <gtk/gtk.h>
+
+#define __GTKEXTRA_H_INSIDE__
+
 #include "gtkextra-compat.h"
 #include "gtkdataentry.h"
 #include "gtkdataformat.h"

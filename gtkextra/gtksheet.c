@@ -67,11 +67,13 @@
 
 #ifdef GTK_SHEET_DEBUG
 #  define GTK_SHEET_DEBUG_SIGNALS   0
-#  define GTK_SHEET_DEBUG_KEYPRESS   0
+#  define GTK_SHEET_DEBUG_KEYPRESS   1
 #  define GTK_SHEET_DEBUG_FREEZE   0
 #  define GTK_SHEET_DEBUG_EXPOSE   0
 #  define GTK_SHEET_DEBUG_DRAW  0
 #endif
+
+#define GTK_SHEET_MOD_MASK  GDK_MOD1_MASK  /* main modifier for sheet navigation */
 
 /* sheet flags */
 enum _GtkSheetFlags
@@ -2203,17 +2205,17 @@ static void
 }
 
 static void
-  _add_super_binding(GtkBindingSet *binding_set,
+  _add_mod_binding(GtkBindingSet *binding_set,
 					 gint key, gint alt_key, GdkModifierType mods, 
 					 GtkMovementStep step, gint count)
 {
 	_add_binding_ext(binding_set, 
-						   key, alt_key, GDK_SUPER_MASK|mods,
+						   key, alt_key, GTK_SHEET_MOD_MASK|mods,
 						   step, count, 
 						   FALSE);
 
 	_add_binding_ext(binding_set, 
-						   key, alt_key, GDK_SUPER_MASK|GDK_SHIFT_MASK|mods,
+						   key, alt_key, GTK_SHEET_MOD_MASK|GDK_SHIFT_MASK|mods,
 						   step, count, 
 						   TRUE);
 }
@@ -2279,14 +2281,14 @@ static void
 						   GTK_MOVEMENT_LOGICAL_POSITIONS, prim_back, 
 						   FALSE);
 
-	/* Tab / Backtab (Super) */
+	/* Tab / Backtab (Mod-Ctrl) */
 	_add_binding_ext(b, GDK_KEY_Tab, 0, 
-						   GDK_SUPER_MASK,
+						   GTK_SHEET_MOD_MASK|GDK_CONTROL_MASK,
 						   GTK_MOVEMENT_LOGICAL_POSITIONS, sec_forw, 
 						   FALSE);
 
 	_add_binding_ext(b, GDK_KEY_ISO_Left_Tab, 0, 
-						   GDK_SUPER_MASK|GDK_SHIFT_MASK,
+						   GTK_SHEET_MOD_MASK|GDK_CONTROL_MASK|GDK_SHIFT_MASK,
 						   GTK_MOVEMENT_LOGICAL_POSITIONS, sec_back, 
 						   FALSE);
 
@@ -2301,14 +2303,14 @@ static void
 						   GTK_MOVEMENT_LOGICAL_POSITIONS, prim_back, 
 						   FALSE);
 
-	/* Return / Enter (Super) */
+	/* Return / Enter (Mod-Ctrl) */
 	_add_binding_ext(b, GDK_KEY_Return, GDK_KEY_KP_Enter, 
-						   GDK_SUPER_MASK,
+						   GTK_SHEET_MOD_MASK|GDK_CONTROL_MASK,
 						   GTK_MOVEMENT_LOGICAL_POSITIONS, sec_forw, 
 						   FALSE);
 
 	_add_binding_ext(b, GDK_KEY_Return, GDK_KEY_KP_Enter, 
-						   GDK_SUPER_MASK|GDK_SHIFT_MASK,
+						   GTK_SHEET_MOD_MASK|GDK_CONTROL_MASK|GDK_SHIFT_MASK,
 						   GTK_MOVEMENT_LOGICAL_POSITIONS, sec_back, 
 						   FALSE);
 }
@@ -2325,18 +2327,18 @@ static void
 	_add_normal_binding(b, GDK_KEY_Down, GDK_KEY_KP_Down, 
 						0, GTK_MOVEMENT_DISPLAY_LINES, 1);
 
-	/* Up / Down (Super) */
-	_add_super_binding(b, GDK_KEY_Up, GDK_KEY_KP_Up, 
+	/* Up / Down (Mod) */
+	_add_mod_binding(b, GDK_KEY_Up, GDK_KEY_KP_Up, 
 					   0, GTK_MOVEMENT_DISPLAY_LINES, -1);
 
-	_add_super_binding(b, GDK_KEY_Down, GDK_KEY_KP_Down, 
+	_add_mod_binding(b, GDK_KEY_Down, GDK_KEY_KP_Down, 
 					   0, GTK_MOVEMENT_DISPLAY_LINES, 1);
 
-	/* Up / Down (Super-Ctrl) */
-	_add_super_binding(b, GDK_KEY_Up, GDK_KEY_KP_Up, 
+	/* Up / Down (Mod-Ctrl) */
+	_add_mod_binding(b, GDK_KEY_Up, GDK_KEY_KP_Up, 
 					   GDK_CONTROL_MASK, GTK_MOVEMENT_PAGES, -1);
 
-	_add_super_binding(b, GDK_KEY_Down, GDK_KEY_KP_Down, 
+	_add_mod_binding(b, GDK_KEY_Down, GDK_KEY_KP_Down, 
 					   GDK_CONTROL_MASK, GTK_MOVEMENT_PAGES, 1);
 
 	/* PgUp / PgDn (Normal) */
@@ -2346,39 +2348,39 @@ static void
 	_add_normal_binding(b, GDK_KEY_Page_Down, GDK_KEY_KP_Page_Down, 
 						0, GTK_MOVEMENT_PAGES, 1);
 
-	/* PgUp / PgDn (Super) */
-	_add_super_binding(b, GDK_KEY_Page_Up, GDK_KEY_KP_Page_Up, 
+	/* PgUp / PgDn (Mod) */
+	_add_mod_binding(b, GDK_KEY_Page_Up, GDK_KEY_KP_Page_Up, 
 					   0, GTK_MOVEMENT_PAGES, -1);
 
-	_add_super_binding(b, GDK_KEY_Page_Down, GDK_KEY_KP_Page_Down, 
+	_add_mod_binding(b, GDK_KEY_Page_Down, GDK_KEY_KP_Page_Down, 
 					   0, GTK_MOVEMENT_PAGES, 1);
 
-	/* Left / Right (Super) */
-	_add_super_binding(b, GDK_KEY_Left, GDK_KEY_KP_Left, 
+	/* Left / Right (Mod) */
+	_add_mod_binding(b, GDK_KEY_Left, GDK_KEY_KP_Left, 
 					   0, GTK_MOVEMENT_VISUAL_POSITIONS, -1);
 
-	_add_super_binding(b, GDK_KEY_Right, GDK_KEY_KP_Right, 
+	_add_mod_binding(b, GDK_KEY_Right, GDK_KEY_KP_Right, 
 					   0, GTK_MOVEMENT_VISUAL_POSITIONS, 1);
 
-	/* Left / Right (Super-Ctrl) */
-	_add_super_binding(b, GDK_KEY_Left, GDK_KEY_KP_Left, 
+	/* Left / Right (Mod-Ctrl) */
+	_add_mod_binding(b, GDK_KEY_Left, GDK_KEY_KP_Left, 
 					   GDK_CONTROL_MASK, GTK_MOVEMENT_HORIZONTAL_PAGES, -1);
 
-	_add_super_binding(b, GDK_KEY_Right, GDK_KEY_KP_Right, 
+	_add_mod_binding(b, GDK_KEY_Right, GDK_KEY_KP_Right, 
 					   GDK_CONTROL_MASK, GTK_MOVEMENT_HORIZONTAL_PAGES, 1);
 
-	/* Home / End (Super) */
-	_add_super_binding(b, GDK_KEY_Home, GDK_KEY_KP_Home, 
+	/* Home / End (Mod) */
+	_add_mod_binding(b, GDK_KEY_Home, GDK_KEY_KP_Home, 
 					   0, GTK_MOVEMENT_DISPLAY_LINE_ENDS, -1);
 
-	_add_super_binding(b, GDK_KEY_End, GDK_KEY_KP_End, 
+	_add_mod_binding(b, GDK_KEY_End, GDK_KEY_KP_End, 
 					   0, GTK_MOVEMENT_DISPLAY_LINE_ENDS, 1);
 
-	/* Home / End (Super-Ctrl) */
-	_add_super_binding(b, GDK_KEY_Home, GDK_KEY_KP_Home, 
+	/* Home / End (Mod-Ctrl) */
+	_add_mod_binding(b, GDK_KEY_Home, GDK_KEY_KP_Home, 
 					   GDK_CONTROL_MASK, GTK_MOVEMENT_BUFFER_ENDS, -1);
 
-	_add_super_binding(b, GDK_KEY_End, GDK_KEY_KP_End, 
+	_add_mod_binding(b, GDK_KEY_End, GDK_KEY_KP_End, 
 					   GDK_CONTROL_MASK, GTK_MOVEMENT_BUFFER_ENDS, 1);
 
 	/* Tab, Return, Enter */
@@ -2403,7 +2405,7 @@ static void
 static gboolean _gtk_sheet_binding_filter(GtkSheet *sheet, 
 										 GdkEventKey *key)
 {
-	if (key->state & GDK_SUPER_MASK) return(TRUE);
+	if (key->state & GTK_SHEET_MOD_MASK) return(TRUE);
 
 	if (GTK_IS_TEXT_VIEW(sheet->sheet_entry))
 	{
@@ -7129,10 +7131,11 @@ void
  *
  * Sets a primary movement direction to the Tab, Return and 
  * Enter keys, and assigns the opposite direction to the same 
- * keys with GDK_SHIFT_MOD. 
+ * keys with GDK_SHIFT_MASK. 
  *  
  * Transposed movement direction can be accessed with 
- * GDK_SUPER_MOD and GDK_SUPER_MOD|GDK_SHIFT_MOD. 
+ * GTK_SHEET_MOD_MASK|GDK_CONTROL_MASK and 
+ * GTK_SHEET_MOD_MASK|GDK_CONTROL_MASK|GDK_SHIFT_MASK. 
  *  
  * All bindings are defined for the #GtkSheetClass, so all sheet
  * instances use the same movement directions. 

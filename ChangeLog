@@ -1,3 +1,6 @@
+2012-04-28 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: reworked KeyBindings to use Alt-Mod instead of Super-Mod (collisions on Win7)
+
 2012-04-22 Fredy Paquet <mailbox AT opag.ch>
 	* Gtk+3 Migration: Prepare: cleanup single includes
 

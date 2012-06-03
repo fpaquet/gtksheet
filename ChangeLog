@@ -1,5 +1,6 @@
 2012-06-03 Fredy Paquet <mailbox AT opag.ch>
 	* Added m4/introspection.m4 to the distribution - Bug ID 3471311
+	* fixed dimension name dz - Bug ID 3450154
 
 2012-04-28 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: reworked KeyBindings to use Alt-Mod instead of Super-Mod (collisions on Win7)

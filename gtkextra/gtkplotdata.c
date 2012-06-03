@@ -5218,7 +5218,7 @@ gtk_plot_data_set_dz(GtkPlotData *data,
                      gdouble *dz)
 {
   GtkPlotArray *array;
-  array = gtk_plot_data_dimension_set_points(data, "ErrZ", dz);
+  array = gtk_plot_data_dimension_set_points(data, "dz", dz);
   return array;
 }
 
@@ -5417,7 +5417,7 @@ gdouble *
 gtk_plot_data_get_dz(GtkPlotData *dataset, gint *num_points)
 {
   GtkPlotArray *array;
-  array = gtk_plot_data_dimension_get_array(dataset, "ErrZ");
+  array = gtk_plot_data_dimension_get_array(dataset, "dz");
   if(array){
     *num_points = gtk_plot_array_get_size(array);
     return gtk_plot_array_get_double(array);

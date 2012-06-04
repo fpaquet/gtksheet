@@ -10,6 +10,7 @@
 
 AC_INIT(gtkextra,3.0.2)
 AC_LANG([C])
+AC_CONFIG_MACRO_DIR([m4])
 
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS:+set}

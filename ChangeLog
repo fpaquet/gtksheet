@@ -1,3 +1,6 @@
+2012-06-04 Fredy Paquet <mailbox AT opag.ch>
+	* fixed autoconf m4 includedir - Bug ID 3471311
+
 2012-06-03 Fredy Paquet <mailbox AT opag.ch>
 	* Added m4/introspection.m4 to the distribution - Bug ID 3471311
 	* fixed dimension name dz - Bug ID 3450154

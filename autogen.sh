@@ -66,7 +66,7 @@ fi
 if ( aclocal --version ) </dev/null > /dev/null 2>&1; then
 	rm -f aclocal.m4
 	echo "Building aclocal.m4... "
-	${ACLOCAL}
+	${ACLOCAL} -I m4
 	echo "done."
 else
 	echo "aclocal not found -- aborting `basename $0`"

@@ -323,7 +323,8 @@ struct _GtkSheet
     guint16 flags;
 
     GtkSelectionMode selection_mode;
-    gboolean autoresize;
+    gboolean autoresize_columns;
+    gboolean autoresize_rows;
     gboolean autoscroll;
     gboolean clip_text;
     gboolean justify_entry;
@@ -534,6 +535,8 @@ struct _GtkSheetClass
     void gtk_sheet_set_selection_mode(GtkSheet *sheet, GtkSelectionMode mode);
     void gtk_sheet_set_autoresize(GtkSheet *sheet, gboolean autoresize);
     gboolean gtk_sheet_autoresize(GtkSheet *sheet);
+    gboolean gtk_sheet_autoresize_columns(GtkSheet *sheet);
+    gboolean gtk_sheet_autoresize_rows(GtkSheet *sheet);
     void gtk_sheet_set_autoscroll(GtkSheet *sheet, gboolean autoscroll);
     gboolean gtk_sheet_autoscroll(GtkSheet *sheet);
     void gtk_sheet_set_clip_text(GtkSheet *sheet, gboolean clip_text);

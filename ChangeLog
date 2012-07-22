@@ -1,3 +1,6 @@
+2012-07-22 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: improved autoresize columns (max width limit)
+
 2012-06-04 Fredy Paquet <mailbox AT opag.ch>
 	* fixed autoconf m4 includedir in autogen.sh - Bug ID 3471311
 

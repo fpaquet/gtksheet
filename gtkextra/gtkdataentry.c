@@ -69,7 +69,7 @@
 #undef GTK_DATA_ENTRY_DEBUG
 
 #ifdef DEBUG
-#  define GTK_DATA_ENTRY_DEBUG 1  /* define to activate debug output */
+#  define GTK_DATA_ENTRY_DEBUG  0  /* define to activate debug output */
 #endif
 
 enum
@@ -222,7 +222,7 @@ G_CONST_RETURN gchar*
         text = gtk_data_format_remove(text, data_entry->data_format);
     }
 
-#ifdef GTK_DATA_ENTRY_DEBUG
+#if GTK_DATA_ENTRY_DEBUG
     g_debug("gtk_data_entry_get_text: %s", text ? text : "");
 #endif
 
@@ -248,7 +248,7 @@ void gtk_data_entry_set_text(GtkDataEntry *data_entry,
         text = gtk_data_format(text, data_entry->data_format);
     }
 
-#ifdef GTK_DATA_ENTRY_DEBUG
+#if GTK_DATA_ENTRY_DEBUG
     g_debug("gtk_data_entry_set_text: %s", text ? text : "");
 #endif
 
@@ -394,7 +394,7 @@ static gint
     const gchar *text = gtk_entry_get_text(GTK_ENTRY(widget));
     gchar *data_format = GTK_DATA_ENTRY(widget)->data_format;
 
-#ifdef GTK_DATA_ENTRY_DEBUG
+#if GTK_DATA_ENTRY_DEBUG
     g_debug("gtk_data_entry_focus_in: called");
 #endif
     if (data_format && data_format[0])
@@ -412,7 +412,7 @@ static gint
     const gchar *text = gtk_entry_get_text(GTK_ENTRY(widget));
     gchar *data_format = GTK_DATA_ENTRY(widget)->data_format;
 
-#ifdef GTK_DATA_ENTRY_DEBUG
+#if GTK_DATA_ENTRY_DEBUG
     g_debug("gtk_data_entry_focus_out: called");
 #endif
 

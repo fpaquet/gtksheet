@@ -1256,6 +1256,8 @@ gtk_sheet_get_rows_count
 gtk_sheet_get_visible_range
 gtk_sheet_set_selection_mode
 gtk_sheet_autoresize
+gtk_sheet_autoresize_columns
+gtk_sheet_autoresize_rows
 gtk_sheet_set_autoresize
 gtk_sheet_autoscroll
 gtk_sheet_set_autoscroll
@@ -1395,6 +1397,8 @@ gtk_widget_set_mapped_false
 gtk_widget_set_mapped_true
 gtk_widget_set_realized_false
 gtk_widget_set_realized_true
+_gtk_sheet_move_cursor
+_gtk_sheet_row_default_height
 
 GDK_KEY_BackSpace
 GDK_KEY_Control_L

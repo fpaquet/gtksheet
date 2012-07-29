@@ -103,6 +103,8 @@ enum _GtkSheetProperties
     PROP_GTK_SHEET_LOCKED,  /* gtk_sheet_set_locked() */
     PROP_GTK_SHEET_SELECTION_MODE,  /* gtk_sheet_set_selection_mode() */
     PROP_GTK_SHEET_AUTO_RESIZE,  /* gtk_sheet_set_autoresize() */
+    PROP_GTK_SHEET_AUTO_RESIZE_ROWS,  /* gtk_sheet_set_autoresize_rows() */
+    PROP_GTK_SHEET_AUTO_RESIZE_COLUMNS,  /* gtk_sheet_set_autoresize_columns() */
     PROP_GTK_SHEET_AUTO_SCROLL,  /* gtk_sheet_set_autoscroll() */
     PROP_GTK_SHEET_CLIP_TEXT,  /* gtk_sheet_set_clip_text() */
     PROP_GTK_SHEET_JUSTIFY_ENTRY,  /* gtk_sheet_set_justify_entry() */
@@ -191,7 +193,21 @@ typedef enum _GtkSheetArea
 #define COLUMN_WIDTH(sheet, text_width, attr_border_width)  \
     (text_width + 2*CELLOFFSET + attr_border_width > MAX_COLUMN_WIDTH(sheet) ? \
     MAX_COLUMN_WIDTH(sheet) : \
-    text_width + 2 * CELLOFFSET + attr_border_width)
+    text_width + 2*CELLOFFSET + attr_border_width)
+
+#define ROW_UNREAL_MAX_HEIGHT 256  /* unrealized maximum height */
+#define ROW_REMNANT_PIXELS  32   /* maximized rows leave these pixels free */
+
+#define MAX_ROW_HEIGHT(sheet) \
+    (sheet->sheet_window_height < ROW_REMNANT_PIXELS ? \
+    ROW_UNREAL_MAX_HEIGHT : \
+    sheet->sheet_window_height - ROW_REMNANT_PIXELS )
+
+#define ROW_HEIGHT(sheet, text_height, attr_border_height)  \
+    (text_height + 2*CELLOFFSET + attr_border_height > MAX_ROW_HEIGHT(sheet) ? \
+    MAX_ROW_HEIGHT(sheet) : \
+    text_height + 2*CELLOFFSET + attr_border_height)
+
 
 /* defaults */
 
@@ -1308,6 +1324,14 @@ gtk_sheet_set_property(GObject *object,
         gtk_sheet_set_autoresize(sheet, g_value_get_boolean(value));
         break;
 
+    case PROP_GTK_SHEET_AUTO_RESIZE_ROWS:
+        gtk_sheet_set_autoresize_rows(sheet, g_value_get_boolean(value));
+        break;
+
+    case PROP_GTK_SHEET_AUTO_RESIZE_COLUMNS:
+        gtk_sheet_set_autoresize_columns(sheet, g_value_get_boolean(value));
+        break;
+
     case PROP_GTK_SHEET_AUTO_SCROLL:
         gtk_sheet_set_autoscroll(sheet, g_value_get_boolean(value));
         break;
@@ -1420,6 +1444,14 @@ gtk_sheet_get_property(GObject    *object,
 
     case PROP_GTK_SHEET_AUTO_RESIZE:
         g_value_set_boolean(value, gtk_sheet_autoresize(sheet));
+        break;
+
+    case PROP_GTK_SHEET_AUTO_RESIZE_ROWS:
+        g_value_set_boolean(value, gtk_sheet_autoresize_rows(sheet));
+        break;
+
+    case PROP_GTK_SHEET_AUTO_RESIZE_COLUMNS:
+        g_value_set_boolean(value, gtk_sheet_autoresize_columns(sheet));
         break;
 
     case PROP_GTK_SHEET_AUTO_SCROLL:
@@ -1565,16 +1597,46 @@ gtk_sheet_class_init_properties(GObjectClass *gobject_class)
         G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class, PROP_GTK_SHEET_SELECTION_MODE, pspec);
 
+#if 1
     /**
      * GtkSheet:autoresize:
      *
-     * Autoreisize cells while typing
+     * Autoreisize cells while typing (rows and columns) 
+     *  
+     * deprecated: 3.0:  use autoresize-rows, autoresize-columns 
+     * instead 
      */
     pspec = g_param_spec_boolean("autoresize", "Autoresize cells",
-        "Autoreisize cells while typing",
+        "Autoreisize rows and columns while typing",
         FALSE,
         G_PARAM_READWRITE);
-    g_object_class_install_property(gobject_class, PROP_GTK_SHEET_AUTO_RESIZE, pspec);
+    g_object_class_install_property(gobject_class, 
+        PROP_GTK_SHEET_AUTO_RESIZE, pspec);
+#endif
+
+    /**
+     * GtkSheet:autoresize-rows:
+     *
+     * Autoreisize rows while typing
+     */
+    pspec = g_param_spec_boolean("autoresize-rows", "Autoresize rows",
+        "Autoreisize rows while typing",
+        FALSE,
+        G_PARAM_READWRITE);
+    g_object_class_install_property(gobject_class, 
+        PROP_GTK_SHEET_AUTO_RESIZE_ROWS, pspec);
+
+    /**
+     * GtkSheet:autoresize-cols:
+     *
+     * Autoreisize columns while typing
+     */
+    pspec = g_param_spec_boolean("autoresize-cols", "Autoresize cols",
+        "Autoreisize columns while typing",
+        FALSE,
+        G_PARAM_READWRITE);
+    g_object_class_install_property(gobject_class, 
+        PROP_GTK_SHEET_AUTO_RESIZE_COLUMNS, pspec);
 
     /**
      * GtkSheet:autoscroll:
@@ -3193,7 +3255,7 @@ gtk_sheet_autoresize_rows(GtkSheet *sheet)
 
 
 static void
-gtk_sheet_autoresize_column(GtkSheet *sheet, gint col)
+_gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 {
     gint new_width = 0;
     gint row;
@@ -3202,7 +3264,7 @@ gtk_sheet_autoresize_column(GtkSheet *sheet, gint col)
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
 #if GTK_SHEET_DEBUG_SIZE
-    g_debug("gtk_sheet_autoresize_column[%d]: called", col);
+    g_debug("_gtk_sheet_autoresize_column_internal[%d]: called", col);
 #endif
 
     if (col < 0 || col > sheet->maxalloccol || col > sheet->maxcol) return;
@@ -3232,10 +3294,58 @@ gtk_sheet_autoresize_column(GtkSheet *sheet, gint col)
     if (new_width != COLPTR(sheet, col)->width)
     {
 #if GTK_SHEET_DEBUG_SIZE
-        g_debug("gtk_sheet_autoresize_column[%d]: set width %d",
+        g_debug("_gtk_sheet_autoresize_column_internal[%d]: set width %d",
             col, new_width);
 #endif
         gtk_sheet_set_column_width(sheet, col, new_width);
+        GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
+    }
+}
+
+static void
+_gtk_sheet_autoresize_row_internal(GtkSheet *sheet, gint row)
+{
+    gint new_height = 0;
+    gint col;
+
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+#if GTK_SHEET_DEBUG_SIZE
+    g_debug("_gtk_sheet_autoresize_row_internal[%d]: called", row);
+#endif
+
+    if (row < 0 || row > sheet->maxallocrow || row > sheet->maxrow) return;
+
+    for (col = 0; col <= sheet->maxalloccol; col++)
+    {
+        GtkSheetCell **cell = &sheet->data[row][col];
+
+        if (*cell && (*cell)->text && (*cell)->text[0])
+        {
+            GtkSheetCellAttr attributes;
+
+            gtk_sheet_get_attributes(sheet, row, col, &attributes);
+
+            if (attributes.is_visible)
+            {
+                guint text_width, text_height;
+                _get_string_extent(GTK_WIDGET(sheet),
+                    attributes.font_desc, (*cell)->text, &text_width, &text_height);
+                gint row_height = ROW_HEIGHT(sheet, text_height,
+                    0);
+                new_height = MAX(new_height, row_height);
+            }
+        }
+    }
+
+    if (new_height != ROWPTR(sheet, row)->height)
+    {
+#if GTK_SHEET_DEBUG_SIZE
+        g_debug("_gtk_sheet_autoresize_row_internal[%d]: set height %d",
+            row, new_height);
+#endif
+        gtk_sheet_set_row_height(sheet, row, new_height);
         GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
     }
 }
@@ -3248,28 +3358,48 @@ static void gtk_sheet_autoresize_all(GtkSheet *sheet)
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
     {
 #if GTK_SHEET_DEBUG_SIZE
-        g_debug("gtk_sheet_autoresize_column_all: not realized");
+        g_debug("gtk_sheet_autoresize_all: not realized");
 #endif
         return;
     }
 
 #if GTK_SHEET_DEBUG_SIZE
-    g_debug("gtk_sheet_autoresize_column_all: running");
+    g_debug("gtk_sheet_autoresize_all: running");
 #endif
 
     if (gtk_sheet_autoresize_columns(sheet))
     {
         gint col;
 
+#if GTK_SHEET_DEBUG_SIZE
+        g_debug("gtk_sheet_autoresize_all: columns");
+#endif
+
         for (col = 0; col <= sheet->maxalloccol; col++)
         {
-            if (gtk_widget_get_visible((GtkWidget *)COLPTR(sheet, col)))
+            if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)))
             {
-                gtk_sheet_autoresize_column(sheet, col);
+                _gtk_sheet_autoresize_column_internal(sheet, col);
             }
         }
     }
 
+    if (gtk_sheet_autoresize_rows(sheet))
+    {
+        gint row;
+
+#if GTK_SHEET_DEBUG_SIZE
+        g_debug("gtk_sheet_autoresize_all: rows");
+#endif
+
+        for (row = 0; row <= sheet->maxallocrow; row++)
+        {
+            if (GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)))
+            {
+                _gtk_sheet_autoresize_row_internal(sheet, row);
+            }
+        }
+    }
 }
 
 /**
@@ -6692,7 +6822,6 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
     {
         if (gtk_sheet_autoresize(sheet))
         {
-
             if (cell->text && cell->text[0])
             {
                 guint text_width = 0, text_height = 0;
@@ -6700,16 +6829,33 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
                 _get_string_extent(GTK_WIDGET(sheet),
                     attributes.font_desc, cell->text, &text_width, &text_height);
 
-                gint col_width = COLUMN_WIDTH(sheet, text_width,
-                    attributes.border.width);
-
-                if (col_width > COLPTR(sheet, col)->width)
+                if (gtk_sheet_autoresize_columns(sheet))
                 {
-#if GTK_SHEET_DEBUG_SIZE
-                    g_debug("gtk_sheet_set_cell[%d]: set width %d", col, col_width);
-#endif
-                    gtk_sheet_set_column_width(sheet, col, col_width);
-                    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
+                    gint col_width = COLUMN_WIDTH(sheet, text_width,
+                        attributes.border.width);
+
+                    if (col_width > COLPTR(sheet, col)->width)
+                    {
+    #if GTK_SHEET_DEBUG_SIZE
+                        g_debug("gtk_sheet_set_cell[%d]: set col width %d", col, col_width);
+    #endif
+                        gtk_sheet_set_column_width(sheet, col, col_width);
+                        GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
+                    }
+                }
+
+                if (gtk_sheet_autoresize_rows(sheet))
+                {
+                    gint row_height = ROW_HEIGHT(sheet, text_width, 0);
+
+                    if (row_height > ROWPTR(sheet, row)->height)
+                    {
+    #if GTK_SHEET_DEBUG_SIZE
+                        g_debug("gtk_sheet_set_cell[%d]: set row height %d", row, row_height);
+    #endif
+                        gtk_sheet_set_row_height(sheet, row, row_height);
+                        GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
+                    }
                 }
             }
         }
@@ -8443,7 +8589,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
             guint req;
             if (event->type == GDK_2BUTTON_PRESS)
             {
-                gtk_sheet_autoresize_column(sheet, sheet->drag_cell.col);
+                _gtk_sheet_autoresize_column_internal(sheet, sheet->drag_cell.col);
                 GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_XDRAG);
                 return (TRUE);
             }
@@ -9444,15 +9590,9 @@ static gboolean
 gtk_sheet_key_press_handler(GtkWidget *widget, GdkEventKey *key)
 {
     GtkSheet *sheet;
-    gint row, col;
     gint state;
     gboolean extend_selection = FALSE;
-    gboolean force_move = FALSE;
     gboolean in_selection = FALSE;
-    gboolean veto = TRUE;
-    gint scroll = 1;
-    gchar *text = NULL;
-    gboolean text_is_empty;
 
     sheet = GTK_SHEET(widget);
 

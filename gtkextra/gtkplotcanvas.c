@@ -1900,11 +1900,9 @@ gtk_plot_canvas_cancel_action (GtkPlotCanvas *plot_canvas)
 
 /**
  * gtk_plot_canvas_get_active_item:
- * @canvas: a #GtkPlotCanvas.
+ * @canvas: a #GtkPlotCanvas. 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none): the active #GtkPlotCanvasChild
  */
 GtkPlotCanvasChild *
 gtk_plot_canvas_get_active_item(GtkPlotCanvas *canvas)

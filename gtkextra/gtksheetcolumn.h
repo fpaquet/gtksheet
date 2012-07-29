@@ -170,7 +170,6 @@ struct _GtkSheetColumnClass
     void gtk_sheet_show_column_titles(GtkSheet *sheet);
     void gtk_sheet_hide_column_titles(GtkSheet *sheet);
     gboolean gtk_sheet_column_titles_visible(GtkSheet *sheet);
-    guint gtk_sheet_get_columns_count(GtkSheet *sheet);
 
     const gchar *gtk_sheet_get_column_title(GtkSheet *sheet, gint column);
     void gtk_sheet_set_column_title(GtkSheet *sheet, gint column, const gchar *title);

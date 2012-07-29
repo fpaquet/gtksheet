@@ -326,7 +326,8 @@ gtk_char_selection_get_selection(GtkCharSelection *charsel)
 /**
  * gtk_char_selection_set_selection:
  * @charsel: Char Selection widget.
- * @selection: (a character from the list).0 is left,upper corner;256 is right, down corner.
+ * @selection: a character index from the list. 0 is left,upper
+ *           corner;256 is right, down corner.
  *
  * Sets the selection for the #GtkCharSelection widget.
  */

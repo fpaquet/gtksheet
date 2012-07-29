@@ -528,8 +528,10 @@ struct _GtkSheetClass
 /* Added by Steven Rostedt <steven.rostedt@lmco.com> */
     GtkSheetState gtk_sheet_get_state(GtkSheet *sheet);
 
-/* sheet's ranges - Added by Murray Cumming */
     guint gtk_sheet_get_rows_count(GtkSheet *sheet);
+    guint gtk_sheet_get_columns_count(GtkSheet *sheet);
+
+/* sheet's ranges - Added by Murray Cumming */
     void gtk_sheet_get_visible_range(GtkSheet *sheet, GtkSheetRange *range);
     gboolean gtk_sheet_get_selection(GtkSheet *sheet, GtkSheetState *state, GtkSheetRange *range);
     void gtk_sheet_set_selection_mode(GtkSheet *sheet, GtkSelectionMode mode);
@@ -639,7 +641,7 @@ struct _GtkSheetClass
     void gtk_sheet_select_range(GtkSheet *sheet, const GtkSheetRange *range); 
 
 /* clipboard */
-    void gtk_sheet_clip_range(GtkSheet *sheet, const GtkSheetRange *range);
+    void gtk_sheet_clip_range(GtkSheet *sheet, const GtkSheetRange *clip_range);
     void gtk_sheet_unclip_range(GtkSheet *sheet);
     gboolean gtk_sheet_in_clip(GtkSheet *sheet);
 
@@ -767,7 +769,7 @@ struct _GtkSheetClass
     void gtk_sheet_attach(GtkSheet *sheet, GtkWidget *widget, 
                           gint row, gint col, gint xoptions, gint yoptions, gint xpadding, gint ypadding);
     void gtk_sheet_move_child(GtkSheet *sheet, GtkWidget *widget, gint x, gint y);
-    GtkSheetChild *gtk_sheet_get_child_at(GtkSheet *sheet, gint row, gint col);
+    const GtkSheetChild *gtk_sheet_get_child_at(GtkSheet *sheet, gint row, gint col);
     void gtk_sheet_button_attach(GtkSheet *sheet, GtkWidget *widget, gint row, gint col);
 
     /*< private >*/

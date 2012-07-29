@@ -738,7 +738,8 @@ gtk_sheet_column_get_type(void)
  *  
  * Get a #GtkSheetColumn
  *  
- * Returns:	the requested #GtkSheetColumn or NULL
+ * Returns:	(transfer none) the requested #GtkSheetColumn or 
+ * NULL 
  */
 GtkSheetColumn *gtk_sheet_column_get(GtkSheet *sheet, gint col)
 {
@@ -777,7 +778,6 @@ gtk_sheet_column_get_index(GtkSheetColumn *colobj)
 
 /**
  * gtk_sheet_column_rightmost_visible: 
- * 
  * @sheet:  the sheet
  * 
  * rightmost visible column index 
@@ -799,7 +799,6 @@ gtk_sheet_column_rightmost_visible(GtkSheet *sheet)
 
 /**
  * _gtk_sheet_column_left_xpixel:
- * 
  * @sheet:  the #GtkSheet
  * @col:    column index 
  *  
@@ -816,7 +815,6 @@ _gtk_sheet_column_left_xpixel(GtkSheet *sheet, gint col)
 
 /**
  * _gtk_sheet_column_right_xpixel:
- * 
  * @sheet:  the #GtkSheet
  * @col:    column index 
  *  
@@ -840,7 +838,6 @@ _gtk_sheet_column_right_xpixel(GtkSheet *sheet, gint col)
 
 /**
  * _gtk_sheet_column_size_request:
- * 
  * @sheet:  the #GtkSheet
  * @col: column index
  * @button_requisition: the requisition width
@@ -884,8 +881,7 @@ _gtk_sheet_column_size_request(GtkSheet *sheet,
 
 /**
  * _gtk_sheet_column_buttons_size_allocate:
- * 
- * @param sheet  the #GtkSheet 
+ * @sheet:  the #GtkSheet 
  *  
  * column title button size allocation
  */
@@ -1609,7 +1605,6 @@ gtk_sheet_columns_resizable(GtkSheet *sheet)
 
 /**
  * _gtk_sheet_column_button_set:
- * 
  * @sheet:  the #GtkSheet
  * @col:    column index 
  *  
@@ -1631,7 +1626,6 @@ _gtk_sheet_column_button_set(GtkSheet *sheet, gint col)
 
 /**
  * _gtk_sheet_column_button_release:
- * 
  * @sheet:  the #GtkSheet
  * @col:    column index 
  *  
@@ -1989,23 +1983,6 @@ gtk_sheet_column_titles_visible(GtkSheet *sheet)
     g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
 
     return (sheet->column_titles_visible);
-}
-
-/**
- * gtk_sheet_get_columns_count:
- * @sheet: a #GtkSheet
- *
- * Get the number of the columns of the #GtkSheet.
- *
- * Returns: number of columns.
- */
-guint
-gtk_sheet_get_columns_count(GtkSheet *sheet)
-{
-    g_return_val_if_fail(sheet != NULL, 0);
-    g_return_val_if_fail(GTK_IS_SHEET(sheet), 0);
-
-    return (sheet->maxcol + 1);
 }
 
 

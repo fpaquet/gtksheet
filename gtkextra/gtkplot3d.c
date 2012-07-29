@@ -18,7 +18,7 @@
  */
 
 /**
- * SECTION: gtkplot
+ * SECTION: gtkplot3d
  * @short_description: 3d scientific plots widget
  *
  * FIXME:: Need long description.
@@ -2813,11 +2813,10 @@ gtk_plot3d_frame_get_attributes   (GtkPlot3D *plot,
 /**
  * gtk_plot3d_get_axis:
  * @plot: a #GtkPlot3D widget.
- * @orientation:
+ * @orientation: of axis to be returned
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the #GtkPlotAxis with given 
+ * orientation 
  */
 GtkPlotAxis *
 gtk_plot3d_get_axis(GtkPlot3D *plot, GtkPlotOrientation orientation)
@@ -2845,11 +2844,10 @@ gtk_plot3d_get_axis(GtkPlot3D *plot, GtkPlotOrientation orientation)
 /**
  * gtk_plot3d_get_side:
  * @plot: a #GtkPlot3D widget.
- * @side:
+ * @side: #GtkPlotSide of the wanted axis
  *
- *
- *
- * Return value:
+ * Return value: (transfer none): the #GtkPlotAxis on the given 
+ * side 
  */
 GtkPlotAxis *
 gtk_plot3d_get_side(GtkPlot3D *plot, GtkPlotSide side)
@@ -3286,7 +3284,7 @@ gtk_plot3d_major_zgrid_get_attributes    (GtkPlot3D *plot,
 }
 
 /**
- * gtk_plot3d_minor_zgrid_set_attributes:
+ * gtk_plot3d_minor_zgrid_get_attributes: 
  * @plot: a #GtkPlot3D widget.
  * @style:
  * @width:

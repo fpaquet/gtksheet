@@ -489,6 +489,12 @@ gtk_plot_array_get_int(GtkPlotArray *array)
   return array->data.data_int;
 }
 
+/**
+ * gtk_plot_array_get_string:
+ * @array:  the #GtkPlotArray
+ * 
+ * Returns: (transfer none) the data string array
+ */
 gchar **
 gtk_plot_array_get_string(GtkPlotArray *array)
 {
@@ -496,6 +502,12 @@ gtk_plot_array_get_string(GtkPlotArray *array)
   return array->data.data_string;
 }
 
+/**
+ * gtk_plot_array_get_pointer:
+ * @array:  the #GtkPlotArray
+ * 
+ * Returns: (transfer none) the data pointer array
+ */
 gpointer *
 gtk_plot_array_get_pointer(GtkPlotArray *array)
 {
@@ -613,11 +625,18 @@ gtk_plot_array_list_remove(GtkPlotArrayList *array_list, GtkPlotArray *array)
   }
 }
 
+/**
+ * gtk_plot_array_list_get:
+ * @set: a #GtkPlotArrayList
+ * @name:       the name to be searched for
+ * 
+ * Returns: (transfer none) the named #GtkPlotArray or NULL
+ */
 GtkPlotArray *
-gtk_plot_array_list_get(GtkPlotArrayList *array_list, const gchar *name)
+gtk_plot_array_list_get(GtkPlotArrayList *set, const gchar *name)
 {
   GList *list = NULL;;
-  list = find_array(array_list, name);
+  list = find_array(set, name);
   if(list) return GTK_PLOT_ARRAY(list->data);
   return NULL;
 }

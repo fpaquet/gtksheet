@@ -410,7 +410,7 @@ gtk_plot_pixmap_get_legend_size(GtkPlotData *data, gint *width, gint *height)
  *
  * Get pixmap from #GtkPlotPixmap.
  *
- * Return value: a GdkPixmap.
+ * Return value: (transfer none) the #GdkPixmap
  */
 GdkPixmap *
 gtk_plot_pixmap_get_pixmap (GtkPlotPixmap *pixmap)
@@ -424,7 +424,7 @@ gtk_plot_pixmap_get_pixmap (GtkPlotPixmap *pixmap)
  *
  * Get mask bitmap from #GtkPlotPixmap.
  *
- * Return value: a GdkBitmap.
+ * Return value: (transfer none) the #GdkBitmap
  */
 GdkBitmap *
 gtk_plot_pixmap_get_mask (GtkPlotPixmap *pixmap)

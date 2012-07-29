@@ -427,7 +427,7 @@ gtk_plot_csurface_new (void)
 
 /**
  * gtk_plot_csurface_new_function:
- * @function:
+ * @function: (scope async): a #GtkPlotFunc3D
  *
  *
  */
@@ -445,9 +445,7 @@ gtk_plot_csurface_new_function (GtkPlotFunc3D function)
 
 /**
  * gtk_plot_csurface_construct_function:
- * @function:
- *
- *
+ * @function: (scope async): a  #GtkPlotFunc3D
  */
 void
 gtk_plot_csurface_construct_function (GtkPlotCSurface *data, 

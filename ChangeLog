@@ -1,3 +1,9 @@
+2012-07-29 Fredy Paquet <mailbox AT opag.ch>
+	* gtkplot.h: replaced callbacks in _GtkPlotAxis with function typedefs
+	  https://bugzilla.gnome.org/show_bug.cgi?id=674002
+	* cleanup documentation tags (introspection warnings)
+	* re-generated GtkExtra-3.0.gir, added GtkExtra-3.0.typelib
+
 2012-07-22 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: improved autoresize columns (max width limit)
 

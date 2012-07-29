@@ -707,7 +707,7 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
                            G_PARAM_READABLE|G_PARAM_WRITABLE));
 
   /**
-   * GtkPlotData:yline_join:
+   * GtkPlotData:yline_width:
    *
    *
    **/
@@ -2297,11 +2297,9 @@ gtk_plot_data_new (void)
 
 /**
  * gtk_plot_data_new_function:
- * @function: a #GtkPlotFunc.
+ * @function: (scope async): a #GtkPlotFunc.
  *
- *
- *
- * Return value:
+ * Return value: (transfer none): the #GtkPlotData Widget
  */
 GtkWidget*
 gtk_plot_data_new_function (GtkPlotFunc function)
@@ -2318,9 +2316,7 @@ gtk_plot_data_new_function (GtkPlotFunc function)
 /**
  * gtk_plot_data_construct_function:
  * @data: a #GtkPlotData widget.
- * @function: a #GtkPlotFunc.
- *
- *
+ * @function: (scope notified): a #GtkPlotFunc.
  */
 void
 gtk_plot_data_construct_function (GtkPlotData *data, GtkPlotFunc function)
@@ -2331,13 +2327,11 @@ gtk_plot_data_construct_function (GtkPlotData *data, GtkPlotFunc function)
 
 /**
  * gtk_plot_data_new_iterator:
- * @iterator: a #GtkPlotIterator.
+ * @iterator: (scope async): a #GtkPlotIterator.
  * @npoints:
  * @mask:
  *
- *
- *
- * Return value: a new #GtkPlotData.
+ * Return value: (transfer full) a new #GtkPlotData.
  */
 GtkWidget*
 gtk_plot_data_new_iterator (GtkPlotIterator iterator, gint npoints, guint16 mask)
@@ -2354,11 +2348,9 @@ gtk_plot_data_new_iterator (GtkPlotIterator iterator, gint npoints, guint16 mask
 /**
  * gtk_plot_data_construct_iterator:
  * @data: a #GtkPlotData widget.
- * @iterator: a #GtkPlotIterator.
+ * @iterator: (scope async): a #GtkPlotIterator.
  * @npoints:
  * @mask:
- *
- *
  */
 void
 gtk_plot_data_construct_iterator (GtkPlotData *data,
@@ -3615,9 +3607,7 @@ gtk_plot_data_get_legend_size(GtkPlotData *data, gint *width, gint *height)
  * gtk_plot_data_gradient:
  * @data: a #GtkPlotData widget.
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the gradient #GtkPlotAxis
  */
 GtkPlotAxis *
 gtk_plot_data_gradient (GtkPlotData *data)
@@ -3643,11 +3633,9 @@ gtk_plot_data_move_gradient(GtkPlotData *data, gdouble x, gdouble y)
 
 /**
  * gtk_plot_data_get_gradient_allocation:
- * @data: a #GtkPlotData widget.
+ * @data: a #GtkPlotData widget
  *
- *
- *
- * Return value:
+ * Return value: (transfer full) the gradient #GtkAllocation
  */
 GtkAllocation
 gtk_plot_data_get_gradient_allocation(GtkPlotData *data)
@@ -4735,11 +4723,10 @@ gtk_plot_data_connect_points(GtkPlotData *dataset, gint npoints)
 /**
  * gtk_plot_data_find_dimension:
  * @data: a #GtkPlotData widget.
- * @name:
+ * @name: dimension name to be searched for
  *
- *
- *
- * Return value:
+ * Return value: (transfer none): the #GtkPlotArray with the 
+ * given name 
  */
 GtkPlotArray *
 gtk_plot_data_find_dimension(GtkPlotData *data, const gchar *name)
@@ -4842,12 +4829,10 @@ gtk_plot_data_dimension_set_array(GtkPlotData *data,
 /**
  * gtk_plot_data_dimension_set_points:
  * @data: a #GtkPlotData widget.
- * @name:
- * @points:
+ * @name: the dimension name affected
+ * @points: 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_data_dimension_set_points(GtkPlotData *data,
@@ -4865,11 +4850,10 @@ gtk_plot_data_dimension_set_points(GtkPlotData *data,
 /**
  * gtk_plot_data_dimension_get_array:
  * @data: a #GtkPlotData widget.
- * @name:
- *
- *
- *
- * Return value:
+ * @name: the dimension name to be searched 
+ *  
+ * Return value: (transfer none) the #GtkPlotArray with the 
+ * given name 
  */
 GtkPlotArray *
 gtk_plot_data_dimension_get_array(GtkPlotData *data,
@@ -5099,11 +5083,9 @@ gtk_plot_data_get_point(GtkPlotData *dataset, gint n,
 /**
  * gtk_plot_data_set_x:
  * @data: a #GtkPlotData widget.
- * @x:
+ * @x: value to be updated
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_data_set_x(GtkPlotData *data,
@@ -5117,11 +5099,9 @@ gtk_plot_data_set_x(GtkPlotData *data,
 /**
  * gtk_plot_data_set_y:
  * @data: a #GtkPlotData widget.
- * @y:
+ * @y: value to be updated 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_data_set_y(GtkPlotData *data,
@@ -5135,11 +5115,9 @@ gtk_plot_data_set_y(GtkPlotData *data,
 /**
  * gtk_plot_data_set_z:
  * @data: a #GtkPlotData widget.
- * @z:
+ * @z: value to be updated 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_data_set_z(GtkPlotData *data,
@@ -5153,11 +5131,9 @@ gtk_plot_data_set_z(GtkPlotData *data,
 /**
  * gtk_plot_data_set_a:
  * @data: a #GtkPlotData widget.
- * @a:
+ * @a: value to be updated 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_data_set_a(GtkPlotData *data,
@@ -5171,11 +5147,9 @@ gtk_plot_data_set_a(GtkPlotData *data,
 /**
  * gtk_plot_data_set_dx:
  * @data: a #GtkPlotData widget.
- * @dx:
+ * @dx: value to be updated 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_data_set_dx(GtkPlotData *data,
@@ -5189,11 +5163,9 @@ gtk_plot_data_set_dx(GtkPlotData *data,
 /**
  * gtk_plot_data_set_dy:
  * @data: a #GtkPlotData widget.
- * @dy:
+ * @dy: value to be updated 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_data_set_dy(GtkPlotData *data,
@@ -5207,11 +5179,9 @@ gtk_plot_data_set_dy(GtkPlotData *data,
 /**
  * gtk_plot_data_set_dz:
  * @data: a #GtkPlotData widget.
- * @dz:
+ * @dz: value to be updated 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_data_set_dz(GtkPlotData *data,
@@ -5225,11 +5195,9 @@ gtk_plot_data_set_dz(GtkPlotData *data,
 /**
  * gtk_plot_data_set_da:
  * @data: a #GtkPlotData widget.
- * @da:
+ * @da: value to be updated
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_data_set_da(GtkPlotData *data,
@@ -5257,11 +5225,9 @@ gtk_plot_data_set_a_scale(GtkPlotData *data, gdouble a_scale)
 /**
  * gtk_plot_data_set_labels:
  * @data: a #GtkPlotData widget.
- * @labels:
+ * @labels: labels to be set 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_data_set_labels(GtkPlotData *data,
@@ -5465,11 +5431,9 @@ gtk_plot_data_get_a_scale(GtkPlotData *dataset)
 /**
  * gtk_plot_data_get_labels:
  * @dataset: a #GtkPlotData widget.
- * @show_labels:
+ * @show_labels: (out): current setting
  *
- *
- *
- * Return value:
+ * Return value: (transfer none) the label string array
  */
 gchar **
 gtk_plot_data_get_labels(GtkPlotData *dataset, gboolean *show_labels)
@@ -5981,7 +5945,7 @@ gtk_plot_data_set_link(GtkPlotData *dataset, gpointer link)
  * gtk_plot_data_get_link:
  * @dataset: a #GtkPlotData widget.
  *
- *
+ * Returns: (transfer none) link pointer
  */
 gpointer
 gtk_plot_data_get_link(GtkPlotData *dataset)

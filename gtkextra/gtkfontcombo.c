@@ -399,18 +399,24 @@ gtk_font_combo_get_font_height (GtkFontCombo *combo)
   }
 }
 
+/**
+ * gtk_font_combo_get_psfont:
+ * @font_combo:  the #GtkFontCombo
+ * 
+ * Returns: (transfer none) the #GtkPSFont
+ */
 GtkPSFont * 
-gtk_font_combo_get_psfont (GtkFontCombo *combo)
+gtk_font_combo_get_psfont (GtkFontCombo *font_combo)
 {
   const gchar *text;
   gboolean italic = FALSE, bold = FALSE;
 
-  text=gtk_entry_get_text(GTK_ENTRY(GTK_COMBO_BOX(combo->name_combo)));
+  text=gtk_entry_get_text(GTK_ENTRY(GTK_COMBO_BOX(font_combo->name_combo)));
 
-  if(GTK_IS_TOGGLE_BUTTON(GTK_FONT_COMBO(combo)->italic_button))
-    italic = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(GTK_FONT_COMBO(combo)->italic_button));
-  if(GTK_IS_TOGGLE_BUTTON(GTK_FONT_COMBO(combo)->bold_button))
-    bold = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(GTK_FONT_COMBO(combo)->bold_button));
+  if(GTK_IS_TOGGLE_BUTTON(GTK_FONT_COMBO(font_combo)->italic_button))
+    italic = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(GTK_FONT_COMBO(font_combo)->italic_button));
+  if(GTK_IS_TOGGLE_BUTTON(GTK_FONT_COMBO(font_combo)->bold_button))
+    bold = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(GTK_FONT_COMBO(font_combo)->bold_button));
 
   return (gtk_psfont_get_by_family(text, italic, bold));
 }

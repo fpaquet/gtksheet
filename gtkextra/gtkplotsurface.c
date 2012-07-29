@@ -653,11 +653,9 @@ gtk_plot_surface_new (void)
 
 /**
  * gtk_plot_surface_new_function:
- * @function: 
+ * @function: (scope async): a #GtkPlotFunc3D
  *
- *
- *
- * Return value:
+ * Return value: (transfer full) the constructed #GtkWidget 
  */
 GtkWidget*
 gtk_plot_surface_new_function (GtkPlotFunc3D function)
@@ -674,9 +672,7 @@ gtk_plot_surface_new_function (GtkPlotFunc3D function)
 /**
  * gtk_plot_surface_construct_function:
  * @surface:
- * @function: 
- *
- *
+ * @function: (scope async): a #GtkPlotFunc3D
  */
 void
 gtk_plot_surface_construct_function(GtkPlotSurface *surface, 
@@ -1479,11 +1475,9 @@ gtk_plot_surface_get_points(GtkPlotSurface *data,
 /**
  * gtk_plot_surface_set_x:
  * @data:
- * @x:
+ * @x: the value to be set
  *
- *
- *
- * Return value:
+ * Return value: (transfer none)  the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_surface_set_x(GtkPlotSurface *data, 
@@ -1495,11 +1489,9 @@ gtk_plot_surface_set_x(GtkPlotSurface *data,
 /**
  * gtk_plot_surface_set_y:
  * @data:
- * @y:
- *
- *
- *
- * Return value:
+ * @y: the value to be set 
+ *  
+ * Return value: (transfer none)  the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_surface_set_y(GtkPlotSurface *data, 
@@ -1511,11 +1503,9 @@ gtk_plot_surface_set_y(GtkPlotSurface *data,
 /**
  * gtk_plot_surface_set_z:
  * @data:
- * @z:
+ * @z: the value to be set 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none)  the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_surface_set_z(GtkPlotSurface *data, 
@@ -1527,11 +1517,9 @@ gtk_plot_surface_set_z(GtkPlotSurface *data,
 /**
  * gtk_plot_surface_set_dx:
  * @data:
- * @dx:
+ * @dx: the value to be set 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none)  the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_surface_set_dx(GtkPlotSurface *data, 
@@ -1543,11 +1531,9 @@ gtk_plot_surface_set_dx(GtkPlotSurface *data,
 /**
  * gtk_plot_surface_set_dy:
  * @data:
- * @dy:
+ * @dy: the value to be set 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none)  the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_surface_set_dy(GtkPlotSurface *data, 
@@ -1559,11 +1545,9 @@ gtk_plot_surface_set_dy(GtkPlotSurface *data,
 /**
  * gtk_plot_surface_set_dz:
  * @data:
- * @dz:
+ * @dz: the value to be set 
  *
- *
- *
- * Return value:
+ * Return value: (transfer none)  the affected #GtkPlotArray
  */
 GtkPlotArray *
 gtk_plot_surface_set_dz(GtkPlotSurface *data, 
@@ -1575,9 +1559,7 @@ gtk_plot_surface_set_dz(GtkPlotSurface *data,
 /**
  * gtk_plot_surface_get_x:
  * @dataset:
- * @nx:
- *
- *
+ * @nx: the value to be set 
  *
  * Return value:
  */

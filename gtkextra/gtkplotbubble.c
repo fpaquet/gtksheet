@@ -18,7 +18,7 @@
  */
 
 /**
- * SECTION: gtkplot
+ * SECTION: gtkplotbubble
  * @short_description: 
  *
  * FIXME:: Need long description.

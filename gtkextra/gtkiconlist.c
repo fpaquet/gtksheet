@@ -1885,7 +1885,7 @@ gtk_icon_list_link(GtkIconListItem *item, gpointer data)
  *
  * Add a gpointer link to a icon from the iconlist.
  *  
- * Returns: a gpointer to some data sed with 
+ * Returns: (transfer none) a gpointer to some data sed with 
  * gtk_icon_list_link(). 
  */ 	
 gpointer
@@ -1925,7 +1925,7 @@ gtk_icon_list_get_icon_from_link(GtkIconList *iconlist, gpointer data)
  *
  * Get the item->entry.
  * 
- * Returns: a #GtkWidget
+ * Returns: (transfer none) a #GtkWidget
  */ 	
 GtkWidget *
 gtk_icon_list_get_entry(GtkIconListItem *item)
@@ -1939,7 +1939,7 @@ gtk_icon_list_get_entry(GtkIconListItem *item)
  *
  * Get the icon pixmap.
  *  
- * Returns: a #GtkWidget
+ * Returns: (transfer none) a #GtkWidget
  */ 	
 GtkWidget *
 gtk_icon_list_get_pixmap(GtkIconListItem *item)

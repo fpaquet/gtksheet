@@ -1,3 +1,17 @@
+2012-07-31 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: removed obsolete Sheet::changed signal emissions
+	   for column width modifications connect to Sheet::new-column-width
+	   for row height modifications connect to Sheet::new-column-width
+	* GtkSheet: reworked emission of Sheet::changed
+	   gtk_sheet_column_button_add_label() always emitted (even when frozen)
+	   gtk_sheet_column_button_justify() no longer emitted (contents unchanged)
+	   gtk_sheet_column_label_set_visibility() no longer emitted (contents unchanged)
+	   gtk_sheet_row_button_add_label() always emitted (even when frozen)
+	   gtk_sheet_row_label_set_visibility() no longer emitted (contents unchanged)
+	   gtk_sheet_row_button_justify() no longer emitted (contents unchanged)
+	* GtkSheet: sheet button drawing reworked and optimized
+	* GtkSheet: autoresize completely rewritten and optimized
+
 2012-07-29 Fredy Paquet <mailbox AT opag.ch>
 	* gtkplot.h: replaced callbacks in _GtkPlotAxis with function typedefs
 	  https://bugzilla.gnome.org/show_bug.cgi?id=674002

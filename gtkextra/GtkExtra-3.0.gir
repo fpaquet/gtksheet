@@ -15111,7 +15111,9 @@ usage.</doc>
       <method name="column_set_justification"
               c:identifier="gtk_sheet_column_set_justification">
         <doc xml:whitespace="preserve">Set column justification (GTK_JUSTIFY_LEFT, RIGHT, CENTER).
-The default value is GTK_JUSTIFY_LEFT. If autoformat is on, the default justification for numbers is GTK_JUSTIFY_RIGHT.</doc>
+The default value is GTK_JUSTIFY_LEFT. 
+If autoformat is on, the default justification for numbers is 
+GTK_JUSTIFY_RIGHT.</doc>
         <return-value transfer-ownership="none">
           <type name="none" c:type="void"/>
         </return-value>
@@ -15856,7 +15858,7 @@ you might want to use #gtk_sheet_get_entry() instead.</doc>
       </method>
       <method name="locked" c:identifier="gtk_sheet_locked">
         <doc xml:whitespace="preserve">Get the lock status of #GtkSheet, locked means the sheet is
-not editable, cell contents cannot be changed by the user.</doc>
+not editable, cell contents cannot be modified by the user.</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">TRUE or FALSE</doc>
           <type name="gboolean" c:type="gboolean"/>
@@ -16435,6 +16437,38 @@ autoresize_columns and autoresize_cells.</doc>
           </parameter>
         </parameters>
       </method>
+      <method name="set_autoresize_columns"
+              c:identifier="gtk_sheet_set_autoresize_columns">
+        <doc xml:whitespace="preserve">Controls wether columns will be autoresized upon 
+deactivation, as you type text or set a cell_text value. If 
+you want the cells to be autoresized when you pack widgets 
+look at gtk_sheet_attach_*().</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="autoresize" transfer-ownership="none">
+            <doc xml:whitespace="preserve">TRUE or FALSE</doc>
+            <type name="gboolean" c:type="gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="set_autoresize_rows"
+              c:identifier="gtk_sheet_set_autoresize_rows">
+        <doc xml:whitespace="preserve">Controls wether rows will be autoresized upon deactivation,
+as you type text or set a cell_text value. If you want the 
+cells to be autoresized when you pack widgets look at 
+gtk_sheet_attach_*().</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="autoresize" transfer-ownership="none">
+            <doc xml:whitespace="preserve">TRUE or FALSE</doc>
+            <type name="gboolean" c:type="gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
       <method name="set_autoscroll" c:identifier="gtk_sheet_set_autoscroll">
         <doc xml:whitespace="preserve">The sheet will be automatically scrolled when you move beyond
 the last row/col in #GtkSheet.</doc>
@@ -16656,7 +16690,7 @@ If pass NULL, the grid will be reset to the default color.</doc>
       </method>
       <method name="set_locked" c:identifier="gtk_sheet_set_locked">
         <doc xml:whitespace="preserve">Lock the #GtkSheet, which means it is no longer editable,
-cell contents cannot be changed by the user.</doc>
+cell contents cannot be modified by the user.</doc>
         <return-value transfer-ownership="none">
           <type name="none" c:type="void"/>
         </return-value>
@@ -16930,7 +16964,7 @@ for application use</doc>
       </property>
       <property name="locked" writable="1" transfer-ownership="none">
         <doc xml:whitespace="preserve">If the sheet ist locked, it is not editable, cell contents
-cannot be changed by the user.</doc>
+cannot be modified by the user.</doc>
         <type name="gboolean"/>
       </property>
       <property name="n-rows" writable="1" transfer-ownership="none">
@@ -17513,7 +17547,7 @@ It should only be accessed through the functions described below.</doc>
     <record name="SheetCell" c:type="GtkSheetCell">
       <doc xml:whitespace="preserve">The GtkSheetCell struct contains only private data.
 It should only be accessed through the functions described below.</doc>
-      <field name="area" readable="0" private="1">
+      <field name="extent" readable="0" private="1">
         <type name="Gdk.Rectangle" c:type="GdkRectangle"/>
       </field>
       <field name="row" readable="0" private="1">
@@ -18042,11 +18076,14 @@ any widget content is text</doc>
       <field name="width" readable="0" private="1">
         <type name="gint" c:type="gint"/>
       </field>
+      <field name="requisition" readable="0" private="1">
+        <type name="guint16" c:type="guint16"/>
+      </field>
       <field name="left_xpixel" readable="0" private="1">
         <type name="gint" c:type="gint"/>
       </field>
-      <field name="requisition" readable="0" private="1">
-        <type name="guint16" c:type="guint16"/>
+      <field name="max_extent_width" readable="0" private="1">
+        <type name="gint" c:type="gint"/>
       </field>
       <field name="button" readable="0" private="1">
         <type name="SheetButton" c:type="GtkSheetButton"/>
@@ -18161,6 +18198,9 @@ It should only be accessed through the functions described below.</doc>
         <type name="guint16" c:type="guint16"/>
       </field>
       <field name="top_ypixel" readable="0" private="1">
+        <type name="gint" c:type="gint"/>
+      </field>
+      <field name="max_extent_height" readable="0" private="1">
         <type name="gint" c:type="gint"/>
       </field>
       <field name="button" readable="0" private="1">

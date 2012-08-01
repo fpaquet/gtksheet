@@ -256,7 +256,7 @@ struct _GtkSheetCellAttr
 struct _GtkSheetCell
 {
     /*< private >*/
-    GdkRectangle extent;  /* extent of pango layout + border */
+    GdkRectangle extent;  /* extent of pango layout + cell attributes.border */
 
     gint row;
     gint col;

@@ -69,10 +69,10 @@
 #   define GTK_SHEET_DEBUG_SIGNALS   0
 #   define GTK_SHEET_DEBUG_KEYPRESS   0
 #   define GTK_SHEET_DEBUG_FREEZE   1
-#   define GTK_SHEET_DEBUG_EXPOSE   0
+#   define GTK_SHEET_DEBUG_EXPOSE   1
 #   define GTK_SHEET_DEBUG_DRAW  0
 #   define GTK_SHEET_DEBUG_ADJUSTMENT  0
-#   define GTK_SHEET_DEBUG_SIZE  0
+#   define GTK_SHEET_DEBUG_SIZE  1
 #   define GTK_SHEET_DEBUG_FONT_METRICS  0
 #   define GTK_SHEET_DEBUG_COLORS  0
 #endif
@@ -183,32 +183,36 @@ typedef enum _GtkSheetArea
 #define MIN_VISIBLE_COLUMN(sheet)  (sheet->view.col0)
 #define MAX_VISIBLE_COLUMN(sheet)  (sheet->view.coli)  /* beware: MAX_VISIBLE_COLUMN() can be maxcol+1 */
 
-#define COLUMN_UNREAL_MAX_WIDTH 512  /* unrealized maximum width */
-#define COLUMN_REMNANT_PIXELS  32   /* maximized cols leave these pixels free */
+#define COLUMN_UNREALIZED_MAX_WIDTH 512  /* unrealized maximum width */
+#define COLUMN_REMNANT_PIXELS  32   /* maximized: free space left for others */
+#define ROW_UNREALIZED_MAX_HEIGHT 256  /* unrealized maximum height */
+#define ROW_REMNANT_PIXELS  32   /* maximized: free space left for others */
 
-#define MAX_COLUMN_WIDTH(sheet) \
+#define COLUMN_MAX_WIDTH(sheet) \
     (sheet->sheet_window_width < COLUMN_REMNANT_PIXELS ? \
-    COLUMN_UNREAL_MAX_WIDTH : \
+    COLUMN_UNREALIZED_MAX_WIDTH : \
     sheet->sheet_window_width - COLUMN_REMNANT_PIXELS )
 
-#define COLUMN_WIDTH(sheet, text_width, attr_border_width)  \
-    (text_width + 2*CELLOFFSET + attr_border_width > MAX_COLUMN_WIDTH(sheet) ? \
-    MAX_COLUMN_WIDTH(sheet) : \
-    text_width + 2*CELLOFFSET + attr_border_width)
-
-#define ROW_UNREAL_MAX_HEIGHT 256  /* unrealized maximum height */
-#define ROW_REMNANT_PIXELS  32   /* maximized rows leave these pixels free */
-
-#define MAX_ROW_HEIGHT(sheet) \
+#define ROW_MAX_HEIGHT(sheet) \
     (sheet->sheet_window_height < ROW_REMNANT_PIXELS ? \
-    ROW_UNREAL_MAX_HEIGHT : \
+    ROW_UNREALIZED_MAX_HEIGHT : \
     sheet->sheet_window_height - ROW_REMNANT_PIXELS )
 
-#define ROW_HEIGHT(sheet, text_height, attr_border_height)  \
-    (text_height + 2*CELLOFFSET + attr_border_height > MAX_ROW_HEIGHT(sheet) ? \
-    MAX_ROW_HEIGHT(sheet) : \
-    text_height + 2*CELLOFFSET + attr_border_height)
+#define CELL_EXTENT_WIDTH(text_width, attr_border_width)  \
+    (text_width + attr_border_width)
 
+#define CELL_EXTENT_HEIGHT(text_height, attr_border_height)  \
+    (text_height + attr_border_height)
+
+#define COLUMN_EXTENT_TO_WIDTH(extent_width) \
+    (extent_width + 2*CELLOFFSET > COLUMN_MAX_WIDTH(sheet) ? \
+    COLUMN_MAX_WIDTH(sheet) : \
+    extent_width + 2*CELLOFFSET)
+
+#define ROW_EXTENT_TO_HEIGHT(extent_height) \
+    (extent_height + 2*CELLOFFSET > ROW_MAX_HEIGHT(sheet) ? \
+    ROW_MAX_HEIGHT(sheet) : \
+    extent_height + 2*CELLOFFSET)
 
 /* defaults */
 
@@ -3276,6 +3280,13 @@ gtk_sheet_autoresize_rows(GtkSheet *sheet)
     return (sheet->autoresize_rows);
 }
 
+/**
+ * _gtk_sheet_recalc_extent_width:
+ * @sheet:  the #GtkSheet 
+ * @col:    column to be recalculated
+ *  
+ * recalc maximum column extent width
+ */
 static void _gtk_sheet_recalc_extent_width(GtkSheet *sheet, gint col)
 {
     gint new_width = 0;
@@ -3313,6 +3324,13 @@ static void _gtk_sheet_recalc_extent_width(GtkSheet *sheet, gint col)
     COLPTR(sheet, col)->max_extent_width = new_width;
 }
 
+/**
+ * _gtk_sheet_recalc_extent_height:
+ * @sheet:  the #GtkSheet 
+ * @row:    row to be recalculated
+ *  
+ * recalc maximum row extent height
+ */
 static void _gtk_sheet_recalc_extent_height(GtkSheet *sheet, gint row)
 {
     gint new_height = 0;
@@ -3357,14 +3375,14 @@ static void _gtk_sheet_recalc_extent_height(GtkSheet *sheet, gint row)
  * @cell:   the #GtkSheetCell
  * @row:    the row
  * @col:    the column
- * @font:   the cell font
  * 
- * update cell, row, column extent
+ * update cell extent and propagate to max row/column extent
  */
 static void _gtk_sheet_udpate_extent(GtkSheet *sheet,
                                      GtkSheetCell *cell, gint row, gint col)
 {
-    guint new_width = 0, new_height = 0;
+    guint text_width = 0, text_height = 0;
+    guint new_extent_width = 0, new_extent_height = 0;
     GdkRectangle old_extent;
     GtkSheetColumn *colptr = COLPTR(sheet, col);
     GtkSheetRow *rowptr = ROWPTR(sheet, row);
@@ -3396,38 +3414,38 @@ static void _gtk_sheet_udpate_extent(GtkSheet *sheet,
     gtk_sheet_get_attributes(sheet, row, col, &attributes);
 
     _get_string_extent(GTK_WIDGET(sheet),
-                       attributes.font_desc, cell->text, &new_width, &new_height);
+                       attributes.font_desc, cell->text, &text_width, &text_height);
 
     /* add borders */
-    new_width = COLUMN_WIDTH(sheet, new_width, attributes.border.width);
-    new_height = ROW_HEIGHT(sheet, new_height, 0);
+    new_extent_width = CELL_EXTENT_WIDTH(text_width, attributes.border.width);
+    new_extent_height = CELL_EXTENT_HEIGHT(text_height, 0);
 
-    cell->extent.width = new_width;
-    cell->extent.height = new_height;
+    cell->extent.width = new_extent_width;
+    cell->extent.height = new_extent_height;
 
     if (!GTK_SHEET_COLUMN_IS_VISIBLE(colptr)) return;
     if (!GTK_SHEET_ROW_IS_VISIBLE(rowptr)) return;
 
-    if (new_width > old_extent.width)  /* wider */
+    if (new_extent_width > old_extent.width)  /* wider */
     {
-        if (new_width > colptr->max_extent_width) 
+        if (new_extent_width > colptr->max_extent_width) 
         {
-            colptr->max_extent_width = new_width;
+            colptr->max_extent_width = new_extent_width;
         }
     }
-    else if (new_width < old_extent.width)  /* narrower */
+    else if (new_extent_width < old_extent.width)  /* narrower */
     {
         _gtk_sheet_recalc_extent_width(sheet, col);
     }
 
-    if (new_height > old_extent.height)  /* higher */
+    if (new_extent_height > old_extent.height)  /* higher */
     {
-        if (new_height > rowptr->max_extent_height)
+        if (new_extent_height > rowptr->max_extent_height)
         {
-            rowptr->max_extent_height = new_height;
+            rowptr->max_extent_height = new_extent_height;
         }
     }
-    else if (new_height < old_extent.height)  /* lower */
+    else if (new_extent_height < old_extent.height)  /* lower */
     {
         _gtk_sheet_recalc_extent_height(sheet, row);
     }
@@ -3443,21 +3461,24 @@ static void _gtk_sheet_udpate_extent(GtkSheet *sheet,
 static void
 _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 {
-    gint new_width = 0;
-    GtkSheetColumn *colptr = COLPTR(sheet, col);
+    gint new_width;
+    GtkSheetColumn *colptr;
 
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
-#if GTK_SHEET_DEBUG_SIZE
-    g_debug("_gtk_sheet_autoresize_column_internal[%d]: called colw %d xw %d", 
-            col, colptr->width, colptr->max_extent_width);
-#endif
-
     if (col < 0 || col > sheet->maxalloccol || col > sheet->maxcol) return;
+
+    colptr = COLPTR(sheet, col);
+
     if (!GTK_SHEET_COLUMN_IS_VISIBLE(colptr)) return;
 
-    new_width = colptr->max_extent_width;
+    new_width = COLUMN_EXTENT_TO_WIDTH(colptr->max_extent_width);
+
+#if GTK_SHEET_DEBUG_SIZE
+    g_debug("_gtk_sheet_autoresize_column_internal[%d]: called col w %d new w %d", 
+            col, colptr->width, new_width);
+#endif
 
     if (new_width != colptr->width)
     {
@@ -3473,21 +3494,24 @@ _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 static void
 _gtk_sheet_autoresize_row_internal(GtkSheet *sheet, gint row)
 {
-    gint new_height = 0;
-    GtkSheetRow *rowptr = ROWPTR(sheet, row);
+    gint new_height;
+    GtkSheetRow *rowptr;
 
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
-#if GTK_SHEET_DEBUG_SIZE
-    g_debug("_gtk_sheet_autoresize_row_internal[%d]: called rowh %d xh %d", 
-            row, rowptr->height, rowptr->max_extent_height);
-#endif
-
     if (row < 0 || row > sheet->maxallocrow || row > sheet->maxrow) return;
+
+    rowptr = ROWPTR(sheet, row);
+
     if (!GTK_SHEET_ROW_IS_VISIBLE(rowptr)) return;
 
-    new_height = rowptr->max_extent_height;
+    new_height = ROW_EXTENT_TO_HEIGHT(rowptr->max_extent_height);
+
+#if GTK_SHEET_DEBUG_SIZE
+    g_debug("_gtk_sheet_autoresize_row_internal[%d]: called row h %d new h %d", 
+            row, rowptr->height, new_height);
+#endif
 
     if (new_height != rowptr->height)
     {
@@ -6975,20 +6999,21 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
     {
         gboolean need_draw = TRUE;
 
-        if (gtk_sheet_autoresize(sheet))
+        if (gtk_sheet_autoresize(sheet))  /* handle immediate resize */
         {
             if (cell->text && cell->text[0])
             {
                 if (gtk_sheet_autoresize_columns(sheet))
                 {
-                    gint col_width = COLPTR(sheet, col)->max_extent_width;
+                    GtkSheetColumn *colptr = COLPTR(sheet, col);
+                    gint new_width = COLUMN_EXTENT_TO_WIDTH(colptr->max_extent_width);
 
-                    if (col_width > COLPTR(sheet, col)->width)
+                    if (new_width != colptr->width)
                     {
 #if GTK_SHEET_DEBUG_SIZE
-                        g_debug("gtk_sheet_set_cell[%d]: set col width %d", col, col_width);
+                        g_debug("gtk_sheet_set_cell[%d]: set col width %d", col, new_width);
 #endif
-                        gtk_sheet_set_column_width(sheet, col, col_width);
+                        gtk_sheet_set_column_width(sheet, col, new_width);
                         GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
                         need_draw = FALSE;
                     }
@@ -6996,14 +7021,15 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
 
                 if (gtk_sheet_autoresize_rows(sheet))
                 {
-                    gint row_height = ROWPTR(sheet, row)->max_extent_height;
+                    GtkSheetRow *rowptr = ROWPTR(sheet, row);
+                    gint new_height = ROW_EXTENT_TO_HEIGHT(rowptr->max_extent_height);
 
-                    if (row_height > ROWPTR(sheet, row)->height)
+                    if (new_height != rowptr->height)
                     {
 #if GTK_SHEET_DEBUG_SIZE
-                        g_debug("gtk_sheet_set_cell[%d]: set row height %d", row, row_height);
+                        g_debug("gtk_sheet_set_cell[%d]: set row height %d", row, new_height);
 #endif
-                        gtk_sheet_set_row_height(sheet, row, row_height);
+                        gtk_sheet_set_row_height(sheet, row, new_height);
                         GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
                         need_draw = FALSE;
                     }

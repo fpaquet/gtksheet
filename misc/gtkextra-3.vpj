@@ -1,0 +1,422 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
+<Project
+	Version="10.0"
+	VendorName="SlickEdit"
+	WorkingDir="../gtkextra">
+	<Config
+		Name="Debug"
+		Type="gnuc"
+		DebugCallbackName="gdb"
+		Version="1"
+		OutputFile="%rw/.libs/testgtksheet"
+		CompilerConfigName="Latest Version"
+		Defines="">
+		<Menu>
+			<Target
+				Name="Compile"
+				MenuCaption="&amp;Compile"
+				Dialog="_gnuc_options_form Compile"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				OutputExts="*.o"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec CmdLine='gcc -c %xup %defd -g -fPIC -o "%bd%n%oe" %i %f'/>
+			</Target>
+			<Target
+				Name="Link"
+				MenuCaption="&amp;Link"
+				ShowOnMenu="Never"
+				Dialog="_gnuc_options_form Link"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec CmdLine='gcc %xup -g -o "%o" %objs'/>
+			</Target>
+			<Target
+				Name="Build"
+				MenuCaption="&amp;Build"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine="make"/>
+			</Target>
+			<Target
+				Name="Rebuild"
+				MenuCaption="&amp;Rebuild"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine=""/>
+			</Target>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				Dialog="_gnuc_options_form Run/Debug"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec
+					CmdLine='vsdebugio -prog "%o" %~other'
+					OtherOptions="--display :0.2 --gdk-debug nograbs"/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="E&amp;xecute"
+				Dialog="_gnuc_options_form Run/Debug"
+				BuildFirst="1"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec
+					CmdLine='"%o" %~other'
+					OtherOptions="--display :0.2 --gdk-debug nograbs"/>
+			</Target>
+			<Target
+				Name="dash"
+				MenuCaption="-"
+				Deletable="0">
+				<Exec/>
+			</Target>
+			<Target
+				Name="GNU C Options"
+				MenuCaption="GNU C &amp;Options..."
+				ShowOnMenu="HideIfNoCmdLine"
+				Deletable="0"
+				SaveOption="SaveNone">
+				<Exec
+					CmdLine="gnucoptions"
+					Type="Slick-C"/>
+			</Target>
+		</Menu>
+		<Includes>
+		</Includes>
+		<Libs PreObjects="0"/>
+	</Config>
+	<Config
+		Name="Release"
+		Type="gnuc"
+		DebugCallbackName="gdb"
+		Version="1"
+		OutputFile="%rw/.libs/testgtksheet"
+		CompilerConfigName="Latest Version"
+		Defines="">
+		<Menu>
+			<Target
+				Name="Compile"
+				MenuCaption="&amp;Compile"
+				Dialog="_gnuc_options_form Compile"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				OutputExts="*.o"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec CmdLine='gcc -c %xup %defd -fPIC -o "%bd%n%oe" %i %f'/>
+			</Target>
+			<Target
+				Name="Link"
+				MenuCaption="&amp;Link"
+				ShowOnMenu="Never"
+				Dialog="_gnuc_options_form Link"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec CmdLine='gcc %xup -o "%o" %objs'/>
+			</Target>
+			<Target
+				Name="Build"
+				MenuCaption="&amp;Build"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine="make"/>
+			</Target>
+			<Target
+				Name="Rebuild"
+				MenuCaption="&amp;Rebuild"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine=""/>
+			</Target>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				Dialog="_gnuc_options_form Run/Debug"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec
+					CmdLine='vsdebugio -prog "%o" %~other'
+					OtherOptions="--display :0.2 --gdk-debug nograbs"/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="E&amp;xecute"
+				Dialog="_gnuc_options_form Run/Debug"
+				BuildFirst="1"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec
+					CmdLine='"%o" %~other'
+					OtherOptions="--display :0.2 --gdk-debug nograbs"/>
+			</Target>
+			<Target
+				Name="dash"
+				MenuCaption="-"
+				Deletable="0">
+				<Exec/>
+			</Target>
+			<Target
+				Name="GNU C Options"
+				MenuCaption="GNU C &amp;Options..."
+				ShowOnMenu="HideIfNoCmdLine"
+				Deletable="0"
+				SaveOption="SaveNone">
+				<Exec
+					CmdLine="gnucoptions"
+					Type="Slick-C"/>
+			</Target>
+		</Menu>
+		<Includes>
+		</Includes>
+		<Libs PreObjects="0"/>
+	</Config>
+	<Files>
+		<Folder
+			Name="Source Files"
+			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.c++;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl;*.d">
+			<Folder
+				Name="Glade"
+				Filters="">
+				<F N="../glade/glade-gtksheet-editor.c"/>
+				<F N="../glade/glade-gtksheet-editor.h"/>
+				<F N="../glade/gtk+extra-catalog.xml"/>
+				<F
+					N="../glade/Makefile.am"
+					Type="Makefile"/>
+			</Folder>
+			<Folder
+				Name="Plot"
+				Filters="">
+				<F N="../gtkextra/gtkplot.c"/>
+				<F N="../gtkextra/gtkplot3d.c"/>
+				<F N="../gtkextra/gtkplotarray.c"/>
+				<F N="../gtkextra/gtkplotbar.c"/>
+				<F N="../gtkextra/gtkplotbox.c"/>
+				<F N="../gtkextra/gtkplotbubble.c"/>
+				<F N="../gtkextra/gtkplotcairo.c"/>
+				<F N="../gtkextra/gtkplotcandle.c"/>
+				<F N="../gtkextra/gtkplotcanvas.c"/>
+				<F N="../gtkextra/gtkplotcanvasellipse.c"/>
+				<F N="../gtkextra/gtkplotcanvasline.c"/>
+				<F N="../gtkextra/gtkplotcanvaspixmap.c"/>
+				<F N="../gtkextra/gtkplotcanvasplot.c"/>
+				<F N="../gtkextra/gtkplotcanvasrectangle.c"/>
+				<F N="../gtkextra/gtkplotcanvastext.c"/>
+				<F N="../gtkextra/gtkplotcsurface.c"/>
+				<F N="../gtkextra/gtkplotdata.c"/>
+				<F N="../gtkextra/gtkplotdt.c"/>
+				<F N="../gtkextra/gtkplotdtriangle.c"/>
+				<F N="../gtkextra/gtkplotflux.c"/>
+				<F N="../gtkextra/gtkplotgdk.c"/>
+				<F N="../gtkextra/gtkplotpc.c"/>
+				<F N="../gtkextra/gtkplotpixmap.c"/>
+				<F N="../gtkextra/gtkplotpolar.c"/>
+				<F N="../gtkextra/gtkplotprint.c"/>
+				<F N="../gtkextra/gtkplotps.c"/>
+				<F N="../gtkextra/gtkplotsegment.c"/>
+				<F N="../gtkextra/gtkplotsurface.c"/>
+				<F N="../gtkextra/gtkplot.h"/>
+				<F N="../gtkextra/gtkplot3d.h"/>
+				<F N="../gtkextra/gtkplotarray.h"/>
+				<F N="../gtkextra/gtkplotbar.h"/>
+				<F N="../gtkextra/gtkplotbox.h"/>
+				<F N="../gtkextra/gtkplotbubble.h"/>
+				<F N="../gtkextra/gtkplotcairo.h"/>
+				<F N="../gtkextra/gtkplotcandle.h"/>
+				<F N="../gtkextra/gtkplotcanvas.h"/>
+				<F N="../gtkextra/gtkplotcanvasellipse.h"/>
+				<F N="../gtkextra/gtkplotcanvasline.h"/>
+				<F N="../gtkextra/gtkplotcanvaspixmap.h"/>
+				<F N="../gtkextra/gtkplotcanvasplot.h"/>
+				<F N="../gtkextra/gtkplotcanvasrectangle.h"/>
+				<F N="../gtkextra/gtkplotcanvastext.h"/>
+				<F N="../gtkextra/gtkplotcsurface.h"/>
+				<F N="../gtkextra/gtkplotdata.h"/>
+				<F N="../gtkextra/gtkplotdt.h"/>
+				<F N="../gtkextra/gtkplotdtriangle.h"/>
+				<F N="../gtkextra/gtkplotflux.h"/>
+				<F N="../gtkextra/gtkplotgdk.h"/>
+				<F N="../gtkextra/gtkplotpc.h"/>
+				<F N="../gtkextra/gtkplotpixmap.h"/>
+				<F N="../gtkextra/gtkplotpolar.h"/>
+				<F N="../gtkextra/gtkplotprint.h"/>
+				<F N="../gtkextra/gtkplotps.h"/>
+				<F N="../gtkextra/gtkplotsegment.h"/>
+				<F N="../gtkextra/gtkplotsurface.h"/>
+				<F N="../gtkextra/gtkpsfont.c"/>
+				<F N="../gtkextra/gtkpsfont.h"/>
+			</Folder>
+			<Folder
+				Name="Test"
+				Filters="">
+				<F N="../gtkextra/testboxes.c"/>
+				<F N="../gtkextra/testbubbles.c"/>
+				<F N="../gtkextra/testcandles.c"/>
+				<F N="../gtkextra/testcharsel.c"/>
+				<F N="../gtkextra/testcontour.c"/>
+				<F N="../gtkextra/testdt.c"/>
+				<F N="../gtkextra/testflux.c"/>
+				<F N="../gtkextra/testgtkfilesel.c"/>
+				<F N="../gtkextra/testgtkfont.c"/>
+				<F N="../gtkextra/testgtkiconlist.c"/>
+				<F N="../gtkextra/testgtkplot.c"/>
+				<F N="../gtkextra/testgtkplot3d.c"/>
+				<F N="../gtkextra/testgtkplotcanvas.c"/>
+				<F N="../gtkextra/testgtkplotdt.c"/>
+				<F N="../gtkextra/testgtksheet.c"/>
+				<F N="../gtkextra/testimage.c"/>
+				<F N="../gtkextra/testiterator.c"/>
+				<F N="../gtkextra/testpixmap.c"/>
+				<F N="../gtkextra/testpolar.c"/>
+				<F N="../gtkextra/testrealtime.c"/>
+				<F N="../gtkextra/testsegment.c"/>
+			</Folder>
+			<Folder
+				Name="Combos"
+				Filters="">
+				<F N="../gtkextra/gtkbordercombo.c"/>
+				<F N="../gtkextra/gtkbordercombo.h"/>
+				<F N="../gtkextra/gtkcheckitem.c"/>
+				<F N="../gtkextra/gtkcheckitem.h"/>
+				<F N="../gtkextra/gtkcolorcombo.c"/>
+				<F N="../gtkextra/gtkcolorcombo.h"/>
+				<F N="../gtkextra/gtkcombobutton.c"/>
+				<F N="../gtkextra/gtkcombobutton.h"/>
+				<F N="../gtkextra/gtkfontcombo.c"/>
+				<F N="../gtkextra/gtkfontcombo.h"/>
+				<F N="../gtkextra/gtktogglecombo.c"/>
+				<F N="../gtkextra/gtktogglecombo.h"/>
+				<F N="../gtkextra/gtkcharsel.c"/>
+				<F N="../gtkextra/gtkcharsel.h"/>
+				<F N="../gtkextra/gtkdirtree.c"/>
+				<F N="../gtkextra/gtkdirtree.h"/>
+				<F N="../gtkextra/gtkfilelist.c"/>
+				<F N="../gtkextra/gtkfilelist.h"/>
+				<F N="../gtkextra/gtkiconfilesel.c"/>
+				<F N="../gtkextra/gtkiconfilesel.h"/>
+				<F N="../gtkextra/gtkiconlist.c"/>
+				<F N="../gtkextra/gtkiconlist.h"/>
+				<F N="../gtkextra/gtkfileicons.h"/>
+			</Folder>
+			<Folder
+				Name="Common"
+				Filters="">
+				<F N="../gtkextra/gtkextra-compat.h"/>
+				<F N="../gtkextra/gtkextra-marshal.c"/>
+				<F N="../gtkextra/gtkextra-marshal.h"/>
+				<F N="../gtkextra/gtkextra-marshal.list"/>
+				<F N="../gtkextra/gtkextra.c"/>
+				<F N="../gtkextra/gtkextra.h"/>
+				<F N="../gtkextra/icons.h"/>
+				<F N="../gtkextra/pixmaps.h"/>
+				<F N="../gtkextra/gtkextrafeatures.h"/>
+				<F N="../gtkextra/gtkextraicons.h"/>
+				<F N="../acconfig.h"/>
+				<F N="../config.h"/>
+				<F N="../gtkextra/gtkextratypebuiltins.c"/>
+				<F N="../gtkextra/gtkextratypebuiltins.h"/>
+				<F N="../gtkextra/gdk-pixbuf-rotate.c"/>
+			</Folder>
+			<Folder
+				Name="Sheet"
+				Filters="">
+				<F N="../gtkextra/gtkdataentry.c"/>
+				<F N="../gtkextra/gtkdataentry.h"/>
+				<F N="../gtkextra/gtkdataformat.c"/>
+				<F N="../gtkextra/gtkdataformat.h"/>
+				<F N="../gtkextra/gtksheet.c"/>
+				<F N="../gtkextra/gtksheet.h"/>
+				<F N="../gtkextra/gtksheetcolumn.c"/>
+				<F N="../gtkextra/gtksheetcolumn.h"/>
+				<F N="../gtkextra/gtkitementry.c"/>
+				<F N="../gtkextra/gtkitementry.h"/>
+			</Folder>
+		</Folder>
+		<Folder
+			Name="Resource Files"
+			Filters="*.ico;*.cur;*.dlg">
+			<F N="../gtkextra/GtkExtra-3.0.gir"/>
+			<F N="../gtkextra/GtkExtra-3.0.typelib"/>
+		</Folder>
+		<Folder
+			Name="Other Files"
+			Filters="">
+			<F N="../AUTHORS"/>
+			<F N="../autogen.sh"/>
+			<F N="../autoregen.sh"/>
+			<F N="../ChangeLog"/>
+			<F N="../config.h.in"/>
+			<F N="../config.h.win32"/>
+			<F N="../config.log"/>
+			<F N="../configure"/>
+			<F N="../configure.in"/>
+			<F N="../COPYING"/>
+			<F N="../glib-2.0.m4"/>
+			<F N="../gtk-2.0.m4"/>
+			<F N="../gtk-doc.make"/>
+			<F N="../gtk.m4"/>
+			<F N="../gtkextra-3.0.m4"/>
+			<F N="../gtkextra-3.0.pc"/>
+			<F N="../gtkextra-3.0.pc.in"/>
+			<F N="../gtkextra-3.0.spec"/>
+			<F N="../gtkextra-3.0.spec.in"/>
+			<F N="../gtkextra.m4"/>
+			<F N="../INSTALL"/>
+			<F
+				N="../Makefile"
+				Type="Makefile"/>
+			<F
+				N="../Makefile.am"
+				Type="Makefile"/>
+			<F
+				N="../gtkextra/Makefile.am"
+				Type="Makefile"/>
+			<F
+				N="../Makefile.in"
+				Type="Makefile"/>
+			<F
+				N="../gtkextra/Makefile.in"
+				Type="Makefile"/>
+			<F
+				N="../gtkextra/Makefile.mingw"
+				Type="Makefile"/>
+			<F N="../NEWS"/>
+			<F N="../README"/>
+			<F N="../gtkextra/sat.xpm"/>
+			<F N="../gtkextra/sg_small.xpm"/>
+			<F N="../gtkextra/suncloud.xpm"/>
+			<F N="../TODO"/>
+		</Folder>
+		<Folder
+			Name="Documentation"
+			Filters="">
+			<F N="../docs/reference/gtkextra-docs.sgml"/>
+			<F N="../docs/reference/gtkextra-sections.txt"/>
+			<F N="../docs/reference/gtkextra-undocumented.txt"/>
+			<F N="../docs/reference/gtkextra-unused.txt"/>
+		</Folder>
+	</Files>
+</Project>

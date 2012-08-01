@@ -1,6 +1,7 @@
 2012-08-01 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed extent calculation and autoresize w/unrealized window
 	* added misc/gtkextra.vpj (slickedit project file)
+	* GtkSheet: horizontal adjustment partially fixed
 
 2012-07-31 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: removed obsolete Sheet::changed signal emissions

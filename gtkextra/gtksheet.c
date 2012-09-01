@@ -69,9 +69,9 @@
 #   define GTK_SHEET_DEBUG_SIGNALS   0
 #   define GTK_SHEET_DEBUG_KEYPRESS   0
 #   define GTK_SHEET_DEBUG_FREEZE   0
-#   define GTK_SHEET_DEBUG_EXPOSE   0
-#   define GTK_SHEET_DEBUG_DRAW  0
-#   define GTK_SHEET_DEBUG_ADJUSTMENT  1
+#   define GTK_SHEET_DEBUG_EXPOSE   1
+#   define GTK_SHEET_DEBUG_DRAW  1
+#   define GTK_SHEET_DEBUG_ADJUSTMENT  0
 #   define GTK_SHEET_DEBUG_SIZE  0
 #   define GTK_SHEET_DEBUG_FONT_METRICS  0
 #   define GTK_SHEET_DEBUG_COLORS  0
@@ -228,7 +228,7 @@ typedef enum _GtkSheetArea
 
 #define GTK_SHEET_ROW_DEFAULT_HEIGHT 24
 
-#define GTK_SHEET_DEFAULT_BG_COLOR      "white"
+#define GTK_SHEET_DEFAULT_BG_COLOR      "lightgray"
 #define GTK_SHEET_DEFAULT_GRID_COLOR  "gray"
 #define GTK_SHEET_DEFAULT_TM_COLOR  "red"   /* tooltip marker */
 #define GTK_SHEET_DEFAULT_TM_SIZE  4  /* pixels, size of tooltip marker */
@@ -435,6 +435,80 @@ _gtk_sheet_column_from_xpixel(GtkSheet *sheet, gint x)
     /* no match */
     return (sheet->maxcol + 1);
 }
+
+/**
+ * _gtk_sheet_first_visible_colidx: 
+ * @sheet:  the sheet 
+ *  
+ * find index of leftmost visible column >= startidx
+ *  
+ * returns: column index or -1 
+ */
+static inline gint _gtk_sheet_first_visible_colidx(GtkSheet *sheet, gint startidx)
+{
+    gint i;
+    for (i=startidx; i <= sheet->maxcol; i++)
+    {
+        if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, i))) return(i);
+    }
+    return(-1);
+}
+
+/**
+ * _gtk_sheet_last_visible_colidx: 
+ * @sheet:  the sheet 
+ *  
+ * find  index of rightmost visible column <= startidx
+ *  
+ * returns: column index or -1
+ */
+static inline gint _gtk_sheet_last_visible_colidx(GtkSheet *sheet, gint startidx)
+{
+    gint i;
+    for (i=startidx; i >= 0; i--)
+    {
+        if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, i))) return(i);
+    }
+    return(-1);
+}
+
+/**
+ * _gtk_sheet_first_visible_rowidx: 
+ * @sheet:  the sheet 
+ *  
+ * find index of topmost visible row >= startidx
+ *  
+ * returns: row index or -1 
+ */
+static inline gint _gtk_sheet_first_visible_rowidx(GtkSheet *sheet, gint startidx)
+{
+    gint i;
+    for (i=startidx; i <= sheet->maxrow; i++)
+    {
+        if (GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i))) return(i);
+    }
+    return(-1);
+}
+
+/**
+ * _gtk_sheet_last_visible_rowidx: 
+ * @sheet:  the sheet 
+ *  
+ * find index of bottommost visible row <= startidx
+ *  
+ * returns: row index or -1 
+ */
+static inline gint _gtk_sheet_last_visible_rowidx(GtkSheet *sheet, gint startidx)
+{
+    gint i;
+    for (i=startidx; i >= 0; i--)
+    {
+        if (GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i))) return(i);
+    }
+    return(-1);
+}
+
+
 
 
 /**
@@ -2907,7 +2981,6 @@ gtk_sheet_construct_browser(GtkSheet *sheet, guint rows, guint columns,
     gtk_sheet_construct(sheet, rows, columns, title);
 
     gtk_sheet_set_locked(sheet, TRUE);
-    gtk_sheet_set_autoresize(sheet, TRUE);  /* why this ? */
 }
 
 /**
@@ -6575,7 +6648,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
         if (maxcol >= 0)
         {
             area.x = _gtk_sheet_column_left_xpixel(sheet, maxcol) +
-                COLPTR(sheet, maxcol)->width + 1;
+                COLPTR(sheet, maxcol)->width;
         }
         else
         {
@@ -6588,7 +6661,12 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 
         if (area.width > 0) /* beware, rightmost column might be partially visible */
         {
+#if 0
             gdk_gc_set_foreground(sheet->fg_gc, &sheet->bg_color);
+#else
+            gdk_gc_set_foreground(sheet->fg_gc, 
+                &gtk_widget_get_style(GTK_WIDGET(sheet))->bg[GTK_STATE_NORMAL]);
+#endif
 
             gdk_draw_rectangle(sheet->pixmap,
                                sheet->fg_gc,
@@ -6621,7 +6699,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
         if (maxrow >= 0)
         {
             area.y = _gtk_sheet_row_top_ypixel(sheet, maxrow) +
-                ROWPTR(sheet, maxrow)->height + 1;
+                ROWPTR(sheet, maxrow)->height;
         }
         else
         {
@@ -6632,7 +6710,12 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 
         if (area.height > 0) /* beware, last row might be partially visible */
         {
+#if 0
             gdk_gc_set_foreground(sheet->fg_gc, &sheet->bg_color);
+#else
+            gdk_gc_set_foreground(sheet->fg_gc, 
+                &gtk_widget_get_style(GTK_WIDGET(sheet))->bg[GTK_STATE_NORMAL]);
+#endif
 
             gdk_draw_rectangle(sheet->pixmap,
                                sheet->fg_gc,
@@ -9440,15 +9523,32 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     if (GTK_SHEET_IN_DRAG(sheet))
     {
         GtkSheetRange aux;
-        column = _gtk_sheet_column_from_xpixel(sheet, x) - sheet->drag_cell.col;
-        row = _gtk_sheet_row_from_ypixel(sheet, y) - sheet->drag_cell.row;
+        gint minvr, maxvr, minvc, maxvc;
+
+        gint current_col = MIN(sheet->maxcol, _gtk_sheet_column_from_xpixel(sheet, x));
+        gint current_row = MIN(sheet->maxrow,_gtk_sheet_row_from_ypixel(sheet, y));
+
+        column = current_col - sheet->drag_cell.col;
+        row = current_row - sheet->drag_cell.row;
+
         if (sheet->state == GTK_SHEET_COLUMN_SELECTED) row = 0;
         if (sheet->state == GTK_SHEET_ROW_SELECTED) column = 0;
         sheet->x_drag = x;
         sheet->y_drag = y;
         aux = sheet->range;
-        if (aux.row0 + row >= 0 && aux.rowi + row <= sheet->maxrow &&
-            aux.col0 + column >= 0 && aux.coli + column <= sheet->maxcol)
+
+        /* beware of invisible columns/rows */
+        minvr = _gtk_sheet_first_visible_rowidx(sheet, 0);
+        if (minvr < 0) return(TRUE);
+        maxvr = _gtk_sheet_last_visible_rowidx(sheet, sheet->maxrow);
+        if (maxvr < 0) return(TRUE);
+        minvc = _gtk_sheet_first_visible_colidx(sheet, 0);
+        if (minvc < 0) return(TRUE);
+        maxvc = _gtk_sheet_last_visible_colidx(sheet, sheet->maxcol);
+        if (maxvc < 0) return(TRUE);
+
+        if (minvr <= (aux.row0 + row) && (aux.rowi + row) <= maxvr
+            && minvc <= (aux.col0 + column) && (aux.coli + column) <= maxvc)
         {
             aux = sheet->drag_range;
             sheet->drag_range.row0 = sheet->range.row0 + row;
@@ -9469,9 +9569,11 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     {
         GtkSheetRange aux;
         gint v_h, current_col, current_row, col_threshold, row_threshold;
+        gint minvr, maxvr, minvc, maxvc;
+
         v_h = 1;
 
-        /* use center of the selection to determine h_v */
+        /* use center of the selection to determine v_h */
         g_assert(0 <= sheet->drag_cell.col && sheet->drag_cell.col <= sheet->maxcol);
         g_assert(0 <= sheet->drag_cell.row && sheet->drag_cell.row <= sheet->maxrow);
 
@@ -9523,13 +9625,23 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
         else
             row = 0;
 
+        /* beware of invisible columns/rows */
+        minvr = _gtk_sheet_first_visible_rowidx(sheet, 0);
+        if (minvr < 0) return(TRUE);
+        maxvr = _gtk_sheet_last_visible_rowidx(sheet, sheet->maxrow);
+        if (maxvr < 0) return(TRUE);
+        minvc = _gtk_sheet_first_visible_colidx(sheet, 0);
+        if (minvc < 0) return(TRUE);
+        maxvc = _gtk_sheet_last_visible_colidx(sheet, sheet->maxcol);
+        if (maxvc < 0) return(TRUE);
+
 #ifdef GTK_SHEET_DEBUG
         g_debug("gtk_sheet_motion: 2 state %d row %d cr %d th %d column %d",
                 v_h, row, current_row, row_threshold, column);
 #endif
 
-        if (aux.row0 + row >= 0 && aux.rowi + row <= sheet->maxrow &&
-            aux.col0 + column >= 0 && aux.coli + column <= sheet->maxcol)
+        if (minvr <= (aux.row0 + row) && (aux.rowi + row) <= maxvr &&
+            minvc <= (aux.col0 + column) && (aux.coli + column) <= maxvc)
         {
 
             aux = sheet->drag_range;

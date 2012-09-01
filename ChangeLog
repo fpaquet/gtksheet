@@ -1,3 +1,8 @@
+2012-09-01 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed drawing, dirty edges beyond rightmost column
+	* GtkSheet: use style background for area beyond outmost row/column
+	* GtkSheet: reworked drag/resize of sheet selection w/invisible columns
+
 2012-08-01 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed extent calculation and autoresize w/unrealized window
 	* added misc/gtkextra.vpj (slickedit project file)

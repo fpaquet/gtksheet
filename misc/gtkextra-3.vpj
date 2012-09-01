@@ -2,7 +2,8 @@
 <Project
 	Version="10.0"
 	VendorName="SlickEdit"
-	WorkingDir="../gtkextra">
+	WorkingDir="../gtkextra"
+	VCSProject="Git:">
 	<Config
 		Name="Debug"
 		Type="gnuc"

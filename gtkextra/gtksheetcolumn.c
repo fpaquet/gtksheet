@@ -65,8 +65,8 @@
 
 #define COLPTR(sheet, colidx) (sheet->column[colidx])
 
-#define MIN_VISIBLE_COLUMN(sheet)  sheet->view.col0
-#define MAX_VISIBLE_COLUMN(sheet)  sheet->view.coli
+#define MIN_VIEW_COLUMN(sheet)  sheet->view.col0
+#define MAX_VIEW_COLUMN(sheet)  sheet->view.coli
 
 
 
@@ -920,7 +920,7 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
     }
 
     /* if the right edge of the sheet is visible, clear it */
-    if (MAX_VISIBLE_COLUMN(sheet) >= sheet->maxcol)
+    if (MAX_VIEW_COLUMN(sheet) >= sheet->maxcol)
     {
         gint mc = gtk_sheet_column_rightmost_visible(sheet);
         gint mx = _gtk_sheet_column_right_xpixel(sheet, mc);
@@ -940,7 +940,7 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
 
     if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return;
 
-    for (i = MIN_VISIBLE_COLUMN(sheet); i <= MAX_VISIBLE_COLUMN(sheet); i++)
+    for (i = MIN_VIEW_COLUMN(sheet); i <= MAX_VIEW_COLUMN(sheet); i++)
     {
         _gtk_sheet_draw_button(sheet, -1, i);
     }
@@ -1086,8 +1086,8 @@ gtk_sheet_column_set_justification(GtkSheet *sheet, gint col,
 
     if (gtk_widget_get_realized(GTK_WIDGET(sheet))
         && !gtk_sheet_is_frozen(sheet)
-        && col >= MIN_VISIBLE_COLUMN(sheet)
-        && col <= MAX_VISIBLE_COLUMN(sheet))
+        && col >= MIN_VIEW_COLUMN(sheet)
+        && col <= MAX_VIEW_COLUMN(sheet))
     {
         _gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
@@ -1133,8 +1133,8 @@ gtk_sheet_column_set_vjustification(GtkSheet *sheet, gint col,
 
     if (gtk_widget_get_realized(GTK_WIDGET(sheet))
         && !gtk_sheet_is_frozen(sheet)
-        && col >= MIN_VISIBLE_COLUMN(sheet)
-        && col <= MAX_VISIBLE_COLUMN(sheet))
+        && col >= MIN_VIEW_COLUMN(sheet)
+        && col <= MAX_VIEW_COLUMN(sheet))
     {
         _gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
@@ -1882,7 +1882,7 @@ gtk_sheet_show_column_titles(GtkSheet *sheet)
                            sheet->column_title_area.width,
                            sheet->column_title_area.height);
 
-    for (col = MIN_VISIBLE_COLUMN(sheet); col <= MAX_VISIBLE_COLUMN(sheet); col++)
+    for (col = MIN_VIEW_COLUMN(sheet); col <= MAX_VIEW_COLUMN(sheet); col++)
     {
         GtkSheetChild *child;
         if (col < 0 || col > sheet->maxcol) continue;
@@ -1918,7 +1918,7 @@ gtk_sheet_hide_column_titles(GtkSheet *sheet)
 
     if (gtk_widget_get_visible(sheet->button)) gtk_widget_hide(sheet->button);
 
-    for (col = MIN_VISIBLE_COLUMN(sheet); col <= MAX_VISIBLE_COLUMN(sheet); col++)
+    for (col = MIN_VIEW_COLUMN(sheet); col <= MAX_VIEW_COLUMN(sheet); col++)
     {
         GtkSheetChild *child;
         if (col < 0 || col > sheet->maxcol) continue;

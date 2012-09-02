@@ -1,4 +1,7 @@
 2012-09-01 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: reworked drag/resize of sheet selection w/invisible columns
+
+2012-09-01 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed drawing, dirty edges beyond rightmost column
 	* GtkSheet: use style background for area beyond outmost row/column
 	* GtkSheet: reworked drag/resize of sheet selection w/invisible columns

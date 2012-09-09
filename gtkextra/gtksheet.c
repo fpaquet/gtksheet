@@ -577,7 +577,7 @@ static inline gboolean _gtk_sheet_get_visible_range(GtkSheet *sheet,
  *  
  * count visible rows/cols in range
  */
-static inline gboolean _gtk_sheet_count_visible(GtkSheet *sheet, 
+static inline void _gtk_sheet_count_visible(GtkSheet *sheet, 
     GtkSheetRange *range, gint *nrows, gint *ncols)
 {
     gint i;
@@ -953,7 +953,7 @@ static void gtk_sheet_range_draw_selection(GtkSheet *sheet, GtkSheetRange range)
 
 /* Selection */
 
-static gint gtk_sheet_move_query(GtkSheet *sheet, gint row, gint column);
+static gint _gtk_sheet_move_query(GtkSheet *sheet, gint row, gint column);
 static void gtk_sheet_real_select_range(GtkSheet *sheet, GtkSheetRange *range);
 static void gtk_sheet_real_unselect_range(GtkSheet *sheet, GtkSheetRange *range);
 static void gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column);
@@ -8060,6 +8060,27 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
     return (TRUE);
 }
 
+static void _gtk_sheet_entry_preselect(GtkSheet *sheet)
+{
+    gboolean select_on_focus;
+    gboolean editable = TRUE;  /* incomplete - refer to gtkitementry::gtk_entry_grab_focus() */
+    gboolean in_click = FALSE;  /* incomplete - refer to gtkitementry::gtk_entry_grab_focus() */
+
+#ifdef GTK_SHEET_DEBUG
+    g_warning("_gtk_sheet_entry_preselect");
+#endif
+
+    g_object_get (G_OBJECT (gtk_settings_get_default()),
+	"gtk-entry-select-on-focus",
+	&select_on_focus,
+	NULL);
+
+    if (select_on_focus && editable && !in_click)
+    {
+	gtk_sheet_entry_select_region(sheet, 0, -1);
+    }
+}
+
 static void
 gtk_sheet_show_active_cell(GtkSheet *sheet)
 {
@@ -8147,6 +8168,8 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
 
     gtk_widget_map(sheet->sheet_entry);
     gtk_sheet_draw_active_cell(sheet);
+
+    _gtk_sheet_entry_preselect(sheet);
 
     gtk_widget_grab_focus(GTK_WIDGET(sheet_entry));
 
@@ -9140,7 +9163,7 @@ gtk_sheet_scroll(gpointer data)
 
     if (GTK_SHEET_IN_DRAG(sheet) || GTK_SHEET_IN_RESIZE(sheet))
     {
-        move = gtk_sheet_move_query(sheet, row, column);
+        move = _gtk_sheet_move_query(sheet, row, column);
         if (move) draw_xor_rectangle(sheet, sheet->drag_range);
     }
 
@@ -9197,14 +9220,14 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 
     if (row == -1 && col >= 0)  /* column button clicked */
     {
-        if (gtk_sheet_autoscroll(sheet)) gtk_sheet_move_query(sheet, row, col);
+        if (gtk_sheet_autoscroll(sheet)) _gtk_sheet_move_query(sheet, row, col);
 
         gtk_sheet_select_column(sheet, col);
         return;
     }
     if (col == -1 && row >= 0)  /* row button clicked */
     {
-        if (gtk_sheet_autoscroll(sheet)) gtk_sheet_move_query(sheet, row, col);
+        if (gtk_sheet_autoscroll(sheet)) _gtk_sheet_move_query(sheet, row, col);
 
         gtk_sheet_select_row(sheet, row);
         return;
@@ -9305,7 +9328,7 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
         }
 #endif
 
-        if (gtk_sheet_autoscroll(sheet)) gtk_sheet_move_query(sheet, row, col);
+        if (gtk_sheet_autoscroll(sheet)) _gtk_sheet_move_query(sheet, row, col);
 
         sheet->active_cell.row = row;
         sheet->active_cell.col = col;
@@ -9814,7 +9837,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 }
 
 static gint
-gtk_sheet_move_query(GtkSheet *sheet, gint row, gint column)
+_gtk_sheet_move_query(GtkSheet *sheet, gint row, gint column)
 {
     gint row_move, column_move;
     gfloat row_align, col_align;
@@ -9839,7 +9862,7 @@ gtk_sheet_move_query(GtkSheet *sheet, gint row, gint column)
     width = sheet->sheet_window_width;
 
     /* beware of invisible columns/rows */
-    if (!_gtk_sheet_get_visible_range(sheet, &visr)) return;
+    if (!_gtk_sheet_get_visible_range(sheet, &visr)) return(0);
 
     if (row >= MAX_VIEW_ROW(sheet) 
         && row <= visr.rowi
@@ -9914,7 +9937,7 @@ gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column)
     if (sheet->active_cell.row < 0 || sheet->active_cell.row > sheet->maxrow) return;
     if (sheet->active_cell.col < 0 || sheet->active_cell.col > sheet->maxcol) return;
 
-    gtk_sheet_move_query(sheet, row, column);
+    _gtk_sheet_move_query(sheet, row, column);
     gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
     if (GTK_SHEET_IN_DRAG(sheet)) return;
@@ -11305,6 +11328,46 @@ void gtk_sheet_set_entry_editable(GtkSheet *sheet, const gboolean editable)
     else
     {
         g_warning("gtk_sheet_set_entry_editable: no GTK_EDITABLE, don't know how to set editable.");
+    }
+}
+
+/**
+ * gtk_sheet_entry_select_region:
+ * @sheet: a #GtkSheet 
+ * @start_pos: start of region 
+ * @end_pos: end of region 
+ *
+ * Selects a region of text.
+ *  
+ * This function is necessary, because not all possible entry 
+ * widgets implement the GtkEditable interface yet. 
+ */
+void gtk_sheet_entry_select_region(GtkSheet *sheet, gint start_pos, gint end_pos)
+{
+    GtkWidget *entry = NULL;
+
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    entry = gtk_sheet_get_entry(sheet);
+    g_return_if_fail(entry != NULL);
+
+    if (GTK_IS_EDITABLE(entry))
+    {
+        gtk_editable_select_region(GTK_EDITABLE(entry), start_pos, end_pos);
+    }
+    else if (GTK_IS_TEXT_VIEW(entry))
+    {
+        GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
+	GtkTextIter start, end;
+
+	gtk_text_buffer_get_iter_at_offset(buffer, &start, start_pos);
+	gtk_text_buffer_get_iter_at_offset(buffer, &end, end_pos);
+	gtk_text_buffer_select_range(buffer, &start, &end);
+    }
+    else
+    {
+        g_warning("gtk_sheet_entry_select_region: no GTK_EDITABLE, don't know how to select region.");
     }
 }
 

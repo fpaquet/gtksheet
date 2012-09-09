@@ -525,6 +525,7 @@ GtkWidget *gtk_sheet_get_entry_widget(GtkSheet *sheet);
 gchar *gtk_sheet_get_entry_text(GtkSheet *sheet);
 void gtk_sheet_set_entry_text(GtkSheet *sheet, const gchar *text);
 void gtk_sheet_set_entry_editable(GtkSheet *sheet, const gboolean editable);
+void gtk_sheet_entry_select_region(GtkSheet *sheet, gint start_pos, gint end_pos);
 
 gulong gtk_sheet_entry_signal_connect_changed(GtkSheet *sheet, GtkSignalFunc handler);
 void gtk_sheet_entry_signal_disconnect_by_func(GtkSheet *sheet, GtkSignalFunc handler);

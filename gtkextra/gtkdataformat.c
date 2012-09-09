@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <locale.h>
 #include <gtk/gtk.h>
 
 #define __GTKEXTRA_H_INSIDE__
@@ -46,83 +47,56 @@
  * 
  */
 
-#define NUM_SEPARATOR   '\''
+#define DEFAULT_DECIMAL_POINT   '.'  /* default radix char */
+#define DEFAULT_THOUSANDS_SEP   '\''  /* default thousands grouping char */
 #define MAX_NUM_STRLEN  64
 #define NULL_TEXT_REP   ""
 #define INVALID_DATA   "?"
 
 #define SIGNIFICANT_DIGITS  16
 
-#if 0
-
-#define IS_NUM_CHAR(c) \
-        (  (('0' <= (c)) && ((c) <= '9')) \
-        || ((c) == '.') \
-        || ((c) == '+') || ((c) == '-') \
-        || ((c) == 'e') || ((c) == 'E') )
-        
-static BOOL is_numeric(char *str)
-{
-    for(;*str;str++)
-    {
-        if (!IS_NUM_CHAR(*str)) return(FALSE);
-    }
-    return(TRUE);
-}
-#endif
-             
-static gchar *replace_dot_with_comma(gchar *cp)
+static gchar *insert_thousands_seps(const gchar *cp)
 {
     static gchar buf[MAX_NUM_STRLEN];
-    gchar *dst;
-        
-    for(dst=buf;*cp; cp++)
-    {
-        switch(*cp)
-        {
-            case '.': *dst++ = ','; break;
-            default: *dst++ = *cp; break;
-        }
-    }   
-    *dst = '\0';
-    return(buf);
-}
-
-static gchar *insert_num_seps(const gchar *cp)
-{
-    static gchar buf[MAX_NUM_STRLEN];
-    gchar *dot, c;
+    gchar *radix_cp, c;
     gint pos;
+    struct lconv *lc = localeconv();
+    gchar radix_c = (lc && lc->decimal_point) ? 
+	*lc->decimal_point : DEFAULT_DECIMAL_POINT;
+    gchar thousands_c = (lc && lc->thousands_sep) ? 
+	*lc->thousands_sep : DEFAULT_THOUSANDS_SEP;
         
-    dot = strchr(cp, '.');
-    if (dot)
-        pos = dot - cp;
+    radix_cp = strchr(cp, radix_c);
+    if (radix_cp)
+        pos = radix_cp - cp;
     else
         pos = strlen(cp);
     
-    for(dot=buf;;)
+    for(radix_cp=buf;;)
     {
         if (!*cp) break;
-        c = *dot++ = *cp++;
+        c = *radix_cp++ = *cp++;
         --pos;
         if ((pos > 0) && !(pos % 3)
         && (c != '-') && (c != '+'))
-            *dot++ = NUM_SEPARATOR;
+            *radix_cp++ = thousands_c;
     }
-    *dot++ = '\0';
+    *radix_cp++ = '\0';
     return(buf);
 }
 
-static gchar *remove_num_seps(const gchar *src)
+static gchar *remove_thousands_seps(const gchar *src)
 {
     static gchar buf[MAX_NUM_STRLEN];
     gchar *dst = buf;
     gboolean found=FALSE;
     gint i=0,l = strlen(src);
+    struct lconv *lc = localeconv();
+    gchar thousands_c = (lc && lc->thousands_sep) ? 
+	*lc->thousands_sep : DEFAULT_THOUSANDS_SEP;
 
     if (!src) return((gchar *) src);
     
-#if 1
     if ((l > 1) && (src[l-1] == '-'))    /* handle trailing minus sign */
     {
         if (src[0] == '-')
@@ -137,11 +111,10 @@ static gchar *remove_num_seps(const gchar *src)
         }
         found=TRUE;
     }
-#endif
 
     for(;i<l;i++)
     {
-        if (src[i] == NUM_SEPARATOR)
+        if (src[i] == thousands_c)
             found=TRUE;
         else
             *dst++ = src[i];
@@ -153,7 +126,7 @@ static gchar *remove_num_seps(const gchar *src)
 }
 
 static gchar *format_double(gdouble d, 
-    gint comma_digits, gboolean do_numseps, gboolean do_comma)
+    gint comma_digits, gboolean do_numseps)
 {
     static gchar str_buf[MAX_NUM_STRLEN], *cp;
 
@@ -164,8 +137,7 @@ static gchar *format_double(gdouble d,
     
     cp = str_buf; 
 
-    if (do_numseps) cp = insert_num_seps(str_buf);  
-    if (do_comma) cp = replace_dot_with_comma(cp);
+    if (do_numseps) cp = insert_thousands_seps(str_buf);  
 
     return(cp);
 }
@@ -220,21 +192,21 @@ gchar *gtk_data_format(const gchar *str, const gchar *dataformat)
             if (strcmp(dataformat, "int8") == 0)
             {
                 gint i;
-                str = remove_num_seps(str);
+                str = remove_thousands_seps(str);
                 if (sscanf(str, "%d", &i) == 1) return(format_int(i, 1));
                 return(INVALID_DATA);
             }
             else if (strcmp(dataformat, "int16") == 0)
             {
                 gint i;
-                str = remove_num_seps(str);
+                str = remove_thousands_seps(str);
                 if (sscanf(str, "%d", &i) == 1) return(format_int(i, 2));
                 return(INVALID_DATA);
             }
             else if (strcmp(dataformat, "int32") == 0)
             {
                 gint i;
-                str = remove_num_seps(str);
+                str = remove_thousands_seps(str);
                 if (sscanf(str, "%d", &i) == 1) return(format_int(i, 4));
                 return(INVALID_DATA);
             }
@@ -245,10 +217,10 @@ gchar *gtk_data_format(const gchar *str, const gchar *dataformat)
             {
                 gdouble d;
 
-                str = remove_num_seps(str);
+                str = remove_thousands_seps(str);
 
                 if (sscanf(str, "%lg", &d) == 1) 
-                    return(format_double(d, 2, TRUE, FALSE));
+                    return(format_double(d, 2, TRUE));
 
                 return(INVALID_DATA);
             }
@@ -263,10 +235,10 @@ gchar *gtk_data_format(const gchar *str, const gchar *dataformat)
                 {
                     gdouble d;
 
-                    str = remove_num_seps(str);
+                    str = remove_thousands_seps(str);
 
                     if (sscanf(str, "%lg", &d) == 1) 
-                        return(format_double(d, precision, TRUE, FALSE));
+                        return(format_double(d, precision, TRUE));
 
                     return(INVALID_DATA);
                 }
@@ -309,22 +281,22 @@ gchar *gtk_data_format_remove(const gchar *str, const gchar *dataformat)
         case 'i':
             if (strcmp(dataformat, "int8") == 0)
             {
-                str = remove_num_seps(str);
+                str = remove_thousands_seps(str);
             }
             else if (strcmp(dataformat, "int16") == 0)
             {
-                str = remove_num_seps(str);
+                str = remove_thousands_seps(str);
             }
             else if (strcmp(dataformat, "int32") == 0)
             {
-                str = remove_num_seps(str);
+                str = remove_thousands_seps(str);
             }
             break;
 
         case 'm':
             if (strcmp(dataformat, "money") == 0)
             {
-                str = remove_num_seps(str);
+                str = remove_thousands_seps(str);
             }
             break;
 
@@ -335,7 +307,7 @@ gchar *gtk_data_format_remove(const gchar *str, const gchar *dataformat)
 
                 if (sscanf(&dataformat[6], "%d", &precision) == 1)
                 {
-                    str = remove_num_seps(str);
+                    str = remove_thousands_seps(str);
                 }
             }
             break;

@@ -1,3 +1,9 @@
+2012-09-09 Fredy Paquet <mailbox AT opag.ch>
+	* GtkDataEntry, GtkSheetColumn: fixed formatting for non POSIX/C locales
+	* GtkSheet: experimental support for cell text preselection (incomplete)
+	* GtkSheet: fixed missing return value in _gtk_sheet_move_query()
+	* GtkSheet: fixed return type of _gtk_sheet_count_visible()
+
 2012-09-01 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: reworked drag/resize of sheet selection w/invisible columns
 

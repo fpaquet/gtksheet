@@ -589,9 +589,11 @@ gtk_entry_grab_focus (GtkWidget        *widget)
 		"gtk-entry-select-on-focus",
 		&select_on_focus,
 		NULL);
-  
+
   if (select_on_focus && entry->editable && !entry->in_click)
-    gtk_editable_select_region (GTK_EDITABLE (widget), 0, -1);
+  {
+      gtk_editable_select_region (GTK_EDITABLE (widget), 0, -1);
+  }
 }
 
 static void 

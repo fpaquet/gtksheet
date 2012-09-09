@@ -15407,6 +15407,26 @@ with the given number of rows and columns and a custom entry.</doc>
           </parameter>
         </parameters>
       </method>
+      <method name="entry_select_region"
+              c:identifier="gtk_sheet_entry_select_region">
+        <doc xml:whitespace="preserve">Selects a region of text.
+ 
+This function is necessary, because not all possible entry 
+widgets implement the GtkEditable interface yet.</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="start_pos" transfer-ownership="none">
+            <doc xml:whitespace="preserve">start of region</doc>
+            <type name="gint" c:type="gint"/>
+          </parameter>
+          <parameter name="end_pos" transfer-ownership="none">
+            <doc xml:whitespace="preserve">end of region</doc>
+            <type name="gint" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
       <method name="entry_signal_connect_changed"
               c:identifier="gtk_sheet_entry_signal_connect_changed">
         <doc xml:whitespace="preserve">Connect a handler to the sheet_entry "changed" signal

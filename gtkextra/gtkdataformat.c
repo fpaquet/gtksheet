@@ -47,8 +47,8 @@
  * 
  */
 
-#define DEFAULT_DECIMAL_POINT   '.'  /* default radix char */
-#define DEFAULT_THOUSANDS_SEP   '\''  /* default thousands grouping char */
+#define DEFAULT_DECIMAL_POINT   "."  /* default radix char */
+#define DEFAULT_THOUSANDS_SEP   "'"  /* default thousands grouping char */
 #define MAX_NUM_STRLEN  64
 #define NULL_TEXT_REP   ""
 #define INVALID_DATA   "?"
@@ -61,25 +61,30 @@ static gchar *insert_thousands_seps(const gchar *cp)
     gchar *radix_cp, c;
     gint pos;
     struct lconv *lc = localeconv();
-    gchar radix_c = (lc && lc->decimal_point) ? 
-	*lc->decimal_point : DEFAULT_DECIMAL_POINT;
-    gchar thousands_c = (lc && lc->thousands_sep) ? 
-	*lc->thousands_sep : DEFAULT_THOUSANDS_SEP;
-        
-    radix_cp = strchr(cp, radix_c);
+    gchar *radix_c = (lc && lc->decimal_point) ? 
+	lc->decimal_point : DEFAULT_DECIMAL_POINT;
+    gchar *thousands_c = (lc && lc->thousands_sep) ? 
+	lc->thousands_sep : DEFAULT_THOUSANDS_SEP;
+    gint thousands_len = strlen(thousands_c);
+
+    radix_cp = strstr(cp, radix_c);
     if (radix_cp)
         pos = radix_cp - cp;
     else
         pos = strlen(cp);
     
-    for(radix_cp=buf;;)
+    for(radix_cp=buf;;)  /* copy inserting thousands_c on the fly */
     {
         if (!*cp) break;
+
         c = *radix_cp++ = *cp++;
         --pos;
         if ((pos > 0) && !(pos % 3)
         && (c != '-') && (c != '+'))
-            *radix_cp++ = thousands_c;
+        {
+            strcpy(radix_cp, thousands_c);
+            radix_cp += thousands_len;
+        }
     }
     *radix_cp++ = '\0';
     return(buf);
@@ -90,10 +95,11 @@ static gchar *remove_thousands_seps(const gchar *src)
     static gchar buf[MAX_NUM_STRLEN];
     gchar *dst = buf;
     gboolean found=FALSE;
-    gint i=0,l = strlen(src);
+    gint i=0, l = strlen(src);
     struct lconv *lc = localeconv();
-    gchar thousands_c = (lc && lc->thousands_sep) ? 
-	*lc->thousands_sep : DEFAULT_THOUSANDS_SEP;
+    gchar *thousands_c = (lc && lc->thousands_sep) ? 
+	lc->thousands_sep : DEFAULT_THOUSANDS_SEP;
+    gint thousands_len = strlen(thousands_c);
 
     if (!src) return((gchar *) src);
     
@@ -112,12 +118,15 @@ static gchar *remove_thousands_seps(const gchar *src)
         found=TRUE;
     }
 
-    for(;i<l;i++)
+    while (i<l)
     {
-        if (src[i] == thousands_c)
+        if ((src[i] == thousands_c[0]) && (strcmp(&src[i], thousands_c) == 0))
+        {
+            i += thousands_len;
             found=TRUE;
+        }
         else
-            *dst++ = src[i];
+            *dst++ = src[i++];  /* beware: minor risc to hit a UTF-8 radix_c */
     }
     *dst = '\0';
     

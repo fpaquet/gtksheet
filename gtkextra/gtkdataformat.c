@@ -29,6 +29,10 @@
 #include "gtkextra-compat.h"
 #include "gtkdataformat.h"
 
+#ifdef DEBUG
+#  define GTK_DATA_FORMAT_DEBUG  0  /* define to activate debug output */
+#endif
+
 /**
  * SECTION: gtkdataformat
  * @short_description: a data formatting library
@@ -120,7 +124,7 @@ static gchar *remove_thousands_seps(const gchar *src)
 
     while (i<l)
     {
-        if ((src[i] == thousands_c[0]) && (strcmp(&src[i], thousands_c) == 0))
+        if ((src[i] == thousands_c[0]) && (strncmp(&src[i], thousands_c, thousands_len) == 0))
         {
             i += thousands_len;
             found=TRUE;

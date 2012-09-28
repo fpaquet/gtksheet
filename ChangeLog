@@ -1,3 +1,6 @@
+2012-09-28 Fredy Paquet <mailbox AT opag.ch>
+	* GtkDataEntry, GtkSheetColumn: fixed removal of thousands separator
+
 2012-09-14 Fredy Paquet <mailbox AT opag.ch>
 	* GtkDataEntry, GtkSheetColumn: fixed formatting for non POSIX/C locales (UTF-8)
 

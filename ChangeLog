@@ -1,3 +1,7 @@
+2012-10.03 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: auto-resize on window size modification fixed
+	* GtkSheet: cleanup debug defines
+
 2012-09-28 Fredy Paquet <mailbox AT opag.ch>
 	* GtkDataEntry, GtkSheetColumn: fixed removal of thousands separator
 

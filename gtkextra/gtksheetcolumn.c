@@ -55,7 +55,7 @@
 #endif
 
 #ifdef GTK_SHEET_DEBUG
-#   define GTK_SHEET_DEBUG_SIZE  1
+#   define GTK_SHEET_DEBUG_SIZE  0
 #   define GTK_SHEET_DEBUG_PROPERTIES  0
 #endif
 
@@ -169,7 +169,7 @@ gtk_sheet_column_set_property(GObject *object,
                 }
                 else
                 {
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
                     g_debug("gtk_sheet_column_set_property[%d]: set width %d", col, width);
 #endif
                     gtk_sheet_set_column_width(sheet, col, width);
@@ -875,7 +875,7 @@ _gtk_sheet_column_size_request(GtkSheet *sheet,
 
     COLPTR(sheet, col)->requisition = *requisition;
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("_gtk_sheet_column_size_request: col %d = %d", col, *requisition);
 #endif
 }
@@ -895,7 +895,7 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
     if (!sheet->column_titles_visible) return;
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("_gtk_sheet_column_buttons_size_allocate: called");
 #endif
 
@@ -966,7 +966,7 @@ gtk_sheet_set_column_width(GtkSheet *sheet, gint col, guint width)
 
     if (col < 0 || col > sheet->maxcol) return;
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("gtk_sheet_set_column_width[%d]: width %d", col, width);
 #endif
 
@@ -1047,7 +1047,7 @@ gtk_sheet_column_button_add_label(GtkSheet *sheet, gint col, const gchar *label)
 
     if (req.width > COLPTR(sheet, col)->width)
     {
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
         g_debug("gtk_sheet_column_button_add_label[%d]: set width %d", col, req.width);
 #endif
         gtk_sheet_set_column_width(sheet, col, req.width);

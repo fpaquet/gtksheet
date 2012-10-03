@@ -66,17 +66,19 @@
 #endif
 
 #ifdef GTK_SHEET_DEBUG
-#   define GTK_SHEET_DEBUG_SIGNALS   0
-#   define GTK_SHEET_DEBUG_KEYPRESS   0
-#   define GTK_SHEET_DEBUG_FREEZE   0
-#   define GTK_SHEET_DEBUG_EXPOSE   0
-#   define GTK_SHEET_DEBUG_DRAW  0
-#   define GTK_SHEET_DEBUG_MOVE  1
-#   define GTK_SHEET_DEBUG_SELECTION  1
 #   define GTK_SHEET_DEBUG_ADJUSTMENT  0
-#   define GTK_SHEET_DEBUG_SIZE  0
-#   define GTK_SHEET_DEBUG_FONT_METRICS  0
+#   define GTK_SHEET_DEBUG_BUILDER   0
 #   define GTK_SHEET_DEBUG_COLORS  0
+#   define GTK_SHEET_DEBUG_DRAW  0
+#   define GTK_SHEET_DEBUG_EXPOSE   0
+#   define GTK_SHEET_DEBUG_FONT_METRICS  0
+#   define GTK_SHEET_DEBUG_FREEZE   0
+#   define GTK_SHEET_DEBUG_KEYPRESS   0
+#   define GTK_SHEET_DEBUG_MOVE  0
+#   define GTK_SHEET_DEBUG_PROPERTIES  0
+#   define GTK_SHEET_DEBUG_SELECTION  0
+#   define GTK_SHEET_DEBUG_SIGNALS   0
+#   define GTK_SHEET_DEBUG_SIZE  0
 #endif
 
 #define GTK_SHEET_MOD_MASK  GDK_MOD1_MASK  /* main modifier for sheet navigation */
@@ -187,7 +189,7 @@ typedef enum _GtkSheetArea
 
 #define COLUMN_UNREALIZED_MAX_WIDTH 512  /* unrealized maximum width */
 #define COLUMN_REMNANT_PIXELS  32   /* maximized: free space left for others */
-#define ROW_UNREALIZED_MAX_HEIGHT 256  /* unrealized maximum height */
+#define ROW_UNREALIZED_MAX_HEIGHT 128  /* unrealized maximum height */
 #define ROW_REMNANT_PIXELS  32   /* maximized: free space left for others */
 
 #define COLUMN_MAX_WIDTH(sheet) \
@@ -195,10 +197,17 @@ typedef enum _GtkSheetArea
     COLUMN_UNREALIZED_MAX_WIDTH : \
     sheet->sheet_window_width - COLUMN_REMNANT_PIXELS )
 
+#if 0
 #define ROW_MAX_HEIGHT(sheet) \
     (sheet->sheet_window_height < ROW_REMNANT_PIXELS ? \
     ROW_UNREALIZED_MAX_HEIGHT : \
     sheet->sheet_window_height - ROW_REMNANT_PIXELS )
+#else
+#define ROW_MAX_HEIGHT(sheet) \
+    (sheet->sheet_window_height < ROW_REMNANT_PIXELS ? \
+    ROW_UNREALIZED_MAX_HEIGHT : \
+    sheet->sheet_window_height * 2/3 )
+#endif
 
 #define CELL_EXTENT_WIDTH(text_width, attr_border_width)  \
     (text_width + attr_border_width)
@@ -343,7 +352,7 @@ static void _get_string_extent(GtkWidget *widget,
 
     pango_layout_get_extents(layout, NULL, &extent);
 
-#if GTK_SHEET_DEBUG_FONT_METRICS
+#if GTK_SHEET_DEBUG_FONT_METRICS > 0
     {
         PangoContext *context = gtk_widget_get_pango_context(widget);
         PangoFontMetrics *metrics = pango_context_get_metrics(
@@ -1110,7 +1119,7 @@ gtk_sheet_buildable_add_child(
     GtkSheetColumn *newcol;
     const gchar *name = gtk_widget_get_name(GTK_WIDGET(child));
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_BUILDER > 0
     g_debug("gtk_sheet_buildable_add_child %p: %s type %s", child,
             name ? name : "NULL",
             type ? type : "NULL");
@@ -1119,7 +1128,7 @@ gtk_sheet_buildable_add_child(
     sheet = GTK_SHEET(buildable);
     newcol = GTK_SHEET_COLUMN(child);
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_BUILDER > 0
     {
         gchar *strval;
 
@@ -1136,7 +1145,7 @@ gtk_sheet_buildable_add_child(
 static void
 gtk_sheet_buildable_init(GtkBuildableIface *iface)
 {
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_BUILDER > 0
     g_debug("gtk_sheet_buildable_init");
 #endif
     iface->add_child = gtk_sheet_buildable_add_child;
@@ -1452,7 +1461,7 @@ gtk_sheet_set_property(GObject *object,
 {
     GtkSheet *sheet = GTK_SHEET(object);
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_PROPERTIES > 0
     g_debug("gtk_sheet_set_property: %s", pspec->name);
 #endif
 
@@ -1472,7 +1481,7 @@ gtk_sheet_set_property(GObject *object,
 
                 if (newval < 0) break;
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_PROPERTIES > 0
                 g_debug("gtk_sheet_set_property: newval = %d sheet->maxrow %d", newval, sheet->maxrow);
 #endif
                 if (newval < (sheet->maxrow + 1))
@@ -1493,7 +1502,7 @@ gtk_sheet_set_property(GObject *object,
                 gint newval = g_value_get_int(value);
 
                 if (newval < 0) break;
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_PROPERTIES > 0
                 g_debug("gtk_sheet_set_property: newval = %d sheet->maxcol %d", newval, sheet->maxcol);
 #endif
                 if (newval < (sheet->maxcol + 1))
@@ -3463,7 +3472,7 @@ static void _gtk_sheet_recalc_extent_width(GtkSheet *sheet, gint col)
     gint new_width = 0;
     gint row;
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("_gtk_sheet_recalc_extent_width[%d]: called", col);
 #endif
 
@@ -3507,7 +3516,7 @@ static void _gtk_sheet_recalc_extent_height(GtkSheet *sheet, gint row)
     gint new_height = 0;
     gint col;
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("_gtk_sheet_recalc_extent_height[%d]: called", row);
 #endif
 
@@ -3563,7 +3572,7 @@ static void _gtk_sheet_udpate_extent(GtkSheet *sheet,
     g_return_if_fail(GTK_IS_SHEET(sheet));
     g_return_if_fail(cell != NULL);
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("_gtk_sheet_update_extent[%d,%d]: called cell (xw %d,xh %d) colxw %d rowxh %d", 
             row, col, 
             cell->extent.width, cell->extent.height, 
@@ -3621,7 +3630,7 @@ static void _gtk_sheet_udpate_extent(GtkSheet *sheet,
         _gtk_sheet_recalc_extent_height(sheet, row);
     }
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("_gtk_sheet_update_extent[%d,%d]: done cell (xw %d,xh %d) colxw %d rowxh %d", 
             row, col, 
             cell->extent.width, cell->extent.height, 
@@ -3646,14 +3655,14 @@ _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 
     new_width = COLUMN_EXTENT_TO_WIDTH(colptr->max_extent_width);
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("_gtk_sheet_autoresize_column_internal[%d]: called col w %d new w %d", 
             col, colptr->width, new_width);
 #endif
 
     if (new_width != colptr->width)
     {
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
         g_debug("_gtk_sheet_autoresize_column_internal[%d]: set width %d",
                 col, new_width);
 #endif
@@ -3679,14 +3688,17 @@ _gtk_sheet_autoresize_row_internal(GtkSheet *sheet, gint row)
 
     new_height = ROW_EXTENT_TO_HEIGHT(rowptr->max_extent_height);
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
+    g_debug("_gtk_sheet_autoresize_row_internal[%d]: win_h %d ext_h %d row_max_h %d", 
+	row, sheet->sheet_window_height, rowptr->max_extent_height,
+	ROW_MAX_HEIGHT(sheet) );
     g_debug("_gtk_sheet_autoresize_row_internal[%d]: called row h %d new h %d", 
-            row, rowptr->height, new_height);
+	row, rowptr->height, new_height);
 #endif
 
     if (new_height != rowptr->height)
     {
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
         g_debug("_gtk_sheet_autoresize_row_internal[%d]: set height %d",
                 row, new_height);
 #endif
@@ -3702,13 +3714,13 @@ static void gtk_sheet_autoresize_all(GtkSheet *sheet)
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
     {
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
         g_debug("gtk_sheet_autoresize_all: not realized");
 #endif
         return;
     }
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("gtk_sheet_autoresize_all: running");
 #endif
 
@@ -3716,7 +3728,7 @@ static void gtk_sheet_autoresize_all(GtkSheet *sheet)
     {
         gint col;
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
         g_debug("gtk_sheet_autoresize_all: columns");
 #endif
 
@@ -3733,7 +3745,7 @@ static void gtk_sheet_autoresize_all(GtkSheet *sheet)
     {
         gint row;
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
         g_debug("gtk_sheet_autoresize_all: rows");
 #endif
 
@@ -4079,7 +4091,7 @@ void _gtk_sheet_redraw_internal(GtkSheet *sheet,
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
     if (GTK_SHEET_IS_FROZEN(sheet)) return;
 
-#if GTK_SHEET_DEBUG_DRAW
+#if GTK_SHEET_DEBUG_DRAW > 0
     g_debug("_gtk_sheet_redraw_internal: called");
 #endif
 
@@ -7191,7 +7203,7 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
 
                     if (new_width != colptr->width)
                     {
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
                         g_debug("gtk_sheet_set_cell[%d]: set col width %d", col, new_width);
 #endif
                         gtk_sheet_set_column_width(sheet, col, new_width);
@@ -7207,7 +7219,7 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
 
                     if (new_height != rowptr->height)
                     {
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
                         g_debug("gtk_sheet_set_cell[%d]: set row height %d", row, new_height);
 #endif
                         gtk_sheet_set_row_height(sheet, row, new_height);
@@ -8067,7 +8079,7 @@ static void _gtk_sheet_entry_preselect(GtkSheet *sheet)
     gboolean in_click = FALSE;  /* incomplete - refer to gtkitementry::gtk_entry_grab_focus() */
 
 #ifdef GTK_SHEET_DEBUG
-    g_warning("_gtk_sheet_entry_preselect");
+    g_debug("_gtk_sheet_entry_preselect: called");
 #endif
 
     g_object_get (G_OBJECT (gtk_settings_get_default()),
@@ -9379,7 +9391,7 @@ gtk_sheet_button_release_handler(GtkWidget *widget, GdkEventButton *event)
         gdk_pointer_ungrab(event->time);
         draw_xor_vline(sheet);
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
         g_debug("gtk_sheet_button_release_handler[%d]: set width %d",
                 sheet->drag_cell.col, new_column_width(sheet, sheet->drag_cell.col, &x));
 #endif
@@ -10499,7 +10511,7 @@ gtk_sheet_size_request_handler(GtkWidget *widget, GtkRequisition *requisition)
     g_return_if_fail(GTK_IS_SHEET(widget));
     g_return_if_fail(requisition != NULL);
 
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("gtk_sheet_size_request_handler: called");
 #endif
 
@@ -10541,13 +10553,15 @@ gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
     GtkSheet *sheet;
     GtkAllocation sheet_allocation;
     gint border_width;
+    gboolean modified;
 
     g_return_if_fail(widget != NULL);
     g_return_if_fail(GTK_IS_SHEET(widget));
     g_return_if_fail(allocation != NULL);
 
-#if GTK_SHEET_DEBUG_SIZE
-    g_debug("gtk_sheet_size_allocate_handler: called");
+#if GTK_SHEET_DEBUG_SIZE > 0
+    g_debug("gtk_sheet_size_allocate_handler: called (%d, %d, %d, %d)",
+	allocation->x, allocation->y, allocation->width, allocation->height);
 #endif
 
     sheet = GTK_SHEET(widget);
@@ -10577,6 +10591,10 @@ gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
     sheet_allocation.y = 0;
     sheet_allocation.width = allocation->width - 2 * border_width;
     sheet_allocation.height = allocation->height - 2 * border_width;
+
+    modified = 
+	(sheet->sheet_window_width != sheet_allocation.width) || 
+	(sheet->sheet_window_height != sheet_allocation.height);
 
     sheet->sheet_window_width = sheet_allocation.width;
     sheet->sheet_window_height = sheet_allocation.height;
@@ -10628,7 +10646,7 @@ gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
     size_allocate_row_title_buttons(sheet);
 
     if (gtk_sheet_autoresize(sheet) &&
-        GTK_SHEET_FLAGS(sheet) & GTK_SHEET_IN_AUTORESIZE_PENDING)
+        (modified || (GTK_SHEET_FLAGS(sheet) & GTK_SHEET_IN_AUTORESIZE_PENDING)))
     {
         /* autoresize here, because window was changed -> max col_width */
         gtk_sheet_autoresize_all(sheet);
@@ -10783,7 +10801,7 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
     if (!gtk_widget_get_mapped(GTK_WIDGET(sheet))) return;
     if (sheet->maxrow < 0 || sheet->maxcol < 0) return;
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("gtk_sheet_size_allocate_entry: called");
 #endif
 
@@ -10868,7 +10886,7 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 
     if (GTK_IS_ITEM_ENTRY(sheet->sheet_entry))
     {
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_SIZE > 0
         g_debug("gtk_sheet_size_allocate_entry: is_item_entry");
 #endif
 
@@ -10897,7 +10915,7 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
     }
     else if (GTK_IS_TEXT_VIEW(sheet->sheet_entry))
     {
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_SIZE > 0
         g_debug("gtk_sheet_size_allocate_entry: is_text_view");
 #endif
 
@@ -10923,14 +10941,14 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
                                 shentry_allocation.width, shentry_allocation.height);
 #endif
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_SIZE >0
     g_debug("gtk_sheet_size_allocate_entry: allocate (%d,%d,%d,%d)",
             shentry_allocation.x, shentry_allocation.y, shentry_allocation.width, shentry_allocation.height);
 #endif
 
     gtk_widget_size_allocate(sheet->sheet_entry, &shentry_allocation);
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("gtk_sheet_size_allocate_entry: returned (%d,%d,%d,%d)",
             shentry_allocation.x, shentry_allocation.y, shentry_allocation.width, shentry_allocation.height);
 #endif
@@ -10962,7 +10980,7 @@ gtk_sheet_entry_set_max_size(GtkSheet *sheet)
     row = sheet->active_cell.row;
     col = sheet->active_cell.col;
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("gtk_sheet_entry_set_max_size: called");
 #endif
 
@@ -11717,7 +11735,7 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
 void
 _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
 {
-#if GTK_SHEET_DEBUG_ADJUSTMENT
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
     g_debug("_gtk_sheet_scrollbar_adjust: called");
 #endif
 
@@ -11731,7 +11749,7 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
         va->lower = 0;
         va->upper = _gtk_sheet_height(sheet) + 80;
 
-#if GTK_SHEET_DEBUG_ADJUSTMENT
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
         g_debug("_gtk_sheet_scrollbar_adjust: va PS %g PI %g SI %g L %g U %g V %g O %d",
             va->page_size, va->page_increment, va->step_increment,
             va->lower, va->upper, va->value, sheet->voffset);
@@ -11759,7 +11777,7 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
         ha->lower = 0;
         ha->upper = _gtk_sheet_width(sheet) * 3/2;
 
-#if GTK_SHEET_DEBUG_ADJUSTMENT
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
         g_debug("_gtk_sheet_scrollbar_adjust: ha PS %g PI %g SI %g L %g U %g V %g O %d",
             ha->page_size, ha->page_increment, ha->step_increment,
             ha->lower, ha->upper, ha->value, sheet->hoffset);
@@ -11773,7 +11791,7 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
             ha->value = _gtk_sheet_width(sheet) - (gint) sheet->sheet_window_width;
             if (ha->value < 0.0) ha->value = 0.0;
 
-#if GTK_SHEET_DEBUG_ADJUSTMENT
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
         g_debug("_gtk_sheet_scrollbar_adjust: ha V %g sw %d sww %d diff %d %g", 
             ha->value, 
             _gtk_sheet_width(sheet), sheet->sheet_window_width,
@@ -11864,7 +11882,7 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
     g_return_if_fail(data != NULL);
     g_return_if_fail(GTK_IS_SHEET(data));
 
-#if GTK_SHEET_DEBUG_ADJUSTMENT
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
     g_debug("_vadjustment_value_changed_handler: called");
 #endif
 
@@ -12001,7 +12019,7 @@ _hadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
     g_return_if_fail(data != NULL);
     g_return_if_fail(GTK_IS_SHEET(data));
 
-#if GTK_SHEET_DEBUG_ADJUSTMENT
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
     g_debug("_hadjustment_value_changed_handler: called");
 #endif
 
@@ -12636,7 +12654,7 @@ gtk_sheet_range_set_background(GtkSheet *sheet,
     else
         range = *urange;
 
-#if GTK_SHEET_DEBUG_COLORS
+#if GTK_SHEET_DEBUG_COLORS > 0
     g_debug("gtk_sheet_range_set_background: %s row %d-%d col %d-%d)",
             gdk_color_to_string(color), range.row0, range.rowi, range.col0, range.coli);
 #endif
@@ -12680,7 +12698,7 @@ gtk_sheet_range_set_foreground(GtkSheet *sheet,
     else
         range = *urange;
 
-#if GTK_SHEET_DEBUG_COLORS
+#if GTK_SHEET_DEBUG_COLORS > 0
     g_debug("gtk_sheet_range_set_foreground: %s row %d-%d col %d-%d)",
             gdk_color_to_string(color), range.row0, range.rowi, range.col0, range.coli);
 #endif
@@ -13940,7 +13958,7 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
             {
                 if (!child->xshrink)
                 {
-#if GTK_SHEET_DEBUG_SIZE
+#if GTK_SHEET_DEBUG_SIZE > 0
                     g_debug("gtk_sheet_position_child[%d]: set width %d",
                             child->col, child_requisition.width + 2 * child->xpadding);
 #endif

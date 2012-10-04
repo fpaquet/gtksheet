@@ -177,7 +177,10 @@ extern void gtkextra_VOID__BOXED_BOXED (GClosure     *closure,
                                         gpointer      invocation_hint,
                                         gpointer      marshal_data);
 
-/* VOID:OBJECT,OBJECT (gtkextra-marshal.list:24) */
+/* VOID:OBJECT (gtkextra-marshal.list:24) */
+#define gtkextra_VOID__OBJECT	g_cclosure_marshal_VOID__OBJECT
+
+/* VOID:OBJECT,OBJECT (gtkextra-marshal.list:25) */
 extern void gtkextra_VOID__OBJECT_OBJECT (GClosure     *closure,
                                           GValue       *return_value,
                                           guint         n_param_values,
@@ -185,7 +188,7 @@ extern void gtkextra_VOID__OBJECT_OBJECT (GClosure     *closure,
                                           gpointer      invocation_hint,
                                           gpointer      marshal_data);
 
-/* VOID:DOUBLE,DOUBLE,DOUBLE,DOUBLE (gtkextra-marshal.list:25) */
+/* VOID:DOUBLE,DOUBLE,DOUBLE,DOUBLE (gtkextra-marshal.list:26) */
 extern void gtkextra_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE (GClosure     *closure,
                                                         GValue       *return_value,
                                                         guint         n_param_values,
@@ -193,7 +196,7 @@ extern void gtkextra_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE (GClosure     *closure,
                                                         gpointer      invocation_hint,
                                                         gpointer      marshal_data);
 
-/* VOID:ENUM,INT,BOOLEAN (gtkextra-marshal.list:26) */
+/* VOID:ENUM,INT,BOOLEAN (gtkextra-marshal.list:27) */
 extern void gtkextra_VOID__ENUM_INT_BOOLEAN (GClosure     *closure,
                                              GValue       *return_value,
                                              guint         n_param_values,

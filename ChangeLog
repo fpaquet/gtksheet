@@ -1,4 +1,7 @@
-2012-10.03 Fredy Paquet <mailbox AT opag.ch>
+2012-10-04 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: new signal #GtkSheet::populate-popup propagates sheet_entry signal
+
+2012-10-03 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: auto-resize on window size modification fixed
 	* GtkSheet: cleanup debug defines
 

@@ -77,7 +77,7 @@
 #   define GTK_SHEET_DEBUG_MOVE  0
 #   define GTK_SHEET_DEBUG_PROPERTIES  0
 #   define GTK_SHEET_DEBUG_SELECTION  0
-#   define GTK_SHEET_DEBUG_SIGNALS   0
+#   define GTK_SHEET_DEBUG_SIGNALS   1
 #   define GTK_SHEET_DEBUG_SIZE  0
 #endif
 
@@ -146,6 +146,7 @@ enum _GtkSheetSignals
     NEW_ROW_HEIGHT,
     ENTRY_FOCUS_IN,
     ENTRY_FOCUS_OUT,
+    ENTRY_POPULATE_POPUP,
     MOVE_CURSOR,
     LAST_SIGNAL
 };
@@ -2357,7 +2358,7 @@ _gtk_sheet_class_init_signals(GtkObjectClass *object_class,
      * @event: the #GdkEventFocus which triggered this signal
      *
      * The ::entry-focus-in signal will be emitted when the keyboard 
-     * focus enters the @sheet entry editor. 
+     * focus enters the sheet_entry editor. 
      *
      * Returns: %TRUE to stop other handlers from being invoked for the event.
      *   %FALSE to propagate the event further.
@@ -2380,7 +2381,7 @@ _gtk_sheet_class_init_signals(GtkObjectClass *object_class,
      * @event: the #GdkEventFocus which triggered this signal
      *
      * The ::entry-focus-out signal will be emitted when the 
-     * keyboard focus leaves the @sheet entry editor. 
+     * keyboard focus leaves the sheet_entry editor. 
      *
      * Returns: %TRUE to stop other handlers from being invoked for the event.
      *   %FALSE to propagate the event further.
@@ -2396,6 +2397,29 @@ _gtk_sheet_class_init_signals(GtkObjectClass *object_class,
                      gtkextra_BOOLEAN__BOXED,
                      G_TYPE_BOOLEAN, 1,
                      GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+
+    /**
+     * GtkSheet::populate-popup:
+     * @sheet: the sheet widget that emitted the signal
+     * @menu: the menu that ist being populated 
+     *
+     * The ::populate-popup signal will be emitted when the user 
+     * activates the popup menu of the sheet_entry editor. 
+     *  
+     * The emission of this signal is only supported for #GtkEntry, 
+     * #GtkDataEntry, #GtkItemEntry and #GtkTextView. 
+     *  
+     * Since: 3.0.1
+     */
+    sheet_signals[ENTRY_POPULATE_POPUP] =
+        g_signal_new("populate-popup",
+                     G_TYPE_FROM_CLASS(object_class),
+                     G_SIGNAL_RUN_LAST,
+                     0,
+                     NULL, NULL,
+                     gtkextra_VOID__OBJECT,
+                     G_TYPE_NONE, 1,
+                     gtk_menu_get_type());
 
 
     /**
@@ -11037,7 +11061,8 @@ static gboolean sheet_entry_focus_in_handler(GtkWidget *widget,
                                              GdkEventFocus *event, gpointer user_data)
 {
     gboolean retval = FALSE;
-    g_signal_emit(GTK_OBJECT(widget), sheet_signals[ENTRY_FOCUS_IN], 0, event, &retval);
+    g_signal_emit(GTK_OBJECT(widget), 
+	sheet_signals[ENTRY_FOCUS_IN], 0, event, &retval);
     return (retval);
 }
 
@@ -11045,8 +11070,20 @@ static gboolean sheet_entry_focus_out_handler(GtkWidget *widget,
                                               GdkEventFocus *event, gpointer user_data)
 {
     gboolean retval = FALSE;
-    g_signal_emit(GTK_OBJECT(widget), sheet_signals[ENTRY_FOCUS_OUT], 0, event, &retval);
+    g_signal_emit(GTK_OBJECT(widget), 
+	sheet_signals[ENTRY_FOCUS_OUT], 0, event, &retval);
     return (retval);
+}
+
+static void sheet_entry_populate_popup_handler(GtkWidget *widget,
+    GtkMenu *menu, gpointer user_data)
+{
+#if GTK_SHEET_DEBUG_SIGNALS > 0
+    g_debug("sheet_entry_populate_popup_handler: menu %p", menu);
+#endif
+
+    g_signal_emit(GTK_OBJECT(widget), 
+	sheet_signals[ENTRY_POPULATE_POPUP], 0, menu);
 }
 
 static void
@@ -11084,6 +11121,12 @@ create_sheet_entry(GtkSheet *sheet, GType new_entry_type)
                              G_CALLBACK(sheet_entry_focus_in_handler), sheet);
     g_signal_connect_swapped(new_entry, "focus-out-event",
                              G_CALLBACK(sheet_entry_focus_out_handler), sheet);
+
+    if (GTK_IS_ENTRY(new_entry) || GTK_IS_TEXT_VIEW(new_entry))
+    {
+	g_signal_connect_swapped(new_entry, "populate-popup",
+				 G_CALLBACK(sheet_entry_populate_popup_handler), sheet);
+    }
 
     sheet->installed_entry_type = new_entry_type;
     sheet->sheet_entry = new_entry;
@@ -11394,7 +11437,9 @@ void gtk_sheet_entry_select_region(GtkSheet *sheet, gint start_pos, gint end_pos
  * @sheet: a #GtkSheet 
  * @handler: (scope notified) the signal handler
  *
- * Connect a handler to the sheet_entry "changed" signal
+ * Connect a handler to the sheet_entry "changed" signal. The 
+ * user_data argument of the handler will be filled with the 
+ * #GtkSheet. 
  *  
  * This function is mainly used to synchronize a second entry 
  * widget with the sheet_entry. 
@@ -11417,7 +11462,7 @@ gulong gtk_sheet_entry_signal_connect_changed(GtkSheet *sheet, GCallback handler
 
     if (GTK_IS_EDITABLE(entry))
     {
-        handler_id = gtk_signal_connect(GTK_OBJECT(entry),
+        handler_id = g_signal_connect(G_OBJECT(entry),
                                         "changed", handler, GTK_OBJECT(sheet));
     }
     else if (GTK_IS_TEXT_VIEW(entry))

@@ -15429,7 +15429,9 @@ widgets implement the GtkEditable interface yet.</doc>
       </method>
       <method name="entry_signal_connect_changed"
               c:identifier="gtk_sheet_entry_signal_connect_changed">
-        <doc xml:whitespace="preserve">Connect a handler to the sheet_entry "changed" signal
+        <doc xml:whitespace="preserve">Connect a handler to the sheet_entry "changed" signal. The 
+user_data argument of the handler will be filled with the 
+#GtkSheet. 
  
 This function is mainly used to synchronize a second entry 
 widget with the sheet_entry. 
@@ -17303,7 +17305,7 @@ deactivation, FALSE to deny deactivation.</doc>
       </glib:signal>
       <glib:signal name="entry-focus-in" when="last" version="3.0.1">
         <doc xml:whitespace="preserve">The ::entry-focus-in signal will be emitted when the keyboard 
-focus enters the @sheet entry editor.</doc>
+focus enters the sheet_entry editor.</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">%TRUE to stop other handlers from being invoked for the event. %FALSE to propagate the event further.</doc>
           <type name="gboolean"/>
@@ -17317,7 +17319,7 @@ focus enters the @sheet entry editor.</doc>
       </glib:signal>
       <glib:signal name="entry-focus-out" when="last" version="3.0.1">
         <doc xml:whitespace="preserve">The ::entry-focus-out signal will be emitted when the 
-keyboard focus leaves the @sheet entry editor.</doc>
+keyboard focus leaves the sheet_entry editor.</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">%TRUE to stop other handlers from being invoked for the event. %FALSE to propagate the event further.</doc>
           <type name="gboolean"/>
@@ -17397,6 +17399,22 @@ programmatically.</doc>
           <parameter name="height" transfer-ownership="none">
             <doc xml:whitespace="preserve">new row height.</doc>
             <type name="gint"/>
+          </parameter>
+        </parameters>
+      </glib:signal>
+      <glib:signal name="populate-popup" when="last" version="3.0.1">
+        <doc xml:whitespace="preserve">The ::populate-popup signal will be emitted when the user 
+activates the popup menu of the sheet_entry editor. 
+ 
+The emission of this signal is only supported for #GtkEntry, 
+#GtkDataEntry, #GtkItemEntry and #GtkTextView.</doc>
+        <return-value transfer-ownership="none">
+          <type name="none"/>
+        </return-value>
+        <parameters>
+          <parameter name="menu" transfer-ownership="none">
+            <doc xml:whitespace="preserve">the menu that ist being populated</doc>
+            <type name="Gtk.Menu"/>
           </parameter>
         </parameters>
       </glib:signal>

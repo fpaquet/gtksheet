@@ -771,7 +771,9 @@ gtkextra_VOID__BOXED_BOXED (GClosure     *closure,
             data2);
 }
 
-/* VOID:OBJECT,OBJECT (gtkextra-marshal.list:24) */
+/* VOID:OBJECT (gtkextra-marshal.list:24) */
+
+/* VOID:OBJECT,OBJECT (gtkextra-marshal.list:25) */
 void
 gtkextra_VOID__OBJECT_OBJECT (GClosure     *closure,
                               GValue       *return_value G_GNUC_UNUSED,
@@ -808,7 +810,7 @@ gtkextra_VOID__OBJECT_OBJECT (GClosure     *closure,
             data2);
 }
 
-/* VOID:DOUBLE,DOUBLE,DOUBLE,DOUBLE (gtkextra-marshal.list:25) */
+/* VOID:DOUBLE,DOUBLE,DOUBLE,DOUBLE (gtkextra-marshal.list:26) */
 void
 gtkextra_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE (GClosure     *closure,
                                             GValue       *return_value G_GNUC_UNUSED,
@@ -849,7 +851,7 @@ gtkextra_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE (GClosure     *closure,
             data2);
 }
 
-/* VOID:ENUM,INT,BOOLEAN (gtkextra-marshal.list:26) */
+/* VOID:ENUM,INT,BOOLEAN (gtkextra-marshal.list:27) */
 void
 gtkextra_VOID__ENUM_INT_BOOLEAN (GClosure     *closure,
                                  GValue       *return_value G_GNUC_UNUSED,

@@ -15908,8 +15908,13 @@ not editable, cell contents cannot be modified by the user.</doc>
       </method>
       <method name="moveto" c:identifier="gtk_sheet_moveto">
         <doc xml:whitespace="preserve">Scroll the viewing area of the sheet to the given column and row;
-row_align and col_align are between 0-1 representing the location the row should appear on the screnn, 0.0 being top or left,
-1.0 being bottom or right; if row or column is negative then there is no change</doc>
+ 
+row_align and col_align are between 0-1 representing the location 
+the row should appear on the screnn, 0.0 being top or left, 
+1.0 being bottom or right. passing row_align/col_align of
+-1.0 will suppress movement in that direction. 
+ 
+if row or column is negative then there is no change</doc>
         <return-value transfer-ownership="none">
           <type name="none" c:type="void"/>
         </return-value>
@@ -17376,8 +17381,8 @@ programmatically.</doc>
           <type name="none"/>
         </return-value>
         <parameters>
-          <parameter name="row" transfer-ownership="none">
-            <doc xml:whitespace="preserve">modified row number.</doc>
+          <parameter name="col" transfer-ownership="none">
+            <doc xml:whitespace="preserve">modified column number.</doc>
             <type name="gint"/>
           </parameter>
           <parameter name="width" transfer-ownership="none">
@@ -17392,8 +17397,8 @@ programmatically.</doc>
           <type name="none"/>
         </return-value>
         <parameters>
-          <parameter name="col" transfer-ownership="none">
-            <doc xml:whitespace="preserve">modified dolumn number.</doc>
+          <parameter name="row" transfer-ownership="none">
+            <doc xml:whitespace="preserve">modified row number.</doc>
             <type name="gint"/>
           </parameter>
           <parameter name="height" transfer-ownership="none">

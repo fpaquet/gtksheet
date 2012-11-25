@@ -17308,6 +17308,25 @@ deactivation, FALSE to deny deactivation.</doc>
           </parameter>
         </parameters>
       </glib:signal>
+      <glib:signal name="enter-pressed" when="last">
+        <doc xml:whitespace="preserve">This signal intercepts RETURN and ENTER key-press-events 
+before they are processed by the sheet-entry editor. Any 
+modifier combinations on these keys may trigger the signal.
+ 
+The default behaviour of the sheet-entry editor is to move 
+the active cell, which might not be appropriate for the type 
+of application.</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">%TRUE to block the sheet-entry from processing the event. %FALSE to propagate the event to the sheet-entry.</doc>
+          <type name="gboolean"/>
+        </return-value>
+        <parameters>
+          <parameter name="event" transfer-ownership="none">
+            <doc xml:whitespace="preserve">the #GdkEventKey which triggered this signal.</doc>
+            <type name="Gdk.EventKey"/>
+          </parameter>
+        </parameters>
+      </glib:signal>
       <glib:signal name="entry-focus-in" when="last" version="3.0.1">
         <doc xml:whitespace="preserve">The ::entry-focus-in signal will be emitted when the keyboard 
 focus enters the sheet_entry editor.</doc>

@@ -307,6 +307,11 @@ GtkPlotOrientation
 GtkPlotAxisPos
 GtkPlotLabelStyle
 GtkPlotTicksPos
+GtkPlotTicksAutoscaleFunc
+GtkPlotTicksInverseFunc
+GtkPlotTicksRecalcFunc
+GtkPlotTicksTransformFunc
+GtkPlotParseLabelFunc
 gtk_plot_new
 gtk_plot_new_with_size
 gtk_plot_construct
@@ -1249,6 +1254,7 @@ gtk_sheet_set_entry_text
 gtk_sheet_set_entry_editable
 gtk_sheet_entry_signal_connect_changed
 gtk_sheet_entry_signal_disconnect_by_func
+gtk_sheet_entry_select_region
 
 gtk_sheet_get_state
 gtk_sheet_get_attributes
@@ -1257,7 +1263,9 @@ gtk_sheet_get_visible_range
 gtk_sheet_set_selection_mode
 gtk_sheet_autoresize
 gtk_sheet_autoresize_columns
+gtk_sheet_set_autoresize_columns
 gtk_sheet_autoresize_rows
+gtk_sheet_set_autoresize_rows
 gtk_sheet_set_autoresize
 gtk_sheet_autoscroll
 gtk_sheet_set_autoscroll
@@ -1397,8 +1405,6 @@ gtk_widget_set_mapped_false
 gtk_widget_set_mapped_true
 gtk_widget_set_realized_false
 gtk_widget_set_realized_true
-_gtk_sheet_move_cursor
-_gtk_sheet_row_default_height
 
 GDK_KEY_BackSpace
 GDK_KEY_Control_L

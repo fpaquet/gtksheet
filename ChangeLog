@@ -1,3 +1,14 @@
+2012-11-25 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: new signal GtkSheet::enter-pressed to intercept default action
+
+2012-11-11 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed update of sheet_entry style when moving around colored cells
+	* GtkItemEntry: fixed justification propagation to GtkEntry alignment
+	* GtkSheet: fixed clipping of active cell border
+	* GtkSheet: fixed sheet_move_query check when tabbing around w/scrollbars
+	* GtkSheet: fixed set_active_cell to scroll active cell into view range
+	* GtkSheet: fixed signal documentation bug: NEW_ROW_HEIGHT, NEW_COL_WIDTH
+
 2012-10-04 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: new signal #GtkSheet::populate-popup propagates sheet_entry signal
 

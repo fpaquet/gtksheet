@@ -63,7 +63,7 @@
 
 #ifdef DEBUG
 #undef GTK_SHEET_DEBUG
-#define GTK_SHEET_DEBUG  1  /* define to activate debug output */
+#define GTK_SHEET_DEBUG  0  /* define to activate debug output */
 #endif
 
 #ifdef GTK_SHEET_DEBUG
@@ -74,7 +74,8 @@
 #   define GTK_SHEET_DEBUG_EXPOSE   0
 #   define GTK_SHEET_DEBUG_FONT_METRICS  0
 #   define GTK_SHEET_DEBUG_FREEZE   0
-#   define GTK_SHEET_DEBUG_KEYPRESS   0
+#   define GTK_SHEET_DEBUG_KEYPRESS   1
+#   define GTK_SHEET_DEBUG_ENTER_PRESSED   1
 #   define GTK_SHEET_DEBUG_MOVE  0
 #   define GTK_SHEET_DEBUG_PROPERTIES  0
 #   define GTK_SHEET_DEBUG_SELECTION  0
@@ -150,6 +151,7 @@ enum _GtkSheetSignals
     ENTRY_FOCUS_OUT,
     ENTRY_POPULATE_POPUP,
     MOVE_CURSOR,
+    ENTER_PRESSED,
     LAST_SIGNAL
 };
 static guint sheet_signals[LAST_SIGNAL] = { 0 };
@@ -2470,6 +2472,32 @@ _gtk_sheet_class_init_signals(GtkObjectClass *object_class,
 	G_TYPE_INT,
 	G_TYPE_BOOLEAN);
 
+    /**
+     * GtkSheet::enter-pressed:
+     * @sheet: the sheet widget that emitted the signal
+     * @event: (type Gdk.EventKey): the #GdkEventKey which triggered this signal.
+     *
+     * This signal intercepts RETURN and ENTER key-press-events 
+     * before they are processed by the sheet-entry editor. Any 
+     * modifier combinations on these keys may trigger the signal.
+     *  
+     * The default behaviour of the sheet-entry editor is to move 
+     * the active cell, which might not be appropriate for the type 
+     * of application. 
+     *  
+     * Returns: %TRUE to block the sheet-entry from processing 
+     *   the event. %FALSE to propagate the event to the
+     *   sheet-entry.
+     */
+    sheet_signals[ENTER_PRESSED] =
+	g_signal_new("enter-pressed",
+	G_TYPE_FROM_CLASS(object_class),
+	G_SIGNAL_RUN_LAST,
+	0,
+	NULL, NULL,
+	gtkextra_BOOLEAN__BOXED,
+	G_TYPE_BOOLEAN, 1, GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+
 }
 
 static void
@@ -2587,6 +2615,7 @@ _gtk_sheet_class_init_tab_bindings(GtkSheetClass *klass, GtkDirectionType dir)
 	GTK_MOVEMENT_LOGICAL_POSITIONS, sec_back,
 	FALSE);
 
+#if 1
     /* Return / Enter (Normal) */
     _add_binding_ext(b, GDK_KEY_Return, GDK_KEY_KP_Enter,
 	0,
@@ -2608,6 +2637,7 @@ _gtk_sheet_class_init_tab_bindings(GtkSheetClass *klass, GtkDirectionType dir)
 	GTK_SHEET_MOD_MASK | GDK_CONTROL_MASK | GDK_SHIFT_MASK,
 	GTK_MOVEMENT_LOGICAL_POSITIONS, sec_back,
 	FALSE);
+#endif
 }
 
 static void
@@ -7962,7 +7992,7 @@ _gtk_sheet_hide_active_cell(GtkSheet *sheet)
     col = sheet->active_cell.col;
 
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-    g_debug("gtk_sheet_hide_active_cell: called row %d col %d", row, col);
+    g_debug("_gtk_sheet_hide_active_cell: called row %d col %d", row, col);
 #endif
 
     if (row < 0 || row > sheet->maxrow) return;
@@ -7998,14 +8028,14 @@ _gtk_sheet_hide_active_cell(GtkSheet *sheet)
 
 	_gtk_sheet_range_draw(sheet, &range, FALSE);  /* do not reactivate active cell!!! */
     }
-#ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_hide_active_cell: _gtk_sheet_column_button_release");
+#if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
+    g_debug("_gtk_sheet_hide_active_cell: _gtk_sheet_column_button_release");
 #endif
 
     _gtk_sheet_column_button_release(sheet, col);
     row_button_release(sheet, row);
-#ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_hide_active_cell: gtk_widget_unmap");
+#if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
+    g_debug("_gtk_sheet_hide_active_cell: gtk_widget_unmap");
 #endif
 
 
@@ -8026,14 +8056,14 @@ _gtk_sheet_hide_active_cell(GtkSheet *sheet)
     gtk_widget_grab_focus(GTK_WIDGET(sheet));
 #endif
 
-#ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_hide_active_cell: gtk_widget_set_visible");
+#if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
+    g_debug("_gtk_sheet_hide_active_cell: gtk_widget_set_visible");
 #endif
 
     gtk_widget_set_visible(GTK_WIDGET(sheet->sheet_entry), FALSE);
 
-#ifdef GTK_SHEET_DEBUG
-    g_debug("gtk_sheet_hide_active_cell: done");
+#if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
+    g_debug("_gtk_sheet_hide_active_cell: done");
 #endif
 }
 
@@ -10151,7 +10181,7 @@ gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column)
 static gboolean
 gtk_sheet_entry_key_press_handler(GtkWidget *widget, GdkEventKey *key, gpointer user_data)
 {
-    gboolean stop_emission;
+    gboolean stop_emission = FALSE;
     GtkSheet *sheet = GTK_SHEET(widget);
 
 #if GTK_SHEET_DEBUG_KEYPRESS > 0
@@ -10166,17 +10196,43 @@ gtk_sheet_entry_key_press_handler(GtkWidget *widget, GdkEventKey *key, gpointer 
 #endif
 	return (FALSE);
     }
-    /* intercept item_entry processing if there exists a key binding on the sheet */
 
-    if (gtk_bindings_activate_event(GTK_OBJECT(sheet), key))
+#if 1
+    /* process enter-event
+       - detect wether Return or Enter was pressed 
+       - detect wether the application wants it to be handled by the sheet 
+       - if unwanted: execute appropriate application handler 
+       - use a new signal for this ? 
+       */
+    if ((key->keyval == GDK_KEY_Return) || (key->keyval == GDK_KEY_KP_Enter))
     {
-	stop_emission = TRUE;
-    }
-    else
-    {
-	g_signal_emit_by_name(GTK_OBJECT(widget),
-	    "key_press_event", key,
+#if GTK_SHEET_DEBUG_ENTER_PRESSED > 0
+	g_debug("gtk_sheet_entry_key_press_handler: enter-pressed: invoke");
+#endif
+	_gtkextra_signal_emit(GTK_OBJECT(sheet), 
+	    sheet_signals[ENTER_PRESSED], 
+	    key, 
 	    &stop_emission);
+#if GTK_SHEET_DEBUG_ENTER_PRESSED > 0
+	g_debug("gtk_sheet_entry_key_press_handler: enter-pressed: returns %d", stop_emission);
+#endif
+    }
+#endif
+
+    if (!stop_emission)
+    {
+	/* intercept item_entry processing if there exists a key binding on the sheet */
+
+	if (gtk_bindings_activate_event(GTK_OBJECT(sheet), key))
+	{
+	    stop_emission = TRUE;
+	}
+	else
+	{
+	    g_signal_emit_by_name(GTK_OBJECT(widget),
+		"key_press_event", key,
+		&stop_emission);
+	}
     }
 
 #if GTK_SHEET_DEBUG_KEYPRESS > 0

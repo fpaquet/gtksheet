@@ -1,3 +1,6 @@
+2012-11-30 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed entry_type switching when moving around the sheet
+
 2012-11-25 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: new signal GtkSheet::enter-pressed to intercept default action
 

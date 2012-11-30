@@ -9445,10 +9445,10 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	/* not sure wether to move this code to gtk_sheet_show_active_cell() */
 	{
 	    GType installed_entry_type = sheet->installed_entry_type;
-	    GType wanted_type =
-		colp->entry_type != G_TYPE_NONE ? colp->entry_type : sheet->entry_type;
+	    GType wanted_type = 
+		(colp->entry_type != G_TYPE_NONE) ? colp->entry_type : sheet->entry_type;
 
-	    if (wanted_type != G_TYPE_NONE && installed_entry_type != wanted_type)
+	    if (installed_entry_type != wanted_type)
 	    {
 		if (sheet->state == GTK_SHEET_NORMAL) _gtk_sheet_hide_active_cell(sheet);
 

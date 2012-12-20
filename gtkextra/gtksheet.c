@@ -12700,7 +12700,8 @@ gtk_sheet_delete_rows(GtkSheet *sheet, guint row, guint nrows)
 	child = (GtkSheetChild *)children->data;
 
 	if (child->attached_to_cell &&
-	    child->row >= row && child->row < row + nrows)
+	    child->row >= row && child->row < row + nrows &&
+	    gtk_widget_get_realized(child->widget) )
 	{
 	    gtk_container_remove(GTK_CONTAINER(sheet), child->widget);
 	    children = sheet->children;
@@ -12766,7 +12767,8 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
 	child = (GtkSheetChild *)children->data;
 
 	if (child->attached_to_cell &&
-	    child->col >= col && child->col < col + ncols)
+	    child->col >= col && child->col < col + ncols &&
+	    gtk_widget_get_realized(child->widget) )
 	{
 	    gtk_container_remove(GTK_CONTAINER(sheet), child->widget);
 	    children = sheet->children;

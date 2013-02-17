@@ -14127,6 +14127,11 @@ It should only be accessed through the functions described below.</doc>
               c:type="GTK_SHEET_COLUMN_MIN_WIDTH">
       <type name="gint" c:type="gint"/>
     </constant>
+    <constant name="SHEET_OPTIMIZE_COLUMN_DRAW"
+              value="0"
+              c:type="GTK_SHEET_OPTIMIZE_COLUMN_DRAW">
+      <type name="gint" c:type="gint"/>
+    </constant>
     <class name="Sheet"
            c:symbol-prefix="sheet"
            c:type="GtkSheet"
@@ -18149,12 +18154,6 @@ any widget content is text</doc>
       </field>
       <field name="button" readable="0" private="1">
         <type name="SheetButton" c:type="GtkSheetButton"/>
-      </field>
-      <field name="left_text_column" readable="0" private="1">
-        <type name="gint" c:type="gint"/>
-      </field>
-      <field name="right_text_column" readable="0" private="1">
-        <type name="gint" c:type="gint"/>
       </field>
       <field name="justification" readable="0" private="1">
         <type name="Gtk.Justification" c:type="GtkJustification"/>

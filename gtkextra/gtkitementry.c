@@ -60,7 +60,7 @@
 #undef GTK_ITEM_ENTRY_DEBUG
 
 #ifdef DEBUG
-#define GTK_ITEM_ENTRY_DEBUG  1  /* define to activate debug output */
+#define GTK_ITEM_ENTRY_DEBUG  0  /* define to activate debug output */
 #endif
 
 #ifdef GTK_ITEM_ENTRY_DEBUG
@@ -529,11 +529,32 @@ gtk_entry_size_allocate(GtkWidget     *widget,
 
 	get_widget_window_size(entry, &x, &y, &width, &height);
 
+#if GTK_ITEM_ENTRY_DEBUG>0
+	g_debug("gtk_entry_size_allocate: get_widget_window_size (%d, %d, %d, %d)",
+	    x, y, width, height);
+#endif
+
+#if GTK_ITEM_ENTRY_DEBUG>0
+	g_debug("gtk_entry_size_allocate: move widget window (%d, %d, %d, %d)",
+	    allocation->x, allocation->y, allocation->width, allocation->height);
+#endif
+
 	gdk_window_move_resize(gtk_widget_get_window(widget),
 	    allocation->x, allocation->y,
 	    allocation->width, allocation->height);
 
 	get_text_area_size(entry, &x, &y, &width, &height);
+
+#if GTK_ITEM_ENTRY_DEBUG>0
+	g_debug("gtk_entry_size_allocate: get_text_area_size (%d, %d, %d, %d)",
+	    x, y, width, height);
+#endif
+
+
+#if GTK_ITEM_ENTRY_DEBUG>0
+	g_debug("gtk_entry_size_allocate: move text_area (%d, %d, %d, %d)",
+	    0, allocation->height - height, allocation->width, height);
+#endif
 
 	gdk_window_move_resize(entry->text_area,
 	    0, allocation->height - height, allocation->width, height);

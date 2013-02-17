@@ -166,6 +166,8 @@ typedef struct _GtkSheetButton       GtkSheetButton;
 typedef struct _GtkSheetCellAttr     GtkSheetCellAttr;
 typedef struct _GtkSheetCellBorder     GtkSheetCellBorder;
 
+#define GTK_SHEET_OPTIMIZE_COLUMN_DRAW  0  /* 0=off, 1=on */
+
 
 /**
  * GtkSheetChild:
@@ -256,7 +258,7 @@ struct _GtkSheetCellAttr
 struct _GtkSheetCell
 {
     /*< private >*/
-    GdkRectangle extent;  /* extent of pango layout + cell attributes.border */
+    GdkRectangle extent;  /* extent of pango layout + cell attributes.border (used for column auto-resize) */
 
     gint row;
     gint col;

@@ -53,8 +53,10 @@ struct _GtkSheetColumn
 
     GtkSheetButton button;
 
+#if GTK_SHEET_OPTIMIZE_COLUMN_DRAW>0
     gint left_text_column;      /* min left column displaying text on this column */
     gint right_text_column;    /* max right column displaying text on this column */
+#endif
 
     GtkJustification justification;    /* horizontal text justification */
     GtkSheetVerticalJustification vjust;   /* vertical text justification */

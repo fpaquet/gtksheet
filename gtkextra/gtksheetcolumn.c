@@ -576,7 +576,9 @@ gtk_sheet_column_init(GtkSheetColumn *column)
     column->button.child = NULL;
     column->button.justification = GTK_JUSTIFY_CENTER;
 
+#if GTK_SHEET_OPTIMIZE_COLUMN_DRAW>0
     column->left_text_column = column->right_text_column = 0;
+#endif
 
     column->justification = GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION;
     column->vjust = GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT;

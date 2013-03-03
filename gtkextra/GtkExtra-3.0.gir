@@ -17,8 +17,8 @@ and/or use gtk-doc annotations.  -->
   <include name="Pango" version="1.0"/>
   <include name="cairo" version="1.0"/>
   <namespace name="GtkExtra"
-             version="3.0.2"
-             shared-library="libgtkextra-x11-3.0.so.2"
+             version="3.0.3"
+             shared-library="libgtkextra-x11-3.0.so.3"
              c:identifier-prefixes="Gtk"
              c:symbol-prefixes="gtk">
     <class name="BorderCombo"
@@ -1103,7 +1103,7 @@ This is what we all expect to have on the top of a GUI for a spreadsheet or word
       <type name="gint" c:type="gint"/>
     </constant>
     <constant name="GTKEXTRA_MICRO_VERSION"
-              value="2"
+              value="3"
               c:type="GTKEXTRA_MICRO_VERSION">
       <type name="gint" c:type="gint"/>
     </constant>

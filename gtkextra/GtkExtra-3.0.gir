@@ -6362,7 +6362,7 @@ It should only be accessed through the functions described below.</doc>
            glib:type-name="GtkPlotCairo"
            glib:get-type="gtk_plot_cairo_get_type"
            glib:type-struct="PlotCairoClass">
-      <doc xml:whitespace="preserve">FIXME:: need long description</doc>
+      <doc xml:whitespace="preserve">Subclass of #GtkPlotPC used for screen drawing.</doc>
       <constructor name="new" c:identifier="gtk_plot_cairo_new">
         <return-value transfer-ownership="none">
           <type name="Gtk.Object" c:type="GtkObject*"/>
@@ -11027,7 +11027,8 @@ It should only be accessed through the functions described below.</doc>
            glib:type-name="GtkPlotGdk"
            glib:get-type="gtk_plot_gdk_get_type"
            glib:type-struct="PlotGdkClass">
-      <doc xml:whitespace="preserve">FIXME:: Need long description.</doc>
+      <doc xml:whitespace="preserve">This Subclass of #GtkPlotPC has been rewritten to use Cairo 
+drawing routines.</doc>
       <constructor name="new" c:identifier="gtk_plot_gdk_new">
         <return-value transfer-ownership="none">
           <type name="Gtk.Object" c:type="GtkObject*"/>
@@ -11276,7 +11277,7 @@ It should only be accessed through the functions described below.</doc>
            glib:type-name="GtkPlotPC"
            glib:get-type="gtk_plot_pc_get_type"
            glib:type-struct="PlotPCClass">
-      <doc xml:whitespace="preserve">FIXME:: Need long description.</doc>
+      <doc xml:whitespace="preserve">Base Class for #GtkPlotCairo, #GtkPlotGdk and #GtkPlotPS.</doc>
       <constructor name="new" c:identifier="gtk_plot_pc_new">
         <return-value transfer-ownership="none">
           <type name="Gtk.Object" c:type="GtkObject*"/>
@@ -12404,7 +12405,7 @@ It should only be accessed through the functions described below.</doc>
            glib:type-name="GtkPlotPS"
            glib:get-type="gtk_plot_ps_get_type"
            glib:type-struct="PlotPSClass">
-      <doc xml:whitespace="preserve">FIXME:: Need long description.</doc>
+      <doc xml:whitespace="preserve">Subclass of #GtkPlotPC used to generate PostScript output.</doc>
       <constructor name="new" c:identifier="gtk_plot_ps_new">
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">a new GtkObject.</doc>

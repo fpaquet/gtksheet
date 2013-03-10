@@ -19,9 +19,10 @@
 
 /**
  * SECTION: gtkplotgdk
- * @short_description: 
+ * @short_description: GDK drawing backend (mapped to Cairo)
  *
- * FIXME:: Need long description.
+ * This Subclass of #GtkPlotPC has been rewritten to use Cairo 
+ * drawing routines. 
  */
 
 #include <stdio.h>
@@ -594,7 +595,7 @@ drawstring(GtkPlotPC *pc,
 */
 
   }
-  pango_font_description_free(font);
+  if (font) pango_font_description_free(font);
   ret_value = (angle == 0 || angle == 180) ? rect.width : rect.height;
   return PANGO_PIXELS(rect.width);
 }

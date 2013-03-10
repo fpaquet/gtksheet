@@ -19,9 +19,9 @@
 
 /**
  * SECTION: gtkplotpc
- * @short_description: 
+ * @short_description: Plot Context
  *
- * FIXME:: Need long description.
+ * Base Class for #GtkPlotCairo, #GtkPlotGdk and #GtkPlotPS.
  */
 
 #include <stdio.h>

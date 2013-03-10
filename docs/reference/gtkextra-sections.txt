@@ -1019,23 +1019,6 @@ gtk_plot_flux_get_type
 </SECTION>
 
 <SECTION>
-<FILE>gtkplotgdk</FILE>
-<TITLE>GtkPlotGdk</TITLE>
-GtkPlotGdk
-gtk_plot_gdk_new
-gtk_plot_gdk_construct
-gtk_plot_gdk_set_drawable
-<SUBSECTION Standard>
-GTK_PLOT_GDK
-GTK_IS_PLOT_GDK
-G_TYPE_PLOT_GDK
-GTK_PLOT_GDK_CLASS
-GtkPlotGdkClass
-<SUBSECTION Private>
-gtk_plot_gdk_get_type
-</SECTION>
-
-<SECTION>
 <FILE>gtkplotpc</FILE>
 <TITLE>GtkPlotPC</TITLE>
 GtkPlotPC
@@ -1081,6 +1064,24 @@ GtkPlotPCClass
 <SUBSECTION Private>
 gtk_plot_pc_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gtkplotgdk</FILE>
+<TITLE>GtkPlotGdk</TITLE>
+GtkPlotGdk
+gtk_plot_gdk_new
+gtk_plot_gdk_construct
+gtk_plot_gdk_set_drawable
+<SUBSECTION Standard>
+GTK_PLOT_GDK
+GTK_IS_PLOT_GDK
+G_TYPE_PLOT_GDK
+GTK_PLOT_GDK_CLASS
+GtkPlotGdkClass
+<SUBSECTION Private>
+gtk_plot_gdk_get_type
+</SECTION>
+
 
 <SECTION>
 <FILE>gtkplotpixmap</FILE>

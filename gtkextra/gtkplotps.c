@@ -31,7 +31,7 @@
  * SECTION: gtkplotps
  * @short_description: postscript driver
  *
- * FIXME:: Need long description.
+ * Subclass of #GtkPlotPC used to generate PostScript output.
  */
 
 #include <stdio.h>

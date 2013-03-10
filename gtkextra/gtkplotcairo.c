@@ -19,9 +19,9 @@
 
 /**
  * SECTION: gtkplotcairo
- * @short_description: 
+ * @short_description: Cairo drawing backend.
  *
- * FIXME:: need long description
+ * Subclass of #GtkPlotPC used for screen drawing.
  */
 
 

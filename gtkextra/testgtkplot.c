@@ -38,6 +38,10 @@ draw_page (GtkPrintOperation *operation,
   GtkPlotCanvas *canvas = GTK_PLOT_CANVAS(user_data);
 
   cr = gtk_print_context_get_cairo_context (context);
+
+  double width = gtk_print_context_get_width (context);
+  double height = gtk_print_context_get_height (context);
+  cairo_scale (cr, width/canvas->pixmap_width, height/canvas->pixmap_height);
   gtk_plot_canvas_export_cairo(canvas, cr);
 }
 

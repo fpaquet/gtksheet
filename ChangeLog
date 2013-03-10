@@ -1,3 +1,8 @@
+2013-03-10 Daisuke Shimamura <daisuke_shimamura AT nifty.com>
+	* GtkPlot: patch to fix MinGW missing drawing problem Bug ID: 3182951
+	* GtkPlot: patch for SEGV in gtk_plot_cairo_draw_pixmap()
+	* GtkPlot: patch for image size in testgtkplot.c
+
 2013-03-03 Fredy Paquet <mailbox AT opag.ch>
 	* published gtkextra-3 version 3.0.2
 	* updated gtkextra-3 cvs version to 3.0.3

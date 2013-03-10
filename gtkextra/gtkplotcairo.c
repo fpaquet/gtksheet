@@ -619,8 +619,8 @@ drawstring(GtkPlotPC *pc,
   map = pango_cairo_font_map_get_default();
   dpi_cairo = pango_cairo_font_map_get_resolution(PANGO_CAIRO_FONT_MAP(map));
   dpi_screen = gdk_screen_get_resolution(screen);
-
-  height *= (double)dpi_screen/(double)dpi_cairo;
+  if (dpi_screen != -1)
+    height *= (double)dpi_screen/(double)dpi_cairo;
   font = gtk_psfont_get_font_description(psfont, height);
   pango_layout_set_font_description(GTK_PLOT_CAIRO(pc)->layout, font);
   pango_layout_set_text(GTK_PLOT_CAIRO(pc)->layout, text, strlen(text));
@@ -1111,6 +1111,9 @@ static void gtk_plot_cairo_draw_pixmap                (GtkPlotPC *pc,
                                                       gdouble scale_x, 
                                                       gdouble scale_y)
 {
+  if (!GTK_PLOT_CAIRO(pc)->cairo)
+    return;
+
   cairo_surface_t *image_surface = NULL;
   cairo_surface_t *mask_surface = NULL;
   cairo_t *cr;

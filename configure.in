@@ -8,7 +8,7 @@
 # - http://www.linuxselfhelp.com/gnu/autoconf/html_chapter/autoconf_7.html
 #
 
-AC_INIT(gtkextra,3.0.3)
+AC_INIT([gtkextra], [3.0.4])
 AC_LANG([C])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -64,12 +64,11 @@ VERSION=$GTK_EXTRA_VERSION
 PACKAGE=gtk+extra
 
 # Initialize automake stuff
-AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
+AM_INIT_AUTOMAKE
 #AM_SILENT_RULES([yes])
 
 # Specify a configuration file
 AM_CONFIG_HEADER(config.h)
-AC_CONFIG_MACRO_DIR([m4])
 AC_DEFINE([ENABLE_NLS],1,undef)
 AC_DEFINE([HAVE_GETTEXT],1,undef)
 

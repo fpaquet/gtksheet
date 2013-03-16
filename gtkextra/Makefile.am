@@ -1,6 +1,6 @@
 # Makefile.am for gtk+extra
 
-AUTOMAKE_OPTIONS = 1.7
+#AUTOMAKE_OPTIONS = 1.7
 
 
 gtarget=@gdktarget@
@@ -72,10 +72,7 @@ gtkextra_public_h_sources = \
         gtkdataformat.h	\
         gtkdirtree.h	\
         gtkextra.h	\
-        gtkextrafeatures.h	\
         gtkextraicons.h	\
-        gtkextra-marshal.h	\
-        gtkextratypebuiltins.h	\
         gtkfilelist.h	\
         gtkfileicons.h	\
         gtkfontcombo.h	\
@@ -124,8 +121,6 @@ gtkextra_c_sources = 	\
         gtkdataformat.c	\
         gtkdirtree.c	\
         gtkextra.c	\
-        gtkextra-marshal.c	\
-        gtkextratypebuiltins.c	\
         gtkfilelist.c	\
         gtkfontcombo.c	\
         gtkiconlist.c	\
@@ -161,7 +156,7 @@ gtkextra_c_sources = 	\
         gtkplotcanvasellipse.c \
         gtkplotcanvastext.c \
         gtkplotcanvaspixmap.c \
-        gtkplotcanvasplot.c 
+        gtkplotcanvasplot.c
 
 gtkextra_private_h_sources = \
 	gtkextra-compat.h \
@@ -181,17 +176,21 @@ gtkextra_extra_sources = \
 	gtkextrafeatures.h.in	\
 	gtkextra-marshal.list 	
 
-INCLUDES = -I$(top_builddir) -I$(top_srcdir) $(GTK_CFLAGS) 
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) $(GTK_CFLAGS) 
 
 # target platform:
 lib_LTLIBRARIES = $(gtkextratargetlib)
 
 gtkextraincludedir = $(includedir)/gtkextra-3.0/gtkextra
-gtkextrainclude_HEADERS = $(gtkextra_public_h_sources) $(gtkextra_built_public_sources)
+gtkextrainclude_HEADERS = $(gtkextra_public_h_sources)
+nodist_gtkextrainclude_HEADERS = $(gtkextra_built_public_sources) gtkextrafeatures.h
 
 libgtkextra_x11_3_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_x11_3_0_la_SOURCES = $(gtkextra_built_sources)
 libgtkextra_linux_fb_3_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_linux_fb_3_0_la_SOURCES = $(gtkextra_built_sources)
 libgtkextra_win32_3_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_win32_3_0_la_SOURCES = $(gtkextra_built_sources)
 
 libgtkextra_win32_3_0_la_LIBADD = $(gtkextra_win32res_lo)
 libgtkextra_win32_3_0_la_DEPENDENCIES = $(gtkextra_def) $(gtkextra_win32res_lo)
@@ -205,68 +204,40 @@ MAINTAINERCLEANFILES = $(gtkextra_built_sources)
 CLEANFILES = $(gtkextra_built_sources) 
 
 EXTRA_DIST = $(gtkextra_private_h_sources) $(gtkextra_extra_sources)
-EXTRA_DIST += $(gtkextra_built_sources)
+#EXTRA_DIST += $(gtkextra_built_sources)
 EXTRA_DIST += gtkextra.def Makefile.mingw sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
-
-# gobject-introspection (begin)
-if HAVE_INTROSPECTION
-  include $(INTROSPECTION_MAKEFILE)
-
-  INTROSPECTION_GIRS = GtkExtra-3.0.gir
-
-  INTROSPECTION_SCANNER_ARGS = --accept-unprefixed --identifier-prefix="Gtk" --symbol-prefix="gtk" --warn-all --add-include-path=$(srcdir)
-  INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
-
-  introspection_sources = $(gtkextra_c_sources) $(gtkextra_public_h_sources)
-
-  GtkExtra_3_0_gir: $(gtkextratargetlib)
-  GtkExtra_3_0_gir_NAMESPACE = GtkExtra
-  GtkExtra_3_0_gir_VERSION = $(GTK_EXTRA_VERSION)
-  GtkExtra_3_0_gir_INCLUDES = GLib-2.0 GObject-2.0 Gtk-2.0
-  GtkExtra_3_0_gir_CFLAGS = $(INCLUDES)
-  GtkExtra_3_0_gir_LIBS = $(gtkextratargetlib)
-  GtkExtra_3_0_gir_FILES = $(introspection_sources)
-
-  girdir = $(datadir)/gir-1.0
-  gir_DATA = $(INTROSPECTION_GIRS)
-
-  typelibdir = $(libdir)/girepository-1.0
-  typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
-
-  CLEANFILES += $(gir_DATA) # $(typelib_DATA)
-endif
-# gobject-introspection (end)
 
 
 $(libgtkextra_x11_3_0_la_OBJECTS) $(libgtkextra_linux_fb_3_0_la_OBJECTS) $(libgtkextra_win32_3_0_la_OBJECTS): ${gtkextra_built_public_sources} ${gtkextra_built_private_headers}
 
-$(srcdir)/gtkextra-marshal.h: gtkextra-marshal.list
-	( @GLIB_GENMARSHAL@ --prefix=gtkextra gtkextra-marshal.list --header > gtkextra-marshal.tmp \
+gtkextra-marshal.h: $(builddir)/gtkextra-marshal.list
+	( @GLIB_GENMARSHAL@ --prefix=gtkextra $(srcdir)/gtkextra-marshal.list --header > gtkextra-marshal.tmp \
         && mv gtkextra-marshal.tmp gtkextra-marshal.h ) \
         || ( rm -f gtkextra-marshal.tmp && exit 1 )
-$(srcdir)/gtkextra-marshal.c: gtkextra-marshal.h
-	( @GLIB_GENMARSHAL@ --prefix=gtkextra gtkextra-marshal.list --body > gtkextra-marshal.tmp \
+
+gtkextra-marshal.c: $(builddir)/gtkextra-marshal.h
+	( @GLIB_GENMARSHAL@ --prefix=gtkextra $(srcdir)/gtkextra-marshal.list --body > gtkextra-marshal.tmp \
         && mv gtkextra-marshal.tmp gtkextra-marshal.c ) \
         || ( rm -f gtkextra-marshal.tmp && exit 1 )
 
 
-$(srcdir)/gtkextratypebuiltins.h: $(gtkextra_public_h_sources)
+gtkextratypebuiltins.h: $(gtkextra_public_h_sources)
 	( cd $(srcdir) && glib-mkenums \
 		--fhead "#ifndef __GTKEXTRA_TYPE_BUILTINS_H__\n#define __GTKEXTRA_TYPE_BUILTINS_H__\n\n#include <glib-object.h>\n\nG_BEGIN_DECLS\n" \
 		--fprod "/* enumerations from \"@filename@\" */\n" \
 		--vhead "GType @enum_name@_get_type (void);\n#define GTK_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" \
 		--ftail "G_END_DECLS\n\n#endif /* __GTKEXTRA_TYPE_BUILTINS_H__ */" \
-		$(gtkextra_public_h_sources) ) > gtkextratypebuiltins.h
+		$(gtkextra_public_h_sources) ) > $(builddir)/gtkextratypebuiltins.h
 
 
-$(srcdir)/gtkextratypebuiltins.c: $(gtkextra_public_h_sources)
+gtkextratypebuiltins.c: $(gtkextra_public_h_sources)
 	( cd $(srcdir) && glib-mkenums \
 		--fhead "#define GTKEXTRA_ENABLE_BROKEN\n#include \"gtkextra.h\"" \
 		--fprod "\n/* enumerations from \"@filename@\" */" \
 		--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" \
 		--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
 		--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
-		$(gtkextra_public_h_sources) ) > $(srcdir)/gtkextratypebuiltins.c
+		$(gtkextra_public_h_sources) ) > $(builddir)/gtkextratypebuiltins.c
 
 
 # test programs, not to be installed
@@ -318,31 +289,63 @@ testiterator_LDADD = $(LDADDS)
 testsegment_LDADD = $(LDADDS)
 testgtkplotcanvas_LDADD = $(LDADDS)
 
+# gobject-introspection (begin)
+if ENABLE_INTROSPECTION
+-include $(INTROSPECTION_MAKEFILE)
+
+INTROSPECTION_GIRS = GtkExtra-3.0.gir
+
+INTROSPECTION_SCANNER_ARGS = --accept-unprefixed --identifier-prefix="Gtk" --symbol-prefix="gtk" --warn-all --add-include-path=$(srcdir)
+INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
+
+introspection_sources = $(gtkextra_c_sources) $(gtkextra_public_h_sources)
+
+GtkExtra-3.0.gir: $(gtkextratargetlib)
+GtkExtra_3_0_gir_NAMESPACE = GtkExtra
+GtkExtra_3_0_gir_VERSION = $(GTK_EXTRA_VERSION)
+GtkExtra_3_0_gir_INCLUDES = GLib-2.0 GObject-2.0 Gtk-2.0
+GtkExtra_3_0_gir_CFLAGS = $(AM_CPPFLAGS)
+GtkExtra_3_0_gir_LIBS = $(gtkextratargetlib)
+GtkExtra_3_0_gir_FILES = $(introspection_sources)
+
+girdir = $(datadir)/gir-1.0
+gir_DATA = $(INTROSPECTION_GIRS)
+
+typelibdir = $(libdir)/girepository-1.0
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+CLEANFILES += $(gir_DATA) # $(typelib_DATA)
+endif
+# gobject-introspection (end)
+
 
 files:
 	@files=`ls $(DISTFILES) 2> /dev/null `; for p in $$files; do \
 		echo $$p; \
 	done
 
-test: testgtksheet testgtkiconlist testgtkfilesel testgtkplot testgtkfont testrealtime testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testiterator
-        builddir=`pwd`; cd $(top_builddir); top_builddir=`pwd`; export HAVE_PROGRESSBAR=1; \
-	cd $$builddir; cd $(srcdir); \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtksheet;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkplot;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkpolar;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkplot3d;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkbubble;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkflux;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testcontour;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkiconlist;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkfilesel;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkfont;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testrealtime;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testiterator;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testimage;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testcandles;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testpixmap;  \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testcharsel; \
-	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testdt \
-	$$builddir/testgtkplotdt.in > $$builddir/testgtkplotdt.out; echo
+#test: testgtksheet testgtkiconlist testgtkfilesel testgtkplot testgtkfont testrealtime testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testiterator
+#        builddir=`pwd`; cd $(top_builddir); top_builddir=`pwd`; export HAVE_PROGRESSBAR=1; \
+#	cd $$builddir; cd $(srcdir); \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtksheet;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkplot;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkpolar;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkplot3d;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkbubble;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkflux;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testcontour;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkiconlist;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkfilesel;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtkfont;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testrealtime;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testiterator;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testimage;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testcandles;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testpixmap;  \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testcharsel; \
+#	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testdt \
+#	$$builddir/testgtkplotdt.in > $$builddir/testgtkplotdt.out; echo
+
+clean-local:
+	rm -rf gtkextrafeatures.h
 

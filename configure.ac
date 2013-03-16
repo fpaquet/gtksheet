@@ -63,14 +63,16 @@ AC_SUBST(LIBGTKEXTRA_SO_VERSION)
 VERSION=$GTK_EXTRA_VERSION
 PACKAGE=gtk+extra
 
+AC_CONFIG_AUX_DIR([build-aux])
 # Initialize automake stuff
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 #AM_SILENT_RULES([yes])
 
 # Specify a configuration file
-AM_CONFIG_HEADER(config.h)
-AC_DEFINE([ENABLE_NLS],1,undef)
-AC_DEFINE([HAVE_GETTEXT],1,undef)
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIR([m4])
+AC_DEFINE([ENABLE_NLS],1, [NLS enabled])
+AC_DEFINE([HAVE_GETTEXT],1, [have gettext])
 
 # Build time sanity check...
 AM_SANITY_CHECK
@@ -78,14 +80,14 @@ AM_SANITY_CHECK
 # Checks for programs.
 AC_PROG_CC
 AC_ISC_POSIX
-AM_PROG_CC_STDC
+AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 
 # Initialize libtool
 AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
-
 AM_MAINTAINER_MODE
 
 AC_MSG_CHECKING([for some Win32 platform])
@@ -192,7 +194,6 @@ ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
 
 # Compiler and Lib Stuff
 # AC_PROG_CXX
-AC_PROG_RANLIB
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -201,14 +202,14 @@ AC_HEADER_STDC
 AC_C_CONST
 
 dnl header file checks
-AC_CHECK_HEADERS(unistd.h, AC_DEFINE(HAVE_UNISTD_H))
-AC_CHECK_HEADERS(dirent.h, AC_DEFINE(HAVE_DIRENT_H))
+AC_CHECK_HEADERS(unistd.h, AC_DEFINE(HAVE_UNISTD_H, 1, [unistd.h found]))
+AC_CHECK_HEADERS(dirent.h, AC_DEFINE(HAVE_DIRENT_H, 1, [dirent.h found]))
 AC_CHECK_HEADERS([locale.h])
 AC_CHECK_HEADERS([sys/time.h])
 
 dnl Don't attempt to use fnmatch under win32 due to problems with creating DLLs.
 if test "$platform_win32" = "no"; then
-  AC_CHECK_HEADERS(fnmatch.h, AC_DEFINE(HAVE_FNMATCH_H))
+  AC_CHECK_HEADERS(fnmatch.h, AC_DEFINE(HAVE_FNMATCH_H, 1, [fnmatch.h found]))
 fi
 
 # Checks for nonportable Functions

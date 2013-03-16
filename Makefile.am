@@ -1,5 +1,7 @@
 ## Makefile.am for gtk+extra
 
+ACLOCAL_AMFLAGS = -I m4
+
 if ENABLE_GLADE
     GLADE_SUBDIR = glade
 endif
@@ -8,12 +10,11 @@ SRC_SUBDIRS = gtkextra  $(GLADE_SUBDIR)
 SUBDIRS = $(SRC_SUBDIRS) docs
 
 # require automake 1.7
-AUTOMAKE_OPTIONS = 1.7
+#AUTOMAKE_OPTIONS = 1.7
 
 EXTRA_DIST = \
 	TODO \
 	gtkextra-3.0.m4 \
-	acconfig.h \
 	makecopyright \
 	config.h.win32 \
 	gtkextra-3.0.spec 
@@ -48,4 +49,5 @@ ChangeLog.cvs:
 	cvs log | perl mkchlog > ChangeLog.cvs
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-man --disable-rebuilds
+#DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-man --disable-rebuilds
 

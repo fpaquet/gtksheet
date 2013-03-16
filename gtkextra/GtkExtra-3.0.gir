@@ -1087,31 +1087,6 @@ This is what we all expect to have on the top of a GUI for a spreadsheet or word
         </callback>
       </field>
     </record>
-    <constant name="GTKEXTRA_BINARY_AGE"
-              value="0"
-              c:type="GTKEXTRA_BINARY_AGE">
-      <type name="gint" c:type="gint"/>
-    </constant>
-    <constant name="GTKEXTRA_INTERFACE_AGE"
-              value="0"
-              c:type="GTKEXTRA_INTERFACE_AGE">
-      <type name="gint" c:type="gint"/>
-    </constant>
-    <constant name="GTKEXTRA_MAJOR_VERSION"
-              value="3"
-              c:type="GTKEXTRA_MAJOR_VERSION">
-      <type name="gint" c:type="gint"/>
-    </constant>
-    <constant name="GTKEXTRA_MICRO_VERSION"
-              value="4"
-              c:type="GTKEXTRA_MICRO_VERSION">
-      <type name="gint" c:type="gint"/>
-    </constant>
-    <constant name="GTKEXTRA_MINOR_VERSION"
-              value="0"
-              c:type="GTKEXTRA_MINOR_VERSION">
-      <type name="gint" c:type="gint"/>
-    </constant>
     <class name="IconFileSel"
            c:symbol-prefix="icon_file_selection"
            c:type="GtkIconFileSel"
@@ -2132,22 +2107,14 @@ It should only be accessed through the functions described below.</doc>
         <type name="gpointer" c:type="gpointer"/>
       </field>
     </record>
-    <enumeration name="IconListMode"
-                 glib:type-name="GtkIconListMode"
-                 glib:get-type="gtk_icon_list_mode_get_type"
-                 c:type="GtkIconListMode">
-      <member name="icon"
-              value="0"
-              c:identifier="GTK_ICON_LIST_ICON"
-              glib:nick="icon"/>
+    <enumeration name="IconListMode" c:type="GtkIconListMode">
+      <member name="icon" value="0" c:identifier="GTK_ICON_LIST_ICON"/>
       <member name="text_right"
               value="1"
-              c:identifier="GTK_ICON_LIST_TEXT_RIGHT"
-              glib:nick="text-right"/>
+              c:identifier="GTK_ICON_LIST_TEXT_RIGHT"/>
       <member name="text_below"
               value="2"
-              c:identifier="GTK_ICON_LIST_TEXT_BELOW"
-              glib:nick="text-below"/>
+              c:identifier="GTK_ICON_LIST_TEXT_BELOW"/>
     </enumeration>
     <class name="ItemEntry"
            c:symbol-prefix="item_entry"
@@ -5069,22 +5036,10 @@ It should only be accessed through the functions described below.</doc>
         <type name="GObject.ObjectClass" c:type="GObjectClass"/>
       </field>
     </record>
-    <bitfield name="PlotArrow"
-              glib:type-name="GtkPlotArrow"
-              glib:get-type="gtk_plot_arrow_get_type"
-              c:type="GtkPlotArrow">
-      <member name="none"
-              value="0"
-              c:identifier="GTK_PLOT_ARROW_NONE"
-              glib:nick="none"/>
-      <member name="origin"
-              value="1"
-              c:identifier="GTK_PLOT_ARROW_ORIGIN"
-              glib:nick="origin"/>
-      <member name="end"
-              value="2"
-              c:identifier="GTK_PLOT_ARROW_END"
-              glib:nick="end"/>
+    <bitfield name="PlotArrow" c:type="GtkPlotArrow">
+      <member name="none" value="0" c:identifier="GTK_PLOT_ARROW_NONE"/>
+      <member name="origin" value="1" c:identifier="GTK_PLOT_ARROW_ORIGIN"/>
+      <member name="end" value="2" c:identifier="GTK_PLOT_ARROW_END"/>
     </bitfield>
     <class name="PlotAxis"
            c:symbol-prefix="plot_axis"
@@ -5831,26 +5786,11 @@ It should only be accessed through the functions described below.</doc>
         </callback>
       </field>
     </record>
-    <enumeration name="PlotAxisPos"
-                 glib:type-name="GtkPlotAxisPos"
-                 glib:get-type="gtk_plot_axis_pos_get_type"
-                 c:type="GtkPlotAxisPos">
-      <member name="left"
-              value="0"
-              c:identifier="GTK_PLOT_AXIS_LEFT"
-              glib:nick="left"/>
-      <member name="right"
-              value="1"
-              c:identifier="GTK_PLOT_AXIS_RIGHT"
-              glib:nick="right"/>
-      <member name="top"
-              value="2"
-              c:identifier="GTK_PLOT_AXIS_TOP"
-              glib:nick="top"/>
-      <member name="bottom"
-              value="3"
-              c:identifier="GTK_PLOT_AXIS_BOTTOM"
-              glib:nick="bottom"/>
+    <enumeration name="PlotAxisPos" c:type="GtkPlotAxisPos">
+      <member name="left" value="0" c:identifier="GTK_PLOT_AXIS_LEFT"/>
+      <member name="right" value="1" c:identifier="GTK_PLOT_AXIS_RIGHT"/>
+      <member name="top" value="2" c:identifier="GTK_PLOT_AXIS_TOP"/>
+      <member name="bottom" value="3" c:identifier="GTK_PLOT_AXIS_BOTTOM"/>
     </enumeration>
     <class name="PlotBar"
            c:symbol-prefix="plot_bar"
@@ -5929,39 +5869,15 @@ It should only be accessed through the functions described below.</doc>
         <type name="PlotDataClass" c:type="GtkPlotDataClass"/>
       </field>
     </record>
-    <enumeration name="PlotBarUnits"
-                 glib:type-name="GtkPlotBarUnits"
-                 glib:get-type="gtk_plot_bar_units_get_type"
-                 c:type="GtkPlotBarUnits">
-      <member name="points"
-              value="0"
-              c:identifier="GTK_PLOT_BAR_POINTS"
-              glib:nick="points"/>
-      <member name="relative"
-              value="1"
-              c:identifier="GTK_PLOT_BAR_RELATIVE"
-              glib:nick="relative"/>
-      <member name="absolute"
-              value="2"
-              c:identifier="GTK_PLOT_BAR_ABSOLUTE"
-              glib:nick="absolute"/>
+    <enumeration name="PlotBarUnits" c:type="GtkPlotBarUnits">
+      <member name="points" value="0" c:identifier="GTK_PLOT_BAR_POINTS"/>
+      <member name="relative" value="1" c:identifier="GTK_PLOT_BAR_RELATIVE"/>
+      <member name="absolute" value="2" c:identifier="GTK_PLOT_BAR_ABSOLUTE"/>
     </enumeration>
-    <enumeration name="PlotBorderStyle"
-                 glib:type-name="GtkPlotBorderStyle"
-                 glib:get-type="gtk_plot_border_style_get_type"
-                 c:type="GtkPlotBorderStyle">
-      <member name="none"
-              value="0"
-              c:identifier="GTK_PLOT_BORDER_NONE"
-              glib:nick="none"/>
-      <member name="line"
-              value="1"
-              c:identifier="GTK_PLOT_BORDER_LINE"
-              glib:nick="line"/>
-      <member name="shadow"
-              value="2"
-              c:identifier="GTK_PLOT_BORDER_SHADOW"
-              glib:nick="shadow"/>
+    <enumeration name="PlotBorderStyle" c:type="GtkPlotBorderStyle">
+      <member name="none" value="0" c:identifier="GTK_PLOT_BORDER_NONE"/>
+      <member name="line" value="1" c:identifier="GTK_PLOT_BORDER_LINE"/>
+      <member name="shadow" value="2" c:identifier="GTK_PLOT_BORDER_SHADOW"/>
     </enumeration>
     <class name="PlotBox"
            c:symbol-prefix="plot_box"
@@ -7133,43 +7049,26 @@ It should only be accessed through the functions described below.</doc>
         </parameters>
       </glib:signal>
     </class>
-    <enumeration name="PlotCanvasAction"
-                 glib:type-name="GtkPlotCanvasAction"
-                 glib:get-type="gtk_plot_canvas_action_get_type"
-                 c:type="GtkPlotCanvasAction">
+    <enumeration name="PlotCanvasAction" c:type="GtkPlotCanvasAction">
       <member name="inactive"
               value="0"
-              c:identifier="GTK_PLOT_CANVAS_ACTION_INACTIVE"
-              glib:nick="inactive"/>
+              c:identifier="GTK_PLOT_CANVAS_ACTION_INACTIVE"/>
       <member name="selection"
               value="1"
-              c:identifier="GTK_PLOT_CANVAS_ACTION_SELECTION"
-              glib:nick="selection"/>
+              c:identifier="GTK_PLOT_CANVAS_ACTION_SELECTION"/>
       <member name="drag"
               value="2"
-              c:identifier="GTK_PLOT_CANVAS_ACTION_DRAG"
-              glib:nick="drag"/>
+              c:identifier="GTK_PLOT_CANVAS_ACTION_DRAG"/>
       <member name="resize"
               value="3"
-              c:identifier="GTK_PLOT_CANVAS_ACTION_RESIZE"
-              glib:nick="resize"/>
+              c:identifier="GTK_PLOT_CANVAS_ACTION_RESIZE"/>
     </enumeration>
-    <bitfield name="PlotCanvasArrow"
-              glib:type-name="GtkPlotCanvasArrow"
-              glib:get-type="gtk_plot_canvas_arrow_get_type"
-              c:type="GtkPlotCanvasArrow">
-      <member name="none"
-              value="0"
-              c:identifier="GTK_PLOT_CANVAS_ARROW_NONE"
-              glib:nick="none"/>
+    <bitfield name="PlotCanvasArrow" c:type="GtkPlotCanvasArrow">
+      <member name="none" value="0" c:identifier="GTK_PLOT_CANVAS_ARROW_NONE"/>
       <member name="origin"
               value="1"
-              c:identifier="GTK_PLOT_CANVAS_ARROW_ORIGIN"
-              glib:nick="origin"/>
-      <member name="end"
-              value="2"
-              c:identifier="GTK_PLOT_CANVAS_ARROW_END"
-              glib:nick="end"/>
+              c:identifier="GTK_PLOT_CANVAS_ARROW_ORIGIN"/>
+      <member name="end" value="2" c:identifier="GTK_PLOT_CANVAS_ARROW_END"/>
     </bitfield>
     <class name="PlotCanvasChild"
            c:symbol-prefix="plot_canvas_child"
@@ -7667,22 +7566,14 @@ It should only be accessed through the functions described below.</doc>
         <type name="PlotCanvasChildClass" c:type="GtkPlotCanvasChildClass"/>
       </field>
     </record>
-    <bitfield name="PlotCanvasFlag"
-              glib:type-name="GtkPlotCanvasFlag"
-              glib:get-type="gtk_plot_canvas_flag_get_type"
-              c:type="GtkPlotCanvasFlag">
-      <member name="frozen"
-              value="0"
-              c:identifier="GTK_PLOT_CANVAS_FROZEN"
-              glib:nick="frozen"/>
+    <bitfield name="PlotCanvasFlag" c:type="GtkPlotCanvasFlag">
+      <member name="frozen" value="0" c:identifier="GTK_PLOT_CANVAS_FROZEN"/>
       <member name="can_move"
               value="1"
-              c:identifier="GTK_PLOT_CANVAS_CAN_MOVE"
-              glib:nick="can-move"/>
+              c:identifier="GTK_PLOT_CANVAS_CAN_MOVE"/>
       <member name="can_resize"
               value="2"
-              c:identifier="GTK_PLOT_CANVAS_CAN_RESIZE"
-              glib:nick="can-resize"/>
+              c:identifier="GTK_PLOT_CANVAS_CAN_RESIZE"/>
     </bitfield>
     <class name="PlotCanvasLine"
            c:symbol-prefix="plot_canvas_line"
@@ -7914,87 +7805,49 @@ It should only be accessed through the functions described below.</doc>
         <type name="PlotCanvasChildClass" c:type="GtkPlotCanvasChildClass"/>
       </field>
     </record>
-    <enumeration name="PlotCanvasPlotPos"
-                 glib:type-name="GtkPlotCanvasPlotPos"
-                 glib:get-type="gtk_plot_canvas_plot_pos_get_type"
-                 c:type="GtkPlotCanvasPlotPos">
-      <member name="out"
-              value="0"
-              c:identifier="GTK_PLOT_CANVAS_PLOT_OUT"
-              glib:nick="out"/>
+    <enumeration name="PlotCanvasPlotPos" c:type="GtkPlotCanvasPlotPos">
+      <member name="out" value="0" c:identifier="GTK_PLOT_CANVAS_PLOT_OUT"/>
       <member name="in_plot"
               value="1"
-              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_PLOT"
-              glib:nick="in-plot"/>
+              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_PLOT"/>
       <member name="in_legends"
               value="2"
-              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_LEGENDS"
-              glib:nick="in-legends"/>
+              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_LEGENDS"/>
       <member name="in_title"
               value="3"
-              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_TITLE"
-              glib:nick="in-title"/>
+              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_TITLE"/>
       <member name="in_axis"
               value="4"
-              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_AXIS"
-              glib:nick="in-axis"/>
+              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_AXIS"/>
       <member name="in_data"
               value="5"
-              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_DATA"
-              glib:nick="in-data"/>
+              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_DATA"/>
       <member name="in_gradient"
               value="6"
-              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_GRADIENT"
-              glib:nick="in-gradient"/>
+              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_GRADIENT"/>
       <member name="in_marker"
               value="7"
-              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_MARKER"
-              glib:nick="in-marker"/>
+              c:identifier="GTK_PLOT_CANVAS_PLOT_IN_MARKER"/>
     </enumeration>
-    <enumeration name="PlotCanvasPos"
-                 glib:type-name="GtkPlotCanvasPos"
-                 glib:get-type="gtk_plot_canvas_pos_get_type"
-                 c:type="GtkPlotCanvasPos">
-      <member name="out"
-              value="0"
-              c:identifier="GTK_PLOT_CANVAS_OUT"
-              glib:nick="out"/>
-      <member name="in"
-              value="1"
-              c:identifier="GTK_PLOT_CANVAS_IN"
-              glib:nick="in"/>
-      <member name="left"
-              value="2"
-              c:identifier="GTK_PLOT_CANVAS_LEFT"
-              glib:nick="left"/>
-      <member name="right"
-              value="3"
-              c:identifier="GTK_PLOT_CANVAS_RIGHT"
-              glib:nick="right"/>
-      <member name="top"
-              value="4"
-              c:identifier="GTK_PLOT_CANVAS_TOP"
-              glib:nick="top"/>
-      <member name="bottom"
-              value="5"
-              c:identifier="GTK_PLOT_CANVAS_BOTTOM"
-              glib:nick="bottom"/>
+    <enumeration name="PlotCanvasPos" c:type="GtkPlotCanvasPos">
+      <member name="out" value="0" c:identifier="GTK_PLOT_CANVAS_OUT"/>
+      <member name="in" value="1" c:identifier="GTK_PLOT_CANVAS_IN"/>
+      <member name="left" value="2" c:identifier="GTK_PLOT_CANVAS_LEFT"/>
+      <member name="right" value="3" c:identifier="GTK_PLOT_CANVAS_RIGHT"/>
+      <member name="top" value="4" c:identifier="GTK_PLOT_CANVAS_TOP"/>
+      <member name="bottom" value="5" c:identifier="GTK_PLOT_CANVAS_BOTTOM"/>
       <member name="top_left"
               value="6"
-              c:identifier="GTK_PLOT_CANVAS_TOP_LEFT"
-              glib:nick="top-left"/>
+              c:identifier="GTK_PLOT_CANVAS_TOP_LEFT"/>
       <member name="top_right"
               value="7"
-              c:identifier="GTK_PLOT_CANVAS_TOP_RIGHT"
-              glib:nick="top-right"/>
+              c:identifier="GTK_PLOT_CANVAS_TOP_RIGHT"/>
       <member name="bottom_left"
               value="8"
-              c:identifier="GTK_PLOT_CANVAS_BOTTOM_LEFT"
-              glib:nick="bottom-left"/>
+              c:identifier="GTK_PLOT_CANVAS_BOTTOM_LEFT"/>
       <member name="bottom_right"
               value="9"
-              c:identifier="GTK_PLOT_CANVAS_BOTTOM_RIGHT"
-              glib:nick="bottom-right"/>
+              c:identifier="GTK_PLOT_CANVAS_BOTTOM_RIGHT"/>
     </enumeration>
     <class name="PlotCanvasRectangle"
            c:symbol-prefix="plot_canvas_rectangle"
@@ -8096,35 +7949,25 @@ It should only be accessed through the functions described below.</doc>
         <type name="PlotCanvasChildClass" c:type="GtkPlotCanvasChildClass"/>
       </field>
     </record>
-    <enumeration name="PlotCanvasSelection"
-                 glib:type-name="GtkPlotCanvasSelection"
-                 glib:get-type="gtk_plot_canvas_selection_get_type"
-                 c:type="GtkPlotCanvasSelection">
+    <enumeration name="PlotCanvasSelection" c:type="GtkPlotCanvasSelection">
       <member name="none"
               value="0"
-              c:identifier="GTK_PLOT_CANVAS_SELECT_NONE"
-              glib:nick="none"/>
+              c:identifier="GTK_PLOT_CANVAS_SELECT_NONE"/>
       <member name="markers"
               value="1"
-              c:identifier="GTK_PLOT_CANVAS_SELECT_MARKERS"
-              glib:nick="markers"/>
+              c:identifier="GTK_PLOT_CANVAS_SELECT_MARKERS"/>
       <member name="target"
               value="2"
-              c:identifier="GTK_PLOT_CANVAS_SELECT_TARGET"
-              glib:nick="target"/>
+              c:identifier="GTK_PLOT_CANVAS_SELECT_TARGET"/>
     </enumeration>
     <enumeration name="PlotCanvasSelectionMode"
-                 glib:type-name="GtkPlotCanvasSelectionMode"
-                 glib:get-type="gtk_plot_canvas_selection_mode_get_type"
                  c:type="GtkPlotCanvasSelectionMode">
       <member name="1"
               value="0"
-              c:identifier="GTK_PLOT_CANVAS_SELECT_CLICK_1"
-              glib:nick="1"/>
+              c:identifier="GTK_PLOT_CANVAS_SELECT_CLICK_1"/>
       <member name="2"
               value="1"
-              c:identifier="GTK_PLOT_CANVAS_SELECT_CLICK_2"
-              glib:nick="2"/>
+              c:identifier="GTK_PLOT_CANVAS_SELECT_CLICK_2"/>
     </enumeration>
     <class name="PlotCanvasText"
            c:symbol-prefix="plot_canvas_text"
@@ -8403,34 +8246,21 @@ It should only be accessed through the functions described below.</doc>
         </callback>
       </field>
     </record>
-    <enumeration name="PlotConnector"
-                 glib:type-name="GtkPlotConnector"
-                 glib:get-type="gtk_plot_connector_get_type"
-                 c:type="GtkPlotConnector">
-      <member name="none"
-              value="0"
-              c:identifier="GTK_PLOT_CONNECT_NONE"
-              glib:nick="none"/>
+    <enumeration name="PlotConnector" c:type="GtkPlotConnector">
+      <member name="none" value="0" c:identifier="GTK_PLOT_CONNECT_NONE"/>
       <member name="straight"
               value="1"
-              c:identifier="GTK_PLOT_CONNECT_STRAIGHT"
-              glib:nick="straight"/>
-      <member name="spline"
-              value="2"
-              c:identifier="GTK_PLOT_CONNECT_SPLINE"
-              glib:nick="spline"/>
+              c:identifier="GTK_PLOT_CONNECT_STRAIGHT"/>
+      <member name="spline" value="2" c:identifier="GTK_PLOT_CONNECT_SPLINE"/>
       <member name="hv_step"
               value="3"
-              c:identifier="GTK_PLOT_CONNECT_HV_STEP"
-              glib:nick="hv-step"/>
+              c:identifier="GTK_PLOT_CONNECT_HV_STEP"/>
       <member name="vh_step"
               value="4"
-              c:identifier="GTK_PLOT_CONNECT_VH_STEP"
-              glib:nick="vh-step"/>
+              c:identifier="GTK_PLOT_CONNECT_VH_STEP"/>
       <member name="middle_step"
               value="5"
-              c:identifier="GTK_PLOT_CONNECT_MIDDLE_STEP"
-              glib:nick="middle-step"/>
+              c:identifier="GTK_PLOT_CONNECT_MIDDLE_STEP"/>
     </enumeration>
     <class name="PlotDT"
            c:symbol-prefix="plot_dt"
@@ -10753,18 +10583,11 @@ It should only be accessed through the functions described below.</doc>
         </callback>
       </field>
     </record>
-    <enumeration name="PlotError"
-                 glib:type-name="GtkPlotError"
-                 glib:get-type="gtk_plot_error_get_type"
-                 c:type="GtkPlotError">
+    <enumeration name="PlotError" c:type="GtkPlotError">
       <member name="div_zero"
               value="0"
-              c:identifier="GTK_PLOT_ERROR_DIV_ZERO"
-              glib:nick="div-zero"/>
-      <member name="log_neg"
-              value="1"
-              c:identifier="GTK_PLOT_ERROR_LOG_NEG"
-              glib:nick="log-neg"/>
+              c:identifier="GTK_PLOT_ERROR_DIV_ZERO"/>
+      <member name="log_neg" value="1" c:identifier="GTK_PLOT_ERROR_LOG_NEG"/>
     </enumeration>
     <class name="PlotFlux"
            c:symbol-prefix="plot_flux"
@@ -11162,39 +10985,15 @@ drawing routines.</doc>
         </parameter>
       </parameters>
     </callback>
-    <bitfield name="PlotLabelPos"
-              glib:type-name="GtkPlotLabelPos"
-              glib:get-type="gtk_plot_label_pos_get_type"
-              c:type="GtkPlotLabelPos">
-      <member name="none"
-              value="0"
-              c:identifier="GTK_PLOT_LABEL_NONE"
-              glib:nick="none"/>
-      <member name="in"
-              value="1"
-              c:identifier="GTK_PLOT_LABEL_IN"
-              glib:nick="in"/>
-      <member name="out"
-              value="2"
-              c:identifier="GTK_PLOT_LABEL_OUT"
-              glib:nick="out"/>
+    <bitfield name="PlotLabelPos" c:type="GtkPlotLabelPos">
+      <member name="none" value="0" c:identifier="GTK_PLOT_LABEL_NONE"/>
+      <member name="in" value="1" c:identifier="GTK_PLOT_LABEL_IN"/>
+      <member name="out" value="2" c:identifier="GTK_PLOT_LABEL_OUT"/>
     </bitfield>
-    <enumeration name="PlotLabelStyle"
-                 glib:type-name="GtkPlotLabelStyle"
-                 glib:get-type="gtk_plot_label_style_get_type"
-                 c:type="GtkPlotLabelStyle">
-      <member name="float"
-              value="0"
-              c:identifier="GTK_PLOT_LABEL_FLOAT"
-              glib:nick="float"/>
-      <member name="exp"
-              value="1"
-              c:identifier="GTK_PLOT_LABEL_EXP"
-              glib:nick="exp"/>
-      <member name="pow"
-              value="2"
-              c:identifier="GTK_PLOT_LABEL_POW"
-              glib:nick="pow"/>
+    <enumeration name="PlotLabelStyle" c:type="GtkPlotLabelStyle">
+      <member name="float" value="0" c:identifier="GTK_PLOT_LABEL_FLOAT"/>
+      <member name="exp" value="1" c:identifier="GTK_PLOT_LABEL_EXP"/>
+      <member name="pow" value="2" c:identifier="GTK_PLOT_LABEL_POW"/>
     </enumeration>
     <record name="PlotLine" c:type="GtkPlotLine">
       <doc xml:whitespace="preserve">The GtkPlotLine struct contains only private data.
@@ -11215,38 +11014,18 @@ It should only be accessed through the functions described below.</doc>
         <type name="Gdk.Color" c:type="GdkColor"/>
       </field>
     </record>
-    <enumeration name="PlotLineStyle"
-                 glib:type-name="GtkPlotLineStyle"
-                 glib:get-type="gtk_plot_line_style_get_type"
-                 c:type="GtkPlotLineStyle">
-      <member name="none"
-              value="0"
-              c:identifier="GTK_PLOT_LINE_NONE"
-              glib:nick="none"/>
-      <member name="solid"
-              value="1"
-              c:identifier="GTK_PLOT_LINE_SOLID"
-              glib:nick="solid"/>
-      <member name="dotted"
-              value="2"
-              c:identifier="GTK_PLOT_LINE_DOTTED"
-              glib:nick="dotted"/>
-      <member name="dashed"
-              value="3"
-              c:identifier="GTK_PLOT_LINE_DASHED"
-              glib:nick="dashed"/>
-      <member name="dot_dash"
-              value="4"
-              c:identifier="GTK_PLOT_LINE_DOT_DASH"
-              glib:nick="dot-dash"/>
+    <enumeration name="PlotLineStyle" c:type="GtkPlotLineStyle">
+      <member name="none" value="0" c:identifier="GTK_PLOT_LINE_NONE"/>
+      <member name="solid" value="1" c:identifier="GTK_PLOT_LINE_SOLID"/>
+      <member name="dotted" value="2" c:identifier="GTK_PLOT_LINE_DOTTED"/>
+      <member name="dashed" value="3" c:identifier="GTK_PLOT_LINE_DASHED"/>
+      <member name="dot_dash" value="4" c:identifier="GTK_PLOT_LINE_DOT_DASH"/>
       <member name="dot_dot_dash"
               value="5"
-              c:identifier="GTK_PLOT_LINE_DOT_DOT_DASH"
-              glib:nick="dot-dot-dash"/>
+              c:identifier="GTK_PLOT_LINE_DOT_DOT_DASH"/>
       <member name="dot_dash_dash"
               value="6"
-              c:identifier="GTK_PLOT_LINE_DOT_DASH_DASH"
-              glib:nick="dot-dash-dash"/>
+              c:identifier="GTK_PLOT_LINE_DOT_DASH_DASH"/>
     </enumeration>
     <record name="PlotMarker"
             c:type="GtkPlotMarker"
@@ -11262,13 +11041,10 @@ It should only be accessed through the functions described below.</doc>
         <type name="gint" c:type="gint"/>
       </field>
     </record>
-    <enumeration name="PlotOrientation"
-                 glib:type-name="GtkPlotOrientation"
-                 glib:get-type="gtk_plot_orientation_get_type"
-                 c:type="GtkPlotOrientation">
-      <member name="x" value="0" c:identifier="GTK_PLOT_AXIS_X" glib:nick="x"/>
-      <member name="y" value="1" c:identifier="GTK_PLOT_AXIS_Y" glib:nick="y"/>
-      <member name="z" value="2" c:identifier="GTK_PLOT_AXIS_Z" glib:nick="z"/>
+    <enumeration name="PlotOrientation" c:type="GtkPlotOrientation">
+      <member name="x" value="0" c:identifier="GTK_PLOT_AXIS_X"/>
+      <member name="y" value="1" c:identifier="GTK_PLOT_AXIS_Y"/>
+      <member name="z" value="2" c:identifier="GTK_PLOT_AXIS_Z"/>
     </enumeration>
     <class name="PlotPC"
            c:symbol-prefix="plot_pc"
@@ -12601,40 +12377,16 @@ It should only be accessed through the functions described below.</doc>
         <type name="PlotPCClass" c:type="GtkPlotPCClass"/>
       </field>
     </record>
-    <enumeration name="PlotPageOrientation"
-                 glib:type-name="GtkPlotPageOrientation"
-                 glib:get-type="gtk_plot_page_orientation_get_type"
-                 c:type="GtkPlotPageOrientation">
-      <member name="portrait"
-              value="0"
-              c:identifier="GTK_PLOT_PORTRAIT"
-              glib:nick="portrait"/>
-      <member name="landscape"
-              value="1"
-              c:identifier="GTK_PLOT_LANDSCAPE"
-              glib:nick="landscape"/>
+    <enumeration name="PlotPageOrientation" c:type="GtkPlotPageOrientation">
+      <member name="portrait" value="0" c:identifier="GTK_PLOT_PORTRAIT"/>
+      <member name="landscape" value="1" c:identifier="GTK_PLOT_LANDSCAPE"/>
     </enumeration>
-    <enumeration name="PlotPageSize"
-                 glib:type-name="GtkPlotPageSize"
-                 glib:get-type="gtk_plot_page_size_get_type"
-                 c:type="GtkPlotPageSize">
-      <member name="letter"
-              value="0"
-              c:identifier="GTK_PLOT_LETTER"
-              glib:nick="letter"/>
-      <member name="legal"
-              value="1"
-              c:identifier="GTK_PLOT_LEGAL"
-              glib:nick="legal"/>
-      <member name="a4" value="2" c:identifier="GTK_PLOT_A4" glib:nick="a4"/>
-      <member name="executive"
-              value="3"
-              c:identifier="GTK_PLOT_EXECUTIVE"
-              glib:nick="executive"/>
-      <member name="custom"
-              value="4"
-              c:identifier="GTK_PLOT_CUSTOM"
-              glib:nick="custom"/>
+    <enumeration name="PlotPageSize" c:type="GtkPlotPageSize">
+      <member name="letter" value="0" c:identifier="GTK_PLOT_LETTER"/>
+      <member name="legal" value="1" c:identifier="GTK_PLOT_LEGAL"/>
+      <member name="a4" value="2" c:identifier="GTK_PLOT_A4"/>
+      <member name="executive" value="3" c:identifier="GTK_PLOT_EXECUTIVE"/>
+      <member name="custom" value="4" c:identifier="GTK_PLOT_CUSTOM"/>
     </enumeration>
     <callback name="PlotParseLabelFunc" c:type="GtkPlotParseLabelFunc">
       <return-value transfer-ownership="none">
@@ -12734,34 +12486,13 @@ It should only be accessed through the functions described below.</doc>
         <type name="PlotDataClass" c:type="GtkPlotDataClass"/>
       </field>
     </record>
-    <enumeration name="PlotPlane"
-                 glib:type-name="GtkPlotPlane"
-                 glib:get-type="gtk_plot_plane_get_type"
-                 c:type="GtkPlotPlane">
-      <member name="xy"
-              value="0"
-              c:identifier="GTK_PLOT_PLANE_XY"
-              glib:nick="xy"/>
-      <member name="yx"
-              value="0"
-              c:identifier="GTK_PLOT_PLANE_YX"
-              glib:nick="yx"/>
-      <member name="xz"
-              value="1"
-              c:identifier="GTK_PLOT_PLANE_XZ"
-              glib:nick="xz"/>
-      <member name="zx"
-              value="1"
-              c:identifier="GTK_PLOT_PLANE_ZX"
-              glib:nick="zx"/>
-      <member name="yz"
-              value="2"
-              c:identifier="GTK_PLOT_PLANE_YZ"
-              glib:nick="yz"/>
-      <member name="zy"
-              value="2"
-              c:identifier="GTK_PLOT_PLANE_ZY"
-              glib:nick="zy"/>
+    <enumeration name="PlotPlane" c:type="GtkPlotPlane">
+      <member name="xy" value="0" c:identifier="GTK_PLOT_PLANE_XY"/>
+      <member name="yx" value="0" c:identifier="GTK_PLOT_PLANE_YX"/>
+      <member name="xz" value="1" c:identifier="GTK_PLOT_PLANE_XZ"/>
+      <member name="zx" value="1" c:identifier="GTK_PLOT_PLANE_ZX"/>
+      <member name="yz" value="2" c:identifier="GTK_PLOT_PLANE_YZ"/>
+      <member name="zy" value="2" c:identifier="GTK_PLOT_PLANE_ZY"/>
     </enumeration>
     <record name="PlotPoint" c:type="GtkPlotPoint">
       <doc xml:whitespace="preserve">The GtkPlotPoint struct contains only private data.
@@ -12902,35 +12633,14 @@ It should only be accessed through the functions described below.</doc>
         <type name="gboolean" c:type="gboolean"/>
       </field>
     </record>
-    <enumeration name="PlotProjection"
-                 glib:type-name="GtkPlotProjection"
-                 glib:get-type="gtk_plot_projection_get_type"
-                 c:type="GtkPlotProjection">
-      <member name="none"
-              value="0"
-              c:identifier="GTK_PLOT_PROJECT_NONE"
-              glib:nick="none"/>
-      <member name="empty"
-              value="1"
-              c:identifier="GTK_PLOT_PROJECT_EMPTY"
-              glib:nick="empty"/>
-      <member name="full"
-              value="2"
-              c:identifier="GTK_PLOT_PROJECT_FULL"
-              glib:nick="full"/>
+    <enumeration name="PlotProjection" c:type="GtkPlotProjection">
+      <member name="none" value="0" c:identifier="GTK_PLOT_PROJECT_NONE"/>
+      <member name="empty" value="1" c:identifier="GTK_PLOT_PROJECT_EMPTY"/>
+      <member name="full" value="2" c:identifier="GTK_PLOT_PROJECT_FULL"/>
     </enumeration>
-    <enumeration name="PlotScale"
-                 glib:type-name="GtkPlotScale"
-                 glib:get-type="gtk_plot_scale_get_type"
-                 c:type="GtkPlotScale">
-      <member name="linear"
-              value="0"
-              c:identifier="GTK_PLOT_SCALE_LINEAR"
-              glib:nick="linear"/>
-      <member name="log10"
-              value="1"
-              c:identifier="GTK_PLOT_SCALE_LOG10"
-              glib:nick="log10"/>
+    <enumeration name="PlotScale" c:type="GtkPlotScale">
+      <member name="linear" value="0" c:identifier="GTK_PLOT_SCALE_LINEAR"/>
+      <member name="log10" value="1" c:identifier="GTK_PLOT_SCALE_LOG10"/>
     </enumeration>
     <class name="PlotSegment"
            c:symbol-prefix="plot_segment"
@@ -13073,34 +12783,13 @@ It should only be accessed through the functions described below.</doc>
         <type name="PlotDataClass" c:type="GtkPlotDataClass"/>
       </field>
     </record>
-    <bitfield name="PlotSide"
-              glib:type-name="GtkPlotSide"
-              glib:get-type="gtk_plot_side_get_type"
-              c:type="GtkPlotSide">
-      <member name="xy"
-              value="1"
-              c:identifier="GTK_PLOT_SIDE_XY"
-              glib:nick="xy"/>
-      <member name="xz"
-              value="2"
-              c:identifier="GTK_PLOT_SIDE_XZ"
-              glib:nick="xz"/>
-      <member name="yx"
-              value="4"
-              c:identifier="GTK_PLOT_SIDE_YX"
-              glib:nick="yx"/>
-      <member name="yz"
-              value="8"
-              c:identifier="GTK_PLOT_SIDE_YZ"
-              glib:nick="yz"/>
-      <member name="zx"
-              value="16"
-              c:identifier="GTK_PLOT_SIDE_ZX"
-              glib:nick="zx"/>
-      <member name="zy"
-              value="32"
-              c:identifier="GTK_PLOT_SIDE_ZY"
-              glib:nick="zy"/>
+    <bitfield name="PlotSide" c:type="GtkPlotSide">
+      <member name="xy" value="1" c:identifier="GTK_PLOT_SIDE_XY"/>
+      <member name="xz" value="2" c:identifier="GTK_PLOT_SIDE_XZ"/>
+      <member name="yx" value="4" c:identifier="GTK_PLOT_SIDE_YX"/>
+      <member name="yz" value="8" c:identifier="GTK_PLOT_SIDE_YZ"/>
+      <member name="zx" value="16" c:identifier="GTK_PLOT_SIDE_ZX"/>
+      <member name="zy" value="32" c:identifier="GTK_PLOT_SIDE_ZY"/>
     </bitfield>
     <class name="PlotSurface"
            c:symbol-prefix="plot_surface"
@@ -13711,79 +13400,35 @@ It should only be accessed through the functions described below.</doc>
         <type name="PlotLine" c:type="GtkPlotLine"/>
       </field>
     </record>
-    <enumeration name="PlotSymbolStyle"
-                 glib:type-name="GtkPlotSymbolStyle"
-                 glib:get-type="gtk_plot_symbol_style_get_type"
-                 c:type="GtkPlotSymbolStyle">
-      <member name="empty"
-              value="0"
-              c:identifier="GTK_PLOT_SYMBOL_EMPTY"
-              glib:nick="empty"/>
-      <member name="filled"
-              value="1"
-              c:identifier="GTK_PLOT_SYMBOL_FILLED"
-              glib:nick="filled"/>
-      <member name="opaque"
-              value="2"
-              c:identifier="GTK_PLOT_SYMBOL_OPAQUE"
-              glib:nick="opaque"/>
+    <enumeration name="PlotSymbolStyle" c:type="GtkPlotSymbolStyle">
+      <member name="empty" value="0" c:identifier="GTK_PLOT_SYMBOL_EMPTY"/>
+      <member name="filled" value="1" c:identifier="GTK_PLOT_SYMBOL_FILLED"/>
+      <member name="opaque" value="2" c:identifier="GTK_PLOT_SYMBOL_OPAQUE"/>
     </enumeration>
-    <enumeration name="PlotSymbolType"
-                 glib:type-name="GtkPlotSymbolType"
-                 glib:get-type="gtk_plot_symbol_type_get_type"
-                 c:type="GtkPlotSymbolType">
-      <member name="none"
-              value="0"
-              c:identifier="GTK_PLOT_SYMBOL_NONE"
-              glib:nick="none"/>
-      <member name="square"
-              value="1"
-              c:identifier="GTK_PLOT_SYMBOL_SQUARE"
-              glib:nick="square"/>
-      <member name="circle"
-              value="2"
-              c:identifier="GTK_PLOT_SYMBOL_CIRCLE"
-              glib:nick="circle"/>
+    <enumeration name="PlotSymbolType" c:type="GtkPlotSymbolType">
+      <member name="none" value="0" c:identifier="GTK_PLOT_SYMBOL_NONE"/>
+      <member name="square" value="1" c:identifier="GTK_PLOT_SYMBOL_SQUARE"/>
+      <member name="circle" value="2" c:identifier="GTK_PLOT_SYMBOL_CIRCLE"/>
       <member name="up_triangle"
               value="3"
-              c:identifier="GTK_PLOT_SYMBOL_UP_TRIANGLE"
-              glib:nick="up-triangle"/>
+              c:identifier="GTK_PLOT_SYMBOL_UP_TRIANGLE"/>
       <member name="down_triangle"
               value="4"
-              c:identifier="GTK_PLOT_SYMBOL_DOWN_TRIANGLE"
-              glib:nick="down-triangle"/>
+              c:identifier="GTK_PLOT_SYMBOL_DOWN_TRIANGLE"/>
       <member name="right_triangle"
               value="5"
-              c:identifier="GTK_PLOT_SYMBOL_RIGHT_TRIANGLE"
-              glib:nick="right-triangle"/>
+              c:identifier="GTK_PLOT_SYMBOL_RIGHT_TRIANGLE"/>
       <member name="left_triangle"
               value="6"
-              c:identifier="GTK_PLOT_SYMBOL_LEFT_TRIANGLE"
-              glib:nick="left-triangle"/>
-      <member name="diamond"
-              value="7"
-              c:identifier="GTK_PLOT_SYMBOL_DIAMOND"
-              glib:nick="diamond"/>
-      <member name="plus"
-              value="8"
-              c:identifier="GTK_PLOT_SYMBOL_PLUS"
-              glib:nick="plus"/>
-      <member name="cross"
-              value="9"
-              c:identifier="GTK_PLOT_SYMBOL_CROSS"
-              glib:nick="cross"/>
-      <member name="star"
-              value="10"
-              c:identifier="GTK_PLOT_SYMBOL_STAR"
-              glib:nick="star"/>
-      <member name="dot"
-              value="11"
-              c:identifier="GTK_PLOT_SYMBOL_DOT"
-              glib:nick="dot"/>
+              c:identifier="GTK_PLOT_SYMBOL_LEFT_TRIANGLE"/>
+      <member name="diamond" value="7" c:identifier="GTK_PLOT_SYMBOL_DIAMOND"/>
+      <member name="plus" value="8" c:identifier="GTK_PLOT_SYMBOL_PLUS"/>
+      <member name="cross" value="9" c:identifier="GTK_PLOT_SYMBOL_CROSS"/>
+      <member name="star" value="10" c:identifier="GTK_PLOT_SYMBOL_STAR"/>
+      <member name="dot" value="11" c:identifier="GTK_PLOT_SYMBOL_DOT"/>
       <member name="impulse"
               value="12"
-              c:identifier="GTK_PLOT_SYMBOL_IMPULSE"
-              glib:nick="impulse"/>
+              c:identifier="GTK_PLOT_SYMBOL_IMPULSE"/>
     </enumeration>
     <record name="PlotText" c:type="GtkPlotText">
       <doc xml:whitespace="preserve">The GtkPlotText struct contains only private data.
@@ -14050,22 +13695,10 @@ It should only be accessed through the functions described below.</doc>
         </parameter>
       </parameters>
     </callback>
-    <bitfield name="PlotTicksPos"
-              glib:type-name="GtkPlotTicksPos"
-              glib:get-type="gtk_plot_ticks_pos_get_type"
-              c:type="GtkPlotTicksPos">
-      <member name="none"
-              value="0"
-              c:identifier="GTK_PLOT_TICKS_NONE"
-              glib:nick="none"/>
-      <member name="in"
-              value="1"
-              c:identifier="GTK_PLOT_TICKS_IN"
-              glib:nick="in"/>
-      <member name="out"
-              value="2"
-              c:identifier="GTK_PLOT_TICKS_OUT"
-              glib:nick="out"/>
+    <bitfield name="PlotTicksPos" c:type="GtkPlotTicksPos">
+      <member name="none" value="0" c:identifier="GTK_PLOT_TICKS_NONE"/>
+      <member name="in" value="1" c:identifier="GTK_PLOT_TICKS_IN"/>
+      <member name="out" value="2" c:identifier="GTK_PLOT_TICKS_OUT"/>
     </bitfield>
     <callback name="PlotTicksRecalcFunc" c:type="GtkPlotTicksRecalcFunc">
       <return-value transfer-ownership="none">
@@ -14090,20 +13723,11 @@ It should only be accessed through the functions described below.</doc>
         </parameter>
       </parameters>
     </callback>
-    <enumeration name="PlotUnits"
-                 glib:type-name="GtkPlotUnits"
-                 glib:get-type="gtk_plot_units_get_type"
-                 c:type="GtkPlotUnits">
-      <member name="pspoints"
-              value="0"
-              c:identifier="GTK_PLOT_PSPOINTS"
-              glib:nick="pspoints"/>
-      <member name="mm" value="1" c:identifier="GTK_PLOT_MM" glib:nick="mm"/>
-      <member name="cm" value="2" c:identifier="GTK_PLOT_CM" glib:nick="cm"/>
-      <member name="inches"
-              value="3"
-              c:identifier="GTK_PLOT_INCHES"
-              glib:nick="inches"/>
+    <enumeration name="PlotUnits" c:type="GtkPlotUnits">
+      <member name="pspoints" value="0" c:identifier="GTK_PLOT_PSPOINTS"/>
+      <member name="mm" value="1" c:identifier="GTK_PLOT_MM"/>
+      <member name="cm" value="2" c:identifier="GTK_PLOT_CM"/>
+      <member name="inches" value="3" c:identifier="GTK_PLOT_INCHES"/>
     </enumeration>
     <record name="PlotVector" c:type="GtkPlotVector">
       <doc xml:whitespace="preserve">The GtkPlotVector struct contains only private data.
@@ -16980,9 +16604,12 @@ the last visible row/column</doc>
 for application use</doc>
         <type name="utf8"/>
       </property>
-      <property name="entry-type" writable="1" transfer-ownership="none">
+      <property name="entry-type"
+                introspectable="0"
+                writable="1"
+                transfer-ownership="none">
         <doc xml:whitespace="preserve">Sheet cell entry widget type</doc>
-        <type name="SheetEntryType"/>
+        <type/>
       </property>
       <property name="grid-color" writable="1" transfer-ownership="none">
         <doc xml:whitespace="preserve">Color of the grid</doc>
@@ -17026,9 +16653,12 @@ cannot be modified by the user.</doc>
         <doc xml:whitespace="preserve">The sheets title string</doc>
         <type name="utf8"/>
       </property>
-      <property name="vjust" writable="1" transfer-ownership="none">
+      <property name="vjust"
+                introspectable="0"
+                writable="1"
+                transfer-ownership="none">
         <doc xml:whitespace="preserve">Default vertical cell text justification</doc>
-        <type name="SheetVerticalJustification"/>
+        <type/>
       </property>
       <field name="container">
         <type name="Gtk.Container" c:type="GtkContainer"/>
@@ -17556,42 +17186,21 @@ FALSE to veto the movement.</doc>
         </parameters>
       </glib:signal>
     </class>
-    <enumeration name="SheetAttrType"
-                 glib:type-name="GtkSheetAttrType"
-                 glib:get-type="gtk_sheet_attr_type_get_type"
-                 c:type="GtkSheetAttrType">
-      <member name="foreground"
-              value="0"
-              c:identifier="GTK_SHEET_FOREGROUND"
-              glib:nick="foreground"/>
-      <member name="background"
-              value="1"
-              c:identifier="GTK_SHEET_BACKGROUND"
-              glib:nick="background"/>
-      <member name="font"
-              value="2"
-              c:identifier="GTK_SHEET_FONT"
-              glib:nick="font"/>
+    <enumeration name="SheetAttrType" c:type="GtkSheetAttrType">
+      <member name="foreground" value="0" c:identifier="GTK_SHEET_FOREGROUND"/>
+      <member name="background" value="1" c:identifier="GTK_SHEET_BACKGROUND"/>
+      <member name="font" value="2" c:identifier="GTK_SHEET_FONT"/>
       <member name="justification"
               value="3"
-              c:identifier="GTK_SHEET_JUSTIFICATION"
-              glib:nick="justification"/>
-      <member name="border"
-              value="4"
-              c:identifier="GTK_SHEET_BORDER"
-              glib:nick="border"/>
+              c:identifier="GTK_SHEET_JUSTIFICATION"/>
+      <member name="border" value="4" c:identifier="GTK_SHEET_BORDER"/>
       <member name="border_color"
               value="5"
-              c:identifier="GTK_SHEET_BORDER_COLOR"
-              glib:nick="border-color"/>
+              c:identifier="GTK_SHEET_BORDER_COLOR"/>
       <member name="is_editable"
               value="6"
-              c:identifier="GTK_SHEET_IS_EDITABLE"
-              glib:nick="is-editable"/>
-      <member name="is_visible"
-              value="7"
-              c:identifier="GTK_SHEET_IS_VISIBLE"
-              glib:nick="is-visible"/>
+              c:identifier="GTK_SHEET_IS_EDITABLE"/>
+      <member name="is_visible" value="7" c:identifier="GTK_SHEET_IS_VISIBLE"/>
     </enumeration>
     <record name="SheetButton" c:type="GtkSheetButton">
       <doc xml:whitespace="preserve">The GtkSheetButton struct contains only private data.
@@ -18096,9 +17705,12 @@ any widget content is text</doc>
         <doc xml:whitespace="preserve">Description of column contents</doc>
         <type name="utf8"/>
       </property>
-      <property name="entry-type" writable="1" transfer-ownership="none">
+      <property name="entry-type"
+                introspectable="0"
+                writable="1"
+                transfer-ownership="none">
         <doc xml:whitespace="preserve">Column cell entry widget type</doc>
-        <type name="SheetEntryType"/>
+        <type/>
       </property>
       <property name="iskey" writable="1" transfer-ownership="none">
         <doc xml:whitespace="preserve">Flag for key columns</doc>
@@ -18124,9 +17736,12 @@ any widget content is text</doc>
         <doc xml:whitespace="preserve">Visibility for columns</doc>
         <type name="gboolean"/>
       </property>
-      <property name="vjust" writable="1" transfer-ownership="none">
+      <property name="vjust"
+                introspectable="0"
+                writable="1"
+                transfer-ownership="none">
         <doc xml:whitespace="preserve">Column vertical cell text justification</doc>
-        <type name="SheetVerticalJustification"/>
+        <type/>
       </property>
       <property name="width" writable="1" transfer-ownership="none">
         <doc xml:whitespace="preserve">Width of the column</doc>
@@ -18189,44 +17804,33 @@ any widget content is text</doc>
         <type name="Gtk.WidgetClass" c:type="GtkWidgetClass"/>
       </field>
     </record>
-    <enumeration name="SheetEntryType"
-                 glib:type-name="GtkSheetEntryType"
-                 glib:get-type="gtk_sheet_entry_type_get_type"
-                 c:type="GtkSheetEntryType">
+    <enumeration name="SheetEntryType" c:type="GtkSheetEntryType">
       <doc xml:whitespace="preserve">Subset of GtkEditable Widgets to allow selecting a widget 
 from glade-3</doc>
       <member name="default"
               value="0"
-              c:identifier="GTK_SHEET_ENTRY_TYPE_DEFAULT"
-              glib:nick="default"/>
+              c:identifier="GTK_SHEET_ENTRY_TYPE_DEFAULT"/>
       <member name="gtk_item_entry"
               value="1"
-              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_ITEM_ENTRY"
-              glib:nick="gtk-item-entry"/>
+              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_ITEM_ENTRY"/>
       <member name="gtk_entry"
               value="2"
-              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_ENTRY"
-              glib:nick="gtk-entry"/>
+              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_ENTRY"/>
       <member name="gtk_text_view"
               value="3"
-              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW"
-              glib:nick="gtk-text-view"/>
+              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW"/>
       <member name="gtk_spin_button"
               value="4"
-              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON"
-              glib:nick="gtk-spin-button"/>
+              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON"/>
       <member name="gtk_combo_box"
               value="5"
-              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX"
-              glib:nick="gtk-combo-box"/>
+              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX"/>
       <member name="gtk_combo_box_entry"
               value="6"
-              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX_ENTRY"
-              glib:nick="gtk-combo-box-entry"/>
+              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX_ENTRY"/>
       <member name="gtk_combo"
               value="7"
-              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_COMBO"
-              glib:nick="gtk-combo"/>
+              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_COMBO"/>
     </enumeration>
     <record name="SheetRange"
             c:type="GtkSheetRange"
@@ -18281,49 +17885,34 @@ It should only be accessed through the functions described below.</doc>
         <type name="utf8" c:type="gchar*"/>
       </field>
     </record>
-    <enumeration name="SheetState"
-                 glib:type-name="GtkSheetState"
-                 glib:get-type="gtk_sheet_state_get_type"
-                 c:type="GtkSheetState">
+    <enumeration name="SheetState" c:type="GtkSheetState">
       <doc xml:whitespace="preserve">Selection state of the #GtkSheet</doc>
-      <member name="normal"
-              value="0"
-              c:identifier="GTK_SHEET_NORMAL"
-              glib:nick="normal"/>
+      <member name="normal" value="0" c:identifier="GTK_SHEET_NORMAL"/>
       <member name="row_selected"
               value="1"
-              c:identifier="GTK_SHEET_ROW_SELECTED"
-              glib:nick="row-selected"/>
+              c:identifier="GTK_SHEET_ROW_SELECTED"/>
       <member name="column_selected"
               value="2"
-              c:identifier="GTK_SHEET_COLUMN_SELECTED"
-              glib:nick="column-selected"/>
+              c:identifier="GTK_SHEET_COLUMN_SELECTED"/>
       <member name="range_selected"
               value="3"
-              c:identifier="GTK_SHEET_RANGE_SELECTED"
-              glib:nick="range-selected"/>
+              c:identifier="GTK_SHEET_RANGE_SELECTED"/>
     </enumeration>
     <enumeration name="SheetVerticalJustification"
-                 glib:type-name="GtkSheetVerticalJustification"
-                 glib:get-type="gtk_sheet_vertical_justification_get_type"
                  c:type="GtkSheetVerticalJustification">
       <doc xml:whitespace="preserve">Vertical text alignment.</doc>
       <member name="default"
               value="0"
-              c:identifier="GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT"
-              glib:nick="default"/>
+              c:identifier="GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT"/>
       <member name="top"
               value="1"
-              c:identifier="GTK_SHEET_VERTICAL_JUSTIFICATION_TOP"
-              glib:nick="top"/>
+              c:identifier="GTK_SHEET_VERTICAL_JUSTIFICATION_TOP"/>
       <member name="middle"
               value="2"
-              c:identifier="GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE"
-              glib:nick="middle"/>
+              c:identifier="GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE"/>
       <member name="bottom"
               value="3"
-              c:identifier="GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM"
-              glib:nick="bottom"/>
+              c:identifier="GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM"/>
     </enumeration>
     <class name="ToggleCombo"
            c:symbol-prefix="toggle_combo"
@@ -18555,569 +18144,6 @@ formatting characters, apply trailing dash</doc>
         <parameter name="dataformat" transfer-ownership="none">
           <doc xml:whitespace="preserve">formatting instructions</doc>
           <type name="utf8" c:type="const gchar*"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_BOOLEAN__BOXED"
-              c:identifier="gtkextra_BOOLEAN__BOXED">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_BOOLEAN__BOXED_BOXED"
-              c:identifier="gtkextra_BOOLEAN__BOXED_BOXED">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_BOOLEAN__BOXED_DOUBLE_DOUBLE"
-              c:identifier="gtkextra_BOOLEAN__BOXED_DOUBLE_DOUBLE">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_BOOLEAN__BOXED_POINTER"
-              c:identifier="gtkextra_BOOLEAN__BOXED_POINTER">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_BOOLEAN__BOXED_STRING"
-              c:identifier="gtkextra_BOOLEAN__BOXED_STRING">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_BOOLEAN__INT_INT"
-              c:identifier="gtkextra_BOOLEAN__INT_INT">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_BOOLEAN__INT_INT_POINTER_POINTER"
-              c:identifier="gtkextra_BOOLEAN__INT_INT_POINTER_POINTER">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_BOOLEAN__POINTER"
-              c:identifier="gtkextra_BOOLEAN__POINTER">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_BOOLEAN__POINTER_BOXED"
-              c:identifier="gtkextra_BOOLEAN__POINTER_BOXED">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_BOOLEAN__POINTER_POINTER"
-              c:identifier="gtkextra_BOOLEAN__POINTER_POINTER">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_BOOLEAN__POINTER_STRING"
-              c:identifier="gtkextra_BOOLEAN__POINTER_STRING">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_VOID__BOXED_BOXED"
-              c:identifier="gtkextra_VOID__BOXED_BOXED">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_VOID__BOXED_POINTER"
-              c:identifier="gtkextra_VOID__BOXED_POINTER">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE"
-              c:identifier="gtkextra_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_VOID__ENUM_INT_BOOLEAN"
-              c:identifier="gtkextra_VOID__ENUM_INT_BOOLEAN">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_VOID__INT_BOXED"
-              c:identifier="gtkextra_VOID__INT_BOXED">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_VOID__INT_INT"
-              c:identifier="gtkextra_VOID__INT_INT">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_VOID__INT_POINTER"
-              c:identifier="gtkextra_VOID__INT_POINTER">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_VOID__INT_STRING"
-              c:identifier="gtkextra_VOID__INT_STRING">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_VOID__OBJECT_OBJECT"
-              c:identifier="gtkextra_VOID__OBJECT_OBJECT">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_VOID__POINTER_POINTER"
-              c:identifier="gtkextra_VOID__POINTER_POINTER">
-      <return-value transfer-ownership="none">
-        <type name="none" c:type="void"/>
-      </return-value>
-      <parameters>
-        <parameter name="closure" transfer-ownership="none">
-          <type name="GObject.Closure" c:type="GClosure*"/>
-        </parameter>
-        <parameter name="return_value" transfer-ownership="none">
-          <type name="GObject.Value" c:type="GValue*"/>
-        </parameter>
-        <parameter name="n_param_values" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="param_values" transfer-ownership="none">
-          <type name="GObject.Value" c:type="const GValue*"/>
-        </parameter>
-        <parameter name="invocation_hint" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-        <parameter name="marshal_data" transfer-ownership="none">
-          <type name="gpointer" c:type="gpointer"/>
-        </parameter>
-      </parameters>
-    </function>
-    <function name="gtkextra_check_version"
-              c:identifier="gtkextra_check_version">
-      <return-value transfer-ownership="full">
-        <type name="utf8" c:type="gchar*"/>
-      </return-value>
-      <parameters>
-        <parameter name="required_major" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="required_minor" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
-        </parameter>
-        <parameter name="required_micro" transfer-ownership="none">
-          <type name="guint" c:type="guint"/>
         </parameter>
       </parameters>
     </function>

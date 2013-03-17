@@ -8,6 +8,8 @@ gladepixmapdir = @GLADE_PIXMAP_DIR@
 
 libgladegtkextra = $(top_builddir)/glade/libgladegtkextra.la
 
+GLADEUI_LIBS = `pkg-config --libs gladeui-1.0`
+
 # activate this to install into glade-3 modules dir
 glademodule_LTLIBRARIES = libgladegtkextra.la
 
@@ -30,8 +32,8 @@ libgladegtkextra_la_CFLAGS =  \
 
 libgladegtkextra_la_SOURCES = glade-gtksheet-editor.c
 
-libgladegtkextra_la_LDFLAGS = -module -avoid-version $(AM_LDFLAGS)
-libgladegtkextra_la_LIBADD = ../gtkextra/@gtkextratargetlib@
+libgladegtkextra_la_LDFLAGS = -module -avoid-version $(AM_LDFLAGS) $(GLADEUI_LIBS)
+libgladegtkextra_la_LIBADD = ../gtkextra/@gtkextratargetlib@ 
 
 if PLATFORM_WIN32
 libgladegtkextra_la_LDFLAGS += -no-undefined

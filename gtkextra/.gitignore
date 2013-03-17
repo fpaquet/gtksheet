@@ -10,6 +10,9 @@ gtkextrafeatures.h
 gtkextratypebuiltins.c
 gtkextratypebuiltins.h
 
+demo3d.ps
+demosegment.ps
+
 testboxes
 testbubbles
 testcandles
@@ -33,3 +36,4 @@ testpolar
 testrealtime
 testsegment
 
+test*.exe

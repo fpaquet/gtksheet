@@ -21,11 +21,8 @@
  *   Fredy Paquet <fredy@opag.ch> (adopted for GtkSheet)
  */
 
-#ifdef _WIN32
-#  include "config.h.win32"
-#else
-#  include "config.h"
-#endif
+#include "config.h"
+
 #include <gladeui/glade.h>
 #include <glib/gi18n-lib.h>
 #include <gdk/gdkkeysyms.h>

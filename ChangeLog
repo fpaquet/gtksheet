@@ -1,3 +1,7 @@
+2013-03-17 Fredy Paquet <mailbox AT opag.ch>
+	* MinGW: fixed autoconf environment, reworked Git exceptions
+	* Glade integration: fixed build problems in MinGW
+
 2013-03-16 Fredy Paquet <mailbox AT opag.ch>
 	* cleanup build environment
 	* migration to git repo

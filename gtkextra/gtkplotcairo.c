@@ -1015,7 +1015,7 @@ gtk_plot_cairo_draw_string                        (GtkPlotPC *pc,
        case 'b':
            if (lastchar) {
              const gchar *aux2 = lastchar;
-             gint i = g_utf8_prev_char(lastchar) != --aux2 ? 2 : 1;
+             gint i = aux2 - g_utf8_prev_char(lastchar);
              pango_layout_set_text(layout, lastchar, i);
              pango_layout_get_extents(layout, NULL, &rect);
              x -= sign_x*PANGO_PIXELS(rect.width);
@@ -1051,7 +1051,8 @@ gtk_plot_cairo_draw_string                        (GtkPlotPC *pc,
      lastchar = aux;
      while(aux && *aux != '\0' && *aux !='\n' && *aux != '\\'){
        xaux = aux;
-       new_len += g_utf8_next_char(aux) != ++xaux ? 2 : 1;
+       new_len += g_utf8_next_char(aux) - xaux;
+       xaux++;
        aux = g_utf8_next_char(aux);
      }
      xaux = lastchar;

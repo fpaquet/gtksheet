@@ -4078,7 +4078,7 @@ gtk_plot_text_get_size(const gchar *text, gint angle,
        case 'b':
 	   if(lastchar){
              const gchar *aux2 = lastchar;
-             gint i = g_utf8_next_char(lastchar) != ++aux2 ? 2 : 1;
+             gint i = g_utf8_next_char(aux) - aux2;
              pango_layout_set_text(layout, lastchar, i);
              pango_layout_get_extents(layout, NULL, &rect);
              x -= PANGO_PIXELS(rect.width);
@@ -4119,7 +4119,7 @@ gtk_plot_text_get_size(const gchar *text, gint angle,
        default:
            if(aux && *aux != '\0' && *aux !='\n'){
              const gchar *aux2 = aux;
-             gint i = g_utf8_next_char(aux) != ++aux2 ? 2 : 1;
+             gint i = g_utf8_next_char(aux) - aux2;
              pango_layout_set_font_description(layout, font);
              pango_layout_set_text(layout, aux, i);
              pango_layout_get_extents(layout, NULL, &rect);
@@ -4132,7 +4132,7 @@ gtk_plot_text_get_size(const gchar *text, gint angle,
    } else {
      if(aux && *aux != '\0' && *aux != '\n'){
        const gchar *aux2 = aux;
-       gint i = g_utf8_next_char(aux) != ++aux2 ? 2 : 1;
+       gint i = g_utf8_next_char(aux) - aux2;
        pango_layout_set_font_description(layout, font);
        pango_layout_set_text(layout, aux, i);
        pango_layout_get_extents(layout, NULL, &rect);

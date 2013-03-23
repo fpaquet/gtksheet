@@ -3,6 +3,9 @@
 	* GtkSheet: fixed h/voffset when deleting rows PR#90224, PR#95088
 	* GtkSheet: fixed horizontal scrollbar size
 
+2013-03-19 Daisuke Shimamura <daisuke_shimamura AT nifty.com>
+	* GtkPlot: patch for UTF-8 string handling
+
 2013-03-17 Fredy Paquet <mailbox AT opag.ch>
 	* MinGW: fixed autoconf environment, reworked Git exceptions
 	* Glade integration: fixed build problems in MinGW

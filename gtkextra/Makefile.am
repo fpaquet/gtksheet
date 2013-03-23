@@ -205,7 +205,7 @@ CLEANFILES = $(gtkextra_built_sources)
 
 EXTRA_DIST = $(gtkextra_private_h_sources) $(gtkextra_extra_sources)
 #EXTRA_DIST += $(gtkextra_built_sources)
-EXTRA_DIST += gtkextra.def Makefile.mingw sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
+EXTRA_DIST += gtkextra.def sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
 
 
 $(libgtkextra_x11_3_0_la_OBJECTS) $(libgtkextra_linux_fb_3_0_la_OBJECTS) $(libgtkextra_win32_3_0_la_OBJECTS): ${gtkextra_built_public_sources} ${gtkextra_built_private_headers}

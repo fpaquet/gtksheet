@@ -1,3 +1,8 @@
+2013-03-23 Fredy Paquet <mailbox AT opag.ch>
+	* GtkItemEntry: remove debug output when debug is off
+	* GtkSheet: fixed h/voffset when deleting rows PR#90224, PR#95088
+	* GtkSheet: fixed horizontal scrollbar size
+
 2013-03-17 Fredy Paquet <mailbox AT opag.ch>
 	* MinGW: fixed autoconf environment, reworked Git exceptions
 	* Glade integration: fixed build problems in MinGW

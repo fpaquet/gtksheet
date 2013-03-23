@@ -65,6 +65,8 @@
 
 #ifdef GTK_ITEM_ENTRY_DEBUG
 #   define GTK_ITEM_ENTRY_DEBUG_JUSTIFICATION 0
+#   define GTK_ITEM_ENTRY_DEBUG_ALLOC 0
+#   define GTK_ITEM_ENTRY_DEBUG_TEXT 0
 #endif
 
 
@@ -529,12 +531,12 @@ gtk_entry_size_allocate(GtkWidget     *widget,
 
 	get_widget_window_size(entry, &x, &y, &width, &height);
 
-#if GTK_ITEM_ENTRY_DEBUG>0
+#if GTK_ITEM_ENTRY_DEBUG_ALLOC>0
 	g_debug("gtk_entry_size_allocate: get_widget_window_size (%d, %d, %d, %d)",
 	    x, y, width, height);
 #endif
 
-#if GTK_ITEM_ENTRY_DEBUG>0
+#if GTK_ITEM_ENTRY_DEBUG_ALLOC>0
 	g_debug("gtk_entry_size_allocate: move widget window (%d, %d, %d, %d)",
 	    allocation->x, allocation->y, allocation->width, allocation->height);
 #endif
@@ -545,13 +547,13 @@ gtk_entry_size_allocate(GtkWidget     *widget,
 
 	get_text_area_size(entry, &x, &y, &width, &height);
 
-#if GTK_ITEM_ENTRY_DEBUG>0
+#if GTK_ITEM_ENTRY_DEBUG_ALLOC>0
 	g_debug("gtk_entry_size_allocate: get_text_area_size (%d, %d, %d, %d)",
 	    x, y, width, height);
 #endif
 
 
-#if GTK_ITEM_ENTRY_DEBUG>0
+#if GTK_ITEM_ENTRY_DEBUG_ALLOC>0
 	g_debug("gtk_entry_size_allocate: move text_area (%d, %d, %d, %d)",
 	    0, allocation->height - height, allocation->width, height);
 #endif
@@ -801,7 +803,9 @@ gtk_entry_real_insert_text(GtkEditable *editable,
 	new_text_length = g_utf8_offset_to_pointer(new_text, n_chars) - new_text;
     }
 
+#if GTK_ITEM_ENTRY_DEBUG_TEXT>0
     g_debug("gtk_entry_real_insert_text: n_chars %d %d", n_chars, *position);
+#endif
 
 #ifdef GTK_TYPE_ENTRY_BUFFER
 
@@ -811,7 +815,9 @@ gtk_entry_real_insert_text(GtkEditable *editable,
 
 	n_bytes_inserted  = gtk_entry_buffer_insert_text(buffer, *position, new_text, new_text_length);
 
+#if GTK_ITEM_ENTRY_DEBUG_TEXT>0
 	g_debug("gtk_entry_real_insert_text: GTK_TYPE_ENTRY_BUFFER n_chars %d %d", n_chars, *position);
+#endif
     }
 
 #else
@@ -860,7 +866,9 @@ gtk_entry_real_insert_text(GtkEditable *editable,
     if (entry->selection_bound > *position) entry->selection_bound += n_chars;
 #endif //GTK_TYPE_ENTRY_BUFFER
 
+#if GTK_ITEM_ENTRY_DEBUG_TEXT>0
     g_debug("gtk_entry_real_insert_text: n_chars %d %d", n_chars, *position);
+#endif
 
     *position += n_chars;
 

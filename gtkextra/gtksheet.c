@@ -12557,20 +12557,32 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
 	va->upper = _gtk_sheet_height(sheet) + 80;
 
 #if GTK_SHEET_DEBUG_ADJUSTMENT > 0
-	g_debug("_gtk_sheet_scrollbar_adjust: va PS %g PI %g SI %g L %g U %g V %g O %d",
+	g_debug("_gtk_sheet_scrollbar_adjust: va PS %g PI %g SI %g L %g U %g V %g VO %d",
 	    va->page_size, va->page_increment, va->step_increment,
 	    va->lower, va->upper, va->value, sheet->voffset);
 #endif
-/*
-    if (sheet->sheet_window_height - sheet->voffset > SHEET_HEIGHT (sheet))
-    {
-      va->value = MAX(0, SHEET_HEIGHT (sheet) - sheet->sheet_window_height);
-      g_signal_emit_by_name(GTK_OBJECT (va), "value_changed");
-    }
-#if GTK_SHEET_DEBUG_ADJUSTMENT
-    g_debug("_gtk_sheet_scrollbar_adjust: va V %g", va->value);
+
+	if (va->upper <= va->page_size)  /* whole sheet fits into window? */
+	{
+	    va->value = 0;
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
+	    g_debug("_gtk_sheet_scrollbar_adjust: reset to V %g VO %d", 
+		va->value, sheet->voffset);
 #endif
-*/
+	    g_signal_emit_by_name(GTK_OBJECT(va), "value_changed");
+	}
+	/* can produce smudge effects - 23.3.13/fp 
+	else if (va->value >= va->upper - va->page_size)
+	{
+	    va->value = va->upper - va->page_size;
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
+	    g_debug("_gtk_sheet_scrollbar_adjust: reset to V %g VO %d", 
+		va->value, sheet->voffset);
+#endif
+	    g_signal_emit_by_name(GTK_OBJECT(va), "value_changed");
+	} 
+	*/ 
+	
 	g_signal_emit_by_name(GTK_OBJECT(va), "changed");
     }
 
@@ -12583,49 +12595,37 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
 	ha->step_increment = GTK_SHEET_COLUMN_DEFAULT_WIDTH;
 	ha->lower = 0;
 	ha->upper = _gtk_sheet_width(sheet) * 3 / 2;
+	ha->upper = _gtk_sheet_width(sheet) + 80;
 
 #if GTK_SHEET_DEBUG_ADJUSTMENT > 0
-	g_debug("_gtk_sheet_scrollbar_adjust: ha PS %g PI %g SI %g L %g U %g V %g O %d",
+	g_debug("_gtk_sheet_scrollbar_adjust: ha PS %g PI %g SI %g L %g U %g V %g HO %d",
 	    ha->page_size, ha->page_increment, ha->step_increment,
 	    ha->lower, ha->upper, ha->value, sheet->hoffset);
 #endif
 
-	g_signal_emit_by_name(GTK_OBJECT(ha), "changed");
-#if 0
-	if (sheet->hoffset < 0
-	    && _gtk_sheet_width(sheet) + sheet->hoffset < sheet->sheet_window_width)
+	if (ha->upper <= ha->page_size)  /* whole sheet fits into window? */
 	{
-	    ha->value = _gtk_sheet_width(sheet) - (gint)sheet->sheet_window_width;
-	    if (ha->value < 0.0) ha->value = 0.0;
-
+	    ha->value = 0;
 #if GTK_SHEET_DEBUG_ADJUSTMENT > 0
-	    g_debug("_gtk_sheet_scrollbar_adjust: ha V %g sw %d sww %d diff %d %g",
-		    ha->value,
-		    _gtk_sheet_width(sheet), sheet->sheet_window_width,
-		    _gtk_sheet_width(sheet) - (gint)sheet->sheet_window_width,
-		    (gdouble)_gtk_sheet_width(sheet) - (gint)sheet->sheet_window_width);
+	    g_debug("_gtk_sheet_scrollbar_adjust: reset to V %g HO %d", 
+		ha->value, sheet->hoffset);
 #endif
 	    g_signal_emit_by_name(GTK_OBJECT(ha), "value_changed");
 	}
+	/* can produce smudge effects - 23.3.13/fp
+	else if (ha->value >= ha->upper - ha->page_size)
+	{
+	    ha->value = ha->upper - ha->page_size;
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
+	    g_debug("_gtk_sheet_scrollbar_adjust: reset to V %g HO %d", 
+		va->value, sheet->hoffset);
 #endif
+	    g_signal_emit_by_name(GTK_OBJECT(ha), "value_changed");
+	} 
+	*/ 
+	
+	g_signal_emit_by_name(GTK_OBJECT(ha), "changed");
     }
-
-/*
-    if(gtk_widget_get_realized(sheet))
-    {
-    if(sheet->row_titles_visible){
-    size_allocate_row_title_buttons(sheet);
-    gdk_window_show(sheet->row_title_window);
-    }
-
-    if(sheet->column_titles_visible){
-    gtk_sheet_column_buttons_size_allocate(sheet);
-    gdk_window_show(sheet->column_title_window);
-    }
-
-    _gtk_sheet_range_draw(sheet, NULL, TRUE);
-    }
-*/
 }
 
 
@@ -12690,11 +12690,12 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
     g_return_if_fail(data != NULL);
     g_return_if_fail(GTK_IS_SHEET(data));
 
-#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
-    g_debug("_vadjustment_value_changed_handler: called");
-#endif
-
     sheet = GTK_SHEET(data);
+
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
+    g_debug("_vadjustment_value_changed_handler: called: O VA %g VO %d",
+	sheet->old_vadjustment, sheet->voffset);
+#endif
 
     if (GTK_SHEET_IS_FROZEN(sheet))
 	return;
@@ -12748,6 +12749,11 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
     if (sheet->old_vadjustment >= 0. && row == new_row)
     {
 	sheet->old_vadjustment = sheet->vadjustment->value;
+
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
+	g_debug("_vadjustment_value_changed_handler: return 1: vv %g",
+	    sheet->old_vadjustment);
+#endif
 	return;
     }
 
@@ -12830,14 +12836,16 @@ _hadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
     g_return_if_fail(data != NULL);
     g_return_if_fail(GTK_IS_SHEET(data));
 
-#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
-    g_debug("_hadjustment_value_changed_handler: called");
-#endif
-
     sheet = GTK_SHEET(data);
+
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 0
+    g_debug("_hadjustment_value_changed_handler: called: O HA %g HO %d",
+	sheet->old_hadjustment, sheet->hoffset);
+#endif
 
     if (GTK_SHEET_IS_FROZEN(sheet))
 	return;
+
 #if 0
     if (sheet->row_titles_visible) col = _gtk_sheet_column_from_xpixel(sheet, sheet->row_title_area.width + CELL_SPACING);
     else

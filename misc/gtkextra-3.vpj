@@ -370,7 +370,6 @@
 			<F N="../autoregen.sh"/>
 			<F N="../ChangeLog"/>
 			<F N="../config.h.in"/>
-			<F N="../config.h.win32"/>
 			<F N="../config.log"/>
 			<F N="../configure"/>
 			<F N="../configure.in"/>

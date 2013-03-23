@@ -16,7 +16,6 @@ EXTRA_DIST = \
 	TODO \
 	gtkextra-3.0.m4 \
 	makecopyright \
-	config.h.win32 \
 	gtkextra-3.0.spec 
 
 pkgconfigdir = $(libdir)/pkgconfig

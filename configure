@@ -17579,10 +17579,6 @@ else
 fi
 
 	    ;;
-	    *-*-openbsd*)
-	    CATOBJEXT=.mo
-            DATADIRNAME=share
-	    ;;
 	    *)
 	    CATOBJEXT=.mo
             DATADIRNAME=lib

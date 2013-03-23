@@ -1,8 +1,13 @@
 2013-03-23 Fredy Paquet <mailbox AT opag.ch>
+	* published gtkextra-3 version 3.0.4
+	* updated gtkextra-3 git version to 3.0.5
+
+2013-03-23 Fredy Paquet <mailbox AT opag.ch>
 	* GtkItemEntry: remove debug output when debug is off
 	* GtkSheet: fixed h/voffset when deleting rows PR#90224, PR#95088
 	* GtkSheet: fixed horizontal scrollbar size
 	* GtkExtra: removed Makefile.mingw, config.h.win32
+	* GtkExtra: cleanup extra distribution files
 
 2013-03-19 Daisuke Shimamura <daisuke_shimamura AT nifty.com>
 	* GtkPlot: patch for UTF-8 string handling

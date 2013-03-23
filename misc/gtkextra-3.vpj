@@ -400,9 +400,6 @@
 			<F
 				N="../gtkextra/Makefile.in"
 				Type="Makefile"/>
-			<F
-				N="../gtkextra/Makefile.mingw"
-				Type="Makefile"/>
 			<F N="../NEWS"/>
 			<F N="../README"/>
 			<F N="../gtkextra/sat.xpm"/>

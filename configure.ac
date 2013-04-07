@@ -143,8 +143,10 @@ fi
 
 if test "$platform_win32" = "yes"; then
   gdktarget=win32
+  AC_SUBST(libgladegtkextra_soname, [libgladegtkextra.dll])
 else
   gdktarget=x11
+  AC_SUBST(libgladegtkextra_soname, [libgladegtkextra.so])
 fi
 
 # --with-gdktarget option
@@ -371,6 +373,7 @@ AC_OUTPUT(
 Makefile
 glade/Makefile
 glade/pixmaps/Makefile
+glade/gtk+extra-catalog.xml
 gtkextra/Makefile
 gtkextra/gtkextrafeatures.h
 docs/Makefile

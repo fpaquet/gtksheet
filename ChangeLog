@@ -1,3 +1,6 @@
+2013-04-07 Fredy Paquet <mailbox AT opag.ch>
+	* Glade Integration: fixed soname generation in glade catalog xml for win32
+
 2013-03-23 Fredy Paquet <mailbox AT opag.ch>
 	* published gtkextra-3 version 3.0.4
 	* updated gtkextra-3 git version to 3.0.5

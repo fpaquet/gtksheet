@@ -865,6 +865,7 @@ USE_WIN32_TRUE
 GDK_WIN32_EXTRA_CFLAGS
 gtkextratargetlib
 gdktarget
+libgladegtkextra_soname
 MS_LIB_AVAILABLE_FALSE
 MS_LIB_AVAILABLE_TRUE
 ms_librarian
@@ -5941,13 +5942,13 @@ if test "${lt_cv_nm_interface+set}" = set; then
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:5944: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:5945: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5947: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:5948: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5950: output\"" >&5)
+  (eval echo "\"\$as_me:5951: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -7149,7 +7150,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 7152 "configure"' > conftest.$ac_ext
+  echo '#line 7153 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -9004,11 +9005,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9007: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9008: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:9011: \$? = $ac_status" >&5
+   echo "$as_me:9012: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9343,11 +9344,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9346: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9347: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:9350: \$? = $ac_status" >&5
+   echo "$as_me:9351: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9448,11 +9449,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9451: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9452: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9455: \$? = $ac_status" >&5
+   echo "$as_me:9456: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -9503,11 +9504,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9506: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9507: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9510: \$? = $ac_status" >&5
+   echo "$as_me:9511: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -12306,7 +12307,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 12309 "configure"
+#line 12310 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12402,7 +12403,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 12405 "configure"
+#line 12406 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12772,8 +12773,12 @@ fi
 
 if test "$platform_win32" = "yes"; then
   gdktarget=win32
+  libgladegtkextra_soname=libgladegtkextra.dll
+
 else
   gdktarget=x11
+  libgladegtkextra_soname=libgladegtkextra.so
+
 fi
 
 # --with-gdktarget option
@@ -17579,6 +17584,10 @@ else
 fi
 
 	    ;;
+	    *-*-openbsd*)
+	    CATOBJEXT=.mo
+            DATADIRNAME=share
+	    ;;
 	    *)
 	    CATOBJEXT=.mo
             DATADIRNAME=lib
@@ -17853,7 +17862,7 @@ fi
 
 # configure output definition
 
-ac_config_files="$ac_config_files Makefile glade/Makefile glade/pixmaps/Makefile gtkextra/Makefile gtkextra/gtkextrafeatures.h docs/Makefile docs/reference/Makefile docs/tutorial/Makefile gtkextra-3.0.spec gtkextra-3.0.pc"
+ac_config_files="$ac_config_files Makefile glade/Makefile glade/pixmaps/Makefile glade/gtk+extra-catalog.xml gtkextra/Makefile gtkextra/gtkextrafeatures.h docs/Makefile docs/reference/Makefile docs/tutorial/Makefile gtkextra-3.0.spec gtkextra-3.0.pc"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -18851,6 +18860,7 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "glade/Makefile") CONFIG_FILES="$CONFIG_FILES glade/Makefile" ;;
     "glade/pixmaps/Makefile") CONFIG_FILES="$CONFIG_FILES glade/pixmaps/Makefile" ;;
+    "glade/gtk+extra-catalog.xml") CONFIG_FILES="$CONFIG_FILES glade/gtk+extra-catalog.xml" ;;
     "gtkextra/Makefile") CONFIG_FILES="$CONFIG_FILES gtkextra/Makefile" ;;
     "gtkextra/gtkextrafeatures.h") CONFIG_FILES="$CONFIG_FILES gtkextra/gtkextrafeatures.h" ;;
     "docs/Makefile") CONFIG_FILES="$CONFIG_FILES docs/Makefile" ;;

@@ -4,7 +4,7 @@ setenv GLADE_CATALOG_PATH /home/devel/Z/gtk
 setenv GLADE_MODULE_PATH /home/devel/Z/gtk/gtk+extra-2.1.2/gtkextra/.libs
 glade-3
 -->
-<glade-catalog name="gtkextra" library="libgladegtkextra.so" depends="gtk+">
+<glade-catalog name="gtkextra" library="@libgladegtkextra_soname@" depends="gtk+">
 
     <glade-widget-classes>
         <glade-widget-class name="GtkCharSelection" generic-name="gtkcharselection" title="GtkCharSelection - a widget which contains all the characters in a font" />

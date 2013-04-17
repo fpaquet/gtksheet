@@ -47,7 +47,7 @@ and documentation for compiling programs that use gtk+extra widgets.
 
 %build
 export CFLAGS="$RPM_OPT_FLAGS" 
-%configure 
+%configure --disable-tests
 make
 
 %install

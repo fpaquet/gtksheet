@@ -138,6 +138,23 @@ else
     AC_MSG_RESULT(no)
 fi
 
+# --enable-tests option
+
+AC_MSG_CHECKING([whether to enable tests])
+
+AC_ARG_ENABLE(tests, 
+	AC_HELP_STRING(
+		[--enable-tests=[no/yes]], 
+		[turn on tests [default=yes]]),
+	,
+	enable_tests=yes)
+
+if test "x$enable_tests" = "xyes"; then
+    AC_MSG_RESULT(yes)
+else
+    AC_MSG_RESULT(no)
+fi
+AM_CONDITIONAL(ENABLE_TESTS, test x$enable_tests = xyes)
 
 
 

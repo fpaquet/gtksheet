@@ -242,7 +242,9 @@ gtkextratypebuiltins.c: $(gtkextra_public_h_sources)
 
 # test programs, not to be installed
 
+if ENABLE_TESTS
 noinst_PROGRAMS = testgtksheet testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment
+endif
 DEPS = $(gtkextratargetlib)
 LDADDS = $(gtkextratargetlib) $(GTK_LIBS)
 

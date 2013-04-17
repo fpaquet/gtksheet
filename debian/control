@@ -1,0 +1,27 @@
+Source: gtkextra
+Section: graphics
+Priority: extra
+Maintainer: Tom Schoonjans <Tom.Schoonjans@me.com>
+Build-Depends: debhelper (>= 7.0.50~), autotools-dev, gcc (>= 4.4.0), libgtk2.0-dev (>= 2.18.0)
+Standards-Version: 3.9.1
+Homepage: http://gtkextra.sourceforge.net
+
+Package: libgtkextra3
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libgtk2.0-0
+Description: A library of gtk+ widgets -- core C library
+
+
+Package: libgtkextra3-dev
+Architecture: any
+Section: libdevel
+Depends: ${shlibs:Depends}, ${misc:Depends}, libgtkextra3 (= ${binary:Version}), libgtk2.0-dev
+Description: A library of gtk+ widgets -- development tools
+
+
+
+Package: libgtkextra3-dbg
+Section: debug
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libgtkextra3 (= ${binary:Version})
+Description: A library of gtk+ widgets -- debugging symbols

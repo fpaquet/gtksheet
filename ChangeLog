@@ -1,3 +1,6 @@
+2013-04-19 Fredy Paquet <mailbox AT opag.ch>
+	* Glade Integration: added gtk+extra-catalog.xml to .gitignore (generated)
+
 2013-04-07 Fredy Paquet <mailbox AT opag.ch>
 	* Glade Integration: fixed soname generation in glade catalog xml for win32
 

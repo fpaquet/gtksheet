@@ -158,47 +158,6 @@ AM_CONDITIONAL(ENABLE_TESTS, test x$enable_tests = xyes)
 
 
 
-if test "$platform_win32" = "yes"; then
-  gdktarget=win32
-  AC_SUBST(libgladegtkextra_soname, [libgladegtkextra.dll])
-else
-  gdktarget=x11
-  AC_SUBST(libgladegtkextra_soname, [libgladegtkextra.so])
-fi
-
-# --with-gdktarget option
-AC_ARG_WITH(gdktarget, [  --with-gdktarget=[[x11/linux-fb/win32]] select GDK target [default depends on host system]],
-        gdktarget=$with_gdktarget)
-
-AC_SUBST(gdktarget)
-case $gdktarget in
-  x11|linux-fb|win32) ;;
-  *) AC_MSG_ERROR([Invalid target for GDK: use x11, linux-fb or win32.]);;
-esac
-
-gtkextratargetlib=libgtkextra-$gdktarget-$GTK_EXTRA_VERSION_SHORT.la
-
-AC_SUBST(gtkextratargetlib)
-AC_CHECK_LIB(m, sqrt)
-
-if test "x$gdktarget" = "xwin32"; then
-  # We start off with the libraries from Pango
-
-  ## be sure we also have Pango built with win32 support
-  PANGO_PACKAGES="pangowin32"
-
-  if test x$have_wintab = xyes; then
-    GDK_WIN32_EXTRA_CFLAGS="-I $with_wintab/include"
-    AC_SUBST(GDK_WIN32_EXTRA_CFLAGS)
-  fi
-
-  GDK_EXTRA_LIBS="$GDK_EXTRA_LIBS"
-  AM_CONDITIONAL(USE_WIN32, true)
-else
-  AM_CONDITIONAL(USE_WIN32, false)
-fi
-
-
 changequote(,)dnl
 if test "x$GCC" = "xyes"; then
   case " $CFLAGS " in
@@ -207,9 +166,6 @@ if test "x$GCC" = "xyes"; then
   esac
 fi
 changequote([,])dnl
-
-# Honor aclocal flags
-ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
 
 # Compiler and Lib Stuff
 # AC_PROG_CXX
@@ -384,9 +340,31 @@ fi
 AM_CONDITIONAL(ENABLE_INTROSPECTION, test x$enable_introspection != xno)
 
 
+if test "$platform_win32" = "yes"; then
+  AC_SUBST(libgladegtkextra_soname, [libgladegtkextra.dll])
+else
+  AC_SUBST(libgladegtkextra_soname, [libgladegtkextra.so])
+fi
+
+
+
+AC_SUBST(gdktarget, `$PKG_CONFIG --variable=target gtk+-2.0`)
+
+gtkextratargetlib=libgtkextra-$gdktarget-$GTK_EXTRA_VERSION_SHORT.la
+
+AC_SUBST(gtkextratargetlib)
+AC_CHECK_LIB(m, sqrt)
+
+if test "x$gdktarget" = "xwin32"; then
+  AM_CONDITIONAL(USE_WIN32, true)
+else
+  AM_CONDITIONAL(USE_WIN32, false)
+fi
+
+
 # configure output definition
 
-AC_OUTPUT(
+AC_CONFIG_FILES(
 Makefile
 glade/Makefile
 glade/pixmaps/Makefile
@@ -399,3 +377,5 @@ docs/tutorial/Makefile
 gtkextra-3.0.spec
 gtkextra-3.0.pc
 )
+
+AC_OUTPUT

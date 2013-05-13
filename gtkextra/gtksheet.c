@@ -89,7 +89,7 @@
 
 #define GTK_SHEET_MOD_MASK  GDK_MOD1_MASK  /* main modifier for sheet navigation */
 
-#ifdef GDK_KP_Up
+#ifndef GDK_KEY_KP_Up
 #   define GDK_KEY_KP_Up GDK_KP_Up
 #   define GDK_KEY_KP_Down GDK_KP_Down
 #   define GDK_KEY_KP_Page_Up GDK_KP_Page_Up

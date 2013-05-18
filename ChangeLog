@@ -1,3 +1,9 @@
+2013-05-18 Fredy Paquet <mailbox AT opag.ch>
+	* Merged Tom Schoonjans packaging branch into master
+	* packages can now be created using:
+	   rpmbuild on Fedora/Centos/ScientificLinux
+	   dh_make on Debian/Ubuntu
+
 2013-04-19 Fredy Paquet <mailbox AT opag.ch>
 	* Glade Integration: added gtk+extra-catalog.xml to .gitignore (generated)
 

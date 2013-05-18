@@ -191,6 +191,8 @@ libgtkextra_linux_fb_3_0_la_SOURCES = $(gtkextra_c_sources)
 nodist_libgtkextra_linux_fb_3_0_la_SOURCES = $(gtkextra_built_sources)
 libgtkextra_win32_3_0_la_SOURCES = $(gtkextra_c_sources)
 nodist_libgtkextra_win32_3_0_la_SOURCES = $(gtkextra_built_sources)
+libgtkextra_quartz_3_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_quartz_3_0_la_SOURCES = $(gtkextra_built_sources)
 
 libgtkextra_win32_3_0_la_LIBADD = $(gtkextra_win32res_lo)
 libgtkextra_win32_3_0_la_DEPENDENCIES = $(gtkextra_def) $(gtkextra_win32res_lo)
@@ -198,7 +200,7 @@ libgtkextra_win32_3_0_la_DEPENDENCIES = $(gtkextra_def) $(gtkextra_win32res_lo)
 if USE_WIN32
 libgtkextra_target_ldflags = $(gtkextra_win32_symbols) -lwsock32
 endif
-EXTRA_LTLIBRARIES = libgtkextra-x11-3.0.la libgtkextra-linux-fb-3.0.la libgtkextra-win32-3.0.la
+EXTRA_LTLIBRARIES = libgtkextra-x11-3.0.la libgtkextra-linux-fb-3.0.la libgtkextra-win32-3.0.la libgtkextra-quartz-3.0.la
 
 MAINTAINERCLEANFILES = $(gtkextra_built_sources) 
 CLEANFILES = $(gtkextra_built_sources) 
@@ -208,7 +210,7 @@ EXTRA_DIST = $(gtkextra_private_h_sources) $(gtkextra_extra_sources)
 EXTRA_DIST += gtkextra.def sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
 
 
-$(libgtkextra_x11_3_0_la_OBJECTS) $(libgtkextra_linux_fb_3_0_la_OBJECTS) $(libgtkextra_win32_3_0_la_OBJECTS): ${gtkextra_built_public_sources} ${gtkextra_built_private_headers}
+$(libgtkextra_x11_3_0_la_OBJECTS) $(libgtkextra_linux_fb_3_0_la_OBJECTS) $(libgtkextra_win32_3_0_la_OBJECTS) $(libgtkextra_quartz_3_0_la_OBJECTS): ${gtkextra_built_public_sources} ${gtkextra_built_private_headers}
 
 gtkextra-marshal.h: $(builddir)/gtkextra-marshal.list
 	( @GLIB_GENMARSHAL@ --prefix=gtkextra $(srcdir)/gtkextra-marshal.list --header > gtkextra-marshal.tmp \
@@ -242,7 +244,9 @@ gtkextratypebuiltins.c: $(gtkextra_public_h_sources)
 
 # test programs, not to be installed
 
+if ENABLE_TESTS
 noinst_PROGRAMS = testgtksheet testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment
+endif
 DEPS = $(gtkextratargetlib)
 LDADDS = $(gtkextratargetlib) $(GTK_LIBS)
 

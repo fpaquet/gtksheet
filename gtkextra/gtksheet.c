@@ -89,6 +89,21 @@
 
 #define GTK_SHEET_MOD_MASK  GDK_MOD1_MASK  /* main modifier for sheet navigation */
 
+#ifndef GDK_KEY_KP_Up
+#   define GDK_KEY_KP_Up GDK_KP_Up
+#   define GDK_KEY_KP_Down GDK_KP_Down
+#   define GDK_KEY_KP_Page_Up GDK_KP_Page_Up
+#   define GDK_KEY_KP_Page_Down GDK_KP_Page_Down
+#   define GDK_KEY_KP_Page_Left GDK_KP_Page_Left
+#   define GDK_KEY_KP_Page_Right GDK_KP_Page_Right
+#   define GDK_KEY_KP_Home GDK_KP_Home
+#   define GDK_KEY_KP_End GDK_KP_End
+#   define GDK_KEY_KP_Left GDK_KP_Left
+#   define GDK_KEY_KP_Right GDK_KP_Right
+#   define GDK_KEY_KP_Enter GDK_KP_Enter
+#endif
+
+
 /* sheet flags */
 enum _GtkSheetFlags
 {

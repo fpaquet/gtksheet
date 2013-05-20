@@ -16,3 +16,4 @@ gtkextra.prerequisites
 gtkextra.signals
 
 *.stamp
+*.bak

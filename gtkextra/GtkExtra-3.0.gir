@@ -15300,12 +15300,29 @@ you might want to use #gtk_sheet_get_entry() instead.</doc>
         </parameters>
       </method>
       <method name="get_pixel_info" c:identifier="gtk_sheet_get_pixel_info">
-        <doc xml:whitespace="preserve">Get row and column correspondig to the given position in the screen.</doc>
+        <doc xml:whitespace="preserve">Get row and column correspondig to the given position within 
+the sheet. 
+ 
+In order to decode clicks into to title area correctly, pass 
+the GdkWindow from the button event. Omitting the 
+window (NULL) defaults to the sheet window. 
+ 
+row and column may return values in the range [-1 .. max+1] 
+depending on wether the position lies within the title area, 
+the sheet cell area or beyond the outermost row/column. 
+ 
+All 9 sheet areas can be reliably determined by evaluating 
+the returned row/column values (title area/cell 
+area/outside).</doc>
         <return-value transfer-ownership="none">
-          <doc xml:whitespace="preserve">TRUE(success) or FALSE(failure)</doc>
+          <doc xml:whitespace="preserve">TRUE if the position lies within the sheet cell area or FALSE when outside (title area f.e.)</doc>
           <type name="gboolean" c:type="gboolean"/>
         </return-value>
         <parameters>
+          <parameter name="window" transfer-ownership="none">
+            <doc xml:whitespace="preserve">base window for coordinates (null)</doc>
+            <type name="Gdk.Window" c:type="GdkWindow*"/>
+          </parameter>
           <parameter name="x" transfer-ownership="none">
             <doc xml:whitespace="preserve">x coordinate</doc>
             <type name="gint" c:type="gint"/>

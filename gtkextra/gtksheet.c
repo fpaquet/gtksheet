@@ -85,6 +85,7 @@
 #   define GTK_SHEET_DEBUG_SIGNALS   0
 #   define GTK_SHEET_DEBUG_SIZE  0
 #   define GTK_SHEET_DEBUG_CELL_ACTIVATION  0
+#   define GTK_SHEET_DEBUG_PIXEL_INFO  0
 #endif
 
 #define GTK_SHEET_MOD_MASK  GDK_MOD1_MASK  /* main modifier for sheet navigation */
@@ -6163,21 +6164,45 @@ gtk_sheet_realize_handler(GtkWidget *widget)
 
 /*
  * global_button_clicked_handler:
- * this is the #GtkSheet global button "button-press-event" handler
+ * this is the #GtkSheet global sheet button "button-press-event" handler. 
+ *  
+ * It will handle single-clicks of button 1 internally, selecting/deselecting 
+ * all sheet cells. All other button press events are propagated to the sheet. 
+ *  
+ * You cann connect your own "button-press-event" handler to the sheet 
+ * widget, and will receive all non-internally handled button-press-events.
  * 
  * @param widget the global sheet button that received the signal 
  * @param event  the GdkEventButton which triggered this signal
- * @param data   the #GtkSheet passed on signal connection
+ * @param data   the #GtkSheet passed on signal connection 
+ *  
+ * @return TRUE to stop other handlers from being invoked for the event. FALSE to propagate the event further.
  */
-static void
+static gboolean
 global_button_press_handler(GtkWidget *widget,
     GdkEventButton *event,
     gpointer data)
 {
     gboolean veto;
+    GtkSheet *sheet = GTK_SHEET(data);
+    gboolean retval = FALSE;
 
-    gtk_sheet_click_cell(GTK_SHEET(data), -1, -1, &veto);
-    gtk_widget_grab_focus(GTK_WIDGET(data));
+    if (!retval
+	&& (event->type == GDK_BUTTON_PRESS)
+	&& (event->button == 1))
+    {
+	gtk_sheet_click_cell(sheet, -1, -1, &veto);
+	gtk_widget_grab_focus(GTK_WIDGET(sheet));
+    }
+    else
+    {
+	g_signal_emit_by_name(GTK_WIDGET(sheet), 
+	    "button_press_event", 
+	    event,
+	    &retval);
+    }
+
+    return(retval);
 }
 
 static void
@@ -6187,7 +6212,7 @@ create_global_button(GtkSheet *sheet)
 
     g_signal_connect(GTK_OBJECT(sheet->button),
 	"button-press-event",
-	(void *)global_button_press_handler,
+	G_CALLBACK(global_button_press_handler),
 	(gpointer)sheet);
 }
 
@@ -8016,19 +8041,33 @@ gtk_sheet_cell_get_state(GtkSheet *sheet, gint row, gint col)
 /**
  * gtk_sheet_get_pixel_info:
  * @sheet: a #GtkSheet
+ * @window: base window for coordinates (null)
  * @x: x coordinate
  * @y: y coordinate
  * @row: cell row number
  * @column: cell column number
  *
- * Get row and column correspondig to the given position in the screen.
+ * Get row and column correspondig to the given position within 
+ * the sheet. 
+ *  
+ * In order to decode clicks into to title area correctly, pass 
+ * the GdkWindow from the button event. Omitting the 
+ * window (NULL) defaults to the sheet window. 
+ *  
+ * row and column may return values in the range [-1 .. max+1] 
+ * depending on wether the position lies within the title area, 
+ * the sheet cell area or beyond the outermost row/column. 
+ *  
+ * All 9 sheet areas can be reliably determined by evaluating 
+ * the returned row/column values (title area/cell 
+ * area/outside). 
  *
- * Returns: TRUE(success) or FALSE(failure)
+ * Returns: TRUE if the position lies within the sheet cell area
+ * or FALSE when outside (title area f.e.)
  */
 gboolean
 gtk_sheet_get_pixel_info(GtkSheet *sheet,
-    gint x, gint y,
-    gint *row, gint *column)
+    GdkWindow *window, gint x, gint y, gint *row, gint *column)
 {
     gint trow, tcol;
 
@@ -8037,10 +8076,72 @@ gtk_sheet_get_pixel_info(GtkSheet *sheet,
     g_return_val_if_fail(sheet != NULL, 0);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), 0);
 
-    trow = _gtk_sheet_row_from_ypixel(sheet, y);
-    *row = trow;
+    /* there is a coordinate shift to be considered when
+       clicking into a title area because: 
+       - the sheet window covers the whole sheet 
+       - the column titles window overlaps the sheet window,
+          but may be shifted right when row titles are visible
+      - the row titles window overlaps the sheet window,
+         but may be shifted down when column titles are visible
+       */
 
-    tcol = _gtk_sheet_column_from_xpixel(sheet, x);
+    if (sheet->column_titles_visible
+	&& window == sheet->column_title_window)
+    {
+	if (sheet->row_titles_visible)
+	{
+#if GTK_SHEET_DEBUG_PIXEL_INFO > 0
+	    g_debug("gtk_sheet_get_pixel_info: shift x");
+#endif
+	    x += sheet->row_title_area.width;
+	}
+#if GTK_SHEET_DEBUG_PIXEL_INFO > 0
+	g_debug("gtk_sheet_get_pixel_info: r1");
+#endif
+	trow = -1;
+	tcol = _gtk_sheet_column_from_xpixel(sheet, x);
+    }
+    else if (sheet->row_titles_visible
+	&& window == sheet->row_title_window)
+    {
+	if (sheet->column_titles_visible)
+	{
+#if GTK_SHEET_DEBUG_PIXEL_INFO > 0
+	    g_debug("gtk_sheet_get_pixel_info: shift y");
+#endif
+	    y += sheet->column_title_area.height;
+	}
+#if GTK_SHEET_DEBUG_PIXEL_INFO > 0
+	g_debug("gtk_sheet_get_pixel_info: c1");
+#endif
+	trow = _gtk_sheet_row_from_ypixel(sheet, y);
+	tcol = -1;
+    }
+    else if (sheet->column_titles_visible
+	     && sheet->row_titles_visible
+	     && x < sheet->row_title_area.width
+	     && y < sheet->column_title_area.height )
+    {
+#if GTK_SHEET_DEBUG_PIXEL_INFO > 0
+	g_debug("gtk_sheet_get_pixel_info: sb");
+#endif
+	trow = -1;
+	tcol = -1;
+    }
+    else
+    {
+#if GTK_SHEET_DEBUG_PIXEL_INFO > 0
+	g_debug("gtk_sheet_get_pixel_info: rN/cN");
+#endif
+	trow = _gtk_sheet_row_from_ypixel(sheet, y);
+	tcol = _gtk_sheet_column_from_xpixel(sheet, x);
+    }
+
+#if GTK_SHEET_DEBUG_PIXEL_INFO > 0
+    g_debug("gtk_sheet_get_pixel_info: x %d y %d", x, y);
+#endif
+
+    *row = trow;
     *column = tcol;
 
     /* bounds checking, return false if the user clicked
@@ -9572,6 +9673,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 
     gdk_window_get_pointer(gtk_widget_get_window(widget),
 	NULL, NULL, &mods);
+
     if (!(mods & GDK_BUTTON1_MASK))
 	return (TRUE);
 
@@ -9635,7 +9737,9 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 #endif
 
 	gtk_widget_get_pointer(widget, &x, &y);
-	gtk_sheet_get_pixel_info(sheet, x, y, &row, &column);
+	gtk_sheet_get_pixel_info(sheet, NULL, x, y, &row, &column);
+	if (row < 0 && column < 0) return(FALSE);  /* chain up to global button press handler*/
+
 #ifdef GTK_SHEET_DEBUG
 	g_debug("gtk_sheet_button_press_handler: pointer grab");
 #endif
@@ -9720,6 +9824,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    if (veto)
 		GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 	}
+	return(TRUE);
     }
 
     if (event->window == sheet->column_title_window)
@@ -9769,7 +9874,7 @@ _gtk_sheet_scroll_to_pointer(gpointer data)
     GDK_THREADS_ENTER();
 
     gtk_widget_get_pointer(GTK_WIDGET(sheet), &x, &y);
-    gtk_sheet_get_pixel_info(sheet, x, y, &row, &column);
+    gtk_sheet_get_pixel_info(sheet, NULL, x, y, &row, &column);
 
     if (GTK_SHEET_IN_SELECTION(sheet))
     {
@@ -10451,9 +10556,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	return (TRUE);
     }
 
-
-
-    gtk_sheet_get_pixel_info(sheet, x, y, &row, &column);
+    gtk_sheet_get_pixel_info(sheet, NULL, x, y, &row, &column);
 
     if (sheet->state == GTK_SHEET_NORMAL
 	&& row == sheet->active_cell.row && column == sheet->active_cell.col)

@@ -1,3 +1,11 @@
+2013-05-19 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: added 'window' param to gtk_sheet_get_pixel_info()
+	   - enabling correct decoding of clicks into the row/column header area
+	* GtkSheet: reworked global sheet button press handler
+	   - will only handle single-press button1 events internally
+	   - propagate all other button-press-events to the sheet
+	   - allows you to connect your own handler to process right-clicks now
+
 2013-05-18 Fredy Paquet <mailbox AT opag.ch>
 	* Merged Tom Schoonjans packaging branch into master
 	* packages can now be created using:

@@ -701,7 +701,7 @@ void gtk_sheet_remove_link(GtkSheet *sheet, gint row, gint col);
 
 /* get row and column correspondig to the given position in the screen */
 gboolean gtk_sheet_get_pixel_info(GtkSheet *sheet,
-                                  gint x, gint y, gint *row, gint *column);
+    GdkWindow *window, gint x, gint y, gint *row, gint *column);
 
 /* get area of a given cell */
 gboolean gtk_sheet_get_cell_area(GtkSheet *sheet,

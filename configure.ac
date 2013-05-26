@@ -8,7 +8,7 @@
 # - http://www.linuxselfhelp.com/gnu/autoconf/html_chapter/autoconf_7.html
 #
 
-AC_INIT([gtkextra], [3.0.5])
+AC_INIT([gtkextra], [3.0.6])
 AC_LANG([C])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -27,7 +27,7 @@ AC_DIVERT_PUSH(NOTICE)dnl
 
 GTK_EXTRA_MAJOR_VERSION=3
 GTK_EXTRA_MINOR_VERSION=0
-GTK_EXTRA_MICRO_VERSION=5
+GTK_EXTRA_MICRO_VERSION=6
 GTK_EXTRA_INTERFACE_AGE=0
 GTK_EXTRA_BINARY_AGE=0
 

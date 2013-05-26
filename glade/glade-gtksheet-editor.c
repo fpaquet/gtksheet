@@ -30,12 +30,16 @@
 #include "glade-gtksheet-editor.h"
 #include "gtkextra/gtksheet.h"
 
-#undef GTK_SHEET_DEBUG
+#undef GTK_SHEET_EDITOR_DEBUG
 
 #ifdef DEBUG
-    #define GTK_SHEET_DEBUG 1  /* define to activate debug output */
+#    define GTK_SHEET_EDITOR_DEBUG 1  /* define to activate debug output */
 #endif
 
+#ifdef GTK_SHEET_EDITOR_DEBUG
+#    define GTK_SHEET_EDITOR_DEBUG_CHILDREN 0
+#    define GTK_SHEET_EDITOR_DEBUG_LAYOUT 0
+#endif
 
 static void glade_sheet_editor_finalize(GObject *object);
 static void glade_sheet_editor_editable_init(GladeEditableIface *iface);
@@ -263,7 +267,7 @@ static gboolean
     GObject *child  = glade_widget_get_object (gchild);
     GList list   = { 0,};
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_EDITOR_DEBUG_LAYOUT > 0
     g_debug("glade_gtk_sheet_layout_move_child: called");
 #endif
 
@@ -287,7 +291,7 @@ static void
 {
     GObject *child = glade_widget_get_object (gchild);
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_EDITOR_DEBUG_LAYOUT > 0
     g_debug("glade_gtk_sheet_layout_child_selected: called");
 #endif
 
@@ -322,7 +326,7 @@ static gchar *
     else
         name = gchild->name;
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_EDITOR_DEBUG_LAYOUT > 0
     g_debug("glade_gtk_sheet_layout_get_display_name: called <%s>", name ? name : "NULL");
 #endif
 
@@ -413,7 +417,7 @@ GList *
     GtkSheet *sheet;
     gint col;
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_EDITOR_DEBUG_CHILDREN > 0
     g_debug("glade_gtk_sheet_get_children: called");
 #endif
 
@@ -447,7 +451,7 @@ void
     g_return_if_fail (GTK_IS_SHEET (object));
     g_return_if_fail (GTK_IS_WIDGET (child));
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_EDITOR_DEBUG_CHILDREN > 0
     g_debug("glade_gtk_sheet_add_child: %s %d", 
             name ? name : "NULL",
             GLADE_IS_WIDGET(child)
@@ -467,7 +471,7 @@ void
     GtkSheet *sheet;
     GtkSheetColumn *oldcol;
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_EDITOR_DEBUG_CHILDREN > 0
     g_debug("glade_gtk_sheet_remove_child: called");
 #endif
 
@@ -499,7 +503,7 @@ void
     GtkSheet *sheet;
     GtkSheetColumn *oldcol, *newcol;
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_EDITOR_DEBUG_CHILDREN > 0
     g_debug("glade_gtk_sheet_replace_child: called %p -> %p", old_obj, new_obj);
 #endif
 
@@ -537,7 +541,7 @@ void glade_gtk_sheet_column_set_property(
     const gchar *property_name,
     const GValue *value)
 {
-#ifdef GTK_SHEET_DEBUG
+#ifdef GTK_SHEET_EDITOR_DEBUG
     g_debug("glade_gtk_sheet_column_set_property: called %p %s", object, property_name);
 #endif
 }
@@ -548,7 +552,7 @@ void glade_gtk_sheet_column_get_property(
     const gchar *property_name,
     GValue *value)
 {
-#ifdef GTK_SHEET_DEBUG
+#ifdef GTK_SHEET_EDITOR_DEBUG
     g_debug("glade_gtk_sheet_column_get_property: called %p %s", object, property_name);
 #endif
 }

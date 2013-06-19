@@ -17039,10 +17039,12 @@ programmatically.</doc>
           <type name="none"/>
         </return-value>
         <parameters>
-          <parameter name="object" transfer-ownership="none">
+          <parameter name="old_range" transfer-ownership="none">
+            <doc xml:whitespace="preserve">the previous selected #GtkSheetRange.</doc>
             <type name="SheetRange"/>
           </parameter>
-          <parameter name="p0" transfer-ownership="none">
+          <parameter name="new_range" transfer-ownership="none">
+            <doc xml:whitespace="preserve">the newly selected #GtkSheetRange.</doc>
             <type name="SheetRange"/>
           </parameter>
         </parameters>
@@ -17101,10 +17103,12 @@ The emission of this signal is only supported for #GtkEntry,
           <type name="none"/>
         </return-value>
         <parameters>
-          <parameter name="object" transfer-ownership="none">
+          <parameter name="old_range" transfer-ownership="none">
+            <doc xml:whitespace="preserve">the previous selected #GtkSheetRange.</doc>
             <type name="SheetRange"/>
           </parameter>
-          <parameter name="p0" transfer-ownership="none">
+          <parameter name="new_range" transfer-ownership="none">
+            <doc xml:whitespace="preserve">the newly selected #GtkSheetRange.</doc>
             <type name="SheetRange"/>
           </parameter>
         </parameters>

@@ -2256,7 +2256,8 @@ _gtk_sheet_class_init_signals(GtkObjectClass *object_class,
     /**
     * GtkSheet::resize-range:
     * @sheet: the sheet widget that emitted the signal
-    * @resize_range: the newly selected #GtkSheetRange
+    * @old_range: the previous selected #GtkSheetRange.
+    * @new_range: the newly selected #GtkSheetRange.
     *
     * Emmited when a #GtkSheetRange is resized.
     */
@@ -2272,7 +2273,8 @@ _gtk_sheet_class_init_signals(GtkObjectClass *object_class,
     /**
      * GtkSheet::move-range:
      * @sheet: the sheet widget that emitted the signal.
-     * @move_range: the newly selected #GtkSheetRange.
+     * @old_range: the previous selected #GtkSheetRange.
+     * @new_range: the newly selected #GtkSheetRange.
      *
      * Emmited when a #GtkSheetRange is moved.
      */

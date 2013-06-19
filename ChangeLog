@@ -1,3 +1,6 @@
+2013-06-19 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: signal documentation fixed
+
 2013-05-26 Fredy Paquet <mailbox AT opag.ch>
 	* published gtkextra-3 version 3.0.5
 	* updated gtkextra-3 version to 3.0.6

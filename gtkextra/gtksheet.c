@@ -3063,7 +3063,7 @@ gtk_sheet_init(GtkSheet *sheet)
 
 
 static void
-gtk_sheet_row_init(GtkSheetRow *row)
+_gtk_sheet_row_init(GtkSheetRow *row)
 {
     row->name = NULL;
     row->height = GTK_SHEET_ROW_DEFAULT_HEIGHT;
@@ -7815,6 +7815,10 @@ gtk_sheet_real_cell_clear(GtkSheet *sheet,
     {
 	gtk_sheet_cell_finalize(sheet, cell);
 
+#if GTK_SHEET_DEBUG_ALLOCATION > 0
+	g_debug("gtk_sheet_real_cell_clear: freeing %d %d", row, column); 
+#endif
+
 	g_free(cell);
 	sheet->data[row][column] = NULL;
     }
@@ -8682,10 +8686,14 @@ static void _gtk_sheet_entry_preselect(GtkSheet *sheet)
 /**
  * _gtk_sheet_entry_setup - configure for use
  * 
- * setup sheet_entry style, justification and other properties 
+ * setup sheet_entry style, justification and other properties
  * for use within the active cell
  * 
- * @param sheet  the #GtkSheet
+ * @sheet  the #GtkSheet
+ * @row    row index
+ * @col    column index
+ * @entry_widget
+ *               entry widget
  */
 static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
     GtkWidget *entry_widget)
@@ -8764,6 +8772,8 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
 	style->font_desc = pango_font_description_copy(attributes.font_desc);
 
 	gtk_widget_set_style(entry_widget, style);
+
+	g_object_unref(style); /* 22.06.13/fp */
     }
 #endif
 }
@@ -13556,6 +13566,7 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
 
     ncols = MIN(ncols, sheet->maxcol - col + 1);
 
+    _gtk_sheet_hide_active_cell(sheet);
     gtk_sheet_real_unselect_range(sheet, NULL);
 
     DeleteColumn(sheet, col, ncols);
@@ -13601,11 +13612,12 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
     act_col = MIN(act_col, sheet->maxcol);
     act_col = MAX(act_col, 0);
 
-    gtk_sheet_click_cell(sheet, act_row, act_col, &veto);
-    gtk_sheet_activate_cell(sheet, sheet->active_cell.row, sheet->active_cell.col);
-
     _gtk_sheet_scrollbar_adjust(sheet);
     _gtk_sheet_redraw_internal(sheet, TRUE, FALSE);
+
+    /* 22.06.13/fp - want same behaviour as gtk_sheet_delete_rows()
+       gtk_sheet_click_cell(sheet, act_row, act_col, &veto); */
+    gtk_sheet_activate_cell(sheet, sheet->active_cell.row, sheet->active_cell.col);
 }
 
 /**
@@ -14088,7 +14100,7 @@ init_attributes(GtkSheet *sheet, gint col, GtkSheetCellAttr *attributes)
 static void
 AddColumns(GtkSheet *sheet, gint position, gint ncols)
 {
-    gint i;
+    gint c;
     GtkSheetColumn *newobj;
 
     g_assert(ncols >= 0);
@@ -14099,15 +14111,15 @@ AddColumns(GtkSheet *sheet, gint position, gint ncols)
 	sheet->column = (GtkSheetColumn **)g_realloc(sheet->column,
 	    (sheet->maxcol + 1 + ncols)* sizeof(GtkSheetColumn *));
 
-	for (i = sheet->maxcol; i >= position; i--)  /* make space */
+	for (c = sheet->maxcol; c >= position; c--)  /* make space */
 	{
-	    sheet->column[i + ncols] = sheet->column[i];
-	    sheet->column[i] = NULL;
+	    sheet->column[c + ncols] = sheet->column[c];
+	    sheet->column[c] = NULL;
 	}
 
-	for (i = 0; i < ncols; i++)
+	for (c = 0; c < ncols; c++)
 	{
-	    gint newidx = position + i;
+	    gint newidx = position + c;
 
 	    newobj = g_object_new(G_TYPE_SHEET_COLUMN, NULL);
 
@@ -14138,7 +14150,7 @@ AddColumns(GtkSheet *sheet, gint position, gint ncols)
 static void
 InsertColumn(GtkSheet *sheet, gint position, gint ncols)
 {
-    gint i, j;
+    gint r, c;
 
     g_assert(ncols >= 0);
     g_assert(position >= 0);
@@ -14152,16 +14164,16 @@ InsertColumn(GtkSheet *sheet, gint position, gint ncols)
     {
 	GrowSheet(sheet, 0, ncols);
 
-	for (i = 0; i <= sheet->maxallocrow; i++)
+	for (r = 0; r <= sheet->maxallocrow; r++)
 	{
-	    for (j = sheet->maxalloccol; j >= position + ncols; j--)
+	    for (c = sheet->maxalloccol; c >= position + ncols; c--)
 	    {
-		gtk_sheet_real_cell_clear(sheet, i, j, TRUE);
+		gtk_sheet_real_cell_clear(sheet, r, c, TRUE);
 
-		sheet->data[i][j] = sheet->data[i][j - ncols];
-		if (sheet->data[i][j])
-		    sheet->data[i][j]->col = j;
-		sheet->data[i][j - ncols] = NULL;
+		sheet->data[r][c] = sheet->data[r][c - ncols];
+		if (sheet->data[r][c])
+		    sheet->data[r][c]->col = c;
+		sheet->data[r][c - ncols] = NULL;
 	    }
 	}
     }
@@ -14170,7 +14182,7 @@ InsertColumn(GtkSheet *sheet, gint position, gint ncols)
 static void
 DeleteColumn(GtkSheet *sheet, gint position, gint ncols)
 {
-    gint i, j;
+    gint c, r;
 
     g_assert(ncols >= 0);
     g_assert(position >= 0);
@@ -14180,47 +14192,62 @@ DeleteColumn(GtkSheet *sheet, gint position, gint ncols)
     if (ncols <= 0 || position > sheet->maxcol)
 	return;
 
-    for (i = position; i < position + ncols; i++)  /* dispose columns */
-    {
-	sheet->column[i]->sheet = NULL;
+#if GTK_SHEET_DEBUG_ALLOCATION > 0
+    g_debug("DeleteColumn: pos %d ncols %d mxr %d mxc %d mxar %d mxac %d ", 
+	position, ncols, 
+	sheet->maxrow, sheet->maxcol, sheet->maxallocrow, sheet->maxalloccol);
+#endif
 
-	g_object_unref(sheet->column[i]);
-	sheet->column[i] = NULL;
+    for (c = position; c < position + ncols; c++)  /* dispose columns */
+    {
+	sheet->column[c]->sheet = NULL;
+
+	g_object_unref(sheet->column[c]);
+	sheet->column[c] = NULL;
     }
 
-    for (i = position; i <= sheet->maxcol - ncols; i++)  /* shift columns into position*/
+    for (c = position; c <= sheet->maxcol - ncols; c++)  /* shift columns into position*/
     {
-	sheet->column[i] = sheet->column[i + ncols];
+	sheet->column[c] = sheet->column[c + ncols];
     }
 
-    for (i = sheet->maxcol - ncols + 1; i <= sheet->maxcol; i++)  /* clear tail */
+    for (c = sheet->maxcol - ncols + 1; c <= sheet->maxcol; c++)  /* clear tail */
     {
-	sheet->column[i] = NULL;
+	sheet->column[c] = NULL;
     }
 
     /* to be done: shrink pointer pool via realloc */
 
-    if (position <= sheet->maxalloccol)  /* shift data into position */
+    if (position <= sheet->maxalloccol)
     {
-	for (i = position; i <= sheet->maxcol - ncols; i++)
+	for (c = position; c <= sheet->maxcol - ncols; c++)  /* shift column data */
 	{
-	    if (i <= sheet->maxalloccol)
+	    if (c > sheet->maxalloccol) break;
+	    
+	    for (r = 0; r <= sheet->maxallocrow; r++)
 	    {
-		for (j = 0; j <= sheet->maxallocrow; j++)
-		{
-		    gtk_sheet_real_cell_clear(sheet, j, i, TRUE);
+		gtk_sheet_real_cell_clear(sheet, r, c, TRUE);
 
-		    if (i + ncols <= sheet->maxalloccol)
-		    {
-			sheet->data[j][i] = sheet->data[j][i + ncols];
-			sheet->data[j][i + ncols] = NULL;
-			if (sheet->data[j][i])
-			    sheet->data[j][i]->col = i;
-		    }
+		if (c + ncols <= sheet->maxalloccol)
+		{
+		    sheet->data[r][c] = sheet->data[r][c + ncols];
+		    sheet->data[r][c + ncols] = NULL;
+		    if (sheet->data[r][c])
+			sheet->data[r][c]->col = c;
 		}
 	    }
-
 	}
+
+	for (c = sheet->maxcol - ncols + 1; c <= sheet->maxcol; c++)  /* clear tail */
+	{
+	    if (c > sheet->maxalloccol) break;
+	    
+	    for (r = 0; r <= sheet->maxallocrow; r++)
+	    {
+		gtk_sheet_real_cell_clear(sheet, r, c, TRUE);
+	    }
+	}
+
 	sheet->maxalloccol -= MIN(ncols, sheet->maxalloccol - position + 1);
 	sheet->maxalloccol = MIN(sheet->maxalloccol, sheet->maxcol);
     }
@@ -14237,7 +14264,7 @@ DeleteColumn(GtkSheet *sheet, gint position, gint ncols)
 static void
 AddRows(GtkSheet *sheet, gint position, gint nrows)
 {
-    gint i;
+    gint r;
 
     g_assert(nrows >= 0);
     g_assert(position >= 0 && position <= sheet->maxrow + 1);
@@ -14247,21 +14274,17 @@ AddRows(GtkSheet *sheet, gint position, gint nrows)
 	sheet->row = (GtkSheetRow *)g_realloc(sheet->row,
 	    (sheet->maxrow + 1 + nrows) * sizeof(GtkSheetRow));
 
-	for (i = sheet->maxrow; i >= position; i--)  /* make space */
+	for (r = sheet->maxrow; r >= position; r--)  /* make space */
 	{
-	    sheet->row[i + nrows] = sheet->row[i];
-#if 0
-	    sheet->row[i] = NULL;
-#else
-	    gtk_sheet_row_init(&sheet->row[i]);
-#endif
+	    sheet->row[r + nrows] = sheet->row[r];
+	    _gtk_sheet_row_init(&sheet->row[r]);
 	}
 
-	for (i = 0; i < nrows; i++)
+	for (r = 0; r < nrows; r++)
 	{
-	    gint newidx = position + i;
+	    gint newidx = position + r;
 
-	    gtk_sheet_row_init(&sheet->row[newidx]);
+	    _gtk_sheet_row_init(&sheet->row[newidx]);
 
 	    sheet->row[newidx].requisition = sheet->row[newidx].height =
 		_gtk_sheet_row_default_height(GTK_WIDGET(sheet));
@@ -14273,33 +14296,33 @@ AddRows(GtkSheet *sheet, gint position, gint nrows)
 }
 
 static void
-InsertRow(GtkSheet *tbl, gint row, gint nrows)
+InsertRow(GtkSheet *sheet, gint row, gint nrows)
 {
-    GtkSheetCell **pp;
-    gint i, j;
-    GtkSheetCell **auxdata;
+    gint r, c;
 
-    AddRows(tbl, row, nrows);
+    AddRows(sheet, row, nrows);
 
-    _gtk_sheet_recalc_top_ypixels(tbl);
+    _gtk_sheet_recalc_top_ypixels(sheet);
 
-    if (row <= tbl->maxallocrow)  /* adjust allocated cells */
+    if (row <= sheet->maxallocrow)  /* adjust allocated cells */
     {
-	GrowSheet(tbl, nrows, 0);
+	GrowSheet(sheet, nrows, 0);  /* append rows at end */
 
-	for (i = tbl->maxallocrow; i >= row + nrows; i--)
+	for (r = sheet->maxallocrow; r >= row + nrows; r--)  /* swap new rows into position */
 	{
-	    auxdata = tbl->data[i];
-	    tbl->data[i] = tbl->data[i - nrows];
+	    GtkSheetCell **auxdata = sheet->data[r];
 
-	    pp = tbl->data[i];
-	    for (j = 0; j <= tbl->maxalloccol; j++, pp++)
+	    sheet->data[r] = sheet->data[r - nrows];
+	    sheet->data[r - nrows] = auxdata;
+
+	    /* new cells have no data yet to update */
+
+	    GtkSheetCell **pp = sheet->data[r];  /* update row in existing cells */
+	    for (c = 0; c <= sheet->maxalloccol; c++, pp++)
 	    {
-		if (*pp != (GtkSheetCell *)NULL)
-		    (*pp)->row = i;
-
+		if (*pp)
+		    (*pp)->row = r;
 	    }
-	    tbl->data[i - nrows] = auxdata;
 	}
     }
 }
@@ -14307,8 +14330,7 @@ InsertRow(GtkSheet *tbl, gint row, gint nrows)
 static void
 DeleteRow(GtkSheet *sheet, gint position, gint nrows)
 {
-    GtkSheetCell **auxdata = NULL;
-    gint i, j;
+    gint r, c;
 
     g_assert(nrows >= 0);
     g_assert(position >= 0);
@@ -14318,57 +14340,81 @@ DeleteRow(GtkSheet *sheet, gint position, gint nrows)
     if (nrows <= 0 || position > sheet->maxrow)
 	return;
 
-    for (i = position; i < position + nrows; i++)
+#if GTK_SHEET_DEBUG_ALLOCATION > 0
+    g_debug("DeleteRow: pos %d nrows %d mxr %d mxc %d mxar %d mxac %d ", 
+	position, nrows, 
+	sheet->maxrow, sheet->maxcol, sheet->maxallocrow, sheet->maxalloccol);
+#endif
+
+    for (r = position; r < position + nrows; r++)  /* dispose row data */
     {
-	gtk_sheet_row_finalize(&sheet->row[i]);
+	gtk_sheet_row_finalize(&sheet->row[r]);
     }
 
-    for (i = position; i <= sheet->maxrow - nrows; i++)
+    for (r = position; r <= sheet->maxrow - nrows; r++)  /* shift rows into position*/
     {
-	if (i + nrows <= sheet->maxrow)
-	{
-	    sheet->row[i] = sheet->row[i + nrows];
-	}
+	sheet->row[r] = sheet->row[r + nrows];
     }
+
+    for (r = sheet->maxrow - nrows + 1; r <= sheet->maxrow; r++)  /* clear tail */
+    {
+	_gtk_sheet_row_init(&sheet->row[r]);
+    }
+
+    /* to be done: shrink pointer pool via realloc */
 
     if (position <= sheet->maxallocrow)
     {
-	for (i = position; i <= sheet->maxrow - nrows; i++)
+	for (r = position; r <= sheet->maxrow - nrows; r++)  /* shift row data */
 	{
-	    if (i <= sheet->maxallocrow)
-	    {
-		auxdata = sheet->data[i];
-		for (j = 0; j <= sheet->maxalloccol; j++)
-		{
-		    gtk_sheet_real_cell_clear(sheet, i, j, TRUE);
-		}
-	    }
-	    if (i + nrows <= sheet->maxallocrow)
-	    {
-		sheet->data[i] = sheet->data[i + nrows];
-		sheet->data[i + nrows] = auxdata;
+	    if (r > sheet->maxallocrow) break;
 
-		for (j = 0; j <= sheet->maxalloccol; j++)
+	    for (c = 0; c <= sheet->maxalloccol; c++)  /* dispose cell data */
+	    {
+		gtk_sheet_real_cell_clear(sheet, r, c, TRUE);
+	    }
+
+	    if (sheet->data[r])  /* dispose row data pointer array */
+	    {
+		g_free(sheet->data[r]);
+		sheet->data[r] = NULL;
+	    }
+
+	    if (r + nrows <= sheet->maxallocrow)  /* shift tail down */
+	    {
+		sheet->data[r] = sheet->data[r + nrows];
+		sheet->data[r + nrows] = NULL;
+
+		GtkSheetCell **pp = sheet->data[r];  /* update row in existing cells */
+		for (c = 0; c <= sheet->maxalloccol; c++, pp++)
 		{
-		    if (sheet->data[i][j])
-			sheet->data[i][j]->row = i;
+		    if (*pp)
+			(*pp)->row = r;
 		}
 	    }
 	}
 
-	for (i = sheet->maxrow - nrows + 1; i <= sheet->maxallocrow; i++)
+	for (r = sheet->maxrow - nrows + 1; r <= sheet->maxrow; r++)  /* clear tail */
 	{
-	    if (i > 0 && sheet->data[i])
+	    if (r > sheet->maxallocrow) break;
+
+	    for (c = 0; c <= sheet->maxalloccol; c++)  /* dispose cell data */
 	    {
-		g_free(sheet->data[i]);
-		sheet->data[i] = NULL;
+		gtk_sheet_real_cell_clear(sheet, r, c, TRUE);
+	    }
+
+	    if (sheet->data[r])  /* dispose row data pointer array */
+	    {
+		g_free(sheet->data[r]);
+		sheet->data[r] = NULL;
 	    }
 	}
+
 	sheet->maxallocrow -= MIN(nrows, sheet->maxallocrow - position + 1);
+	sheet->maxallocrow = MIN(sheet->maxallocrow, sheet->maxrow);
     }
 
     sheet->maxrow -= nrows;
-    sheet->maxallocrow = MIN(sheet->maxallocrow, sheet->maxrow);
 
     _gtk_sheet_range_fixup(sheet, &sheet->view);
     _gtk_sheet_range_fixup(sheet, &sheet->range);
@@ -14379,7 +14425,7 @@ DeleteRow(GtkSheet *sheet, gint position, gint nrows)
 static gint
 GrowSheet(GtkSheet *tbl, gint newrows, gint newcols)
 {
-    gint i, j;
+    gint r, c;
     gint inirow, inicol;
 
     inirow = tbl->maxallocrow + 1;
@@ -14393,14 +14439,14 @@ GrowSheet(GtkSheet *tbl, gint newrows, gint newcols)
 	tbl->data = (GtkSheetCell ***)
 	g_realloc(tbl->data, (tbl->maxallocrow + 1)*sizeof(GtkSheetCell **)+sizeof(double));
 
-	for (i = inirow; i <= tbl->maxallocrow; i++)
+	for (r = inirow; r <= tbl->maxallocrow; r++)
 	{
-	    tbl->data[i] = (GtkSheetCell **)\
+	    tbl->data[r] = (GtkSheetCell **)
 		g_malloc((tbl->maxcol + 1)*sizeof(GtkSheetCell *)+sizeof(double));
 
-	    for (j = 0; j < inicol; j++)
+	    for (c = 0; c < inicol; c++)
 	    {
-		tbl->data[i][j] = NULL;
+		tbl->data[r][c] = NULL;
 	    }
 	}
 
@@ -14408,13 +14454,13 @@ GrowSheet(GtkSheet *tbl, gint newrows, gint newcols)
 
     if (newcols > 0)
     {
-	for (i = 0; i <= tbl->maxallocrow; i++)
+	for (r = 0; r <= tbl->maxallocrow; r++)
 	{
-	    tbl->data[i] = (GtkSheetCell **)\
-		g_realloc(tbl->data[i], (tbl->maxalloccol + 1)*sizeof(GtkSheetCell *)+sizeof(double));
-	    for (j = inicol; j <= tbl->maxalloccol; j++)
+	    tbl->data[r] = (GtkSheetCell **)
+		g_realloc(tbl->data[r], (tbl->maxalloccol + 1)*sizeof(GtkSheetCell *)+sizeof(double));
+	    for (c = inicol; c <= tbl->maxalloccol; c++)
 	    {
-		tbl->data[i][j] = NULL;
+		tbl->data[r][c] = NULL;
 	    }
 	}
     }

@@ -1,3 +1,9 @@
+2013-06-22 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed memory leak in _gtk_sheet_entry_setup()
+	* GtkSheet: fixed memory leak in DeleteRow()
+	* GtkSheet: fixed memory leak in DeleteColumn()
+	* GtkSheet: fixed cell activation in gtk_sheet_delete_columns()
+
 2013-06-19 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: signal documentation fixed
 

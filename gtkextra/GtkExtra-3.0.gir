@@ -506,33 +506,36 @@ It should only be accessed through the functions described below.</doc>
            glib:type-name="GtkDataEntry"
            glib:get-type="gtk_data_entry_get_type"
            glib:type-struct="DataEntryClass">
-      <doc xml:whitespace="preserve">GtkDataEntry provides additional features:
+      <doc xml:whitespace="preserve">GtkDataEntry provides additional properties: 
 
-- description (property): no functionality, a place for 
+- #GtkDataEntry:description - no functionality, a place for 
   private information that cannot be put anywhere else
- 
-- data_type (property): no functionality, a datatype hint for
-  the application because any widget content is text
- 
-- data_format (property): a formatting instruction that 
+
+- #GtkDataEntry:datatype - no functionality, a datatype hint
+  for the application because any widget content is text
+
+- #GtkDataEntry:dataformat - a formatting instruction that 
   controls what you see when the widget doesn't have input
   focus
- 
-- text (property): set the contents of the widget. if the 
+
+- #GtkDataEntry:text - set the contents of the widget. if the
   widget doesn't have input focus text will be formatted
   according to the data_format
- 
+
+- #GtkDataEntry:max-length-bytes - set the maximum byte 
+  length for the contents of the widget.
+
 The main reason for this widget is to provide a formatting  
 entry widget for numeric data like integer, float, money 
 which also supports NULL values (GtkSpinButton is nice but 
 doesn't support empty field values). Handling of Null values 
 is supported by all SQL database systems. The Null values are
 represented by empty field contents. 
- 
+
 When editing field contents, all data formatting is removed 
 before the focus enters the widget. As soon as the focus 
 leaves the widget, data will be nicely formatted again. 
- 
+
 As an additional feature, the minus sign (negative numbers) 
 can be entered at the end of the data. As soon as you leave 
 the field it will be placed properly in front of the number.</doc>
@@ -547,6 +550,14 @@ the field it will be placed properly in front of the number.</doc>
           <type name="DataEntry" c:type="GtkDataEntry*"/>
         </return-value>
       </constructor>
+      <method name="get_data_format"
+              c:identifier="gtk_data_entry_get_data_format">
+        <doc xml:whitespace="preserve">Retrieves the #GtkDataEntry data_format.</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">a pointer to the contents of the widget as a string. This string points to internally allocated storage in the widget and must not be freed, modified or stored.</doc>
+          <type name="utf8" c:type="const gchar*"/>
+        </return-value>
+      </method>
       <method name="get_data_type" c:identifier="gtk_data_entry_get_data_type">
         <doc xml:whitespace="preserve">Retrieves the #GtkDataEntry data_type.</doc>
         <return-value transfer-ownership="none">
@@ -560,6 +571,16 @@ the field it will be placed properly in front of the number.</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">a pointer to the contents of the widget as a string. This string points to internally allocated storage in the widget and must not be freed, modified or stored.</doc>
           <type name="utf8" c:type="const gchar*"/>
+        </return-value>
+      </method>
+      <method name="get_max_length_bytes"
+              c:identifier="gtk_data_entry_get_max_length_bytes"
+              version="3.0.6">
+        <doc xml:whitespace="preserve">Retrieves the maximum byte length for the contents of  
+#GtkDataEntry data_format.</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">maximum byte length or 0.</doc>
+          <type name="gint" c:type="const gint"/>
         </return-value>
       </method>
       <method name="get_text" c:identifier="gtk_data_entry_get_text">
@@ -609,6 +630,21 @@ display will not be refreshed upon change.</doc>
           </parameter>
         </parameters>
       </method>
+      <method name="set_max_length_bytes"
+              c:identifier="gtk_data_entry_set_max_length_bytes"
+              version="3.0.6">
+        <doc xml:whitespace="preserve">Sets the maximum byte length for the contents of the 
+GtkDataEntry. Existing content will not be truncted.</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="max_length_bytes" transfer-ownership="none">
+            <doc xml:whitespace="preserve">maximum byte length or 0</doc>
+            <type name="gint" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
       <method name="set_text" c:identifier="gtk_data_entry_set_text">
         <doc xml:whitespace="preserve">Sets the GtkDataEntry contents. The contents will be 
 formatted due to the current data_format.</doc>
@@ -637,6 +673,9 @@ any widget content is text.</doc>
 for private information that cannot be put anywhere else.</doc>
         <type name="utf8"/>
       </property>
+      <property name="max-length-bytes" writable="1" transfer-ownership="none">
+        <type name="gint"/>
+      </property>
       <property name="text" writable="1" transfer-ownership="none">
         <doc xml:whitespace="preserve">Set the contents of the GtkDataEntry. For details see 
 #gtk_data_entry_set_text.</doc>
@@ -653,6 +692,9 @@ for private information that cannot be put anywhere else.</doc>
       </field>
       <field name="description">
         <type name="utf8" c:type="gchar*"/>
+      </field>
+      <field name="max_length_bytes">
+        <type name="gint" c:type="gint"/>
       </field>
     </class>
     <record name="DataEntryClass"
@@ -18114,26 +18156,26 @@ A combo row may be selected with gtk_toggle_combo_select().The current selection
     </record>
     <function name="data_format" c:identifier="gtk_data_format">
       <doc xml:whitespace="preserve">format @str according to @dataformat. 
- 
+
 formatting instructions: 
- 
+
 '' (the empty string) does no formatting at all.
- 
+
 'int8' is formatted as a singed 8-bit integer value with 
 optional '-' sign. 
- 
+
 'int16' is formatted as a signed 16-bit integer with optional
 '-' sign. 
- 
+
 'int32' is formatted as a signed 32-bit integer with optional
 '-' sign.
- 
+
 'money' is formatted as a double float value with 2 decimal 
 digits and 1000s-separators 
- 
+
 'float,N' is formatted as a double float value with N decimal
 digits and 1000s-separators 
- 
+
 'bit' is formatted as a boolean value [0,1].</doc>
       <return-value transfer-ownership="full">
         <doc xml:whitespace="preserve">a pointer to an internal static buffer, with the formatted data</doc>

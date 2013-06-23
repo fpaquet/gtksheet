@@ -6,6 +6,8 @@ glade-3
 -->
 <glade-catalog name="gtkextra" library="@libgladegtkextra_soname@" depends="gtk+">
 
+  <book>gtkextra</book>
+
     <glade-widget-classes>
         <glade-widget-class name="GtkCharSelection" generic-name="gtkcharselection" title="GtkCharSelection - a widget which contains all the characters in a font" />
 

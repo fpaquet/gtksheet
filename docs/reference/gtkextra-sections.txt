@@ -96,9 +96,12 @@ gtk_data_entry_get_description
 gtk_data_entry_set_description
 gtk_data_entry_get_data_type
 gtk_data_entry_set_data_type
+gtk_data_entry_get_data_format
 gtk_data_entry_set_data_format
 gtk_data_entry_get_text
 gtk_data_entry_set_text
+gtk_data_entry_get_max_length_bytes
+gtk_data_entry_set_max_length_bytes
 <SUBSECTION Standard>
 GTK_DATA_ENTRY
 GTK_DATA_ENTRY_CLASS

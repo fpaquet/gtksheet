@@ -1,5 +1,8 @@
 2013-06-23 Fredy Paquet <mailbox AT opag.ch>
 	* GtkItemEntry: fixed UTF-8 character insertion, killing trailing text (PR#96868)
+	* new branch GtkDataTextView for development of property enhancements 
+	* GtkDataEntry: added new property max-length-bytes
+	* Glade-Integration: added <book> tag to catalog
 
 2013-06-22 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed memory leak in _gtk_sheet_entry_setup()

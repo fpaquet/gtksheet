@@ -40,12 +40,12 @@
  * the widget property 'dataformat' may contain formatting 
  * instructions for the field contents. Any unrecognized 
  * formatting instruction is silently skipped. 
- *  
+ *
  * The formatting process should always be reversible. Thus 
  * formatting can be applied when input focus leaves a field and
  * removed again when the focus enters a field, without the need
  * of an additional content buffer. 
- *  
+ *
  * the library can be easily extended by adding more 
  * instructions to the list above.
  * 
@@ -167,31 +167,31 @@ static gchar *format_int(gint i, gint num_bytes)
  * gtk_data_format:
  * @str:        the string to be formatted
  * @dataformat: formatting instructions
- * 
+ *
  * format @str according to @dataformat. 
- *  
+ *
  * formatting instructions: 
- *  
+ *
  * '' (the empty string) does no formatting at all.
- *  
+ *
  * 'int8' is formatted as a singed 8-bit integer value with 
  * optional '-' sign. 
- *  
+ *
  * 'int16' is formatted as a signed 16-bit integer with optional
  * '-' sign. 
- *  
+ *
  * 'int32' is formatted as a signed 32-bit integer with optional
  * '-' sign.
- *  
+ *
  * 'money' is formatted as a double float value with 2 decimal 
  * digits and 1000s-separators 
- *  
+ *
  * 'float,N' is formatted as a double float value with N decimal
  * digits and 1000s-separators 
- *  
+ *
  * 'bit' is formatted as a boolean value [0,1].
- *  
- * 
+ *
+ *
  * Returns: a pointer to an internal static buffer, with the 
  * formatted data 
  */
@@ -278,10 +278,10 @@ gchar *gtk_data_format(const gchar *str, const gchar *dataformat)
  * gtk_data_format_remove:
  * @str:        the string to be unformatted
  * @dataformat: formatting instructions
- * 
+ *
  * reverse the effect of #gtk_data_format, i.e. remove all 
  * formatting characters, apply trailing dash
- * 
+ *
  * Returns: a pointer to an internal static buffer, with the 
  * unformatted data 
  */

@@ -201,12 +201,12 @@
 			<Folder
 				Name="Glade"
 				Filters="">
-				<F N="../glade/glade-gtksheet-editor.c"/>
-				<F N="../glade/glade-gtksheet-editor.h"/>
-				<F N="../glade/gtk+extra-catalog.xml"/>
 				<F
 					N="../glade/Makefile.am"
 					Type="Makefile"/>
+				<F N="../glade/glade-gtksheet-editor.c"/>
+				<F N="../glade/glade-gtksheet-editor.h"/>
+				<F N="../glade/gtk+extra-catalog.xml.in"/>
 			</Folder>
 			<Folder
 				Name="Plot"
@@ -335,7 +335,6 @@
 				<F N="../gtkextra/pixmaps.h"/>
 				<F N="../gtkextra/gtkextrafeatures.h"/>
 				<F N="../gtkextra/gtkextraicons.h"/>
-				<F N="../acconfig.h"/>
 				<F N="../config.h"/>
 				<F N="../gtkextra/gtkextratypebuiltins.c"/>
 				<F N="../gtkextra/gtkextratypebuiltins.h"/>
@@ -366,24 +365,8 @@
 			Name="Other Files"
 			Filters="">
 			<F N="../AUTHORS"/>
-			<F N="../autogen.sh"/>
-			<F N="../autoregen.sh"/>
-			<F N="../ChangeLog"/>
-			<F N="../config.h.in"/>
-			<F N="../config.log"/>
-			<F N="../configure"/>
-			<F N="../configure.in"/>
 			<F N="../COPYING"/>
-			<F N="../glib-2.0.m4"/>
-			<F N="../gtk-2.0.m4"/>
-			<F N="../gtk-doc.make"/>
-			<F N="../gtk.m4"/>
-			<F N="../gtkextra-3.0.m4"/>
-			<F N="../gtkextra-3.0.pc"/>
-			<F N="../gtkextra-3.0.pc.in"/>
-			<F N="../gtkextra-3.0.spec"/>
-			<F N="../gtkextra-3.0.spec.in"/>
-			<F N="../gtkextra.m4"/>
+			<F N="../ChangeLog"/>
 			<F N="../INSTALL"/>
 			<F
 				N="../Makefile"
@@ -402,14 +385,32 @@
 				Type="Makefile"/>
 			<F N="../NEWS"/>
 			<F N="../README"/>
+			<F N="../TODO"/>
+			<F N="../autogen.sh"/>
+			<F N="../config.h.in"/>
+			<F N="../config.log"/>
+			<F N="../configure"/>
+			<F N="../configure.ac"/>
+			<F N="../glib-2.0.m4"/>
+			<F N="../gtk-2.0.m4"/>
+			<F N="../gtk-doc.make"/>
+			<F N="../gtk.m4"/>
+			<F N="../gtkextra-3.0.m4"/>
+			<F N="../gtkextra-3.0.pc"/>
+			<F N="../gtkextra-3.0.pc.in"/>
+			<F N="../gtkextra-3.0.spec"/>
+			<F N="../gtkextra-3.0.spec.in"/>
+			<F N="../gtkextra.m4"/>
 			<F N="../gtkextra/sat.xpm"/>
 			<F N="../gtkextra/sg_small.xpm"/>
 			<F N="../gtkextra/suncloud.xpm"/>
-			<F N="../TODO"/>
 		</Folder>
 		<Folder
 			Name="Documentation"
 			Filters="">
+			<F
+				N="../docs/reference/Makefile.am"
+				Type="Makefile"/>
 			<F N="../docs/reference/gtkextra-docs.sgml"/>
 			<F N="../docs/reference/gtkextra-sections.txt"/>
 			<F N="../docs/reference/gtkextra-undocumented.txt"/>

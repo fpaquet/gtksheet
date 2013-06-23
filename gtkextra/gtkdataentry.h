@@ -51,6 +51,7 @@ struct _GtkDataEntry
     gchar *data_type;           /* data type for application use */
     gchar *data_format;        /* cell content formatting template */
     gchar *description;         /* column description */
+    gint max_length_bytes;   /* maximum length in bytes */
 };
 
 struct _GtkDataEntryClass
@@ -73,6 +74,9 @@ G_CONST_RETURN gchar*
 void gtk_data_entry_set_data_type(GtkDataEntry *data_entry, 
                                   const gchar *data_type);
 
+G_CONST_RETURN gchar *
+gtk_data_entry_get_data_format(GtkDataEntry *data_entry);
+
 void gtk_data_entry_set_data_format(GtkDataEntry *data_entry, 
                                     const gchar *data_format);
 
@@ -81,6 +85,12 @@ G_CONST_RETURN gchar*
 
 void gtk_data_entry_set_text(GtkDataEntry *data_entry, 
                                     const gchar *text);
+
+G_CONST_RETURN gint
+    gtk_data_entry_get_max_length_bytes(GtkDataEntry *data_entry);
+
+void gtk_data_entry_set_max_length_bytes(GtkDataEntry *data_entry, 
+                                    gint max_length_bytes);
 
 G_END_DECLS
 

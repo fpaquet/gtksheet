@@ -57,16 +57,18 @@
 /* Maximum size of text buffer, in bytes */
 #define MAX_SIZE G_MAXUSHORT
 
+#define DEBUG
+
 #undef GTK_ITEM_ENTRY_DEBUG
 
 #ifdef DEBUG
-#define GTK_ITEM_ENTRY_DEBUG  0  /* define to activate debug output */
+#define GTK_ITEM_ENTRY_DEBUG  1  /* define to activate debug output */
 #endif
 
 #ifdef GTK_ITEM_ENTRY_DEBUG
 #   define GTK_ITEM_ENTRY_DEBUG_JUSTIFICATION 0
 #   define GTK_ITEM_ENTRY_DEBUG_ALLOC 0
-#   define GTK_ITEM_ENTRY_DEBUG_TEXT 0
+#   define GTK_ITEM_ENTRY_DEBUG_TEXT 1
 #endif
 
 
@@ -813,7 +815,7 @@ gtk_entry_real_insert_text(GtkEditable *editable,
 	guint n_bytes_inserted;
 	GtkEntryBuffer *buffer = get_buffer(entry);
 
-	n_bytes_inserted  = gtk_entry_buffer_insert_text(buffer, *position, new_text, new_text_length);
+	n_bytes_inserted  = gtk_entry_buffer_insert_text(buffer, *position, new_text, n_chars);
 
 #if GTK_ITEM_ENTRY_DEBUG_TEXT>0
 	g_debug("gtk_entry_real_insert_text: GTK_TYPE_ENTRY_BUFFER n_chars %d %d", n_chars, *position);

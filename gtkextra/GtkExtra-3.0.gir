@@ -538,7 +538,9 @@ leaves the widget, data will be nicely formatted again.
 
 As an additional feature, the minus sign (negative numbers) 
 can be entered at the end of the data. As soon as you leave 
-the field it will be placed properly in front of the number.</doc>
+the field it will be placed properly in front of the number. 
+
+See also: gtk_data_format()</doc>
       <implements name="Atk.ImplementorIface"/>
       <implements name="Gtk.Buildable"/>
       <implements name="Gtk.CellEditable"/>
@@ -552,7 +554,9 @@ the field it will be placed properly in front of the number.</doc>
       </constructor>
       <method name="get_data_format"
               c:identifier="gtk_data_entry_get_data_format">
-        <doc xml:whitespace="preserve">Retrieves the #GtkDataEntry data_format.</doc>
+        <doc xml:whitespace="preserve">Retrieves the #GtkDataEntry data_format. 
+
+See gtk_data_format() for details.</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">a pointer to the contents of the widget as a string. This string points to internally allocated storage in the widget and must not be freed, modified or stored.</doc>
           <type name="utf8" c:type="const gchar*"/>
@@ -577,7 +581,7 @@ the field it will be placed properly in front of the number.</doc>
               c:identifier="gtk_data_entry_get_max_length_bytes"
               version="3.0.6">
         <doc xml:whitespace="preserve">Retrieves the maximum byte length for the contents of  
-#GtkDataEntry data_format.</doc>
+#GtkDataEntry.</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">maximum byte length or 0.</doc>
           <type name="gint" c:type="const gint"/>
@@ -594,7 +598,9 @@ removed.</doc>
       <method name="set_data_format"
               c:identifier="gtk_data_entry_set_data_format">
         <doc xml:whitespace="preserve">Sets the GtkDataEntry data type for application use. The 
-display will not be refreshed upon change.</doc>
+display will not be refreshed upon change. 
+
+See gtk_data_format() for details.</doc>
         <return-value transfer-ownership="none">
           <type name="none" c:type="void"/>
         </return-value>
@@ -634,7 +640,7 @@ display will not be refreshed upon change.</doc>
               c:identifier="gtk_data_entry_set_max_length_bytes"
               version="3.0.6">
         <doc xml:whitespace="preserve">Sets the maximum byte length for the contents of the 
-GtkDataEntry. Existing content will not be truncted.</doc>
+#GtkDataEntry. Existing content will not be truncted.</doc>
         <return-value transfer-ownership="none">
           <type name="none" c:type="void"/>
         </return-value>
@@ -660,7 +666,9 @@ formatted due to the current data_format.</doc>
       </method>
       <property name="dataformat" writable="1" transfer-ownership="none">
         <doc xml:whitespace="preserve">a formatting string that controls what you see when the 
-widget doesn't contain input focus.</doc>
+widget doesn't contain input focus. 
+
+See gtk_data_format() for details.</doc>
         <type name="utf8"/>
       </property>
       <property name="datatype" writable="1" transfer-ownership="none">
@@ -673,7 +681,17 @@ any widget content is text.</doc>
 for private information that cannot be put anywhere else.</doc>
         <type name="utf8"/>
       </property>
-      <property name="max-length-bytes" writable="1" transfer-ownership="none">
+      <property name="max-length-bytes"
+                version="3.0.6"
+                writable="1"
+                transfer-ownership="none">
+        <doc xml:whitespace="preserve">Set the maximum length in bytes for the GtkDataEntry. For 
+details see #gtk_data_entry_set_max_length_bytes. 
+
+Sometimes, systems cannot handle UTF-8 string length
+correctly, to overcome this problem, you can use the maximum 
+string length in bytes. When setting both limits, max-length 
+ and max-length-bytes, both must be fulfilled.</doc>
         <type name="gint"/>
       </property>
       <property name="text" writable="1" transfer-ownership="none">
@@ -681,19 +699,19 @@ for private information that cannot be put anywhere else.</doc>
 #gtk_data_entry_set_text.</doc>
         <type name="utf8"/>
       </property>
-      <field name="entry">
+      <field name="entry" readable="0" private="1">
         <type name="Gtk.Entry" c:type="GtkEntry"/>
       </field>
-      <field name="data_type">
+      <field name="data_type" readable="0" private="1">
         <type name="utf8" c:type="gchar*"/>
       </field>
-      <field name="data_format">
+      <field name="data_format" readable="0" private="1">
         <type name="utf8" c:type="gchar*"/>
       </field>
-      <field name="description">
+      <field name="description" readable="0" private="1">
         <type name="utf8" c:type="gchar*"/>
       </field>
-      <field name="max_length_bytes">
+      <field name="max_length_bytes" readable="0" private="1">
         <type name="gint" c:type="gint"/>
       </field>
     </class>
@@ -702,6 +720,173 @@ for private information that cannot be put anywhere else.</doc>
             glib:is-gtype-struct-for="DataEntry">
       <field name="parent_class">
         <type name="Gtk.EntryClass" c:type="GtkEntryClass"/>
+      </field>
+    </record>
+    <class name="DataTextView"
+           c:symbol-prefix="data_text_view"
+           c:type="GtkDataTextView"
+           parent="Gtk.TextView"
+           glib:type-name="GtkDataTextView"
+           glib:get-type="gtk_data_text_view_get_type"
+           glib:type-struct="DataTextViewClass">
+      <doc xml:whitespace="preserve">GtkDataTextView provides additional properties: 
+
+- #GtkDataTextView:description - no functionality, a place for 
+  private information that cannot be put anywhere else
+
+- #GtkDataTextView:max-length - set the maximum character 
+  length for the contents of the widget.
+
+- #GtkDataTextView:max-length-bytes - set the maximum byte 
+  length for the contents of the widget.
+
+The main reason for this widget is to provide a length limit 
+for text contents, required by SQL database systems. There 
+is always a limit, no matter what you do. 
+ 
+Some database systems may handle character length of UTF-8 
+strings correctly, others may not. Choose the appropriate 
+limit for your system, characters or bytes.
+ 
+Note that setting a byte length limit &gt; 0 on a datatextview 
+may slow down text insertions. The  byte length limit is 
+imposed upon gtk_text_buffer_get_text() including invisible 
+content. See gtk_text_buffer_get_text() for details.</doc>
+      <implements name="Atk.ImplementorIface"/>
+      <implements name="Gtk.Buildable"/>
+      <constructor name="new"
+                   c:identifier="gtk_data_text_view_new"
+                   version="3.0.6">
+        <doc xml:whitespace="preserve">Creates a new GtkDataTextView Widget.</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">the new GtkDataTextView Widget</doc>
+          <type name="DataTextView" c:type="GtkDataTextView*"/>
+        </return-value>
+      </constructor>
+      <method name="get_description"
+              c:identifier="gtk_data_text_view_get_description"
+              version="3.0.6">
+        <doc xml:whitespace="preserve">Retrieves the #GtkDataTextView description.</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">a pointer to the contents of the widget as a string. This string points to internally allocated storage in the widget and must not be freed, modified or stored.</doc>
+          <type name="utf8" c:type="const gchar*"/>
+        </return-value>
+      </method>
+      <method name="get_max_length"
+              c:identifier="gtk_data_text_view_get_max_length"
+              version="3.0.6">
+        <doc xml:whitespace="preserve">Retrieves the maximum character length for the contents of  
+#GtkDataTextView.</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">maximum byte length or 0.</doc>
+          <type name="gint" c:type="const gint"/>
+        </return-value>
+      </method>
+      <method name="get_max_length_bytes"
+              c:identifier="gtk_data_text_view_get_max_length_bytes"
+              version="3.0.6">
+        <doc xml:whitespace="preserve">Retrieves the maximum byte length for the contents of  
+#GtkDataTextView data_format.</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">maximum byte length or 0.</doc>
+          <type name="gint" c:type="const gint"/>
+        </return-value>
+      </method>
+      <method name="set_description"
+              c:identifier="gtk_data_text_view_set_description"
+              version="3.0.6">
+        <doc xml:whitespace="preserve">Sets the GtkDataTextView description.</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="description" transfer-ownership="none">
+            <doc xml:whitespace="preserve">the description or NULL</doc>
+            <type name="utf8" c:type="const gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="set_max_length"
+              c:identifier="gtk_data_text_view_set_max_length"
+              version="3.0.6">
+        <doc xml:whitespace="preserve">Sets the maximum character length for the contents of the 
+#GtkDataTextView. Existing content will not be truncted.</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="max_length" transfer-ownership="none">
+            <type name="gint" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="set_max_length_bytes"
+              c:identifier="gtk_data_text_view_set_max_length_bytes"
+              version="3.0.6">
+        <doc xml:whitespace="preserve">Sets the maximum byte length for the contents of the 
+GtkDataTextView. Existing content will not be truncted.</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="max_length_bytes" transfer-ownership="none">
+            <doc xml:whitespace="preserve">maximum byte length or 0</doc>
+            <type name="gint" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <property name="description"
+                version="3.0.6"
+                writable="1"
+                transfer-ownership="none">
+        <doc xml:whitespace="preserve">Description of the GtkDataTextView, no functionality, a place 
+for private information that cannot be put anywhere else.</doc>
+        <type name="utf8"/>
+      </property>
+      <property name="max-length"
+                version="3.0.6"
+                writable="1"
+                transfer-ownership="none">
+        <doc xml:whitespace="preserve">Set the maximum length in characters for the GtkDataTextView.
+For details see #gtk_data_text_view_set_max_length. 
+
+Sometimes, systems cannot handle UTF-8 string length
+correctly, to overcome this problem, you can use the maximum 
+string length in bytes. When setting both limits, max-length 
+ and max-length-bytes, both must be fulfilled.</doc>
+        <type name="gint"/>
+      </property>
+      <property name="max-length-bytes"
+                version="3.0.6"
+                writable="1"
+                transfer-ownership="none">
+        <doc xml:whitespace="preserve">Set the maximum length in bytes for the GtkDataTextView. For 
+details see #gtk_data_text_view_set_max_length_bytes. 
+
+Sometimes, systems cannot handle UTF-8 string length
+correctly, to overcome this problem, you can use the maximum 
+string length in bytes. When setting both limits, max-length 
+ and max-length-bytes, both must be fulfilled.</doc>
+        <type name="gint"/>
+      </property>
+      <field name="textview" readable="0" private="1">
+        <type name="Gtk.TextView" c:type="GtkTextView"/>
+      </field>
+      <field name="description" readable="0" private="1">
+        <type name="utf8" c:type="gchar*"/>
+      </field>
+      <field name="max_length" readable="0" private="1">
+        <type name="gint" c:type="gint"/>
+      </field>
+      <field name="max_length_bytes" readable="0" private="1">
+        <type name="gint" c:type="gint"/>
+      </field>
+    </class>
+    <record name="DataTextViewClass"
+            c:type="GtkDataTextViewClass"
+            glib:is-gtype-struct-for="DataTextView">
+      <field name="parent_class">
+        <type name="Gtk.TextViewClass" c:type="GtkTextViewClass"/>
       </field>
     </record>
     <class name="DirTree"

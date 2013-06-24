@@ -358,6 +358,45 @@ gtk_plot_canvas_pos_get_type (void)
   return etype;
 }
 
+/* enumerations from "gtkplotcanvasline.h" */
+GType
+gtk_plot_canvas_arrow_get_type (void)
+{
+  static GType etype = 0;
+  if (etype == 0) {
+    static const GFlagsValue values[] = {
+      { GTK_PLOT_CANVAS_ARROW_NONE, "GTK_PLOT_CANVAS_ARROW_NONE", "none" },
+      { GTK_PLOT_CANVAS_ARROW_ORIGIN, "GTK_PLOT_CANVAS_ARROW_ORIGIN", "origin" },
+      { GTK_PLOT_CANVAS_ARROW_END, "GTK_PLOT_CANVAS_ARROW_END", "end" },
+      { 0, NULL, NULL }
+    };
+    etype = g_flags_register_static ("GtkPlotCanvasArrow", values);
+  }
+  return etype;
+}
+
+/* enumerations from "gtkplotcanvasplot.h" */
+GType
+gtk_plot_canvas_plot_pos_get_type (void)
+{
+  static GType etype = 0;
+  if (etype == 0) {
+    static const GEnumValue values[] = {
+      { GTK_PLOT_CANVAS_PLOT_OUT, "GTK_PLOT_CANVAS_PLOT_OUT", "out" },
+      { GTK_PLOT_CANVAS_PLOT_IN_PLOT, "GTK_PLOT_CANVAS_PLOT_IN_PLOT", "in-plot" },
+      { GTK_PLOT_CANVAS_PLOT_IN_LEGENDS, "GTK_PLOT_CANVAS_PLOT_IN_LEGENDS", "in-legends" },
+      { GTK_PLOT_CANVAS_PLOT_IN_TITLE, "GTK_PLOT_CANVAS_PLOT_IN_TITLE", "in-title" },
+      { GTK_PLOT_CANVAS_PLOT_IN_AXIS, "GTK_PLOT_CANVAS_PLOT_IN_AXIS", "in-axis" },
+      { GTK_PLOT_CANVAS_PLOT_IN_DATA, "GTK_PLOT_CANVAS_PLOT_IN_DATA", "in-data" },
+      { GTK_PLOT_CANVAS_PLOT_IN_GRADIENT, "GTK_PLOT_CANVAS_PLOT_IN_GRADIENT", "in-gradient" },
+      { GTK_PLOT_CANVAS_PLOT_IN_MARKER, "GTK_PLOT_CANVAS_PLOT_IN_MARKER", "in-marker" },
+      { 0, NULL, NULL }
+    };
+    etype = g_enum_register_static ("GtkPlotCanvasPlotPos", values);
+  }
+  return etype;
+}
+
 /* enumerations from "gtkplotcsurface.h" */
 GType
 gtk_plot_projection_get_type (void)
@@ -511,45 +550,6 @@ gtk_sheet_vertical_justification_get_type (void)
       { 0, NULL, NULL }
     };
     etype = g_enum_register_static ("GtkSheetVerticalJustification", values);
-  }
-  return etype;
-}
-
-/* enumerations from "gtkplotcanvasline.h" */
-GType
-gtk_plot_canvas_arrow_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GFlagsValue values[] = {
-      { GTK_PLOT_CANVAS_ARROW_NONE, "GTK_PLOT_CANVAS_ARROW_NONE", "none" },
-      { GTK_PLOT_CANVAS_ARROW_ORIGIN, "GTK_PLOT_CANVAS_ARROW_ORIGIN", "origin" },
-      { GTK_PLOT_CANVAS_ARROW_END, "GTK_PLOT_CANVAS_ARROW_END", "end" },
-      { 0, NULL, NULL }
-    };
-    etype = g_flags_register_static ("GtkPlotCanvasArrow", values);
-  }
-  return etype;
-}
-
-/* enumerations from "gtkplotcanvasplot.h" */
-GType
-gtk_plot_canvas_plot_pos_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { GTK_PLOT_CANVAS_PLOT_OUT, "GTK_PLOT_CANVAS_PLOT_OUT", "out" },
-      { GTK_PLOT_CANVAS_PLOT_IN_PLOT, "GTK_PLOT_CANVAS_PLOT_IN_PLOT", "in-plot" },
-      { GTK_PLOT_CANVAS_PLOT_IN_LEGENDS, "GTK_PLOT_CANVAS_PLOT_IN_LEGENDS", "in-legends" },
-      { GTK_PLOT_CANVAS_PLOT_IN_TITLE, "GTK_PLOT_CANVAS_PLOT_IN_TITLE", "in-title" },
-      { GTK_PLOT_CANVAS_PLOT_IN_AXIS, "GTK_PLOT_CANVAS_PLOT_IN_AXIS", "in-axis" },
-      { GTK_PLOT_CANVAS_PLOT_IN_DATA, "GTK_PLOT_CANVAS_PLOT_IN_DATA", "in-data" },
-      { GTK_PLOT_CANVAS_PLOT_IN_GRADIENT, "GTK_PLOT_CANVAS_PLOT_IN_GRADIENT", "in-gradient" },
-      { GTK_PLOT_CANVAS_PLOT_IN_MARKER, "GTK_PLOT_CANVAS_PLOT_IN_MARKER", "in-marker" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("GtkPlotCanvasPlotPos", values);
   }
   return etype;
 }

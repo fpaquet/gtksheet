@@ -46,6 +46,7 @@ typedef struct _GtkDataEntryClass  GtkDataEntryClass;
  */
 struct _GtkDataEntry
 {
+    /*< private >*/
     GtkEntry entry;
 
     gchar *data_type;           /* data type for application use */

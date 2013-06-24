@@ -70,46 +70,47 @@ gtkextra_public_h_sources = \
         gtkcombobutton.h	\
         gtkdataentry.h	\
         gtkdataformat.h	\
+        gtkdatatextview.h	\
         gtkdirtree.h	\
         gtkextra.h	\
         gtkextraicons.h	\
-        gtkfilelist.h	\
         gtkfileicons.h	\
+        gtkfilelist.h	\
         gtkfontcombo.h	\
         gtkiconfilesel.h	\
         gtkiconlist.h	\
         gtkitementry.h	\
         gtkplot.h	\
-        gtkplotarray.h	\
         gtkplot3d.h	\
-        gtkplotdt.h	\
-        gtkplotpolar.h	\
-        gtkplotdata.h	\
-        gtkplotpixmap.h	\
+        gtkplotarray.h	\
         gtkplotbar.h	\
         gtkplotbox.h	\
         gtkplotbubble.h	\
-        gtkplotcandle.h	\
-        gtkplotflux.h	\
-        gtkplotsurface.h	\
         gtkplotcairo.h	\
+        gtkplotcandle.h	\
         gtkplotcanvas.h	\
+        gtkplotcanvasellipse.h \
+        gtkplotcanvasline.h \
+        gtkplotcanvaspixmap.h \
+        gtkplotcanvasplot.h \
+        gtkplotcanvasrectangle.h \
+        gtkplotcanvastext.h \
         gtkplotcsurface.h	\
-        gtkplotpc.h	\
+        gtkplotdata.h	\
+        gtkplotdt.h	\
+        gtkplotflux.h	\
         gtkplotgdk.h	\
-        gtkplotps.h	\
+        gtkplotpc.h	\
+        gtkplotpixmap.h	\
+        gtkplotpolar.h	\
         gtkplotprint.h	\
+        gtkplotps.h	\
         gtkplotsegment.h	\
+        gtkplotsurface.h	\
         gtkpsfont.h	\
         gtksheet.h	\
         gtksheetcolumn.h	\
-        gtktogglecombo.h	\
-        gtkplotcanvasline.h \
-        gtkplotcanvasrectangle.h \
-        gtkplotcanvasellipse.h \
-        gtkplotcanvastext.h \
-        gtkplotcanvaspixmap.h \
-        gtkplotcanvasplot.h 
+        gtktogglecombo.h
 
 gtkextra_c_sources = 	\
         gtkbordercombo.c	\
@@ -119,44 +120,45 @@ gtkextra_c_sources = 	\
         gtkcombobutton.c	\
         gtkdataentry.c	\
         gtkdataformat.c	\
+        gtkdatatextview.c	\
         gtkdirtree.c	\
         gtkextra.c	\
         gtkfilelist.c	\
         gtkfontcombo.c	\
+        gtkiconfilesel.c	\
         gtkiconlist.c	\
         gtkitementry.c	\
-        gtkiconfilesel.c	\
         gtkplot.c	\
-        gtkplotarray.c	\
         gtkplot3d.c	\
-        gtkplotdt.c	\
-        gtkplotpolar.c	\
-        gtkplotdata.c	\
-        gtkplotpixmap.c \
+        gtkplotarray.c	\
         gtkplotbar.c	\
         gtkplotbox.c	\
         gtkplotbubble.c	\
-        gtkplotcandle.c	\
-        gtkplotflux.c	\
-        gtkplotsurface.c	\
-        gtkplotcsurface.c	\
         gtkplotcairo.c	\
+        gtkplotcandle.c	\
         gtkplotcanvas.c	\
-        gtkplotpc.c	\
+        gtkplotcanvasellipse.c \
+        gtkplotcanvasline.c \
+        gtkplotcanvaspixmap.c \
+        gtkplotcanvasplot.c \
+        gtkplotcanvasrectangle.c \
+        gtkplotcanvastext.c \
+        gtkplotcsurface.c	\
+        gtkplotdata.c	\
+        gtkplotdt.c	\
+        gtkplotflux.c	\
         gtkplotgdk.c	\
-        gtkplotps.c	\
+        gtkplotpc.c	\
+        gtkplotpixmap.c \
+        gtkplotpolar.c	\
         gtkplotprint.c	\
+        gtkplotps.c	\
         gtkplotsegment.c	\
+        gtkplotsurface.c	\
         gtkpsfont.c	\
         gtksheet.c	\
         gtksheetcolumn.c	\
-        gtktogglecombo.c \
-        gtkplotcanvasline.c \
-        gtkplotcanvasrectangle.c \
-        gtkplotcanvasellipse.c \
-        gtkplotcanvastext.c \
-        gtkplotcanvaspixmap.c \
-        gtkplotcanvasplot.c
+        gtktogglecombo.c 
 
 gtkextra_private_h_sources = \
 	gtkextra-compat.h \

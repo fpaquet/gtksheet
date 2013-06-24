@@ -8684,7 +8684,8 @@ static void _gtk_sheet_entry_preselect(GtkSheet *sheet)
 }
 
 /**
- * _gtk_sheet_entry_setup - configure for use
+ * _gtk_sheet_entry_setup: 
+ * configure sheet_entry for use
  * 
  * setup sheet_entry style, justification and other properties
  * for use within the active cell

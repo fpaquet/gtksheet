@@ -67,6 +67,8 @@
  * can be entered at the end of the data. As soon as you leave 
  * the field it will be placed properly in front of the number. 
  *
+ * See also: gtk_data_format()
+ *
  */
 
 #undef GTK_DATA_ENTRY_DEBUG
@@ -74,6 +76,9 @@
 #ifdef DEBUG
 #define GTK_DATA_ENTRY_DEBUG  0  /* define to activate debug output */
 #endif
+
+#define GTK_DATA_ENTRY_DEBUG 0
+#define GTK_DATA_ENTRY_DEBUG 1
 
 #if GTK_DATA_ENTRY_DEBUG
 #define GTK_DATA_ENTRY_DEBUG_SIGNAL  0  /* debug signal handlers */
@@ -178,8 +183,8 @@ void gtk_data_entry_set_data_type(GtkDataEntry *data_entry,
  *
  * Retrieves the #GtkDataEntry data_format. 
  *
- * @see_also: gtk_data_format()
- *  
+ * See gtk_data_format() for details. 
+ *
  * Returns: a pointer to the contents of the widget as a
  *      string. This string points to internally allocated
  *      storage in the widget and must not be freed, modified or
@@ -200,7 +205,8 @@ gtk_data_entry_get_data_format(GtkDataEntry *data_entry)
  * Sets the GtkDataEntry data type for application use. The 
  * display will not be refreshed upon change. 
  *
- * @see_also: gtk_data_format()
+ * See gtk_data_format() for details. 
+ *
  */
 void gtk_data_entry_set_data_format(GtkDataEntry *data_entry,
     const gchar *data_format)
@@ -276,7 +282,7 @@ void gtk_data_entry_set_text(GtkDataEntry *data_entry,
  * @data_entry: a #GtkDataEntry
  *
  * Retrieves the maximum byte length for the contents of  
- * #GtkDataEntry data_format. 
+ * #GtkDataEntry. 
  *
  * Returns: maximum byte length or 0. 
  *  
@@ -295,7 +301,7 @@ gtk_data_entry_get_max_length_bytes(GtkDataEntry *data_entry)
  * @max_length_bytes:  maximum byte length or 0
  *
  * Sets the maximum byte length for the contents of the 
- * GtkDataEntry. Existing content will not be truncted. 
+ * #GtkDataEntry. Existing content will not be truncted. 
  *  
  * Since: 3.0.6 
  */
@@ -533,8 +539,9 @@ gtk_data_entry_class_init(GtkDataEntryClass *klass)
      *
      * a formatting string that controls what you see when the 
      * widget doesn't contain input focus. 
-    *
-    * @see_also: gtk_data_format()
+     *
+     * See gtk_data_format() for details. 
+     *
      */
     g_object_class_install_property(gobject_class,
 	PROP_DATA_ENTRY_DATAFORMAT,
@@ -573,7 +580,7 @@ gtk_data_entry_class_init(GtkDataEntryClass *klass)
 	    G_PARAM_READWRITE));
 
     /**
-     * GtkDataEntry:max-bytes:
+     * GtkDataEntry:max-length-bytes:
      *
      * Set the maximum length in bytes for the GtkDataEntry. For 
      * details see #gtk_data_entry_set_max_length_bytes. 
@@ -598,16 +605,6 @@ gtk_data_entry_class_init(GtkDataEntryClass *klass)
 
 /* Signal interception */
 
-#if 0
-static void _gtk_data_entry_delete_text_handler(GtkEditable *editable,
-    gint start_pos, gint end_pos, gpointer user_data)
-{
-#if GTK_DATA_ENTRY_DEBUG_SIGNAL > 0
-    g_debug("_gtk_data_entry_delete_text_handler: s %d e %d", start_pos, end_pos);
-#endif
-}
-#endif
-
 static void _gtk_data_entry_insert_text_handler(GtkEditable *editable,
     gchar *new_text, gint  new_text_length,
     gpointer position, gpointer user_data)   
@@ -617,20 +614,18 @@ static void _gtk_data_entry_insert_text_handler(GtkEditable *editable,
 
     if (!max_len) return;
 
-    gchar *old_text = gtk_editable_get_chars(editable, 0, -1);
+    const gchar *old_text = gtk_data_entry_get_text(data_entry);
     gint old_length = strlen(old_text);
-    g_free(old_text);
 
     if (new_text_length < 0) new_text_length = strlen(new_text);
 
 #if GTK_DATA_ENTRY_DEBUG_SIGNAL > 0
-    g_debug("_gtk_data_entry_insert_text_handler: cl %d max %d new %d", 
+    g_debug("_gtk_data_entry_insert_text_handler(bytes): cl %d max %d new %d", 
 	old_length, max_len, new_text_length);
 #endif
 	
     if (old_length + new_text_length > max_len)
     {
-	gdk_beep();
 	gdk_beep();
 	g_signal_stop_emission_by_name(editable, "insert-text");
     }
@@ -651,15 +646,8 @@ gtk_data_entry_init(GtkDataEntry *data_entry)
 
     g_debug("gtk_data_entry_init");
 
-#if 0
-    /* not needed today */
-    g_signal_connect(GTK_BUILDABLE(data_entry), "delete-text",
-	G_CALLBACK(_gtk_data_entry_delete_text_handler), NULL);
-#endif
-
     g_signal_connect(GTK_BUILDABLE(data_entry), "insert-text",
 	G_CALLBACK(_gtk_data_entry_insert_text_handler), NULL);
-
 }
 
 /**

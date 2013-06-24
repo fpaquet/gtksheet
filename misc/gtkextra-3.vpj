@@ -347,12 +347,14 @@
 				<F N="../gtkextra/gtkdataentry.h"/>
 				<F N="../gtkextra/gtkdataformat.c"/>
 				<F N="../gtkextra/gtkdataformat.h"/>
+				<F N="../gtkextra/gtkdatatextview.c"/>
+				<F N="../gtkextra/gtkdatatextview.h"/>
+				<F N="../gtkextra/gtkitementry.c"/>
+				<F N="../gtkextra/gtkitementry.h"/>
 				<F N="../gtkextra/gtksheet.c"/>
 				<F N="../gtkextra/gtksheet.h"/>
 				<F N="../gtkextra/gtksheetcolumn.c"/>
 				<F N="../gtkextra/gtksheetcolumn.h"/>
-				<F N="../gtkextra/gtkitementry.c"/>
-				<F N="../gtkextra/gtkitementry.h"/>
 			</Folder>
 		</Folder>
 		<Folder
@@ -415,6 +417,7 @@
 			<F N="../docs/reference/gtkextra-sections.txt"/>
 			<F N="../docs/reference/gtkextra-undocumented.txt"/>
 			<F N="../docs/reference/gtkextra-unused.txt"/>
+			<F N="../docs/reference/gtkextra.hierarchy"/>
 		</Folder>
 	</Files>
 </Project>

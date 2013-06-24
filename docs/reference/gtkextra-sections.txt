@@ -116,6 +116,30 @@ gtk_data_entry_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gtkdatatextview</FILE>
+<TITLE>GtkDataTextView</TITLE>
+GtkDataTextView
+gtk_data_text_view_new
+gtk_data_text_view_get_description
+gtk_data_text_view_get_max_length
+gtk_data_text_view_get_max_length_bytes
+gtk_data_text_view_set_description
+gtk_data_text_view_set_max_length
+gtk_data_text_view_set_max_length_bytes
+<SUBSECTION Standard>
+GTK_DATA_TEXT_VIEW
+GTK_DATA_TEXT_VIEW_CLASS
+GTK_DATA_TEXT_VIEW_GET_CLASS
+GTK_IS_DATA_TEXT_VIEW
+GTK_IS_DATA_TEXT_VIEW_CLASS
+GTK_TYPE_DATA_TEXT_VIEW
+
+GtkDataTextViewClass
+<SUBSECTION Private>
+gtk_data_text_view_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gtkdirtree</FILE>
 <TITLE>GtkDirTree</TITLE>
 GtkDirTree
@@ -1428,6 +1452,8 @@ GDK_KEY_Shift_L
 GDK_KEY_Shift_R
 GDK_KEY_Tab
 GDK_KEY_Up
+
+GTK_SHEET_OPTIMIZE_COLUMN_DRAW
 </SECTION>
 
 <SECTION>

@@ -584,7 +584,7 @@ See gtk_data_format() for details.</doc>
 #GtkDataEntry.</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">maximum byte length or 0.</doc>
-          <type name="gint" c:type="const gint"/>
+          <type name="gint" c:type="gint"/>
         </return-value>
       </method>
       <method name="get_text" c:identifier="gtk_data_entry_get_text">
@@ -779,7 +779,7 @@ content. See gtk_text_buffer_get_text() for details.</doc>
 #GtkDataTextView.</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">maximum byte length or 0.</doc>
-          <type name="gint" c:type="const gint"/>
+          <type name="gint" c:type="gint"/>
         </return-value>
       </method>
       <method name="get_max_length_bytes"
@@ -789,7 +789,7 @@ content. See gtk_text_buffer_get_text() for details.</doc>
 #GtkDataTextView data_format.</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">maximum byte length or 0.</doc>
-          <type name="gint" c:type="const gint"/>
+          <type name="gint" c:type="gint"/>
         </return-value>
       </method>
       <method name="set_description"
@@ -816,6 +816,7 @@ content. See gtk_text_buffer_get_text() for details.</doc>
         </return-value>
         <parameters>
           <parameter name="max_length" transfer-ownership="none">
+            <doc xml:whitespace="preserve">maximum character length or 0</doc>
             <type name="gint" c:type="gint"/>
           </parameter>
         </parameters>
@@ -2362,15 +2363,17 @@ It should only be accessed through the functions described below.</doc>
       </constructor>
       <constructor name="new_with_max_length"
                    c:identifier="gtk_item_entry_new_with_max_length">
-        <doc xml:whitespace="preserve">Creates a new #GtkItemEntry with the maximum allowed length of the contents of the widget. 
-If the current contents are longer than the given length, then they will be truncated to fit.</doc>
+        <doc xml:whitespace="preserve">Creates a new #GtkItemEntry with the maximum allowed number 
+of characters in the contents of the widget. If the current 
+contents are longer than the given length, then they will be 
+truncated to fit.</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">the newly-created #GtkItemEntry widget.</doc>
           <type name="Gtk.Widget" c:type="GtkWidget*"/>
         </return-value>
         <parameters>
           <parameter name="max" transfer-ownership="none">
-            <doc xml:whitespace="preserve">the maximum length of the entry, or 0 for no maximum. (other than the maximum length of entries.) The value passed in will be clamped to the range 0-65536.</doc>
+            <doc xml:whitespace="preserve">the maximum character length of the entry, or 0 for no maximum. (other than the maximum length of entries.) The value passed in will be clamped to the range 0-65536.</doc>
             <type name="gint" c:type="gint"/>
           </parameter>
         </parameters>
@@ -2379,6 +2382,16 @@ If the current contents are longer than the given length, then they will be trun
               c:identifier="gtk_item_entry_get_cursor_visible">
         <return-value transfer-ownership="none">
           <type name="gboolean" c:type="gboolean"/>
+        </return-value>
+      </method>
+      <method name="get_max_length_bytes"
+              c:identifier="gtk_item_entry_get_max_length_bytes"
+              version="3.0.6">
+        <doc xml:whitespace="preserve">Retrieves the maximum byte length for the contents of  
+#GtkItemEntry.</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">maximum byte length or 0.</doc>
+          <type name="gint" c:type="gint"/>
         </return-value>
       </method>
       <method name="set_cursor_visible"
@@ -2405,6 +2418,21 @@ If the current contents are longer than the given length, then they will be trun
           </parameter>
         </parameters>
       </method>
+      <method name="set_max_length_bytes"
+              c:identifier="gtk_item_entry_set_max_length_bytes"
+              version="3.0.6">
+        <doc xml:whitespace="preserve">Sets the maximum byte length for the contents of the 
+#GtkItemEntry. Existing content will not be truncted.</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="max_length_bytes" transfer-ownership="none">
+            <doc xml:whitespace="preserve">maximum byte length or 0</doc>
+            <type name="gint" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
       <method name="set_text" c:identifier="gtk_item_entry_set_text">
         <doc xml:whitespace="preserve">Sets the text in the widget to the given value, replacing the current contents.</doc>
         <return-value transfer-ownership="none">
@@ -2421,19 +2449,22 @@ If the current contents are longer than the given length, then they will be trun
           </parameter>
         </parameters>
       </method>
-      <field name="parent">
+      <field name="parent" readable="0" private="1">
         <type name="Gtk.Entry" c:type="GtkEntry"/>
       </field>
-      <field name="text_max_size">
+      <field name="text_max_size" readable="0" private="1">
         <type name="gint" c:type="gint"/>
       </field>
-      <field name="item_text_size">
+      <field name="item_text_size" readable="0" private="1">
         <type name="gint16" c:type="gint16"/>
       </field>
-      <field name="item_n_bytes">
+      <field name="item_n_bytes" readable="0" private="1">
         <type name="gint16" c:type="gint16"/>
       </field>
-      <field name="justification">
+      <field name="max_length_bytes" readable="0" private="1">
+        <type name="gint" c:type="gint"/>
+      </field>
+      <field name="justification" readable="0" private="1">
         <type name="Gtk.Justification" c:type="GtkJustification"/>
       </field>
     </class>
@@ -15058,7 +15089,10 @@ up with the Pango text markup language.</doc>
       </method>
       <method name="column_set_visibility"
               c:identifier="gtk_sheet_column_set_visibility">
-        <doc xml:whitespace="preserve">Set column visibility. The default value is TRUE. If FALSE, the column is hidden.</doc>
+        <doc xml:whitespace="preserve">Set column visible property. 
+
+Default value is TRUE. When set to FALSE, the column is 
+hidden.</doc>
         <return-value transfer-ownership="none">
           <type name="none" c:type="void"/>
         </return-value>
@@ -15100,7 +15134,7 @@ up with the Pango text markup language.</doc>
         </return-value>
       </method>
       <method name="column_visible" c:identifier="gtk_sheet_column_visible">
-        <doc xml:whitespace="preserve">Get column visibility.</doc>
+        <doc xml:whitespace="preserve">Get column visible property.</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">TRUE - visible, FALSE - hidden or not existant</doc>
           <type name="gboolean" c:type="gboolean"/>

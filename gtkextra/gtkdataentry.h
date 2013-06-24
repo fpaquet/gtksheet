@@ -63,32 +63,31 @@ struct _GtkDataEntryClass
 GType gtk_data_entry_get_type(void) G_GNUC_CONST;
 GtkDataEntry *gtk_data_entry_new(void);
 
-G_CONST_RETURN gchar *
+const gchar *
     gtk_data_entry_get_description(GtkDataEntry *data_entry);
 
 void gtk_data_entry_set_description(GtkDataEntry *data_entry, 
                                     const gchar *description);
 
-G_CONST_RETURN gchar*
+const gchar*
     gtk_data_entry_get_data_type(GtkDataEntry *data_entry);
 
 void gtk_data_entry_set_data_type(GtkDataEntry *data_entry, 
                                   const gchar *data_type);
 
-G_CONST_RETURN gchar *
+const gchar *
 gtk_data_entry_get_data_format(GtkDataEntry *data_entry);
 
 void gtk_data_entry_set_data_format(GtkDataEntry *data_entry, 
                                     const gchar *data_format);
 
-G_CONST_RETURN gchar*
+const gchar*
     gtk_data_entry_get_text(GtkDataEntry *data_entry);
 
 void gtk_data_entry_set_text(GtkDataEntry *data_entry, 
                                     const gchar *text);
 
-G_CONST_RETURN gint
-    gtk_data_entry_get_max_length_bytes(GtkDataEntry *data_entry);
+gint gtk_data_entry_get_max_length_bytes(GtkDataEntry *data_entry);
 
 void gtk_data_entry_set_max_length_bytes(GtkDataEntry *data_entry, 
                                     gint max_length_bytes);

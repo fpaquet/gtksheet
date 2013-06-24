@@ -90,6 +90,13 @@ enum _GtkSheetColumnProperties
     PROP_GTK_SHEET_COLUMN_ENTRY_TYPE,  /* gtk_sheet_column_set_entry_type() */
     PROP_GTK_SHEET_COLUMN_VJUST,  /* gtk_sheet_column_set_vjustification() */
     PROP_GTK_SHEET_COLUMN_VISIBLE,  /* gtk_sheet_column_set_visibility() */
+#if 0
+    /* todo */
+    PROP_GTK_SHEET_COLUMN_PASSWD_MODE,  /* gtk_sheet_column_set_passwd_mode() */
+    PROP_GTK_SHEET_COLUMN_MAX_LENGTH,  /* gtk_sheet_column_set_max_length() */
+    PROP_GTK_SHEET_COLUMN_MAX_LENGTH_BYTES,  /* gtk_sheet_column_set_max_length_bytes() */
+    PROP_GTK_SHEET_COLUMN_WRAP_MODE,  /* gtk_sheet_column_set_wrap_mode() */
+#endif
 };
 
 
@@ -1662,7 +1669,7 @@ _gtk_sheet_column_button_release(GtkSheet *sheet, gint col)
  * @sheet: a #GtkSheet.
  * @column: column number
  *
- * Get column visibility. 
+ * Get column visible property. 
  *  
  * Returns: TRUE - visible, FALSE - hidden or not existant 
  */
@@ -1683,7 +1690,10 @@ gtk_sheet_column_visible(GtkSheet *sheet, gint column)
  * @column: column number
  * @visible: TRUE or FALSE
  *
- * Set column visibility. The default value is TRUE. If FALSE, the column is hidden.
+ * Set column visible property. 
+ *
+ * Default value is TRUE. When set to FALSE, the column is 
+ * hidden. 
  */
 void
 gtk_sheet_column_set_visibility(GtkSheet *sheet, gint col, gboolean visible)

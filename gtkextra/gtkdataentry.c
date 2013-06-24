@@ -77,9 +77,6 @@
 #define GTK_DATA_ENTRY_DEBUG  0  /* define to activate debug output */
 #endif
 
-#define GTK_DATA_ENTRY_DEBUG 0
-#define GTK_DATA_ENTRY_DEBUG 1
-
 #if GTK_DATA_ENTRY_DEBUG
 #define GTK_DATA_ENTRY_DEBUG_SIGNAL  0  /* debug signal handlers */
 #endif
@@ -116,7 +113,7 @@ static GtkEntryClass *parent_class = NULL;
  *      storage in the widget and must not be freed, modified or
  *      stored.
  **/
-G_CONST_RETURN gchar *
+const gchar *
 gtk_data_entry_get_description(GtkDataEntry *data_entry)
 {
     g_return_val_if_fail(GTK_IS_DATA_ENTRY(data_entry), NULL);
@@ -152,7 +149,7 @@ void gtk_data_entry_set_description(GtkDataEntry *data_entry,
  *      storage in the widget and must not be freed, modified or
  *      stored.
  **/
-G_CONST_RETURN gchar *
+const gchar *
 gtk_data_entry_get_data_type(GtkDataEntry *data_entry)
 {
     g_return_val_if_fail(GTK_IS_DATA_ENTRY(data_entry), NULL);
@@ -190,7 +187,7 @@ void gtk_data_entry_set_data_type(GtkDataEntry *data_entry,
  *      storage in the widget and must not be freed, modified or
  *      stored.
  **/
-G_CONST_RETURN gchar *
+const gchar *
 gtk_data_entry_get_data_format(GtkDataEntry *data_entry)
 {
     g_return_val_if_fail(GTK_IS_DATA_ENTRY(data_entry), NULL);
@@ -231,7 +228,7 @@ void gtk_data_entry_set_data_format(GtkDataEntry *data_entry,
  *      storage in the widget and must not be freed, modified or
  *      stored.
  **/
-G_CONST_RETURN gchar *
+const gchar *
 gtk_data_entry_get_text(GtkDataEntry *data_entry)
 {
     gchar *text;
@@ -288,7 +285,7 @@ void gtk_data_entry_set_text(GtkDataEntry *data_entry,
  *  
  * Since: 3.0.6 
  **/
-G_CONST_RETURN gint
+gint
 gtk_data_entry_get_max_length_bytes(GtkDataEntry *data_entry)
 {
     g_return_val_if_fail(GTK_IS_DATA_ENTRY(data_entry), 0);

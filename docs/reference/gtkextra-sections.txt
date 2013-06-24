@@ -294,8 +294,10 @@ gtk_item_entry_new
 gtk_item_entry_new_with_max_length
 gtk_item_entry_set_text
 gtk_item_entry_set_justification
-gtk_item_entry_set_cursor_visible
+gtk_item_entry_get_max_length_bytes
+gtk_item_entry_set_max_length_bytes
 gtk_item_entry_get_cursor_visible
+gtk_item_entry_set_cursor_visible
 <SUBSECTION Standard>
 GTK_ITEM_ENTRY
 GTK_IS_ITEM_ENTRY

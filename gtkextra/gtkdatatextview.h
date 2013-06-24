@@ -62,20 +62,18 @@ struct _GtkDataTextViewClass
 GType gtk_data_text_view_get_type(void) G_GNUC_CONST;
 GtkDataTextView *gtk_data_text_view_new(void);
 
-G_CONST_RETURN gchar *
+const gchar *
     gtk_data_text_view_get_description(GtkDataTextView *data_text_view);
 
 void gtk_data_text_view_set_description(GtkDataTextView *data_text_view, 
                                     const gchar *description);
 
-G_CONST_RETURN gint
-    gtk_data_text_view_get_max_length(GtkDataTextView *data_text_view);
+gint gtk_data_text_view_get_max_length(GtkDataTextView *data_text_view);
 
 void gtk_data_text_view_set_max_length(GtkDataTextView *data_text_view, 
                                     gint max_length);
 
-G_CONST_RETURN gint
-    gtk_data_text_view_get_max_length_bytes(GtkDataTextView *data_text_view);
+gint gtk_data_text_view_get_max_length_bytes(GtkDataTextView *data_text_view);
 
 void gtk_data_text_view_set_max_length_bytes(GtkDataTextView *data_text_view, 
                                     gint max_length_bytes);

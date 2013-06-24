@@ -67,9 +67,6 @@
 #define GTK_DATA_TEXT_VIEW_DEBUG  0  /* define to activate debug output */
 #endif
 
-#define GTK_DATA_TEXT_VIEW_DEBUG 0
-#define GTK_DATA_TEXT_VIEW_DEBUG 1
-
 #if GTK_DATA_TEXT_VIEW_DEBUG
 #define GTK_DATA_TEXT_VIEW_DEBUG_SIGNAL  1  /* debug signal handlers */
 #endif
@@ -108,7 +105,7 @@ static GtkTextViewClass *parent_class = NULL;
  *  
  * Since: 3.0.6 
  **/
-G_CONST_RETURN gchar *
+const gchar *
 gtk_data_text_view_get_description(GtkDataTextView *data_text_view)
 {
     g_return_val_if_fail(GTK_IS_DATA_TEXT_VIEW(data_text_view), NULL);
@@ -146,7 +143,7 @@ void gtk_data_text_view_set_description(GtkDataTextView *data_text_view,
  *  
  * Since: 3.0.6 
  **/
-G_CONST_RETURN gint
+gint
 gtk_data_text_view_get_max_length(GtkDataTextView *data_text_view)
 {
     g_return_val_if_fail(GTK_IS_DATA_TEXT_VIEW(data_text_view), 0);
@@ -156,7 +153,7 @@ gtk_data_text_view_get_max_length(GtkDataTextView *data_text_view)
 /**
  * gtk_data_text_view_set_max_length: 
  * @data_text_view:  a #GtkDataTextView
- * @max_length_bytes:  maximum character length or 0
+ * @max_length:  maximum character length or 0
  *
  * Sets the maximum character length for the contents of the 
  * #GtkDataTextView. Existing content will not be truncted. 
@@ -189,7 +186,7 @@ void gtk_data_text_view_set_max_length(GtkDataTextView *data_text_view,
  *  
  * Since: 3.0.6 
  **/
-G_CONST_RETURN gint
+gint
 gtk_data_text_view_get_max_length_bytes(GtkDataTextView *data_text_view)
 {
     g_return_val_if_fail(GTK_IS_DATA_TEXT_VIEW(data_text_view), 0);

@@ -8685,16 +8685,15 @@ static void _gtk_sheet_entry_preselect(GtkSheet *sheet)
 
 /**
  * _gtk_sheet_entry_setup: 
- * configure sheet_entry for use
+ * @sheet:  the #GtkSheet
+ * @row:    row index
+ * @col:    column index
+ * @entry_widget: entry widget 
+ * 
+ * configure sheet_entry for use 
  * 
  * setup sheet_entry style, justification and other properties
- * for use within the active cell
- * 
- * @sheet  the #GtkSheet
- * @row    row index
- * @col    column index
- * @entry_widget
- *               entry widget
+ * for use within the active cell 
  */
 static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
     GtkWidget *entry_widget)

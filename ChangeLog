@@ -1,5 +1,7 @@
 2013-06-24 Fredy Paquet <mailbox AT opag.ch>
 	* GtkDataTextView: new subclass of GtkTextView to limit multiline text length
+	* GtkDataEntry: resolved deprecated G_CONST_RETURN
+	* GtkItemEntry: added internal max_length_bytes property (incomplete)
 
 2013-06-23 Fredy Paquet <mailbox AT opag.ch>
 	* GtkItemEntry: fixed UTF-8 character insertion, killing trailing text (PR#96868)

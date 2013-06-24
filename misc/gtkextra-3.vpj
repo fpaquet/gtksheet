@@ -418,6 +418,8 @@
 			<F N="../docs/reference/gtkextra-undocumented.txt"/>
 			<F N="../docs/reference/gtkextra-unused.txt"/>
 			<F N="../docs/reference/gtkextra.hierarchy"/>
+			<F N="../docs/reference/gtkextra.interfaces"/>
+			<F N="../docs/reference/gtkextra.types"/>
 		</Folder>
 	</Files>
 </Project>

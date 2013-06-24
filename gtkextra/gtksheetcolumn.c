@@ -57,7 +57,7 @@
 #ifdef GTK_SHEET_COL_DEBUG
 #   define GTK_SHEET_COL_DEBUG_BUILDER   0
 #   define GTK_SHEET_COL_DEBUG_DRAW  0
-#   define GTK_SHEET_COL_DEBUG_PROPERTIES  0
+#   define GTK_SHEET_COL_DEBUG_PROPERTIES  1
 #   define GTK_SHEET_COL_DEBUG_SIZE  0
 #endif
 
@@ -70,6 +70,7 @@
 #define MIN_VIEW_COLUMN(sheet)  sheet->view.col0
 #define MAX_VIEW_COLUMN(sheet)  sheet->view.coli
 
+#define GTK_DATA_TEXT_VIEW_BUFFER_MAX_SIZE (G_MAXINT / 2)
 
 
 static GtkObjectClass *sheet_column_parent_class = NULL;
@@ -77,26 +78,22 @@ static GtkObjectClass *sheet_column_parent_class = NULL;
 enum _GtkSheetColumnProperties
 {
     PROP_0,
-    PROP_GTK_SHEET_COLUMN_0,  /* dummy */
-    PROP_GTK_SHEET_COLUMN_POSITION,  /* position of the column */
-    PROP_GTK_SHEET_COLUMN_LABEL,  /* gtk_sheet_column_button_add_label() */
-    PROP_GTK_SHEET_COLUMN_WIDTH,  /* gtk_sheet_set_column_width() */
-    PROP_GTK_SHEET_COLUMN_JUSTIFICATION,  /* gtk_sheet_column_set_justification() */
-    PROP_GTK_SHEET_COLUMN_ISKEY,  /* gtk_sheet_column_set_iskey() */
-    PROP_GTK_SHEET_COLUMN_READONLY,  /* gtk_sheet_column_set_readonly() */
-    PROP_GTK_SHEET_COLUMN_DATATYPE,  /* gtk_sheet_column_set_datatype() */
-    PROP_GTK_SHEET_COLUMN_DATAFMT,  /* gtk_sheet_column_set_format() */
-    PROP_GTK_SHEET_COLUMN_DESCRIPTION,  /* gtk_sheet_column_set_description() */
-    PROP_GTK_SHEET_COLUMN_ENTRY_TYPE,  /* gtk_sheet_column_set_entry_type() */
-    PROP_GTK_SHEET_COLUMN_VJUST,  /* gtk_sheet_column_set_vjustification() */
-    PROP_GTK_SHEET_COLUMN_VISIBLE,  /* gtk_sheet_column_set_visibility() */
-#if 0
-    /* todo */
-    PROP_GTK_SHEET_COLUMN_PASSWD_MODE,  /* gtk_sheet_column_set_passwd_mode() */
-    PROP_GTK_SHEET_COLUMN_MAX_LENGTH,  /* gtk_sheet_column_set_max_length() */
-    PROP_GTK_SHEET_COLUMN_MAX_LENGTH_BYTES,  /* gtk_sheet_column_set_max_length_bytes() */
-    PROP_GTK_SHEET_COLUMN_WRAP_MODE,  /* gtk_sheet_column_set_wrap_mode() */
-#endif
+    PROP_SHEET_COLUMN_0,  /* dummy */
+    PROP_SHEET_COLUMN_POSITION,  /* position of the column */
+    PROP_SHEET_COLUMN_LABEL,  /* gtk_sheet_column_button_add_label() */
+    PROP_SHEET_COLUMN_WIDTH,  /* gtk_sheet_set_column_width() */
+    PROP_SHEET_COLUMN_JUSTIFICATION,  /* gtk_sheet_column_set_justification() */
+    PROP_SHEET_COLUMN_ISKEY,  /* gtk_sheet_column_set_iskey() */
+    PROP_SHEET_COLUMN_READONLY,  /* gtk_sheet_column_set_readonly() */
+    PROP_SHEET_COLUMN_DATATYPE,  /* gtk_sheet_column_set_datatype() */
+    PROP_SHEET_COLUMN_DATAFMT,  /* gtk_sheet_column_set_format() */
+    PROP_SHEET_COLUMN_DESCRIPTION,  /* gtk_sheet_column_set_description() */
+    PROP_SHEET_COLUMN_ENTRY_TYPE,  /* gtk_sheet_column_set_entry_type() */
+    PROP_SHEET_COLUMN_VJUST,  /* gtk_sheet_column_set_vjustification() */
+    PROP_SHEET_COLUMN_VISIBLE,  /* gtk_sheet_column_set_visibility() */
+    PROP_SHEET_COLUMN_MAX_LENGTH,  /* max char length */
+    PROP_SHEET_COLUMN_MAX_LENGTH_BYTES,  /* max byte length  */
+    PROP_SHEET_COLUMN_WRAP_MODE,  /* wrap_mode */
 };
 
 
@@ -121,7 +118,7 @@ gtk_sheet_column_set_property(GObject *object,
 
     switch(property_id)
     {
-        case PROP_GTK_SHEET_COLUMN_POSITION:
+        case PROP_SHEET_COLUMN_POSITION:
             {
                 GtkSheetColumn *swapcol;
                 guint newcol = g_value_get_int(value);
@@ -148,7 +145,7 @@ gtk_sheet_column_set_property(GObject *object,
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_LABEL:
+        case PROP_SHEET_COLUMN_LABEL:
             {
                 const gchar *label = g_value_get_string(value);
 
@@ -159,13 +156,11 @@ gtk_sheet_column_set_property(GObject *object,
                     button->label = g_strdup(label);
                 }
                 else
-                {
                     gtk_sheet_column_button_add_label(sheet, col, label);
-                }
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_WIDTH:
+        case PROP_SHEET_COLUMN_WIDTH:
             {
                 gint width = g_value_get_int(value);
 
@@ -186,7 +181,7 @@ gtk_sheet_column_set_property(GObject *object,
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_JUSTIFICATION:
+        case PROP_SHEET_COLUMN_JUSTIFICATION:
             {
                 gint justification = g_value_get_enum(value);
 
@@ -195,13 +190,11 @@ gtk_sheet_column_set_property(GObject *object,
                     colobj->justification = justification;
                 }
                 else
-                {
                     gtk_sheet_column_set_justification(sheet, col, justification);
-                }
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_ISKEY:
+        case PROP_SHEET_COLUMN_ISKEY:
             {
                 gint is_key = g_value_get_boolean(value);
 
@@ -210,13 +203,11 @@ gtk_sheet_column_set_property(GObject *object,
                     colobj->is_key = is_key;
                 }
                 else
-                {
                     gtk_sheet_column_set_iskey(sheet, col, is_key);
-                }
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_READONLY:
+        case PROP_SHEET_COLUMN_READONLY:
             {
                 gint is_readonly = g_value_get_boolean(value);
 
@@ -225,13 +216,11 @@ gtk_sheet_column_set_property(GObject *object,
                     colobj->is_readonly = is_readonly;
                 }
                 else
-                {
                     gtk_sheet_column_set_readonly(sheet, col, is_readonly);
-                }
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_DATATYPE:
+        case PROP_SHEET_COLUMN_DATATYPE:
             {
                 const gchar *data_type = g_value_get_string(value);
 
@@ -241,13 +230,11 @@ gtk_sheet_column_set_property(GObject *object,
                     colobj->data_type = g_strdup(data_type);
                 }
                 else
-                {
                     gtk_sheet_column_set_datatype(sheet, col, data_type);
-                }
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_DATAFMT:
+        case PROP_SHEET_COLUMN_DATAFMT:
             {
                 const gchar *data_format = g_value_get_string(value);
 
@@ -257,13 +244,11 @@ gtk_sheet_column_set_property(GObject *object,
                     colobj->data_format = g_strdup(data_format);
                 }
                 else
-                {
                     gtk_sheet_column_set_format(sheet, col, data_format);
-                }
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_DESCRIPTION:
+        case PROP_SHEET_COLUMN_DESCRIPTION:
             {
                 const gchar *description = g_value_get_string(value);
 
@@ -273,13 +258,11 @@ gtk_sheet_column_set_property(GObject *object,
                     colobj->description = g_strdup(description);
                 }
                 else
-                {
                     gtk_sheet_column_set_description(sheet, col, description);
-                }
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_ENTRY_TYPE:
+        case PROP_SHEET_COLUMN_ENTRY_TYPE:
             {
                 GType entry_type = _gtk_sheet_entry_type_to_gtype(g_value_get_enum(value));
 
@@ -288,13 +271,11 @@ gtk_sheet_column_set_property(GObject *object,
                     colobj->entry_type = entry_type;
                 }
                 else
-                {
                     gtk_sheet_column_set_entry_type(sheet, col, entry_type);
-                }
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_VJUST:
+        case PROP_SHEET_COLUMN_VJUST:
             {
                 GtkSheetVerticalJustification vjust = g_value_get_enum(value);
 
@@ -303,13 +284,11 @@ gtk_sheet_column_set_property(GObject *object,
                     colobj->vjust = vjust;
                 }
                 else
-                {
                     gtk_sheet_column_set_vjustification(sheet, col, vjust);
-                }
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_VISIBLE:
+        case PROP_SHEET_COLUMN_VISIBLE:
             {
                 gint visible = g_value_get_boolean(value);
 
@@ -323,10 +302,20 @@ gtk_sheet_column_set_property(GObject *object,
                     GTK_SHEET_COLUMN_SET_VISIBLE(colobj, visible);
                 }
                 else
-                {
                     gtk_sheet_column_set_visibility(sheet, col, visible);
-                }
             }
+            break;
+
+        case PROP_SHEET_COLUMN_MAX_LENGTH:
+	    colobj->max_length = g_value_get_int(value);
+            break;
+
+        case PROP_SHEET_COLUMN_MAX_LENGTH_BYTES:
+	    colobj->max_length = g_value_get_int(value);
+            break;
+
+        case PROP_SHEET_COLUMN_WRAP_MODE:
+	    colobj->wrap_mode = g_value_get_enum(value);
             break;
 
         default:
@@ -354,59 +343,71 @@ gtk_sheet_column_get_property(GObject *object,
 
     switch(property_id)
     {
-        case PROP_GTK_SHEET_COLUMN_POSITION:
+        case PROP_SHEET_COLUMN_POSITION:
             {
                 if (!sheet) return;
                 if (col >= 0) g_value_set_int(value, col);
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_LABEL:
+        case PROP_SHEET_COLUMN_LABEL:
             g_value_set_string(value, colobj->button.label);
             break;
 
-        case PROP_GTK_SHEET_COLUMN_WIDTH:
+        case PROP_SHEET_COLUMN_WIDTH:
             g_value_set_int(value, colobj->width);
             break;
 
-        case PROP_GTK_SHEET_COLUMN_JUSTIFICATION:
+        case PROP_SHEET_COLUMN_JUSTIFICATION:
             g_value_set_enum(value, colobj->justification);
             break;
 
-        case PROP_GTK_SHEET_COLUMN_ISKEY:
+        case PROP_SHEET_COLUMN_ISKEY:
             g_value_set_boolean(value, colobj->is_key);
             break;
 
-        case PROP_GTK_SHEET_COLUMN_READONLY:
+        case PROP_SHEET_COLUMN_READONLY:
             g_value_set_boolean(value, colobj->is_readonly);
             break;
 
-        case PROP_GTK_SHEET_COLUMN_DATATYPE:
+        case PROP_SHEET_COLUMN_DATATYPE:
             g_value_set_string(value, colobj->data_type);
             break;
 
-        case PROP_GTK_SHEET_COLUMN_DATAFMT:
+        case PROP_SHEET_COLUMN_DATAFMT:
             g_value_set_string(value, colobj->data_format);
             break;
 
-        case PROP_GTK_SHEET_COLUMN_DESCRIPTION:
+        case PROP_SHEET_COLUMN_DESCRIPTION:
             g_value_set_string(value, colobj->description);
             break;
 
-        case PROP_GTK_SHEET_COLUMN_ENTRY_TYPE:
+        case PROP_SHEET_COLUMN_ENTRY_TYPE:
             {
                 GtkSheetEntryType et = _gtk_sheet_entry_type_from_gtype(colobj->entry_type);
                 g_value_set_enum(value, et);
             }
             break;
 
-        case PROP_GTK_SHEET_COLUMN_VJUST:
+        case PROP_SHEET_COLUMN_VJUST:
             g_value_set_enum(value, colobj->vjust);
             break;
 
-        case PROP_GTK_SHEET_COLUMN_VISIBLE:
+        case PROP_SHEET_COLUMN_VISIBLE:
             g_value_set_boolean(value, GTK_SHEET_COLUMN_IS_VISIBLE(colobj));
             break;
+
+        case PROP_SHEET_COLUMN_MAX_LENGTH:
+            g_value_set_int(value, colobj->max_length);
+            break;
+
+	case PROP_SHEET_COLUMN_MAX_LENGTH_BYTES:
+	    g_value_set_int(value, colobj->max_length_bytes);
+	    break;
+
+	case PROP_SHEET_COLUMN_WRAP_MODE:
+	    g_value_set_enum(value, colobj->wrap_mode);
+	    break;
 
         default:
             /* We don't have any other property... */
@@ -432,7 +433,7 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                              0, 1024, 0,
                              G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
-                                    PROP_GTK_SHEET_COLUMN_POSITION, pspec);
+                                    PROP_SHEET_COLUMN_POSITION, pspec);
 
     /**
      * GtkSheetColumn:label:
@@ -444,7 +445,7 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                                 "" /* default value */,
                                 G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
-                                    PROP_GTK_SHEET_COLUMN_LABEL, pspec);
+                                    PROP_SHEET_COLUMN_LABEL, pspec);
 
     /**
      * GtkSheetColumn:width:
@@ -456,7 +457,7 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                              -1, 8192, -1,
                              G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
-                                    PROP_GTK_SHEET_COLUMN_WIDTH, pspec);
+                                    PROP_SHEET_COLUMN_WIDTH, pspec);
 
     /**
      * GtkSheetColumn:justification:
@@ -469,7 +470,7 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                               GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION,
                               G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
-                                    PROP_GTK_SHEET_COLUMN_JUSTIFICATION, pspec);
+                                    PROP_SHEET_COLUMN_JUSTIFICATION, pspec);
 
     /**
      * GtkSheetColumn:iskey:
@@ -481,7 +482,7 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                                  FALSE,
                                  G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
-                                    PROP_GTK_SHEET_COLUMN_ISKEY, pspec);
+                                    PROP_SHEET_COLUMN_ISKEY, pspec);
 
     /**
      * GtkSheetColumn:readonly:
@@ -493,7 +494,7 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                                  FALSE,
                                  G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
-                                    PROP_GTK_SHEET_COLUMN_READONLY, pspec);
+                                    PROP_SHEET_COLUMN_READONLY, pspec);
 
     /**
      * GtkSheetColumn:datatype:
@@ -506,7 +507,7 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                                 "",
                                 G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
-                                    PROP_GTK_SHEET_COLUMN_DATATYPE, pspec);
+                                    PROP_SHEET_COLUMN_DATATYPE, pspec);
 
     /**
      * GtkSheetColumn:dataformat:
@@ -519,7 +520,7 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                                 "",
                                 G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
-                                    PROP_GTK_SHEET_COLUMN_DATAFMT, pspec);
+                                    PROP_SHEET_COLUMN_DATAFMT, pspec);
 
     /**
      * GtkSheetColumn:description:
@@ -531,7 +532,7 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                                 "",
                                 G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
-                                    PROP_GTK_SHEET_COLUMN_DESCRIPTION, pspec);
+                                    PROP_SHEET_COLUMN_DESCRIPTION, pspec);
 
     /**
      * GtkSheetColumn:entry-type:
@@ -544,7 +545,7 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                               GTK_SHEET_ENTRY_TYPE_DEFAULT,
                               G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
-                                    PROP_GTK_SHEET_COLUMN_ENTRY_TYPE, pspec);
+                                    PROP_SHEET_COLUMN_ENTRY_TYPE, pspec);
 
     /**
      * GtkSheetColumn:vjust:
@@ -557,21 +558,80 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                               GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT,
                               G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
-                                    PROP_GTK_SHEET_COLUMN_VJUST, pspec);
+                                    PROP_SHEET_COLUMN_VJUST, pspec);
 
-#if 1
     /**
      * GtkSheetColumn:visible:
      *
-     * Visibility for columns
+     * Visible property for columns
      */
     pspec = g_param_spec_boolean("visible", "Column is visible",
                                  "Wether the column is visible",
                                  FALSE,
                                  G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
-                                    PROP_GTK_SHEET_COLUMN_VISIBLE, pspec);
-#endif
+                                    PROP_SHEET_COLUMN_VISIBLE, pspec);
+
+    /**
+     * GtkSheetColumn:max-length:
+     *
+     * Maximum number orf characters in this column, Zero if no 
+    *  maximum.
+    *
+    *  This property is passed to the sheet entry editor. It is
+    *  supported for  the following editors: #GtkItemEntry,
+    *  #GtkEntry, #GtkDataTextView
+    *
+    * Since: 3.0.6 
+     */
+    pspec = g_param_spec_int("max-length", "Maximum char length",
+                             "Maximum number orf characters in this column, Zero if no maximum.",
+                             0, GTK_DATA_TEXT_VIEW_BUFFER_MAX_SIZE, 0,
+                             G_PARAM_READWRITE);
+    g_object_class_install_property(gobject_class,
+                                    PROP_SHEET_COLUMN_MAX_LENGTH, pspec);
+
+    /**
+     * GtkSheetColumn:max-length-bytes:
+     *
+     * Set the maximum length in bytes for the GtkDataEntry. For 
+     * details see #gtk_data_entry_set_max_length_bytes. 
+     *
+     *  This property is passed to the sheet entry editor. It is
+     *  supported for  the following editors: #GtkItemEntry,
+     *  #GtkDataTextView.
+     *
+     * Sometimes, systems cannot handle UTF-8 string length
+     * correctly, to overcome this problem, you can use the maximum 
+     * string length in bytes. When setting both limits, max-length 
+     *  and max-length-bytes, both must be fulfilled.
+     *  
+     * Since: 3.0.6 
+     */
+    pspec = g_param_spec_int("max-length-bytes", "Maximum bytes length",
+                             "The maximum number of bytes for this entry. Zero if no maximum",
+                             0, GTK_DATA_TEXT_VIEW_BUFFER_MAX_SIZE, 0,
+                             G_PARAM_READWRITE);
+    g_object_class_install_property(gobject_class,
+                                    PROP_SHEET_COLUMN_MAX_LENGTH_BYTES, pspec);
+
+    /**
+     * GtkSheetColumn:wrap-mode:
+     *
+     *  This property is passed to the sheet entry editor. It is
+     *  supported for  the following editors: #GtkTextView,
+     *  #GtkDataTextView.
+     *
+     * Since: 3.0.6 
+     */
+    pspec = g_param_spec_enum("wrap-mode", "Wrap-mode",
+                              "Whether to wrap lines never, at word boundaries, or at character boundaries",
+                              GTK_TYPE_WRAP_MODE,
+                              GTK_WRAP_NONE,
+                              G_PARAM_READWRITE);
+    g_object_class_install_property(gobject_class,
+                                    PROP_SHEET_COLUMN_WRAP_MODE, pspec);
+
 }
 
 static void
@@ -603,6 +663,9 @@ gtk_sheet_column_init(GtkSheetColumn *column)
     column->data_type = NULL;
     column->description = NULL;
     column->entry_type = G_TYPE_NONE;
+    column->max_length = 0;
+    column->max_length_bytes = 0;
+    column->wrap_mode = GTK_WRAP_NONE;
 
     GTK_SHEET_COLUMN_SET_VISIBLE(column, TRUE);
     GTK_SHEET_COLUMN_SET_SENSITIVE(column, TRUE);

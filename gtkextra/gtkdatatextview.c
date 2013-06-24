@@ -64,7 +64,7 @@
 #undef GTK_DATA_TEXT_VIEW_DEBUG
 
 #ifdef DEBUG
-#define GTK_DATA_TEXT_VIEW_DEBUG  0  /* define to activate debug output */
+#define GTK_DATA_TEXT_VIEW_DEBUG  1  /* define to activate debug output */
 #endif
 
 #if GTK_DATA_TEXT_VIEW_DEBUG

@@ -68,6 +68,10 @@ struct _GtkSheetColumn
     gchar *description;         /* column description and further information about the column */
 
     GType entry_type;     /* Column entry_type or G_TYPE_NONE */
+
+    gint max_length;   /* maximum character length */
+    gint max_length_bytes;   /* maximum byte length */
+    GtkWrapMode wrap_mode;  /* wrap-mode */
 };
 
 struct _GtkSheetColumnClass

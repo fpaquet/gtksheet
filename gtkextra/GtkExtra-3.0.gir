@@ -18006,6 +18006,35 @@ any widget content is text</doc>
         <doc xml:whitespace="preserve">Label of the column button</doc>
         <type name="utf8"/>
       </property>
+      <property name="max-length"
+                version="3.0.6"
+                writable="1"
+                transfer-ownership="none">
+        <doc xml:whitespace="preserve">Maximum number orf characters in this column, Zero if no 
+ maximum.
+
+ This property is passed to the sheet entry editor. It is
+ supported for  the following editors: #GtkItemEntry,
+ #GtkEntry, #GtkDataTextView</doc>
+        <type name="gint"/>
+      </property>
+      <property name="max-length-bytes"
+                version="3.0.6"
+                writable="1"
+                transfer-ownership="none">
+        <doc xml:whitespace="preserve">Set the maximum length in bytes for the GtkDataEntry. For 
+details see #gtk_data_entry_set_max_length_bytes. 
+
+ This property is passed to the sheet entry editor. It is
+ supported for  the following editors: #GtkItemEntry,
+ #GtkDataTextView.
+
+Sometimes, systems cannot handle UTF-8 string length
+correctly, to overcome this problem, you can use the maximum 
+string length in bytes. When setting both limits, max-length 
+ and max-length-bytes, both must be fulfilled.</doc>
+        <type name="gint"/>
+      </property>
       <property name="position" writable="1" transfer-ownership="none">
         <doc xml:whitespace="preserve">The packing position of the column</doc>
         <type name="gint"/>
@@ -18015,7 +18044,7 @@ any widget content is text</doc>
         <type name="gboolean"/>
       </property>
       <property name="visible" writable="1" transfer-ownership="none">
-        <doc xml:whitespace="preserve">Visibility for columns</doc>
+        <doc xml:whitespace="preserve">Visible property for columns</doc>
         <type name="gboolean"/>
       </property>
       <property name="vjust"
@@ -18028,6 +18057,15 @@ any widget content is text</doc>
       <property name="width" writable="1" transfer-ownership="none">
         <doc xml:whitespace="preserve">Width of the column</doc>
         <type name="gint"/>
+      </property>
+      <property name="wrap-mode"
+                version="3.0.6"
+                writable="1"
+                transfer-ownership="none">
+        <doc xml:whitespace="preserve">This property is passed to the sheet entry editor. It is
+ supported for  the following editors: #GtkTextView,
+ #GtkDataTextView.</doc>
+        <type name="Gtk.WrapMode"/>
       </property>
       <field name="parent" readable="0" private="1">
         <type name="Gtk.Widget" c:type="GtkWidget"/>
@@ -18078,6 +18116,15 @@ any widget content is text</doc>
       <field name="entry_type" readable="0" private="1">
         <type name="GType" c:type="GType"/>
       </field>
+      <field name="max_length" readable="0" private="1">
+        <type name="gint" c:type="gint"/>
+      </field>
+      <field name="max_length_bytes" readable="0" private="1">
+        <type name="gint" c:type="gint"/>
+      </field>
+      <field name="wrap_mode" readable="0" private="1">
+        <type name="Gtk.WrapMode" c:type="GtkWrapMode"/>
+      </field>
     </class>
     <record name="SheetColumnClass"
             c:type="GtkSheetColumnClass"
@@ -18101,17 +18148,20 @@ from glade-3</doc>
       <member name="gtk_text_view"
               value="3"
               c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW"/>
-      <member name="gtk_spin_button"
+      <member name="gtk_data_text_view"
               value="4"
+              c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_DATA_TEXT_VIEW"/>
+      <member name="gtk_spin_button"
+              value="5"
               c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON"/>
       <member name="gtk_combo_box"
-              value="5"
+              value="6"
               c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX"/>
       <member name="gtk_combo_box_entry"
-              value="6"
+              value="7"
               c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX_ENTRY"/>
       <member name="gtk_combo"
-              value="7"
+              value="8"
               c:identifier="GTK_SHEET_ENTRY_TYPE_GTK_COMBO"/>
     </enumeration>
     <record name="SheetRange"

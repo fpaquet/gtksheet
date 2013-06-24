@@ -54,6 +54,7 @@
 
 #include "gtkextra-compat.h"
 #include "gtkitementry.h"
+#include "gtkdatatextview.h"
 #include "gtksheet.h"
 #include "gtkdataformat.h"
 #include "gtkextra-marshal.h"
@@ -79,7 +80,7 @@
 #   define GTK_SHEET_DEBUG_DRAW_BUTTON  0
 #   define GTK_SHEET_DEBUG_DRAW_LABEL  0
 #   define GTK_SHEET_DEBUG_ENTER_PRESSED   0
-#   define GTK_SHEET_DEBUG_ENTRY   0
+#   define GTK_SHEET_DEBUG_ENTRY   1
 #   define GTK_SHEET_DEBUG_EXPOSE   0
 #   define GTK_SHEET_DEBUG_FINALIZE  0
 #   define GTK_SHEET_DEBUG_FONT_METRICS  0
@@ -1471,6 +1472,9 @@ _gtk_sheet_entry_type_from_gtype(GType entry_type)
     else if (entry_type == GTK_TYPE_TEXT_VIEW)
 	return (GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW);
 
+    else if (entry_type == GTK_TYPE_DATA_TEXT_VIEW)
+	return (GTK_SHEET_ENTRY_TYPE_GTK_DATA_TEXT_VIEW);
+
     else if (entry_type == GTK_TYPE_SPIN_BUTTON)
 	return (GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON);
 
@@ -1507,6 +1511,9 @@ _gtk_sheet_entry_type_to_gtype(GtkSheetEntryType ety)
 
 	case GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW:
 	    return (GTK_TYPE_TEXT_VIEW);
+
+	case GTK_SHEET_ENTRY_TYPE_GTK_DATA_TEXT_VIEW:
+	    return (GTK_TYPE_DATA_TEXT_VIEW);
 
 	case GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON:
 	    return (GTK_TYPE_SPIN_BUTTON);
@@ -8702,6 +8709,7 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
     GtkJustification justification = GTK_JUSTIFY_LEFT;
     gboolean editable;
     GtkStyle *style;
+    GtkSheetColumn *colptr = COLPTR(sheet, col);
 
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
     g_debug("_gtk_sheet_entry_setup: row %d col %d", row, col);
@@ -8717,12 +8725,15 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
 
     editable = !(gtk_sheet_locked(sheet)
 	|| !attributes.is_editable
-	|| COLPTR(sheet, col)->is_readonly);
+	|| colptr->is_readonly);
 
     gtk_sheet_set_entry_editable(sheet, editable);
 
     if (GTK_IS_ITEM_ENTRY(entry_widget))
     {
+	GtkItemEntry *item_entry = GTK_ITEM_ENTRY(entry_widget);
+	GtkEntry *entry = GTK_ENTRY(entry_widget);
+
 	/* 5.8.2010/fp - the code below has no effect in GTK 2.18.9,
 	   a right justified editable will pop to left justification
 	   as soon as something gets selected, and will
@@ -8733,14 +8744,34 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
 	g_debug("_gtk_sheet_entry_setup: GtkItemEntry justification %d", justification);
 #endif
-	gtk_item_entry_set_justification(GTK_ITEM_ENTRY(entry_widget), justification);
+	gtk_item_entry_set_justification(item_entry, justification);
+	gtk_item_entry_set_max_length_bytes(item_entry, colptr->max_length_bytes);
+
+	gtk_entry_set_max_length(entry, colptr->max_length);
+    }
+    else if (GTK_IS_DATA_TEXT_VIEW(entry_widget))
+    {
+	GtkDataTextView *data_textview = GTK_DATA_TEXT_VIEW(entry_widget);
+	GtkTextView *textview = GTK_TEXT_VIEW(entry_widget);
+
+	gtk_text_view_set_wrap_mode(textview, colptr->wrap_mode);
+	gtk_data_text_view_set_max_length(data_textview, colptr->max_length);
+	gtk_data_text_view_set_max_length_bytes(data_textview, colptr->max_length_bytes);
     }
     else if (GTK_IS_TEXT_VIEW(entry_widget))
     {
+	GtkTextView *textview = GTK_TEXT_VIEW(entry_widget);
+
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
 	g_debug("_gtk_sheet_entry_setup: GtkTextView justification %d", justification);
 #endif
-	gtk_text_view_set_justification(GTK_TEXT_VIEW(entry_widget), justification);
+	gtk_text_view_set_justification(textview, justification);
+	gtk_text_view_set_wrap_mode(textview, colptr->wrap_mode);
+    }
+    else if (GTK_IS_ENTRY(entry_widget))
+    {
+	GtkEntry *entry = GTK_ENTRY(entry_widget);
+	gtk_entry_set_max_length(entry, colptr->max_length);
     }
 
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
@@ -11808,6 +11839,21 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 	    }
 	}
     }
+    else if (GTK_IS_DATA_TEXT_VIEW(sheet->sheet_entry))
+    {
+#if GTK_SHEET_DEBUG_SIZE > 0
+	g_debug("_gtk_sheet_entry_size_allocate: is_text_view");
+#endif
+
+	shentry_allocation.height -= 2 * CELLOFFSET;
+	shentry_allocation.y += CELLOFFSET;
+	shentry_allocation.x += CELLOFFSET;
+
+	if (gtk_sheet_clip_text(sheet))
+	    shentry_allocation.width = column_width - 2 * CELLOFFSET;
+	else  /* text extends multiple cells */
+	    shentry_allocation.width = size;
+    }
     else if (GTK_IS_TEXT_VIEW(sheet->sheet_entry))
     {
 #if GTK_SHEET_DEBUG_SIZE > 0
@@ -11988,8 +12034,14 @@ create_sheet_entry(GtkSheet *sheet, GType new_entry_type)
 	sheet->sheet_entry = NULL;
     }
 
-    new_entry = gtk_widget_new(
-	new_entry_type != G_TYPE_NONE ? new_entry_type : G_TYPE_ITEM_ENTRY, NULL);
+    if (new_entry_type == G_TYPE_NONE) new_entry_type = G_TYPE_ITEM_ENTRY;
+
+#if GTK_SHEET_DEBUG_ENTRY > 0
+	g_debug("create_sheet_entry: new_entry type %s", 
+	    g_type_name(new_entry_type));
+#endif
+
+    new_entry = gtk_widget_new(new_entry_type, NULL);
 
     /* connect focus signal propagation handlers */
     g_signal_connect_swapped(new_entry, "focus-in-event",
@@ -11997,7 +12049,9 @@ create_sheet_entry(GtkSheet *sheet, GType new_entry_type)
     g_signal_connect_swapped(new_entry, "focus-out-event",
 	G_CALLBACK(sheet_entry_focus_out_handler), sheet);
 
-    if (GTK_IS_ENTRY(new_entry) || GTK_IS_TEXT_VIEW(new_entry))
+    if (GTK_IS_ENTRY(new_entry) 
+	|| GTK_IS_DATA_TEXT_VIEW(new_entry) 
+	|| GTK_IS_TEXT_VIEW(new_entry))
     {
 	g_signal_connect_swapped(new_entry, "populate-popup",
 	    G_CALLBACK(sheet_entry_populate_popup_handler), sheet);
@@ -12087,6 +12141,8 @@ gtk_sheet_get_entry(GtkSheet *sheet)
 
     if (GTK_IS_EDITABLE(sheet->sheet_entry))
 	return (sheet->sheet_entry);
+    if (GTK_IS_DATA_TEXT_VIEW(sheet->sheet_entry))
+	return (sheet->sheet_entry);
     if (GTK_IS_TEXT_VIEW(sheet->sheet_entry))
 	return (sheet->sheet_entry);
 
@@ -12115,6 +12171,8 @@ gtk_sheet_get_entry(GtkSheet *sheet)
 	}
 
 	if (GTK_IS_EDITABLE(entry))
+	    return (entry);
+	if (GTK_IS_DATA_TEXT_VIEW(entry))
 	    return (entry);
 	if (GTK_IS_TEXT_VIEW(entry))
 	    return (entry);
@@ -12178,6 +12236,13 @@ gchar *gtk_sheet_get_entry_text(GtkSheet *sheet)
     {
 	text = gtk_editable_get_chars(GTK_EDITABLE(entry), 0, -1);
     }
+    else if (GTK_IS_DATA_TEXT_VIEW(entry))
+    {
+	GtkTextIter start, end;
+	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
+	gtk_text_buffer_get_bounds(buffer, &start, &end);
+	text = gtk_text_buffer_get_text(buffer, &start, &end, TRUE);
+    }
     else if (GTK_IS_TEXT_VIEW(entry))
     {
 	GtkTextIter start, end;
@@ -12220,6 +12285,16 @@ void gtk_sheet_set_entry_text(GtkSheet *sheet, const gchar *text)
 	gint position = 0;
 	gtk_editable_delete_text(GTK_EDITABLE(entry), 0, -1);
 	gtk_editable_insert_text(GTK_EDITABLE(entry), text, -1, &position);
+    }
+    else if (GTK_IS_DATA_TEXT_VIEW(entry))
+    {
+	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
+	GtkTextIter iter;
+
+	gtk_text_buffer_set_text(buffer, text, -1);
+
+	gtk_text_buffer_get_start_iter(buffer, &iter);
+	gtk_text_buffer_place_cursor(buffer, &iter);
     }
     else if (GTK_IS_TEXT_VIEW(entry))
     {
@@ -12264,6 +12339,10 @@ void gtk_sheet_set_entry_editable(GtkSheet *sheet, const gboolean editable)
     {
 	gtk_editable_set_editable(GTK_EDITABLE(entry), editable);
     }
+    else if (GTK_IS_DATA_TEXT_VIEW(entry))
+    {
+	gtk_text_view_set_editable(GTK_TEXT_VIEW(entry), editable);
+    }
     else if (GTK_IS_TEXT_VIEW(entry))
     {
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(entry), editable);
@@ -12298,6 +12377,15 @@ void gtk_sheet_entry_select_region(GtkSheet *sheet, gint start_pos, gint end_pos
     if (GTK_IS_EDITABLE(entry))
     {
 	gtk_editable_select_region(GTK_EDITABLE(entry), start_pos, end_pos);
+    }
+    else if (GTK_IS_DATA_TEXT_VIEW(entry))
+    {
+	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
+	GtkTextIter start, end;
+
+	gtk_text_buffer_get_iter_at_offset(buffer, &start, start_pos);
+	gtk_text_buffer_get_iter_at_offset(buffer, &end, end_pos);
+	gtk_text_buffer_select_range(buffer, &start, &end);
     }
     else if (GTK_IS_TEXT_VIEW(entry))
     {
@@ -12347,6 +12435,13 @@ gulong gtk_sheet_entry_signal_connect_changed(GtkSheet *sheet, GCallback handler
 	handler_id = g_signal_connect(G_OBJECT(entry),
 	    "changed", handler, GTK_OBJECT(sheet));
     }
+    else if (GTK_IS_DATA_TEXT_VIEW(entry))
+    {
+	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
+
+	handler_id = g_signal_connect(G_OBJECT(buffer),
+	    "changed", handler, GTK_OBJECT(sheet));
+    }
     else if (GTK_IS_TEXT_VIEW(entry))
     {
 	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
@@ -12387,6 +12482,13 @@ void gtk_sheet_entry_signal_disconnect_by_func(GtkSheet *sheet, GCallback handle
     if (GTK_IS_EDITABLE(entry))
     {
 	g_signal_handlers_disconnect_by_func(G_OBJECT(entry),
+	    handler, GTK_OBJECT(sheet));
+    }
+    else if (GTK_IS_DATA_TEXT_VIEW(entry))
+    {
+	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
+
+	g_signal_handlers_disconnect_by_func(G_OBJECT(buffer),
 	    handler, GTK_OBJECT(sheet));
     }
     else if (GTK_IS_TEXT_VIEW(entry))

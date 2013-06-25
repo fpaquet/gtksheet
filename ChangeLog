@@ -1,3 +1,6 @@
+2013-06-25 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheed: code cleanup, GtkDataTextView key binding in sheet fixed
+
 2013-06-24 Fredy Paquet <mailbox AT opag.ch>
 	* GtkDataTextView: new subclass of GtkTextView to limit multiline text length
 	* GtkDataEntry: resolved deprecated G_CONST_RETURN

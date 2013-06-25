@@ -2823,7 +2823,8 @@ static gboolean _gtk_sheet_binding_filter(GtkSheet *sheet,
     if (key->state & GTK_SHEET_MOD_MASK)
 	return (TRUE);
 
-    if (GTK_IS_TEXT_VIEW(sheet->sheet_entry))
+    if ( GTK_IS_DATA_TEXT_VIEW(sheet->sheet_entry)
+	|| GTK_IS_TEXT_VIEW(sheet->sheet_entry) )
     {
 	switch(key->keyval)
 	{
@@ -11839,22 +11840,8 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 	    }
 	}
     }
-    else if (GTK_IS_DATA_TEXT_VIEW(sheet->sheet_entry))
-    {
-#if GTK_SHEET_DEBUG_SIZE > 0
-	g_debug("_gtk_sheet_entry_size_allocate: is_text_view");
-#endif
-
-	shentry_allocation.height -= 2 * CELLOFFSET;
-	shentry_allocation.y += CELLOFFSET;
-	shentry_allocation.x += CELLOFFSET;
-
-	if (gtk_sheet_clip_text(sheet))
-	    shentry_allocation.width = column_width - 2 * CELLOFFSET;
-	else  /* text extends multiple cells */
-	    shentry_allocation.width = size;
-    }
-    else if (GTK_IS_TEXT_VIEW(sheet->sheet_entry))
+    else if ( GTK_IS_DATA_TEXT_VIEW(sheet->sheet_entry)
+	     || GTK_IS_TEXT_VIEW(sheet->sheet_entry) )
     {
 #if GTK_SHEET_DEBUG_SIZE > 0
 	g_debug("_gtk_sheet_entry_size_allocate: is_text_view");
@@ -12236,14 +12223,8 @@ gchar *gtk_sheet_get_entry_text(GtkSheet *sheet)
     {
 	text = gtk_editable_get_chars(GTK_EDITABLE(entry), 0, -1);
     }
-    else if (GTK_IS_DATA_TEXT_VIEW(entry))
-    {
-	GtkTextIter start, end;
-	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
-	gtk_text_buffer_get_bounds(buffer, &start, &end);
-	text = gtk_text_buffer_get_text(buffer, &start, &end, TRUE);
-    }
-    else if (GTK_IS_TEXT_VIEW(entry))
+    else if ( GTK_IS_DATA_TEXT_VIEW(entry) 
+	     || GTK_IS_TEXT_VIEW(entry) )
     {
 	GtkTextIter start, end;
 	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
@@ -12286,17 +12267,8 @@ void gtk_sheet_set_entry_text(GtkSheet *sheet, const gchar *text)
 	gtk_editable_delete_text(GTK_EDITABLE(entry), 0, -1);
 	gtk_editable_insert_text(GTK_EDITABLE(entry), text, -1, &position);
     }
-    else if (GTK_IS_DATA_TEXT_VIEW(entry))
-    {
-	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
-	GtkTextIter iter;
-
-	gtk_text_buffer_set_text(buffer, text, -1);
-
-	gtk_text_buffer_get_start_iter(buffer, &iter);
-	gtk_text_buffer_place_cursor(buffer, &iter);
-    }
-    else if (GTK_IS_TEXT_VIEW(entry))
+    else if ( GTK_IS_DATA_TEXT_VIEW(entry) 
+	     || GTK_IS_TEXT_VIEW(entry) )
     {
 	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
 	GtkTextIter iter;
@@ -12339,11 +12311,8 @@ void gtk_sheet_set_entry_editable(GtkSheet *sheet, const gboolean editable)
     {
 	gtk_editable_set_editable(GTK_EDITABLE(entry), editable);
     }
-    else if (GTK_IS_DATA_TEXT_VIEW(entry))
-    {
-	gtk_text_view_set_editable(GTK_TEXT_VIEW(entry), editable);
-    }
-    else if (GTK_IS_TEXT_VIEW(entry))
+    else if ( GTK_IS_DATA_TEXT_VIEW(entry)
+	     || GTK_IS_TEXT_VIEW(entry) )
     {
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(entry), editable);
     }
@@ -12378,16 +12347,8 @@ void gtk_sheet_entry_select_region(GtkSheet *sheet, gint start_pos, gint end_pos
     {
 	gtk_editable_select_region(GTK_EDITABLE(entry), start_pos, end_pos);
     }
-    else if (GTK_IS_DATA_TEXT_VIEW(entry))
-    {
-	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
-	GtkTextIter start, end;
-
-	gtk_text_buffer_get_iter_at_offset(buffer, &start, start_pos);
-	gtk_text_buffer_get_iter_at_offset(buffer, &end, end_pos);
-	gtk_text_buffer_select_range(buffer, &start, &end);
-    }
-    else if (GTK_IS_TEXT_VIEW(entry))
+    else if ( GTK_IS_DATA_TEXT_VIEW(entry)
+	     || GTK_IS_TEXT_VIEW(entry) )
     {
 	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
 	GtkTextIter start, end;
@@ -12435,14 +12396,8 @@ gulong gtk_sheet_entry_signal_connect_changed(GtkSheet *sheet, GCallback handler
 	handler_id = g_signal_connect(G_OBJECT(entry),
 	    "changed", handler, GTK_OBJECT(sheet));
     }
-    else if (GTK_IS_DATA_TEXT_VIEW(entry))
-    {
-	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
-
-	handler_id = g_signal_connect(G_OBJECT(buffer),
-	    "changed", handler, GTK_OBJECT(sheet));
-    }
-    else if (GTK_IS_TEXT_VIEW(entry))
+    else if ( GTK_IS_DATA_TEXT_VIEW(entry) 
+	     || GTK_IS_TEXT_VIEW(entry) )
     {
 	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
 
@@ -12484,14 +12439,8 @@ void gtk_sheet_entry_signal_disconnect_by_func(GtkSheet *sheet, GCallback handle
 	g_signal_handlers_disconnect_by_func(G_OBJECT(entry),
 	    handler, GTK_OBJECT(sheet));
     }
-    else if (GTK_IS_DATA_TEXT_VIEW(entry))
-    {
-	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
-
-	g_signal_handlers_disconnect_by_func(G_OBJECT(buffer),
-	    handler, GTK_OBJECT(sheet));
-    }
-    else if (GTK_IS_TEXT_VIEW(entry))
+    else if ( GTK_IS_DATA_TEXT_VIEW(entry)
+	     || GTK_IS_TEXT_VIEW(entry) )
     {
 	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
 

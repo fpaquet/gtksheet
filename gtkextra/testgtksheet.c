@@ -561,7 +561,6 @@ void
     GdkRectangle area;
     GdkColor color;
     GdkColormap *colormap;
-    PangoFontDescription *font;
     gchar font_name1[]="Arial 36";
     gchar font_name2[]="Arial 28";
 
@@ -603,8 +602,11 @@ void
 
     gtk_sheet_clip_range(sheet, &range);
 
-    font = pango_font_description_from_string (font_name2);
-    gtk_sheet_range_set_font(sheet, &range, font);
+    PangoFontDescription *font_desc;
+
+    font_desc = pango_font_description_from_string (font_name2);
+    gtk_sheet_range_set_font(sheet, &range, font_desc);
+    pango_font_description_free(font_desc);
 
     gdk_color_parse("red", &color);
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
@@ -615,8 +617,9 @@ void
 
     range.row0=2;
 
-    font = pango_font_description_from_string (font_name1);
-    gtk_sheet_range_set_font(sheet, &range, font);
+    font_desc = pango_font_description_from_string (font_name1);
+    gtk_sheet_range_set_font(sheet, &range, font_desc);
+    pango_font_description_free(font_desc);
 
     gdk_color_parse("blue", &color);
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);

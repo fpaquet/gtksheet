@@ -249,6 +249,7 @@ struct _GtkSheetCellAttr
     GtkSheetCellBorder border;
     gboolean is_editable;
     gboolean is_visible;
+    gboolean do_font_desc_free;   /* TRUE if font_desc needs free */
 };
 
 /**

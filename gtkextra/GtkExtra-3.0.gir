@@ -15972,17 +15972,16 @@ FIXME:: if range==NULL whole sheet is deleted?</doc>
         </parameters>
       </method>
       <method name="range_set_font" c:identifier="gtk_sheet_range_set_font">
-        <doc xml:whitespace="preserve">Set font for the given range.</doc>
+        <doc xml:whitespace="preserve">Set font_desc for the given range.</doc>
         <return-value transfer-ownership="none">
           <type name="none" c:type="void"/>
         </return-value>
         <parameters>
           <parameter name="urange" transfer-ownership="none">
-            <doc xml:whitespace="preserve">a #GtkSheetRange where we set font.</doc>
+            <doc xml:whitespace="preserve">a #GtkSheetRange where we set font_desc.</doc>
             <type name="SheetRange" c:type="const GtkSheetRange*"/>
           </parameter>
           <parameter name="font" transfer-ownership="none">
-            <doc xml:whitespace="preserve">a #PangoFontDescription.</doc>
             <type name="Pango.FontDescription" c:type="PangoFontDescription*"/>
           </parameter>
         </parameters>
@@ -17556,6 +17555,9 @@ It should only be accessed through the functions described below.</doc>
         <type name="gboolean" c:type="gboolean"/>
       </field>
       <field name="is_visible" readable="0" private="1">
+        <type name="gboolean" c:type="gboolean"/>
+      </field>
+      <field name="do_font_desc_free" readable="0" private="1">
         <type name="gboolean" c:type="gboolean"/>
       </field>
     </record>

@@ -15981,7 +15981,8 @@ FIXME:: if range==NULL whole sheet is deleted?</doc>
             <doc xml:whitespace="preserve">a #GtkSheetRange where we set font_desc.</doc>
             <type name="SheetRange" c:type="const GtkSheetRange*"/>
           </parameter>
-          <parameter name="font" transfer-ownership="none">
+          <parameter name="font_desc" transfer-ownership="none">
+            <doc xml:whitespace="preserve">a #PangoFontDescription.</doc>
             <type name="Pango.FontDescription" c:type="PangoFontDescription*"/>
           </parameter>
         </parameters>

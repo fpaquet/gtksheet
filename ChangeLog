@@ -2,6 +2,7 @@
 	* GtkSheet: pango font description handling rewritten to prevent occasional crashes
 	* GtkSheet: fixed memory leak in font description handling
 	* merged branch GtkDataTextView into master
+	* GtkSheet: doc fix
 
 2013-06-25 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: code cleanup, GtkDataTextView key binding in sheet fixed

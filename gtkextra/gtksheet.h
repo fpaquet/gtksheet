@@ -769,7 +769,7 @@ void gtk_sheet_range_set_border_color(GtkSheet *sheet,
 
 /* set font for the given range */
 void gtk_sheet_range_set_font(GtkSheet *sheet,
-                              const GtkSheetRange *urange, PangoFontDescription *font);
+                              const GtkSheetRange *urange, PangoFontDescription *font_desc);
 
 /* get cell attributes of the given cell */
 /* TRUE means that the cell is currently allocated */

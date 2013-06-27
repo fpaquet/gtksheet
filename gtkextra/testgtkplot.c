@@ -204,14 +204,14 @@ activate_plot(GtkWidget *widget, gpointer data)
 
   while(n < nlayers)
     {
-      g_signal_handlers_block_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
+      g_signal_handlers_block_by_func(GTK_OBJECT(buttons[n]), G_CALLBACK(activate_plot), data);
       if(widget_list[n] == active_widget){
             active_plot = plots[n];  
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[n]), TRUE);
       }else{
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[n]), FALSE);
       }
-      g_signal_handlers_unblock_by_func(GTK_OBJECT(buttons[n]), GTK_SIGNAL_FUNC(activate_plot), data);
+      g_signal_handlers_unblock_by_func(GTK_OBJECT(buttons[n]), G_CALLBACK(activate_plot), data);
       
       n++;
     }
@@ -287,7 +287,7 @@ build_example1(GtkWidget *plot)
  gtk_plot_axis_use_custom_tick_labels(gtk_plot_get_axis(GTK_PLOT(plot), GTK_PLOT_AXIS_RIGHT), TRUE);
  axis = gtk_plot_get_axis(GTK_PLOT(plot), GTK_PLOT_AXIS_RIGHT);
  g_signal_connect(GTK_OBJECT(axis), "tick_label", 
-                    GTK_SIGNAL_FUNC(my_tick_label), NULL);
+                    G_CALLBACK(my_tick_label), NULL);
 
  dataset[0] = GTK_PLOT_DATA(gtk_plot_data_new());
  gtk_plot_add_data(GTK_PLOT(plot), dataset[0]);
@@ -418,7 +418,7 @@ int main(int argc, char *argv[]){
  gtk_container_border_width(GTK_CONTAINER(window1),0);
 
  g_signal_connect (GTK_OBJECT (window1), "destroy",
-		     GTK_SIGNAL_FUNC (quit), NULL);
+		     G_CALLBACK (quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);
  gtk_container_add(GTK_CONTAINER(window1),vbox1);

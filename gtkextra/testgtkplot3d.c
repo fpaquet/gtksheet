@@ -141,7 +141,7 @@ int main(int argc, char *argv[]){
  gtk_container_border_width(GTK_CONTAINER(window1),0);
 
  g_signal_connect (GTK_OBJECT (window1), "destroy",
-		     GTK_SIGNAL_FUNC (quit), NULL);
+		     G_CALLBACK (quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);
  gtk_container_add(GTK_CONTAINER(window1),vbox1);
@@ -309,13 +309,13 @@ int main(int argc, char *argv[]){
  gtk_fixed_put(GTK_FIXED(canvas), button, 80, 0);
 
  g_signal_connect(GTK_OBJECT(button), "clicked",
-                    GTK_SIGNAL_FUNC(rotate_x), canvas);
+                    G_CALLBACK(rotate_x), canvas);
 
  button = gtk_button_new_with_label("Rotate Y");
  gtk_fixed_put(GTK_FIXED(canvas), button, 160, 0);
 
  g_signal_connect(GTK_OBJECT(button), "clicked",
-                    GTK_SIGNAL_FUNC(rotate_y), canvas);
+                    G_CALLBACK(rotate_y), canvas);
 
  button = gtk_button_new_with_label("Rotate Z");
  gtk_fixed_put(GTK_FIXED(canvas), button, 240, 0);
@@ -328,7 +328,7 @@ int main(int argc, char *argv[]){
 */
 
  g_signal_connect(GTK_OBJECT(button), "clicked",
-                    GTK_SIGNAL_FUNC(rotate_z), canvas);
+                    G_CALLBACK(rotate_z), canvas);
 
  gtk_widget_show_all(window1);
 

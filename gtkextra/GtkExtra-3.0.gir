@@ -15336,7 +15336,7 @@ widgets implement the GtkEditable interface yet.</doc>
         <parameters>
           <parameter name="handler" transfer-ownership="none" scope="notified">
             <doc xml:whitespace="preserve">the signal handler</doc>
-            <type name="Gtk.SignalFunc" c:type="GtkSignalFunc"/>
+            <type name="GObject.Callback" c:type="GCallback"/>
           </parameter>
         </parameters>
       </method>
@@ -15355,7 +15355,7 @@ widgets implement the GtkEditable interface yet.</doc>
         <parameters>
           <parameter name="handler" transfer-ownership="none" scope="call">
             <doc xml:whitespace="preserve">the signal handler</doc>
-            <type name="Gtk.SignalFunc" c:type="GtkSignalFunc"/>
+            <type name="GObject.Callback" c:type="GCallback"/>
           </parameter>
         </parameters>
       </method>

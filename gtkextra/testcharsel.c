@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 /*
   g_signal_connect (GTK_OBJECT (GTK_CHAR_SELECTION(charsel)->ok_button), 
                      "clicked",
-		      GTK_SIGNAL_FUNC (ok_clicked), charsel);
+		      G_CALLBACK(ok_clicked), charsel);
 */
 /*
   gtk_char_selection_set_selection(GTK_CHAR_SELECTION(charsel), 25);

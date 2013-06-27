@@ -532,8 +532,8 @@ void gtk_sheet_set_entry_text(GtkSheet *sheet, const gchar *text);
 void gtk_sheet_set_entry_editable(GtkSheet *sheet, const gboolean editable);
 void gtk_sheet_entry_select_region(GtkSheet *sheet, gint start_pos, gint end_pos);
 
-gulong gtk_sheet_entry_signal_connect_changed(GtkSheet *sheet, GtkSignalFunc handler);
-void gtk_sheet_entry_signal_disconnect_by_func(GtkSheet *sheet, GtkSignalFunc handler);
+gulong gtk_sheet_entry_signal_connect_changed(GtkSheet *sheet, GCallback handler);
+void gtk_sheet_entry_signal_disconnect_by_func(GtkSheet *sheet, GCallback handler);
 
 /* Added by Steven Rostedt <steven.rostedt@lmco.com> */
 GtkSheetState gtk_sheet_get_state(GtkSheet *sheet);

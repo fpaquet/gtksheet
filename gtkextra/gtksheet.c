@@ -3316,7 +3316,7 @@ gtk_sheet_change_entry(GtkSheet *sheet, const GType entry_type)
 	   the text will be written into the old active cell (which is WRONG)
 	 
 	   gtk_sheet_entry_signal_connect_changed(sheet, 
-	       (GtkSignalFunc) gtk_sheet_entry_changed_handler);
+	       G_CALLBACK(gtk_sheet_entry_changed_handler));
 	   */
     }
 }
@@ -8478,7 +8478,7 @@ gtk_sheet_deactivate_cell(GtkSheet *sheet)
 	return (FALSE);
 
     gtk_sheet_entry_signal_disconnect_by_func(sheet,
-	(GtkSignalFunc)gtk_sheet_entry_changed_handler);
+	G_CALLBACK(gtk_sheet_entry_changed_handler));
 
     _gtk_sheet_hide_active_cell(sheet);
 
@@ -8679,7 +8679,7 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
 #endif
 
     gtk_sheet_entry_signal_connect_changed(sheet,
-	(GtkSignalFunc)gtk_sheet_entry_changed_handler);
+	G_CALLBACK(gtk_sheet_entry_changed_handler));
 
     _gtkextra_signal_emit(GTK_OBJECT(sheet), sheet_signals[ACTIVATE], row, col, &veto);
 

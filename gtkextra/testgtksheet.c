@@ -483,7 +483,7 @@ gboolean
            after every call to gtk_sheet_change_entry()! */
 
         gtk_sheet_entry_signal_connect_changed(sheet, 
-                                               (GtkSignalFunc) sheet_entry_changed_handler);
+	    G_CALLBACK(sheet_entry_changed_handler));
     }
 
     return (TRUE);
@@ -896,7 +896,7 @@ void
     gtk_sheet_change_entry(sheet, gtk_combo_get_type());
 
     gtk_sheet_entry_signal_connect_changed(sheet,
-                                           (GtkSignalFunc) sheet_entry_changed_handler);
+                                           G_CALLBACK(sheet_entry_changed_handler));
 
     g_signal_connect(GTK_OBJECT(sheet),
                      "traverse",
@@ -1342,7 +1342,7 @@ int main(int argc, char *argv[])
     gtk_widget_set_size_request(GTK_WIDGET(window), 900, 600);
 
     g_signal_connect (GTK_OBJECT (window), "destroy",
-                      GTK_SIGNAL_FUNC (quit), NULL);
+                      G_CALLBACK (quit), NULL);
 
     main_vbox=gtk_vbox_new(FALSE,1);
     gtk_container_set_border_width(GTK_CONTAINER(main_vbox),0); 
@@ -1391,7 +1391,7 @@ int main(int argc, char *argv[])
     gtk_widget_set_size_request(GTK_FONT_COMBO(font_combo)->italic_button, 32, 32);
     gtk_widget_set_size_request(GTK_FONT_COMBO(font_combo)->bold_button, 32, 32);
     gtk_widget_show(font_combo);
-    g_signal_connect(GTK_OBJECT(font_combo), "changed", GTK_SIGNAL_FUNC(new_font), NULL);
+    g_signal_connect(GTK_OBJECT(font_combo), "changed", G_CALLBACK(new_font), NULL);
 
     gtk_toolbar_append_space(GTK_TOOLBAR(toolbar));
 
@@ -1501,7 +1501,7 @@ int main(int argc, char *argv[])
                                  label);
 
         gtk_sheet_entry_signal_connect_changed(GTK_SHEET(sheets[i]),
-                                               (GtkSignalFunc) sheet_entry_changed_handler);
+                                               G_CALLBACK(sheet_entry_changed_handler));
 
         g_signal_connect(GTK_OBJECT(sheets[i]),
                          "activate", (void *)activate_sheet_cell,

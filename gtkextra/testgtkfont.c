@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
  gtk_container_border_width(GTK_CONTAINER(window1),0);
 
  g_signal_connect (GTK_OBJECT (window1), "destroy",
-		     GTK_SIGNAL_FUNC (quit), NULL);
+		     G_CALLBACK (quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);
  gtk_container_add(GTK_CONTAINER(window1),vbox1);
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 
  g_signal_connect(GTK_OBJECT(font_combo),
                     "changed",
-                    GTK_SIGNAL_FUNC(new_font), preview_entry);
+                    G_CALLBACK(new_font), preview_entry);
 
  gtk_main();
 

@@ -10,8 +10,7 @@ gtkextrafeatures.h
 gtkextratypebuiltins.c
 gtkextratypebuiltins.h
 
-demo3d.ps
-demosegment.ps
+demo*.ps
 
 testboxes
 testbubbles
@@ -37,3 +36,6 @@ testrealtime
 testsegment
 
 test*.exe
+
+log
+

@@ -68,7 +68,7 @@
 #endif
 
 #ifdef GTK_SHEET_DEBUG
-#   define GTK_SHEET_DEBUG_ADJUSTMENT  0
+#   define GTK_SHEET_DEBUG_ADJUSTMENT  2
 #   define GTK_SHEET_DEBUG_ALLOCATION  0
 #   define GTK_SHEET_DEBUG_BUILDER   0
 #   define GTK_SHEET_DEBUG_CELL_ACTIVATION  0
@@ -80,7 +80,7 @@
 #   define GTK_SHEET_DEBUG_DRAW_BUTTON  0
 #   define GTK_SHEET_DEBUG_DRAW_LABEL  0
 #   define GTK_SHEET_DEBUG_ENTER_PRESSED   0
-#   define GTK_SHEET_DEBUG_ENTRY   1
+#   define GTK_SHEET_DEBUG_ENTRY   0
 #   define GTK_SHEET_DEBUG_EXPOSE   0
 #   define GTK_SHEET_DEBUG_FINALIZE  0
 #   define GTK_SHEET_DEBUG_FONT_METRICS  0
@@ -1062,8 +1062,8 @@ static void gtk_sheet_make_backing_pixmap(GtkSheet *sheet, guint width, guint he
 static void gtk_sheet_draw_backing_pixmap(GtkSheet *sheet, GtkSheetRange range);
 /* Scrollbars */
 
-static void vadjustment_changed_handler(GtkAdjustment *adjustment, gpointer data);
-static void hadjustment_changed_handler(GtkAdjustment *adjustment, gpointer data);
+static void _vadjustment_changed_handler(GtkAdjustment *adjustment, gpointer data);
+static void _hadjustment_changed_handler(GtkAdjustment *adjustment, gpointer data);
 static void _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data);
 static void _hadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data);
 
@@ -5746,7 +5746,7 @@ gtk_sheet_set_vadjustment(GtkSheet *sheet, GtkAdjustment *adjustment)
 	g_object_unref(G_OBJECT(sheet->vadjustment));
 
 	g_signal_connect(GTK_OBJECT(sheet->vadjustment), "changed",
-	    (void *)vadjustment_changed_handler,
+	    (void *)_vadjustment_changed_handler,
 	    (gpointer)sheet);
 	g_signal_connect(GTK_OBJECT(sheet->vadjustment), "value_changed",
 	    (void *)_vadjustment_value_changed_handler,
@@ -5802,7 +5802,7 @@ gtk_sheet_set_hadjustment(GtkSheet *sheet, GtkAdjustment *adjustment)
 	g_object_unref(G_OBJECT(sheet->hadjustment));
 
 	g_signal_connect(GTK_OBJECT(sheet->hadjustment), "changed",
-	    (void *)hadjustment_changed_handler,
+	    (void *)_hadjustment_changed_handler,
 	    (gpointer)sheet);
 	g_signal_connect(GTK_OBJECT(sheet->hadjustment), "value_changed",
 	    (void *)_hadjustment_value_changed_handler,
@@ -12766,26 +12766,36 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
     {
 	GtkAdjustment *va = sheet->vadjustment;
 
-	va->page_size = sheet->sheet_window_height;
-	va->page_increment = sheet->sheet_window_height / 2;
-	va->step_increment = _gtk_sheet_row_default_height(GTK_WIDGET(sheet));
-	va->lower = 0;
-	va->upper = _gtk_sheet_height(sheet) + 80;
+	gint upper = _gtk_sheet_height(sheet) + 80;
+	gint page_size = sheet->sheet_window_height;
+
+	gtk_adjustment_configure(va,
+	    gtk_adjustment_get_value(va),  /* value */
+	    0.0,  /* lower */
+	    upper,  /* upper */
+	    _gtk_sheet_row_default_height(GTK_WIDGET(sheet)), /* step_increment */
+	    sheet->sheet_window_height / 2, /* page_increment */
+	    page_size  /* page_size */
+	    );
 
 #if GTK_SHEET_DEBUG_ADJUSTMENT > 0
 	g_debug("_gtk_sheet_scrollbar_adjust: va PS %g PI %g SI %g L %g U %g V %g VO %d",
-	    va->page_size, va->page_increment, va->step_increment,
-	    va->lower, va->upper, va->value, sheet->voffset);
+	    page_size, 
+	    gtk_adjustment_get_page_increment(va), 
+	    gtk_adjustment_get_step_increment(va),
+	    gtk_adjustment_get_lower(va), 
+	    upper, 
+	    gtk_adjustment_get_value(va), 
+	    sheet->voffset);
 #endif
 
-	if (va->upper <= va->page_size)  /* whole sheet fits into window? */
+	if (upper <= page_size)  /* whole sheet fits into window? */
 	{
-	    va->value = 0;
 #if GTK_SHEET_DEBUG_ADJUSTMENT > 0
-	    g_debug("_gtk_sheet_scrollbar_adjust: reset to V %g VO %d", 
-		va->value, sheet->voffset);
+	    g_debug("_gtk_sheet_scrollbar_adjust: reset V to 0");
 #endif
-	    g_signal_emit_by_name(GTK_OBJECT(va), "value_changed");
+	    gtk_adjustment_set_value(va, 0);
+	    gtk_adjustment_value_changed(va);
 	}
 	/* can produce smudge effects - 23.3.13/fp 
 	else if (va->value >= va->upper - va->page_size)
@@ -12799,34 +12809,43 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
 	} 
 	*/ 
 	
-	g_signal_emit_by_name(GTK_OBJECT(va), "changed");
+	gtk_adjustment_changed(va);
     }
 
     if (sheet->hadjustment)
     {
 	GtkAdjustment *ha = sheet->hadjustment;
 
-	ha->page_size = sheet->sheet_window_width;
-	ha->page_increment = sheet->sheet_window_width / 2;
-	ha->step_increment = GTK_SHEET_COLUMN_DEFAULT_WIDTH;
-	ha->lower = 0;
-	ha->upper = _gtk_sheet_width(sheet) * 3 / 2;
-	ha->upper = _gtk_sheet_width(sheet) + 80;
+	/* gint upper = _gtk_sheet_width(sheet) * 3 / 2; */
+	gint upper = _gtk_sheet_width(sheet) + 80;
+	gint page_size = sheet->sheet_window_width;
+
+	gtk_adjustment_configure(ha,
+	    gtk_adjustment_get_value(ha),  /* value */
+	    0.0,  /* lower */
+	    upper,  /* upper */
+	    GTK_SHEET_COLUMN_DEFAULT_WIDTH, /* step_increment */
+	    sheet->sheet_window_width / 2, /* page_increment */
+	    page_size  /* page_size */
+	    );
 
 #if GTK_SHEET_DEBUG_ADJUSTMENT > 0
 	g_debug("_gtk_sheet_scrollbar_adjust: ha PS %g PI %g SI %g L %g U %g V %g HO %d",
-	    ha->page_size, ha->page_increment, ha->step_increment,
-	    ha->lower, ha->upper, ha->value, sheet->hoffset);
+	    page_size, 
+	    gtk_adjustment_get_page_increment(ha), 
+	    gtk_adjustment_get_step_increment(ha),
+	    gtk_adjustment_get_lower(ha), 
+	    upper, 
+	    gtk_adjustment_get_value(ha), sheet->hoffset);
 #endif
 
-	if (ha->upper <= ha->page_size)  /* whole sheet fits into window? */
+	if (upper <= page_size)  /* whole sheet fits into window? */
 	{
-	    ha->value = 0;
 #if GTK_SHEET_DEBUG_ADJUSTMENT > 0
-	    g_debug("_gtk_sheet_scrollbar_adjust: reset to V %g HO %d", 
-		ha->value, sheet->hoffset);
+	    g_debug("_gtk_sheet_scrollbar_adjust: reset V to 0");
 #endif
-	    g_signal_emit_by_name(GTK_OBJECT(ha), "value_changed");
+	    gtk_adjustment_set_value(ha, 0);
+	    gtk_adjustment_value_changed(ha);
 	}
 	/* can produce smudge effects - 23.3.13/fp
 	else if (ha->value >= ha->upper - ha->page_size)
@@ -12840,13 +12859,13 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
 	} 
 	*/ 
 	
-	g_signal_emit_by_name(GTK_OBJECT(ha), "changed");
+	gtk_adjustment_changed(ha);
     }
 }
 
 
 /*
- * vadjustment_changed_handler:
+ * _vadjustment_changed_handler:
  * 
  * this is the #GtkSheet vertical adjustment "changed" signal handler
  * 
@@ -12854,7 +12873,7 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
  * @param data the #GtkSheet passed on signal creation
  */
 static void
-vadjustment_changed_handler(GtkAdjustment *adjustment,
+_vadjustment_changed_handler(GtkAdjustment *adjustment,
     gpointer data)
 {
     GtkSheet *sheet;
@@ -12863,10 +12882,15 @@ vadjustment_changed_handler(GtkAdjustment *adjustment,
     g_return_if_fail(data != NULL);
 
     sheet = GTK_SHEET(data);
+
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 1
+    g_debug("_vadjustment_changed_handler: called: O VA %g VO %d",
+	sheet->old_vadjustment, sheet->voffset);
+#endif
 }
 
 /*
- * hadjustment_changed_handler:
+ * _hadjustment_changed_handler:
  * 
  * this is the #GtkSheet horizontal adjustment "change" handler
  * 
@@ -12874,7 +12898,7 @@ vadjustment_changed_handler(GtkAdjustment *adjustment,
  * @param data       the #GtkSheet passed on signal creation
  */
 static void
-hadjustment_changed_handler(GtkAdjustment *adjustment, gpointer data)
+_hadjustment_changed_handler(GtkAdjustment *adjustment, gpointer data)
 {
     GtkSheet *sheet;
 
@@ -12882,6 +12906,11 @@ hadjustment_changed_handler(GtkAdjustment *adjustment, gpointer data)
     g_return_if_fail(data != NULL);
 
     sheet = GTK_SHEET(data);
+
+#if GTK_SHEET_DEBUG_ADJUSTMENT > 1
+    g_debug("_hadjustment_changed_handler: called: O VA %g VO %d",
+	sheet->old_vadjustment, sheet->voffset);
+#endif
 }
 
 
@@ -12927,7 +12956,7 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
     {
 	if (GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)))
 	    y += sheet->row[i].height;
-	if (y > adjustment->value)
+	if (y > gtk_adjustment_get_value(adjustment))
 	    break;
     }
     if (0 <= i && i <= sheet->maxrow)
@@ -12952,9 +12981,9 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
 	}
     }
 #else
-    if (adjustment->value > sheet->old_vadjustment && sheet->old_vadjustment > 0. &&
+    if (gtk_adjustment_get_value(adjustment) > sheet->old_vadjustment && sheet->old_vadjustment > 0. &&
 	0 <= new_row && new_row <= sheet->maxrow &&
-	sheet->row[new_row].height > sheet->vadjustment->step_increment)
+	sheet->row[new_row].height > gtk_adjustment_get_step_increment(sheet->vadjustment))
     {
 	new_row += 1;
 	y = y + sheet->row[row].height;
@@ -12964,7 +12993,7 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
     /* Negative old_adjustment enforces the redraw, otherwise avoid spureous redraw */
     if (sheet->old_vadjustment >= 0. && row == new_row)
     {
-	sheet->old_vadjustment = gtk_adjustment_get_value(sheet);
+	sheet->old_vadjustment = gtk_adjustment_get_value(sheet->vadjustment);
 
 #if GTK_SHEET_DEBUG_ADJUSTMENT > 0
 	g_debug("_vadjustment_value_changed_handler: return 1: vv %g",
@@ -12974,23 +13003,25 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
     }
 
     sheet->old_vadjustment = gtk_adjustment_get_value(sheet->vadjustment);
-    adjustment->value = y;
+    gtk_adjustment_set_value(adjustment, y);
 
     if (new_row < 0 || new_row > sheet->maxrow)
     {
-	sheet->vadjustment->step_increment = GTK_SHEET_ROW_DEFAULT_HEIGHT;
+	gtk_adjustment_set_step_increment(sheet->vadjustment, 
+	    GTK_SHEET_ROW_DEFAULT_HEIGHT);
     }
     else if (new_row == 0)
     {
-	sheet->vadjustment->step_increment = sheet->row[0].height;
+	gtk_adjustment_set_step_increment(sheet->vadjustment, 
+	    sheet->row[0].height);
     }
     else
     {
-	sheet->vadjustment->step_increment =
-	    MIN(sheet->row[new_row].height, sheet->row[new_row - 1].height);
+	gtk_adjustment_set_step_increment(sheet->vadjustment,
+	    MIN(sheet->row[new_row].height, sheet->row[new_row - 1].height));
     }
 
-    value = adjustment->value;
+    value = gtk_adjustment_get_value(adjustment);
     gtk_adjustment_set_value(sheet->vadjustment, value);
 
     if (value >= -sheet->voffset)
@@ -13148,7 +13179,7 @@ _hadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
     old_value = sheet->old_hadjustment;
     sheet->old_hadjustment = gtk_adjustment_get_value(sheet->hadjustment);
 
-    if (old_value >= 0. && sheet->hoffset == -adjustment->value)
+    if (old_value >= 0. && sheet->hoffset == -1 *  gtk_adjustment_get_value(adjustment))
 	return;
 
     gdouble value = gtk_adjustment_get_value(adjustment);

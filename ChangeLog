@@ -2,6 +2,7 @@
 	* replaced deprecated GTK_SIGNAL_FUNC with G_CALLBACK
 	* disabled deprecated GTK_TYPE_COMBO_BOX_ENTRY from Gtk 2.24
 	* disabled deprecated GTK_TYPE_COMBO from Gtk 2.4 (yes, 2.4!)
+	* GtkSheet: clean out deprecated GtkAdjustment accessors
 
 2013-06-26 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: pango font description handling rewritten to prevent occasional crashes

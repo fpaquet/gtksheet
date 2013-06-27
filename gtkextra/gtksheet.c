@@ -1491,11 +1491,15 @@ _gtk_sheet_entry_type_from_gtype(GType entry_type)
     else if (entry_type == GTK_TYPE_COMBO_BOX)
 	return (GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX);
 
+#if !GTK_CHECK_VERSION(2,24,0)
     else if (entry_type == GTK_TYPE_COMBO_BOX_ENTRY)
 	return (GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX_ENTRY);
+#endif
 
+#if !GTK_CHECK_VERSION(2,4,0)
     else if (entry_type == GTK_TYPE_COMBO)
 	return (GTK_SHEET_ENTRY_TYPE_GTK_COMBO);
+#endif
 
     return (GTK_SHEET_ENTRY_TYPE_DEFAULT);
 }
@@ -1531,11 +1535,15 @@ _gtk_sheet_entry_type_to_gtype(GtkSheetEntryType ety)
 	case GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX:
 	    return (GTK_TYPE_COMBO_BOX);
 
+#if !GTK_CHECK_VERSION(2,24,0)
 	case GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX_ENTRY:
 	    return (GTK_TYPE_COMBO_BOX_ENTRY);
+#endif
 
+#if !GTK_CHECK_VERSION(2,4,0)
 	case GTK_SHEET_ENTRY_TYPE_GTK_COMBO:
 	    return (GTK_TYPE_COMBO);
+#endif
 
 	default:
 	    break;
@@ -4784,9 +4792,9 @@ gtk_sheet_moveto(GtkSheet *sheet,
 	}
 
 	if (y < 0)
-	    sheet->vadjustment->value = 0.0;
+	    gtk_adjustment_set_value(sheet->vadjustment, 0.0);
 	else
-	    sheet->vadjustment->value = y;
+	    gtk_adjustment_set_value(sheet->vadjustment, y);
 
 	sheet->old_vadjustment = -1.;
 	if (sheet->vadjustment)
@@ -4828,9 +4836,9 @@ gtk_sheet_moveto(GtkSheet *sheet,
 	}
 
 	if (x < 0)
-	    sheet->hadjustment->value = 0.0;
+	    gtk_adjustment_set_value(sheet->hadjustment, 0.0);
 	else
-	    sheet->hadjustment->value = x;
+	    gtk_adjustment_set_value(sheet->hadjustment, x);
 
 	sheet->old_vadjustment = -1.;
 
@@ -5751,7 +5759,7 @@ gtk_sheet_set_vadjustment(GtkSheet *sheet, GtkAdjustment *adjustment)
 	return;
     }
 
-    sheet->old_vadjustment = sheet->vadjustment->value;
+    sheet->old_vadjustment = gtk_adjustment_get_value(sheet->vadjustment);
 }
 
 /**
@@ -5807,7 +5815,7 @@ gtk_sheet_set_hadjustment(GtkSheet *sheet, GtkAdjustment *adjustment)
 	return;
     }
 
-    sheet->old_hadjustment = sheet->hadjustment->value;
+    sheet->old_hadjustment = gtk_adjustment_get_value(sheet->hadjustment);
 }
 
 /**
@@ -12956,7 +12964,7 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
     /* Negative old_adjustment enforces the redraw, otherwise avoid spureous redraw */
     if (sheet->old_vadjustment >= 0. && row == new_row)
     {
-	sheet->old_vadjustment = sheet->vadjustment->value;
+	sheet->old_vadjustment = gtk_adjustment_get_value(sheet);
 
 #if GTK_SHEET_DEBUG_ADJUSTMENT > 0
 	g_debug("_vadjustment_value_changed_handler: return 1: vv %g",
@@ -12965,7 +12973,7 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
 	return;
     }
 
-    sheet->old_vadjustment = sheet->vadjustment->value;
+    sheet->old_vadjustment = gtk_adjustment_get_value(sheet->vadjustment);
     adjustment->value = y;
 
     if (new_row < 0 || new_row > sheet->maxrow)
@@ -12982,8 +12990,8 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
 	    MIN(sheet->row[new_row].height, sheet->row[new_row - 1].height);
     }
 
-    sheet->vadjustment->value = adjustment->value;
     value = adjustment->value;
+    gtk_adjustment_set_value(sheet->vadjustment, value);
 
     if (value >= -sheet->voffset)
     {
@@ -13138,13 +13146,14 @@ _hadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
 #else
     /* Negative old_adjustment enforces the redraw, otherwise avoid spureous redraw */
     old_value = sheet->old_hadjustment;
-    sheet->old_hadjustment = sheet->hadjustment->value;
+    sheet->old_hadjustment = gtk_adjustment_get_value(sheet->hadjustment);
 
     if (old_value >= 0. && sheet->hoffset == -adjustment->value)
 	return;
 
-    sheet->hadjustment->value = adjustment->value;
-    sheet->hoffset = -sheet->hadjustment->value;
+    gdouble value = gtk_adjustment_get_value(adjustment);
+    gtk_adjustment_set_value(sheet->hadjustment, value);
+    sheet->hoffset = -value;
 #endif
 
     _gtk_sheet_recalc_view_range(sheet);

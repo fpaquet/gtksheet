@@ -9838,7 +9838,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
 	if (sheet->selection_mode != GTK_SELECTION_SINGLE &&
-	    sheet->cursor_drag->type == GDK_SIZING &&
+	    gdk_cursor_get_cursor_type(sheet->cursor_drag) == GDK_SIZING &&
 	    !GTK_SHEET_IN_SELECTION(sheet) && !GTK_SHEET_IN_RESIZE(sheet))
 	{
 	    if (sheet->state == GTK_STATE_NORMAL)
@@ -9865,7 +9865,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    draw_xor_rectangle(sheet, sheet->drag_range);
 	    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_RESIZE);
 	}
-	else if (sheet->cursor_drag->type == GDK_TOP_LEFT_ARROW &&
+	else if (gdk_cursor_get_cursor_type(sheet->cursor_drag) == GDK_TOP_LEFT_ARROW &&
 	    !GTK_SHEET_IN_SELECTION(sheet) && !GTK_SHEET_IN_DRAG(sheet))
 	{
 	    if (sheet->state == GTK_STATE_NORMAL)
@@ -10340,7 +10340,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	if (!GTK_SHEET_IN_SELECTION(sheet) && POSSIBLE_XDRAG(sheet, x, &column))
 	{
 	    new_cursor = GDK_SB_H_DOUBLE_ARROW;
-	    if (new_cursor != sheet->cursor_drag->type)
+	    if (new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
 	    {
 		gdk_cursor_destroy(sheet->cursor_drag);
 		sheet->cursor_drag = gdk_cursor_new(GDK_SB_H_DOUBLE_ARROW);
@@ -10350,7 +10350,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	else
 	{
 	    new_cursor = GDK_TOP_LEFT_ARROW;
-	    if (!GTK_SHEET_IN_XDRAG(sheet) && new_cursor != sheet->cursor_drag->type)
+	    if (!GTK_SHEET_IN_XDRAG(sheet) && new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
 	    {
 		gdk_cursor_destroy(sheet->cursor_drag);
 		sheet->cursor_drag = gdk_cursor_new(GDK_TOP_LEFT_ARROW);
@@ -10365,7 +10365,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	if (!GTK_SHEET_IN_SELECTION(sheet) && POSSIBLE_YDRAG(sheet, y, &column))
 	{
 	    new_cursor = GDK_SB_V_DOUBLE_ARROW;
-	    if (new_cursor != sheet->cursor_drag->type)
+	    if (new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
 	    {
 		gdk_cursor_destroy(sheet->cursor_drag);
 		sheet->cursor_drag = gdk_cursor_new(GDK_SB_V_DOUBLE_ARROW);
@@ -10375,7 +10375,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	else
 	{
 	    new_cursor = GDK_TOP_LEFT_ARROW;
-	    if (!GTK_SHEET_IN_YDRAG(sheet) && new_cursor != sheet->cursor_drag->type)
+	    if (!GTK_SHEET_IN_YDRAG(sheet) && new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
 	    {
 		gdk_cursor_destroy(sheet->cursor_drag);
 		sheet->cursor_drag = gdk_cursor_new(GDK_TOP_LEFT_ARROW);
@@ -10388,7 +10388,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     if (!POSSIBLE_DRAG(sheet, x, y, &row, &column) && !GTK_SHEET_IN_DRAG(sheet) &&
 	!POSSIBLE_RESIZE(sheet, x, y, &row, &column) && !GTK_SHEET_IN_RESIZE(sheet) &&
 	event->window == sheet->sheet_window &&
-	new_cursor != sheet->cursor_drag->type)
+	new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
     {
 	gdk_cursor_destroy(sheet->cursor_drag);
 	sheet->cursor_drag = gdk_cursor_new(GDK_PLUS);
@@ -10399,7 +10399,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     if (!(POSSIBLE_RESIZE(sheet, x, y, &row, &column) || GTK_SHEET_IN_RESIZE(sheet)) &&
 	(POSSIBLE_DRAG(sheet, x, y, &row, &column) || GTK_SHEET_IN_DRAG(sheet)) &&
 	event->window == sheet->sheet_window &&
-	new_cursor != sheet->cursor_drag->type)
+	new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
     {
 	gdk_cursor_destroy(sheet->cursor_drag);
 	sheet->cursor_drag = gdk_cursor_new(GDK_TOP_LEFT_ARROW);
@@ -10410,7 +10410,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     if (!GTK_SHEET_IN_DRAG(sheet) &&
 	(POSSIBLE_RESIZE(sheet, x, y, &row, &column) || GTK_SHEET_IN_RESIZE(sheet)) &&
 	event->window == sheet->sheet_window &&
-	new_cursor != sheet->cursor_drag->type)
+	new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
     {
 	gdk_cursor_destroy(sheet->cursor_drag);
 	sheet->cursor_drag = gdk_cursor_new(GDK_SIZING);

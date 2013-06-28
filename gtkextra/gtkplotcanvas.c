@@ -1321,7 +1321,7 @@ gtk_plot_canvas_motion (GtkWidget *widget, GdkEventMotion *event)
                  cursor = GDK_TOP_LEFT_ARROW;
        }
 
-  if(cursor != canvas->cursor->type){
+  if(cursor != gdk_cursor_get_cursor_type(canvas->cursor)){
          gdk_cursor_destroy(canvas->cursor);
          canvas->cursor = gdk_cursor_new(cursor);
          gdk_window_set_cursor(gtk_widget_get_window(widget), canvas->cursor);

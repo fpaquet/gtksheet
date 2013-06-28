@@ -1,5 +1,6 @@
 2013-06-28 Fredy Paquet <mailbox AT opag.ch>
-	* replaced deprecated widget->parent accessors
+	* replaced deprecated GtkWidget->parent accessors
+	* replaced deprecated GdkCursor->type accessors
 
 2013-06-27 Fredy Paquet <mailbox AT opag.ch>
 	* replaced deprecated GTK_SIGNAL_FUNC with G_CALLBACK

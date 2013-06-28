@@ -1,3 +1,6 @@
+2013-06-28 Fredy Paquet <mailbox AT opag.ch>
+	* replaced deprecated widget->parent accessors
+
 2013-06-27 Fredy Paquet <mailbox AT opag.ch>
 	* replaced deprecated GTK_SIGNAL_FUNC with G_CALLBACK
 	* disabled deprecated GTK_TYPE_COMBO_BOX_ENTRY from Gtk 2.24

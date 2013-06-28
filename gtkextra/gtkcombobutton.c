@@ -295,7 +295,7 @@ gtk_combo_button_button_press (GtkWidget * widget, GdkEvent * event, gpointer da
 	{
 	  if (child == widget)
 	    return FALSE;
-	  child = child->parent;
+	  child = gtk_widget_get_parent(child);
 	}
     }
 

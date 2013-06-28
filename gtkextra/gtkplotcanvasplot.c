@@ -147,7 +147,13 @@ gtk_plot_canvas_plot_destroy(GtkObject *object)
 {
   GtkWidget *widget = GTK_WIDGET(GTK_PLOT_CANVAS_PLOT(object)->plot);
   g_object_unref(widget);
-  widget->parent = NULL;
+
+  /* 28.06.13/fp - dropped the following line
+     - do not access widget data after g_object_unref()
+     - calling gtk_widget_unparent() before g_object_unref() -> invalid GObject warnings
+   
+  widget->parent = NULL; 
+  */ 
 }
 
 static void 
@@ -400,7 +406,7 @@ gtk_plot_canvas_plot_size_allocate	(GtkPlotCanvas *canvas,
       allocation.height = canvas->pixmap_height;
       gtk_widget_set_allocation(GTK_WIDGET(plot), &allocation);
 
-      if(!GTK_WIDGET(plot)->parent) 
+      if(!gtk_widget_get_parent(GTK_WIDGET(plot))) 
         gtk_widget_set_parent(GTK_WIDGET(plot), GTK_WIDGET(canvas));
 
       gtk_plot_move_resize(plot, child->rx1, child->ry1, 

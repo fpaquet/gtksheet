@@ -550,7 +550,7 @@ gtk_icon_list_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
   GTK_WIDGET_CLASS(parent_class)->size_allocate(widget, allocation);
   if(gtk_widget_get_realized(widget) && old){
     gint new_width, new_height;
-    gdk_window_get_size(GTK_VIEWPORT(widget->parent)->view_window, &new_width, &new_height);
+    gdk_window_get_size(GTK_VIEWPORT(gtk_widget_get_parent(widget))->view_window, &new_width, &new_height);
     if(old->width != new_width || old->height != new_height)
       reorder_icons(GTK_ICON_LIST(widget));
     old->width = new_width; 

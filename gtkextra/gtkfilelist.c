@@ -355,7 +355,7 @@ sort_list(gpointer a, gpointer b)
   itemb = (GtkIconListItem *)b;
   filea = (GtkFileListItem *)itema->link;
   fileb = (GtkFileListItem *)itemb->link;
-  file_list = GTK_FILE_LIST(itema->entry->parent);
+  file_list = GTK_FILE_LIST(gtk_widget_get_parent(itema->entry));
   if(!file_list) return 0;
 
   switch(file_list->sort_mode){

@@ -11692,6 +11692,24 @@ _get_entry_window_size(GtkEntry *entry,
     GtkAllocation allocation;
     GtkWidget *widget = GTK_WIDGET(entry);
 
+    /* GtkEntry->is_cell_renderer is a GSEAL()ed structure member.
+       It will only be set to TRUE when calling the GtkEntry's GtkCellEditable
+       interface function gtk_entry_cell_editable_init().
+     
+       This should never be the case in GtkSheet or GtkItemEntry.
+     
+       Anyhow, if the above statement wasn't true, solutions could be:
+       - ask the Gtk maintainers to add the function
+         GtkEntry::get_widget_window_size() to the public GtkEntry interface
+       - last resort work-around:
+         use the sealed member anyhow GtkEntry->GSEAL(is_cell_renderer)
+       */
+#if 0
+#    define ENTRY_IS_CELL_RENDERER  entry->is_cell_renderer
+#else
+#    define ENTRY_IS_CELL_RENDERER  FALSE
+#endif
+
     gtk_widget_get_child_requisition(widget, &requisition);
     gtk_widget_get_allocation(widget, &allocation);
 
@@ -11700,7 +11718,7 @@ _get_entry_window_size(GtkEntry *entry,
 
     if (y)
     {
-	if (entry->is_cell_renderer)
+	if (ENTRY_IS_CELL_RENDERER)
 	    *y = allocation.y;
 	else
 	    *y = allocation.y + (allocation.height - requisition.height) / 2;
@@ -11711,7 +11729,7 @@ _get_entry_window_size(GtkEntry *entry,
 
     if (height)
     {
-	if (entry->is_cell_renderer)
+	if (ENTRY_IS_CELL_RENDERER)
 	    *height = allocation.height;
 	else
 	    *height = requisition.height;

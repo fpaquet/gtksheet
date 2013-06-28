@@ -68,7 +68,7 @@
 #endif
 
 #ifdef GTK_SHEET_DEBUG
-#   define GTK_SHEET_DEBUG_ADJUSTMENT  2
+#   define GTK_SHEET_DEBUG_ADJUSTMENT  0
 #   define GTK_SHEET_DEBUG_ALLOCATION  0
 #   define GTK_SHEET_DEBUG_BUILDER   0
 #   define GTK_SHEET_DEBUG_CELL_ACTIVATION  0
@@ -80,7 +80,7 @@
 #   define GTK_SHEET_DEBUG_DRAW_BUTTON  0
 #   define GTK_SHEET_DEBUG_DRAW_LABEL  0
 #   define GTK_SHEET_DEBUG_ENTER_PRESSED   0
-#   define GTK_SHEET_DEBUG_ENTRY   0
+#   define GTK_SHEET_DEBUG_ENTRY   1
 #   define GTK_SHEET_DEBUG_EXPOSE   0
 #   define GTK_SHEET_DEBUG_FINALIZE  0
 #   define GTK_SHEET_DEBUG_FONT_METRICS  0
@@ -3314,6 +3314,8 @@ gtk_sheet_change_entry(GtkSheet *sheet, const GType entry_type)
 	_gtk_sheet_hide_active_cell(sheet);
 
     create_sheet_entry(sheet, entry_type ? entry_type : G_TYPE_NONE);
+
+    sheet->entry_type = entry_type;  /* save wanted type, no matter wether it failed */
 
     if (state == GTK_SHEET_NORMAL)
     {
@@ -8722,10 +8724,15 @@ static void _gtk_sheet_entry_preselect(GtkSheet *sheet)
  * @col:    column index
  * @entry_widget: entry widget 
  * 
- * configure sheet_entry for use 
- * 
- * setup sheet_entry style, justification and other properties
- * for use within the active cell 
+ * configure sheet_entry for use within the active cell
+ * - justification 
+ * - editable
+ * - max_length 
+ * - wrap_mode 
+ * - color attributes
+ * - font
+ *  
+ * this function must not dependant on any text contents.
  */
 static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
     GtkWidget *entry_widget)
@@ -8837,7 +8844,6 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
 static void
 gtk_sheet_show_active_cell(GtkSheet *sheet)
 {
-    GtkWidget *entry_widget;
     gchar *text = NULL;
     gchar *old_text;
     gint row, col;
@@ -8880,7 +8886,7 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
 	}
     }
 
-    entry_widget = gtk_sheet_get_entry(sheet);
+    GtkWidget *entry_widget = gtk_sheet_get_entry(sheet);
 
     /* update visibility */
 
@@ -8897,6 +8903,11 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
 	text = g_strdup("");
 
     old_text = gtk_sheet_get_entry_text(sheet);
+
+    /* the entry setup must be done before the text assigment,
+       otherwise max_length may cause text assignment to fail
+       */
+    _gtk_sheet_entry_setup(sheet, row, col, entry_widget);
 
     if (old_text && strcmp(old_text, text) != 0)
     {
@@ -11748,7 +11759,6 @@ void
 _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 {
     GtkAllocation shentry_allocation;
-    GtkWidget *entry_widget;
     gint row, col;
     gint size, entry_max_size, column_width, row_height;
     guint text_width, text_height;
@@ -11764,13 +11774,16 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
     g_debug("_gtk_sheet_entry_size_allocate: called");
 #endif
 
-    entry_widget = gtk_sheet_get_entry(sheet);
+    GtkWidget *entry_widget = gtk_sheet_get_entry(sheet);
 
-    /* update properties */
-
+#if 0
+    /* the entry setup must be done before the text assigment,
+       otherwise max_length may cause text assignment to fail
+       */
     _gtk_sheet_entry_setup(sheet,
 	sheet->active_cell.row, sheet->active_cell.col,
 	entry_widget);
+#endif
 
     GtkSheetCellAttr attributes;
     gtk_sheet_get_attributes(sheet,
@@ -12166,7 +12179,7 @@ gtk_sheet_get_entry(GtkSheet *sheet)
     g_return_val_if_fail(sheet != NULL, NULL);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), NULL);
     g_return_val_if_fail(sheet->sheet_entry != NULL, NULL);
-
+    
     if (GTK_IS_EDITABLE(sheet->sheet_entry))
 	return (sheet->sheet_entry);
     if (GTK_IS_DATA_TEXT_VIEW(sheet->sheet_entry))

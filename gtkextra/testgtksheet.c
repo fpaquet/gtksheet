@@ -429,14 +429,18 @@ gboolean
     gboolean changed = FALSE;
     GtkSheet *sheet = GTK_SHEET(widget);
 
+    printf("change_entry: %d %d -> %d %d\n", row, col, *new_row, *new_col);
+
     if (*new_col == 0 && (col != 0 || sheet->state != GTK_STATE_NORMAL))
     {
+	printf("change_entry: GtkCombo\n");
         gtk_sheet_change_entry(sheet, gtk_combo_get_type());
         changed = TRUE;
     }
 
     if (*new_col == 1 && (col != 1 || sheet->state != GTK_STATE_NORMAL))
     {
+	printf("change_entry: GtkEntry\n");
         gtk_sheet_change_entry(sheet, gtk_entry_get_type());
         changed = TRUE;
     }
@@ -448,6 +452,7 @@ gboolean
         gdouble value = 0.0;
         gchar *text;
 
+	printf("change_entry: GtkSpinButton\n");
         gtk_sheet_change_entry(sheet, gtk_spin_button_get_type ());
         changed = TRUE;
 
@@ -462,20 +467,24 @@ gboolean
 
     if (*new_col == 3 && (col != 3 || sheet->state != GTK_STATE_NORMAL))
     {
+	printf("change_entry: GtkTextView\n");
         gtk_sheet_change_entry(sheet, GTK_TYPE_TEXT_VIEW);
         changed = TRUE;
     }
 
-    if (*new_col >= 4 && (col < 4 || sheet->state != GTK_STATE_NORMAL))
+    if (*new_col == 4 && (col != 4 || sheet->state != GTK_STATE_NORMAL))
     {
+	printf("change_entry: GtkItemEntry\n");
         gtk_sheet_change_entry(sheet, G_TYPE_ITEM_ENTRY);
         changed = TRUE;
     }
 
-/* this one crashes with SEGV in GLib
-   GLib-GObject-WARNING **: cannot retrieve class for invalid (unclassed) type `GtkCellEditable'
-           gtk_sheet_change_entry(sheet, G_TYPE_CELL_EDITABLE);
-           */
+    if (*new_col >= 5 && (col < 5 || sheet->state != GTK_STATE_NORMAL))
+    {
+	printf("change_entry: GtkDataTextView\n");
+        gtk_sheet_change_entry(sheet, gtk_data_text_view_get_type());
+        changed = TRUE;
+    }
 
     if (changed)
     {
@@ -892,6 +901,19 @@ void
     gtk_sheet_range_set_border(sheet, &range, GTK_SHEET_BOTTOM_BORDER, 4, 1);
 
     gtk_sheet_set_autoresize(sheet, TRUE);
+
+    gtk_sheet_column_button_add_label(sheet, 0, "GtkCombo");
+    gtk_sheet_column_button_add_label(sheet, 1, "GtkEntry");
+    gtk_sheet_column_button_add_label(sheet, 2, "GtkSpinButton");
+    gtk_sheet_column_button_add_label(sheet, 3, "GtkTextView");
+
+    gtk_sheet_column_button_add_label(sheet, 4, "GtkItemEntry\nmax 10 chars");
+    g_object_set(gtk_sheet_column_get(sheet, 4),"max-length", 10, NULL);
+
+    gtk_sheet_column_button_add_label(sheet, 5, "GtkDataTextView\nmax 20 chars");
+    g_object_set(gtk_sheet_column_get(sheet, 5),"max-length", 20, NULL);
+
+    gtk_sheet_column_button_add_label(sheet, 6, "GtkDataTextView\nno limit");
 
     gtk_sheet_change_entry(sheet, gtk_combo_get_type());
 

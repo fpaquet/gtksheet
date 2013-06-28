@@ -3,6 +3,8 @@
 	* replaced deprecated accessor: GdkCursor->type
 	* replaced deprecated accessor: GtkContainer->border_width
 	* replaced deprecated accessor: GtkEntry->is_cell_renderer
+	* GtkSheet: fixed custom sheet_entry assignment, update testgtksheet
+	* GtkDataTextView: fixed entry setup during cell activation
 
 2013-06-27 Fredy Paquet <mailbox AT opag.ch>
 	* replaced deprecated GTK_SIGNAL_FUNC with G_CALLBACK

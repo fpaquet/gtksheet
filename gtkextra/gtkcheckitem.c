@@ -185,7 +185,7 @@ gtk_check_item_paint (GtkWidget    *widget,
 	  
       gtk_check_item_draw_indicator (check_item, area);
       
-      border_width = GTK_CONTAINER (widget)->border_width;
+      border_width = gtk_container_get_border_width(GTK_CONTAINER (widget));
       if (gtk_widget_has_focus (widget))
 	gtk_paint_focus (gtk_widget_get_style(widget), 
 			gtk_widget_get_window(widget),
@@ -253,18 +253,19 @@ gtk_check_item_size_allocate (GtkWidget     *widget,
       if (gtk_bin_get_child(GTK_BIN (button))&& 
 		gtk_widget_get_visible (gtk_bin_get_child(GTK_BIN (button))))
 	{
-	  child_allocation.x = (GTK_CONTAINER (widget)->border_width +
+	  guint border_width = gtk_container_get_border_width(GTK_CONTAINER (widget));
+
+	  child_allocation.x = (border_width +
 				GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_size +
 				GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_spacing * 3 + 1 +
 				allocation->x);
-	  child_allocation.y = GTK_CONTAINER (widget)->border_width + 1 + 
-						allocation->y;
+	  child_allocation.y = border_width + 1 + allocation->y;
 	  child_allocation.width = MAX (1, allocation->width - 
-				(GTK_CONTAINER (widget)->border_width +
+				(border_width +
 				 GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_size +
 				 GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_spacing * 3 + 1)  -
-				GTK_CONTAINER (widget)->border_width - 1);
-	  child_allocation.height = MAX (1, allocation->height - (GTK_CONTAINER (widget)->border_width + 1) * 2);
+				border_width - 1);
+	  child_allocation.height = MAX (1, allocation->height - (border_width + 1) * 2);
 	  
 	  gtk_widget_size_allocate (gtk_bin_get_child(GTK_BIN (button)), 
 				&child_allocation);
@@ -360,10 +361,12 @@ gtk_real_check_item_draw_indicator (GtkCheckItem *check_item,
 	  state_type != GTK_STATE_PRELIGHT)
 	state_type = GTK_STATE_NORMAL;
       
-      restrict_area.x = allocation.x + GTK_CONTAINER (widget)->border_width;
-      restrict_area.y = allocation.y + GTK_CONTAINER (widget)->border_width;
-      restrict_area.width = allocation.width - ( 2 * GTK_CONTAINER (widget)->border_width);
-      restrict_area.height = allocation.height - ( 2 * GTK_CONTAINER (widget)->border_width);
+      guint border_width = gtk_container_get_border_width(GTK_CONTAINER(widget));
+
+      restrict_area.x = allocation.x + border_width;
+      restrict_area.y = allocation.y + border_width;
+      restrict_area.width = allocation.width - ( 2 * border_width);
+      restrict_area.height = allocation.height - ( 2 * border_width);
       
       if (gdk_rectangle_intersect (area, &restrict_area, &new_area))
 	{
@@ -376,7 +379,7 @@ gtk_real_check_item_draw_indicator (GtkCheckItem *check_item,
 				new_area.width, new_area.height);
 	}
       
-      x = allocation.x + GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_spacing + GTK_CONTAINER (widget)->border_width;
+      x = allocation.x + GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_spacing + border_width;
       y = allocation.y + (allocation.height - GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_size) / 2;
       width = GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_size;
       height = GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_size;

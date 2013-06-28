@@ -1,6 +1,7 @@
 2013-06-28 Fredy Paquet <mailbox AT opag.ch>
-	* replaced deprecated GtkWidget->parent accessors
-	* replaced deprecated GdkCursor->type accessors
+	* replaced deprecated accessors: GtkWidget->parent 
+	* replaced deprecated accessors: GdkCursor->type
+	* replaced deprecated accessors: GtkContainer->border_width
 
 2013-06-27 Fredy Paquet <mailbox AT opag.ch>
 	* replaced deprecated GTK_SIGNAL_FUNC with G_CALLBACK

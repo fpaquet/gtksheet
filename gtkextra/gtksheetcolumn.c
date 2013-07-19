@@ -51,13 +51,13 @@
 #undef GTK_SHEET_COL_DEBUG
 
 #ifdef DEBUG
-#define GTK_SHEET_COL_DEBUG 1  /* define to activate debug output */
+#define GTK_SHEET_COL_DEBUG 0  /* define to activate debug output */
 #endif
 
 #ifdef GTK_SHEET_COL_DEBUG
 #   define GTK_SHEET_COL_DEBUG_BUILDER   0
 #   define GTK_SHEET_COL_DEBUG_DRAW  0
-#   define GTK_SHEET_COL_DEBUG_PROPERTIES  1
+#   define GTK_SHEET_COL_DEBUG_PROPERTIES  0
 #   define GTK_SHEET_COL_DEBUG_SIZE  0
 #endif
 
@@ -149,7 +149,9 @@ gtk_sheet_column_set_property(GObject *object,
             {
                 const gchar *label = g_value_get_string(value);
 
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                if ((col < 0) 
+                    || !G_IS_OBJECT(sheet) 
+                    || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     GtkSheetButton *button = &colobj->button;
                     if (button->label) g_free(button->label);
@@ -167,7 +169,9 @@ gtk_sheet_column_set_property(GObject *object,
                 if (width < 0) return;
                 if (width < GTK_SHEET_COLUMN_MIN_WIDTH) width = GTK_SHEET_COLUMN_DEFAULT_WIDTH;
 
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                if ((col < 0) 
+                    || !G_IS_OBJECT(sheet) 
+                    || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     colobj->width = width;
                 }
@@ -185,7 +189,9 @@ gtk_sheet_column_set_property(GObject *object,
             {
                 gint justification = g_value_get_enum(value);
 
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                if ((col < 0) 
+                    || !G_IS_OBJECT(sheet) 
+                    || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     colobj->justification = justification;
                 }
@@ -198,7 +204,9 @@ gtk_sheet_column_set_property(GObject *object,
             {
                 gint is_key = g_value_get_boolean(value);
 
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                if ((col < 0) 
+                    || !G_IS_OBJECT(sheet) 
+                    || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     colobj->is_key = is_key;
                 }
@@ -211,7 +219,9 @@ gtk_sheet_column_set_property(GObject *object,
             {
                 gint is_readonly = g_value_get_boolean(value);
 
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                if ((col < 0) 
+                    || !G_IS_OBJECT(sheet) 
+                    || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     colobj->is_readonly = is_readonly;
                 }
@@ -224,7 +234,9 @@ gtk_sheet_column_set_property(GObject *object,
             {
                 const gchar *data_type = g_value_get_string(value);
 
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                if ((col < 0) 
+                    || !G_IS_OBJECT(sheet) 
+                    || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     if (colobj->data_type) g_free(colobj->data_type);
                     colobj->data_type = g_strdup(data_type);
@@ -238,7 +250,9 @@ gtk_sheet_column_set_property(GObject *object,
             {
                 const gchar *data_format = g_value_get_string(value);
 
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                if ((col < 0) 
+                    || !G_IS_OBJECT(sheet) 
+                    || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     if (colobj->data_format) g_free(colobj->data_format);
                     colobj->data_format = g_strdup(data_format);
@@ -252,7 +266,9 @@ gtk_sheet_column_set_property(GObject *object,
             {
                 const gchar *description = g_value_get_string(value);
 
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                if ((col < 0) 
+                    || !G_IS_OBJECT(sheet) 
+                    || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     if (colobj->description) g_free(colobj->description);
                     colobj->description = g_strdup(description);
@@ -266,7 +282,9 @@ gtk_sheet_column_set_property(GObject *object,
             {
                 GType entry_type = _gtk_sheet_entry_type_to_gtype(g_value_get_enum(value));
 
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                if ((col < 0) 
+                    || !G_IS_OBJECT(sheet) 
+                    || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     colobj->entry_type = entry_type;
                 }
@@ -279,7 +297,9 @@ gtk_sheet_column_set_property(GObject *object,
             {
                 GtkSheetVerticalJustification vjust = g_value_get_enum(value);
 
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                if ((col < 0) 
+                    || !G_IS_OBJECT(sheet) 
+                    || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     colobj->vjust = vjust;
                 }
@@ -293,11 +313,13 @@ gtk_sheet_column_set_property(GObject *object,
                 gint visible = g_value_get_boolean(value);
 
 #if GTK_SHEET_COL_DEBUG_PROPERTIES > 0
-                g_debug("gtk_sheet_column_set_property: col %d visible %d realized %d", 
-		    col, visible, gtk_widget_get_realized(GTK_WIDGET(sheet)));
+                g_debug("gtk_sheet_column_set_property: col %d visible %d sheet %p", 
+                    col, visible, sheet);
 #endif
 
-                if ((col < 0) || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
+                if ((col < 0) 
+                    || !G_IS_OBJECT(sheet) 
+                    || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
                 {
                     GTK_SHEET_COLUMN_SET_VISIBLE(colobj, visible);
                 }
@@ -324,7 +346,7 @@ gtk_sheet_column_set_property(GObject *object,
             break;
     }
 
-    if (sheet && gtk_widget_get_realized(GTK_WIDGET(sheet))
+    if (G_IS_OBJECT(sheet) && gtk_widget_get_realized(GTK_WIDGET(sheet))
         && !gtk_sheet_is_frozen(sheet))
     {
         _gtk_sheet_range_draw(sheet, NULL, TRUE);

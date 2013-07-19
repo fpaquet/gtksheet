@@ -1,3 +1,6 @@
+2013-07-19 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheetColumn: fixed sheet realized check that caused SEGV
+
 2013-07-02 Fredy Paquet <mailbox AT opag.ch>
 	* merged branch gtk3 into master
 

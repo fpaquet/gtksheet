@@ -94,6 +94,7 @@
 #   define GTK_SHEET_DEBUG_SELECTION  0
 #   define GTK_SHEET_DEBUG_SIGNALS   0
 #   define GTK_SHEET_DEBUG_SIZE  0
+#   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0
 #endif
 
 #define GTK_SHEET_MOD_MASK  GDK_MOD1_MASK  /* main modifier for sheet navigation */
@@ -7656,7 +7657,15 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
     if (col < 0 || row < 0)
 	return;
 
+#if GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
+    GTimer *tm = g_timer_new();
+#endif
+
     CheckCellData(sheet, row, col);
+
+#if GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
+    g_debug("st1: %0.6f", g_timer_elapsed(tm, NULL));
+#endif
 
     cell = sheet->data[row][col];
 
@@ -7674,7 +7683,15 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
     if (text)
 	cell->text = g_strdup(text);
 
+#if GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
+    g_debug("st2: %0.6f", g_timer_elapsed(tm, NULL));
+#endif
+
     _gtk_sheet_udpate_extent(sheet, cell, row, col);
+
+#if GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
+    g_debug("st3: %0.6f", g_timer_elapsed(tm, NULL));
+#endif
 
     if (attributes.is_visible)
     {
@@ -7731,7 +7748,16 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
 		_gtk_sheet_range_draw(sheet, &range, TRUE);
 	}
     }
+#if GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
+    g_debug("st4: %0.6f", g_timer_elapsed(tm, NULL));
+#endif
+
     g_signal_emit(GTK_OBJECT(sheet), sheet_signals[CHANGED], 0, row, col);
+
+#if GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
+    g_debug("st9: %0.6f", g_timer_elapsed(tm, NULL));
+    g_timer_destroy(tm);
+#endif
 }
 
 /**

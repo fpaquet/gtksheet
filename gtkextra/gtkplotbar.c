@@ -63,7 +63,7 @@ static void gtk_plot_bar_draw_legend	(GtkPlotData *data,
 					 gint x, gint y);
 static void gtk_plot_bar_clone		(GtkPlotData *data, GtkPlotData *copy);
 
-extern inline gint roundint (gdouble x);
+extern gint roundint (gdouble x);
 
 enum {
   ARG_0,

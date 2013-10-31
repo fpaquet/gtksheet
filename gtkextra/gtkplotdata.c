@@ -137,7 +137,7 @@ static void gtk_plot_data_draw_star		(GtkPlotData *data,
 static void gtk_plot_data_connect_points	(GtkPlotData *data,
 						 gint npoints);
 
-extern inline gint roundint			(gdouble x);
+extern gint roundint			(gdouble x);
 static void spline_solve 			(int n,
                                                  gdouble x[], gdouble y[],
 						 gdouble y2[]);

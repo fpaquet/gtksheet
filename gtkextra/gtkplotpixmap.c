@@ -74,7 +74,7 @@ static void gtk_plot_pixmap_set_property	(GObject      *object,
 
 
 
-extern inline gint roundint 			(gdouble x);
+extern gint roundint 			(gdouble x);
 
 static GtkPlotDataClass *parent_class = NULL;
 

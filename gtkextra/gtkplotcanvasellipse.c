@@ -71,7 +71,7 @@ static void gtk_plot_canvas_ellipse_set_property(GObject      *object,
                                                  GParamSpec      *pspec);
 
 
-extern inline gint roundint                     (gdouble x);
+extern gint roundint                     (gdouble x);
 static GtkPlotCanvasChildClass *parent_class = NULL;
 
 GType

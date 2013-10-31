@@ -52,7 +52,7 @@ static void gtk_plot_candle_draw_symbol	(GtkPlotData *data,
 					 gdouble dz, 
 					 gdouble da);
 
-extern inline gint roundint (gdouble x);
+extern gint roundint (gdouble x);
 
 
 static GtkPlotDataClass *parent_class = NULL;

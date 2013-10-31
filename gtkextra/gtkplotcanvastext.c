@@ -61,7 +61,7 @@ static void gtk_plot_canvas_text_set_property(GObject      *object,
                                                  const GValue          *value,
                                                  GParamSpec      *pspec);
 
-extern inline gint roundint                     (gdouble x);
+extern gint roundint                     (gdouble x);
 static GtkPlotCanvasChildClass *parent_class = NULL;
 
 GType

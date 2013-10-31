@@ -71,7 +71,7 @@ static void gtk_plot_polar_real_get_point	(GtkWidget *widget,
 						 gint py,
                           			 gdouble *x, 
 						 gdouble *y); 
-extern inline gint roundint			(gdouble x);
+extern gint roundint			(gdouble x);
 
 static GtkPlotClass *parent_class = NULL;
 

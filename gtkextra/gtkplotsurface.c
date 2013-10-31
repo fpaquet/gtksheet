@@ -71,7 +71,7 @@ static void gtk_plot_surface_lighting 		(GdkColor *a,
 						 gdouble normal,
 						 gdouble ambient);
 static void clear_polygons                      (GtkPlotSurface *surface);
-extern inline gint roundint				(gdouble x);
+extern gint roundint				(gdouble x);
 static void hsv_to_rgb 				(gdouble  h, 
 						 gdouble  s, 
 						 gdouble  v,
@@ -107,7 +107,7 @@ enum {
 static GtkPlotDataClass *parent_class = NULL;
 
 /* "stolen" from 3dgpl */
-inline gulong _sqrt(register gulong arg)
+gulong _sqrt(register gulong arg)
 { 
    register gint i;
    register gulong nprd,msk=0x8000L,val=0,prd=0;

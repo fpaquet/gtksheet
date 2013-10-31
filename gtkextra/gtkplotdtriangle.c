@@ -3905,7 +3905,7 @@ struct edge *newedge;
 /*   reference is given in the header.                                       */
 
 /* Which of the following two methods of finding the absolute values is      */
-/*   fastest is compiler-dependent.  A few compilers can inline and optimize */
+/*   fastest is compiler-dependent.  A few compilers can and optimize */
 /*   the fabs() call; but most will incur the overhead of a function call,   */
 /*   which is disastrously slow.  A faster way on IEEE machines might be to  */
 /*   mask the appropriate bit, but that's difficult to do in C.              */

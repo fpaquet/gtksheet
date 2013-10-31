@@ -65,7 +65,7 @@ static void gtk_plot_bubble_draw_symbol	(GtkPlotData *data,
 					 gdouble dz, 
 					 gdouble da);
 
-extern inline gint roundint (gdouble x);
+extern gint roundint (gdouble x);
 
 enum {
   ARG_0,

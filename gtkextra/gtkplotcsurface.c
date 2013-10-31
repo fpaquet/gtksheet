@@ -95,7 +95,7 @@ static void gtk_plot_csurface_lighting 		(GdkColor *a,
 						 gdouble normal,
 						 gdouble ambient);
 static void clear_polygons			(GtkPlotCSurface *surface);
-extern inline gint roundint			(gdouble x);
+extern gint roundint			(gdouble x);
 static void hsv_to_rgb 				(gdouble  h, 
 						 gdouble  s, 
 						 gdouble  v,

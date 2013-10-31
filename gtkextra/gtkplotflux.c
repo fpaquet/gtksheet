@@ -67,7 +67,7 @@ static void gtk_plot_flux_draw_arrow	(GtkPlotFlux *flux,
                                          gdouble x2, gdouble y2);
 
 
-extern inline gint roundint (gdouble x);
+extern gint roundint (gdouble x);
 
 enum {
   ARG_0,

@@ -67,7 +67,7 @@ static void gtk_plot_canvas_plot_button_release (GtkPlotCanvas *canvas,
 						 GtkPlotCanvasChild *child);
 static void reset_plot_allocation		(GtkPlotCanvas *canvas, 
 						 GtkPlotCanvasPlot *child);
-extern inline gint roundint                     (gdouble x);
+extern gint roundint                     (gdouble x);
 static GtkPlotCanvasChildClass *parent_class = NULL;
 
 extern GtkPlotCanvasPos possible_selection	(GtkAllocation area, 

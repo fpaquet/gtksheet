@@ -144,7 +144,7 @@ static void gtk_plot_canvas_child_draw		(GtkPlotCanvas *canvas,
 /* Auxiliary functions */
 GtkPlotCanvasPos 	possible_selection	(GtkAllocation area, 
 						 gint x, gint y);
-extern inline gint roundint                     (gdouble x);
+extern gint roundint                     (gdouble x);
 
 
 /* Signals */

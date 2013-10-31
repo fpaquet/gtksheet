@@ -64,7 +64,7 @@ static void gtk_plot_segment_draw_arrow	(GtkPlotSegment *segment,
                                          gdouble x2, gdouble y2);
 
 
-extern inline gint roundint (gdouble x);
+extern gint roundint (gdouble x);
 
 enum {
   ARG_0,

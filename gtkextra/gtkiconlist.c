@@ -130,7 +130,7 @@ static void pixmap_destroy                      ( GtkImage* pixmap);
 
 static GtkFixedClass *parent_class = NULL;
 
-static inline guint STRING_WIDTH(GtkWidget *widget,
+static guint STRING_WIDTH(GtkWidget *widget,
                                  PangoFontDescription *font, const gchar *text)
 {
   PangoRectangle rect;

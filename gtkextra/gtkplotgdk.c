@@ -130,7 +130,7 @@ static GdkBitmap * scale_bitmap 		    (GdkWindow *window,
 						     gdouble scale_x,
 						     gdouble scale_y);
 
-extern inline gint roundint                         (gdouble x);
+extern gint roundint                         (gdouble x);
 
 static GtkPlotPCClass *parent_class = NULL;
 

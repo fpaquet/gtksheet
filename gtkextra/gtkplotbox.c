@@ -62,7 +62,7 @@ static void gtk_plot_box_draw_symbol	(GtkPlotData *data,
 					 gdouble da);
 static void gtk_plot_box_clone          (GtkPlotData *data, GtkPlotData *copy);
 
-extern inline gint roundint (gdouble x);
+extern gint roundint (gdouble x);
 
 enum {
   ARG_0,

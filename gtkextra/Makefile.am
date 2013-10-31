@@ -247,11 +247,12 @@ gtkextratypebuiltins.c: $(gtkextra_public_h_sources)
 # test programs, not to be installed
 
 if ENABLE_TESTS
-noinst_PROGRAMS = testgtksheet testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment
+noinst_PROGRAMS = testgtksheet testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment testprintexport
 endif
 DEPS = $(gtkextratargetlib)
 LDADDS = $(gtkextratargetlib) $(GTK_LIBS)
 
+testprintexport_DEPENDENCIES = $(DEPS)
 testgtksheet_DEPENDENCIES = $(DEPS)
 testgtkplot_DEPENDENCIES = $(DEPS)
 testdt_DEPENDENCIES = $(DEPS)
@@ -294,6 +295,7 @@ testcandles_LDADD = $(LDADDS)
 testiterator_LDADD = $(LDADDS)
 testsegment_LDADD = $(LDADDS)
 testgtkplotcanvas_LDADD = $(LDADDS)
+testprintexport_LDADD = $(LDADDS)
 
 # gobject-introspection (begin)
 if ENABLE_INTROSPECTION

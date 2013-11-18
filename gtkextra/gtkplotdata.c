@@ -6409,6 +6409,8 @@ gtk_plot_data_gradient_set_style        (GtkPlotData *data,
 {
   data->legends_style = style,
   data->legends_precision = precision;
+  data->gradient->label_style = style;
+  data->gradient->label_precision = precision;
 }
 
 /**
@@ -6423,6 +6425,26 @@ void            gtk_plot_data_gradient_set_scale        (GtkPlotData *data,
 {
   data->gradient->ticks.scale = scale;
   gtk_plot_data_reset_gradient(data);
+}
+
+/**
+ * gtk_plot_data_gradient_set_title:
+ * @data: a #GtkPlotData widget.
+ * @title: title that will be displayed in the gradient box
+ *
+ *
+ */
+void
+gtk_plot_data_gradient_set_title        (GtkPlotData *data,
+                                         gchar *title)
+{
+  if (!title)
+  	return;
+
+  if (data->gradient->title.text) 
+  	g_free(data->gradient->title.text);
+ 	
+  data->gradient->title.text = g_strdup(title);
 }
 
 static void

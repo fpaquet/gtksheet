@@ -6408,7 +6408,7 @@ gtk_plot_data_gradient_set_style        (GtkPlotData *data,
                                          gint precision)
 {
   data->legends_style = style,
-  data->legends_precision = style;
+  data->legends_precision = precision;
 }
 
 /**

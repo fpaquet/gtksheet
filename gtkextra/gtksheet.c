@@ -113,7 +113,14 @@
 #   define GDK_KEY_KP_Enter GDK_KP_Enter
 #endif
 
-
+#if !GTK_CHECK_VERSION(2,22,0)
+static GdkCursorType
+gdk_cursor_get_cursor_type (GdkCursor *cursor)
+{
+  g_return_val_if_fail (cursor != NULL, GDK_BLANK_CURSOR);
+  return cursor->type;
+}
+#endif
 /* sheet flags */
 enum _GtkSheetFlags
 {

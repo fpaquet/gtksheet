@@ -71,7 +71,7 @@
 #   define GTK_SHEET_DEBUG_ADJUSTMENT  0
 #   define GTK_SHEET_DEBUG_ALLOCATION  0
 #   define GTK_SHEET_DEBUG_BUILDER   0
-#   define GTK_SHEET_DEBUG_CELL_ACTIVATION  0
+#   define GTK_SHEET_DEBUG_CELL_ACTIVATION  1
 #   define GTK_SHEET_DEBUG_CHILDREN  0
 #   define GTK_SHEET_DEBUG_CLICK  0
 #   define GTK_SHEET_DEBUG_COLORS  0
@@ -83,7 +83,7 @@
 #   define GTK_SHEET_DEBUG_ENTRY   1
 #   define GTK_SHEET_DEBUG_EXPOSE   0
 #   define GTK_SHEET_DEBUG_FINALIZE  0
-#   define GTK_SHEET_DEBUG_FONT_METRICS  0
+#   define GTK_SHEET_DEBUG_FONT_METRICS  1
 #   define GTK_SHEET_DEBUG_FREEZE   0
 #   define GTK_SHEET_DEBUG_KEYPRESS   0
 #   define GTK_SHEET_DEBUG_MOUSE  0
@@ -246,7 +246,7 @@ typedef enum _GtkSheetArea
 #   define ROW_MAX_HEIGHT(sheet) \
     (sheet->sheet_window_height < ROW_REMNANT_PIXELS ? \
     ROW_UNREALIZED_MAX_HEIGHT : \
-    sheet->sheet_window_height * 2/3 )
+    sheet->sheet_window_height * 1/3 )
 #endif
 
 #define CELL_EXTENT_WIDTH(text_width, attr_border_width)  \
@@ -399,7 +399,7 @@ static void _get_string_extent(GtkWidget *widget,
     layout = gtk_widget_create_pango_layout(widget, text);
     pango_layout_set_font_description(layout, font_desc);
 
-    pango_layout_get_extents(layout, NULL, &extent);
+    pango_layout_get_pixel_extents(layout, NULL, &extent);
 
 #if GTK_SHEET_DEBUG_FONT_METRICS > 0
     {
@@ -415,8 +415,8 @@ static void _get_string_extent(GtkWidget *widget,
 
 	g_debug("_get_string_extent(%s): ext (%d, %d, %d, %d) asc %d desc %d spac %d",
 	    text,
-	    PANGO_PIXELS(extent.x), PANGO_PIXELS(extent.y),
-	    PANGO_PIXELS(extent.width), PANGO_PIXELS(extent.height),
+	    extent.x, extent.y,
+	    extent.width, extent.height,
 	    ascent, descent, spacing);
     }
 #endif
@@ -424,9 +424,9 @@ static void _get_string_extent(GtkWidget *widget,
     g_object_unref(G_OBJECT(layout));
 
     if (width)
-	*width = PANGO_PIXELS(extent.width);
+	*width = extent.width;
     if (height)
-	*height = PANGO_PIXELS(extent.height);
+	*height = extent.height;
 }
 
 static inline guint
@@ -3734,7 +3734,7 @@ static void _gtk_sheet_recalc_extent_height(GtkSheet *sheet, gint row)
 }
 
 /**
- * _gtk_sheet_udpate_extent:
+ * _gtk_sheet_update_extent:
  * @sheet:  the #GtkSheet
  * @cell:   the #GtkSheetCell
  * @row:    the row
@@ -3742,7 +3742,7 @@ static void _gtk_sheet_recalc_extent_height(GtkSheet *sheet, gint row)
  * 
  * update cell extent and propagate to max row/column extent
  */
-static void _gtk_sheet_udpate_extent(GtkSheet *sheet,
+static void _gtk_sheet_update_extent(GtkSheet *sheet,
     GtkSheetCell *cell, gint row, gint col)
 {
     guint text_width = 0, text_height = 0;
@@ -3880,7 +3880,7 @@ _gtk_sheet_autoresize_row_internal(GtkSheet *sheet, gint row)
 
     new_height = ROW_EXTENT_TO_HEIGHT(rowptr->max_extent_height);
 
-#if GTK_SHEET_DEBUG_SIZE > 0
+#if 0 && GTK_SHEET_DEBUG_SIZE > 0
     g_debug("_gtk_sheet_autoresize_row_internal[%d]: win_h %d ext_h %d row_max_h %d",
 	row, sheet->sheet_window_height, rowptr->max_extent_height,
 	ROW_MAX_HEIGHT(sheet));
@@ -7670,7 +7670,7 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
 
     CheckCellData(sheet, row, col);
 
-#if GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
+#if 0 && GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
     g_debug("st1: %0.6f", g_timer_elapsed(tm, NULL));
 #endif
 
@@ -7690,11 +7690,11 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
     if (text)
 	cell->text = g_strdup(text);
 
-#if GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
+#if 0 && GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
     g_debug("st2: %0.6f", g_timer_elapsed(tm, NULL));
 #endif
 
-    _gtk_sheet_udpate_extent(sheet, cell, row, col);
+    _gtk_sheet_update_extent(sheet, cell, row, col);
 
 #if GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
     g_debug("st3: %0.6f", g_timer_elapsed(tm, NULL));
@@ -8942,7 +8942,11 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
        */
     _gtk_sheet_entry_setup(sheet, row, col, entry_widget);
 
-    if (old_text && strcmp(old_text, text) != 0)
+#if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
+    g_debug("gtk_sheet_show_active_cell: old_text <%s> text <%s>", old_text, text);
+#endif
+
+    if (!old_text || (old_text[0] != text[0]) || strcmp(old_text, text) != 0)
     {
 	gtk_sheet_set_entry_text(sheet, text);
     }
@@ -12723,8 +12727,8 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
 	layout = gtk_widget_create_pango_layout(GTK_WIDGET(sheet), label);
 	pango_layout_set_font_description(layout, font_desc);
 
-	pango_layout_get_extents(layout, NULL, &extent);
-	text_width = PANGO_PIXELS(extent.width);
+	pango_layout_get_pixel_extents(layout, NULL, &extent);
+	text_width = extent.width;
 
 	switch(button->justification)
 	{

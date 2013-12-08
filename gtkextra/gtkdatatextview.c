@@ -68,11 +68,13 @@
 #endif
 
 #if GTK_DATA_TEXT_VIEW_DEBUG
-#define GTK_DATA_TEXT_VIEW_DEBUG_SIGNAL  1  /* debug signal handlers */
+#define GTK_DATA_TEXT_VIEW_DEBUG_SIGNAL  0  /* debug signal handlers */
 #endif
 
 #define GTK_DATA_TEXT_VIEW_BUFFER_MAX_SIZE (G_MAXINT / 2)
 #define GTK_DATA_TEXT_VIEW_COUNT_HIDDEN_BYTES  TRUE
+
+#define GTK_DATA_TEXT_VIEW_CUT_INSERTED_TEXT 1  /* 1=cut pasted text to max len, 0=refuse */
 
 enum
 {
@@ -425,7 +427,17 @@ static void _gtk_data_text_view_insert_text_handler(GtkTextBuffer *textbuffer,
 	    
 	if (old_length_chars + new_text_length_chars > max_len_chars)
 	{
-	    gdk_beep();
+#if GTK_DATA_TEXT_VIEW_CUT_INSERTED_TEXT > 0
+	    gint remaining_chars = max_len_chars - old_length_chars;
+	    if (remaining_chars > 0)
+	    {
+		gchar *cp = g_malloc0(new_text_len_bytes);
+		g_utf8_strncpy(cp, new_text, remaining_chars);
+		gtk_text_buffer_insert(textbuffer, location, cp, -1);
+		g_free(cp);
+	    }
+#endif
+	    gdk_beep(); 
 	    g_signal_stop_emission_by_name(textbuffer, "insert-text");
 	}
     }
@@ -451,6 +463,24 @@ static void _gtk_data_text_view_insert_text_handler(GtkTextBuffer *textbuffer,
 
 	if (old_length_bytes + new_text_len_bytes > max_len_bytes)
 	{
+#if GTK_DATA_TEXT_VIEW_CUT_INSERTED_TEXT > 0
+	    gint remaining_bytes = max_len_bytes - old_length_bytes;
+	    if (remaining_bytes > 0)
+	    {
+		gchar *bpxx = &new_text[remaining_bytes];  /* byte position, may be invalid */
+		gchar *cpe = g_utf8_find_prev_char(new_text, bpxx);
+		if (cpe) 
+		{
+		    gchar *cpn = g_utf8_find_next_char(cpe, NULL);
+		    if (cpn && cpn <= bpxx) cpe = bpxx;
+
+		    gchar *cp = g_malloc0(new_text_len_bytes); 
+		    strncpy(cp, new_text, cpe-new_text);
+		    gtk_text_buffer_insert(textbuffer, location, cp, -1);
+		    g_free(cp);
+		}
+	    }
+#endif
 	    gdk_beep();
 	    g_signal_stop_emission_by_name(textbuffer, "insert-text");
 	}

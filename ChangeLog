@@ -1,3 +1,8 @@
+2013-12-08 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet - fixed maximum autosized row height
+	* GtkSheet - fixed typo, reworked debug output
+	* GtkDataTextView - cut too long texts when pasting into length limited buffer
+
 2013-07-19 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheetColumn: fixed sheet realized check that caused SEGV
 

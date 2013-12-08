@@ -71,7 +71,7 @@
 #   define GTK_SHEET_DEBUG_ADJUSTMENT  0
 #   define GTK_SHEET_DEBUG_ALLOCATION  0
 #   define GTK_SHEET_DEBUG_BUILDER   0
-#   define GTK_SHEET_DEBUG_CELL_ACTIVATION  1
+#   define GTK_SHEET_DEBUG_CELL_ACTIVATION  0
 #   define GTK_SHEET_DEBUG_CHILDREN  0
 #   define GTK_SHEET_DEBUG_CLICK  0
 #   define GTK_SHEET_DEBUG_COLORS  0
@@ -80,10 +80,10 @@
 #   define GTK_SHEET_DEBUG_DRAW_BUTTON  0
 #   define GTK_SHEET_DEBUG_DRAW_LABEL  0
 #   define GTK_SHEET_DEBUG_ENTER_PRESSED   0
-#   define GTK_SHEET_DEBUG_ENTRY   1
+#   define GTK_SHEET_DEBUG_ENTRY   0
 #   define GTK_SHEET_DEBUG_EXPOSE   0
 #   define GTK_SHEET_DEBUG_FINALIZE  0
-#   define GTK_SHEET_DEBUG_FONT_METRICS  1
+#   define GTK_SHEET_DEBUG_FONT_METRICS  0
 #   define GTK_SHEET_DEBUG_FREEZE   0
 #   define GTK_SHEET_DEBUG_KEYPRESS   0
 #   define GTK_SHEET_DEBUG_MOUSE  0
@@ -3804,7 +3804,7 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
     GtkSheetCellAttr attributes;
     gtk_sheet_get_attributes(sheet, row, col, &attributes);
 
-    _get_string_extent(GTK_WIDGET(sheet), colptr,
+    _get_string_extent(sheet, colptr,
 	attributes.font_desc, cell->text, &text_width, &text_height);
 
     /* add borders */
@@ -11900,7 +11900,7 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 
 	if (text && text[0])
 	{
-	    _get_string_extent(GTK_WIDGET(sheet), COLPTR(sheet, col),
+	    _get_string_extent(sheet, COLPTR(sheet, col),
 		attributes.font_desc, text, &text_width, &text_height);
 	}
 
@@ -12898,7 +12898,7 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
 	    );
 
 #if GTK_SHEET_DEBUG_ADJUSTMENT > 0
-	g_debug("_gtk_sheet_scrollbar_adjust: va PS %g PI %g SI %g L %g U %g V %g VO %d",
+	g_debug("_gtk_sheet_scrollbar_adjust: va PS %d PI %g SI %g L %g U %d V %g VO %d",
 	    page_size, 
 	    gtk_adjustment_get_page_increment(va), 
 	    gtk_adjustment_get_step_increment(va),
@@ -12949,7 +12949,7 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
 	    );
 
 #if GTK_SHEET_DEBUG_ADJUSTMENT > 0
-	g_debug("_gtk_sheet_scrollbar_adjust: ha PS %g PI %g SI %g L %g U %g V %g HO %d",
+	g_debug("_gtk_sheet_scrollbar_adjust: ha PS %d PI %g SI %g L %g U %d V %g HO %d",
 	    page_size, 
 	    gtk_adjustment_get_page_increment(ha), 
 	    gtk_adjustment_get_step_increment(ha),
@@ -13045,10 +13045,7 @@ static void
 _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
 {
     GtkSheet *sheet;
-    gint diff, value, old_value;
-    gint i;
-    gint row, new_row;
-    gint y = 0;
+    gint old_value;
 
     g_return_if_fail(adjustment != NULL);
     g_return_if_fail(data != NULL);
@@ -13064,6 +13061,7 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
     if (GTK_SHEET_IS_FROZEN(sheet))
 	return;
 
+#if 0
     if (sheet->column_titles_visible)
 	row = _gtk_sheet_row_from_ypixel(sheet, sheet->column_title_area.height + CELL_SPACING);
     else
@@ -13155,6 +13153,18 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
     }
 
     sheet->voffset = -value;
+#else
+    /* Negative old_adjustment enforces the redraw, otherwise avoid spureous redraw */
+    old_value = sheet->old_vadjustment;
+    sheet->old_vadjustment = gtk_adjustment_get_value(sheet->vadjustment);
+
+    if (old_value >= 0. && sheet->voffset == -1 *  gtk_adjustment_get_value(adjustment))
+	return;
+
+    gdouble value = gtk_adjustment_get_value(adjustment);
+    gtk_adjustment_set_value(sheet->vadjustment, value);
+    sheet->voffset = -value;
+#endif
 
     _gtk_sheet_recalc_view_range(sheet);
 
@@ -15074,7 +15084,7 @@ label_size_request(GtkSheet *sheet, gchar *label, GtkRequisition *req)
 
 	    word[n] = '\0';
 
-	    _get_string_extent(GTK_WIDGET(sheet), NULL,
+	    _get_string_extent(sheet, NULL,
 		gtk_widget_get_style(GTK_WIDGET(sheet))->font_desc, 
 		word, &text_width, &text_height);
 	    req->width = MAX(req->width, text_width);

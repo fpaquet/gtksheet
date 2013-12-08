@@ -641,7 +641,9 @@ gtk_data_entry_init(GtkDataEntry *data_entry)
     data_entry->data_format = NULL;
     data_entry->max_length_bytes = 0;
 
+#if GTK_DATA_ENTRY_DEBUG > 0
     g_debug("gtk_data_entry_init");
+#endif
 
     g_signal_connect(GTK_BUILDABLE(data_entry), "insert-text",
 	G_CALLBACK(_gtk_data_entry_insert_text_handler), NULL);

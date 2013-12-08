@@ -2,7 +2,8 @@
 	* GtkSheet: fixed maximum autosized row height
 	* GtkSheet: fixed typo, reworked debug output
 	* GtkDataTextView: cut too long texts when pasting into length limited buffer
-	* GtkSheet: finished GtkSheetColumn->wrap_mode in cell drawing PR#9931
+	* GtkSheet: finished GtkSheetColumn->wrap_mode in cell drawing PR#95931
+	* GtkSheet: finished SEGV in _gtk_sheet_entry_size_allocate
 
 2013-07-19 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheetColumn: fixed sheet realized check that caused SEGV

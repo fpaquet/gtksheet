@@ -11890,6 +11890,9 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
     else
 	entry_max_size = 0;
 
+    row = sheet->active_cell.row;
+    col = sheet->active_cell.col;
+
     text_width = 0;
     text_height = 0;
     {
@@ -11903,9 +11906,6 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 
 	g_free(text);
     }
-
-    row = sheet->active_cell.row;
-    col = sheet->active_cell.col;
 
     if (0 <= col && col <= sheet->maxcol)
 	column_width = COLPTR(sheet, col)->width;

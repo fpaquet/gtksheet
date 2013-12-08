@@ -389,21 +389,46 @@ _default_font_ascent(GtkWidget *widget)
     return (PANGO_PIXELS(val));
 }
 
-static void _get_string_extent(GtkWidget *widget,
+static void _get_string_extent(GtkSheet *sheet, GtkSheetColumn *colptr,
     PangoFontDescription *font_desc, const gchar *text,
     guint *width, guint *height)
 {
     PangoRectangle extent;
     PangoLayout *layout;
 
-    layout = gtk_widget_create_pango_layout(widget, text);
+    layout = gtk_widget_create_pango_layout(GTK_WIDGET(sheet), text);
     pango_layout_set_font_description(layout, font_desc);
+
+    if (colptr && !gtk_sheet_autoresize_columns(sheet))
+    {
+	switch(colptr->wrap_mode)
+	{
+	    case GTK_WRAP_NONE: 
+		break;
+
+	    case GTK_WRAP_CHAR:
+		pango_layout_set_width(layout, colptr->width * PANGO_SCALE);
+		pango_layout_set_wrap(layout, PANGO_WRAP_CHAR);
+		break;
+
+	    case GTK_WRAP_WORD:
+		pango_layout_set_width(layout, colptr->width * PANGO_SCALE);
+		pango_layout_set_wrap(layout, PANGO_WRAP_WORD);
+		break;
+
+	    case GTK_WRAP_WORD_CHAR:
+		pango_layout_set_width(layout, colptr->width * PANGO_SCALE);
+		pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+		break;
+	}
+    }
+
 
     pango_layout_get_pixel_extents(layout, NULL, &extent);
 
 #if GTK_SHEET_DEBUG_FONT_METRICS > 0
     {
-	PangoContext *context = gtk_widget_get_pango_context(widget);
+	PangoContext *context = gtk_widget_get_pango_context(GTK_WIDGET(sheet));
 	PangoFontMetrics *metrics = pango_context_get_metrics(
 	    context, font_desc, pango_context_get_language(context));
 
@@ -3779,7 +3804,7 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
     GtkSheetCellAttr attributes;
     gtk_sheet_get_attributes(sheet, row, col, &attributes);
 
-    _get_string_extent(GTK_WIDGET(sheet),
+    _get_string_extent(GTK_WIDGET(sheet), colptr,
 	attributes.font_desc, cell->text, &text_width, &text_height);
 
     /* add borders */
@@ -6808,7 +6833,9 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col)
     if (!gtk_widget_is_drawable(GTK_WIDGET(sheet)))
 	return;
 
-    if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)))
+    GtkSheetColumn *colptr = COLPTR(sheet, col);
+
+    if (!GTK_SHEET_COLUMN_IS_VISIBLE(colptr))
 	return;
     if (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)))
 	return;
@@ -6832,13 +6859,37 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col)
 
     area.x = _gtk_sheet_column_left_xpixel(sheet, col);
     area.y = _gtk_sheet_row_top_ypixel(sheet, row);
-    area.width = COLPTR(sheet, col)->width;
+    area.width = colptr->width;
     area.height = ROWPTR(sheet, row)->height;
 
     clip_area = area;
 
     layout = gtk_widget_create_pango_layout(GTK_WIDGET(sheet), label);
     pango_layout_set_font_description(layout, attributes.font_desc);
+
+    if (!gtk_sheet_autoresize_columns(sheet))
+    {
+	switch(colptr->wrap_mode)
+	{
+	    case GTK_WRAP_NONE: 
+		break;
+
+	    case GTK_WRAP_CHAR:
+		pango_layout_set_width(layout, colptr->width * PANGO_SCALE);
+		pango_layout_set_wrap(layout, PANGO_WRAP_CHAR);
+		break;
+
+	    case GTK_WRAP_WORD:
+		pango_layout_set_width(layout, colptr->width * PANGO_SCALE);
+		pango_layout_set_wrap(layout, PANGO_WRAP_WORD);
+		break;
+
+	    case GTK_WRAP_WORD_CHAR:
+		pango_layout_set_width(layout, colptr->width * PANGO_SCALE);
+		pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+		break;
+	}
+    }
 
     pango_layout_get_pixel_extents(layout, NULL, &rect);
 
@@ -6857,7 +6908,7 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col)
     {
 	/* column->vjust overrides sheet->vjust */
 
-	vjust = COLPTR(sheet, col)->vjust;
+	vjust = colptr->vjust;
 	if (vjust == GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT)
 	    vjust = sheet->vjust;
 
@@ -11846,7 +11897,7 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 
 	if (text && text[0])
 	{
-	    _get_string_extent(GTK_WIDGET(sheet),
+	    _get_string_extent(GTK_WIDGET(sheet), COLPTR(sheet, col),
 		attributes.font_desc, text, &text_width, &text_height);
 	}
 
@@ -15023,7 +15074,7 @@ label_size_request(GtkSheet *sheet, gchar *label, GtkRequisition *req)
 
 	    word[n] = '\0';
 
-	    _get_string_extent(GTK_WIDGET(sheet),
+	    _get_string_extent(GTK_WIDGET(sheet), NULL,
 		gtk_widget_get_style(GTK_WIDGET(sheet))->font_desc, 
 		word, &text_width, &text_height);
 	    req->width = MAX(req->width, text_width);

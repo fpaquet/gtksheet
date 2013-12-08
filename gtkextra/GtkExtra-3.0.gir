@@ -9555,6 +9555,18 @@ It should only be accessed through the functions described below.</doc>
           </parameter>
         </parameters>
       </method>
+      <method name="gradient_set_title"
+              c:identifier="gtk_plot_data_gradient_set_title">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="title" transfer-ownership="none">
+            <doc xml:whitespace="preserve">title that will be displayed in the gradient box</doc>
+            <type name="utf8" c:type="gchar*"/>
+          </parameter>
+        </parameters>
+      </method>
       <method name="gradient_set_visible"
               c:identifier="gtk_plot_data_gradient_set_visible">
         <return-value transfer-ownership="none">

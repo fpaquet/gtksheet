@@ -15368,14 +15368,21 @@ gtk_sheet_forall_handler(GtkContainer *container,
 	child = children->data;
 	children = children->next;
 
-	(*callback)(child->widget, callback_data);
+	if (G_IS_OBJECT(child->widget))
+	{
+	    (*callback)(child->widget, callback_data); 
+	}
     }
 
-    if (sheet->button)
+    if (sheet->button && G_IS_OBJECT(sheet->button))
+    {
 	(*callback)(sheet->button, callback_data);
+    }
 
-    if (sheet->sheet_entry)
+    if (sheet->sheet_entry && G_IS_OBJECT(sheet->sheet_entry))
+    {
 	(*callback)(sheet->sheet_entry, callback_data);
+    }
 }
 
 

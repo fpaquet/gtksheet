@@ -12172,6 +12172,10 @@ create_sheet_entry(GtkSheet *sheet, GType new_entry_type)
 
     new_entry = gtk_widget_new(new_entry_type, NULL);
 
+#if GTK_SHEET_DEBUG_ENTRY > 0
+	g_debug("create_sheet_entry: got new_entry %p", new_entry);
+#endif
+
     /* connect focus signal propagation handlers */
     g_signal_connect_swapped(new_entry, "focus-in-event",
 	G_CALLBACK(sheet_entry_focus_in_handler), sheet);
@@ -14794,6 +14798,11 @@ gtk_sheet_put(GtkSheet *sheet, GtkWidget *child, gint x, gint y)
     g_return_val_if_fail(child != NULL, NULL);
     g_return_val_if_fail(gtk_widget_get_parent(child) == NULL, NULL);
 
+#if GTK_SHEET_DEBUG_CHILDREN > 0
+    g_debug("gtk_sheet_put: %p %s child %p", 
+	sheet, gtk_widget_get_name(sheet), child);
+#endif
+
     child_info = g_new(GtkSheetChild, 1);
     child_info->widget = child;
     child_info->x = x;
@@ -14806,7 +14815,7 @@ gtk_sheet_put(GtkSheet *sheet, GtkWidget *child, gint x, gint y)
     child_info->xfill = child_info->yfill = FALSE;
 
     sheet->children = g_list_append(sheet->children, child_info);
-
+    g_object_ref(child);
     gtk_widget_set_parent(child, GTK_WIDGET(sheet));
 
     gtk_widget_size_request(child, &child_requisition);
@@ -14923,11 +14932,20 @@ gtk_sheet_attach(GtkSheet *sheet,
     GdkRectangle area;
     GtkSheetChild *child = NULL;
 
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+    g_return_if_fail(widget != NULL);
+
     if (row < 0 || col < 0)
     {
 	gtk_sheet_button_attach(sheet, widget, row, col);
 	return;
     }
+
+#if GTK_SHEET_DEBUG_CHILDREN > 0
+    g_debug("gtk_sheet_attach: %p %s widget %p", 
+	sheet, gtk_widget_get_name(sheet), widget);
+#endif
 
     child = g_new0(GtkSheetChild, 1);
     child->attached_to_cell = TRUE;
@@ -14945,7 +14963,7 @@ gtk_sheet_attach(GtkSheet *sheet,
     child->yfill = (yoptions & GTK_FILL) != 0;
 
     sheet->children = g_list_append(sheet->children, child);
-
+    g_object_ref(child->widget);
     gtk_sheet_get_cell_area(sheet, row, col, &area);
 
     child->x = area.x + child->xpadding;
@@ -15363,25 +15381,69 @@ gtk_sheet_forall_handler(GtkContainer *container,
 
     sheet = GTK_SHEET(container);
     children = sheet->children;
+
+#if GTK_SHEET_DEBUG_CHILDREN > 1
+    g_debug("gtk_sheet_forall_handler: Sheet <%s>", 
+	gtk_widget_get_name(GTK_WIDGET(sheet)));
+#endif
+
     while (children)
     {
 	child = children->data;
 	children = children->next;
 
-	if (G_IS_OBJECT(child->widget))
+#if GTK_SHEET_DEBUG_CHILDREN > 1
+	g_debug("gtk_sheet_forall_handler: L1 %p", child->widget);
+#endif
+
+	if (G_IS_OBJECT(child->widget) 
+	    && GTK_IS_WIDGET(child->widget)
+	    )
 	{
+#if GTK_SHEET_DEBUG_CHILDREN > 1
+	    g_debug("gtk_sheet_forall_handler: L2 %p", child->widget);
+#endif
 	    (*callback)(child->widget, callback_data); 
 	}
     }
 
-    if (sheet->button && G_IS_OBJECT(sheet->button))
+#if GTK_SHEET_DEBUG_CHILDREN > 1
+    g_debug("gtk_sheet_forall_handler: B1 %p %d", 
+	sheet->button, GTK_IS_WIDGET(sheet->button));
+#endif
+
+    if (sheet->button 
+	&& G_IS_OBJECT(sheet->button) 
+	&& GTK_IS_WIDGET(sheet->button)
+	)
     {
+#if GTK_SHEET_DEBUG_CHILDREN > 1
+	g_debug("gtk_sheet_forall_handler: B2 %p", sheet->button);
+#endif
+	g_object_ref(sheet->button);
 	(*callback)(sheet->button, callback_data);
+	g_object_unref(sheet->button);
     }
 
-    if (sheet->sheet_entry && G_IS_OBJECT(sheet->sheet_entry))
+#if GTK_SHEET_DEBUG_CHILDREN > 1
+    g_debug("gtk_sheet_forall_handler: C1 %p %d", 
+	sheet->sheet_entry, GTK_IS_WIDGET(sheet->sheet_entry));
+#endif
+
+    if (sheet->sheet_entry 
+	&& G_IS_OBJECT(sheet->sheet_entry) 
+	&& GTK_IS_WIDGET(sheet->sheet_entry)
+	)
     {
+#if GTK_SHEET_DEBUG_CHILDREN > 1
+	g_debug("gtk_sheet_forall_handler: C2 %p IsObject %d IsWidget %d", 
+	    sheet->sheet_entry,
+	    G_IS_OBJECT(sheet->sheet_entry),
+	    GTK_IS_WIDGET(sheet->sheet_entry));
+#endif
+	g_object_ref(sheet->sheet_entry);
 	(*callback)(sheet->sheet_entry, callback_data);
+	g_object_unref(sheet->sheet_entry);
     }
 }
 
@@ -15463,7 +15525,13 @@ gtk_sheet_remove_handler(GtkContainer *container, GtkWidget *widget)
 	if (child->col == -1)
 	    COLPTR(sheet, child->row)->button.child = NULL;
 
+#if GTK_SHEET_DEBUG_CHILDREN > 0
+	g_debug("gtk_sheet_remove_handler: %p %s widget %p", 
+	    sheet, gtk_widget_get_name(sheet), widget);
+#endif
+
 	gtk_widget_unparent(widget);
+	g_object_unref(child->widget);
 	child->widget = NULL;
 
 	sheet->children = g_list_remove_link(sheet->children, children);

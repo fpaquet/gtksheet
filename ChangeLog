@@ -1,3 +1,7 @@
+2013-12-31 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed SEGV caused by missing child reference counting
+	* GtkSheet: added parameter checks to gtk_sheet_attach()
+
 2013-12-30 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed warnings and SEGV in gtk_sheet_forall_handler() for invalid childs
 

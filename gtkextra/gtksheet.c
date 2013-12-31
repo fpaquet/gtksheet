@@ -11900,7 +11900,8 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 
 	if (text && text[0])
 	{
-	    _get_string_extent(sheet, COLPTR(sheet, col),
+	    _get_string_extent(sheet, 
+		 (0 <= col && col <= sheet->maxcol) ? COLPTR(sheet, col) : NULL,
 		attributes.font_desc, text, &text_width, &text_height);
 	}
 
@@ -15044,6 +15045,7 @@ gtk_sheet_button_attach(GtkSheet *sheet,
     }
 
     sheet->children = g_list_append(sheet->children, child);
+    g_object_ref(child);
 
     _gtk_sheet_button_size_request(sheet, button, &button_requisition);
 
@@ -15247,6 +15249,31 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
     gint x = 0, y = 0;
     GdkRectangle area;
 
+    /* PR#99118 - we cannot reposition all children while scrolling because
+       with many offside rows it will consume lots of CPU and incredibly
+       slow down scrolling.
+     
+       If we do not reposition all childs, we have to hide them whenn going
+       off screen, in order not to stray around. We're using unmap/map here
+       in order to leave hide/show available for the application
+       */
+
+    if (child->attached_to_cell)
+    {
+	if ((child->row < MIN_VIEW_ROW(sheet) || child->row > MAX_VIEW_ROW(sheet))
+	    || (child->col < MIN_VIEW_COLUMN(sheet) || child->col > MAX_VIEW_COLUMN(sheet))
+	    )
+	{
+	    gtk_widget_unmap(child->widget);
+	    return;
+	}
+	if (gtk_widget_get_realized(child->widget) 
+	    && !gtk_widget_get_mapped(child->widget))
+	{
+	    gtk_widget_map(child->widget); 
+	}
+    }
+
     gtk_widget_get_child_requisition(child->widget, &child_requisition);
 
     if (sheet->column_titles_visible)
@@ -15257,20 +15284,8 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
 
     if (child->attached_to_cell)
     {
-/*
-      child->x = COLUMN_LEFT_XPIXEL(sheet, child->col);
-      child->y = ROW_TOP_YPIXEL(sheet, child->row);
-
-      if(sheet->row_titles_visible)
-    child->x-=sheet->row_title_area.width;
-      if(sheet->column_titles_visible)
-    child->y-=sheet->column_title_area.height;
-
-      width = COLPTR(sheet, child->col)->width;
-      height = sheet->row[child->row].height;
-*/
-
 	gtk_sheet_get_cell_area(sheet, child->row, child->col, &area);
+
 	child->x = area.x + child->xpadding;
 	child->y = area.y + child->ypadding;
 
@@ -15340,7 +15355,7 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
 	x = child_allocation.x = child->x + xoffset;
 	y = child_allocation.y = child->y + yoffset;
     }
-    else
+    else  /* not attached_to_cell */
     {
 	x = child_allocation.x = child->x + sheet->hoffset + xoffset;
 	x = child_allocation.x = child->x + xoffset;
@@ -15498,7 +15513,7 @@ gtk_sheet_remove_handler(GtkContainer *container, GtkWidget *widget)
 {
     GtkSheet *sheet;
     GList *children;
-    GtkSheetChild *child = 0;
+    GtkSheetChild *child = NULL;
 
     g_return_if_fail(container != NULL);
     g_return_if_fail(GTK_IS_SHEET(container));
@@ -15531,7 +15546,8 @@ gtk_sheet_remove_handler(GtkContainer *container, GtkWidget *widget)
 #endif
 
 	gtk_widget_unparent(widget);
-	g_object_unref(child->widget);
+	if (G_IS_OBJECT(child->widget))
+	    g_object_unref(child->widget); 
 	child->widget = NULL;
 
 	sheet->children = g_list_remove_link(sheet->children, children);

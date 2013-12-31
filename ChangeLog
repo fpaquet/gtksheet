@@ -1,8 +1,9 @@
 2013-12-31 Fredy Paquet <mailbox AT opag.ch>
-	* GtkSheet: fixed SEGV caused by missing child reference counting
+	* GtkSheet: fixed SEGV caused by missing child reference counting PR#100392
 	* GtkSheet: added parameter checks to gtk_sheet_attach()
-	* GtkSheet: optimized scrolling behaviour with many sheet childs
+	* GtkSheet: optimized scrolling behaviour with many sheet childs PR#99118
 	* GtkSheet: fixed SEGV in _get_string_extent()
+	* GtkSheet: set focus when tabbing into the sheet (prevent invisible focus) PR#95144
 
 2013-12-30 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed warnings and SEGV in gtk_sheet_forall_handler() for invalid childs

@@ -1040,6 +1040,9 @@ static void gtk_sheet_size_request_handler(GtkWidget *widget,
 static void gtk_sheet_size_allocate_handler(GtkWidget *widget,
     GtkAllocation *allocation);
 
+static gboolean gtk_sheet_focus(GtkWidget *widget,
+    GtkDirectionType  direction);
+
 static void _gtk_sheet_move_cursor(GtkSheet *sheet,
     GtkMovementStep step,
     gint count,
@@ -2937,6 +2940,7 @@ gtk_sheet_class_init(GtkSheetClass *klass)
     widget_class->expose_event = gtk_sheet_expose_handler;
     widget_class->size_request = gtk_sheet_size_request_handler;
     widget_class->size_allocate = gtk_sheet_size_allocate_handler;
+    widget_class->focus = gtk_sheet_focus;
     widget_class->focus_in_event = NULL;
     widget_class->focus_out_event = NULL;
 
@@ -11653,6 +11657,44 @@ gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
     /* set the scrollbars adjustments */
     _gtk_sheet_scrollbar_adjust(sheet);
 }
+
+static gboolean gtk_sheet_focus(GtkWidget *widget,
+    GtkDirectionType  direction)
+{
+    g_return_val_if_fail(GTK_IS_SHEET(widget), FALSE);
+    GtkSheet *sheet = GTK_SHEET(widget);
+
+    if (!gtk_widget_is_sensitive(sheet)) {
+	g_debug("gtk_sheet_focus: X"); 
+	return(FALSE);
+    }
+
+#if GTK_SHEET_DEBUG_KEYPRESS > 0
+    g_debug("gtk_sheet_focus: %p %d", widget, direction); 
+#endif
+
+    if (!gtk_widget_has_focus (widget))
+    {
+	gtk_widget_grab_focus (widget);
+    }
+
+    gint row = sheet->active_cell.row;
+    gint col = sheet->active_cell.col;
+
+    if (row < 0 || col < 0)  /* not in sheet */
+    {
+	_gtk_sheet_move_cursor(sheet, GTK_MOVEMENT_VISUAL_POSITIONS, 1, FALSE);
+	return(TRUE);
+    }
+
+    gboolean veto;
+
+    gtk_sheet_click_cell(sheet, row, col, &veto);
+    if (!veto) return(FALSE);
+	
+    return(TRUE);
+}
+
 
 static void
 size_allocate_row_title_buttons(GtkSheet *sheet)

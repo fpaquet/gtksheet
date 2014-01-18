@@ -274,6 +274,10 @@ void		gtk_plot_data_gradient_set_scale	(GtkPlotData *data,
 							 GtkPlotScale scale);
 void 		gtk_plot_data_gradient_set_title        (GtkPlotData *data,
                                          		 gchar *title);
+void 		gtk_plot_data_set_gradient_show_lt_gt 	(GtkPlotData *data,
+							 gboolean show);
+gboolean	gtk_plot_data_gradient_show_lt_gt 	(GtkPlotData *data);
+
 void		gtk_plot_data_set_link			(GtkPlotData *dataset,
 							 gpointer link);
 gpointer	gtk_plot_data_get_link			(GtkPlotData *dataset);

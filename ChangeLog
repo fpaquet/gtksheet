@@ -1,3 +1,9 @@
+2014-02-02 Fredy Paquet <mailbox AT opag.ch>
+	* Reworked libtool versioning scheme, now documented in developer CMS
+	* configure.ac - re-initialized libtool versioning
+	   removed GTK_EXTRA_INTERFACE_AGE and GTK_EXTRA_BINARY_AGE
+	* updated gtkextra-3 version to 3.1.0, Libtool Revision 7.0.0
+
 2013-12-31 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed SEGV caused by missing child reference counting PR#100392
 	* GtkSheet: added parameter checks to gtk_sheet_attach()

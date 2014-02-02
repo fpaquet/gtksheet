@@ -25,8 +25,6 @@
 const guint gtkextra_major_version = GTKEXTRA_MAJOR_VERSION;
 const guint gtkextra_minor_version = GTKEXTRA_MINOR_VERSION;
 const guint gtkextra_micro_version = GTKEXTRA_MICRO_VERSION;
-const guint gtkextra_binary_age = GTKEXTRA_BINARY_AGE;
-const guint gtkextra_interface_age = GTKEXTRA_INTERFACE_AGE;
 
 gchar * 
 gtkextra_check_version (guint required_major,
@@ -41,8 +39,6 @@ gtkextra_check_version (guint required_major,
     return "GtkExtra version too old (minor mismatch)";
   if (required_minor < GTKEXTRA_MINOR_VERSION)
     return "GtkExtra version too new (minor mismatch)";
-  if (required_micro < GTKEXTRA_MICRO_VERSION - GTKEXTRA_BINARY_AGE)
-    return "GtkExtra version too new (micro mismatch)";
   if (required_micro > GTKEXTRA_MICRO_VERSION)
     return "GtkExtra version too old (micro mismatch)";
   return NULL;

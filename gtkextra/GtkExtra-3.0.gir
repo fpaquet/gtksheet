@@ -17,8 +17,8 @@ and/or use gtk-doc annotations.  -->
   <include name="Pango" version="1.0"/>
   <include name="cairo" version="1.0"/>
   <namespace name="GtkExtra"
-             version="3.0.6"
-             shared-library="libgtkextra-x11-3.0.so.6"
+             version="3.1.0"
+             shared-library="libgtkextra-x11-3.0.so.7"
              c:identifier-prefixes="Gtk"
              c:symbol-prefixes="gtk">
     <class name="BorderCombo"
@@ -9578,6 +9578,12 @@ It should only be accessed through the functions described below.</doc>
           </parameter>
         </parameters>
       </method>
+      <method name="gradient_show_lt_gt"
+              c:identifier="gtk_plot_data_gradient_show_lt_gt">
+        <return-value transfer-ownership="none">
+          <type name="gboolean" c:type="gboolean"/>
+        </return-value>
+      </method>
       <method name="gradient_use_custom_colors"
               c:identifier="gtk_plot_data_gradient_use_custom_colors">
         <return-value transfer-ownership="none">
@@ -9867,6 +9873,17 @@ It should only be accessed through the functions described below.</doc>
           </parameter>
           <parameter name="max" transfer-ownership="none">
             <type name="Gdk.Color" c:type="const GdkColor*"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="set_gradient_show_lt_gt"
+              c:identifier="gtk_plot_data_set_gradient_show_lt_gt">
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="show" transfer-ownership="none">
+            <type name="gboolean" c:type="gboolean"/>
           </parameter>
         </parameters>
       </method>

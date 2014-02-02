@@ -8,7 +8,7 @@
 # - http://www.linuxselfhelp.com/gnu/autoconf/html_chapter/autoconf_7.html
 #
 
-AC_INIT([gtkextra], [3.0.6])
+AC_INIT([gtkextra], [3.1.0])
 AC_LANG([C])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -17,40 +17,31 @@ cflags_set=${CFLAGS:+set}
 CFLAGS=${CFLAGS:-""}
 
 AC_DIVERT_PUSH(NOTICE)dnl
-# Making releases:
-#   GTK_EXTRA_MICRO_VERSION += 1;
-#   GTK_EXTRA_INTERFACE_AGE += 1;
-#   GTK_EXTRA_BINARY_AGE += 1;
-# if any functions have been added, set GTK_EXTRA_INTERFACE_AGE to 0.
-# if backwards compatibility has been broken,
-# set GTK_BINARY_AGE and GTK_EXTRA_INTERFACE_AGE to 0.
+
+# GtkExtra versioning: before making releases, be sure to read
+# http://gtkextra.sourceforge.net/cms/index.php?option=com_content&view=article&id=44&Itemid=22
 
 GTK_EXTRA_MAJOR_VERSION=3
-GTK_EXTRA_MINOR_VERSION=0
-GTK_EXTRA_MICRO_VERSION=6
-GTK_EXTRA_INTERFACE_AGE=0
-GTK_EXTRA_BINARY_AGE=0
+GTK_EXTRA_MINOR_VERSION=1
+GTK_EXTRA_MICRO_VERSION=0
 
 GTK_EXTRA_VERSION=$GTK_EXTRA_MAJOR_VERSION.$GTK_EXTRA_MINOR_VERSION.$GTK_EXTRA_MICRO_VERSION
 
 GTK_EXTRA_VERSION_SHORT=$GTK_EXTRA_MAJOR_VERSION.$GTK_EXTRA_MINOR_VERSION
 
-dnl
 AC_DIVERT_POP()dnl
 
 AC_SUBST(GTK_EXTRA_MAJOR_VERSION)
 AC_SUBST(GTK_EXTRA_MINOR_VERSION)
 AC_SUBST(GTK_EXTRA_MICRO_VERSION)
-AC_SUBST(GTK_EXTRA_INTERFACE_AGE)
-AC_SUBST(GTK_EXTRA_BINARY_AGE)
 AC_SUBST(GTK_EXTRA_VERSION)
 AC_SUBST(GTK_EXTRA_VERSION_SHORT)
 
 # libtool versioning
 
-LT_CURRENT=`expr $GTK_EXTRA_MICRO_VERSION - $GTK_EXTRA_INTERFACE_AGE`
-LT_REVISION=$GTK_EXTRA_INTERFACE_AGE
-LT_AGE=`expr $GTK_EXTRA_BINARY_AGE - $GTK_EXTRA_INTERFACE_AGE`
+LT_CURRENT=7
+LT_REVISION=0
+LT_AGE=0
 
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
@@ -350,7 +341,7 @@ fi
 
 AC_SUBST(gdktarget, `$PKG_CONFIG --variable=target gtk+-2.0`)
 
-gtkextratargetlib=libgtkextra-$gdktarget-$GTK_EXTRA_VERSION_SHORT.la
+gtkextratargetlib=libgtkextra-$gdktarget-3.0.la
 
 AC_SUBST(gtkextratargetlib)
 AC_CHECK_LIB(m, sqrt)

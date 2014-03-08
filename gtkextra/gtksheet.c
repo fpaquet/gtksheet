@@ -64,7 +64,7 @@
 
 #ifdef DEBUG
 #   undef GTK_SHEET_DEBUG
-#define GTK_SHEET_DEBUG  1  /* define to activate debug output */
+#define GTK_SHEET_DEBUG  0  /* define to activate debug output */
 #endif
 
 #ifdef GTK_SHEET_DEBUG

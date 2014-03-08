@@ -1,3 +1,7 @@
+2014-03-08 Fredy Paquet <mailbox AT opag.ch>
+	* GtkItemEntry: prefix all functions with "_item_entry" to prevent confusion with GtkEntry
+	* GtkItemEntry: fix SEGV, correctly chain up object destruction, PR#101967, PR#101214, PR#100847, PR#101004
+
 2014-02-02 Fredy Paquet <mailbox AT opag.ch>
 	* Reworked libtool versioning scheme, now documented in developer CMS
 	* configure.ac - re-initialized libtool versioning

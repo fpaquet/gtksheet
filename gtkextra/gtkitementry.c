@@ -57,8 +57,6 @@
 /* Maximum size of text buffer, in bytes */
 #define MAX_SIZE G_MAXUSHORT
 
-#define DEBUG
-
 #undef GTK_ITEM_ENTRY_DEBUG
 
 #ifdef DEBUG
@@ -68,7 +66,8 @@
 #ifdef GTK_ITEM_ENTRY_DEBUG
 #   define GTK_ITEM_ENTRY_DEBUG_JUSTIFICATION 0
 #   define GTK_ITEM_ENTRY_DEBUG_ALLOC 0
-#   define GTK_ITEM_ENTRY_DEBUG_TEXT 1
+#   define GTK_ITEM_ENTRY_DEBUG_TEXT 0
+#   define GTK_ITEM_ENTRY_DEBUG_DESTUCTION 1  /* destroy, dispose, finalize */
 #endif
 
 
@@ -79,41 +78,40 @@ typedef enum {
 
 /* GObject, GtkObject methods
  */
-static void   gtk_item_entry_class_init(GtkItemEntryClass        *klass);
-static void   gtk_item_entry_init(GtkItemEntry         *entry);
+static void   gtk_item_entry_class_init(GtkItemEntryClass *klass);
+static void   gtk_item_entry_init(GtkItemEntry *entry);
 static void   gtk_item_entry_editable_init(GtkEditableClass *iface);
 
 /* GtkWidget methods
  */
-static void   gtk_entry_realize(GtkWidget        *widget);
-static void   gtk_entry_size_request(GtkWidget        *widget,
-    GtkRequisition   *requisition);
-static void   gtk_item_entry_size_allocate(GtkWidget        *widget,
-    GtkAllocation    *allocation);
-static void   gtk_entry_draw_frame(GtkWidget        *widget);
-static gint   gtk_item_entry_expose(GtkWidget        *widget,
-    GdkEventExpose   *event);
-static void   gtk_entry_grab_focus(GtkWidget        *widget);
-static void   gtk_entry_style_set(GtkWidget        *widget,
-    GtkStyle         *previous_style);
-static void   gtk_entry_direction_changed(GtkWidget        *widget,
-    GtkTextDirection  previous_dir);
-static void   gtk_entry_state_changed(GtkWidget        *widget,
-    GtkStateType      previous_state);
+static void   gtk_item_entry_realize(GtkWidget *widget);
+static void   gtk_item_entry_size_request(GtkWidget *widget, 
+    GtkRequisition *requisition);
+static void   gtk_item_entry_size_allocate(GtkWidget *widget,
+    GtkAllocation *allocation);
+static void   gtk_item_entry_draw_frame(GtkWidget *widget);
+static void   gtk_item_entry_destroy(GtkObject *object);
+static void   gtk_item_entry_dispose(GObject *object);
+static void   gtk_item_entry_finalize(GObject *object);
+static gint   gtk_item_entry_expose(GtkWidget *widget, GdkEventExpose *event);
+static void   gtk_item_entry_grab_focus(GtkWidget *widget);
+static void   gtk_item_entry_style_set(GtkWidget *widget, GtkStyle *previous_style);
+static void   gtk_item_entry_direction_changed(GtkWidget *widget, GtkTextDirection previous_dir);
+static void   gtk_item_entry_state_changed(GtkWidget *widget, GtkStateType previous_state);
 
 /* GtkEditable method implementations
  */
-static void     gtk_entry_insert_text(GtkEditable *editable,
+static void     gtk_item_entry_insert_text(GtkEditable *editable,
     const gchar *new_text,
     gint         new_text_length,
     gint        *position);
-static void     gtk_entry_delete_text(GtkEditable *editable,
+static void     gtk_item_entry_delete_text(GtkEditable *editable,
     gint         start_pos,
     gint         end_pos);
 
-static void     gtk_entry_real_set_position(GtkEditable *editable,
+static void     gtk_item_entry_real_set_position(GtkEditable *editable,
     gint         position);
-static gint     gtk_entry_get_position(GtkEditable *editable);
+static gint     gtk_item_entry_get_position(GtkEditable *editable);
 
 /* Default signal handlers
  */
@@ -121,80 +119,80 @@ static void gtk_item_entry_real_insert_text(GtkEditable     *editable,
     const gchar     *new_text,
     gint             new_text_length,
     gint            *position);
-static void gtk_entry_real_delete_text(GtkEditable     *editable,
+static void gtk_item_entry_real_delete_text(GtkEditable     *editable,
     gint             start_pos,
     gint             end_pos);
-static void gtk_entry_move_cursor(GtkEntry        *entry,
+static void gtk_item_entry_move_cursor(GtkEntry        *entry,
     GtkMovementStep  step,
     gint             count,
     gboolean         extend_selection);
-static void gtk_entry_insert_at_cursor(GtkEntry        *entry,
+static void gtk_item_entry_insert_at_cursor(GtkEntry        *entry,
     const gchar     *str);
-static void gtk_entry_delete_from_cursor(GtkEntry        *entry,
+static void gtk_item_entry_delete_from_cursor(GtkEntry        *entry,
     GtkDeleteType    type,
     gint             count);
 
 /* IM Context Callbacks
  */
-static void     gtk_entry_commit_cb(GtkIMContext *context,
+static void     gtk_item_entry_commit_cb(GtkIMContext *context,
     const gchar  *str,
     GtkEntry     *entry);
-static void     gtk_entry_preedit_changed_cb(GtkIMContext *context,
+static void     gtk_item_entry_preedit_changed_cb(GtkIMContext *context,
     GtkEntry     *entry);
-static gboolean gtk_entry_retrieve_surrounding_cb(GtkIMContext *context,
+static gboolean gtk_item_entry_retrieve_surrounding_cb(GtkIMContext *context,
     GtkEntry     *entry);
-static gboolean gtk_entry_delete_surrounding_cb(GtkIMContext *context,
+static gboolean gtk_item_entry_delete_surrounding_cb(GtkIMContext *context,
     gint          offset,
     gint          n_chars,
     GtkEntry     *entry);
 
 /* Internal routines
  */
-static void         gtk_entry_enter_text(GtkEntry       *entry,
+static void         gtk_item_entry_enter_text(GtkEntry       *entry,
     const gchar    *str);
-static void         gtk_entry_set_positions(GtkEntry       *entry,
+static void         gtk_item_entry_set_positions(GtkEntry       *entry,
     gint            current_pos,
     gint            selection_bound);
-static void         gtk_entry_draw_text(GtkEntry       *entry);
-static void         gtk_entry_draw_cursor(GtkEntry       *entry,
+static void         gtk_item_entry_draw_text(GtkEntry       *entry);
+static void         gtk_item_entry_draw_cursor(GtkEntry       *entry,
     CursorType      type);
-static PangoLayout *gtk_entry_ensure_layout(GtkEntry       *entry,
+static PangoLayout *gtk_item_entry_ensure_layout(GtkEntry       *entry,
     gboolean        include_preedit);
-static void         gtk_entry_queue_draw(GtkEntry       *entry);
+static void         gtk_item_entry_queue_draw(GtkEntry       *entry);
 #if GTK_CHECK_VERSION(2,21,0) == 0
 static void         gtk_entry_reset_im_context(GtkEntry       *entry);
 #endif
-static void         gtk_entry_recompute(GtkEntry       *entry);
-static void         gtk_entry_get_cursor_locations(GtkEntry       *entry,
+static void         gtk_item_entry_recompute(GtkEntry       *entry);
+static void         gtk_item_entry_get_cursor_locations(GtkEntry       *entry,
     CursorType      type,
     gint           *strong_x,
     gint           *weak_x);
-static void         gtk_entry_adjust_scroll(GtkEntry       *entry);
-static gint         gtk_entry_move_visually(GtkEntry       *editable,
+static void         gtk_item_entry_adjust_scroll(GtkEntry       *entry);
+static gint         gtk_item_entry_move_visually(GtkEntry       *editable,
     gint            start,
     gint            count);
-static gint         gtk_entry_move_logically(GtkEntry       *entry,
+static gint         gtk_item_entry_move_logically(GtkEntry       *entry,
     gint            start,
     gint            count);
-static gint         gtk_entry_move_forward_word(GtkEntry       *entry,
+static gint         gtk_item_entry_move_forward_word(GtkEntry       *entry,
     gint            start);
-static gint         gtk_entry_move_backward_word(GtkEntry       *entry,
+static gint         gtk_item_entry_move_backward_word(GtkEntry       *entry,
     gint            start);
-static void         gtk_entry_delete_whitespace(GtkEntry       *entry);
-static char *gtk_entry_get_public_chars(GtkEntry       *entry,
+static void         gtk_item_entry_delete_whitespace(GtkEntry       *entry);
+static char *gtk_item_entry_get_public_chars(GtkEntry       *entry,
     gint            start,
     gint            end);
-static void         gtk_entry_update_primary_selection(GtkEntry       *entry);
-static void         gtk_entry_state_changed(GtkWidget      *widget,
+static void         gtk_item_entry_update_primary_selection(GtkEntry       *entry);
+static void         gtk_item_entry_state_changed(GtkWidget      *widget,
     GtkStateType    previous_state);
-static void         gtk_entry_check_cursor_blink(GtkEntry       *entry);
-static void         gtk_entry_pend_cursor_blink(GtkEntry       *entry);
-static void         get_text_area_size(GtkEntry       *entry,
+static void         gtk_item_entry_check_cursor_blink(GtkEntry       *entry);
+static void         gtk_item_entry_pend_cursor_blink(GtkEntry       *entry);
+static void         _item_entry_get_text_area_size(GtkEntry       *entry,
     gint           *x,
     gint           *y,
     gint           *width,
     gint           *height);
-static void         get_widget_window_size(GtkEntry       *entry,
+static void         _item_entry_get_widget_window_size(GtkEntry       *entry,
     gint           *x,
     gint           *y,
     gint           *width,
@@ -259,39 +257,44 @@ gtk_item_entry_get_type(void)
 static void
 gtk_item_entry_class_init(GtkItemEntryClass *klass)
 {
-    GtkObjectClass *object_class;
+    GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+    GtkObjectClass *gtk_object_class;
     GtkWidgetClass *widget_class;
     GtkEntryClass *entry_class;
 
-    object_class = (GtkObjectClass *)klass;
+    gobject_class->dispose = gtk_item_entry_dispose;
+    gobject_class->finalize = gtk_item_entry_finalize;
+
+    gtk_object_class = (GtkObjectClass *)klass;
     widget_class = (GtkWidgetClass *)klass;
     parent_class = g_type_class_ref(gtk_entry_get_type());
     entry_class = (GtkEntryClass *)klass;
 
-    widget_class->realize = gtk_entry_realize;
-    widget_class->size_request = gtk_entry_size_request;
+    widget_class->realize = gtk_item_entry_realize;
+    widget_class->size_request = gtk_item_entry_size_request;
     widget_class->size_allocate = gtk_item_entry_size_allocate;
     widget_class->expose_event = gtk_item_entry_expose;
-    widget_class->grab_focus = gtk_entry_grab_focus;
-    widget_class->style_set = gtk_entry_style_set;
-    widget_class->direction_changed = gtk_entry_direction_changed;
-    widget_class->state_changed = gtk_entry_state_changed;
+    widget_class->grab_focus = gtk_item_entry_grab_focus;
+    widget_class->style_set = gtk_item_entry_style_set;
+    widget_class->direction_changed = gtk_item_entry_direction_changed;
+    widget_class->state_changed = gtk_item_entry_state_changed;
 
-    entry_class->move_cursor = gtk_entry_move_cursor;
-    entry_class->insert_at_cursor = gtk_entry_insert_at_cursor;
-    entry_class->delete_from_cursor = gtk_entry_delete_from_cursor;
+    entry_class->move_cursor = gtk_item_entry_move_cursor;
+    entry_class->insert_at_cursor = gtk_item_entry_insert_at_cursor;
+    entry_class->delete_from_cursor = gtk_item_entry_delete_from_cursor;
 
+    gtk_object_class->destroy = gtk_item_entry_destroy;
 }
 
 static void
 gtk_item_entry_editable_init(GtkEditableClass *iface)
 {
-    iface->do_insert_text = gtk_entry_insert_text;
-    iface->do_delete_text = gtk_entry_delete_text;
+    iface->do_insert_text = gtk_item_entry_insert_text;
+    iface->do_delete_text = gtk_item_entry_delete_text;
     iface->insert_text = gtk_item_entry_real_insert_text;
-    iface->delete_text = gtk_entry_real_delete_text;
-    iface->set_position = gtk_entry_real_set_position;
-    iface->get_position = gtk_entry_get_position;
+    iface->delete_text = gtk_item_entry_real_delete_text;
+    iface->set_position = gtk_item_entry_real_set_position;
+    iface->get_position = gtk_item_entry_get_position;
 }
 
 static void
@@ -309,18 +312,18 @@ gtk_item_entry_init(GtkItemEntry *entry)
     GTK_ENTRY(entry)->im_context = gtk_im_multicontext_new();
 
     g_signal_connect(G_OBJECT(GTK_ENTRY(entry)->im_context), "commit",
-	G_CALLBACK(gtk_entry_commit_cb), entry);
+	G_CALLBACK(gtk_item_entry_commit_cb), entry);
     g_signal_connect(G_OBJECT(GTK_ENTRY(entry)->im_context), "preedit_changed",
-	G_CALLBACK(gtk_entry_preedit_changed_cb), entry);
+	G_CALLBACK(gtk_item_entry_preedit_changed_cb), entry);
     g_signal_connect(G_OBJECT(GTK_ENTRY(entry)->im_context), "retrieve_surrounding",
-	G_CALLBACK(gtk_entry_retrieve_surrounding_cb), entry);
+	G_CALLBACK(gtk_item_entry_retrieve_surrounding_cb), entry);
     g_signal_connect(G_OBJECT(GTK_ENTRY(entry)->im_context), "delete_surrounding",
-	G_CALLBACK(gtk_entry_delete_surrounding_cb), entry);
+	G_CALLBACK(gtk_item_entry_delete_surrounding_cb), entry);
 
 }
 
 static void
-gtk_entry_realize(GtkWidget *widget)
+gtk_item_entry_realize(GtkWidget *widget)
 {
     GtkEntry *entry;
     GtkEditable *editable;
@@ -334,7 +337,7 @@ gtk_entry_realize(GtkWidget *widget)
 
     attributes.window_type = GDK_WINDOW_CHILD;
 
-    get_widget_window_size(entry, &attributes.x, &attributes.y, &attributes.width, &attributes.height);
+    _item_entry_get_widget_window_size(entry, &attributes.x, &attributes.y, &attributes.width, &attributes.height);
 
     attributes.wclass = GDK_INPUT_OUTPUT;
     attributes.visual = gtk_widget_get_visual(widget);
@@ -356,7 +359,7 @@ gtk_entry_realize(GtkWidget *widget)
 	    &attributes, attributes_mask));
     gdk_window_set_user_data(gtk_widget_get_window(widget), entry);
 
-    get_text_area_size(entry, &attributes.x, &attributes.y, &attributes.width, &attributes.height);
+    _item_entry_get_text_area_size(entry, &attributes.x, &attributes.y, &attributes.width, &attributes.height);
 
     attributes.cursor = gdk_cursor_new(GDK_XTERM);
     attributes_mask |= GDK_WA_CURSOR;
@@ -380,11 +383,11 @@ gtk_entry_realize(GtkWidget *widget)
 
     gtk_im_context_set_client_window(entry->im_context, entry->text_area);
 
-    gtk_entry_adjust_scroll(entry);
+    gtk_item_entry_adjust_scroll(entry);
 }
 
 static void
-get_borders(GtkEntry *entry,
+_item_entry_get_borders(GtkEntry *entry,
     gint     *xborder,
     gint     *yborder)
 {
@@ -417,7 +420,7 @@ get_borders(GtkEntry *entry,
 }
 
 static void
-gtk_entry_size_request(GtkWidget *widget, GtkRequisition *requisition)
+gtk_item_entry_size_request(GtkWidget *widget, GtkRequisition *requisition)
 {
     GtkEntry *entry = GTK_ENTRY(widget);
     PangoFontMetrics *metrics;
@@ -432,7 +435,7 @@ gtk_entry_size_request(GtkWidget *widget, GtkRequisition *requisition)
     entry->ascent = pango_font_metrics_get_ascent(metrics);
     entry->descent = pango_font_metrics_get_descent(metrics);
 
-    get_borders(entry, &xborder, &yborder);
+    _item_entry_get_borders(entry, &xborder, &yborder);
 
     xborder += INNER_BORDER;
     yborder += INNER_BORDER;
@@ -451,7 +454,7 @@ gtk_entry_size_request(GtkWidget *widget, GtkRequisition *requisition)
 }
 
 static void
-get_text_area_size(GtkEntry *entry,
+_item_entry_get_text_area_size(GtkEntry *entry,
     gint     *x,
     gint     *y,
     gint     *width,
@@ -465,7 +468,7 @@ get_text_area_size(GtkEntry *entry,
 
     gtk_widget_get_child_requisition(widget, &requisition);
 
-    get_borders(entry, &xborder, &yborder);
+    _item_entry_get_borders(entry, &xborder, &yborder);
 
     if (x)
 	*x = xborder;
@@ -484,7 +487,7 @@ get_text_area_size(GtkEntry *entry,
 }
 
 static void
-get_widget_window_size(GtkEntry *entry,
+_item_entry_get_widget_window_size(GtkEntry *entry,
     gint     *x,
     gint     *y,
     gint     *width,
@@ -502,7 +505,7 @@ get_widget_window_size(GtkEntry *entry,
      
        Anyhow, if the above statement wasn't true, solutions could be:
        - ask the Gtk maintainers to add the function
-         GtkEntry::get_widget_window_size() to the public GtkEntry interface
+         GtkEntry::_get_widget_window_size() to the public GtkEntry interface
        - last resort work-around:
          use the sealed member anyhow GtkEntry->GSEAL(is_cell_renderer)
        */
@@ -558,10 +561,10 @@ gtk_item_entry_size_allocate(GtkWidget     *widget,
 	 */
 	gint x, y, width, height;
 
-	get_widget_window_size(entry, &x, &y, &width, &height);
+	_item_entry_get_widget_window_size(entry, &x, &y, &width, &height);
 
 #if GTK_ITEM_ENTRY_DEBUG_ALLOC>0
-	g_debug("gtk_item_entry_size_allocate: get_widget_window_size (%d, %d, %d, %d)",
+	g_debug("gtk_item_entry_size_allocate: _get_widget_window_size (%d, %d, %d, %d)",
 	    x, y, width, height);
 #endif
 
@@ -574,10 +577,10 @@ gtk_item_entry_size_allocate(GtkWidget     *widget,
 	    allocation->x, allocation->y,
 	    allocation->width, allocation->height);
 
-	get_text_area_size(entry, &x, &y, &width, &height);
+	_item_entry_get_text_area_size(entry, &x, &y, &width, &height);
 
 #if GTK_ITEM_ENTRY_DEBUG_ALLOC>0
-	g_debug("gtk_item_entry_size_allocate: get_text_area_size (%d, %d, %d, %d)",
+	g_debug("gtk_item_entry_size_allocate: _get_text_area_size (%d, %d, %d, %d)",
 	    x, y, width, height);
 #endif
 
@@ -590,14 +593,52 @@ gtk_item_entry_size_allocate(GtkWidget     *widget,
 	gdk_window_move_resize(entry->text_area,
 	    0, allocation->height - height, allocation->width, height);
 
-	gtk_entry_recompute(entry);
+	gtk_item_entry_recompute(entry);
     }
 }
 
 static void
-gtk_entry_draw_frame(GtkWidget *widget)
+gtk_item_entry_draw_frame(GtkWidget *widget)
 {
 }
+
+static void
+gtk_item_entry_destroy (GtkObject *object)
+{
+#if GTK_ITEM_ENTRY_DEBUG_DESTUCTION>0
+  GtkItemEntry *ientry = GTK_ITEM_ENTRY(object);
+
+  g_debug("gtk_item_entry_destroy %p %s", ientry, 
+      gtk_widget_get_name(GTK_WIDGET(ientry)));
+#endif
+
+  GTK_OBJECT_CLASS (parent_class)->destroy(object);
+}
+
+static void
+gtk_item_entry_dispose (GObject *object)
+{
+#if GTK_ITEM_ENTRY_DEBUG_DESTUCTION>0
+  GtkItemEntry *ientry = GTK_ITEM_ENTRY(object);
+
+  g_debug("gtk_item_entry_dispose %p", ientry);
+#endif
+
+  G_OBJECT_CLASS (parent_class)->dispose(object);
+}
+
+static void
+gtk_item_entry_finalize (GObject *object)
+{
+#if GTK_ITEM_ENTRY_DEBUG_DESTUCTION>0
+  GtkItemEntry *ientry = GTK_ITEM_ENTRY(object);
+
+  g_debug("gtk_item_entry_finalize %p", ientry);
+#endif
+
+  G_OBJECT_CLASS (parent_class)->finalize(object);
+}
+
 
 static gint
 gtk_item_entry_expose(GtkWidget *widget, GdkEventExpose *event)
@@ -628,12 +669,12 @@ gtk_item_entry_expose(GtkWidget *widget, GdkEventExpose *event)
     }
 
     if (gtk_widget_get_window(widget) == event->window)
-	gtk_entry_draw_frame(widget);
+	gtk_item_entry_draw_frame(widget);
     else if (entry->text_area == event->window)
     {
 	gint area_width, area_height;
 
-	get_text_area_size(entry, NULL, NULL, &area_width, &area_height);
+	_item_entry_get_text_area_size(entry, NULL, NULL, &area_width, &area_height);
 
 	gdk_draw_rectangle(entry->text_area,
 	    gtk_widget_get_style(widget)->bg_gc[gtk_widget_get_state(widget)],
@@ -643,19 +684,19 @@ gtk_item_entry_expose(GtkWidget *widget, GdkEventExpose *event)
 	if ((entry->visible || entry->invisible_char != 0) &&
 	    gtk_widget_has_focus(GTK_WIDGET(widget)) &&
 	    entry->selection_bound == entry->current_pos && entry->cursor_visible)
-	    gtk_entry_draw_cursor(GTK_ENTRY(widget), CURSOR_STANDARD);
+	    gtk_item_entry_draw_cursor(GTK_ENTRY(widget), CURSOR_STANDARD);
 
 	if (entry->dnd_position != -1)
-	    gtk_entry_draw_cursor(GTK_ENTRY(widget), CURSOR_DND);
+	    gtk_item_entry_draw_cursor(GTK_ENTRY(widget), CURSOR_DND);
 
-	gtk_entry_draw_text(GTK_ENTRY(widget));
+	gtk_item_entry_draw_text(GTK_ENTRY(widget));
     }
 
     return FALSE;
 }
 
 static void
-gtk_entry_grab_focus(GtkWidget        *widget)
+gtk_item_entry_grab_focus(GtkWidget        *widget)
 {
     GtkEntry *entry = GTK_ENTRY(widget);
     gboolean select_on_focus;
@@ -674,18 +715,18 @@ gtk_entry_grab_focus(GtkWidget        *widget)
 }
 
 static void
-gtk_entry_direction_changed(GtkWidget        *widget,
+gtk_item_entry_direction_changed(GtkWidget        *widget,
     GtkTextDirection  previous_dir)
 {
     GtkEntry *entry = GTK_ENTRY(widget);
 
-    gtk_entry_recompute(entry);
+    gtk_item_entry_recompute(entry);
 
     GTK_WIDGET_CLASS(parent_class)->direction_changed(widget, previous_dir);
 }
 
 static void
-gtk_entry_state_changed(GtkWidget      *widget,
+gtk_item_entry_state_changed(GtkWidget      *widget,
     GtkStateType    previous_state)
 {
     GtkEntry *entry = GTK_ENTRY(widget);
@@ -710,7 +751,7 @@ gtk_entry_state_changed(GtkWidget      *widget,
 /* GtkEditable method implementations
  */
 static void
-gtk_entry_insert_text(GtkEditable *editable,
+gtk_item_entry_insert_text(GtkEditable *editable,
     const gchar *new_text,
     gint         new_text_length,
     gint        *position)
@@ -741,7 +782,7 @@ gtk_entry_insert_text(GtkEditable *editable,
 }
 
 static void
-gtk_entry_delete_text(GtkEditable *editable,
+gtk_item_entry_delete_text(GtkEditable *editable,
     gint         start_pos,
     gint         end_pos)
 {
@@ -762,14 +803,14 @@ gtk_entry_delete_text(GtkEditable *editable,
 }
 
 static void
-gtk_entry_style_set(GtkWidget      *widget,
+gtk_item_entry_style_set(GtkWidget      *widget,
     GtkStyle       *previous_style)
 {
     GtkEntry *entry = GTK_ENTRY(widget);
 
     if (previous_style && gtk_widget_get_realized(widget))
     {
-	gtk_entry_recompute(entry);
+	gtk_item_entry_recompute(entry);
 
 	gdk_window_set_background(gtk_widget_get_window(widget),
 	    &gtk_widget_get_style(widget)->bg[gtk_widget_get_state(widget)]);
@@ -779,7 +820,7 @@ gtk_entry_style_set(GtkWidget      *widget,
 }
 
 static void
-gtk_entry_real_set_position(GtkEditable *editable,
+gtk_item_entry_real_set_position(GtkEditable *editable,
     gint         position)
 {
     GtkEntry *entry = GTK_ENTRY(editable);
@@ -791,12 +832,12 @@ gtk_entry_real_set_position(GtkEditable *editable,
 	position != entry->selection_bound)
     {
 	gtk_entry_reset_im_context(entry);
-	gtk_entry_set_positions(entry, position, position);
+	gtk_item_entry_set_positions(entry, position, position);
     }
 }
 
 static gint
-gtk_entry_get_position(GtkEditable *editable)
+gtk_item_entry_get_position(GtkEditable *editable)
 {
     return GTK_ENTRY(editable)->current_pos;
 }
@@ -806,7 +847,7 @@ gtk_entry_get_position(GtkEditable *editable)
 // Get_buffer copied from gtk/gtkentry.c
 //
 static GtkEntryBuffer *
-get_buffer(GtkEntry *entry)
+_item_entry_get_buffer(GtkEntry *entry)
 {
     GtkEntryPrivate *priv = GTK_ENTRY_GET_PRIVATE(entry);
 
@@ -833,7 +874,9 @@ gtk_item_entry_real_insert_text(GtkEditable *editable,
 {
     gint n_chars;
 
+#ifndef GTK_TYPE_ENTRY_BUFFER
     GtkItemEntry *ientry = GTK_ITEM_ENTRY(editable);
+#endif
     GtkEntry *entry = GTK_ENTRY(editable);
 
     if (new_text_length < 0)
@@ -855,7 +898,7 @@ gtk_item_entry_real_insert_text(GtkEditable *editable,
 
     {
 	guint n_bytes_inserted;
-	GtkEntryBuffer *buffer = get_buffer(entry);
+	GtkEntryBuffer *buffer = _item_entry_get_buffer(entry);
 
 	n_bytes_inserted  = gtk_entry_buffer_insert_text(buffer, *position, new_text, n_chars);
 
@@ -921,14 +964,14 @@ gtk_item_entry_real_insert_text(GtkEditable *editable,
 
     *position += n_chars;
 
-    gtk_entry_recompute(entry);
+    gtk_item_entry_recompute(entry);
 
     g_signal_emit_by_name(editable, "changed");
     g_object_notify(G_OBJECT(editable), "text");
 }
 
 static void
-gtk_entry_real_delete_text(GtkEditable *editable,
+gtk_item_entry_real_delete_text(GtkEditable *editable,
     gint         start_pos,
     gint         end_pos)
 {
@@ -942,7 +985,7 @@ gtk_entry_real_delete_text(GtkEditable *editable,
     if (start_pos < end_pos)
     {
 #ifdef GTK_TYPE_ENTRY_BUFFER
-	GtkEntryBuffer *buffer = get_buffer(entry);
+	GtkEntryBuffer *buffer = _item_entry_get_buffer(entry);
 	gtk_entry_buffer_delete_text(buffer, start_pos, end_pos - start_pos);
 #else
 	GtkItemEntry *ientry = GTK_ITEM_ENTRY(editable);
@@ -963,9 +1006,9 @@ gtk_entry_real_delete_text(GtkEditable *editable,
 
 	/* We might have deleted the selection
 	 */
-	gtk_entry_update_primary_selection(entry);
+	gtk_item_entry_update_primary_selection(entry);
 
-	gtk_entry_recompute(entry);
+	gtk_item_entry_recompute(entry);
 
 	g_signal_emit_by_name(editable, "changed");
 	g_object_notify(G_OBJECT(editable), "text");
@@ -978,7 +1021,7 @@ gtk_entry_real_delete_text(GtkEditable *editable,
  * right arrow key.
  */
 static gint
-get_better_cursor_x(GtkEntry *entry,
+_item_entry_get_better_cursor_x(GtkEntry *entry,
     gint      offset)
 {
     GtkTextDirection keymap_direction =
@@ -987,7 +1030,7 @@ get_better_cursor_x(GtkEntry *entry,
     GtkTextDirection widget_direction = gtk_widget_get_direction(GTK_WIDGET(entry));
     gboolean split_cursor;
 
-    PangoLayout *layout = gtk_entry_ensure_layout(entry, TRUE);
+    PangoLayout *layout = gtk_item_entry_ensure_layout(entry, TRUE);
     gint index = g_utf8_offset_to_pointer(entry->text, offset) - entry->text;
 
     PangoRectangle strong_pos, weak_pos;
@@ -1005,7 +1048,7 @@ get_better_cursor_x(GtkEntry *entry,
 }
 
 static void
-gtk_entry_move_cursor(GtkEntry       *entry,
+gtk_item_entry_move_cursor(GtkEntry       *entry,
     GtkMovementStep step,
     gint            count,
     gboolean        extend_selection)
@@ -1023,8 +1066,8 @@ gtk_entry_move_cursor(GtkEntry       *entry,
 	{
 	    case GTK_MOVEMENT_VISUAL_POSITIONS:
 		{
-		    gint current_x = get_better_cursor_x(entry, entry->current_pos);
-		    gint bound_x = get_better_cursor_x(entry, entry->selection_bound);
+		    gint current_x = _item_entry_get_better_cursor_x(entry, entry->current_pos);
+		    gint bound_x = _item_entry_get_better_cursor_x(entry, entry->selection_bound);
 
 		    if (count < 0)
 			new_pos = current_x < bound_x ? entry->current_pos : entry->selection_bound;
@@ -1057,20 +1100,20 @@ gtk_entry_move_cursor(GtkEntry       *entry,
 	switch(step)
 	{
 	    case GTK_MOVEMENT_LOGICAL_POSITIONS:
-		new_pos = gtk_entry_move_logically(entry, new_pos, count);
+		new_pos = gtk_item_entry_move_logically(entry, new_pos, count);
 		break;
 	    case GTK_MOVEMENT_VISUAL_POSITIONS:
-		new_pos = gtk_entry_move_visually(entry, new_pos, count);
+		new_pos = gtk_item_entry_move_visually(entry, new_pos, count);
 		break;
 	    case GTK_MOVEMENT_WORDS:
 		while (count > 0)
 		{
-		    new_pos = gtk_entry_move_forward_word(entry, new_pos);
+		    new_pos = gtk_item_entry_move_forward_word(entry, new_pos);
 		    count--;
 		}
 		while (count < 0)
 		{
-		    new_pos = gtk_entry_move_backward_word(entry, new_pos);
+		    new_pos = gtk_item_entry_move_backward_word(entry, new_pos);
 		    count++;
 		}
 		break;
@@ -1092,11 +1135,11 @@ gtk_entry_move_cursor(GtkEntry       *entry,
     else
 	gtk_editable_set_position(GTK_EDITABLE(entry), new_pos);
 
-    gtk_entry_pend_cursor_blink(entry);
+    gtk_item_entry_pend_cursor_blink(entry);
 }
 
 static void
-gtk_entry_insert_at_cursor(GtkEntry    *entry,
+gtk_item_entry_insert_at_cursor(GtkEntry    *entry,
     const gchar *str)
 {
     GtkEditable *editable = GTK_EDITABLE(entry);
@@ -1112,7 +1155,7 @@ gtk_entry_insert_at_cursor(GtkEntry    *entry,
 }
 
 static void
-gtk_entry_delete_from_cursor(GtkEntry       *entry,
+gtk_item_entry_delete_from_cursor(GtkEntry       *entry,
     GtkDeleteType   type,
     gint            count)
 {
@@ -1134,33 +1177,33 @@ gtk_entry_delete_from_cursor(GtkEntry       *entry,
     switch(type)
     {
 	case GTK_DELETE_CHARS:
-	    end_pos = gtk_entry_move_logically(entry, entry->current_pos, count);
+	    end_pos = gtk_item_entry_move_logically(entry, entry->current_pos, count);
 	    gtk_editable_delete_text(editable, MIN(start_pos, end_pos), MAX(start_pos, end_pos));
 	    break;
 	case GTK_DELETE_WORDS:
 	    if (count < 0)
 	    {
 		/* Move to end of current word, or if not on a word, end of previous word */
-		end_pos = gtk_entry_move_backward_word(entry, end_pos);
-		end_pos = gtk_entry_move_forward_word(entry, end_pos);
+		end_pos = gtk_item_entry_move_backward_word(entry, end_pos);
+		end_pos = gtk_item_entry_move_forward_word(entry, end_pos);
 	    }
 	    else if (count > 0)
 	    {
 		/* Move to beginning of current word, or if not on a word, begining of next word */
-		start_pos = gtk_entry_move_forward_word(entry, start_pos);
-		start_pos = gtk_entry_move_backward_word(entry, start_pos);
+		start_pos = gtk_item_entry_move_forward_word(entry, start_pos);
+		start_pos = gtk_item_entry_move_backward_word(entry, start_pos);
 	    }
 
 	    /* Fall through */
 	case GTK_DELETE_WORD_ENDS:
 	    while (count < 0)
 	    {
-		start_pos = gtk_entry_move_backward_word(entry, start_pos);
+		start_pos = gtk_item_entry_move_backward_word(entry, start_pos);
 		count++;
 	    }
 	    while (count > 0)
 	    {
-		end_pos = gtk_entry_move_forward_word(entry, end_pos);
+		end_pos = gtk_item_entry_move_forward_word(entry, end_pos);
 		count--;
 	    }
 	    gtk_editable_delete_text(editable, start_pos, end_pos);
@@ -1177,26 +1220,26 @@ gtk_entry_delete_from_cursor(GtkEntry       *entry,
 	    gtk_editable_delete_text(editable, 0, -1);
 	    break;
 	case GTK_DELETE_WHITESPACE:
-	    gtk_entry_delete_whitespace(entry);
+	    gtk_item_entry_delete_whitespace(entry);
 	    break;
     }
 
-    gtk_entry_pend_cursor_blink(entry);
+    gtk_item_entry_pend_cursor_blink(entry);
 }
 
 /* IM Context Callbacks
  */
 
 static void
-gtk_entry_commit_cb(GtkIMContext *context,
+gtk_item_entry_commit_cb(GtkIMContext *context,
     const gchar  *str,
     GtkEntry     *entry)
 {
-    gtk_entry_enter_text(entry, str);
+    gtk_item_entry_enter_text(entry, str);
 }
 
 static void
-gtk_entry_preedit_changed_cb(GtkIMContext *context,
+gtk_item_entry_preedit_changed_cb(GtkIMContext *context,
     GtkEntry     *entry)
 {
     gchar *preedit_string;
@@ -1210,15 +1253,14 @@ gtk_entry_preedit_changed_cb(GtkIMContext *context,
     entry->preedit_cursor = cursor_pos;
     g_free(preedit_string);
 
-    gtk_entry_recompute(entry);
+    gtk_item_entry_recompute(entry);
 }
 
 static gboolean
-gtk_entry_retrieve_surrounding_cb(GtkIMContext *context,
+gtk_item_entry_retrieve_surrounding_cb(GtkIMContext *context,
     GtkEntry     *entry)
 {
-    GtkItemEntry *ientry = GTK_ITEM_ENTRY(entry);
-    GtkEntryBuffer *buffer = get_buffer(entry);
+    GtkEntryBuffer *buffer = _item_entry_get_buffer(entry);
 
     gtk_im_context_set_surrounding(context,
 	entry->text,
@@ -1229,7 +1271,7 @@ gtk_entry_retrieve_surrounding_cb(GtkIMContext *context,
 }
 
 static gboolean
-gtk_entry_delete_surrounding_cb(GtkIMContext *slave,
+gtk_item_entry_delete_surrounding_cb(GtkIMContext *slave,
     gint          offset,
     gint          n_chars,
     GtkEntry     *entry)
@@ -1247,7 +1289,7 @@ gtk_entry_delete_surrounding_cb(GtkIMContext *slave,
 
 /* Used for im_commit_cb and inserting Unicode chars */
 static void
-gtk_entry_enter_text(GtkEntry       *entry,
+gtk_item_entry_enter_text(GtkEntry       *entry,
     const gchar    *str)
 {
     GtkEditable *editable = GTK_EDITABLE(entry);
@@ -1258,7 +1300,7 @@ gtk_entry_enter_text(GtkEntry       *entry,
     else
     {
 	if (entry->overwrite_mode)
-	    gtk_entry_delete_from_cursor(entry, GTK_DELETE_CHARS, 1);
+	    gtk_item_entry_delete_from_cursor(entry, GTK_DELETE_CHARS, 1);
     }
 
     tmp_pos = entry->current_pos;
@@ -1270,7 +1312,7 @@ gtk_entry_enter_text(GtkEntry       *entry,
  * should go through this function.
  */
 static void
-gtk_entry_set_positions(GtkEntry *entry,
+gtk_item_entry_set_positions(GtkEntry *entry,
     gint      current_pos,
     gint      selection_bound)
 {
@@ -1299,11 +1341,11 @@ gtk_entry_set_positions(GtkEntry *entry,
     g_object_thaw_notify(G_OBJECT(entry));
 
     if (changed)
-	gtk_entry_recompute(entry);
+	gtk_item_entry_recompute(entry);
 }
 
 static void
-gtk_entry_reset_layout(GtkEntry *entry)
+gtk_item_entry_reset_layout(GtkEntry *entry)
 {
     if (entry->cached_layout)
     {
@@ -1313,16 +1355,16 @@ gtk_entry_reset_layout(GtkEntry *entry)
 }
 
 static void
-update_im_cursor_location(GtkEntry *entry)
+_item_entry_update_im_cursor_location(GtkEntry *entry)
 {
     GdkRectangle area;
     gint strong_x;
     gint strong_xoffset;
     gint x, y, area_width, area_height;
 
-    gtk_entry_get_cursor_locations(entry, CURSOR_STANDARD, &strong_x, NULL)
+    gtk_item_entry_get_cursor_locations(entry, CURSOR_STANDARD, &strong_x, NULL)
     ;
-    get_text_area_size(entry, &x, &y, &area_width, &area_height);
+    _item_entry_get_text_area_size(entry, &x, &y, &area_width, &area_height);
 
     strong_xoffset = strong_x - entry->scroll_offset;
     if (strong_xoffset < 0)
@@ -1342,7 +1384,7 @@ update_im_cursor_location(GtkEntry *entry)
 }
 
 static gboolean
-recompute_idle_func(gpointer data)
+_item_entry_recompute_idle_func(gpointer data)
 {
     GtkEntry *entry;
 
@@ -1350,12 +1392,12 @@ recompute_idle_func(gpointer data)
 
     entry = GTK_ENTRY(data);
 
-    gtk_entry_adjust_scroll(entry);
-    gtk_entry_queue_draw(entry);
+    gtk_item_entry_adjust_scroll(entry);
+    gtk_item_entry_queue_draw(entry);
 
     entry->recompute_idle = FALSE;
 
-    update_im_cursor_location(entry);
+    _item_entry_update_im_cursor_location(entry);
 
     GDK_THREADS_LEAVE();
 
@@ -1363,21 +1405,21 @@ recompute_idle_func(gpointer data)
 }
 
 static void
-gtk_entry_recompute(GtkEntry *entry)
+gtk_item_entry_recompute(GtkEntry *entry)
 {
-    gtk_entry_reset_layout(entry);
-    gtk_entry_check_cursor_blink(entry);
+    gtk_item_entry_reset_layout(entry);
+    gtk_item_entry_check_cursor_blink(entry);
 
 
     if (!entry->recompute_idle)
     {
 	entry->recompute_idle = g_idle_add_full(G_PRIORITY_HIGH_IDLE + 15, /* between resize and redraw */
-	    recompute_idle_func, entry, NULL);
+	    _item_entry_recompute_idle_func, entry, NULL);
     }
 }
 
 static void
-append_char(GString *str,
+_item_entry_append_char(GString *str,
     gunichar ch,
     gint     count)
 {
@@ -1396,10 +1438,9 @@ append_char(GString *str,
 }
 
 static PangoLayout *
-gtk_entry_create_layout(GtkEntry *entry,
+gtk_item_entry_create_layout(GtkEntry *entry,
     gboolean  include_preedit)
 {
-    GtkItemEntry *ientry = GTK_ITEM_ENTRY(entry);
     PangoLayout *layout = gtk_widget_create_pango_layout(GTK_WIDGET(entry), NULL);
     PangoAttrList *tmp_attrs = pango_attr_list_new();
 
@@ -1419,7 +1460,7 @@ gtk_entry_create_layout(GtkEntry *entry,
     if (preedit_length)
     {
 	GString *tmp_string = g_string_new(NULL);
-	GtkEntryBuffer *buffer = get_buffer(entry);
+	GtkEntryBuffer *buffer = _item_entry_get_buffer(entry);
 
 	gint cursor_index = g_utf8_offset_to_pointer(entry->text, entry->current_pos) - entry->text;
 
@@ -1444,7 +1485,7 @@ gtk_entry_create_layout(GtkEntry *entry,
 	    else
 		invisible_char = ' '; /* just pick a char */
 
-	    append_char(tmp_string, invisible_char, ch_len);
+	    _item_entry_append_char(tmp_string, invisible_char, ch_len);
 
 	    /* Fix cursor index to point to invisible char corresponding
 	     * to the preedit, fix preedit_length to be the length of
@@ -1469,7 +1510,7 @@ gtk_entry_create_layout(GtkEntry *entry,
     {
 	if (entry->visible)
 	{
-	    GtkEntryBuffer *buffer = get_buffer(entry);
+	    GtkEntryBuffer *buffer = _item_entry_get_buffer(entry);
 	    pango_layout_set_text(layout, entry->text, gtk_entry_buffer_get_bytes(buffer));
 	}
 	else
@@ -1482,7 +1523,7 @@ gtk_entry_create_layout(GtkEntry *entry,
 	    else
 		invisible_char = ' '; /* just pick a char */
 
-	    append_char(str, invisible_char, entry->text_length);
+	    _item_entry_append_char(str, invisible_char, entry->text_length);
 	    pango_layout_set_text(layout, str->str, str->len);
 	    g_string_free(str, TRUE);
 	}
@@ -1501,16 +1542,16 @@ gtk_entry_create_layout(GtkEntry *entry,
 }
 
 static PangoLayout *
-gtk_entry_ensure_layout(GtkEntry *entry,
+gtk_item_entry_ensure_layout(GtkEntry *entry,
     gboolean  include_preedit)
 {
     if (entry->preedit_length > 0 &&
 	!include_preedit != !entry->cache_includes_preedit)
-	gtk_entry_reset_layout(entry);
+	gtk_item_entry_reset_layout(entry);
 
     if (!entry->cached_layout)
     {
-	entry->cached_layout = gtk_entry_create_layout(entry, include_preedit);
+	entry->cached_layout = gtk_item_entry_create_layout(entry, include_preedit);
 	entry->cache_includes_preedit = include_preedit;
     }
 
@@ -1518,7 +1559,7 @@ gtk_entry_ensure_layout(GtkEntry *entry,
 }
 
 static void
-get_layout_position(GtkEntry *entry,
+_item_entry_get_layout_position(GtkEntry *entry,
     gint     *x,
     gint     *y)
 {
@@ -1528,9 +1569,9 @@ get_layout_position(GtkEntry *entry,
     gint y_pos;
     PangoLayoutLine *line;
 
-    layout = gtk_entry_ensure_layout(entry, TRUE);
+    layout = gtk_item_entry_ensure_layout(entry, TRUE);
 
-    get_text_area_size(entry, NULL, NULL, &area_width, &area_height);
+    _item_entry_get_text_area_size(entry, NULL, NULL, &area_width, &area_height);
 
     area_height = PANGO_SCALE * (area_height);
 
@@ -1562,7 +1603,7 @@ get_layout_position(GtkEntry *entry,
 }
 
 static void
-gtk_entry_draw_text(GtkEntry *entry)
+gtk_item_entry_draw_text(GtkEntry *entry)
 {
     GtkWidget *widget;
     PangoLayoutLine *line;
@@ -1572,7 +1613,7 @@ gtk_entry_draw_text(GtkEntry *entry)
 
     if (gtk_widget_is_drawable(GTK_WIDGET(entry)))
     {
-	PangoLayout *layout = gtk_entry_ensure_layout(entry, TRUE);
+	PangoLayout *layout = gtk_item_entry_ensure_layout(entry, TRUE);
 	gint area_width, area_height;
 
 	gint x, y;
@@ -1580,9 +1621,9 @@ gtk_entry_draw_text(GtkEntry *entry)
 
 	widget = GTK_WIDGET(entry);
 
-	get_layout_position(entry, &x, &y);
+	_item_entry_get_layout_position(entry, &x, &y);
 
-	get_text_area_size(entry, NULL, NULL, &area_width, &area_height);
+	_item_entry_get_text_area_size(entry, NULL, NULL, &area_width, &area_height);
 
 
 	gdk_draw_layout(entry->text_area,
@@ -1665,7 +1706,7 @@ struct _CursorInfo
 };
 
 static GdkGC *
-make_cursor_gc(GtkWidget *widget,
+_item_entry_make_cursor_gc(GtkWidget *widget,
     const gchar *property_name,
     GdkColor *fallback)
 {
@@ -1692,7 +1733,7 @@ make_cursor_gc(GtkWidget *widget,
 }
 
 static GdkGC *
-_gtkextra_get_insertion_cursor_gc(GtkWidget *widget,
+_item_entry_get_insertion_cursor_gc(GtkWidget *widget,
     gboolean   is_primary)
 {
     CursorInfo *cursor_info;
@@ -1733,7 +1774,7 @@ _gtkextra_get_insertion_cursor_gc(GtkWidget *widget,
     if (is_primary)
     {
 	if (!cursor_info->primary_gc)
-	    cursor_info->primary_gc = make_cursor_gc(widget,
+	    cursor_info->primary_gc = _item_entry_make_cursor_gc(widget,
 		"cursor-color",
 		&gtk_widget_get_style(widget)->black);
 
@@ -1744,7 +1785,7 @@ _gtkextra_get_insertion_cursor_gc(GtkWidget *widget,
 	static GdkColor gray = { 0, 0x8888, 0x8888, 0x8888 };
 
 	if (!cursor_info->secondary_gc)
-	    cursor_info->secondary_gc = make_cursor_gc(widget,
+	    cursor_info->secondary_gc = _item_entry_make_cursor_gc(widget,
 		"secondary-cursor-color",
 		&gray);
 
@@ -1756,7 +1797,7 @@ _gtkextra_get_insertion_cursor_gc(GtkWidget *widget,
  * From _gtk_draw_insertion_cursor
  */
 static void
-_gtkextra_draw_insertion_cursor(GtkWidget *widget,
+_item_entry_draw_insertion_cursor(GtkWidget *widget,
     GdkDrawable *drawable,
     GdkGC *gc,
     GdkRectangle *location,
@@ -1819,7 +1860,7 @@ _gtkextra_draw_insertion_cursor(GtkWidget *widget,
 }
 
 static void
-gtk_entry_draw_cursor(GtkEntry  *entry,
+gtk_item_entry_draw_cursor(GtkEntry  *entry,
     CursorType type)
 {
     GtkTextDirection keymap_direction =
@@ -1844,7 +1885,7 @@ gtk_entry_draw_cursor(GtkEntry  *entry,
 
 	gdk_window_get_size(entry->text_area, NULL, &text_area_height);
 
-	gtk_entry_get_cursor_locations(entry, type, &strong_x, &weak_x);
+	gtk_item_entry_get_cursor_locations(entry, type, &strong_x, &weak_x);
 
 	g_object_get(gtk_widget_get_settings(widget),
 	    "gtk-split-cursor", &split_cursor,
@@ -1875,8 +1916,8 @@ gtk_entry_draw_cursor(GtkEntry  *entry,
 	cursor_location.width = 0;
 	cursor_location.height = text_area_height - 2 * INNER_BORDER;
 
-	gc = _gtkextra_get_insertion_cursor_gc(widget, TRUE);
-	_gtkextra_draw_insertion_cursor(widget, entry->text_area, gc,
+	gc = _item_entry_get_insertion_cursor_gc(widget, TRUE);
+	_item_entry_draw_insertion_cursor(widget, entry->text_area, gc,
 	    &cursor_location, dir1,
 	    dir2 != GTK_TEXT_DIR_NONE);
 	g_object_unref(gc);
@@ -1884,8 +1925,8 @@ gtk_entry_draw_cursor(GtkEntry  *entry,
 	if (dir2 != GTK_TEXT_DIR_NONE)
 	{
 	    cursor_location.x = xoffset + x2;
-	    gc = _gtkextra_get_insertion_cursor_gc(widget, FALSE);
-	    _gtkextra_draw_insertion_cursor(widget, entry->text_area, gc,
+	    gc = _item_entry_get_insertion_cursor_gc(widget, FALSE);
+	    _item_entry_draw_insertion_cursor(widget, entry->text_area, gc,
 		&cursor_location, dir2,
 		TRUE);
 	    g_object_unref(gc);
@@ -1894,7 +1935,7 @@ gtk_entry_draw_cursor(GtkEntry  *entry,
 }
 
 static void
-gtk_entry_queue_draw(GtkEntry *entry)
+gtk_item_entry_queue_draw(GtkEntry *entry)
 {
     if (gtk_widget_get_realized(GTK_WIDGET(entry)))
 	gdk_window_invalidate_rect(entry->text_area, NULL, FALSE);
@@ -1913,12 +1954,12 @@ gtk_entry_reset_im_context(GtkEntry *entry)
 #endif // GTK_CHECK_VERSION(2,21,0) == 0
 
 static void
-gtk_entry_get_cursor_locations(GtkEntry   *entry,
+gtk_item_entry_get_cursor_locations(GtkEntry   *entry,
     CursorType  type,
     gint       *strong_x,
     gint       *weak_x)
 {
-    PangoLayout *layout = gtk_entry_ensure_layout(entry, TRUE);
+    PangoLayout *layout = gtk_item_entry_ensure_layout(entry, TRUE);
     const gchar *text;
     PangoRectangle strong_pos, weak_pos;
     gint index;
@@ -1945,7 +1986,7 @@ gtk_entry_get_cursor_locations(GtkEntry   *entry,
 }
 
 static void
-gtk_entry_adjust_scroll(GtkEntry *entry)
+gtk_item_entry_adjust_scroll(GtkEntry *entry)
 {
     gint min_offset, max_offset;
     gint text_area_width;
@@ -1964,13 +2005,13 @@ gtk_entry_adjust_scroll(GtkEntry *entry)
     gdk_window_get_size(entry->text_area, &text_area_width, NULL);
     text_area_width -= 2 * INNER_BORDER;
 
-    layout = gtk_entry_ensure_layout(entry, TRUE);
+    layout = gtk_item_entry_ensure_layout(entry, TRUE);
     line = pango_layout_get_lines(layout)->data;
 
     pango_layout_line_get_extents(line, NULL, &logical_rect);
     text_width = logical_rect.width / PANGO_SCALE + 2; /* 2 for cursor */
 
-    gtk_entry_get_cursor_locations(entry, CURSOR_STANDARD, &strong_x, &weak_x);
+    gtk_item_entry_get_cursor_locations(entry, CURSOR_STANDARD, &strong_x, &weak_x);
 
     /* Display as much text as we can */
 
@@ -2083,12 +2124,12 @@ gtk_entry_adjust_scroll(GtkEntry *entry)
 }
 
 static gint
-gtk_entry_move_visually(GtkEntry *entry,
+gtk_item_entry_move_visually(GtkEntry *entry,
     gint      start,
     gint      count)
 {
     gint index;
-    PangoLayout *layout = gtk_entry_ensure_layout(entry, FALSE);
+    PangoLayout *layout = gtk_item_entry_ensure_layout(entry, FALSE);
     const gchar *text;
 
     text = pango_layout_get_text(layout);
@@ -2139,7 +2180,7 @@ gtk_entry_move_visually(GtkEntry *entry,
 }
 
 static gint
-gtk_entry_move_logically(GtkEntry *entry,
+gtk_item_entry_move_logically(GtkEntry *entry,
     gint      start,
     gint      count)
 {
@@ -2152,7 +2193,7 @@ gtk_entry_move_logically(GtkEntry *entry,
     }
     else if (entry->text)
     {
-	PangoLayout *layout = gtk_entry_ensure_layout(entry, FALSE);
+	PangoLayout *layout = gtk_item_entry_ensure_layout(entry, FALSE);
 	PangoLogAttr *log_attrs;
 	gint n_attrs;
 
@@ -2180,7 +2221,7 @@ gtk_entry_move_logically(GtkEntry *entry,
 }
 
 static gint
-gtk_entry_move_forward_word(GtkEntry *entry,
+gtk_item_entry_move_forward_word(GtkEntry *entry,
     gint      start)
 {
     gint new_pos = start;
@@ -2192,7 +2233,7 @@ gtk_entry_move_forward_word(GtkEntry *entry,
     }
     else if (entry->text && (new_pos < entry->text_length))
     {
-	PangoLayout *layout = gtk_entry_ensure_layout(entry, FALSE);
+	PangoLayout *layout = gtk_item_entry_ensure_layout(entry, FALSE);
 	PangoLogAttr *log_attrs;
 	gint n_attrs;
 
@@ -2210,7 +2251,7 @@ gtk_entry_move_forward_word(GtkEntry *entry,
 
 
 static gint
-gtk_entry_move_backward_word(GtkEntry *entry,
+gtk_item_entry_move_backward_word(GtkEntry *entry,
     gint      start)
 {
     gint new_pos = start;
@@ -2222,7 +2263,7 @@ gtk_entry_move_backward_word(GtkEntry *entry,
     }
     else if (entry->text && start > 0)
     {
-	PangoLayout *layout = gtk_entry_ensure_layout(entry, FALSE);
+	PangoLayout *layout = gtk_item_entry_ensure_layout(entry, FALSE);
 	PangoLogAttr *log_attrs;
 	gint n_attrs;
 
@@ -2240,9 +2281,9 @@ gtk_entry_move_backward_word(GtkEntry *entry,
 }
 
 static void
-gtk_entry_delete_whitespace(GtkEntry *entry)
+gtk_item_entry_delete_whitespace(GtkEntry *entry)
 {
-    PangoLayout *layout = gtk_entry_ensure_layout(entry, FALSE);
+    PangoLayout *layout = gtk_item_entry_ensure_layout(entry, FALSE);
     PangoLogAttr *log_attrs;
     gint n_attrs;
     gint start, end;
@@ -2267,7 +2308,7 @@ gtk_entry_delete_whitespace(GtkEntry *entry)
  * visible, return asterisks; also convert result to UTF-8.
  */
 static char *
-gtk_entry_get_public_chars(GtkEntry *entry,
+gtk_item_entry_get_public_chars(GtkEntry *entry,
     gint      start,
     gint      end)
 {
@@ -2292,7 +2333,7 @@ gtk_entry_get_public_chars(GtkEntry *entry,
 }
 
 static void
-primary_get_cb(GtkClipboard     *clipboard,
+_item_entry_primary_get_cb(GtkClipboard     *clipboard,
     GtkSelectionData *selection_data,
     guint             info,
     gpointer          data)
@@ -2302,14 +2343,14 @@ primary_get_cb(GtkClipboard     *clipboard,
 
     if (gtk_editable_get_selection_bounds(GTK_EDITABLE(entry), &start, &end))
     {
-	gchar *str = gtk_entry_get_public_chars(entry, start, end);
+	gchar *str = gtk_item_entry_get_public_chars(entry, start, end);
 	gtk_selection_data_set_text(selection_data, str, -1);
 	g_free(str);
     }
 }
 
 static void
-primary_clear_cb(GtkClipboard *clipboard,
+_item_entry_primary_clear_cb(GtkClipboard *clipboard,
     gpointer      data)
 {
     GtkEntry *entry = GTK_ENTRY(data);
@@ -2318,7 +2359,7 @@ primary_clear_cb(GtkClipboard *clipboard,
 }
 
 static void
-gtk_entry_update_primary_selection(GtkEntry *entry)
+gtk_item_entry_update_primary_selection(GtkEntry *entry)
 {
     static const GtkTargetEntry targets[] = {
 	{ "UTF8_STRING", 0, 0 },
@@ -2333,8 +2374,8 @@ gtk_entry_update_primary_selection(GtkEntry *entry)
     if (gtk_editable_get_selection_bounds(GTK_EDITABLE(entry), &start, &end))
     {
 	if (!gtk_clipboard_set_with_owner(clipboard, targets, G_N_ELEMENTS(targets),
-		primary_get_cb, primary_clear_cb, G_OBJECT(entry)))
-	    primary_clear_cb(clipboard, entry);
+		_item_entry_primary_get_cb, _item_entry_primary_clear_cb, G_OBJECT(entry)))
+	    _item_entry_primary_clear_cb(clipboard, entry);
     }
     else
     {
@@ -2425,7 +2466,7 @@ gtk_item_entry_set_text(GtkItemEntry    *entry,
 }
 
 /**
- * gtk_entry_get_layout_offsets:
+ * gtk_item_entry_get_layout_offsets:
  * @entry: a #GtkEntry
  * @x: location to store X offset of layout, or %NULL
  * @y: location to store Y offset of layout, or %NULL
@@ -2462,10 +2503,10 @@ gtk_item_entry_get_layout_offsets(GtkItemEntry *entry,
     g_return_if_fail(GTK_IS_ITEM_ENTRY(entry));
 
     /* this gets coords relative to text area */
-    get_layout_position(GTK_ENTRY(entry), x, y);
+    _item_entry_get_layout_position(GTK_ENTRY(entry), x, y);
 
     /* convert to widget coords */
-    get_text_area_size(GTK_ENTRY(entry), &text_area_x, &text_area_y, NULL, NULL);
+    _item_entry_get_text_area_size(GTK_ENTRY(entry), &text_area_x, &text_area_y, NULL, NULL);
 
     if (x)
 	*x += text_area_x;
@@ -2547,7 +2588,7 @@ gtk_item_entry_set_justification(GtkItemEntry *entry, GtkJustification just)
 #define CURSOR_PEND_MULTIPLIER 1.0
 
 static gboolean
-cursor_blinks(GtkEntry *entry)
+_item_entry_cursor_blinks(GtkEntry *entry)
 {
     GtkSettings *settings = gtk_widget_get_settings(GTK_WIDGET(entry));
     gboolean blink;
@@ -2563,7 +2604,7 @@ cursor_blinks(GtkEntry *entry)
 }
 
 static gint
-get_cursor_time(GtkEntry *entry)
+_item_entry_get_cursor_time(GtkEntry *entry)
 {
     GtkSettings *settings = gtk_widget_get_settings(GTK_WIDGET(entry));
     gint time;
@@ -2574,7 +2615,7 @@ get_cursor_time(GtkEntry *entry)
 }
 
 static void
-show_cursor(GtkEntry *entry)
+_item_entry_show_cursor(GtkEntry *entry)
 {
     if (!entry->cursor_visible)
     {
@@ -2586,7 +2627,7 @@ show_cursor(GtkEntry *entry)
 }
 
 static void
-hide_cursor(GtkEntry *entry)
+_item_entry_hide_cursor(GtkEntry *entry)
 {
     if (entry->cursor_visible)
     {
@@ -2601,7 +2642,7 @@ hide_cursor(GtkEntry *entry)
  * Blink!
  */
 static gint
-blink_cb(gpointer data)
+_item_entry_blink_cb(gpointer data)
 {
     GtkEntry *entry;
 
@@ -2614,21 +2655,21 @@ blink_cb(gpointer data)
 
     if (entry->cursor_visible)
     {
-	hide_cursor(entry);
+	_item_entry_hide_cursor(entry);
 	entry->blink_timeout = g_timeout_add_full(
 	    0,
-	    get_cursor_time(entry) * CURSOR_OFF_MULTIPLIER,
-	    blink_cb,
+	    _item_entry_get_cursor_time(entry) * CURSOR_OFF_MULTIPLIER,
+	    _item_entry_blink_cb,
 	    entry,
 	    NULL);
     }
     else
     {
-	show_cursor(entry);
+	_item_entry_show_cursor(entry);
 	entry->blink_timeout = g_timeout_add_full(
 	    0,
-	    get_cursor_time(entry) * CURSOR_ON_MULTIPLIER,
-	    blink_cb,
+	    _item_entry_get_cursor_time(entry) * CURSOR_ON_MULTIPLIER,
+	    _item_entry_blink_cb,
 	    entry,
 	    NULL);
     }
@@ -2640,19 +2681,19 @@ blink_cb(gpointer data)
 }
 
 static void
-gtk_entry_check_cursor_blink(GtkEntry *entry)
+gtk_item_entry_check_cursor_blink(GtkEntry *entry)
 {
-    if (cursor_blinks(entry))
+    if (_item_entry_cursor_blinks(entry))
     {
 	if (!entry->blink_timeout)
 	{
 	    entry->blink_timeout = g_timeout_add_full(
 		0,
-		get_cursor_time(entry) * CURSOR_ON_MULTIPLIER,
-		blink_cb,
+		_item_entry_get_cursor_time(entry) * CURSOR_ON_MULTIPLIER,
+		_item_entry_blink_cb,
 		entry,
 		NULL);
-	    show_cursor(entry);
+	    _item_entry_show_cursor(entry);
 	}
     }
     else
@@ -2669,20 +2710,20 @@ gtk_entry_check_cursor_blink(GtkEntry *entry)
 }
 
 static void
-gtk_entry_pend_cursor_blink(GtkEntry *entry)
+gtk_item_entry_pend_cursor_blink(GtkEntry *entry)
 {
-    if (cursor_blinks(entry))
+    if (_item_entry_cursor_blinks(entry))
     {
 	if (entry->blink_timeout != 0)
 	    g_source_remove(entry->blink_timeout);
 
 	entry->blink_timeout = g_timeout_add_full(
 	    0,
-	    get_cursor_time(entry) * CURSOR_PEND_MULTIPLIER,
-	    blink_cb,
+	    _item_entry_get_cursor_time(entry) * CURSOR_PEND_MULTIPLIER,
+	    _item_entry_blink_cb,
 	    entry,
 	    NULL);
-	show_cursor(entry);
+	_item_entry_show_cursor(entry);
     }
 }
 

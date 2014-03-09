@@ -1,3 +1,7 @@
+2014-03-09 Fredy Paquet <mailbox AT opag.ch>
+	* Merged bugfix branch
+	* updated gtkextra-3 version to 3.1.1, Libtool Revision 7.1.0
+
 2014-03-08 Fredy Paquet <mailbox AT opag.ch>
 	* GtkItemEntry: prefix all functions with "_item_entry" to prevent confusion with GtkEntry
 	* GtkItemEntry: fix SEGV, correctly chain up object destruction, PR#101967, PR#101214, PR#100847, PR#101004

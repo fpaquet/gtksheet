@@ -1,3 +1,6 @@
+2014-03-16 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed several critical warnings during object destruction
+
 2014-03-09 Fredy Paquet <mailbox AT opag.ch>
 	* Merged bugfix branch
 	* updated gtkextra-3 version to 3.1.1, Libtool Revision 7.1.0

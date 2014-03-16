@@ -134,6 +134,7 @@ enum _GtkSheetFlags
     GTK_SHEET_IN_CLIP  = 1 << 7,    /* cell selection in clipboard */
     GTK_SHEET_IN_REDRAW_PENDING  = 1 << 8,  /* redraw on deactivate */
     GTK_SHEET_IN_AUTORESIZE_PENDING  = 1 << 9,  /* autoresize pending */
+    GTK_SHEET_IS_DESTROYED = 1 << 10,  /* set by destruct handler */
 };
 
 enum _GtkSheetProperties
@@ -6007,6 +6008,8 @@ gtk_sheet_destroy_handler(GtkObject *object)
     }
     sheet->children = NULL;
 
+    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IS_DESTROYED);
+
     if (GTK_OBJECT_CLASS(sheet_parent_class)->destroy)
 	(*GTK_OBJECT_CLASS(sheet_parent_class)->destroy)(object);
 }
@@ -8722,6 +8725,8 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
     g_return_val_if_fail(sheet != NULL, FALSE);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
 
+    if (GTK_SHEET_FLAGS(sheet) & GTK_SHEET_IS_DESTROYED) return(FALSE); /* PR#102114 */
+
     if (row < 0 || col < 0)
 	return (FALSE);
     if (row > sheet->maxrow || col > sheet->maxcol)
@@ -8957,6 +8962,8 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
     if (sheet->state != GTK_SHEET_NORMAL)
 	return;
     if (GTK_SHEET_IN_SELECTION(sheet))
+	return;
+    if (!sheet->sheet_entry)   /* PR#102114 */
 	return;
 
     /* we should send a ENTRY_CHANGE_REQUEST signal here */
@@ -11899,6 +11906,8 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 	return;
     if (sheet->maxrow < 0 || sheet->maxcol < 0)
 	return;
+    if (!sheet->sheet_entry)   /* PR#102114 */
+	return;
 
 #if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("_gtk_sheet_entry_size_allocate: called");
@@ -12313,7 +12322,9 @@ gtk_sheet_get_entry(GtkSheet *sheet)
 
     g_return_val_if_fail(sheet != NULL, NULL);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), NULL);
-    g_return_val_if_fail(sheet->sheet_entry != NULL, NULL);
+
+    if (!sheet->sheet_entry)   /* PR#102114 */
+	return(NULL);
     
     if (GTK_IS_EDITABLE(sheet->sheet_entry))
 	return (sheet->sheet_entry);
@@ -12405,6 +12416,9 @@ gchar *gtk_sheet_get_entry_text(GtkSheet *sheet)
     g_return_val_if_fail(sheet != NULL, NULL);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), NULL);
 
+    if (!sheet->sheet_entry)   /* PR#102114 */
+	return(NULL);
+
     entry = gtk_sheet_get_entry(sheet);
     g_return_val_if_fail(entry != NULL, NULL);
 
@@ -12446,6 +12460,9 @@ void gtk_sheet_set_entry_text(GtkSheet *sheet, const gchar *text)
 
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (!sheet->sheet_entry)   /* PR#102114 */
+	return(NULL);
 
     entry = gtk_sheet_get_entry(sheet);
     g_return_if_fail(entry != NULL);
@@ -12493,6 +12510,9 @@ void gtk_sheet_set_entry_editable(GtkSheet *sheet, const gboolean editable)
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
+    if (!sheet->sheet_entry)   /* PR#102114 */
+	return;
+
     entry = gtk_sheet_get_entry(sheet);
     g_return_if_fail(entry != NULL);
 
@@ -12528,6 +12548,9 @@ void gtk_sheet_entry_select_region(GtkSheet *sheet, gint start_pos, gint end_pos
 
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (!sheet->sheet_entry)   /* PR#102114 */
+	return;
 
     entry = gtk_sheet_get_entry(sheet);
     g_return_if_fail(entry != NULL);
@@ -12577,6 +12600,9 @@ gulong gtk_sheet_entry_signal_connect_changed(GtkSheet *sheet, GCallback handler
     g_return_val_if_fail(sheet != NULL, handler_id);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), handler_id);
 
+    if (!sheet->sheet_entry)   /* PR#102114 */
+	return(handler_id);
+
     entry = gtk_sheet_get_entry(sheet);
     g_return_val_if_fail(entry != NULL, handler_id);
 
@@ -12619,6 +12645,9 @@ void gtk_sheet_entry_signal_disconnect_by_func(GtkSheet *sheet, GCallback handle
 
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (!sheet->sheet_entry)   /* PR#102114 */
+	return;
 
     entry = gtk_sheet_get_entry(sheet);
     g_return_if_fail(entry != NULL);

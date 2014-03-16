@@ -60,14 +60,14 @@
 #undef GTK_ITEM_ENTRY_DEBUG
 
 #ifdef DEBUG
-#define GTK_ITEM_ENTRY_DEBUG  1  /* define to activate debug output */
+#define GTK_ITEM_ENTRY_DEBUG  0  /* define to activate debug output */
 #endif
 
 #ifdef GTK_ITEM_ENTRY_DEBUG
 #   define GTK_ITEM_ENTRY_DEBUG_JUSTIFICATION 0
 #   define GTK_ITEM_ENTRY_DEBUG_ALLOC 0
 #   define GTK_ITEM_ENTRY_DEBUG_TEXT 0
-#   define GTK_ITEM_ENTRY_DEBUG_DESTUCTION 1  /* destroy, dispose, finalize */
+#   define GTK_ITEM_ENTRY_DEBUG_DESTUCTION 0  /* destroy, dispose, finalize */
 #endif
 
 

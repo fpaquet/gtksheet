@@ -1,5 +1,5 @@
 2014-03-16 Fredy Paquet <mailbox AT opag.ch>
-	* GtkSheet: fixed several critical warnings during object destruction
+	* GtkSheet: fixed several critical warnings during object destruction PR#102114
 
 2014-03-09 Fredy Paquet <mailbox AT opag.ch>
 	* Merged bugfix branch

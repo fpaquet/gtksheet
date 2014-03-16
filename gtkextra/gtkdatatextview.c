@@ -64,7 +64,7 @@
 #undef GTK_DATA_TEXT_VIEW_DEBUG
 
 #ifdef DEBUG
-#define GTK_DATA_TEXT_VIEW_DEBUG  1  /* define to activate debug output */
+#define GTK_DATA_TEXT_VIEW_DEBUG  0  /* define to activate debug output */
 #endif
 
 #if GTK_DATA_TEXT_VIEW_DEBUG
@@ -499,7 +499,9 @@ gtk_data_text_view_init(GtkDataTextView *data_text_view)
     data_text_view->max_length = 0;
     data_text_view->max_length_bytes = 0;
 
+#if GTK_DATA_TEXT_VIEW_DEBUG > 0
     g_debug("gtk_data_text_view_init");
+#endif
 
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(data_text_view));
 

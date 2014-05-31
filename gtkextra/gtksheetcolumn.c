@@ -121,7 +121,7 @@ gtk_sheet_column_set_property(GObject *object,
         case PROP_SHEET_COLUMN_POSITION:
             {
                 GtkSheetColumn *swapcol;
-                guint newcol = g_value_get_int(value);
+                gint newcol = g_value_get_int(value);
 
                 if (!sheet) return;
                 if (newcol < 0 || newcol > sheet->maxcol) return;
@@ -1206,8 +1206,8 @@ gtk_sheet_column_set_justification(GtkSheet *sheet, gint col,
 GtkJustification
 gtk_sheet_column_get_justification(GtkSheet *sheet, gint col)
 {
-    g_return_val_if_fail(sheet != NULL, GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT);
-    g_return_val_if_fail(GTK_IS_SHEET(sheet), GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT);
+    g_return_val_if_fail(sheet != NULL, GTK_JUSTIFY_LEFT);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), GTK_JUSTIFY_LEFT);
     if (col < 0 || col > sheet->maxcol) return (GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT);
 
     return (COLPTR(sheet, col)->justification);

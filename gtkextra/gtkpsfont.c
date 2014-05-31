@@ -820,14 +820,14 @@ gtk_psfont_get_char_size(GtkPSFont *psfont,
   GdkFont *dfont;
   gint w, a, d, w0;
 
-  if (psfont->i18n_latinfamily && psfont->vertical && (0 > wc || wc > 0x7f)) {
+  if (psfont->i18n_latinfamily && psfont->vertical && (wc > 0x7f)) {
     /* vertical-writing CJK postscript fonts. */
     w = (font->ascent + font->descent);
     w0 = gdk_char_width_wc(font, wc);
     d = w0 * font->descent / w;
     a = w0 - d;
   } else {
-    if (psfont->i18n_latinfamily && 0 <= wc && wc <= 0x7f)
+    if (psfont->i18n_latinfamily && wc <= 0x7f)
       dfont = latin_font;
     else
       dfont = font;

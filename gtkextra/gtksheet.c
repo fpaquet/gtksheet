@@ -9672,7 +9672,7 @@ void
 gtk_sheet_unselect_range(GtkSheet *sheet)
 {
     gtk_sheet_real_unselect_range(sheet, NULL);
-    sheet->state = GTK_STATE_NORMAL;
+    sheet->state = GTK_SHEET_NORMAL;
     gtk_sheet_activate_cell(sheet, sheet->active_cell.row, sheet->active_cell.col);
 }
 
@@ -12462,7 +12462,7 @@ void gtk_sheet_set_entry_text(GtkSheet *sheet, const gchar *text)
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
     if (!sheet->sheet_entry)   /* PR#102114 */
-	return(NULL);
+	return;
 
     entry = gtk_sheet_get_entry(sheet);
     g_return_if_fail(entry != NULL);
@@ -12726,7 +12726,7 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
     gint state = 0;
     gchar * label, label_buf[10];
     PangoAlignment pango_alignment = PANGO_ALIGN_LEFT;
-    GtkSheetArea area;
+    GtkSheetArea area = ON_SHEET_BUTTON_AREA;
     PangoFontDescription *font_desc =
 	gtk_widget_get_style(GTK_WIDGET(sheet))->font_desc;
     PangoRectangle extent;

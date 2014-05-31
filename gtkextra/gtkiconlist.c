@@ -691,7 +691,7 @@ gtk_icon_list_button_press(GtkWidget *widget, GdkEventButton *event)
   GtkIconList *iconlist;
   GtkIconListItem *item;
   gint x, y;
-  GtkAllocation *allocation;
+  GtkAllocation allocation;
 
   if(!GTK_IS_ICON_LIST(widget)) return FALSE;
 
@@ -708,11 +708,11 @@ gtk_icon_list_button_press(GtkWidget *widget, GdkEventButton *event)
   }
 
   if(item->entry){
-    gtk_widget_get_allocation(item->entry, allocation);
-    if(x >= allocation->x &&
-       x <= allocation->x + allocation->width &&
-       y >= allocation->y &&
-       y <= allocation->y + allocation->height) return FALSE;
+    gtk_widget_get_allocation(item->entry, &allocation);
+    if(x >= allocation.x &&
+       x <= allocation.x + allocation.width &&
+       y >= allocation.y &&
+       y <= allocation.y + allocation.height) return FALSE;
   }
 
   if(item)

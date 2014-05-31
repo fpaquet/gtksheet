@@ -11671,7 +11671,7 @@ static gboolean gtk_sheet_focus(GtkWidget *widget,
     g_return_val_if_fail(GTK_IS_SHEET(widget), FALSE);
     GtkSheet *sheet = GTK_SHEET(widget);
 
-    if (!gtk_widget_is_sensitive(sheet)) {
+    if (!gtk_widget_is_sensitive(GTK_WIDGET(sheet))) {
 	g_debug("gtk_sheet_focus: X"); 
 	return(FALSE);
     }

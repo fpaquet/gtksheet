@@ -1,3 +1,6 @@
+2014-07-13 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed dataformat on cell deactivation PR#104167
+
 2014-05-31 Fredy Paquet <mailbox AT opag.ch>
 	* GtkPSFont, GtkSheet, GtkSheetColumn: fixed some compiler warnings
 

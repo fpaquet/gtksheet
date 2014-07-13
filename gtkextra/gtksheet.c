@@ -7746,7 +7746,14 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
     }
 
     if (text)
-	cell->text = g_strdup(text);
+    {
+	gchar *dataformat = gtk_sheet_column_get_format(sheet, col);
+
+	if (dataformat)
+	    text = gtk_data_format_remove(text, dataformat);
+
+	cell->text = g_strdup(text); 
+    }
 
 #if 0 && GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
     g_debug("st2: %0.6f", g_timer_elapsed(tm, NULL));

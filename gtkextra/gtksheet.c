@@ -95,6 +95,7 @@
 #   define GTK_SHEET_DEBUG_SIGNALS   0
 #   define GTK_SHEET_DEBUG_SIZE  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0
+#   define GTK_SHEET_DEBUG_SET_CELL_TEXT  0
 #endif
 
 #define GTK_SHEET_MOD_MASK  GDK_MOD1_MASK  /* main modifier for sheet navigation */
@@ -7752,6 +7753,11 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
 	if (dataformat)
 	    text = gtk_data_format_remove(text, dataformat);
 
+#if GTK_SHEET_DEBUG_SET_CELL_TEXT > 0
+	g_debug("gtk_sheet_set_cell[%p]: r %d c %d ar %d ac %d <%s>", 
+	    sheet, row, col, sheet->active_cell.row, sheet->active_cell.col, text);
+#endif
+
 	cell->text = g_strdup(text); 
     }
 
@@ -7768,6 +7774,17 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
     if (attributes.is_visible)
     {
 	gboolean need_draw = TRUE;
+
+	/* PR#104553 - if sheet entry editor is active on the cell being modified,
+	   we need to update it's contents
+	   */
+	if (row == sheet->active_cell.row && col == sheet->active_cell.col)
+	{
+#if GTK_SHEET_DEBUG_SET_CELL_TEXT > 0
+	    g_debug("gtk_sheet_set_cell[%p]: update sheet entry");
+#endif
+	    gtk_sheet_set_entry_text(sheet, text);  /* PR#104553 */
+	}
 
 	if (gtk_sheet_autoresize(sheet))  /* handle immediate resize */
 	{

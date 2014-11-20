@@ -37,7 +37,7 @@ typedef struct _GtkComboButtonClass	GtkComboButtonClass;
 
 /* you should access only the entry and list fields directly */
 struct _GtkComboButton {
-	GtkHBox hbox;
+	GtkBox hbox;
 
 	GtkWidget *button;
         GtkWidget *arrow;
@@ -47,7 +47,7 @@ struct _GtkComboButton {
 };
 
 struct _GtkComboButtonClass {
-	GtkHBoxClass parent_class;
+	GtkBoxClass parent_class;
 };
 
 GType      gtk_combo_button_get_type              (void);

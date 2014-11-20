@@ -21,9 +21,9 @@ gtkextra-win32res.lo : gtkextra-win32.rc
 	$(LT_COMPILE_RESOURCE) gtkextra-win32.rc gtkextra-win32res.lo
 
 install-libtool-import-lib:
-	$(INSTALL) .libs/libgtkextra-win32-3.0.dll.a $(DESTDIR)$(libdir)
+	$(INSTALL) .libs/libgtkextra-win32-4.0.dll.a $(DESTDIR)$(libdir)
 uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libgtkextra-win32-3.0.dll.a
+	-rm $(DESTDIR)$(libdir)/libgtkextra-win32-4.0.dll.a
 install-exec-local: install-libtool-import-lib
 else
 install-libtool-import-lib:
@@ -31,16 +31,16 @@ uninstall-libtool-import-lib:
 endif
 
 if MS_LIB_AVAILABLE
-noinst_DATA = gtkextra-win32-3.0.lib
+noinst_DATA = gtkextra-win32-4.0.lib
 
-gtkextra-win32-3.0.lib: libgtkextra-win32-3.0.la gtkextra.def
-	lib -name:libgtkextra-win32-3.0-@LT_CURRENT_MINUS_AGE@.dll -def:gtkextra.def -out:$@
+gtkextra-win32-4.0.lib: libgtkextra-win32-4.0.la gtkextra.def
+	lib -name:libgtkextra-win32-4.0-@LT_CURRENT_MINUS_AGE@.dll -def:gtkextra.def -out:$@
 
 install-ms-lib:
-	$(INSTALL) gtkextra-win32-3.0.lib $(DESTDIR)$(libdir)
+	$(INSTALL) gtkextra-win32-4.0.lib $(DESTDIR)$(libdir)
 
 uninstall-ms-lib:
-	-rm $(DESTDIR)$(libdir)/gtkextra-win32-3.0.lib
+	-rm $(DESTDIR)$(libdir)/gtkextra-win32-4.0.lib
 else
 install-ms-lib:
 uninstall-ms-lib:
@@ -49,7 +49,7 @@ endif
 # libtool stuff: set version and export symbols for resolving
 # since automake doesn't support conditionalized libsomething_la_LDFLAGS
 # we use the general approach here
-libgtkextraincludedir = $(includedir)/gtkextra-3.0/gtkextra
+libgtkextraincludedir = $(includedir)/gtkextra-4.0/gtkextra
 AM_LDFLAGS = \
 	-version-info $(LIBGTKEXTRA_SO_VERSION)    \
 	-export-dynamic                                         \
@@ -183,26 +183,26 @@ AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) $(GTK_CFLAGS)
 # target platform:
 lib_LTLIBRARIES = $(gtkextratargetlib)
 
-gtkextraincludedir = $(includedir)/gtkextra-3.0/gtkextra
+gtkextraincludedir = $(includedir)/gtkextra-4.0/gtkextra
 gtkextrainclude_HEADERS = $(gtkextra_public_h_sources)
 nodist_gtkextrainclude_HEADERS = $(gtkextra_built_public_sources) gtkextrafeatures.h
 
-libgtkextra_x11_3_0_la_SOURCES = $(gtkextra_c_sources)
-nodist_libgtkextra_x11_3_0_la_SOURCES = $(gtkextra_built_sources)
-libgtkextra_linux_fb_3_0_la_SOURCES = $(gtkextra_c_sources)
-nodist_libgtkextra_linux_fb_3_0_la_SOURCES = $(gtkextra_built_sources)
-libgtkextra_win32_3_0_la_SOURCES = $(gtkextra_c_sources)
-nodist_libgtkextra_win32_3_0_la_SOURCES = $(gtkextra_built_sources)
-libgtkextra_quartz_3_0_la_SOURCES = $(gtkextra_c_sources)
-nodist_libgtkextra_quartz_3_0_la_SOURCES = $(gtkextra_built_sources)
+libgtkextra_x11_4_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_x11_4_0_la_SOURCES = $(gtkextra_built_sources)
+libgtkextra_linux_fb_4_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_linux_fb_4_0_la_SOURCES = $(gtkextra_built_sources)
+libgtkextra_win32_4_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_win32_4_0_la_SOURCES = $(gtkextra_built_sources)
+libgtkextra_quartz_4_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_quartz_4_0_la_SOURCES = $(gtkextra_built_sources)
 
-libgtkextra_win32_3_0_la_LIBADD = $(gtkextra_win32res_lo)
-libgtkextra_win32_3_0_la_DEPENDENCIES = $(gtkextra_def) $(gtkextra_win32res_lo)
+libgtkextra_win32_4_0_la_LIBADD = $(gtkextra_win32res_lo)
+libgtkextra_win32_4_0_la_DEPENDENCIES = $(gtkextra_def) $(gtkextra_win32res_lo)
 
 if USE_WIN32
 libgtkextra_target_ldflags = $(gtkextra_win32_symbols) -lwsock32
 endif
-EXTRA_LTLIBRARIES = libgtkextra-x11-3.0.la libgtkextra-linux-fb-3.0.la libgtkextra-win32-3.0.la libgtkextra-quartz-3.0.la
+EXTRA_LTLIBRARIES = libgtkextra-x11-4.0.la libgtkextra-linux-fb-4.0.la libgtkextra-win32-4.0.la libgtkextra-quartz-4.0.la
 
 MAINTAINERCLEANFILES = $(gtkextra_built_sources) 
 CLEANFILES = $(gtkextra_built_sources) 
@@ -212,7 +212,7 @@ EXTRA_DIST = $(gtkextra_private_h_sources) $(gtkextra_extra_sources)
 EXTRA_DIST += gtkextra.def sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
 
 
-$(libgtkextra_x11_3_0_la_OBJECTS) $(libgtkextra_linux_fb_3_0_la_OBJECTS) $(libgtkextra_win32_3_0_la_OBJECTS) $(libgtkextra_quartz_3_0_la_OBJECTS): ${gtkextra_built_public_sources} ${gtkextra_built_private_headers}
+$(libgtkextra_x11_4_0_la_OBJECTS) $(libgtkextra_linux_fb_4_0_la_OBJECTS) $(libgtkextra_win32_4_0_la_OBJECTS) $(libgtkextra_quartz_4_0_la_OBJECTS): ${gtkextra_built_public_sources} ${gtkextra_built_private_headers}
 
 gtkextra-marshal.h: $(builddir)/gtkextra-marshal.list
 	( @GLIB_GENMARSHAL@ --prefix=gtkextra $(srcdir)/gtkextra-marshal.list --header > gtkextra-marshal.tmp \
@@ -299,20 +299,20 @@ testgtkplotcanvas_LDADD = $(LDADDS)
 if ENABLE_INTROSPECTION
 -include $(INTROSPECTION_MAKEFILE)
 
-INTROSPECTION_GIRS = GtkExtra-3.0.gir
+INTROSPECTION_GIRS = GtkExtra-4.0.gir
 
 INTROSPECTION_SCANNER_ARGS = --accept-unprefixed --identifier-prefix="Gtk" --symbol-prefix="gtk" --warn-all --add-include-path=$(srcdir)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 introspection_sources = $(gtkextra_c_sources) $(gtkextra_public_h_sources)
 
-GtkExtra-3.0.gir: $(gtkextratargetlib)
-GtkExtra_3_0_gir_NAMESPACE = GtkExtra
-GtkExtra_3_0_gir_VERSION = $(GTK_EXTRA_VERSION)
-GtkExtra_3_0_gir_INCLUDES = GLib-2.0 GObject-2.0 Gtk-2.0
-GtkExtra_3_0_gir_CFLAGS = $(AM_CPPFLAGS)
-GtkExtra_3_0_gir_LIBS = $(gtkextratargetlib)
-GtkExtra_3_0_gir_FILES = $(introspection_sources)
+GtkExtra-4.0.gir: $(gtkextratargetlib)
+GtkExtra_4_0_gir_NAMESPACE = GtkExtra
+GtkExtra_4_0_gir_VERSION = $(GTK_EXTRA_VERSION)
+GtkExtra_4_0_gir_INCLUDES = GLib-2.0 GObject-2.0 Gtk-3.0
+GtkExtra_4_0_gir_CFLAGS = $(AM_CPPFLAGS)
+GtkExtra_4_0_gir_LIBS = $(gtkextratargetlib)
+GtkExtra_4_0_gir_FILES = $(introspection_sources)
 
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)

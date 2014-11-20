@@ -101,10 +101,12 @@ static gchar *default_sizes[] = {"8","9","10","12","13","14","16","18",
 
 static void         gtk_font_combo_class_init      (GtkFontComboClass *klass);
 static void         gtk_font_combo_init            (GtkFontCombo      *font_combo);
-static void         gtk_font_combo_destroy         (GtkObject     *font_combo);
+static void         gtk_font_combo_destroy         (GtkWidget*font_combo);
 static void         gtk_font_combo_finalize        (GObject     *font_combo);
 static void         new_font			   (GtkWidget *widget, 
                                                     gpointer data);
+
+G_DEFINE_TYPE(GtkFontCombo, gtk_font_combo, GTK_TYPE_TOOLBAR);
 
 static GtkToolbarClass *parent_class = NULL;
 static guint font_combo_signals[LAST_SIGNAL] = {0};
@@ -112,17 +114,15 @@ static guint font_combo_signals[LAST_SIGNAL] = {0};
 static void
 gtk_font_combo_class_init (GtkFontComboClass * klass)
 {
-  GObjectClass *gobject_class;
-  GtkObjectClass *object_class;
+  GObjectClass *object_class;
   GtkWidgetClass *widget_class;
 
   parent_class = g_type_class_ref (gtk_toolbar_get_type ());
-  object_class = (GtkObjectClass *) klass;
-  gobject_class = (GObjectClass *) klass;
+  object_class = (GObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
 
-  object_class->destroy = gtk_font_combo_destroy;
-  gobject_class->finalize = gtk_font_combo_finalize;
+  widget_class->destroy = gtk_font_combo_destroy;
+  object_class->finalize = gtk_font_combo_finalize;
   
   /**
    * GtkFontCombo::changed:
@@ -142,11 +142,11 @@ gtk_font_combo_class_init (GtkFontComboClass * klass)
 }
 
 static void
-gtk_font_combo_destroy (GtkObject * font_combo)
+gtk_font_combo_destroy (GtkWidget* font_combo)
 {
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
 
-    (*GTK_OBJECT_CLASS (parent_class)->destroy) (font_combo);
+    (*GTK_WIDGET_CLASS (parent_class)->destroy) (font_combo);
 }
 
 static void
@@ -257,25 +257,6 @@ gtk_font_combo_init (GtkFontCombo * font_combo)
                      "clicked",
                      (void *)new_font, font_combo);
 
-}
-
-GType
-gtk_font_combo_get_type ()
-{
-  static GType font_combo_type = 0;
-
-  if (!font_combo_type)
-    {
-      font_combo_type = g_type_register_static_simple (
-		gtk_toolbar_get_type (),
-		"GtkFontCombo",
-		sizeof (GtkFontComboClass),
-		(GClassInitFunc) gtk_font_combo_class_init,
-		sizeof (GtkFontCombo),
-		(GInstanceInitFunc) gtk_font_combo_init,
-		0);
-    }
-  return font_combo_type;
 }
 
 GtkWidget *

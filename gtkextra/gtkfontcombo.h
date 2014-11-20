@@ -21,18 +21,15 @@
 #ifndef __GTK_FONT_COMBO_H__
 #define __GTK_FONT_COMBO_H__
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-
 #include "gtkpsfont.h"
 
+G_BEGIN_DECLS
 
-#define GTK_FONT_COMBO(obj)			G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_font_combo_get_type (), GtkFontCombo)
-#define GTK_FONT_COMBO_CLASS(klass)	G_TYPE_CHECK_CLASS_CAST (klass, gtk_font_combo_get_type (), GtkFontComboClass)
-#define GTK_IS_FONT_COMBO(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_font_combo_get_type ())
+#define GTK_FONT_COMBO_TYPE		(gtk_font_combo_get_type())
+#define GTK_FONT_COMBO(obj)		(G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_FONT_COMBO_TYPE, GtkFontCombo))
+#define GTK_FONT_COMBO_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_FONT_COMBO_TYPE, GtkFontComboClass))
+#define GTK_IS_FONT_COMBO(obj)       	(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_FONT_COMBO_TYPE))
+#define GTK_IS_FONT_COMBO_CLASS(obj)	(G_TYPE_CHECK_CLASS_TYPE (obj, GTK_FONT_COMBO_TYPE))
 
 typedef struct _GtkFontCombo		GtkFontCombo;
 typedef struct _GtkFontComboClass	GtkFontComboClass;
@@ -70,11 +67,8 @@ void	   gtk_font_combo_select_nth		(GtkFontCombo *font_combo,
 gint	   gtk_font_combo_get_font_height	(GtkFontCombo *font_combo);
 GtkPSFont  *gtk_font_combo_get_psfont		(GtkFontCombo *font_combo);
 PangoFontDescription  *gtk_font_combo_get_font_description (GtkFontCombo *font_combo);
-GdkFont    *gtk_font_combo_get_gdkfont		(GtkFontCombo *font_combo);
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __GTK_FONT_COMBO_H__ */
 

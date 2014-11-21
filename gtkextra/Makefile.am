@@ -173,14 +173,14 @@ gtkextra_private_h_sources = \
 	icons.h \
 	pixmaps.h 
 
-gtkextra_built_public_sources =	\
-	gtkextra-marshal.h	\
-	gtkextratypebuiltins.h
+#gtkextra_built_public_sources =	\
+#	gtkextra-marshal.h	\
+#	gtkextratypebuiltins.h
 
-gtkextra_built_sources = \
-	gtkextra-marshal.c	\
-	gtkextratypebuiltins.c	\
-	${gtkextra_built_public_sources}            
+#gtkextra_built_sources = \
+#	gtkextra-marshal.c	\
+#	gtkextratypebuiltins.c	\
+#	${gtkextra_built_public_sources}            
 
 gtkextra_extra_sources = \
 	gtkextrafeatures.h.in	\
@@ -255,53 +255,54 @@ gtkextratypebuiltins.c: $(gtkextra_public_h_sources)
 # test programs, not to be installed
 
 if ENABLE_TESTS
-noinst_PROGRAMS = testgtksheet testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment
+noinst_PROGRAMS = testgtkfont
+#noinst_PROGRAMS = testgtksheet testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment
 endif
 DEPS = $(gtkextratargetlib)
 LDADDS = $(gtkextratargetlib) $(GTK_LIBS)
 
-testgtksheet_DEPENDENCIES = $(DEPS)
-testgtkplot_DEPENDENCIES = $(DEPS)
-testdt_DEPENDENCIES = $(DEPS)
-testgtkplotdt_DEPENDENCIES = $(DEPS)
-testpolar_DEPENDENCIES = $(DEPS)
-testgtkplot3d_DEPENDENCIES = $(DEPS)
-testcontour_DEPENDENCIES = $(DEPS)
-testrealtime_DEPENDENCIES = $(DEPS)
-testgtkfilesel_DEPENDENCIES = $(DEPS)
-testgtkiconlist_DEPENDENCIES = $(DEPS)
+#testgtksheet_DEPENDENCIES = $(DEPS)
+#testgtkplot_DEPENDENCIES = $(DEPS)
+#testdt_DEPENDENCIES = $(DEPS)
+#testgtkplotdt_DEPENDENCIES = $(DEPS)
+#testpolar_DEPENDENCIES = $(DEPS)
+#testgtkplot3d_DEPENDENCIES = $(DEPS)
+#testcontour_DEPENDENCIES = $(DEPS)
+#testrealtime_DEPENDENCIES = $(DEPS)
+#testgtkfilesel_DEPENDENCIES = $(DEPS)
+#testgtkiconlist_DEPENDENCIES = $(DEPS)
 testgtkfont_DEPENDENCIES = $(DEPS)
-testbubbles_DEPENDENCIES = $(DEPS)
-testflux_DEPENDENCIES = $(DEPS)
-testboxes_DEPENDENCIES = $(DEPS)
-testcandles_DEPENDENCIES = $(DEPS)
-testpixmap_DEPENDENCIES = $(DEPS)
-testimage_DEPENDENCIES = $(DEPS)
-testcharsel_DEPENDENCIES = $(DEPS)
-testiterator_DEPENDENCIES = $(DEPS)
-testsegment_DEPENDENCIES = $(DEPS)
-testgtkplotcanvas_DEPENDENCIES = $(DEPS)
-testgtksheet_LDADD = $(LDADDS)
-testgtkplot_LDADD = $(LDADDS)
-testdt_LDADD = $(LDADDS)
-testgtkplotdt_LDADD = $(LDADDS)
-testimage_LDADD = $(LDADDS)
-testcharsel_LDADD = $(LDADDS)
-testpixmap_LDADD = $(LDADDS)
-testpolar_LDADD = $(LDADDS)
-testgtkplot3d_LDADD = $(LDADDS)
-testcontour_LDADD = $(LDADDS)
-testrealtime_LDADD = $(LDADDS)
-testgtkfilesel_LDADD = $(LDADDS)
-testgtkiconlist_LDADD = $(LDADDS)
+#testbubbles_DEPENDENCIES = $(DEPS)
+#testflux_DEPENDENCIES = $(DEPS)
+#testboxes_DEPENDENCIES = $(DEPS)
+#testcandles_DEPENDENCIES = $(DEPS)
+#testpixmap_DEPENDENCIES = $(DEPS)
+#testimage_DEPENDENCIES = $(DEPS)
+#testcharsel_DEPENDENCIES = $(DEPS)
+#testiterator_DEPENDENCIES = $(DEPS)
+#testsegment_DEPENDENCIES = $(DEPS)
+#testgtkplotcanvas_DEPENDENCIES = $(DEPS)
+#testgtksheet_LDADD = $(LDADDS)
+#testgtkplot_LDADD = $(LDADDS)
+#testdt_LDADD = $(LDADDS)
+#testgtkplotdt_LDADD = $(LDADDS)
+#testimage_LDADD = $(LDADDS)
+#testcharsel_LDADD = $(LDADDS)
+#testpixmap_LDADD = $(LDADDS)
+#testpolar_LDADD = $(LDADDS)
+#testgtkplot3d_LDADD = $(LDADDS)
+#testcontour_LDADD = $(LDADDS)
+#testrealtime_LDADD = $(LDADDS)
+#testgtkfilesel_LDADD = $(LDADDS)
+#testgtkiconlist_LDADD = $(LDADDS)
 testgtkfont_LDADD = $(LDADDS)
-testbubbles_LDADD = $(LDADDS)
-testflux_LDADD = $(LDADDS)
-testboxes_LDADD = $(LDADDS)
-testcandles_LDADD = $(LDADDS)
-testiterator_LDADD = $(LDADDS)
-testsegment_LDADD = $(LDADDS)
-testgtkplotcanvas_LDADD = $(LDADDS)
+#testbubbles_LDADD = $(LDADDS)
+#testflux_LDADD = $(LDADDS)
+#testboxes_LDADD = $(LDADDS)
+#testcandles_LDADD = $(LDADDS)
+#testiterator_LDADD = $(LDADDS)
+#testsegment_LDADD = $(LDADDS)
+#testgtkplotcanvas_LDADD = $(LDADDS)
 
 # gobject-introspection (begin)
 if ENABLE_INTROSPECTION

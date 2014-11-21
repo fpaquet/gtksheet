@@ -18,26 +18,23 @@ void
 new_font(GtkFontCombo *font_combo, gpointer data)
 {
  GtkWidget *preview_entry;
- GtkStyle *style, *previous_style;
  const gchar *text;
+ PangoFontDescription *font_desc;
 
  preview_entry = GTK_WIDGET(data);
 
- previous_style = gtk_widget_get_style(preview_entry);
- style = gtk_style_copy (previous_style);
+ font_desc = gtk_font_combo_get_font_description(font_combo);
 
- pango_font_description_free(style->font_desc);
- style->font_desc = gtk_font_combo_get_font_description(font_combo);
+ gtk_widget_override_font(preview_entry, font_desc);
 
- gtk_widget_set_style(GTK_WIDGET(preview_entry), style);
- gtk_style_unref(style);
+ printf("NEW FONT %s\n",pango_font_description_to_string(font_desc));
 
- printf("NEW FONT %s\n",pango_font_description_to_string(style->font_desc));
+ pango_font_description_free(font_desc);
 
  text = gtk_entry_get_text(GTK_ENTRY(preview_entry));
  if (strlen(text) == 0)
    gtk_entry_set_text(GTK_ENTRY(preview_entry), PREVIEW_TEXT);
- gtk_entry_set_position(GTK_ENTRY(preview_entry), 0);
+ gtk_editable_set_position(GTK_EDITABLE(preview_entry), 0);
 }
 
 int main(int argc, char *argv[])
@@ -51,12 +48,12 @@ int main(int argc, char *argv[])
 
  window1=gtk_window_new(GTK_WINDOW_TOPLEVEL);
  gtk_window_set_title(GTK_WINDOW(window1), "GtkFontCombo Demo");
- gtk_container_border_width(GTK_CONTAINER(window1),0);
+ gtk_container_set_border_width(GTK_CONTAINER(window1),0);
 
- g_signal_connect (GTK_OBJECT (window1), "destroy",
+ g_signal_connect (G_OBJECT (window1), "destroy",
 		     G_CALLBACK (quit), NULL);
 
- vbox1=gtk_vbox_new(FALSE,0);
+ vbox1=gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
  gtk_container_add(GTK_CONTAINER(window1),vbox1);
  gtk_widget_show(vbox1);
 
@@ -73,7 +70,7 @@ int main(int argc, char *argv[])
  new_font(GTK_FONT_COMBO(font_combo), preview_entry); 
 /*********** SIGNALS ************/
 
- g_signal_connect(GTK_OBJECT(font_combo),
+ g_signal_connect(G_OBJECT(font_combo),
                     "changed",
                     G_CALLBACK(new_font), preview_entry);
 

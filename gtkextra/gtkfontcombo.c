@@ -327,8 +327,8 @@ gtk_font_combo_select (GtkFontCombo *combo,
   GtkTreeModel *model = gtk_combo_box_get_model(GTK_COMBO_BOX(combo->name_combo));
   gboolean valid;
   GtkTreeIter iter;
+  gint column;
 
-  printf("number of columns in model (should be 1): %i\n", gtk_tree_model_get_n_columns(model));
   if (gtk_tree_model_get_column_type(model, 0) != G_TYPE_STRING) {
   	fprintf(stderr, "column 0 is not of type string\n");
 	exit(1);
@@ -336,8 +336,11 @@ gtk_font_combo_select (GtkFontCombo *combo,
 
   valid =  gtk_tree_model_get_iter_first(model, &iter);
 
+  /* I would be very surprised if column would ever be different from zero but let's check it anyways */
+  column = gtk_combo_box_get_entry_text_column(GTK_COMBO_BOX(combo->name_combo));
+
   while (valid) {
-  	gtk_tree_model_get(model, &iter, 0, &text, -1);
+  	gtk_tree_model_get(model, &iter, column, &text, -1);
 	if (strcmp(family, text) == 0) {
 		/* match */
 		g_free(text);
@@ -376,7 +379,7 @@ gtk_font_combo_select_nth (GtkFontCombo *combo,
   gint i;
 
   GtkTreeModel *model = gtk_combo_box_get_model(GTK_COMBO_BOX(combo->name_combo));
-  if (n >= gtk_tree_model_get_n_columns(model)) {
+  if (n >= gtk_tree_model_iter_n_children(model, NULL)) {
   	g_warning("gtk_font_combo_select: font number %i not found in model", n);
 	return;
   }

@@ -1,3 +1,9 @@
+2014-11-21 Tom Schoonjans <Tom.Schoonjans@bam.de>
+	* Started transition to Gtk3 compatible version
+	* gtkfontcombo updated
+	* gtkpsfont updated
+	* testgtkfont updated
+
 2013-06-28 Fredy Paquet <mailbox AT opag.ch>
 	* replaced deprecated accessor: GtkWidget->parent 
 	* replaced deprecated accessor: GdkCursor->type

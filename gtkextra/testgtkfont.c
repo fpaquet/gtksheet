@@ -67,6 +67,8 @@ int main(int argc, char *argv[])
  gtk_entry_set_text(GTK_ENTRY(preview_entry), PREVIEW_TEXT);
  gtk_widget_show(window1);
 
+ //gtk_font_combo_select(GTK_FONT_COMBO(font_combo), "Helvetica", TRUE, FALSE, 32);
+
  new_font(GTK_FONT_COMBO(font_combo), preview_entry); 
 /*********** SIGNALS ************/
 

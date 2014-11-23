@@ -64,11 +64,11 @@ AM_LDFLAGS = \
 gtkextra_public_h_sources = \
         gtkfontcombo.h	\
         gtkpsfont.h \
-	gtkcharsel.h
+	gtkcharsel.h \
+        gtkplotarray.h	
 
 #tkextra_public_h_sources = \
 #       gtkbordercombo.h 	\
-#       gtkcharsel.h	\
 #       gtkcheckitem.h	\
 #       gtkcolorcombo.h	\
 #       gtkcombobutton.h	\
@@ -80,13 +80,11 @@ gtkextra_public_h_sources = \
 #       gtkextraicons.h	\
 #       gtkfileicons.h	\
 #       gtkfilelist.h	\
-#       gtkfontcombo.h	\
 #       gtkiconfilesel.h	\
 #       gtkiconlist.h	\
 #       gtkitementry.h	\
 #       gtkplot.h	\
 #       gtkplot3d.h	\
-#       gtkplotarray.h	\
 #       gtkplotbar.h	\
 #       gtkplotbox.h	\
 #       gtkplotbubble.h	\
@@ -111,7 +109,6 @@ gtkextra_public_h_sources = \
 #       gtkplotps.h	\
 #       gtkplotsegment.h	\
 #       gtkplotsurface.h	\
-#       gtkpsfont.h	\
 #       gtksheet.h	\
 #       gtksheetcolumn.h	\
 #       gtktogglecombo.h
@@ -119,12 +116,11 @@ gtkextra_public_h_sources = \
 gtkextra_c_sources = 	\
 	gtkpsfont.c	\
 	gtkfontcombo.c  \
-	gtkcharsel.c
-
+	gtkcharsel.c \
+        gtkplotarray.c
 
 #tkextra_c_sources = 	\
 #       gtkbordercombo.c	\
-#       gtkcharsel.c	\
 #       gtkcheckitem.c	\
 #       gtkcolorcombo.c	\
 #       gtkcombobutton.c	\
@@ -134,13 +130,11 @@ gtkextra_c_sources = 	\
 #       gtkdirtree.c	\
 #       gtkextra.c	\
 #       gtkfilelist.c	\
-#       gtkfontcombo.c	\
 #       gtkiconfilesel.c	\
 #       gtkiconlist.c	\
 #       gtkitementry.c	\
 #       gtkplot.c	\
 #       gtkplot3d.c	\
-#       gtkplotarray.c	\
 #       gtkplotbar.c	\
 #       gtkplotbox.c	\
 #       gtkplotbubble.c	\
@@ -165,7 +159,6 @@ gtkextra_c_sources = 	\
 #       gtkplotps.c	\
 #       gtkplotsegment.c	\
 #       gtkplotsurface.c	\
-#       gtkpsfont.c	\
 #       gtksheet.c	\
 #       gtksheetcolumn.c	\
 #       gtktogglecombo.c 

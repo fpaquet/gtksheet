@@ -29,9 +29,7 @@
 #ifndef __GTK_PS_FONT_H__
 #define __GTK_PS_FONT_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+G_END_DECLS
 
 
 /* List of names of the 35 default Adobe fonts 
@@ -125,8 +123,6 @@ void 		gtk_psfont_get_families		(GList **families, gint *num_families);
                         			 gint *descent);*/
 
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __GTK_PS_FONT_H__ */

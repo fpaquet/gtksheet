@@ -40,8 +40,6 @@
 #include "gtkextra-compat.h"
 #include "gtkcharsel.h"
 
-static void gtk_char_selection_class_init          (GtkCharSelectionClass *klass);
-static void gtk_char_selection_init                (GtkCharSelection *charsel);
 static void gtk_char_selection_realize 		   (GtkWidget *widget);
 static void gtk_char_selection_map 		   (GtkWidget *widget);
 static void new_font				   (GtkFontCombo *font_combo, 

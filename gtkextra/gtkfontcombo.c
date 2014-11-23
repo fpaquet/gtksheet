@@ -60,8 +60,6 @@ static gchar *default_sizes[] = {"8","9","10","12","13","14","16","18",
                                  "20","22","24","26","28","32","36","40",
                                  "48","56","64","72"};
 
-static void         gtk_font_combo_class_init      (GtkFontComboClass *klass);
-static void         gtk_font_combo_init            (GtkFontCombo      *font_combo);
 static void         new_font			   (GtkWidget *widget, 
                                                     gpointer data);
 
@@ -116,8 +114,6 @@ gtk_font_combo_init (GtkFontCombo * font_combo)
 {
   GtkWidget *widget;
   GtkToolbar *toolbar;
-  GdkPixbuf *pixmap;
-  GtkWidget *tpixmap;
   GtkWidget *label;
   GtkWidget *space;
   GtkRequisition req;

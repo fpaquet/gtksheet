@@ -53,50 +53,6 @@ enum {
       LAST_SIGNAL 
 };
 
-/* XPM */
-static const char * bold_xpm[] = {
-"16 16 2 1",
-" 	c None",
-".	c #000000000000",
-"                ",
-"  .........     ",
-"   ...   ...    ",
-"   ...    ...   ",
-"   ...    ...   ",
-"   ...    ...   ",
-"   ...   ...    ",
-"   ........     ",
-"   ...    ...   ",
-"   ...     ...  ",
-"   ...     ...  ",
-"   ...     ...  ",
-"   ...     ...  ",
-"   ...    ...   ",
-"  .........     ",
-"                "};
-
-
-/* XPM */
-static const char * italic_xpm[] = {
-"16 16 2 1",
-" 	c None",
-".	c #000000000000",
-"                ",
-"        .....   ",
-"         ...    ",
-"         ...    ",
-"        ...     ",
-"        ...     ",
-"       ...      ",
-"       ...      ",
-"      ...       ",
-"      ...       ",
-"     ...        ",
-"     ...        ",
-"    ...         ",
-"    ...         ",
-"   .....        ",
-"                "};
 
 #define NUM_SIZES 20
 
@@ -205,25 +161,14 @@ gtk_font_combo_init (GtkFontCombo * font_combo)
   font_combo->italic_button =  GTK_WIDGET(gtk_toggle_tool_button_new());
   gtk_toolbar_insert(toolbar, GTK_TOOL_ITEM(font_combo->bold_button), 4);
   gtk_toolbar_insert(toolbar, GTK_TOOL_ITEM(font_combo->italic_button), 5);
-  gtk_widget_set_size_request(font_combo->bold_button, 24, 24);
-  gtk_widget_set_size_request(font_combo->italic_button, 24, 24);
 
-  pixmap = gdk_pixbuf_new_from_xpm_data(bold_xpm);
-  tpixmap = gtk_image_new_from_pixbuf(pixmap);
-  gtk_container_add(GTK_CONTAINER(gtk_bin_get_child(GTK_BIN(font_combo->bold_button))), tpixmap);
-  gtk_widget_show(tpixmap);
-
-  pixmap = gdk_pixbuf_new_from_xpm_data(italic_xpm);
-  tpixmap = gtk_image_new_from_pixbuf(pixmap);
-  gtk_container_add(GTK_CONTAINER(gtk_bin_get_child(GTK_BIN(font_combo->italic_button))), tpixmap);
-  gtk_widget_show(tpixmap);
+  gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(font_combo->bold_button), "format-text-bold");
+  gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(font_combo->italic_button), "format-text-italic");
 
   gtk_widget_get_preferred_size(font_combo->size_combo, &req, NULL);
   req.width = 56;
   gtk_widget_set_size_request(font_combo->size_combo, req.width, req.height);
 
-/* FIXME */
-//  gtk_toolbar_set_space_size(toolbar, 20);
   for(i = 0; i < NUM_SIZES; i++)
     gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(font_combo->size_combo),
 				default_sizes[i]);

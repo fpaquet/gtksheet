@@ -283,7 +283,7 @@ PKG_PROG_PKG_CONFIG
 
 # 4.5.10/fp - fontconfig should be implicit to pango  
 #PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.12.0 fontconfig])
-PKG_CHECK_MODULES(GTK, [gtk+-3.0 >= 3.0.0])
+PKG_CHECK_MODULES(GTK, [gtk+-3.0 >= 3.10.0])
 
 AC_SUBST(GLIB_GENMARSHAL, `$PKG_CONFIG --variable=glib_genmarshal glib-2.0`)
 

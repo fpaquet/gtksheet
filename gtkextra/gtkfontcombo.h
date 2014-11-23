@@ -25,11 +25,11 @@
 
 G_BEGIN_DECLS
 
-#define GTK_FONT_COMBO_TYPE		(gtk_font_combo_get_type())
-#define GTK_FONT_COMBO(obj)		(G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_FONT_COMBO_TYPE, GtkFontCombo))
-#define GTK_FONT_COMBO_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_FONT_COMBO_TYPE, GtkFontComboClass))
-#define GTK_IS_FONT_COMBO(obj)       	(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_FONT_COMBO_TYPE))
-#define GTK_IS_FONT_COMBO_CLASS(obj)	(G_TYPE_CHECK_CLASS_TYPE (obj, GTK_FONT_COMBO_TYPE))
+#define GTK_TYPE_FONT_COMBO		(gtk_font_combo_get_type())
+#define GTK_FONT_COMBO(obj)		(G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_TYPE_FONT_COMBO, GtkFontCombo))
+#define GTK_FONT_COMBO_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_FONT_COMBO, GtkFontComboClass))
+#define GTK_IS_FONT_COMBO(obj)       	(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_FONT_COMBO))
+#define GTK_IS_FONT_COMBO_CLASS(obj)	(G_CHECK_CLASS_TYPE (obj, GTK_TYPE_FONT_COMBO))
 
 typedef struct _GtkFontCombo		GtkFontCombo;
 typedef struct _GtkFontComboClass	GtkFontComboClass;

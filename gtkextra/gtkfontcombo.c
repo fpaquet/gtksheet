@@ -106,14 +106,11 @@ static gchar *default_sizes[] = {"8","9","10","12","13","14","16","18",
 
 static void         gtk_font_combo_class_init      (GtkFontComboClass *klass);
 static void         gtk_font_combo_init            (GtkFontCombo      *font_combo);
-static void         gtk_font_combo_destroy         (GtkWidget*font_combo);
-static void         gtk_font_combo_finalize        (GObject     *font_combo);
 static void         new_font			   (GtkWidget *widget, 
                                                     gpointer data);
 
 G_DEFINE_TYPE(GtkFontCombo, gtk_font_combo, GTK_TYPE_TOOLBAR);
 
-static GtkToolbarClass *parent_class = NULL;
 static guint font_combo_signals[LAST_SIGNAL] = {0};
 
 static void
@@ -122,13 +119,9 @@ gtk_font_combo_class_init (GtkFontComboClass * klass)
   GObjectClass *object_class;
   GtkWidgetClass *widget_class;
 
-  parent_class = g_type_class_ref (gtk_toolbar_get_type ());
   object_class = (GObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
 
-  widget_class->destroy = gtk_font_combo_destroy;
-  object_class->finalize = gtk_font_combo_finalize;
-  
   /**
    * GtkFontCombo::changed:
    * @bfont_combo: the #GtkFontCombo object that received the signal.
@@ -146,7 +139,7 @@ gtk_font_combo_class_init (GtkFontComboClass * klass)
 
 }
 
-static void
+/*static void
 gtk_font_combo_destroy (GtkWidget* font_combo)
 {
   if (GTK_WIDGET_CLASS (parent_class)->destroy)
@@ -161,7 +154,7 @@ gtk_font_combo_finalize (GObject * font_combo)
   if (G_OBJECT_CLASS (parent_class)->finalize)
     (*G_OBJECT_CLASS (parent_class)->finalize) (font_combo);
 }
-
+*/
 static void
 gtk_font_combo_init (GtkFontCombo * font_combo)
 {

@@ -63,7 +63,8 @@ AM_LDFLAGS = \
 
 gtkextra_public_h_sources = \
         gtkfontcombo.h	\
-        gtkpsfont.h
+        gtkpsfont.h 
+#	gtkcharsel.h
 
 #tkextra_public_h_sources = \
 #       gtkbordercombo.h 	\
@@ -116,8 +117,9 @@ gtkextra_public_h_sources = \
 #       gtktogglecombo.h
 
 gtkextra_c_sources = 	\
-       gtkpsfont.c	\
-       gtkfontcombo.c
+	gtkpsfont.c	\
+	gtkfontcombo.c 
+#	gtkcharsel.c
 
 
 #tkextra_c_sources = 	\
@@ -255,7 +257,7 @@ gtkextratypebuiltins.c: $(gtkextra_public_h_sources)
 # test programs, not to be installed
 
 if ENABLE_TESTS
-noinst_PROGRAMS = testgtkfont
+noinst_PROGRAMS = testgtkfont 
 #noinst_PROGRAMS = testgtksheet testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment
 endif
 DEPS = $(gtkextratargetlib)
@@ -271,7 +273,7 @@ LDADDS = $(gtkextratargetlib) $(GTK_LIBS)
 #testrealtime_DEPENDENCIES = $(DEPS)
 #testgtkfilesel_DEPENDENCIES = $(DEPS)
 #testgtkiconlist_DEPENDENCIES = $(DEPS)
-testgtkfont_DEPENDENCIES = $(DEPS)
+#testgtkfont_DEPENDENCIES = $(DEPS)
 #testbubbles_DEPENDENCIES = $(DEPS)
 #testflux_DEPENDENCIES = $(DEPS)
 #testboxes_DEPENDENCIES = $(DEPS)
@@ -287,7 +289,7 @@ testgtkfont_DEPENDENCIES = $(DEPS)
 #testdt_LDADD = $(LDADDS)
 #testgtkplotdt_LDADD = $(LDADDS)
 #testimage_LDADD = $(LDADDS)
-#testcharsel_LDADD = $(LDADDS)
+testcharsel_LDADD = $(LDADDS)
 #testpixmap_LDADD = $(LDADDS)
 #testpolar_LDADD = $(LDADDS)
 #testgtkplot3d_LDADD = $(LDADDS)

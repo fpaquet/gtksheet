@@ -264,17 +264,12 @@ gtk_font_combo_init (GtkFontCombo * font_combo)
 	G_OBJECT(GTK_FONT_COMBO(font_combo)->bold_button),
                      "toggled",
                      G_CALLBACK(new_font), font_combo);
-  fprintf(stderr, "end of init\n");
 }
 
 GtkWidget *
 gtk_font_combo_new ()
 {
-  GtkFontCombo *font_combo;
-
-  font_combo = g_object_new (gtk_font_combo_get_type (), NULL);
-
-  return(GTK_WIDGET(font_combo));
+  return GTK_WIDGET(g_object_new (gtk_font_combo_get_type (), NULL));
 }
 
 static void
@@ -296,6 +291,14 @@ new_font(GtkWidget *widget, gpointer data)
   g_free(text);
 
   g_signal_emit(G_OBJECT(font_combo), font_combo_signals[CHANGED], 0);
+  //unfocus
+  GtkWidget *parent_widget = widget;
+  while (parent_widget && !GTK_IS_WINDOW (parent_widget)) {
+	parent_widget = gtk_widget_get_parent (parent_widget);
+  }
+  if (parent_widget) {
+	gtk_window_set_focus (GTK_WINDOW (parent_widget), NULL);
+  }
 }
 
 /**

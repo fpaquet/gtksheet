@@ -1,3 +1,11 @@
+2014-11-23 Tom Schoonjans <Tom.Schoonjans@bam.de>
+	* GtkCharSelection migrated to Gtk3
+	* parent class is now GtkDialog instead of GtkWindow
+	* testcharsel updated
+	* TODO: provide more than just the default ASCII charset for the
+	current locale?
+	* TODO: add function that fetches the PangoFontDescription?
+
 2014-11-21 Tom Schoonjans <Tom.Schoonjans@bam.de>
 	* Started transition to Gtk3 compatible version
 	* gtkfontcombo updated

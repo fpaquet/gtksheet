@@ -22,7 +22,6 @@
 #define __GTK_CHAR_SELECTION_H__
 
 
-#include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include "gtkpsfont.h"
 #include "gtkfontcombo.h"
@@ -33,11 +32,11 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-#define G_TYPE_CHAR_SELECTION                  (gtk_char_selection_get_type ())
-#define GTK_CHAR_SELECTION(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_CHAR_SELECTION, GtkCharSelection))
-#define GTK_CHAR_SELECTION_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_CHAR_SELECTION, GtkCharSelectionClass))
-#define GTK_IS_CHAR_SELECTION(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_CHAR_SELECTION))
-#define GTK_IS_CHAR_SELECTION_CLASS(klass)       (GTK_CHECK_CLASS_TYPE ((klass), G_TYPE_CHAR_SELECTION))
+#define G_TYPE_CHAR_SELECTION			(gtk_char_selection_get_type ())
+#define GTK_CHAR_SELECTION(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_CHAR_SELECTION, GtkCharSelection))
+#define GTK_CHAR_SELECTION_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_CHAR_SELECTION, GtkCharSelectionClass))
+#define GTK_IS_CHAR_SELECTION(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_CHAR_SELECTION))
+#define GTK_IS_CHAR_SELECTION_CLASS(klass)      (G_CHECK_CLASS_TYPE ((klass), G_TYPE_CHAR_SELECTION))
 
 typedef struct _GtkCharSelection       GtkCharSelection;
 typedef struct _GtkCharSelectionClass  GtkCharSelectionClass;
@@ -46,24 +45,19 @@ typedef struct _GtkCharSelectionClass  GtkCharSelectionClass;
 
 struct _GtkCharSelection
 {
-  GtkWindow window;
+  GtkDialog dialog;
 
   GtkFontCombo *font_combo;
 
-  GtkTable *table;
+  GtkGrid *grid;
   GtkToggleButton *button[256];
 
   gint selection;
-
-  GtkWidget *ok_button;
-  GtkWidget *cancel_button;
-
-  GtkWidget *action_area;     
 };
 
 struct _GtkCharSelectionClass
 {
-  GtkWindowClass parent_class;
+  GtkDialogClass parent_class;
 };
 
 

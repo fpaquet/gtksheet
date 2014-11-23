@@ -20,16 +20,15 @@
 #ifndef __GTK_PLOT_DELAUNAY_H__
 #define __GTK_PLOT_DELAUNAY_H__
 
+#include <gtk/gtk.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+G_BEGIN_DECLS
 
-#define GTK_PLOT_DT(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_dt_get_type (), GtkPlotDT)
-#define G_TYPE_PLOT_DT   (gtk_plot_dt_get_type ())
-
-#define GTK_PLOT_DT_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_dt_get_type(), GtkPlotDTClass)
-#define GTK_IS_PLOT_DT(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_dt_get_type ())
+#define GTK_TYPE_PLOT_DT   		(gtk_plot_dt_get_type ())
+#define GTK_PLOT_DT(obj)        	(G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_TYPE_PLOT_DT, GtkPlotDT))
+#define GTK_PLOT_DT_CLASS(klass) 	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT_DT, GtkPlotDTClass))
+#define GTK_IS_PLOT_DT(obj)     	(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT_DT))
+#define GTK_IS_PLOT_DT_CLASS(klass)	(G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT_DT))
 
 
 typedef struct _GtkPlotDTnode GtkPlotDTnode;
@@ -89,7 +88,7 @@ typedef gint (*GtkPlotDTprogressbarFunc) (double progress);
  */
 struct _GtkPlotDT
 {
-  GtkObject object;
+  GObject object;
 
   gboolean quadrilateral;
   gboolean subsampling;
@@ -108,7 +107,7 @@ struct _GtkPlotDT
 
 struct _GtkPlotDTClass
 {
-  GtkObjectClass parent_class;
+  GObjectClass parent_class;
 
   gboolean	(* add_node)			(GtkPlotDT *data,
 						 GtkPlotDTnode node);
@@ -119,7 +118,7 @@ struct _GtkPlotDTClass
 };
 
 GType   	gtk_plot_dt_get_type               	(void);
-GtkObject*	gtk_plot_dt_new 			(gint num);
+GObject*	gtk_plot_dt_new 			(gint num);
 void		gtk_plot_dt_set_quadrilateral		(GtkPlotDT *dt, 
 							 gboolean set);
 void		gtk_plot_dt_set_subsampling		(GtkPlotDT *dt, 
@@ -132,9 +131,7 @@ gboolean        gtk_plot_dt_triangulate			(GtkPlotDT *data);
 void            gtk_plot_dt_clear			(GtkPlotDT *data);
 
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 
 #endif /* __GTK_PLOT_DELAUNAY_H__ */

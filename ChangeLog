@@ -5,8 +5,9 @@
 	* TODO: provide more than just the default ASCII charset for the
 	current locale?
 	* TODO: add function that fetches the PangoFontDescription?
-	* GtkPlotArray migrated to Gtk3 -> untested but compiles fine
+	* GtkPlotArray migrated to Gtk3: untested but compiles fine
 	* Minimum required Gtk3 version set to 3.10.0
+	* GtkPlotDT migrated to Gtk3: untested but an example is available
 
 2014-11-21 Tom Schoonjans <Tom.Schoonjans@bam.de>
 	* Started transition to Gtk3 compatible version

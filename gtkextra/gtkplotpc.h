@@ -71,23 +71,23 @@ typedef enum{
 } GtkPlotUnits;
 
 typedef enum{
-     GTK_PLOT_LINE_SOLID       ,
-     GTK_PLOT_LINE_ON_OFF_DASH ,
-     GTK_PLOT_LINE_DOUBLE_DASH
-} GtkPlotLineStyle;
+     GTK_PLOT_GDK_LINE_SOLID       ,
+     GTK_PLOT_GDK_LINE_ON_OFF_DASH ,
+     GTK_PLOT_GDK_LINE_DOUBLE_DASH
+} GtkPlotGdkLineStyle;
 
 typedef enum{
-     GTK_PLOT_CAP_NOT_LAST   ,
-     GTK_PLOT_CAP_BUTT       ,
-     GTK_PLOT_CAP_ROUND      ,
-     GTK_PLOT_CAP_PROJECTING
-} GtkPlotCapStyle;
+     GTK_PLOT_GDK_CAP_NOT_LAST   ,
+     GTK_PLOT_GDK_CAP_BUTT       ,
+     GTK_PLOT_GDK_CAP_ROUND      ,
+     GTK_PLOT_GDK_CAP_PROJECTING
+} GtkPlotGdkCapStyle;
 
 typedef enum{
-     GTK_PLOT_JOIN_MITER  ,
-     GTK_PLOT_JOIN_ROUND  ,
-     GTK_PLOT_JOIN_BEVEL
-} GtkPlotJoinStyle;
+     GTK_PLOT_GDK_JOIN_MITER  ,
+     GTK_PLOT_GDK_JOIN_ROUND  ,
+     GTK_PLOT_GDK_JOIN_BEVEL
+} GtkPlotGdkJoinStyle;
 
 
 typedef struct _GtkPlotPC GtkPlotPC;
@@ -145,9 +145,9 @@ struct _GtkPlotPCClass
 
    void  (* set_lineattr)			(GtkPlotPC *pc,
 						 gfloat line_width,
-                                                 GtkPlotLineStyle line_style,
-                                                 GtkPlotCapStyle cap_style,
-                                                 GtkPlotJoinStyle join_style);
+                                                 GtkPlotGdkLineStyle line_style,
+                                                 GtkPlotGdkCapStyle cap_style,
+                                                 GtkPlotGdkJoinStyle join_style);
 
    void  (* set_dash)					(GtkPlotPC *pc,
 							 gdouble offset_,	
@@ -252,9 +252,9 @@ void gtk_plot_pc_set_color                     		(GtkPlotPC *pc,
 
 void gtk_plot_pc_set_lineattr			  (GtkPlotPC *pc,
 		                                   gfloat line_width,
-                                                   GtkPlotLineStyle line_style,
-                                                   GtkPlotCapStyle cap_style,
-                                                   GtkPlotJoinStyle join_style);
+                                                   GtkPlotGdkLineStyle line_style,
+                                                   GtkPlotGdkCapStyle cap_style,
+                                                   GtkPlotGdkJoinStyle join_style);
 
 void gtk_plot_pc_set_dash				(GtkPlotPC *pc,
 							 gdouble offset_,

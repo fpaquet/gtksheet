@@ -216,9 +216,9 @@ void gtk_plot_pc_set_color                               (GtkPlotPC *pc,
  */
 void gtk_plot_pc_set_lineattr                    (GtkPlotPC *pc,
                                                  gfloat line_width,
-                                                 GtkPlotLineStyle line_style,
-                                                 GtkPlotCapStyle cap_style,
-                                                 GtkPlotJoinStyle join_style)
+                                                 GtkPlotGdkLineStyle line_style,
+                                                 GtkPlotGdkCapStyle cap_style,
+                                                 GtkPlotGdkJoinStyle join_style)
 {
   GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->set_lineattr(pc, line_width, line_style, cap_style, join_style);
 }

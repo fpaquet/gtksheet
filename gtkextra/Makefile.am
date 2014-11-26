@@ -67,7 +67,9 @@ gtkextra_public_h_sources = \
 	gtkcharsel.h \
         gtkplotarray.h \
         gtkplotdt.h \
-        gtkplotpc.h
+        gtkplotpc.h \
+        gtkplotcairo.h
+
 
 #tkextra_public_h_sources = \
 #       gtkbordercombo.h 	\
@@ -90,7 +92,6 @@ gtkextra_public_h_sources = \
 #       gtkplotbar.h	\
 #       gtkplotbox.h	\
 #       gtkplotbubble.h	\
-#       gtkplotcairo.h	\
 #       gtkplotcandle.h	\
 #       gtkplotcanvas.h	\
 #       gtkplotcanvasellipse.h \
@@ -119,7 +120,8 @@ gtkextra_c_sources = 	\
 	gtkcharsel.c \
         gtkplotarray.c \
         gtkplotdt.c \
-        gtkplotpc.c
+        gtkplotpc.c \
+        gtkplotcairo.c
 
 #tkextra_c_sources = 	\
 #       gtkbordercombo.c	\
@@ -140,7 +142,6 @@ gtkextra_c_sources = 	\
 #       gtkplotbar.c	\
 #       gtkplotbox.c	\
 #       gtkplotbubble.c	\
-#       gtkplotcairo.c	\
 #       gtkplotcandle.c	\
 #       gtkplotcanvas.c	\
 #       gtkplotcanvasellipse.c \

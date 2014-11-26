@@ -29,7 +29,7 @@
 #ifndef __GTK_PS_FONT_H__
 #define __GTK_PS_FONT_H__
 
-G_END_DECLS
+G_BEGIN_DECLS
 
 
 /* List of names of the 35 default Adobe fonts 

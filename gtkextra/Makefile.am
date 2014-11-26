@@ -66,7 +66,8 @@ gtkextra_public_h_sources = \
         gtkpsfont.h \
 	gtkcharsel.h \
         gtkplotarray.h \
-        gtkplotdt.h
+        gtkplotdt.h \
+        gtkplotpc.h
 
 #tkextra_public_h_sources = \
 #       gtkbordercombo.h 	\
@@ -102,7 +103,6 @@ gtkextra_public_h_sources = \
 #       gtkplotdata.h	\
 #       gtkplotflux.h	\
 #       gtkplotgdk.h	\
-#       gtkplotpc.h	\
 #       gtkplotpixmap.h	\
 #       gtkplotpolar.h	\
 #       gtkplotprint.h	\
@@ -118,7 +118,8 @@ gtkextra_c_sources = 	\
 	gtkfontcombo.c  \
 	gtkcharsel.c \
         gtkplotarray.c \
-        gtkplotdt.c
+        gtkplotdt.c \
+        gtkplotpc.c
 
 #tkextra_c_sources = 	\
 #       gtkbordercombo.c	\
@@ -152,7 +153,6 @@ gtkextra_c_sources = 	\
 #       gtkplotdata.c	\
 #       gtkplotflux.c	\
 #       gtkplotgdk.c	\
-#       gtkplotpc.c	\
 #       gtkplotpixmap.c \
 #       gtkplotpolar.c	\
 #       gtkplotprint.c	\

@@ -39,11 +39,11 @@
 //#include <gtkextra/gtkiconlist.h>
 //#include <gtkextra/gtkitementry.h>
 //#include <gtkextra/gtkiconfilesel.h>
-//#include <gtkextra/gtkplot.h>
+#include <gtkextra/gtkplot.h>
 //#include <gtkextra/gtkplotpolar.h>
 //#include <gtkextra/gtkplot3d.h>
 //#include <gtkextra/gtkplotbubble.h>
-//#include <gtkextra/gtkplotdata.h>
+#include <gtkextra/gtkplotdata.h>
 #include <gtkextra/gtkplotarray.h>
 //#include <gtkextra/gtkplotsurface.h>
 #include <gtkextra/gtkplotcairo.h>

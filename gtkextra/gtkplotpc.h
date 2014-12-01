@@ -114,7 +114,7 @@ struct _GtkPlotPC
    GdkRGBA color;
 
    gint init_count;
-   gboolean use_pixmap;
+   gboolean use_surface;
 };
 
 

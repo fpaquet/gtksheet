@@ -80,7 +80,7 @@ gtk_plot_pc_real_init (GtkPlotPC *pc)
   pc->width = pc->height = 0;
 
   pc->init_count = 0;
-  pc->use_pixmap = TRUE;
+  pc->use_surface = TRUE;
 }
 
 GObject *

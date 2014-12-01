@@ -36,7 +36,7 @@
 
 #include "gtkplotpc.h"
 #include "gtkplotcairo.h"
-//#include "gtkplot.h"
+#include "gtkplot.h"
 #include "gtkpsfont.h"
 //#include "gtkplotcanvas.h"
 #include <pango/pango.h>
@@ -622,7 +622,7 @@ drawstring(GtkPlotPC *pc,
   return PANGO_PIXELS(rect.width);
 }
 
-
+/*
 #ifndef __GTK_PLOT_H
 void  gtk_plot_text_get_size(const gchar *text, gint angle,
     const gchar *text_font,
@@ -638,7 +638,7 @@ typedef enum
 } GtkPlotBorderStyle;
 
 #endif
-
+*/
 static void 
 gtk_plot_cairo_draw_string                        (GtkPlotPC *pc,
                                                    gint tx, gint ty,

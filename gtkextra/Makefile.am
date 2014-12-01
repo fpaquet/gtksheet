@@ -19,15 +19,6 @@ gtkextra_win32res_lo =
 
 gtkextra-win32res.lo : gtkextra-win32.rc
 	$(LT_COMPILE_RESOURCE) gtkextra-win32.rc gtkextra-win32res.lo
-
-install-libtool-import-lib:
-	$(INSTALL) .libs/libgtkextra-win32-4.0.dll.a $(DESTDIR)$(libdir)
-uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libgtkextra-win32-4.0.dll.a
-install-exec-local: install-libtool-import-lib
-else
-install-libtool-import-lib:
-uninstall-libtool-import-lib:
 endif
 
 if MS_LIB_AVAILABLE
@@ -68,7 +59,9 @@ gtkextra_public_h_sources = \
         gtkplotarray.h \
         gtkplotdt.h \
         gtkplotpc.h \
-        gtkplotcairo.h
+        gtkplotcairo.h \
+        gtkplot.h \
+        gtkplotdata.h
 
 
 #tkextra_public_h_sources = \
@@ -87,7 +80,6 @@ gtkextra_public_h_sources = \
 #       gtkiconfilesel.h	\
 #       gtkiconlist.h	\
 #       gtkitementry.h	\
-#       gtkplot.h	\
 #       gtkplot3d.h	\
 #       gtkplotbar.h	\
 #       gtkplotbox.h	\
@@ -101,7 +93,6 @@ gtkextra_public_h_sources = \
 #       gtkplotcanvasrectangle.h \
 #       gtkplotcanvastext.h \
 #       gtkplotcsurface.h	\
-#       gtkplotdata.h	\
 #       gtkplotflux.h	\
 #       gtkplotgdk.h	\
 #       gtkplotpixmap.h	\
@@ -121,7 +112,10 @@ gtkextra_c_sources = 	\
         gtkplotarray.c \
         gtkplotdt.c \
         gtkplotpc.c \
-        gtkplotcairo.c
+        gtkplotcairo.c \
+        gtkplot.c \
+        gtkplotdata.c \
+        gtkextra.c
 
 #tkextra_c_sources = 	\
 #       gtkbordercombo.c	\
@@ -132,12 +126,10 @@ gtkextra_c_sources = 	\
 #       gtkdataformat.c	\
 #       gtkdatatextview.c	\
 #       gtkdirtree.c	\
-#       gtkextra.c	\
 #       gtkfilelist.c	\
 #       gtkiconfilesel.c	\
 #       gtkiconlist.c	\
 #       gtkitementry.c	\
-#       gtkplot.c	\
 #       gtkplot3d.c	\
 #       gtkplotbar.c	\
 #       gtkplotbox.c	\
@@ -151,7 +143,6 @@ gtkextra_c_sources = 	\
 #       gtkplotcanvasrectangle.c \
 #       gtkplotcanvastext.c \
 #       gtkplotcsurface.c	\
-#       gtkplotdata.c	\
 #       gtkplotflux.c	\
 #       gtkplotgdk.c	\
 #       gtkplotpixmap.c \

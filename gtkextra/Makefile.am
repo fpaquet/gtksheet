@@ -169,14 +169,14 @@ gtkextra_private_h_sources = \
 	icons.h \
 	pixmaps.h 
 
-#gtkextra_built_public_sources =	\
-#	gtkextra-marshal.h	\
-#	gtkextratypebuiltins.h
+gtkextra_built_public_sources =	\
+	gtkextra-marshal.h	\
+	gtkextratypebuiltins.h
 
-#gtkextra_built_sources = \
-#	gtkextra-marshal.c	\
-#	gtkextratypebuiltins.c	\
-#	${gtkextra_built_public_sources}            
+gtkextra_built_sources = \
+	gtkextra-marshal.c	\
+	gtkextratypebuiltins.c	\
+	${gtkextra_built_public_sources}            
 
 gtkextra_extra_sources = \
 	gtkextrafeatures.h.in	\

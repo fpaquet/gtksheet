@@ -30,10 +30,10 @@ G_BEGIN_DECLS
 #define GTK_PLOT_DATA_CLASS(klass) 	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT_DATA, GtkPlotDataClass))
 #define GTK_IS_PLOT_DATA(obj)     	(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT_DATA))
 #define GTK_IS_PLOT_DATA_CLASS(klass)  	(G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT_DATA))
+#define GTK_PLOT_DATA_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PLOT_DATA, GtkPlotDataClass))
 
 
 GType		gtk_plot_data_get_type		(void);
-GType   	gtk_plot_marker_get_type        (void);
 
 GtkWidget*	gtk_plot_data_new		(void);
 GtkWidget* 	gtk_plot_data_new_function 	(GtkPlotFunc function);
@@ -278,7 +278,6 @@ gpointer	gtk_plot_data_get_link			(GtkPlotData *dataset);
 void		gtk_plot_data_remove_link		(GtkPlotData *dataset);
 
 /* Markers */
-
 GtkPlotMarker *	gtk_plot_data_add_marker		(GtkPlotData *data,
 							 guint point);
 gboolean	gtk_plot_data_remove_marker		(GtkPlotData *data,

@@ -228,14 +228,14 @@ static void gtk_plot_real_get_point		(GtkWidget *widget,
 					 	 gdouble *px, gdouble *py);
 void   gtk_plot_remove_dimension		(GtkPlot *plot, 
 						 const gchar *dimension);
-inline gint roundint				(gdouble x);
+gint roundint					(gdouble x);
 static void update_datasets			(GtkPlot *plot, gboolean new_range);
 
 static guint plot_signals[LAST_SIGNAL] = {0};
 static guint axis_signals[LAST_AXIS_SIGNAL] = {0};
 
-G_DEFINE_TYPE(GtkPlot, gtk_plot, GTK_TYPE_PLOT);
-G_DEFINE_TYPE(GtkPlotAxis, gtk_plot_axis, GTK_TYPE_PLOT_AXIS);
+G_DEFINE_TYPE(GtkPlot, gtk_plot, GTK_TYPE_WIDGET);
+G_DEFINE_TYPE(GtkPlotAxis, gtk_plot_axis, G_TYPE_OBJECT);
 
 static void
 gtk_plot_class_init (GtkPlotClass *klass)

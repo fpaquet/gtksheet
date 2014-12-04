@@ -119,7 +119,7 @@ static void gtk_plot_cairo_draw_surface		     (GtkPlotPC *pc,
                                                       gdouble scale_x, 
                                                       gdouble scale_y);
 
-extern inline gint roundint                         (gdouble x);
+extern gint roundint         		             (gdouble x);
 
 static void
 gtk_plot_cairo_init (GtkPlotCairo *pc)

@@ -52,7 +52,7 @@ static void	gtk_plot_dt_real_clear		(GtkPlotDT *dt);
 static gboolean	gtk_plot_dt_triangulate_tryquad	(GtkPlotDT *dt);
 static void 	gtk_plot_dt_clear_triangles	(GtkPlotDT *data);
 
-G_DEFINE_TYPE(GtkPlotDT, gtk_plot_dt, GTK_TYPE_PLOT_DT);
+G_DEFINE_TYPE(GtkPlotDT, gtk_plot_dt, G_TYPE_OBJECT);
 
 
 static void

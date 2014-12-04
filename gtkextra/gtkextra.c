@@ -78,7 +78,7 @@ _gtkextra_signal_test(GtkObject *object, guint signal_id, gint arg1, gint arg2, 
 */
 
 void
-_gtkextra_signal_emit(GtkObject *object, guint signal_id, ...)
+_gtkextra_signal_emit(GObject *object, guint signal_id, ...)
 {
   gboolean *result;
   GValue ret = { 0, };

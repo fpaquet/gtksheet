@@ -1621,19 +1621,19 @@ gtk_plot_init (GtkPlot *plot)
   plot->x0_line.cap_style = 0;
   plot->x0_line.join_style = 0;
   plot->x0_line.line_width = 0;
-  plot->x0_line.color.red = 1.0; 
-  plot->x0_line.color.green = 1.0;
-  plot->x0_line.color.blue = 1.0;
-  plot->x0_line.color.alpha = 0.0; 
+  plot->x0_line.color.red = 0.0; 
+  plot->x0_line.color.green = 0.0;
+  plot->x0_line.color.blue = 0.0;
+  plot->x0_line.color.alpha = 1.0; 
 
   plot->y0_line.line_style = GTK_PLOT_LINE_SOLID;
   plot->y0_line.line_width = 0;
   plot->y0_line.cap_style = 0;
   plot->y0_line.join_style = 0;
-  plot->y0_line.color.red = 1.0; 
-  plot->y0_line.color.green = 1.0;
-  plot->y0_line.color.blue = 1.0;
-  plot->y0_line.color.alpha = 0.0; 
+  plot->y0_line.color.red = 0.0; 
+  plot->y0_line.color.green = 0.0;
+  plot->y0_line.color.blue = 0.0;
+  plot->y0_line.color.alpha = 1.0; 
 
   plot->legends_x = .6;
   plot->legends_y = .1;
@@ -1648,25 +1648,25 @@ gtk_plot_init (GtkPlot *plot)
   plot->legends_attr.font = g_strdup(DEFAULT_FONT);
   plot->legends_attr.height = DEFAULT_FONT_HEIGHT;
   // opaque black
-  plot->legends_attr.fg.red = 1.0; 
-  plot->legends_attr.fg.green = 1.0;
-  plot->legends_attr.fg.blue = 1.0;
-  plot->legends_attr.fg.alpha = 0.0; 
+  plot->legends_attr.fg.red = 0.0; 
+  plot->legends_attr.fg.green = 0.0;
+  plot->legends_attr.fg.blue = 0.0;
+  plot->legends_attr.fg.alpha = 1.0; 
   // opaque white 
-  plot->legends_attr.bg.red = 0.0; 
-  plot->legends_attr.bg.green = 0.0;
-  plot->legends_attr.bg.blue = 0.0;
-  plot->legends_attr.bg.alpha = 0.0; 
+  plot->legends_attr.bg.red = 1.0; 
+  plot->legends_attr.bg.green = 1.0;
+  plot->legends_attr.bg.blue = 1.0;
+  plot->legends_attr.bg.alpha = 1.0; 
   plot->legends_attr.transparent = FALSE;
   plot->legends_attr.border = 0;
   plot->legends_attr.border_width = 0;
   plot->legends_attr.shadow_width = 0;
   
   // opaque white 
-  plot->background.red = 0.0; 
-  plot->background.green = 0.0;
-  plot->background.blue = 0.0;
-  plot->background.alpha = 0.0; 
+  plot->background.red = 1.0; 
+  plot->background.green = 1.0;
+  plot->background.blue = 1.0;
+  plot->background.alpha = 1.0; 
 
   plot->xscale = GTK_PLOT_SCALE_LINEAR;
   plot->yscale = GTK_PLOT_SCALE_LINEAR;
@@ -2022,15 +2022,15 @@ gtk_plot_axis_init (GtkPlotAxis *axis)
   GdkRGBA black, white;
 
   // opaque black
-  black.red = 1.0; 
-  black.green = 1.0;
-  black.blue = 1.0;
-  black.alpha = 0.0; 
+  black.red = 0.0; 
+  black.green = 0.0;
+  black.blue = 0.0;
+  black.alpha = 1.0; 
   // opaque white 
-  white.red = 0.0; 
-  white.green = 0.0;
-  white.blue = 0.0;
-  white.alpha = 0.0; 
+  white.red = 1.0; 
+  white.green = 1.0;
+  white.blue = 1.0;
+  white.alpha = 1.0; 
 
   axis->ticks.nmajorticks = 0;
   axis->ticks.nminorticks = 0;
@@ -4995,15 +4995,15 @@ gtk_plot_put_text (GtkPlot *plot, gdouble x, gdouble y,
   text_attr->angle = angle;
   text_attr->justification = justification;
   // opaque black
-  text_attr->fg.red = 1.0; 
-  text_attr->fg.green = 1.0;
-  text_attr->fg.blue = 1.0;
-  text_attr->fg.alpha = 0.0; 
+  text_attr->fg.red = 0.0; 
+  text_attr->fg.green = 0.0;
+  text_attr->fg.blue = 0.0;
+  text_attr->fg.alpha = 1.0; 
   // opaque white 
-  text_attr->bg.red = 0.0; 
-  text_attr->bg.green = 0.0;
-  text_attr->bg.blue = 0.0;
-  text_attr->bg.alpha = 0.0; 
+  text_attr->bg.red = 1.0; 
+  text_attr->bg.green = 1.0;
+  text_attr->bg.blue = 1.0;
+  text_attr->bg.alpha = 1.0; 
   text_attr->transparent = transparent;
   text_attr->border = 0;
   text_attr->border_space = 2;
@@ -6390,15 +6390,15 @@ gtk_plot_legends_set_attributes(GtkPlot *plot, const gchar *font, gint height,
   //plot->legends_attr.fg = gtk_widget_get_style(GTK_WIDGET(plot))->black;
   //plot->legends_attr.bg = gtk_widget_get_style(GTK_WIDGET(plot))->white;
   // opaque black
-  plot->legends_attr.fg.red = 1.0; 
-  plot->legends_attr.fg.green = 1.0;
-  plot->legends_attr.fg.blue = 1.0;
-  plot->legends_attr.fg.alpha = 0.0; 
+  plot->legends_attr.fg.red = 0.0; 
+  plot->legends_attr.fg.green = 0.0;
+  plot->legends_attr.fg.blue = 0.0;
+  plot->legends_attr.fg.alpha = 1.0; 
   // opaque white 
-  plot->legends_attr.bg.red = 0.0; 
-  plot->legends_attr.bg.green = 0.0;
-  plot->legends_attr.bg.blue = 0.0;
-  plot->legends_attr.bg.alpha = 0.0; 
+  plot->legends_attr.bg.red = 1.0; 
+  plot->legends_attr.bg.green = 1.0;
+  plot->legends_attr.bg.blue = 1.0;
+  plot->legends_attr.bg.alpha = 1.0; 
 
   if(foreground != NULL)
     plot->legends_attr.fg = *foreground;

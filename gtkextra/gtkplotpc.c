@@ -72,10 +72,10 @@ static void
 gtk_plot_pc_real_init (GtkPlotPC *pc)
 {
   /* opaque black */
-  pc->color.red = 1.0;
-  pc->color.green = 1.0;
-  pc->color.blue = 1.0;
-  pc->color.alpha= 0.0;
+  pc->color.red = 0.0;
+  pc->color.green = 0.0;
+  pc->color.blue = 0.0;
+  pc->color.alpha= 1.0;
 
   pc->width = pc->height = 0;
 

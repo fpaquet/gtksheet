@@ -20,17 +20,17 @@
 #ifndef __GTK_PLOT_SURFACE_H__
 #define __GTK_PLOT_SURFACE_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+G_BEGIN_DECLS
 
 #include "gtkplot.h"
 #include "gtkplotdt.h"
 
-#define GTK_PLOT_SURFACE(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_surface_get_type (), GtkPlotSurface)
-#define G_TYPE_PLOT_SURFACE        (gtk_plot_surface_get_type ())
-#define GTK_PLOT_SURFACE_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_surface_get_type(), GtkPlotSurfaceClass)
-#define GTK_IS_PLOT_SURFACE(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_surface_get_type ())
+#define GTK_TYPE_PLOT_SURFACE        		(gtk_plot_surface_get_type ())
+#define GTK_PLOT_SURFACE(obj)        		(G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_TYPE_PLOT_SURFACE, GtkPlotSurface))
+#define GTK_PLOT_SURFACE_CLASS(klass) 		(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT_SURFACE, GtkPlotSurfaceClass))
+#define GTK_IS_PLOT_SURFACE(obj)     		(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT_SURFACE))
+#define GTK_IS_PLOT_SURFACE_CLASS(klass)	(G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT_SURFACE))
+#define GTK_PLOT_SURFACE_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PLOT_SURFACE, GtkPlotSurfaceClass))
 
 typedef struct _GtkPlotPolygon             GtkPlotPolygon;
 typedef struct _GtkPlotSurface             GtkPlotSurface;
@@ -63,10 +63,10 @@ struct _GtkPlotSurface
 {
   GtkPlotData data;
 
-  GdkColor color;
-  GdkColor shadow;
-  GdkColor grid_foreground;
-  GdkColor grid_background;
+  GdkRGBA color;
+  GdkRGBA shadow;
+  GdkRGBA grid_foreground;
+  GdkRGBA grid_background;
 
   gboolean use_height_gradient;
   gboolean use_amplitud;
@@ -108,13 +108,13 @@ void		gtk_plot_surface_construct_function (GtkPlotSurface *surface,
 				 		    GtkPlotFunc3D function);
 
 void		gtk_plot_surface_set_color	(GtkPlotSurface *data,
-						 GdkColor *color);
+						 GdkRGBA *color);
 void		gtk_plot_surface_set_shadow	(GtkPlotSurface *data,
-						 GdkColor *color);
+						 GdkRGBA *color);
 void		gtk_plot_surface_set_grid_foreground	(GtkPlotSurface *data,
-						 	 GdkColor *foreground);
+						 	 GdkRGBA *foreground);
 void		gtk_plot_surface_set_grid_background	(GtkPlotSurface *data,
-						 	 GdkColor *background);
+						 	 GdkRGBA *background);
 void		gtk_plot_surface_set_grid_visible	(GtkPlotSurface *data,
 						 	 gboolean visible);
 gboolean	gtk_plot_surface_get_grid_visible	(GtkPlotSurface *data);

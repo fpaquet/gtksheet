@@ -30,6 +30,7 @@ G_BEGIN_DECLS
 #define GTK_PLOT3D_CLASS(klass) 	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT3D, GtkPlot3DClass))
 #define GTK_IS_PLOT3D(obj)     		(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT3D))
 #define GTK_IS_PLOT3D_CLASS(klass) 	(G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT3D))
+#define GTK_PLOT3D_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PLOT3D, GtkPlot3DClass))
 
 #define GTK_PLOT3D_FLAGS(plot)         (GTK_PLOT3D(plot)->flags)
 #define GTK_PLOT3D_SET_FLAGS(plot,flag) (GTK_PLOT3D_FLAGS(plot) |= (flag))

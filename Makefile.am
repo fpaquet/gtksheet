@@ -14,12 +14,12 @@ SUBDIRS = $(SRC_SUBDIRS) docs
 
 EXTRA_DIST = \
 	TODO \
-	gtkextra-3.0.m4 \
+	gtkextra-4.0.m4 \
 	makecopyright \
-	gtkextra-3.0.spec 
+	gtkextra-4.0.spec 
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA= gtkextra-3.0.pc
+pkgconfig_DATA= gtkextra-4.0.pc
 
 .PHONY: files release sanity snapshot
 

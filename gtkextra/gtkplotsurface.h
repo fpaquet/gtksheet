@@ -188,9 +188,6 @@ void            gtk_plot_surface_build_mesh     (GtkPlotSurface *surface);
 void            gtk_plot_surface_recalc_nodes   (GtkPlotSurface *surface);
 
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-
+G_END_DECLS
 
 #endif /* __GTK_PLOT_SURFACE_H__ */

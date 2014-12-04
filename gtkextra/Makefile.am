@@ -63,7 +63,8 @@ gtkextra_public_h_sources = \
         gtkplot.h \
         gtkplotdata.h \
         gtkplotpolar.h \
-        gtkplotsurface.h
+        gtkplotsurface.h \
+        gtkplot3d.h
 
 
 #tkextra_public_h_sources = \
@@ -82,7 +83,6 @@ gtkextra_public_h_sources = \
 #       gtkiconfilesel.h	\
 #       gtkiconlist.h	\
 #       gtkitementry.h	\
-#       gtkplot3d.h	\
 #       gtkplotbar.h	\
 #       gtkplotbox.h	\
 #       gtkplotbubble.h	\
@@ -115,7 +115,8 @@ gtkextra_c_sources = 	\
         gtkplotdata.c \
         gtkextra.c \
         gtkplotpolar.c \
-        gtkplotsurface.c
+        gtkplotsurface.c \
+        gtkplot3d.c
 
 #tkextra_c_sources = 	\
 #       gtkbordercombo.c	\
@@ -130,7 +131,6 @@ gtkextra_c_sources = 	\
 #       gtkiconfilesel.c	\
 #       gtkiconlist.c	\
 #       gtkitementry.c	\
-#       gtkplot3d.c	\
 #       gtkplotbar.c	\
 #       gtkplotbox.c	\
 #       gtkplotbubble.c	\

@@ -61,7 +61,8 @@ gtkextra_public_h_sources = \
         gtkplotpc.h \
         gtkplotcairo.h \
         gtkplot.h \
-        gtkplotdata.h
+        gtkplotdata.h \
+        gtkplotpolar.h
 
 
 #tkextra_public_h_sources = \
@@ -94,11 +95,8 @@ gtkextra_public_h_sources = \
 #       gtkplotcanvastext.h \
 #       gtkplotcsurface.h	\
 #       gtkplotflux.h	\
-#       gtkplotgdk.h	\
 #       gtkplotpixmap.h	\
-#       gtkplotpolar.h	\
 #       gtkplotprint.h	\
-#       gtkplotps.h	\
 #       gtkplotsegment.h	\
 #       gtkplotsurface.h	\
 #       gtksheet.h	\
@@ -115,7 +113,8 @@ gtkextra_c_sources = 	\
         gtkplotcairo.c \
         gtkplot.c \
         gtkplotdata.c \
-        gtkextra.c
+        gtkextra.c \
+        gtkplotpolar.c
 
 #tkextra_c_sources = 	\
 #       gtkbordercombo.c	\
@@ -144,11 +143,8 @@ gtkextra_c_sources = 	\
 #       gtkplotcanvastext.c \
 #       gtkplotcsurface.c	\
 #       gtkplotflux.c	\
-#       gtkplotgdk.c	\
 #       gtkplotpixmap.c \
-#       gtkplotpolar.c	\
 #       gtkplotprint.c	\
-#       gtkplotps.c	\
 #       gtkplotsegment.c	\
 #       gtkplotsurface.c	\
 #       gtksheet.c	\

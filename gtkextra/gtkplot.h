@@ -29,6 +29,7 @@ G_BEGIN_DECLS
 #define GTK_PLOT_CLASS(klass) 		(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT, GtkPlotClass))
 #define GTK_IS_PLOT(obj)     		(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT))
 #define GTK_IS_PLOT_CLASS(klass)     	(G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT))
+#define GTK_PLOT_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PLOT, GtkPlotClass))
 
 
 #define GTK_TYPE_PLOT_AXIS   		(gtk_plot_axis_get_type ())
@@ -36,6 +37,7 @@ G_BEGIN_DECLS
 #define GTK_PLOT_AXIS_CLASS(klass)    	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT_AXIS, GtkPlotAxisClass))
 #define GTK_IS_PLOT_AXIS(obj)     	(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT_AXIS))
 #define GTK_IS_PLOT_AXIS_CLASS(klass)   (G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT_AXIS))
+#define GTK_PLOT_AXIS_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PLOT_AXIS, GtkPlotAxisClass))
 
 typedef struct _GtkPlot		GtkPlot;
 typedef struct _GtkPlotClass	GtkPlotClass;

@@ -198,7 +198,7 @@ void gtk_plot_pc_clip_mask                              (GtkPlotPC *pc,
  *
  */
 void gtk_plot_pc_set_color                               (GtkPlotPC *pc,
-                                                          GdkRGBA *color)
+                                                          const GdkRGBA *color)
 {
   pc->color = *color;
   GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->set_color(pc, color);

@@ -248,7 +248,7 @@ void gtk_plot_pc_clip_mask				(GtkPlotPC *pc,
 							 cairo_surface_t *mask);
 
 void gtk_plot_pc_set_color                     		(GtkPlotPC *pc,
-                                                   	 GdkRGBA *color);
+                                                   	 const GdkRGBA *color);
 
 void gtk_plot_pc_set_lineattr			  (GtkPlotPC *pc,
 		                                   gfloat line_width,

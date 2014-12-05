@@ -64,7 +64,8 @@ gtkextra_public_h_sources = \
         gtkplotdata.h \
         gtkplotpolar.h \
         gtkplotsurface.h \
-        gtkplot3d.h
+        gtkplot3d.h \
+        gtkplotcanvas.h
 
 
 #tkextra_public_h_sources = \
@@ -87,7 +88,6 @@ gtkextra_public_h_sources = \
 #       gtkplotbox.h	\
 #       gtkplotbubble.h	\
 #       gtkplotcandle.h	\
-#       gtkplotcanvas.h	\
 #       gtkplotcanvasellipse.h \
 #       gtkplotcanvasline.h \
 #       gtkplotcanvaspixmap.h \
@@ -116,7 +116,8 @@ gtkextra_c_sources = 	\
         gtkextra.c \
         gtkplotpolar.c \
         gtkplotsurface.c \
-        gtkplot3d.c
+        gtkplot3d.c \
+        gtkplotcanvas.c
 
 #tkextra_c_sources = 	\
 #       gtkbordercombo.c	\
@@ -135,7 +136,6 @@ gtkextra_c_sources = 	\
 #       gtkplotbox.c	\
 #       gtkplotbubble.c	\
 #       gtkplotcandle.c	\
-#       gtkplotcanvas.c	\
 #       gtkplotcanvasellipse.c \
 #       gtkplotcanvasline.c \
 #       gtkplotcanvaspixmap.c \

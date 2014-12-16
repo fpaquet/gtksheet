@@ -349,8 +349,17 @@ fi
 
 
 AC_SUBST(gdktarget, `$PKG_CONFIG --variable=targets gtk+-3.0`)
+#gtk3 provides support for multiple targets!
 
-gtkextratargetlib=libgtkextra-$gdktarget-$GTK_EXTRA_VERSION_SHORT.la
+gtkextratargetlib=""
+
+for i in $gdktarget
+do
+	gtkextratargetlib+="libgtkextra-$i-$GTK_EXTRA_VERSION_SHORT.la "
+done
+
+
+#gtkextratargetlib=libgtkextra-$gdktarget-$GTK_EXTRA_VERSION_SHORT.la
 
 AC_SUBST(gtkextratargetlib)
 AC_CHECK_LIB(m, sqrt)

@@ -21,18 +21,16 @@
 #define __GTK_PLOT_PC_H__
 
 #include <stdio.h>
+#include <gtk/gtk.h>
 #include "gtkpsfont.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+G_BEGIN_DECLS
 
-
-#define GTK_PLOT_PC(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_pc_get_type (), GtkPlotPC)
-#define GTK_TYPE_PLOT_PC   (gtk_plot_pc_get_type ())
-
-#define GTK_PLOT_PC_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_pc_get_type(), GtkPlotPCClass)
-#define GTK_IS_PLOT_PC(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_pc_get_type ())
+#define GTK_TYPE_PLOT_PC   		(gtk_plot_pc_get_type ())
+#define GTK_PLOT_PC(obj)        	(G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_TYPE_PLOT_PC, GtkPlotPC))
+#define GTK_PLOT_PC_CLASS(klass) 	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT_PC, GtkPlotPCClass))
+#define GTK_IS_PLOT_PC(obj)     	(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT_PC))
+#define GTK_IS_PLOT_PC_CLASS(klass)    	(G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT_PC))
 
 
 /* Page size */
@@ -72,6 +70,25 @@ typedef enum{
      GTK_PLOT_INCHES	
 } GtkPlotUnits;
 
+typedef enum{
+     GTK_PLOT_GDK_LINE_SOLID       ,
+     GTK_PLOT_GDK_LINE_ON_OFF_DASH ,
+     GTK_PLOT_GDK_LINE_DOUBLE_DASH
+} GtkPlotGdkLineStyle;
+
+typedef enum{
+     GTK_PLOT_GDK_CAP_NOT_LAST   ,
+     GTK_PLOT_GDK_CAP_BUTT       ,
+     GTK_PLOT_GDK_CAP_ROUND      ,
+     GTK_PLOT_GDK_CAP_PROJECTING
+} GtkPlotGdkCapStyle;
+
+typedef enum{
+     GTK_PLOT_GDK_JOIN_MITER  ,
+     GTK_PLOT_GDK_JOIN_ROUND  ,
+     GTK_PLOT_GDK_JOIN_BEVEL
+} GtkPlotGdkJoinStyle;
+
 
 typedef struct _GtkPlotPC GtkPlotPC;
 typedef struct _GtkPlotPCClass GtkPlotPCClass;
@@ -91,19 +108,19 @@ struct _GtkPlotPoint
 
 struct _GtkPlotPC
 {
-   GtkObject object;
+   GObject object;
 
    gdouble width, height; /* viewport */
-   GdkColor color;
+   GdkRGBA color;
 
    gint init_count;
-   gboolean use_pixmap;
+   gboolean use_surface;
 };
 
 
 struct _GtkPlotPCClass
 {
-   GtkObjectClass parent_class;
+   GObjectClass parent_class;
 
    gboolean  (* init)					(GtkPlotPC *pc);
 
@@ -121,16 +138,16 @@ struct _GtkPlotPCClass
    void  (* clip_mask)					(GtkPlotPC *pc,
 							 gdouble x,
 							 gdouble y,
-							 const GdkBitmap *mask);
+							 const cairo_surface_t *mask);
 
    void  (* set_color)                     		(GtkPlotPC *pc,
-                                                 	const GdkColor *color);
+                                                 	const GdkRGBA *color);
 
    void  (* set_lineattr)			(GtkPlotPC *pc,
 						 gfloat line_width,
-                                                 GdkLineStyle line_style,
-                                                 GdkCapStyle cap_style,
-                                                 GdkJoinStyle join_style);
+                                                 GtkPlotGdkLineStyle line_style,
+                                                 GtkPlotGdkCapStyle cap_style,
+                                                 GtkPlotGdkJoinStyle join_style);
 
    void  (* set_dash)					(GtkPlotPC *pc,
 							 gdouble offset_,	
@@ -177,8 +194,8 @@ struct _GtkPlotPCClass
    void  (* draw_string)   	                        (GtkPlotPC *pc,
                                    	             	 gint x, gint y,
                                                		 gint angle,
-							 const GdkColor *fg,
-							 const GdkColor *bg,
+							 const GdkRGBA *fg,
+							 const GdkRGBA *bg,
 							 gboolean transparent,
 							 gint border,
 							 gint border_space,
@@ -188,7 +205,7 @@ struct _GtkPlotPCClass
 							 gint height,
 							 GtkJustification just,
 							 const gchar *text);
-
+/*
    void  (* draw_pixmap)   	                        (GtkPlotPC *pc,
 							 GdkPixmap *pixmap,
 							 GdkBitmap *mask,
@@ -198,10 +215,20 @@ struct _GtkPlotPCClass
                                                          gint height, 
                                    	             	 gdouble scale_x, 
                                                          gdouble scale_y); 
+*/
+   void  (* draw_surface)   	                        (GtkPlotPC *pc,
+							 cairo_surface_t *surface,
+							 cairo_surface_t *mask,
+                                   	             	 gint xsrc, gint ysrc,
+                                   	             	 gint xdest, gint ydest,
+                                   	             	 gint width, 
+                                                         gint height, 
+                                   	             	 gdouble scale_x, 
+                                                         gdouble scale_y); 
 };
 
 GType     gtk_plot_pc_get_type				(void);
-GtkObject *gtk_plot_pc_new				(void);
+GObject *gtk_plot_pc_new				(void);
 							 
 gboolean gtk_plot_pc_init				(GtkPlotPC *pc);
 
@@ -218,16 +245,16 @@ void gtk_plot_pc_clip					(GtkPlotPC *pc,
 void gtk_plot_pc_clip_mask				(GtkPlotPC *pc,
 							 gdouble x, 
 							 gdouble y, 
-							 GdkBitmap *mask);
+							 cairo_surface_t *mask);
 
 void gtk_plot_pc_set_color                     		(GtkPlotPC *pc,
-                                                   	 GdkColor *color);
+                                                   	 const GdkRGBA *color);
 
 void gtk_plot_pc_set_lineattr			  (GtkPlotPC *pc,
 		                                   gfloat line_width,
-                                                   GdkLineStyle line_style,
-                                                   GdkCapStyle cap_style,
-                                                   GdkJoinStyle join_style);
+                                                   GtkPlotGdkLineStyle line_style,
+                                                   GtkPlotGdkCapStyle cap_style,
+                                                   GtkPlotGdkJoinStyle join_style);
 
 void gtk_plot_pc_set_dash				(GtkPlotPC *pc,
 							 gdouble offset_,
@@ -274,8 +301,8 @@ void gtk_plot_pc_set_font				(GtkPlotPC *pc,
 void gtk_plot_pc_draw_string   	                	(GtkPlotPC *pc,
                                    	         	 gint x, gint y,
                                                		 gint angle,
-							 const GdkColor *fg,
-							 const GdkColor *bg,
+							 const GdkRGBA *fg,
+							 const GdkRGBA *bg,
 							 gboolean transparent,
 							 gint border,
 							 gint border_space,
@@ -286,9 +313,9 @@ void gtk_plot_pc_draw_string   	                	(GtkPlotPC *pc,
 							 GtkJustification just,
 							 const gchar *text);
 
-void  gtk_plot_pc_draw_pixmap   	                (GtkPlotPC *pc,
-							 GdkPixmap *pixmap,
-							 GdkBitmap *mask,
+void  gtk_plot_pc_draw_surface				(GtkPlotPC *pc,
+							 cairo_surface_t *surface,
+							 cairo_surface_t *mask,
                                    	             	 gint xsrc, gint ysrc,
                                    	             	 gint xdest, gint ydest,
                                    	             	 gint width,
@@ -296,10 +323,8 @@ void  gtk_plot_pc_draw_pixmap   	                (GtkPlotPC *pc,
                                    	             	 gdouble scale_x,
                                    	             	 gdouble scale_y); 
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
 
+G_END_DECLS
 
 #endif /* __GTK_PLOT_PC_H__ */
 

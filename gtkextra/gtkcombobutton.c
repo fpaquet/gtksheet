@@ -78,7 +78,7 @@ gtk_combo_button_class_init (GtkComboButtonClass * klass)
 }
 
 static void
-gtk_combo_button_destroy (GtkObject * combo_button)
+gtk_combo_button_destroy (GObject * combo_button)
 {
   gtk_widget_destroy (GTK_COMBO_BUTTON (combo_button)->popwin);
   g_object_unref (GTK_COMBO_BUTTON (combo_button)->popwin);

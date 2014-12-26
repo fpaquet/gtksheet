@@ -20,18 +20,19 @@
 #ifndef __GTK_PLOT_POLAR_H__
 #define __GTK_PLOT_POLAR_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+G_BEGIN_DECLS
 
 #include "gtkplot.h"
 #include "gtkplotpc.h"
 
 
-#define GTK_PLOT_POLAR(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_polar_get_type (), GtkPlotPolar)
-#define G_TYPE_PLOT_POLAR        (gtk_plot_polar_get_type ())
-#define GTK_PLOT_POLAR_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_polar_get_type, GtkPlotPolarClass)
-#define GTK_IS_PLOT_POLAR(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_polar_get_type ())
+#define GTK_TYPE_PLOT_POLAR        	(gtk_plot_polar_get_type ())
+#define GTK_PLOT_POLAR(obj)        	(G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_TYPE_PLOT_POLAR, GtkPlotPolar))
+#define GTK_PLOT_POLAR_CLASS(klass) 	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT_POLAR, GtkPlotPolarClass))
+#define GTK_IS_PLOT_POLAR(obj)     	(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT_POLAR))
+#define GTK_IS_PLOT_POLAR_CLASS(klass) 	(G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT_POLAR))
+
+
 #define GTK_PLOT_POLAR_FLAGS(plot)         (GTK_PLOT_POLAR(plot)->flags)
 #define GTK_PLOT_POLAR_SET_FLAGS(plot,flag) (GTK_PLOT_POLAR_FLAGS(plot) |= (flag))
 #define GTK_PLOT_POLAR_UNSET_FLAGS(plot,flag) (GTK_PLOT_POLAR_FLAGS(plot) &= ~(flag))
@@ -39,7 +40,7 @@ extern "C" {
 #define GTK_PLOT_POLAR_TRANSPARENT(plot) (GTK_PLOT_POLAR_FLAGS(plot) & GTK_PLOT_POLAR_TRANSPARENT)
 
 typedef struct _GtkPlotPolar		GtkPlotPolar;
-typedef struct _GtkPlotPolarClass		GtkPlotPolarClass;
+typedef struct _GtkPlotPolarClass	GtkPlotPolarClass;
 
 /**
  * GtkPlotPolar:
@@ -65,13 +66,13 @@ struct _GtkPlotPolarClass
 /* PlotPolar */
 
 GType		gtk_plot_polar_get_type		(void);
-GtkWidget*	gtk_plot_polar_new		(GdkDrawable *drawable);
-GtkWidget*	gtk_plot_polar_new_with_size	(GdkDrawable *drawable,
+GtkWidget*	gtk_plot_polar_new		(cairo_surface_t *surface);
+GtkWidget*	gtk_plot_polar_new_with_size	(cairo_surface_t *surface,
                                                  gdouble width, gdouble height);
 void		gtk_plot_polar_construct	(GtkPlotPolar *plot,
-						 GdkDrawable *drawable);
+						 cairo_surface_t *surface);
 void		gtk_plot_polar_construct_with_size (GtkPlotPolar *plot,
-						    GdkDrawable *drawable,
+						    cairo_surface_t *surface,
 						    gdouble width, 
 						    gdouble height);
 
@@ -80,9 +81,7 @@ void		gtk_plot_polar_rotate		(GtkPlotPolar *plot,
 gdouble         gtk_plot_polar_get_angle        (GtkPlotPolar *plot);
 
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 
 #endif /* __GTK_PLOT_POLAR_H__ */

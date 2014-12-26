@@ -8,7 +8,8 @@
 # - http://www.linuxselfhelp.com/gnu/autoconf/html_chapter/autoconf_7.html
 #
 
-AC_INIT([gtkextra], [3.1.2])
+AC_INIT([gtkextra], [4.0.0])
+
 AC_LANG([C])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -21,9 +22,12 @@ AC_DIVERT_PUSH(NOTICE)dnl
 # GtkExtra versioning: before making releases, be sure to read
 # http://gtkextra.sourceforge.net/cms/index.php?option=com_content&view=article&id=44&Itemid=22
 
-GTK_EXTRA_MAJOR_VERSION=3
-GTK_EXTRA_MINOR_VERSION=1
-GTK_EXTRA_MICRO_VERSION=2
+GTK_EXTRA_MAJOR_VERSION=4
+GTK_EXTRA_MINOR_VERSION=0
+GTK_EXTRA_MICRO_VERSION=0
+
+GTK_EXTRA_INTERFACE_AGE=0
+GTK_EXTRA_BINARY_AGE=0
 
 GTK_EXTRA_VERSION=$GTK_EXTRA_MAJOR_VERSION.$GTK_EXTRA_MINOR_VERSION.$GTK_EXTRA_MICRO_VERSION
 
@@ -39,8 +43,8 @@ AC_SUBST(GTK_EXTRA_VERSION_SHORT)
 
 # libtool versioning
 
-LT_CURRENT=7
-LT_REVISION=2
+LT_CURRENT=0
+LT_REVISION=0
 LT_AGE=0
 
 AC_SUBST(LT_CURRENT)
@@ -52,7 +56,7 @@ AC_SUBST(LIBGTKEXTRA_SO_VERSION)
 
 # For automake
 VERSION=$GTK_EXTRA_VERSION
-PACKAGE=gtk+extra
+PACKAGE=gtkextra
 
 AC_CONFIG_AUX_DIR([build-aux])
 # Initialize automake stuff
@@ -274,7 +278,7 @@ PKG_PROG_PKG_CONFIG
 
 # 4.5.10/fp - fontconfig should be implicit to pango  
 #PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.12.0 fontconfig])
-PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.12.0])
+PKG_CHECK_MODULES(GTK, [gtk+-3.0 >= 3.10.0])
 
 AC_SUBST(GLIB_GENMARSHAL, `$PKG_CONFIG --variable=glib_genmarshal glib-2.0`)
 
@@ -339,9 +343,18 @@ fi
 
 
 
-AC_SUBST(gdktarget, `$PKG_CONFIG --variable=target gtk+-2.0`)
+AC_SUBST(gdktarget, `$PKG_CONFIG --variable=targets gtk+-3.0`)
+#gtk3 provides support for multiple targets!
 
-gtkextratargetlib=libgtkextra-$gdktarget-3.0.la
+gtkextratargetlib=""
+
+for i in $gdktarget
+do
+	gtkextratargetlib+="libgtkextra-$i-$GTK_EXTRA_VERSION_SHORT.la "
+done
+
+
+#gtkextratargetlib=libgtkextra-$gdktarget-$GTK_EXTRA_VERSION_SHORT.la
 
 AC_SUBST(gtkextratargetlib)
 AC_CHECK_LIB(m, sqrt)
@@ -365,8 +378,8 @@ gtkextra/gtkextrafeatures.h
 docs/Makefile
 docs/reference/Makefile
 docs/tutorial/Makefile
-gtkextra-3.0.spec
-gtkextra-3.0.pc
+gtkextra-4.0.spec
+gtkextra-4.0.pc
 )
 
 AC_OUTPUT

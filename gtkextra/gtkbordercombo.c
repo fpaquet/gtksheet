@@ -78,7 +78,7 @@ static char *side001="             X ";
 
 static void         gtk_border_combo_class_init      (GtkBorderComboClass *klass);
 static void         gtk_border_combo_init            (GtkBorderCombo      *border_combo);
-static void         gtk_border_combo_destroy         (GtkObject     *border_combo);
+static void         gtk_border_combo_destroy         (GtkWidget *border_combo);
 static void         gtk_border_combo_realize         (GtkWidget *widget);
 static GtkWidget*   create_border_pixmap             (GtkBorderCombo *border_combo, 
                                                       gchar *border[18]);
@@ -88,15 +88,15 @@ static GtkComboButtonClass *parent_class = NULL;
 static void
 gtk_border_combo_class_init (GtkBorderComboClass * klass)
 {
-  GtkObjectClass *object_class;
+  GObjectClass *object_class;
   GtkWidgetClass *widget_class;
 
 
-  parent_class = g_type_class_ref (gtk_hbox_get_type ());
-  object_class = (GtkObjectClass *) klass;
-  widget_class = (GtkWidgetClass *) klass;
+  parent_class = g_type_class_ref (gtk_box_get_type ());
+  widget_class = GTK_WIDGET_CLASS(klass);
+  object_class = G_OBJECT_CLASS(klass);
 
-  object_class->destroy = gtk_border_combo_destroy;
+  widget_class->destroy = gtk_border_combo_destroy;
   
   widget_class->realize = gtk_border_combo_realize;
 
@@ -120,7 +120,7 @@ gtk_border_combo_class_init (GtkBorderComboClass * klass)
 }
 
 static void
-gtk_border_combo_destroy (GtkObject * border_combo)
+gtk_border_combo_destroy (GtkWidget * border_combo)
 {
   gint i,j;
 
@@ -142,8 +142,8 @@ gtk_border_combo_destroy (GtkObject * border_combo)
     GTK_BORDER_COMBO(border_combo)->table = NULL;
   }
 
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (*GTK_OBJECT_CLASS (parent_class)->destroy) (border_combo);
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+    GTK_WIDGET_CLASS (parent_class)->destroy (border_combo);
 }
 
 

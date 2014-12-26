@@ -20,17 +20,18 @@
 #ifndef __GTK_PLOT3D_H__
 #define __GTK_PLOT3D_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+G_BEGIN_DECLS
 
 #include "gtkplot.h"
 
 
-#define GTK_PLOT3D(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot3d_get_type (), GtkPlot3D)
-#define G_TYPE_PLOT3D        (gtk_plot3d_get_type ())
-#define GTK_PLOT3D_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot3d_get_type(), GtkPlot3DClass)
-#define GTK_IS_PLOT3D(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot3d_get_type ())
+#define GTK_TYPE_PLOT3D        		(gtk_plot3d_get_type ())
+#define GTK_PLOT3D(obj)        		(G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_TYPE_PLOT3D, GtkPlot3D))
+#define GTK_PLOT3D_CLASS(klass) 	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT3D, GtkPlot3DClass))
+#define GTK_IS_PLOT3D(obj)     		(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT3D))
+#define GTK_IS_PLOT3D_CLASS(klass) 	(G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT3D))
+#define GTK_PLOT3D_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PLOT3D, GtkPlot3DClass))
+
 #define GTK_PLOT3D_FLAGS(plot)         (GTK_PLOT3D(plot)->flags)
 #define GTK_PLOT3D_SET_FLAGS(plot,flag) (GTK_PLOT3D_FLAGS(plot) |= (flag))
 #define GTK_PLOT3D_UNSET_FLAGS(plot,flag) (GTK_PLOT3D_FLAGS(plot) &= ~(flag))
@@ -85,9 +86,9 @@ struct _GtkPlot3D
   gboolean yz_visible;
   gboolean zx_visible;
 
-  GdkColor color_xy;
-  GdkColor color_yz;
-  GdkColor color_zx;
+  GdkRGBA color_xy;
+  GdkRGBA color_yz;
+  GdkRGBA color_zx;
 
   GtkPlotLine frame;
   GtkPlotLine corner;
@@ -117,13 +118,13 @@ struct _GtkPlot3DClass
 /* Plot3D */
 
 GType		gtk_plot3d_get_type		(void);
-GtkWidget*	gtk_plot3d_new			(GdkDrawable *drawable);
-GtkWidget*	gtk_plot3d_new_with_size	(GdkDrawable *drawable,
+GtkWidget*	gtk_plot3d_new			(cairo_surface_t *surface);
+GtkWidget*	gtk_plot3d_new_with_size	(cairo_surface_t *surface,
                                                  gdouble width, gdouble height);
 void		gtk_plot3d_construct		(GtkPlot3D *plot,
-						 GdkDrawable *drawable);
+						 cairo_surface_t *surface);
 void		gtk_plot3d_construct_with_size	(GtkPlot3D *plot,
-						 GdkDrawable *drawable,
+						 cairo_surface_t *surface,
                                                  gdouble width, gdouble height);
 void		gtk_plot3d_autoscale		(GtkPlot3D *plot);
 /* rotations around global axes */
@@ -172,7 +173,7 @@ gdouble 	gtk_plot3d_get_zfactor		(GtkPlot3D *plot);
 /* Planes */
 void		gtk_plot3d_plane_set_color	(GtkPlot3D *plot,
 						 GtkPlotPlane plane,
-						 const GdkColor *color);
+						 const GdkRGBA *color);
 void		gtk_plot3d_plane_set_visible	(GtkPlot3D *plot,
 						 GtkPlotPlane plane,
 						 gboolean visible);
@@ -184,20 +185,21 @@ void		gtk_plot3d_corner_set_visible	(GtkPlot3D *plot,
 gboolean	gtk_plot3d_corner_visible	(GtkPlot3D *plot);
 
 void            gtk_plot3d_corner_set_attributes(GtkPlot3D *plot,
-                                                 GtkPlotLineStyle style,                                                         gfloat width,
-                                                 const GdkColor *color);
+                                                 GtkPlotLineStyle style,
+						 gfloat width,
+                                                 const GdkRGBA *color);
 void            gtk_plot3d_corner_get_attributes(GtkPlot3D *plot,
                                                  GtkPlotLineStyle *style,
                                                  gfloat *width,
-                                                 GdkColor *color);
+                                                 GdkRGBA *color);
 void            gtk_plot3d_frame_set_attributes	(GtkPlot3D *plot,
                                                  GtkPlotLineStyle style,
                                                  gfloat width,
-                                                 const GdkColor *color);
+                                                 const GdkRGBA *color);
 void            gtk_plot3d_frame_get_attributes	(GtkPlot3D *plot,
                                                  GtkPlotLineStyle *style,
                                                  gfloat *width,
-                                                 GdkColor *color);
+                                                 GdkRGBA *color);
 
 
 /* Axes */
@@ -264,27 +266,23 @@ void            gtk_plot3d_minor_grids_visible        (GtkPlot3D *plot,
 						       gboolean *y,
 						       gboolean *z);
 void            gtk_plot3d_major_zgrid_set_attributes  (GtkPlot3D *plot,
-                                                       GtkPlotLineStyle style,                                                         gfloat width,
-                                                       const GdkColor *color);
+                                                       GtkPlotLineStyle style,
+						       gfloat width,
+                                                       const GdkRGBA *color);
 void            gtk_plot3d_major_zgrid_get_attributes  (GtkPlot3D *plot,
                                                        GtkPlotLineStyle *style,
                                                        gfloat *width,
-                                                       GdkColor *color);
+                                                       GdkRGBA *color);
 void            gtk_plot3d_minor_zgrid_set_attributes  (GtkPlot3D *plot,
                                                        GtkPlotLineStyle style,
                                                        gfloat width,
-                                                       const GdkColor *color);
+                                                       const GdkRGBA *color);
 void            gtk_plot3d_minor_zgrid_get_attributes  (GtkPlot3D *plot,
                                                        GtkPlotLineStyle *style,
                                                        gfloat *width,
-                                                       GdkColor *color);
+                                                       GdkRGBA *color);
 
 
-
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-
+G_END_DECLS
 
 #endif /* __GTK_PLOT3D_H__ */

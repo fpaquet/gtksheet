@@ -1,4 +1,24 @@
 2014-12-26 Fredy Paquet <mailbox AT opag.ch>
+	* merged branch master and gtk3-tom into gtk3
+
+2014-11-23 Tom Schoonjans <Tom.Schoonjans@bam.de>
+	* GtkCharSelection migrated to Gtk3
+	* parent class is now GtkDialog instead of GtkWindow
+	* testcharsel updated
+	* TODO: provide more than just the default ASCII charset for the
+	current locale?
+	* TODO: add function that fetches the PangoFontDescription?
+	* GtkPlotArray migrated to Gtk3: untested but compiles fine
+	* Minimum required Gtk3 version set to 3.10.0
+	* GtkPlotDT migrated to Gtk3: untested but an example is available
+
+2014-11-21 Tom Schoonjans <Tom.Schoonjans@bam.de>
+	* Started transition to Gtk3 compatible version
+	* gtkfontcombo updated
+	* gtkpsfont updated
+	* testgtkfont updated
+
+2014-12-26 Fredy Paquet <mailbox AT opag.ch>
 	* updated gtkextra-3 version to 3.1.2, Libtool Revision 7.2.0
 	* published gtkextra-3 version 3.1.2
 

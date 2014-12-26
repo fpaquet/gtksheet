@@ -37,10 +37,15 @@
 #include <string.h>
 #include <stdlib.h>
 #include <gtk/gtk.h>
+#include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
 #include <pango/pango.h>
 #include "gtkfontcombo.h"
+#include "gtkextra-compat.h"
 #include "gtkextra-marshal.h"
+
+
+
 
 /* Signals */
 enum {
@@ -48,50 +53,6 @@ enum {
       LAST_SIGNAL 
 };
 
-/* XPM */
-static char * bold_xpm[] = {
-"16 16 2 1",
-" 	c None",
-".	c #000000000000",
-"                ",
-"  .........     ",
-"   ...   ...    ",
-"   ...    ...   ",
-"   ...    ...   ",
-"   ...    ...   ",
-"   ...   ...    ",
-"   ........     ",
-"   ...    ...   ",
-"   ...     ...  ",
-"   ...     ...  ",
-"   ...     ...  ",
-"   ...     ...  ",
-"   ...    ...   ",
-"  .........     ",
-"                "};
-
-
-/* XPM */
-static char * italic_xpm[] = {
-"16 16 2 1",
-" 	c None",
-".	c #000000000000",
-"                ",
-"        .....   ",
-"         ...    ",
-"         ...    ",
-"        ...     ",
-"        ...     ",
-"       ...      ",
-"       ...      ",
-"      ...       ",
-"      ...       ",
-"     ...        ",
-"     ...        ",
-"    ...         ",
-"    ...         ",
-"   .....        ",
-"                "};
 
 #define NUM_SIZES 20
 
@@ -99,31 +60,22 @@ static gchar *default_sizes[] = {"8","9","10","12","13","14","16","18",
                                  "20","22","24","26","28","32","36","40",
                                  "48","56","64","72"};
 
-static void         gtk_font_combo_class_init      (GtkFontComboClass *klass);
-static void         gtk_font_combo_init            (GtkFontCombo      *font_combo);
-static void         gtk_font_combo_destroy         (GtkObject     *font_combo);
-static void         gtk_font_combo_finalize        (GObject     *font_combo);
 static void         new_font			   (GtkWidget *widget, 
                                                     gpointer data);
 
-static GtkToolbarClass *parent_class = NULL;
+G_DEFINE_TYPE(GtkFontCombo, gtk_font_combo, GTK_TYPE_TOOLBAR);
+
 static guint font_combo_signals[LAST_SIGNAL] = {0};
 
 static void
 gtk_font_combo_class_init (GtkFontComboClass * klass)
 {
-  GObjectClass *gobject_class;
-  GtkObjectClass *object_class;
+  GObjectClass *object_class;
   GtkWidgetClass *widget_class;
 
-  parent_class = g_type_class_ref (gtk_toolbar_get_type ());
-  object_class = (GtkObjectClass *) klass;
-  gobject_class = (GObjectClass *) klass;
+  object_class = (GObjectClass *) klass;
   widget_class = (GtkWidgetClass *) klass;
 
-  object_class->destroy = gtk_font_combo_destroy;
-  gobject_class->finalize = gtk_font_combo_finalize;
-  
   /**
    * GtkFontCombo::changed:
    * @bfont_combo: the #GtkFontCombo object that received the signal.
@@ -141,12 +93,12 @@ gtk_font_combo_class_init (GtkFontComboClass * klass)
 
 }
 
-static void
-gtk_font_combo_destroy (GtkObject * font_combo)
+/*static void
+gtk_font_combo_destroy (GtkWidget* font_combo)
 {
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
 
-    (*GTK_OBJECT_CLASS (parent_class)->destroy) (font_combo);
+    (*GTK_WIDGET_CLASS (parent_class)->destroy) (font_combo);
 }
 
 static void
@@ -156,21 +108,18 @@ gtk_font_combo_finalize (GObject * font_combo)
   if (G_OBJECT_CLASS (parent_class)->finalize)
     (*G_OBJECT_CLASS (parent_class)->finalize) (font_combo);
 }
-
+*/
 static void
 gtk_font_combo_init (GtkFontCombo * font_combo)
 {
   GtkWidget *widget;
   GtkToolbar *toolbar;
-  GdkColormap *colormap;
-  GdkPixmap *pixmap;
-  GtkWidget *tpixmap;
   GtkWidget *label;
   GtkWidget *space;
-  GdkBitmap *mask;
   GtkRequisition req;
   GList *family = NULL;
   gint numf, i;
+  GtkToolItem *toolitem;
 
   gtk_psfont_init();
 
@@ -179,45 +128,45 @@ gtk_font_combo_init (GtkFontCombo * font_combo)
   toolbar = GTK_TOOLBAR(font_combo);
   gtk_container_set_border_width(GTK_CONTAINER(toolbar), 0);
 
-  colormap = gdk_colormap_get_system();
   label = gtk_label_new("Font:   ");
-  font_combo->name_combo = gtk_combo_box_new_text(); 
-  font_combo->size_combo = gtk_combo_box_new_text();
+  font_combo->name_combo = gtk_combo_box_text_new(); 
+  font_combo->size_combo = gtk_combo_box_text_new();
   space = gtk_label_new("  ");
 
-  gtk_container_add(GTK_CONTAINER(toolbar), label);
-  gtk_container_add(GTK_CONTAINER(toolbar), font_combo->name_combo);
-  gtk_container_add(GTK_CONTAINER(toolbar), font_combo->size_combo);
-  gtk_container_add(GTK_CONTAINER(toolbar), space);
-  gtk_widget_show(label);
-  gtk_widget_show(space);
-  font_combo->bold_button =  GTK_WIDGET(gtk_toggle_button_new());
-  font_combo->italic_button =  GTK_WIDGET(gtk_toggle_button_new());
-  gtk_container_add(GTK_CONTAINER(toolbar), font_combo->bold_button);
-  gtk_container_add(GTK_CONTAINER(toolbar), font_combo->italic_button);
-  gtk_widget_set_size_request(font_combo->bold_button, 24, 24);
-  gtk_widget_set_size_request(font_combo->italic_button, 24, 24);
+  toolitem = gtk_tool_item_new();
+  gtk_container_add(GTK_CONTAINER(toolitem), label);
+  gtk_toolbar_insert(toolbar, toolitem, 0);
+  gtk_widget_show_all(GTK_WIDGET(toolitem));
 
-  pixmap = gdk_pixmap_colormap_create_from_xpm_d(NULL, colormap, &mask, NULL,
-                                                 bold_xpm);
-  tpixmap = gtk_image_new_from_pixmap(pixmap, mask);
-  gtk_container_add(GTK_CONTAINER(font_combo->bold_button), tpixmap);
-  gtk_widget_show(tpixmap);
+  toolitem = gtk_tool_item_new();
+  gtk_container_add(GTK_CONTAINER(toolitem), font_combo->name_combo);
+  gtk_toolbar_insert(toolbar, toolitem, 1);
+  gtk_widget_show_all(GTK_WIDGET(toolitem));
 
-  pixmap = gdk_pixmap_colormap_create_from_xpm_d(NULL, colormap, &mask, NULL,
-                                                 italic_xpm);
-  tpixmap = gtk_image_new_from_pixmap(pixmap, mask);
-  gtk_container_add(GTK_CONTAINER(font_combo->italic_button), tpixmap);
-  gtk_widget_show(tpixmap);
+  toolitem = gtk_tool_item_new();
+  gtk_container_add(GTK_CONTAINER(toolitem), font_combo->size_combo);
+  gtk_toolbar_insert(toolbar, toolitem, 2);
+  gtk_widget_show_all(GTK_WIDGET(toolitem));
 
-  gtk_widget_size_request(font_combo->size_combo, &req);
+  toolitem = gtk_tool_item_new();
+  gtk_container_add(GTK_CONTAINER(toolitem), space);
+  gtk_toolbar_insert(toolbar, toolitem, 3);
+  gtk_widget_show_all(GTK_WIDGET(toolitem));
+
+  font_combo->bold_button =  GTK_WIDGET(gtk_toggle_tool_button_new());
+  font_combo->italic_button =  GTK_WIDGET(gtk_toggle_tool_button_new());
+  gtk_toolbar_insert(toolbar, GTK_TOOL_ITEM(font_combo->bold_button), 4);
+  gtk_toolbar_insert(toolbar, GTK_TOOL_ITEM(font_combo->italic_button), 5);
+
+  gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(font_combo->bold_button), "format-text-bold");
+  gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(font_combo->italic_button), "format-text-italic");
+
+  gtk_widget_get_preferred_size(font_combo->size_combo, &req, NULL);
   req.width = 56;
   gtk_widget_set_size_request(font_combo->size_combo, req.width, req.height);
 
-/* FIXME */
-//  gtk_toolbar_set_space_size(toolbar, 20);
   for(i = 0; i < NUM_SIZES; i++)
-    gtk_combo_box_append_text(GTK_COMBO_BOX(font_combo->size_combo), 
+    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(font_combo->size_combo),
 				default_sizes[i]);
 
    gtk_psfont_get_families(&family, &numf);
@@ -225,7 +174,7 @@ gtk_font_combo_init (GtkFontCombo * font_combo)
   list = family;
   while(list)
   {
-      gtk_combo_box_append_text(GTK_COMBO_BOX(font_combo->name_combo), 
+      gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(font_combo->name_combo), 
 		(gchar *)list->data);
       list = list->next;
   }
@@ -238,54 +187,30 @@ gtk_font_combo_init (GtkFontCombo * font_combo)
   gtk_widget_show (font_combo->name_combo);
 
   g_signal_connect(
-	GTK_OBJECT(GTK_COMBO_BOX(font_combo->name_combo)),
+	G_OBJECT(GTK_FONT_COMBO(font_combo)->name_combo),
                      "changed",
-                     (void *)new_font, font_combo);
+                     G_CALLBACK(new_font), font_combo);
 
   g_signal_connect(
-	GTK_OBJECT(GTK_FONT_COMBO(font_combo)->size_combo),
+	G_OBJECT(GTK_FONT_COMBO(font_combo)->size_combo),
                      	"changed",
-                     (void *)new_font, font_combo);
+                     G_CALLBACK(new_font), font_combo);
 
   g_signal_connect(
-	GTK_OBJECT(GTK_FONT_COMBO(font_combo)->italic_button),
-                     "clicked",
-                     (void *)new_font, font_combo);
+	G_OBJECT(GTK_FONT_COMBO(font_combo)->italic_button),
+                     "toggled",
+                     G_CALLBACK(new_font), font_combo);
 
   g_signal_connect(
-	GTK_OBJECT(GTK_FONT_COMBO(font_combo)->bold_button),
-                     "clicked",
-                     (void *)new_font, font_combo);
-
-}
-
-GType
-gtk_font_combo_get_type ()
-{
-  static GType font_combo_type = 0;
-
-  if (!font_combo_type)
-    {
-      font_combo_type = g_type_register_static_simple (
-		gtk_toolbar_get_type (),
-		"GtkFontCombo",
-		sizeof (GtkFontComboClass),
-		(GClassInitFunc) gtk_font_combo_class_init,
-		sizeof (GtkFontCombo),
-		(GInstanceInitFunc) gtk_font_combo_init,
-		0);
-    }
-  return font_combo_type;
+	G_OBJECT(GTK_FONT_COMBO(font_combo)->bold_button),
+                     "toggled",
+                     G_CALLBACK(new_font), font_combo);
 }
 
 GtkWidget *
 gtk_font_combo_new ()
 {
-  GtkFontCombo *font_combo;
-
-  font_combo = g_object_new (gtk_font_combo_get_type (), NULL);
-
-  return(GTK_WIDGET(font_combo));
+  return GTK_WIDGET(g_object_new (gtk_font_combo_get_type (), NULL));
 }
 
 static void
@@ -296,17 +221,25 @@ new_font(GtkWidget *widget, gpointer data)
 
   font_combo = GTK_FONT_COMBO(data);
 
-  text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(font_combo->name_combo));
+  text = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(font_combo->name_combo));
 
   if(!text || strlen(text) == 0) return;
   g_free(text);
 
-  text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(font_combo->size_combo));
+  text = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(font_combo->size_combo));
 
   if(!text || strlen(text) == 0) return;
   g_free(text);
 
-  g_signal_emit(GTK_OBJECT(font_combo), font_combo_signals[CHANGED], 0);
+  g_signal_emit(G_OBJECT(font_combo), font_combo_signals[CHANGED], 0);
+  //unfocus
+  GtkWidget *parent_widget = widget;
+  while (parent_widget && !GTK_IS_WINDOW (parent_widget)) {
+	parent_widget = gtk_widget_get_parent (parent_widget);
+  }
+  if (parent_widget) {
+	gtk_window_set_focus (GTK_WINDOW (parent_widget), NULL);
+  }
 }
 
 /**
@@ -326,19 +259,38 @@ gtk_font_combo_select (GtkFontCombo *combo,
 		       gboolean italic,
 		       gint height)
 {
-  GtkItem *item;
-  GList *children;
   gchar *text;
   gint n = 0;
+  GtkTreeModel *model = gtk_combo_box_get_model(GTK_COMBO_BOX(combo->name_combo));
+  gboolean valid;
+  GtkTreeIter iter;
+  gint column;
 
-  children = GTK_LIST(GTK_COMBO_BOX(combo->name_combo))->children;
+  if (gtk_tree_model_get_column_type(model, 0) != G_TYPE_STRING) {
+  	fprintf(stderr, "column 0 is not of type string\n");
+	exit(1);
+  }
 
-  while(children){
-    item = GTK_ITEM(children->data);
-    text = GTK_LABEL(gtk_bin_get_child(GTK_BIN(item)))->label;
-    if(strcmp(text, family) == 0) break;
-    n++;
-    children = children->next;
+  valid =  gtk_tree_model_get_iter_first(model, &iter);
+
+  /* I would be very surprised if column would ever be different from zero but let's check it anyways */
+  column = gtk_combo_box_get_entry_text_column(GTK_COMBO_BOX(combo->name_combo));
+
+  while (valid) {
+  	gtk_tree_model_get(model, &iter, column, &text, -1);
+	if (strcmp(family, text) == 0) {
+		/* match */
+		g_free(text);
+		break;
+	}
+	g_free(text);
+	valid = gtk_tree_model_iter_next(model, &iter);
+	n++;
+  }
+
+  if (!valid) {
+  	g_warning("gtk_font_combo_select: font family %s not found in model", family);
+	return;
   }
 
   gtk_font_combo_select_nth(combo, n, bold, italic, height);
@@ -363,19 +315,24 @@ gtk_font_combo_select_nth (GtkFontCombo *combo,
 {
   gint i;
 
-  gtk_list_select_item(GTK_LIST(GTK_COMBO_BOX(combo->name_combo)), n);
+  GtkTreeModel *model = gtk_combo_box_get_model(GTK_COMBO_BOX(combo->name_combo));
+  if (n >= gtk_tree_model_iter_n_children(model, NULL)) {
+  	g_warning("gtk_font_combo_select: font number %i not found in model", n);
+	return;
+  }
+  gtk_combo_box_set_active(GTK_COMBO_BOX(combo->name_combo), n);
 
   for(i = 0; i < NUM_SIZES; i++){
      if(atoi(default_sizes[i]) >= height) break;
   }
 
   if(i < NUM_SIZES)
-    gtk_list_select_item(GTK_LIST(GTK_COMBO_BOX(combo->size_combo)), i);
+    gtk_combo_box_set_active(GTK_COMBO_BOX(combo->size_combo), i);
 
-  if(GTK_IS_TOGGLE_BUTTON(combo->bold_button))
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(combo->bold_button), bold);
+  if(GTK_IS_TOGGLE_TOOL_BUTTON(combo->bold_button))
+    gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(combo->bold_button), bold);
   if(GTK_IS_TOGGLE_BUTTON(combo->italic_button))
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(combo->italic_button), italic);
+    gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(combo->italic_button), italic);
 }
 
 gint 
@@ -384,7 +341,7 @@ gtk_font_combo_get_font_height (GtkFontCombo *combo)
   gchar *size;
   int isize;
 
-  size = gtk_combo_box_get_active_text(GTK_COMBO_BOX(combo->size_combo));
+  size = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(combo->size_combo));
 
   if (size)
   {
@@ -413,10 +370,10 @@ gtk_font_combo_get_psfont (GtkFontCombo *font_combo)
 
   text=gtk_entry_get_text(GTK_ENTRY(GTK_COMBO_BOX(font_combo->name_combo)));
 
-  if(GTK_IS_TOGGLE_BUTTON(GTK_FONT_COMBO(font_combo)->italic_button))
-    italic = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(GTK_FONT_COMBO(font_combo)->italic_button));
+  if(GTK_IS_TOGGLE_TOOL_BUTTON(GTK_FONT_COMBO(font_combo)->italic_button))
+    italic = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(GTK_FONT_COMBO(font_combo)->italic_button));
   if(GTK_IS_TOGGLE_BUTTON(GTK_FONT_COMBO(font_combo)->bold_button))
-    bold = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(GTK_FONT_COMBO(font_combo)->bold_button));
+    bold = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(GTK_FONT_COMBO(font_combo)->bold_button));
 
   return (gtk_psfont_get_by_family(text, italic, bold));
 }
@@ -429,33 +386,15 @@ gtk_font_combo_get_font_description (GtkFontCombo *combo)
   gboolean italic, bold;
   gint height;
 
-  text = gtk_combo_box_get_active_text(GTK_COMBO_BOX(combo->name_combo));
+  text = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(combo->name_combo));
   if (text == NULL)
 	return NULL;
 
-  italic = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(GTK_FONT_COMBO(combo)->italic_button));
-  bold = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(GTK_FONT_COMBO(combo)->bold_button));
+  italic = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(GTK_FONT_COMBO(combo)->italic_button));
+  bold = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(GTK_FONT_COMBO(combo)->bold_button));
   height = gtk_font_combo_get_font_height(combo);
 
   psfont = gtk_psfont_get_by_family(text, italic, bold);
   g_free(text);
   return (gtk_psfont_get_font_description(psfont, height));
-}
-
-GdkFont * 
-gtk_font_combo_get_gdkfont (GtkFontCombo *combo)
-{
-  const gchar *text;
-  GtkPSFont *psfont;
-  gboolean italic, bold;
-  gint height;
-
-  text=gtk_entry_get_text(GTK_ENTRY(GTK_COMBO_BOX(combo->name_combo)));
-
-  italic = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(GTK_FONT_COMBO(combo)->italic_button));
-  bold = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(GTK_FONT_COMBO(combo)->bold_button));
-  height = gtk_font_combo_get_font_height(combo);
-
-  psfont = gtk_psfont_get_by_family(text, italic, bold);
-  return (gtk_psfont_get_gdkfont(psfont, height));
 }

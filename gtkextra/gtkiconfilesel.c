@@ -65,7 +65,7 @@
 
 static void gtk_icon_file_selection_class_init          (GtkIconFileSelClass *klass);
 static void gtk_icon_file_selection_init                (GtkIconFileSel *filesel);
-static void gtk_icon_file_selection_destroy             (GtkObject *object);
+static void gtk_icon_file_selection_destroy(GtkWidget *widget);
 static void open_dir					(GtkWidget *widget, 
 							 GtkCTreeNode *node, 
 							 gint n,
@@ -153,14 +153,11 @@ gtk_icon_file_selection_construct (GtkIconFileSel *filesel, const gchar *title)
 static void
 gtk_icon_file_selection_class_init (GtkIconFileSelClass *klass)
 {
-  GtkWidgetClass *widget_class;
-  GtkObjectClass *object_class;
+  GtkWidgetClass *widget_class = (GtkWidgetClass*) klass;
 
-  widget_class = (GtkWidgetClass*) klass;
-  object_class = (GtkObjectClass*) klass;
   parent_class = g_type_class_ref (gtk_window_get_type ());
 
-  object_class->destroy = gtk_icon_file_selection_destroy;
+  widget_class->destroy = gtk_icon_file_selection_destroy;
 }
 
 static void
@@ -249,11 +246,11 @@ gtk_icon_file_selection_init (GtkIconFileSel *filesel)
   gtk_widget_show_all(hbox);
 
 /* RRR */
-  g_signal_connect(GTK_OBJECT(GTK_COMBO_BOX(filesel->history_combo)), 
+  g_signal_connect(G_OBJECT(GTK_COMBO_BOX(filesel->history_combo)), 
 		     "key_press_event", 
                      (void *)entry_key_press, filesel);
 
-  g_signal_connect(GTK_OBJECT(GTK_COMBO_BOX(filesel->history_combo)), 
+  g_signal_connect(G_OBJECT(GTK_COMBO_BOX(filesel->history_combo)), 
 		     "changed", 
                      (void *)combo_changed, filesel);
 
@@ -267,9 +264,9 @@ gtk_icon_file_selection_init (GtkIconFileSel *filesel)
   gtk_container_add(GTK_CONTAINER(filesel->up_button), wpixmap);
   gtk_box_pack_start(GTK_BOX(hbox), filesel->up_button, FALSE, FALSE, 0);
   gtk_widget_show_all(filesel->up_button);
-  g_signal_connect_swapped(GTK_OBJECT(filesel->up_button), "clicked",
+  g_signal_connect_swapped(G_OBJECT(filesel->up_button), "clicked",
 		            (void *)up_clicked,
-			    GTK_OBJECT(filesel));
+			    G_OBJECT(filesel));
   tp = gtk_tooltips_new();
   gtk_tooltips_set_tip(GTK_TOOLTIPS(tp), filesel->up_button, "Parent directory", "Parent directory");
   gtk_tooltips_enable(GTK_TOOLTIPS(tp));
@@ -284,9 +281,9 @@ gtk_icon_file_selection_init (GtkIconFileSel *filesel)
   gtk_container_add(GTK_CONTAINER(filesel->home_button), wpixmap);
   gtk_box_pack_start(GTK_BOX(hbox), filesel->home_button, FALSE, FALSE, 0);
   gtk_widget_show_all(filesel->home_button);
-  g_signal_connect_swapped(GTK_OBJECT(filesel->home_button), "clicked",
+  g_signal_connect_swapped(G_OBJECT(filesel->home_button), "clicked",
 		            (void *)home_clicked, 
-			    GTK_OBJECT(filesel));
+			    G_OBJECT(filesel));
   tp = gtk_tooltips_new();
   gtk_tooltips_set_tip(GTK_TOOLTIPS(tp), filesel->home_button, "Home", "Home");
   gtk_tooltips_enable(GTK_TOOLTIPS(tp));
@@ -301,9 +298,9 @@ gtk_icon_file_selection_init (GtkIconFileSel *filesel)
   gtk_container_add(GTK_CONTAINER(filesel->refresh_button), wpixmap);
   gtk_box_pack_start(GTK_BOX(hbox), filesel->refresh_button, FALSE, FALSE, 0);
   gtk_widget_show_all(filesel->refresh_button);
-  g_signal_connect_swapped(GTK_OBJECT(filesel->refresh_button), "clicked",
+  g_signal_connect_swapped(G_OBJECT(filesel->refresh_button), "clicked",
 		            (void *)refresh_clicked,
-			    GTK_OBJECT(filesel));
+			    G_OBJECT(filesel));
   tp = gtk_tooltips_new();
   gtk_tooltips_set_tip(GTK_TOOLTIPS(tp), filesel->refresh_button, "Refresh", "Refresh");
   gtk_tooltips_enable(GTK_TOOLTIPS(tp));
@@ -356,7 +353,7 @@ gtk_icon_file_selection_init (GtkIconFileSel *filesel)
 
   gtk_widget_show(scrolled_window);
 
-  g_signal_connect(GTK_OBJECT(filesel->file_list), "select_icon",
+  g_signal_connect(G_OBJECT(filesel->file_list), "select_icon",
                      (void *)select_icon, filesel);
 
   filesel->action_area = table = gtk_table_new(TRUE, 2, 4);
@@ -381,18 +378,18 @@ gtk_icon_file_selection_init (GtkIconFileSel *filesel)
   gtk_table_attach_defaults(GTK_TABLE(table), filesel->file_entry, 1, 3, 0, 1);
   gtk_widget_show(filesel->file_entry);
 
-  g_signal_connect(GTK_OBJECT(filesel->file_entry), "key_press_event", 
+  g_signal_connect(G_OBJECT(filesel->file_entry), "key_press_event", 
                      (void *)entry_set_file, filesel);
 
   filesel->filter_entry = gtk_entry_new();
   gtk_table_attach_defaults(GTK_TABLE(table), filesel->filter_entry, 1, 3, 1, 2);
   gtk_widget_show(filesel->filter_entry);
 
-  g_signal_connect(GTK_OBJECT(filesel->filter_entry), "key_press_event", 
+  g_signal_connect(G_OBJECT(filesel->filter_entry), "key_press_event", 
                      (void *)set_filter, filesel);
 
 /* FIXME
-  g_signal_connect(GTK_OBJECT(filesel->filter_entry), "insert_text",
+  g_signal_connect(G_OBJECT(filesel->filter_entry), "insert_text",
                      (void *)insert_text, NULL);
 */
 
@@ -410,7 +407,7 @@ gtk_icon_file_selection_init (GtkIconFileSel *filesel)
   gtk_box_pack_end (GTK_BOX (box), filesel->ok_button, TRUE, TRUE, 0);
   gtk_widget_show(filesel->ok_button);
 
-  g_signal_connect(GTK_OBJECT(filesel->ok_button), "clicked", 
+  g_signal_connect(G_OBJECT(filesel->ok_button), "clicked", 
                      (void *)real_set_file, filesel);
 
   pixmap = gdk_pixmap_colormap_create_from_xpm_d(NULL, colormap, &mask, NULL,
@@ -429,14 +426,18 @@ gtk_icon_file_selection_init (GtkIconFileSel *filesel)
 }
 
 static void
-gtk_icon_file_selection_destroy(GtkObject *object)
+gtk_icon_file_selection_destroy(GtkWidget *widget)
 {
-  if(GTK_ICON_FILESEL(object)->selection)
-    g_free(GTK_ICON_FILESEL(object)->selection);
-  GTK_ICON_FILESEL(object)->selection = NULL;
+    GtkIconFileSel *filesel = GTK_ICON_FILESEL(widget);
 
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+    if (filesel->selection)
+    {
+	g_free(filesel->selection);
+	filesel->selection = NULL;
+    }
+
+    if (GTK_WIDGET_CLASS (parent_class)->destroy)
+	(* GTK_WIDGET_CLASS (parent_class)->destroy) (widget);
 }
 
 /**
@@ -457,7 +458,7 @@ gtk_icon_file_selection_show_tree(GtkIconFileSel *filesel, gboolean show)
   if(show){
     const gchar *path;
 
-    filesel->tree_signal_id = g_signal_connect(GTK_OBJECT(filesel->dir_tree), 
+    filesel->tree_signal_id = g_signal_connect(G_OBJECT(filesel->dir_tree), 
                                                  "tree_select_row",
                                                  (void *)open_dir, 
                                                  filesel);
@@ -468,7 +469,7 @@ gtk_icon_file_selection_show_tree(GtkIconFileSel *filesel, gboolean show)
     gtk_widget_set_size_request(filesel->list_window, 380, 250);
     gtk_widget_show(filesel->tree_window);
   } else {
-    g_signal_disconnect(GTK_OBJECT(filesel->dir_tree), 
+    g_signal_disconnect(G_OBJECT(filesel->dir_tree), 
                           filesel->tree_signal_id);
     gtk_widget_hide(filesel->tree_window);
     gtk_widget_set_size_request(filesel->list_window, 550, 250);
@@ -484,7 +485,7 @@ insert_text     (GtkEditable *editable,
                  gpointer data)
 {
   g_object_ref(editable);
-  g_signal_stop_emission_by_name (GTK_OBJECT(editable), "insert_text");
+  g_signal_stop_emission_by_name (G_OBJECT(editable), "insert_text");
   if(new_text[0] != ' '){
      GTK_EDITABLE_CLASS (g_type_class_ref(gtk_editable_get_type ()))->insert_text(editable,
                                                               new_text,
@@ -587,7 +588,7 @@ entry_set_file(GtkWidget *widget, GdkEventKey *key, gpointer data)
 
     /*  real_set_file(widget, data); */
 
-	g_signal_emit_by_name(GTK_OBJECT(filesel->ok_button), "clicked", filesel);
+	g_signal_emit_by_name(G_OBJECT(filesel->ok_button), "clicked", filesel);
 
 	return FALSE;
 }
@@ -938,7 +939,7 @@ entry_key_press(GtkWidget *widget,
 
 	if (event->keyval == GDK_KEY_Return)
 	{
-		g_signal_stop_emission_by_name( GTK_OBJECT(entry), "key_press_event");
+		g_signal_stop_emission_by_name(G_OBJECT(entry), "key_press_event");
 		//RRRgo_to_history(entry, data);
 		return TRUE;
 	}

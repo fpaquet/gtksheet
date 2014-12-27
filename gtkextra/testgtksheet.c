@@ -146,7 +146,7 @@ static GtkWidget *
     {
         item=gtk_menu_item_new_with_label(items[i]);
 
-        g_signal_connect(GTK_OBJECT(item),"activate",
+        g_signal_connect(G_OBJECT(item),"activate",
                          (void *) popup_activated,
                          items[i]);
 
@@ -207,7 +207,7 @@ gint
     {
         if (popup)
         {
-            gtk_object_destroy(GTK_OBJECT(popup));
+            gtk_widget_destroy(GTK_WIDGET(popup));
             popup = NULL;
         }
 
@@ -665,37 +665,37 @@ void
     gtk_sheet_set_cell(sheet, 10, 1, GTK_JUSTIFY_LEFT,
                        "You can add buttons, charts, pixmaps, and other widgets");
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "key_press_event",
                      (void *) clipboard_handler, 
                      NULL);
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "resize_range",
                      (void *) resize_handler, 
                      NULL);
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "move_range",
                      (void *) move_handler, 
                      NULL);
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "changed",
                      (void *) alarm_change, 
                      NULL);
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "activate",
                      (void *) alarm_activate, 
                      NULL);
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "deactivate",
                      (void *) alarm_deactivate, 
                      NULL);
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "traverse",
                      (void *) alarm_traverse, 
                      NULL);
@@ -750,11 +750,11 @@ void
 */
     gtk_sheet_attach(GTK_SHEET(sheets[0]), show_button, 12, 2, GTK_FILL, GTK_FILL, 5, 5);
 
-    g_signal_connect(GTK_OBJECT(show_button), "clicked",
+    g_signal_connect(G_OBJECT(show_button), "clicked",
                      (void *) show_child, 
                      NULL);
 /*
- g_signal_connect(GTK_OBJECT(sheet),
+ g_signal_connect(G_OBJECT(sheet),
                     "button_press_event",
                     (void *) do_popup, 
                     NULL);
@@ -814,27 +814,27 @@ void
  gtk_sheet_set_update_policy(sheet, GTK_UPDATE_CONTINUOUS, GTK_UPDATE_CONTINUOUS);
 */
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "button_press_event",
                      (void *) do_popup, 
                      NULL);
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "set_cell",
                      (void *) parse_numbers,
                      NULL);                   
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "activate",
                      (void *) alarm_activate, 
                      NULL);
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "deactivate",
                      (void *) alarm_deactivate, 
                      NULL);
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "traverse",
                      (void *) alarm_traverse, 
                      NULL);
@@ -920,7 +920,7 @@ void
     gtk_sheet_entry_signal_connect_changed(sheet,
                                            G_CALLBACK(sheet_entry_changed_handler));
 
-    g_signal_connect(GTK_OBJECT(sheet),
+    g_signal_connect(G_OBJECT(sheet),
                      "traverse",
                      (void *) change_entry, 
                      NULL);
@@ -933,7 +933,7 @@ build_example4(GtkWidget *widget)
  GtkSheet *sheet;
 
  sheet=GTK_SHEET(widget);
- g_signal_connect(GTK_OBJECT(sheet),
+ g_signal_connect(G_OBJECT(sheet),
                     "button_press_event",
                     (void *) do_popup, 
                     NULL);
@@ -1363,8 +1363,7 @@ int main(int argc, char *argv[])
     gtk_window_set_title(GTK_WINDOW(window), "GtkSheet Demo");
     gtk_widget_set_size_request(GTK_WIDGET(window), 900, 600);
 
-    g_signal_connect (GTK_OBJECT (window), "destroy",
-                      G_CALLBACK (quit), NULL);
+    g_signal_connect (GTK_WIDGET(window), "destroy", G_CALLBACK(quit), NULL);
 
     main_vbox=gtk_vbox_new(FALSE,1);
     gtk_container_set_border_width(GTK_CONTAINER(main_vbox),0); 
@@ -1387,16 +1386,16 @@ int main(int argc, char *argv[])
     gtk_widget_show(show_row_titles); 
     gtk_widget_show(show_column_titles);
 
-    g_signal_connect(GTK_OBJECT(hide_row_titles), "clicked",
+    g_signal_connect(G_OBJECT(hide_row_titles), "clicked",
                      (void *) do_hide_row_titles, NULL);
 
-    g_signal_connect(GTK_OBJECT(hide_column_titles), "clicked",
+    g_signal_connect(G_OBJECT(hide_column_titles), "clicked",
                      (void *) do_hide_column_titles, NULL);
 
-    g_signal_connect(GTK_OBJECT(show_row_titles), "clicked",
+    g_signal_connect(G_OBJECT(show_row_titles), "clicked",
                      (void *) do_show_row_titles, NULL);
 
-    g_signal_connect(GTK_OBJECT(show_column_titles), "clicked",
+    g_signal_connect(G_OBJECT(show_column_titles), "clicked",
                      (void *) do_show_column_titles, NULL);
 
     gtk_box_pack_start(GTK_BOX(main_vbox), show_hide_box, FALSE, TRUE, 0);
@@ -1413,7 +1412,7 @@ int main(int argc, char *argv[])
     gtk_widget_set_size_request(GTK_FONT_COMBO(font_combo)->italic_button, 32, 32);
     gtk_widget_set_size_request(GTK_FONT_COMBO(font_combo)->bold_button, 32, 32);
     gtk_widget_show(font_combo);
-    g_signal_connect(GTK_OBJECT(font_combo), "changed", G_CALLBACK(new_font), NULL);
+    g_signal_connect(G_OBJECT(font_combo), "changed", G_CALLBACK(new_font), NULL);
 
     gtk_toolbar_append_space(GTK_TOOLBAR(toolbar));
 
@@ -1422,7 +1421,7 @@ int main(int argc, char *argv[])
                               left_button, "justify left", "justify left");
     gtk_widget_show(left_button);
 
-    g_signal_connect(GTK_OBJECT(left_button),"released",
+    g_signal_connect(G_OBJECT(left_button),"released",
                      (void *) justify_left, NULL);
 
     center_button = gtk_toggle_button_new();
@@ -1430,7 +1429,7 @@ int main(int argc, char *argv[])
                               center_button, "justify center", "justify center");
     gtk_widget_show(center_button);
 
-    g_signal_connect(GTK_OBJECT(center_button), "released",
+    g_signal_connect(G_OBJECT(center_button), "released",
                      (void *) justify_center, NULL);
 
 
@@ -1439,7 +1438,7 @@ int main(int argc, char *argv[])
                               right_button, "justify right", "justify right");
     gtk_widget_show(right_button);
 
-    g_signal_connect(GTK_OBJECT(right_button), "released",
+    g_signal_connect(G_OBJECT(right_button), "released",
                      (void *) justify_right, NULL);
 
     gtk_toolbar_append_space(GTK_TOOLBAR(toolbar));
@@ -1450,7 +1449,7 @@ int main(int argc, char *argv[])
     gtk_widget_set_size_request(GTK_COMBO_BUTTON(bordercombo)->button, 32, 32);
     gtk_widget_show(bordercombo);
 
-    g_signal_connect(GTK_OBJECT(bordercombo),
+    g_signal_connect(G_OBJECT(bordercombo),
                      "changed", (void *)change_border, NULL);
 
     gtk_toolbar_append_space(GTK_TOOLBAR(toolbar));
@@ -1460,7 +1459,7 @@ int main(int argc, char *argv[])
                               fgcolorcombo, "font color", "font color");
     gtk_widget_show(fgcolorcombo);
 
-    g_signal_connect(GTK_OBJECT(fgcolorcombo),
+    g_signal_connect(G_OBJECT(fgcolorcombo),
                      "changed", (void *)change_fg, NULL);
 
     gtk_toolbar_append_space(GTK_TOOLBAR(toolbar));
@@ -1470,7 +1469,7 @@ int main(int argc, char *argv[])
                               bgcolorcombo, "background color", "background color");
     gtk_widget_show(bgcolorcombo);
 
-    g_signal_connect(GTK_OBJECT(bgcolorcombo),
+    g_signal_connect(G_OBJECT(bgcolorcombo),
                      "changed", (void *)change_bg, NULL);
 
     gtk_toolbar_append_space(GTK_TOOLBAR(toolbar));
@@ -1525,16 +1524,16 @@ int main(int argc, char *argv[])
         gtk_sheet_entry_signal_connect_changed(GTK_SHEET(sheets[i]),
                                                G_CALLBACK(sheet_entry_changed_handler));
 
-        g_signal_connect(GTK_OBJECT(sheets[i]),
+        g_signal_connect(G_OBJECT(sheets[i]),
                          "activate", (void *)activate_sheet_cell,
                          NULL);
     }
 
 
-    g_signal_connect(GTK_OBJECT(entry),
+    g_signal_connect(G_OBJECT(entry),
                      "changed", (void *)entry_changed_handler, NULL);
 
-    g_signal_connect(GTK_OBJECT(entry),
+    g_signal_connect(G_OBJECT(entry),
                      "activate", (void *)activate_sheet_entry,
                      NULL);
 

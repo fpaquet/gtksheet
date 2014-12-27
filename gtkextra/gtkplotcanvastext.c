@@ -46,7 +46,7 @@ enum {
 };
 
 static void gtk_plot_canvas_text_init		(GtkPlotCanvasText *text);
-static void gtk_plot_canvas_text_destroy	(GtkObject *object);
+static void gtk_plot_canvas_text_destroy(GtkWidget *widget);
 static void gtk_plot_canvas_text_class_init(GtkPlotCanvasChildClass *klass);
 static void gtk_plot_canvas_text_draw 		(GtkPlotCanvas *canvas,
 						 GtkPlotCanvasChild *child);
@@ -163,7 +163,7 @@ gtk_plot_canvas_text_init (GtkPlotCanvasText *text)
 static void
 gtk_plot_canvas_text_class_init (GtkPlotCanvasChildClass *klass)
 {
-  GtkObjectClass *object_class = (GtkObjectClass *)klass;
+  GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
   parent_class = g_type_class_ref (gtk_plot_canvas_child_get_type ());
@@ -173,7 +173,7 @@ gtk_plot_canvas_text_class_init (GtkPlotCanvasChildClass *klass)
   klass->move_resize = NULL; 
   klass->size_allocate = gtk_plot_canvas_text_size_allocate;
 
-  object_class->destroy = gtk_plot_canvas_text_destroy;
+  widget_class->destroy = gtk_plot_canvas_text_destroy;
 
   gobject_class->get_property = gtk_plot_canvas_text_get_property;
   gobject_class->set_property = gtk_plot_canvas_text_set_property;
@@ -226,15 +226,22 @@ gtk_plot_canvas_text_set_property (GObject      *object,
 
 
 static void
-gtk_plot_canvas_text_destroy (GtkObject *object)
+gtk_plot_canvas_text_destroy(GtkWidget *widget)
 {
-  GtkPlotCanvasText *text = GTK_PLOT_CANVAS_TEXT(object);
+  GtkPlotCanvasText *text = GTK_PLOT_CANVAS_TEXT(widget);
 
-  if(text->text.font) g_free(text->text.font);
-  text->text.font = NULL;
+  if (text->text.font) {
+      g_free(text->text.font);
+      text->text.font = NULL;
+  }
 
-  if(text->text.text) g_free(text->text.text);
-  text->text.text = NULL;
+  if (text->text.text) {
+      g_free(text->text.text);
+      text->text.text = NULL;
+  }
+
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+      (* GTK_WIDGET_CLASS (parent_class)->destroy) (widget);
 }
 
 static void 

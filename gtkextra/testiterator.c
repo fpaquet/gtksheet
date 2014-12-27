@@ -86,8 +86,7 @@ int main(int argc, char *argv[]){
  gtk_widget_set_size_request(window1,550,600);
  gtk_container_border_width(GTK_CONTAINER(window1),0);
 
- g_signal_connect (GTK_OBJECT (window1), "destroy",
-		     G_CALLBACK (quit), NULL);
+ g_signal_connect (GTK_WIDGET(window1), "destroy", G_CALLBACK(quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);
  gtk_container_add(GTK_CONTAINER(window1),vbox1);

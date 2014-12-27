@@ -53,19 +53,23 @@ AM_LDFLAGS = \
 #
 
 gtkextra_public_h_sources = \
-        gtkfontcombo.h	\
-        gtkpsfont.h \
 	gtkcharsel.h \
+	gtkdataentry.h	\
+	gtkdataformat.h	\
+	gtkextra.h	\
+        gtkfontcombo.h	\
+        gtkplot.h \
+        gtkplot3d.h \
         gtkplotarray.h \
+        gtkplotcairo.h \
+        gtkplotdata.h \
         gtkplotdt.h \
         gtkplotpc.h \
-        gtkplotcairo.h \
-        gtkplot.h \
-        gtkplotdata.h \
         gtkplotpolar.h \
         gtkplotsurface.h \
-        gtkplot3d.h \
-        gtkplotcanvas.h
+        gtkpsfont.h \
+	#gtkitementry.h	\
+        #gtkplotcanvas.h
 
 
 #tkextra_public_h_sources = \
@@ -73,17 +77,13 @@ gtkextra_public_h_sources = \
 #       gtkcheckitem.h	\
 #       gtkcolorcombo.h	\
 #       gtkcombobutton.h	\
-#       gtkdataentry.h	\
-#       gtkdataformat.h	\
 #       gtkdatatextview.h	\
 #       gtkdirtree.h	\
-#       gtkextra.h	\
 #       gtkextraicons.h	\
 #       gtkfileicons.h	\
 #       gtkfilelist.h	\
 #       gtkiconfilesel.h	\
 #       gtkiconlist.h	\
-#       gtkitementry.h	\
 #       gtkplotbar.h	\
 #       gtkplotbox.h	\
 #       gtkplotbubble.h	\
@@ -104,34 +104,34 @@ gtkextra_public_h_sources = \
 #       gtktogglecombo.h
 
 gtkextra_c_sources = 	\
-	gtkpsfont.c	\
-	gtkfontcombo.c  \
 	gtkcharsel.c \
+	gtkdataentry.c	\
+	gtkdataformat.c	\
+	gtkfontcombo.c  \
+	gtkpsfont.c	\
+        gtkextra.c \
+        gtkplot.c \
+        gtkplot3d.c \
         gtkplotarray.c \
+        gtkplotcairo.c \
+        gtkplotdata.c \
         gtkplotdt.c \
         gtkplotpc.c \
-        gtkplotcairo.c \
-        gtkplot.c \
-        gtkplotdata.c \
-        gtkextra.c \
         gtkplotpolar.c \
         gtkplotsurface.c \
-        gtkplot3d.c \
-        gtkplotcanvas.c
+	#gtkitementry.c	\
+        #gtkplotcanvas.c
 
 #tkextra_c_sources = 	\
 #       gtkbordercombo.c	\
 #       gtkcheckitem.c	\
 #       gtkcolorcombo.c	\
 #       gtkcombobutton.c	\
-#       gtkdataentry.c	\
-#       gtkdataformat.c	\
 #       gtkdatatextview.c	\
 #       gtkdirtree.c	\
 #       gtkfilelist.c	\
 #       gtkiconfilesel.c	\
 #       gtkiconlist.c	\
-#       gtkitementry.c	\
 #       gtkplotbar.c	\
 #       gtkplotbox.c	\
 #       gtkplotbubble.c	\

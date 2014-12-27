@@ -41,7 +41,7 @@
 
 static void         gtk_combo_button_class_init      (GtkComboButtonClass *klass);
 static void         gtk_combo_button_init            (GtkComboButton      *combo_button);
-static void         gtk_combo_button_destroy         (GtkObject     *combo_button);
+static void gtk_combo_button_destroy(GtkWidget *widget);
 static void         gtk_combo_button_get_pos         (GtkComboButton      *combo_button, 
                                                	  gint          *x, 
                                                   gint          *y, 
@@ -64,27 +64,23 @@ static GtkHBoxClass *parent_class = NULL;
 static void
 gtk_combo_button_class_init (GtkComboButtonClass * klass)
 {
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
+  GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
 
   parent_class = g_type_class_ref (gtk_hbox_get_type ());
-  object_class = (GtkObjectClass *) klass;
-  widget_class = (GtkWidgetClass *) klass;
-
-  object_class->destroy = gtk_combo_button_destroy;
   
   widget_class->size_allocate = gtk_combo_button_size_allocate;
   widget_class->size_request = gtk_combo_button_size_request;
+  widget_class->destroy = gtk_combo_button_destroy;
 }
 
 static void
-gtk_combo_button_destroy (GObject * combo_button)
+gtk_combo_button_destroy (GtkWidget *widget)
 {
   gtk_widget_destroy (GTK_COMBO_BUTTON (combo_button)->popwin);
   g_object_unref (GTK_COMBO_BUTTON (combo_button)->popwin);
 
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (*GTK_OBJECT_CLASS (parent_class)->destroy) (combo_button);
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+      (*GTK_WIDGET_CLASS (parent_class)->destroy) (widget);
 }
 
 
@@ -221,7 +217,7 @@ gtk_combo_button_init (GtkComboButton * combo_button)
   gtk_widget_show (combo_button->button);
   gtk_widget_show (combo_button->arrow);
 
-  g_signal_connect (GTK_OBJECT (combo_button->arrow), "toggled",
+  g_signal_connect (G_OBJECT (combo_button->arrow), "toggled",
 		      (void *) gtk_combo_button_arrow_press, combo_button);
 
                        
@@ -245,7 +241,7 @@ gtk_combo_button_init (GtkComboButton * combo_button)
   gtk_frame_set_shadow_type (GTK_FRAME (combo_button->frame), GTK_SHADOW_OUT);
   gtk_widget_show (combo_button->frame);
 
-  g_signal_connect (GTK_OBJECT (combo_button->popwin), "button_press_event",
+  g_signal_connect (G_OBJECT (combo_button->popwin), "button_press_event",
 		      (void *)gtk_combo_button_button_press, combo_button);
   
 

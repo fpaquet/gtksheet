@@ -211,7 +211,7 @@ gtk_border_combo_update (GtkWidget * widget, GtkBorderCombo * border_combo)
 
       gtk_widget_queue_draw(GTK_COMBO_BUTTON(border_combo)->button);
       
-      g_signal_emit (GTK_OBJECT(border_combo), 
+      g_signal_emit (G_OBJECT(border_combo), 
 		border_combo_signals[CHANGED],
 		0,
                 new_row * border_combo->ncols + new_col);
@@ -221,7 +221,7 @@ gtk_border_combo_update (GtkWidget * widget, GtkBorderCombo * border_combo)
           gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(border_combo->button[row][column]), TRUE);
           gtk_widget_queue_draw(border_combo->button[row][column]);
 
-          g_signal_emit (GTK_OBJECT(border_combo),                     
+          g_signal_emit (G_OBJECT(border_combo),                     
                      border_combo_signals[CHANGED],
 		     0,
                      row * border_combo->ncols + column);
@@ -338,7 +338,7 @@ gtk_border_combo_realize(GtkWidget *widget)
 
         gtk_widget_set_size_request(border_combo->button[i][j], 24, 24);
         gtk_widget_show(border_combo->button[i][j]); 
-        g_signal_connect (GTK_OBJECT (border_combo->button[i][j]), 
+        g_signal_connect (G_OBJECT (border_combo->button[i][j]), 
 			"toggled",
 		        (void *) gtk_border_combo_update, 
                         border_combo);
@@ -470,7 +470,7 @@ gtk_border_combo_realize(GtkWidget *widget)
   gtk_container_add(GTK_CONTAINER(border_combo->button[2][3]), pixmap);
   gtk_widget_show(pixmap);
 
-  g_signal_connect (GTK_OBJECT (combo->button), "clicked",
+  g_signal_connect (G_OBJECT (combo->button), "clicked",
 		      (void*) gtk_border_combo_update, 
                        border_combo);
 }

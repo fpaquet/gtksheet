@@ -104,7 +104,7 @@ gtk_plot_export_ps                              (GtkPlot *plot,
 
   plot->pc = pc;
   plot->magnification = m;
-  gtk_object_destroy(GTK_OBJECT(ps));
+  g_object_unref(G_OBJECT(ps));
   recalc_pixels(plot); 
 
   return TRUE;
@@ -172,7 +172,7 @@ gtk_plot_export_ps_with_size                    (GtkPlot *plot,
   plot->pc = pc;
   plot->magnification = m;
   recalc_pixels(plot); 
-  gtk_object_destroy(GTK_OBJECT(ps));
+  g_object_unref(G_OBJECT(ps));
 
   return TRUE;
 }
@@ -233,7 +233,7 @@ gtk_plot_canvas_export_ps                       (GtkPlotCanvas *canvas,
   canvas->pixmap = pixmap;
   canvas->pc = pc;
 
-  gtk_object_destroy(GTK_OBJECT(ps));
+  g_object_unref(G_OBJECT(ps));
 
   return TRUE;
 }
@@ -301,7 +301,7 @@ gtk_plot_canvas_export_ps_with_size             (GtkPlotCanvas *canvas,
   canvas->pixmap = pixmap;
   canvas->pc = pc;
 
-  gtk_object_destroy(GTK_OBJECT(ps));
+  g_object_unref(G_OBJECT(ps));
 
   return TRUE;
 }

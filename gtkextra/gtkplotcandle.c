@@ -79,15 +79,10 @@ gtk_plot_candle_get_type (void)
 static void
 gtk_plot_candle_class_init (GtkPlotCandleClass *klass)
 {
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
-  GtkPlotDataClass *data_class;
+  GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
+  GtkPlotDataClass *data_class = (GtkPlotDataClass *) klass;
 
   parent_class = g_type_class_ref (gtk_plot_data_get_type ());
-
-  object_class = (GtkObjectClass *) klass;
-  widget_class = (GtkWidgetClass *) klass;
-  data_class = (GtkPlotDataClass *) klass;
 
   data_class->draw_legend = gtk_plot_candle_draw_legend;
   data_class->draw_symbol = gtk_plot_candle_draw_symbol;

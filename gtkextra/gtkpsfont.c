@@ -425,7 +425,7 @@ gtk_psfont_unref()
  * 
  * Get PS Font by font name.
  *  
- * Returns: (transfer none) a #GtkPSFont pointer.
+ * Returns(transfer none): a #GtkPSFont pointer.
  */
 GtkPSFont *
 gtk_psfont_get_by_name(const gchar *name)
@@ -690,7 +690,7 @@ find_psfont(const gchar *name)
  * 
  * Get #GtkPSFont by family. 
  *  
- * Returns: (transfer none) the #GtkPSFont 
+ * Returns(transfer none): the #GtkPSFont 
  */
 GtkPSFont *
 gtk_psfont_get_by_family(const gchar *family_name, gboolean italic, gboolean bold)
@@ -738,7 +738,7 @@ gtk_psfont_get_by_family(const gchar *family_name, gboolean italic, gboolean bol
 
 /**
  * gtk_psfont_get_families:
- * @families:  (element-type gchar*) font families
+ * @families:  font families, element-type is gchar*
  * @num_families: families number
  * 
  * Get #GtkPSFont by family. 

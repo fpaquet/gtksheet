@@ -66,7 +66,7 @@ typedef struct
 
 static void gtk_plot_csurface_class_init 	(GtkPlotCSurfaceClass *klass);
 static void gtk_plot_csurface_init 		(GtkPlotCSurface *data);
-static void gtk_plot_csurface_destroy 		(GtkObject *object);
+static void gtk_plot_csurface_destroy(GtkWidget *widget);
 static void gtk_plot_csurface_get_property         (GObject      *object,
                                                  guint            prop_id,
                                                  GValue          *value,
@@ -145,24 +145,17 @@ gtk_plot_csurface_get_type (void)
 static void
 gtk_plot_csurface_class_init (GtkPlotCSurfaceClass *klass)
 {
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
-  GtkPlotDataClass *data_class;
-  GtkPlotSurfaceClass *surface_class;
+  GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
+  GtkPlotDataClass *data_class = (GtkPlotDataClass *) klass;
+  GtkPlotSurfaceClass *surface_class = (GtkPlotSurfaceClass *) klass;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
   parent_class = g_type_class_ref (gtk_plot_surface_get_type ());
 
-  object_class = (GtkObjectClass *) klass;
-  widget_class = (GtkWidgetClass *) klass;
-  data_class = (GtkPlotDataClass *) klass;
-  surface_class = (GtkPlotSurfaceClass *) klass;
-
-  object_class->destroy = gtk_plot_csurface_destroy;
-
   gobject_class->set_property = gtk_plot_csurface_set_property;
   gobject_class->get_property = gtk_plot_csurface_get_property;
 
+  widget_class->destroy = gtk_plot_csurface_destroy;
 
   /**
    * GtkPlotCSurface:lines_visible:
@@ -364,7 +357,7 @@ gtk_plot_csurface_get_property (GObject      *object,
 static void
 update_data (GtkPlotData *data)
 {
-  GTK_PLOT_SURFACE_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(data)))->build_polygons(GTK_PLOT_SURFACE(data));
+  GTK_PLOT_SURFACE_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(data)))->build_polygons(GTK_PLOT_SURFACE(data));
   data->redraw_pending = TRUE;
 }
 
@@ -404,15 +397,14 @@ gtk_plot_csurface_init (GtkPlotCSurface *dataset)
 }
 
 static void 
-gtk_plot_csurface_destroy 		(GtkObject *object)
+gtk_plot_csurface_destroy(GtkWidget *widget)
 {
-  GtkPlotCSurface *surface;
-
-  surface = GTK_PLOT_CSURFACE(object);
+  GtkPlotCSurface *surface = GTK_PLOT_CSURFACE(object);
 
   clear_polygons(surface);
 
-  GTK_OBJECT_CLASS(parent_class)->destroy(object);
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+      (* GTK_WIDGET_CLASS (parent_class)->destroy) (widget);
 }
 
 GtkWidget*

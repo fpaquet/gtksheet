@@ -42,7 +42,7 @@
 
 static void gtk_plot_bubble_class_init 	(GtkPlotBubbleClass *klass);
 static void gtk_plot_bubble_init 	(GtkPlotBubble *data);
-static void gtk_plot_bubble_destroy 	(GtkObject *data);
+static void gtk_plot_bubble_destroy(GtkWidget *widget);
 static void gtk_plot_bubble_set_property       (GObject *object,
                                                 guint            prop_id,
                                                 const GValue    *value,
@@ -106,21 +106,16 @@ gtk_plot_bubble_get_type (void)
 static void
 gtk_plot_bubble_class_init (GtkPlotBubbleClass *klass)
 {
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
-  GtkPlotDataClass *data_class;
+  GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
+  GtkPlotDataClass *data_class = (GtkPlotDataClass *) klass;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
   parent_class = g_type_class_ref (gtk_plot_data_get_type ());
 
-  object_class = (GtkObjectClass *) klass;
-  widget_class = (GtkWidgetClass *) klass;
-  data_class = (GtkPlotDataClass *) klass;
-  
-
   gobject_class->set_property = gtk_plot_bubble_set_property;
   gobject_class->get_property = gtk_plot_bubble_get_property;
-  object_class->destroy = gtk_plot_bubble_destroy;
+
+  widget_class->destroy = gtk_plot_bubble_destroy;
 
   /**
    * GtkPlotBubble:scale_max:
@@ -342,17 +337,21 @@ gtk_plot_bubble_new ()
 }
 
 static void
-gtk_plot_bubble_destroy(GtkObject *object)
+gtk_plot_bubble_destroy(GtkWidget *widget)
 {
   GtkPlotBubble *bubble = GTK_PLOT_BUBBLE(object);
 
-  if(bubble->labels_prefix) g_free(bubble->labels_prefix);
-  bubble->labels_prefix = NULL;
-  if(bubble->labels_suffix) g_free(bubble->labels_suffix);
-  bubble->labels_suffix = NULL;
+  if (bubble->labels_prefix) {
+      g_free(bubble->labels_prefix);
+      bubble->labels_prefix = NULL;
+  }
+  if (bubble->labels_suffix) {
+      g_free(bubble->labels_suffix);
+      bubble->labels_suffix = NULL;
+  }
 
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+      (* GTK_WIDGET_CLASS (parent_class)->destroy) (widget);
 }
 
 static void

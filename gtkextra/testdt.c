@@ -69,6 +69,6 @@ int main(int argc, char **argv)
   }
 
   /* clean up data and exit */
-  gtk_object_destroy(GTK_OBJECT(data));
+  g_object_unref(G_OBJECT(data));
   return 0;
 }

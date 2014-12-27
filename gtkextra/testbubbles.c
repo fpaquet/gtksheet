@@ -124,7 +124,7 @@ activate_plot(GtkWidget *widget, gpointer data)
   
   while(n < nlayers)
     {
-      g_signal_handlers_block_by_func(GTK_OBJECT(buttons[n]), 
+      g_signal_handlers_block_by_func(G_OBJECT(buttons[n]), 
 		(void *)activate_plot, data);
       if(widget_list[n] == active_widget){
             active_plot = plots[n];
@@ -132,7 +132,7 @@ activate_plot(GtkWidget *widget, gpointer data)
       }else{
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(buttons[n]), FALSE);
       }
-      g_signal_handlers_unblock_by_func(GTK_OBJECT(buttons[n]),
+      g_signal_handlers_unblock_by_func(G_OBJECT(buttons[n]),
 		(void *)activate_plot, data);
                                                                                 
       n++;
@@ -165,7 +165,7 @@ new_layer(GtkWidget *canvas)
  gtk_fixed_put(GTK_FIXED(canvas), buttons[nlayers-1], (nlayers-1)*20, 0);
  gtk_widget_show(buttons[nlayers-1]);
 
- g_signal_connect(GTK_OBJECT(buttons[nlayers-1]), "toggled",
+ g_signal_connect(G_OBJECT(buttons[nlayers-1]), "toggled",
                     (void *) activate_plot, canvas);
 
  plots[nlayers-1] = gtk_plot_new_with_size(NULL, .5, .25);
@@ -241,8 +241,7 @@ int main(int argc, char *argv[]){
  gtk_widget_set_size_request(window1,550,650);
  gtk_container_set_border_width(GTK_CONTAINER(window1),0);
 
- g_signal_connect (GTK_OBJECT (window1), "destroy",
-		     (void *)quit, NULL);
+ g_signal_connect (GTK_WIDGET(window1), "destroy", G_CALLBACK(quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);
  gtk_container_add(GTK_CONTAINER(window1),vbox1);
@@ -283,7 +282,7 @@ int main(int argc, char *argv[]){
 
  gtk_widget_show(active_plot);
 
- g_signal_connect(GTK_OBJECT(canvas), "select_item",
+ g_signal_connect(G_OBJECT(canvas), "select_item",
                     (void *) select_item, NULL);
 
  gtk_widget_show(window1);

@@ -454,7 +454,7 @@ gtk_plot_array_get_int(GtkPlotArray *array)
  * gtk_plot_array_get_string:
  * @array:  the #GtkPlotArray
  * 
- * Returns: (transfer none) the data string array
+ * Returns(transfer none): the data string array
  */
 gchar **
 gtk_plot_array_get_string(GtkPlotArray *array)
@@ -467,7 +467,7 @@ gtk_plot_array_get_string(GtkPlotArray *array)
  * gtk_plot_array_get_pointer:
  * @array:  the #GtkPlotArray
  * 
- * Returns: (transfer none) the data pointer array
+ * Returns(transfer none): the data pointer array
  */
 gpointer *
 gtk_plot_array_get_pointer(GtkPlotArray *array)
@@ -561,7 +561,7 @@ gtk_plot_array_list_remove(GtkPlotArrayList *array_list, GtkPlotArray *array)
  * @set: a #GtkPlotArrayList
  * @name:       the name to be searched for
  * 
- * Returns: (transfer none) the named #GtkPlotArray or NULL
+ * Returns(transfer none): the named #GtkPlotArray or NULL
  */
 GtkPlotArray *
 gtk_plot_array_list_get(GtkPlotArrayList *set, const gchar *name)

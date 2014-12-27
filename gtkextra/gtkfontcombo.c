@@ -360,7 +360,7 @@ gtk_font_combo_get_font_height (GtkFontCombo *combo)
  * gtk_font_combo_get_psfont:
  * @font_combo:  the #GtkFontCombo
  * 
- * Returns: (transfer none) the #GtkPSFont
+ * Returns(transfer none): the #GtkPSFont
  */
 GtkPSFont * 
 gtk_font_combo_get_psfont (GtkFontCombo *font_combo)

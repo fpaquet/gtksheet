@@ -46,13 +46,13 @@ gtkextra_check_version (guint required_major,
 
 /*
 void
-_gtkextra_signal_test(GtkObject *object, guint signal_id, gint arg1, gint arg2, gboolean *default_ret)
+_gtkextra_signal_test(GObject *object, guint signal_id, gint arg1, gint arg2, gboolean *default_ret)
 {
   gboolean result;
   GValue ret = { 0, };
   GValue instance_and_param[3] = { { 0, }, {0, }, {0, } };
 
-  g_value_init(instance_and_param + 0, GTK_OBJECT_TYPE(object));
+  g_value_init(instance_and_param + 0, G_OBJECT_TYPE(object));
   g_value_set_instance(instance_and_param + 0, G_OBJECT(object));
 
   g_value_init(instance_and_param + 1, G_TYPE_INT);

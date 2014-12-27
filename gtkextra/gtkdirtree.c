@@ -242,13 +242,9 @@ gtk_dir_tree_new (void)
 static void
 gtk_dir_tree_class_init (GtkDirTreeClass *klass)
 {
-  GtkWidgetClass *widget_class;
-  GtkObjectClass *object_class;
+  GtkWidgetClass *widget_class = (GtkWidgetClass*) klass;
   
   parent_class = g_type_class_ref (gtk_ctree_get_type ());
-  widget_class = (GtkWidgetClass*) klass;
-  object_class = (GtkObjectClass *) klass;
-
 }
 
 static void
@@ -302,7 +298,7 @@ gtk_dir_tree_init (GtkDirTree *dir_tree)
   gtk_clist_set_selection_mode(GTK_CLIST(dir_tree),GTK_SELECTION_SINGLE);
   gtk_ctree_set_line_style(GTK_CTREE(dir_tree),GTK_CTREE_LINES_DOTTED);
   
-  g_signal_connect(GTK_OBJECT(dir_tree),"tree_expand",G_CALLBACK(expand_tree), NULL);
+  g_signal_connect(G_OBJECT(dir_tree),"tree_expand",G_CALLBACK(expand_tree), NULL);
 
   mypc_node=gtk_ctree_insert_node(GTK_CTREE(dir_tree),NULL,NULL,&dir_tree->local_hostname,4,dir_tree->my_pc,dir_tree->my_pc_mask,dir_tree->my_pc,dir_tree->my_pc_mask,FALSE,FALSE);
 

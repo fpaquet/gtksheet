@@ -76,11 +76,11 @@ typedef enum {
     CURSOR_DND
 } CursorType;
 
-/* GObject, GtkObject methods
+/* GObject methods
  */
 static void   gtk_item_entry_class_init(GtkItemEntryClass *klass);
 static void   gtk_item_entry_init(GtkItemEntry *entry);
-static void   gtk_item_entry_editable_init(GtkEditableClass *iface);
+static void   gtk_item_entry_editable_init(GtkEditableInterface *iface);
 
 /* GtkWidget methods
  */
@@ -90,7 +90,7 @@ static void   gtk_item_entry_size_request(GtkWidget *widget,
 static void   gtk_item_entry_size_allocate(GtkWidget *widget,
     GtkAllocation *allocation);
 static void   gtk_item_entry_draw_frame(GtkWidget *widget);
-static void   gtk_item_entry_destroy(GtkObject *object);
+static void   gtk_item_entry_destroy(GtkWidget *widget);
 static void   gtk_item_entry_dispose(GObject *object);
 static void   gtk_item_entry_finalize(GObject *object);
 static gint   gtk_item_entry_expose(GtkWidget *widget, GdkEventExpose *event);
@@ -258,17 +258,13 @@ static void
 gtk_item_entry_class_init(GtkItemEntryClass *klass)
 {
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-    GtkObjectClass *gtk_object_class;
-    GtkWidgetClass *widget_class;
-    GtkEntryClass *entry_class;
+    GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
+    GtkEntryClass *entry_class = (GtkEntryClass *)klass;;
 
     gobject_class->dispose = gtk_item_entry_dispose;
     gobject_class->finalize = gtk_item_entry_finalize;
 
-    gtk_object_class = (GtkObjectClass *)klass;
-    widget_class = (GtkWidgetClass *)klass;
     parent_class = g_type_class_ref(gtk_entry_get_type());
-    entry_class = (GtkEntryClass *)klass;
 
     widget_class->realize = gtk_item_entry_realize;
     widget_class->size_request = gtk_item_entry_size_request;
@@ -278,16 +274,15 @@ gtk_item_entry_class_init(GtkItemEntryClass *klass)
     widget_class->style_set = gtk_item_entry_style_set;
     widget_class->direction_changed = gtk_item_entry_direction_changed;
     widget_class->state_changed = gtk_item_entry_state_changed;
+    widget_class->destroy = gtk_item_entry_destroy;
 
     entry_class->move_cursor = gtk_item_entry_move_cursor;
     entry_class->insert_at_cursor = gtk_item_entry_insert_at_cursor;
     entry_class->delete_from_cursor = gtk_item_entry_delete_from_cursor;
-
-    gtk_object_class->destroy = gtk_item_entry_destroy;
 }
 
 static void
-gtk_item_entry_editable_init(GtkEditableClass *iface)
+gtk_item_entry_editable_init(GtkEditableInterface *iface)
 {
     iface->do_insert_text = gtk_item_entry_insert_text;
     iface->do_delete_text = gtk_item_entry_delete_text;
@@ -603,16 +598,17 @@ gtk_item_entry_draw_frame(GtkWidget *widget)
 }
 
 static void
-gtk_item_entry_destroy (GtkObject *object)
+gtk_item_entry_destroy (GtkWidget *widget)
 {
 #if GTK_ITEM_ENTRY_DEBUG_DESTUCTION>0
-  GtkItemEntry *ientry = GTK_ITEM_ENTRY(object);
+  GtkItemEntry *ientry = GTK_ITEM_ENTRY(widget);
 
   g_debug("gtk_item_entry_destroy %p %s", ientry, 
       gtk_widget_get_name(GTK_WIDGET(ientry)));
 #endif
 
-  GTK_OBJECT_CLASS (parent_class)->destroy(object);
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+      (* GTK_WIDGET_CLASS (parent_class)->destroy) (widget);
 }
 
 static void

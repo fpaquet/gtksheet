@@ -4,23 +4,6 @@
 #define GTKEXTRA_ENABLE_BROKEN
 #include "gtkextra.h"
 
-/* enumerations from "gtkiconlist.h" */
-GType
-gtk_icon_list_mode_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { GTK_ICON_LIST_ICON, "GTK_ICON_LIST_ICON", "icon" },
-      { GTK_ICON_LIST_TEXT_RIGHT, "GTK_ICON_LIST_TEXT_RIGHT", "text-right" },
-      { GTK_ICON_LIST_TEXT_BELOW, "GTK_ICON_LIST_TEXT_BELOW", "text-below" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("GtkIconListMode", values);
-  }
-  return etype;
-}
-
 /* enumerations from "gtkplot.h" */
 GType
 gtk_plot_scale_get_type (void)
@@ -163,9 +146,11 @@ gtk_plot_orientation_get_type (void)
   static GType etype = 0;
   if (etype == 0) {
     static const GEnumValue values[] = {
-      { GTK_PLOT_AXIS_X, "GTK_PLOT_AXIS_X", "x" },
-      { GTK_PLOT_AXIS_Y, "GTK_PLOT_AXIS_Y", "y" },
-      { GTK_PLOT_AXIS_Z, "GTK_PLOT_AXIS_Z", "z" },
+      { GTK_PLOT_AXIS_X, "GTK_PLOT_AXIS_X", "axis-x" },
+      { GTK_PLOT_AXIS_Y, "GTK_PLOT_AXIS_Y", "axis-y" },
+      { GTK_PLOT_AXIS_Z, "GTK_PLOT_AXIS_Z", "axis-z" },
+      { GTK_PLOT_ORIENTATION_HORIZONTAL, "GTK_PLOT_ORIENTATION_HORIZONTAL", "orientation-horizontal" },
+      { GTK_PLOT_ORIENTATION_VERTICAL, "GTK_PLOT_ORIENTATION_VERTICAL", "orientation-vertical" },
       { 0, NULL, NULL }
     };
     etype = g_enum_register_static ("GtkPlotOrientation", values);
@@ -257,163 +242,6 @@ gtk_plot_side_get_type (void)
   return etype;
 }
 
-/* enumerations from "gtkplotbar.h" */
-GType
-gtk_plot_bar_units_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { GTK_PLOT_BAR_POINTS, "GTK_PLOT_BAR_POINTS", "points" },
-      { GTK_PLOT_BAR_RELATIVE, "GTK_PLOT_BAR_RELATIVE", "relative" },
-      { GTK_PLOT_BAR_ABSOLUTE, "GTK_PLOT_BAR_ABSOLUTE", "absolute" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("GtkPlotBarUnits", values);
-  }
-  return etype;
-}
-
-/* enumerations from "gtkplotcanvas.h" */
-GType
-gtk_plot_canvas_action_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { GTK_PLOT_CANVAS_ACTION_INACTIVE, "GTK_PLOT_CANVAS_ACTION_INACTIVE", "inactive" },
-      { GTK_PLOT_CANVAS_ACTION_SELECTION, "GTK_PLOT_CANVAS_ACTION_SELECTION", "selection" },
-      { GTK_PLOT_CANVAS_ACTION_DRAG, "GTK_PLOT_CANVAS_ACTION_DRAG", "drag" },
-      { GTK_PLOT_CANVAS_ACTION_RESIZE, "GTK_PLOT_CANVAS_ACTION_RESIZE", "resize" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("GtkPlotCanvasAction", values);
-  }
-  return etype;
-}
-GType
-gtk_plot_canvas_flag_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GFlagsValue values[] = {
-      { GTK_PLOT_CANVAS_FROZEN, "GTK_PLOT_CANVAS_FROZEN", "frozen" },
-      { GTK_PLOT_CANVAS_CAN_MOVE, "GTK_PLOT_CANVAS_CAN_MOVE", "can-move" },
-      { GTK_PLOT_CANVAS_CAN_RESIZE, "GTK_PLOT_CANVAS_CAN_RESIZE", "can-resize" },
-      { 0, NULL, NULL }
-    };
-    etype = g_flags_register_static ("GtkPlotCanvasFlag", values);
-  }
-  return etype;
-}
-GType
-gtk_plot_canvas_selection_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { GTK_PLOT_CANVAS_SELECT_NONE, "GTK_PLOT_CANVAS_SELECT_NONE", "none" },
-      { GTK_PLOT_CANVAS_SELECT_MARKERS, "GTK_PLOT_CANVAS_SELECT_MARKERS", "markers" },
-      { GTK_PLOT_CANVAS_SELECT_TARGET, "GTK_PLOT_CANVAS_SELECT_TARGET", "target" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("GtkPlotCanvasSelection", values);
-  }
-  return etype;
-}
-GType
-gtk_plot_canvas_selection_mode_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { GTK_PLOT_CANVAS_SELECT_CLICK_1, "GTK_PLOT_CANVAS_SELECT_CLICK_1", "1" },
-      { GTK_PLOT_CANVAS_SELECT_CLICK_2, "GTK_PLOT_CANVAS_SELECT_CLICK_2", "2" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("GtkPlotCanvasSelectionMode", values);
-  }
-  return etype;
-}
-GType
-gtk_plot_canvas_pos_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { GTK_PLOT_CANVAS_OUT, "GTK_PLOT_CANVAS_OUT", "out" },
-      { GTK_PLOT_CANVAS_IN, "GTK_PLOT_CANVAS_IN", "in" },
-      { GTK_PLOT_CANVAS_LEFT, "GTK_PLOT_CANVAS_LEFT", "left" },
-      { GTK_PLOT_CANVAS_RIGHT, "GTK_PLOT_CANVAS_RIGHT", "right" },
-      { GTK_PLOT_CANVAS_TOP, "GTK_PLOT_CANVAS_TOP", "top" },
-      { GTK_PLOT_CANVAS_BOTTOM, "GTK_PLOT_CANVAS_BOTTOM", "bottom" },
-      { GTK_PLOT_CANVAS_TOP_LEFT, "GTK_PLOT_CANVAS_TOP_LEFT", "top-left" },
-      { GTK_PLOT_CANVAS_TOP_RIGHT, "GTK_PLOT_CANVAS_TOP_RIGHT", "top-right" },
-      { GTK_PLOT_CANVAS_BOTTOM_LEFT, "GTK_PLOT_CANVAS_BOTTOM_LEFT", "bottom-left" },
-      { GTK_PLOT_CANVAS_BOTTOM_RIGHT, "GTK_PLOT_CANVAS_BOTTOM_RIGHT", "bottom-right" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("GtkPlotCanvasPos", values);
-  }
-  return etype;
-}
-
-/* enumerations from "gtkplotcanvasline.h" */
-GType
-gtk_plot_canvas_arrow_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GFlagsValue values[] = {
-      { GTK_PLOT_CANVAS_ARROW_NONE, "GTK_PLOT_CANVAS_ARROW_NONE", "none" },
-      { GTK_PLOT_CANVAS_ARROW_ORIGIN, "GTK_PLOT_CANVAS_ARROW_ORIGIN", "origin" },
-      { GTK_PLOT_CANVAS_ARROW_END, "GTK_PLOT_CANVAS_ARROW_END", "end" },
-      { 0, NULL, NULL }
-    };
-    etype = g_flags_register_static ("GtkPlotCanvasArrow", values);
-  }
-  return etype;
-}
-
-/* enumerations from "gtkplotcanvasplot.h" */
-GType
-gtk_plot_canvas_plot_pos_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { GTK_PLOT_CANVAS_PLOT_OUT, "GTK_PLOT_CANVAS_PLOT_OUT", "out" },
-      { GTK_PLOT_CANVAS_PLOT_IN_PLOT, "GTK_PLOT_CANVAS_PLOT_IN_PLOT", "in-plot" },
-      { GTK_PLOT_CANVAS_PLOT_IN_LEGENDS, "GTK_PLOT_CANVAS_PLOT_IN_LEGENDS", "in-legends" },
-      { GTK_PLOT_CANVAS_PLOT_IN_TITLE, "GTK_PLOT_CANVAS_PLOT_IN_TITLE", "in-title" },
-      { GTK_PLOT_CANVAS_PLOT_IN_AXIS, "GTK_PLOT_CANVAS_PLOT_IN_AXIS", "in-axis" },
-      { GTK_PLOT_CANVAS_PLOT_IN_DATA, "GTK_PLOT_CANVAS_PLOT_IN_DATA", "in-data" },
-      { GTK_PLOT_CANVAS_PLOT_IN_GRADIENT, "GTK_PLOT_CANVAS_PLOT_IN_GRADIENT", "in-gradient" },
-      { GTK_PLOT_CANVAS_PLOT_IN_MARKER, "GTK_PLOT_CANVAS_PLOT_IN_MARKER", "in-marker" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("GtkPlotCanvasPlotPos", values);
-  }
-  return etype;
-}
-
-/* enumerations from "gtkplotcsurface.h" */
-GType
-gtk_plot_projection_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { GTK_PLOT_PROJECT_NONE, "GTK_PLOT_PROJECT_NONE", "none" },
-      { GTK_PLOT_PROJECT_EMPTY, "GTK_PLOT_PROJECT_EMPTY", "empty" },
-      { GTK_PLOT_PROJECT_FULL, "GTK_PLOT_PROJECT_FULL", "full" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("GtkPlotProjection", values);
-  }
-  return etype;
-}
-
 /* enumerations from "gtkplotpc.h" */
 GType
 gtk_plot_page_size_get_type (void)
@@ -462,95 +290,49 @@ gtk_plot_units_get_type (void)
   }
   return etype;
 }
-
-/* enumerations from "gtkplotsegment.h" */
 GType
-gtk_plot_arrow_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GFlagsValue values[] = {
-      { GTK_PLOT_ARROW_NONE, "GTK_PLOT_ARROW_NONE", "none" },
-      { GTK_PLOT_ARROW_ORIGIN, "GTK_PLOT_ARROW_ORIGIN", "origin" },
-      { GTK_PLOT_ARROW_END, "GTK_PLOT_ARROW_END", "end" },
-      { 0, NULL, NULL }
-    };
-    etype = g_flags_register_static ("GtkPlotArrow", values);
-  }
-  return etype;
-}
-
-/* enumerations from "gtksheet.h" */
-GType
-gtk_sheet_attr_type_get_type (void)
+gtk_plot_gdk_line_style_get_type (void)
 {
   static GType etype = 0;
   if (etype == 0) {
     static const GEnumValue values[] = {
-      { GTK_SHEET_FOREGROUND, "GTK_SHEET_FOREGROUND", "foreground" },
-      { GTK_SHEET_BACKGROUND, "GTK_SHEET_BACKGROUND", "background" },
-      { GTK_SHEET_FONT, "GTK_SHEET_FONT", "font" },
-      { GTK_SHEET_JUSTIFICATION, "GTK_SHEET_JUSTIFICATION", "justification" },
-      { GTK_SHEET_BORDER, "GTK_SHEET_BORDER", "border" },
-      { GTK_SHEET_BORDER_COLOR, "GTK_SHEET_BORDER_COLOR", "border-color" },
-      { GTK_SHEET_IS_EDITABLE, "GTK_SHEET_IS_EDITABLE", "is-editable" },
-      { GTK_SHEET_IS_VISIBLE, "GTK_SHEET_IS_VISIBLE", "is-visible" },
+      { GTK_PLOT_GDK_LINE_SOLID, "GTK_PLOT_GDK_LINE_SOLID", "solid" },
+      { GTK_PLOT_GDK_LINE_ON_OFF_DASH, "GTK_PLOT_GDK_LINE_ON_OFF_DASH", "on-off-dash" },
+      { GTK_PLOT_GDK_LINE_DOUBLE_DASH, "GTK_PLOT_GDK_LINE_DOUBLE_DASH", "double-dash" },
       { 0, NULL, NULL }
     };
-    etype = g_enum_register_static ("GtkSheetAttrType", values);
+    etype = g_enum_register_static ("GtkPlotGdkLineStyle", values);
   }
   return etype;
 }
 GType
-gtk_sheet_state_get_type (void)
+gtk_plot_gdk_cap_style_get_type (void)
 {
   static GType etype = 0;
   if (etype == 0) {
     static const GEnumValue values[] = {
-      { GTK_SHEET_NORMAL, "GTK_SHEET_NORMAL", "normal" },
-      { GTK_SHEET_ROW_SELECTED, "GTK_SHEET_ROW_SELECTED", "row-selected" },
-      { GTK_SHEET_COLUMN_SELECTED, "GTK_SHEET_COLUMN_SELECTED", "column-selected" },
-      { GTK_SHEET_RANGE_SELECTED, "GTK_SHEET_RANGE_SELECTED", "range-selected" },
+      { GTK_PLOT_GDK_CAP_NOT_LAST, "GTK_PLOT_GDK_CAP_NOT_LAST", "not-last" },
+      { GTK_PLOT_GDK_CAP_BUTT, "GTK_PLOT_GDK_CAP_BUTT", "butt" },
+      { GTK_PLOT_GDK_CAP_ROUND, "GTK_PLOT_GDK_CAP_ROUND", "round" },
+      { GTK_PLOT_GDK_CAP_PROJECTING, "GTK_PLOT_GDK_CAP_PROJECTING", "projecting" },
       { 0, NULL, NULL }
     };
-    etype = g_enum_register_static ("GtkSheetState", values);
+    etype = g_enum_register_static ("GtkPlotGdkCapStyle", values);
   }
   return etype;
 }
 GType
-gtk_sheet_entry_type_get_type (void)
+gtk_plot_gdk_join_style_get_type (void)
 {
   static GType etype = 0;
   if (etype == 0) {
     static const GEnumValue values[] = {
-      { GTK_SHEET_ENTRY_TYPE_DEFAULT, "GTK_SHEET_ENTRY_TYPE_DEFAULT", "default" },
-      { GTK_SHEET_ENTRY_TYPE_GTK_ITEM_ENTRY, "GTK_SHEET_ENTRY_TYPE_GTK_ITEM_ENTRY", "gtk-item-entry" },
-      { GTK_SHEET_ENTRY_TYPE_GTK_ENTRY, "GTK_SHEET_ENTRY_TYPE_GTK_ENTRY", "gtk-entry" },
-      { GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW, "GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW", "gtk-text-view" },
-      { GTK_SHEET_ENTRY_TYPE_GTK_DATA_TEXT_VIEW, "GTK_SHEET_ENTRY_TYPE_GTK_DATA_TEXT_VIEW", "gtk-data-text-view" },
-      { GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON, "GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON", "gtk-spin-button" },
-      { GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX, "GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX", "gtk-combo-box" },
-      { GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX_ENTRY, "GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX_ENTRY", "gtk-combo-box-entry" },
-      { GTK_SHEET_ENTRY_TYPE_GTK_COMBO, "GTK_SHEET_ENTRY_TYPE_GTK_COMBO", "gtk-combo" },
+      { GTK_PLOT_GDK_JOIN_MITER, "GTK_PLOT_GDK_JOIN_MITER", "miter" },
+      { GTK_PLOT_GDK_JOIN_ROUND, "GTK_PLOT_GDK_JOIN_ROUND", "round" },
+      { GTK_PLOT_GDK_JOIN_BEVEL, "GTK_PLOT_GDK_JOIN_BEVEL", "bevel" },
       { 0, NULL, NULL }
     };
-    etype = g_enum_register_static ("GtkSheetEntryType", values);
-  }
-  return etype;
-}
-GType
-gtk_sheet_vertical_justification_get_type (void)
-{
-  static GType etype = 0;
-  if (etype == 0) {
-    static const GEnumValue values[] = {
-      { GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT, "GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT", "default" },
-      { GTK_SHEET_VERTICAL_JUSTIFICATION_TOP, "GTK_SHEET_VERTICAL_JUSTIFICATION_TOP", "top" },
-      { GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE, "GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE", "middle" },
-      { GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM, "GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM", "bottom" },
-      { 0, NULL, NULL }
-    };
-    etype = g_enum_register_static ("GtkSheetVerticalJustification", values);
+    etype = g_enum_register_static ("GtkPlotGdkJoinStyle", values);
   }
   return etype;
 }

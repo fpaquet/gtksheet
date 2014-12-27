@@ -615,7 +615,7 @@ gtk_plot_canvas_line_resize             (GtkPlotCanvas *canvas,
   line->x2 = x2;
   line->y2 = y2;
                                                                                 
-  GTK_PLOT_CANVAS_CHILD_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(child)))->size_allocate(canvas, child);
+  GTK_PLOT_CANVAS_CHILD_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(child)))->size_allocate(canvas, child);
   gtk_plot_canvas_paint(canvas);
   gtk_plot_canvas_refresh(canvas);
 }
@@ -648,7 +648,7 @@ gtk_plot_canvas_line_button_release     (GtkPlotCanvas *canvas,
   child->rx2 = line->x2;
   child->ry2 = line->y2;
 
-  GTK_PLOT_CANVAS_CHILD_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(child)))->size_allocate(canvas, child);
+  GTK_PLOT_CANVAS_CHILD_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(child)))->size_allocate(canvas, child);
   gtk_plot_canvas_paint(canvas);
   gtk_plot_canvas_refresh(canvas);
 }

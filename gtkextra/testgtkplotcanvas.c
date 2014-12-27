@@ -102,8 +102,7 @@ int main(int argc, char *argv[]){
  gtk_widget_set_size_request(window1,550,650);
  gtk_container_border_width(GTK_CONTAINER(window1),0);
 
- g_signal_connect (GTK_OBJECT (window1), "destroy",
-		     G_CALLBACK (quit), NULL);
+ g_signal_connect (GTK_WIDGET(window1), "destroy", G_CALLBACK(quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);
  gtk_container_add(GTK_CONTAINER(window1),vbox1);
@@ -144,7 +143,7 @@ int main(int argc, char *argv[]){
  child = gtk_plot_canvas_text_new("Helvetica", 24, 0, NULL, NULL, TRUE, GTK_JUSTIFY_CENTER, "This is a text box");
  gtk_plot_canvas_put_child(GTK_PLOT_CANVAS(canvas), child, 0.5, 0.05, 0.6, 0.1);
 
- g_signal_connect(GTK_OBJECT(canvas), "select_item",
+ g_signal_connect(G_OBJECT(canvas), "select_item",
                     (void *) select_item, NULL);
 
  gtk_widget_show(window1);

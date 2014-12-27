@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 		      (void *)quit, NULL);
   */
 /*
-  g_signal_connect (GTK_OBJECT (GTK_CHAR_SELECTION(charsel)->ok_button), 
+  g_signal_connect (G_OBJECT (GTK_CHAR_SELECTION(charsel)->ok_button), 
                      "clicked",
 		      G_CALLBACK(ok_clicked), charsel);
 */

@@ -2810,7 +2810,7 @@ gtk_plot3d_frame_get_attributes   (GtkPlot3D *plot,
  * @plot: a #GtkPlot3D widget.
  * @orientation: of axis to be returned
  *
- * Return value: (transfer none) the #GtkPlotAxis with given 
+ * Return value(transfer none): the #GtkPlotAxis with given 
  * orientation 
  */
 GtkPlotAxis *

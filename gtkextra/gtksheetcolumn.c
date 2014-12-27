@@ -73,7 +73,7 @@
 #define GTK_DATA_TEXT_VIEW_BUFFER_MAX_SIZE (G_MAXINT / 2)
 
 
-static GtkObjectClass *sheet_column_parent_class = NULL;
+static GInitiallyUnowned *sheet_column_parent_class = NULL;
 
 enum _GtkSheetColumnProperties
 {
@@ -1087,7 +1087,7 @@ gtk_sheet_set_column_width(GtkSheet *sheet, gint col, guint width)
         _gtk_sheet_entry_size_allocate(sheet);
         _gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
-    g_signal_emit_by_name(GTK_OBJECT(sheet), "new-column-width", col, width);
+    g_signal_emit_by_name(G_OBJECT(sheet), "new-column-width", col, width);
 }
 
 
@@ -1160,7 +1160,7 @@ gtk_sheet_column_button_add_label(GtkSheet *sheet, gint col, const gchar *label)
     {
         _gtk_sheet_draw_button(sheet, -1, col);
     }
-    g_signal_emit_by_name(GTK_OBJECT(sheet), "changed", -1, col);
+    g_signal_emit_by_name(G_OBJECT(sheet), "changed", -1, col);
 }
 
 /**

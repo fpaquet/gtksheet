@@ -82,7 +82,7 @@ fnmatch(const char* pattern, const char* s, int m)
 
 static void gtk_file_list_class_init          (GtkFileListClass *klass);
 static void gtk_file_list_init                (GtkFileList      *file_list);
-static void gtk_file_list_destroy             (GtkObject      *object);
+static void gtk_file_list_destroy(GtkWidget *widget);
 static void gtk_file_list_realize             (GtkWidget *widget);
 static gint sort_list			      (gpointer a, gpointer b);
 extern gboolean check_dir_extra (gchar *dir_name, struct stat *result, gboolean *stat_subdirs);
@@ -221,28 +221,24 @@ gtk_file_list_construct(GtkFileList *file_list,
 static void
 gtk_file_list_class_init (GtkFileListClass *klass)
 {
-  GtkWidgetClass *widget_class;
-  GtkObjectClass *object_class;
+  GtkWidgetClass *widget_class = (GtkWidgetClass*) klass;
   
-  widget_class = (GtkWidgetClass*) klass;
-  object_class = (GtkObjectClass*) klass;
   parent_class = g_type_class_ref (gtk_icon_list_get_type ());
 
   widget_class->realize = gtk_file_list_realize; 
-  object_class->destroy = gtk_file_list_destroy; 
+  widget_class->destroy = gtk_file_list_destroy; 
 }
 
 static void
-gtk_file_list_destroy(GtkObject *object)
+gtk_file_list_destroy(GtkWidget *widget)
 {
-  GtkIconList *icon_list;
-  GtkFileList *file_list;
+  GtkIconList *icon_list = GTK_ICON_LIST(object);
+  GtkFileList *file_list = GTK_FILE_LIST(object);
   GtkIconListItem *item;
   GtkFileListItem *file_item;
   GList *list;
 
-  file_list = GTK_FILE_LIST(object);
-  icon_list = GTK_ICON_LIST(object);
+  g_return_if_fail(icon_list != NULL);
 
   list = icon_list->icons;
   while(list){
@@ -254,6 +250,7 @@ gtk_file_list_destroy(GtkObject *object)
     item->link = NULL;
     list = list->next;
   }
+  icon_list->icons = NULL;
 
   list = file_list->types;
   while(list){
@@ -276,16 +273,20 @@ gtk_file_list_destroy(GtkObject *object)
   }
   file_list->pixmaps = NULL;
 
+  if (file_list->path)
+  {
+      g_free(file_list->path); 
+      file_list->path = NULL; 
+  }
 
-  g_free(GTK_FILE_LIST(object)->path); 
-  GTK_FILE_LIST(object)->path = NULL; 
+  if (file_list->filter)
+  {
+      g_free(file_list->filter); 
+      file_list->filter = NULL; 
+  }
 
-  g_free(GTK_FILE_LIST(object)->filter); 
-  GTK_FILE_LIST(object)->filter = NULL; 
-
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-  (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
-
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+      (*GTK_WIDGET_CLASS (parent_class)->destroy) (widget);
 }
 
 static void

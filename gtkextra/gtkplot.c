@@ -2997,7 +2997,7 @@ gtk_plot_real_set_surface(GtkPlot *plot, cairo_surface_t *surface)
  * gtk_plot_get_drawable:
  * @plot: a #GtkPlot widget
  *
- * Return value: (transfer none) the #GdkDrawable of the plot
+ * Return value(transfer none): the #GdkDrawable of the plot
  */
 cairo_surface_t *
 gtk_plot_get_surface(GtkPlot *plot)
@@ -4323,7 +4323,7 @@ gtk_plot_get_size (GtkPlot *plot, gdouble *width, gdouble *height)
  * gtk_plot_get_internal_allocation:
  * @plot: a #GtkPlot widget.
  *
- * Return value: (transfer none) internal_allocation
+ * Return value(transfer none): internal_allocation
  */
 GtkAllocation 
 gtk_plot_get_internal_allocation (GtkPlot *plot)
@@ -4966,7 +4966,7 @@ gtk_plot_is_y_reflected (GtkPlot *plot)
  * @justification:
  * @text:
  *
- * Return value: (transfer none) the #GtkPlotText
+ * Return value(transfer none): the #GtkPlotText
  */
 GtkPlotText *
 gtk_plot_put_text (GtkPlot *plot, gdouble x, gdouble y, 
@@ -5300,7 +5300,7 @@ void            gtk_plot_remove_break      	(GtkPlot *plot,
  * @plot: a #GtkPlot widget.
  * @axis: a #GtkPlotAxis.
  *
- * Return value: (transfer none) the #GtkPlotAxis at the given 
+ * Return value(transfer none): the #GtkPlotAxis at the given 
  * position 
  */
 GtkPlotAxis *
@@ -6314,7 +6314,7 @@ gtk_plot_legends_get_position(GtkPlot *plot, gdouble *x, gdouble *y)
  * gtk_plot_legends_get_allocation:
  * @plot: a #GtkPlot widget.
  *
- * Return value: (transfer full) the #GtkAllocation
+ * Return value(transfer full): the #GtkAllocation
  */
 GtkAllocation
 gtk_plot_legends_get_allocation(GtkPlot *plot)
@@ -6442,7 +6442,7 @@ gtk_plot_add_data(GtkPlot *plot,
  * @plot: a #GtkPlot widget.
  * @function: (scope async): the dataset generation function
  *
- * Return value: (transfer none) the #GtkPlotData
+ * Return value(transfer none): the #GtkPlotData
  */
 
 GtkPlotData *

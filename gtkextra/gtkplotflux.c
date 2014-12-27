@@ -39,7 +39,7 @@
 
 static void gtk_plot_flux_class_init 	(GtkPlotFluxClass *klass);
 static void gtk_plot_flux_init 		(GtkPlotFlux *data);
-static void gtk_plot_flux_destroy 	(GtkObject *data);
+static void gtk_plot_flux_destroy 	(GtkWidget *widget);
 static void gtk_plot_flux_get_property  (GObject      *object,
                                          guint        prop_id,
                                          GValue       *value,
@@ -108,21 +108,15 @@ gtk_plot_flux_get_type (void)
 static void
 gtk_plot_flux_class_init (GtkPlotFluxClass *klass)
 {
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
-  GtkPlotDataClass *data_class;
+  GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
+  GtkPlotDataClass *data_class = (GtkPlotDataClass *) klass;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
   parent_class = g_type_class_ref (gtk_plot_data_get_type ());
 
-  object_class = (GtkObjectClass *) klass;
-  widget_class = (GtkWidgetClass *) klass;
-  data_class = (GtkPlotDataClass *) klass;
-
   gobject_class->set_property = gtk_plot_flux_set_property;
   gobject_class->get_property = gtk_plot_flux_get_property;
-  object_class->destroy = gtk_plot_flux_destroy;
-
+  widget_class->destroy = gtk_plot_flux_destroy;
 
   /**
    * GtkPlotFlux:centered:
@@ -442,17 +436,17 @@ gtk_plot_flux_new ()
 }
 
 static void
-gtk_plot_flux_destroy(GtkObject *object)
+gtk_plot_flux_destroy(GtkWidget *widget)
 {
-  GtkPlotFlux *flux = GTK_PLOT_FLUX(object);
+  GtkPlotFlux *flux = GTK_PLOT_FLUX(widget);
 
   if(flux->labels_prefix) g_free(flux->labels_prefix);
   flux->labels_prefix = NULL;
   if(flux->labels_suffix) g_free(flux->labels_suffix);
   flux->labels_suffix = NULL;
 
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+    (*GTK_WIDGET_CLASS (parent_class)->destroy) (widget);
 }
 
 static void

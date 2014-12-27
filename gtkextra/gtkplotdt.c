@@ -181,7 +181,7 @@ gtk_plot_dt_add_node(GtkPlotDT *data, GtkPlotDTnode node)
  * @data:
  * @idx:
  *  
- * Return value: (transfer none) the #GtkPlotDTnode
+ * Return value(transfer none): the #GtkPlotDTnode
  */
 GtkPlotDTnode * 
 gtk_plot_dt_get_node(GtkPlotDT *data, gint idx)

@@ -4,6 +4,7 @@
 	gtk_object_get_data(), gtk_object_set_data()
 	* Clean up invalid transfer annotations
 	* Makefile.am: migrated GtkDataFormat, GtkDataEntry, added gtkextra.h
+	* Clean out WidgetClass->size_request
 
 2014-12-26 Fredy Paquet <mailbox AT opag.ch>
 	* merged branch master and gtk3-tom into gtk3

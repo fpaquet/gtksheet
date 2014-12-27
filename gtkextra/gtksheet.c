@@ -1037,8 +1037,12 @@ static gboolean gtk_sheet_entry_key_press_handler(GtkWidget *widget,
 static gboolean gtk_sheet_key_press_handler(GtkWidget *widget,
     GdkEventKey *key);
 
-static void gtk_sheet_size_request_handler(GtkWidget *widget,
+static void gtk_sheet_size_request(GtkWidget *widget,
     GtkRequisition *requisition);
+static void gtk_sheet_get_preferred_width (GtkWidget *widget,
+    gint *minimal_width, gint *natural_width);
+static void gtk_sheet_get_preferred_height (GtkWidget *widget,
+    gint *minimal_height, gint *natural_height);
 static void gtk_sheet_size_allocate_handler(GtkWidget *widget,
     GtkAllocation *allocation);
 
@@ -2934,7 +2938,8 @@ gtk_sheet_class_init(GtkSheetClass *klass)
     widget_class->motion_notify_event = gtk_sheet_motion_handler;
     widget_class->key_press_event = gtk_sheet_key_press_handler;
     widget_class->expose_event = gtk_sheet_expose_handler;
-    widget_class->size_request = gtk_sheet_size_request_handler;
+    widget_class->get_preferred_width = gtk_sheet_get_preferred_width;
+    widget_class->get_preferred_height = gtk_sheet_get_preferred_height;
     widget_class->size_allocate = gtk_sheet_size_allocate_handler;
     widget_class->focus = gtk_sheet_focus;
     widget_class->focus_in_event = NULL;
@@ -11508,7 +11513,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 }
 
 /*
- * gtk_sheet_size_request_handler:
+ * gtk_sheet_size_request:
  * 
  * this is the #GtkSheet widget class "size-request" signal handler
  * 
@@ -11517,7 +11522,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
  *               the #GtkRequisition
  */
 static void
-gtk_sheet_size_request_handler(GtkWidget *widget, GtkRequisition *requisition)
+gtk_sheet_size_request(GtkWidget *widget, GtkRequisition *requisition)
 {
     GtkSheet *sheet;
     GList *children;
@@ -11529,7 +11534,7 @@ gtk_sheet_size_request_handler(GtkWidget *widget, GtkRequisition *requisition)
     g_return_if_fail(requisition != NULL);
 
 #if GTK_SHEET_DEBUG_SIZE > 0
-    g_debug("gtk_sheet_size_request_handler: called");
+    g_debug("gtk_sheet_size_request: called");
 #endif
 
     sheet = GTK_SHEET(widget);
@@ -11557,6 +11562,25 @@ gtk_sheet_size_request_handler(GtkWidget *widget, GtkRequisition *requisition)
     }
 }
 
+static void
+gtk_sheet_get_preferred_width (GtkWidget *widget,
+    gint *minimal_width, gint *natural_width)
+{
+  GtkRequisition requisition;
+  gtk_sheet_size_request(widget, &requisition);
+
+  *minimal_width = *natural_width = requisition.width;
+}
+
+static void
+gtk_sheet_get_preferred_height (GtkWidget *widget,
+    gint *minimal_height, gint *natural_height)
+{
+  GtkRequisition requisition;
+  gtk_sheet_size_request(widget, &requisition);
+
+  *minimal_height = *natural_height = requisition.height;
+}
 
 /*
  * gtk_sheet_size_allocate_handler:

@@ -100,14 +100,12 @@ static void gtk_plot_canvas_child_get_property  (GObject *object,
                                                  GParamSpec      *pspec);
 static void gtk_plot_canvas_destroy 		(GtkWidget *object);
 static void gtk_plot_canvas_map                 (GtkWidget *widget);
-static void gtk_plot_canvas_size_request        (GtkWidget *widget,
-                                                 GtkRequisition *requisition);
-static void gtk_plot_canvas_get_preferred_width (GtkWidget *widget,
-						 gint *minimal_width,
-						 gint *natural_width);
+static void gtk_plot_canvas_size_request(GtkWidget *widget,
+    GtkRequisition *requisition);
+static void gtk_plot_canvas_get_preferred_width(GtkWidget *widget,
+    gint *minimal_width, gint *natural_width);
 static void gtk_plot_canvas_get_preferred_height(GtkWidget *widget,
-						 gint *minimal_height,
-						 gint *natural_height);
+    gint *minimal_height, gint *natural_height);
 static gint gtk_plot_canvas_motion 		(GtkWidget *widget, 
                                                  GdkEventMotion *event);
 static gint gtk_plot_canvas_button_press	(GtkWidget *widget, 
@@ -617,7 +615,6 @@ gtk_plot_canvas_class_init (GtkPlotCanvasClass *klass)
 
   widget_class->map = gtk_plot_canvas_map;
   widget_class->draw = gtk_plot_canvas_draw;
-  //widget_class->size_request = gtk_plot_canvas_size_request;
   widget_class->get_preferred_width = gtk_plot_canvas_get_preferred_width;
   widget_class->get_preferred_height = gtk_plot_canvas_get_preferred_height;
   widget_class->focus_in_event = gtk_plot_canvas_focus_in;
@@ -2037,39 +2034,44 @@ gtk_plot_canvas_draw(GtkWidget *widget, cairo_t *cairo)
 }
 
 static void
-gtk_plot_get_preferred_width (GtkWidget * widget, gint *minimal_width, gint *natural_width)
-{
-  GtkRequisition requisition;
-
-  gtk_plot_size_request(widget, &requisition);
-
-  *minimal_width = *natural_width = requisition.width;
-}
-
-static void
-gtk_plot_get_preferred_height (GtkWidget * widget, gint *minimal_height, gint *natural_height)
-{
-  GtkRequisition requisition;
-
-  gtk_plot_size_request(widget, &requisition);
-
-  *minimal_height = *natural_height = requisition.height;
-}
-
-
-static void
-gtk_plot_canvas_size_request (GtkWidget *widget, GtkRequisition *requisition)
+gtk_plot_canvas_size_request (GtkWidget *widget, 
+    GtkRequisition *minimum_size, GtkRequisition *natural_size)
 {
   GtkPlotCanvas *canvas;
 
   canvas = GTK_PLOT_CANVAS(widget);
 
-  GTK_WIDGET_CLASS(gtk_plot_canvas_parent_class)->size_request(widget, requisition);
+  //GTK_WIDGET_CLASS(gtk_plot_canvas_parent_class)->size_request(widget, requisition);
+  gtk_widget_get_preferred_size (widget, &minimum_size, &natural_size);  
 
   gtk_widget_set_size_request(widget, 
-  			MAX(canvas->surface_width, requisition->width),
-  			MAX(canvas->surface_height, requisition->height));
+  			MAX(canvas->surface_width, minimum_size->width),
+  			MAX(canvas->surface_height, minimum_size->height));
 }
+
+
+static void
+gtk_plot_get_preferred_width (GtkWidget *widget, 
+    gint *minimal_width, gint *natural_width)
+{
+    GtkRequisition minimum_size, natural_size;
+    gtk_plot_canvas_size_request(widget, &minimum_size, &natural_size);
+
+    *minimal_width = minimum_size.width;
+    *natural_width = natural_size.width;
+}
+
+static void
+gtk_plot_get_preferred_height (GtkWidget *widget, 
+    gint *minimal_height, gint *natural_height)
+{
+    GtkRequisition minimum_size, natural_size;
+    gtk_plot_canvas_size_request(widget, &minimum_size, &natural_size);
+
+    *minimal_height = minimum_size.height;
+    *natural_height = natural_size.height;
+}
+
 
 
 /**

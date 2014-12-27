@@ -201,10 +201,12 @@ static void gtk_plot_destroy	 		(GtkWidget *object);
 static void gtk_plot_axis_destroy 		(GObject *object);
 static void gtk_plot_real_set_pc                (GtkPlot *plot, GtkPlotPC *pc);
 static void gtk_plot_real_set_surface		(GtkPlot *plot, cairo_surface_t *surface);
-static void gtk_plot_size_request 		(GtkWidget *widget, 
-                                                 GtkRequisition *requisition);
-static void gtk_plot_get_preferred_width	(GtkWidget *widget, gint *minimal_width, gint *natural_width);
-static void gtk_plot_get_preferred_height	(GtkWidget *widget, gint *minimal_height, gint *natural_width);
+static void gtk_plot_size_request(GtkWidget *widget, 
+    GtkRequisition *requisition);
+static void gtk_plot_get_preferred_width(GtkWidget *widget, 
+    gint *minimal_width, gint *natural_width);
+static void gtk_plot_get_preferred_height(GtkWidget *widget, 
+    gint *minimal_height, gint *natural_width);
 static void gtk_plot_size_allocate 		(GtkWidget *widget, 
                                                  GtkAllocation *allocation);
 static void gtk_plot_show_all 			(GtkWidget *widget); 
@@ -250,7 +252,6 @@ gtk_plot_class_init (GtkPlotClass *klass)
   plot_class = (GtkPlotClass *) klass;
 
   widget_class->show_all = gtk_plot_show_all;
-  //widget_class->size_request = gtk_plot_size_request;
   widget_class->get_preferred_width = gtk_plot_get_preferred_width;
   widget_class->get_preferred_height = gtk_plot_get_preferred_height;
   widget_class->size_allocate = gtk_plot_size_allocate;

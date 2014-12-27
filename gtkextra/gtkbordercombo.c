@@ -88,17 +88,13 @@ static GtkComboButtonClass *parent_class = NULL;
 static void
 gtk_border_combo_class_init (GtkBorderComboClass * klass)
 {
-  GObjectClass *object_class;
-  GtkWidgetClass *widget_class;
-
+  GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
 
   parent_class = g_type_class_ref (gtk_box_get_type ());
-  widget_class = GTK_WIDGET_CLASS(klass);
-  object_class = G_OBJECT_CLASS(klass);
 
-  widget_class->destroy = gtk_border_combo_destroy;
-  
   widget_class->realize = gtk_border_combo_realize;
+  widget_class->destroy = gtk_border_combo_destroy;
 
   /**
    * GtkBorderCombo::changed:
@@ -108,7 +104,7 @@ gtk_border_combo_class_init (GtkBorderComboClass * klass)
    * Emmited when the GtkBorderCombo's state is changed
    */ 
   border_combo_signals[CHANGED]=g_signal_new("changed",
- 			  G_OBJECT_CLASS_TYPE (object_class),
+ 			  G_OBJECT_CLASS_TYPE (gobject_class),
                           G_SIGNAL_RUN_FIRST,
                           G_STRUCT_OFFSET(GtkBorderComboClass, changed),
 			  NULL, NULL,
@@ -305,7 +301,7 @@ gtk_border_combo_realize(GtkWidget *widget)
   GtkComboButton *combo;
   GtkBorderCombo *border_combo;
   GtkWidget *pixmap;
-  GtkRequisition requisition;
+  GtkRequisition minimum_size, natural_size;
   GdkPixmap *border_pixmap;
   gint i,j;
   gchar *border[18];
@@ -363,7 +359,9 @@ gtk_border_combo_realize(GtkWidget *widget)
        gtk_widget_show(pixmap);
   }
 
-  GTK_WIDGET_CLASS (parent_class)->size_request (widget, &requisition); 
+
+  //GTK_WIDGET_CLASS()->size_request(widget, &requisition); 
+  gtk_widget_get_preferred_size (widget, &minimum_size, &natural_size);  
 
   /* EMPTY */
   for(i=0; i<18; i++)

@@ -85,8 +85,12 @@ static void   gtk_item_entry_editable_init(GtkEditableInterface *iface);
 /* GtkWidget methods
  */
 static void   gtk_item_entry_realize(GtkWidget *widget);
-static void   gtk_item_entry_size_request(GtkWidget *widget, 
+static void gtk_item_entry_size_request(GtkWidget *widget, 
     GtkRequisition *requisition);
+static void gtk_item_entry_get_preferred_width (GtkWidget *widget,
+	gint *minimal_width, gint *natural_width);
+static void gtk_item_entry_get_preferred_height (GtkWidget *widget,
+    gint *minimal_height, gint *natural_height);
 static void   gtk_item_entry_size_allocate(GtkWidget *widget,
     GtkAllocation *allocation);
 static void   gtk_item_entry_draw_frame(GtkWidget *widget);
@@ -207,14 +211,16 @@ static GtkEntryClass *parent_class = NULL;
 //
 // rrankin AT ihug DOT com DOT au 21/12/09
 //
-typedef struct _GtkEntryPrivate GtkEntryPrivate;
+//typedef struct _GtkEntryPrivate GtkEntryPrivate;
 
+/*
 struct _GtkEntryPrivate
 {
     GtkEntryBuffer *buffer;
     // The remainder of this structure has been truncated
 
 };
+*/
 
 #   define GTK_ENTRY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), gtk_entry_get_type(), GtkEntryPrivate))
 
@@ -267,7 +273,8 @@ gtk_item_entry_class_init(GtkItemEntryClass *klass)
     parent_class = g_type_class_ref(gtk_entry_get_type());
 
     widget_class->realize = gtk_item_entry_realize;
-    widget_class->size_request = gtk_item_entry_size_request;
+    widget_class->get_preferred_width = gtk_item_entry_get_preferred_width;
+    widget_class->get_preferred_height = gtk_item_entry_get_preferred_height;
     widget_class->size_allocate = gtk_item_entry_size_allocate;
     widget_class->expose_event = gtk_item_entry_expose;
     widget_class->grab_focus = gtk_item_entry_grab_focus;
@@ -446,6 +453,26 @@ gtk_item_entry_size_request(GtkWidget *widget, GtkRequisition *requisition)
     requisition->height = PANGO_PIXELS(entry->ascent + entry->descent) + yborder * 2;
 
     pango_font_metrics_unref(metrics);
+}
+
+static void
+gtk_item_entry_get_preferred_width (GtkWidget *widget,
+	gint *minimal_width, gint *natural_width)
+{
+  GtkRequisition requisition;
+  gtk_item_entry_size_request(widget, &requisition);
+
+  *minimal_width = *natural_width = requisition.width;
+}
+
+static void
+gtk_item_entry_get_preferred_height (GtkWidget *widget,
+    gint *minimal_height, gint *natural_height)
+{
+  GtkRequisition requisition;
+  gtk_item_entry_size_request(widget, &requisition);
+
+  *minimal_height = *natural_height = requisition.height;
 }
 
 static void

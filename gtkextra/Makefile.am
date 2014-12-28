@@ -56,6 +56,7 @@ gtkextra_public_h_sources = \
 	gtkcharsel.h \
 	gtkdataentry.h	\
 	gtkdataformat.h	\
+	gtkdatatextview.h \
 	gtkextra.h	\
         gtkfontcombo.h	\
         gtkplot.h \
@@ -68,7 +69,7 @@ gtkextra_public_h_sources = \
         gtkplotpolar.h \
         gtkplotsurface.h \
         gtkpsfont.h \
-	#gtkitementry.h	\
+	#gtksheet.h \
         #gtkplotcanvas.h
 
 
@@ -77,7 +78,6 @@ gtkextra_public_h_sources = \
 #       gtkcheckitem.h	\
 #       gtkcolorcombo.h	\
 #       gtkcombobutton.h	\
-#       gtkdatatextview.h	\
 #       gtkdirtree.h	\
 #       gtkextraicons.h	\
 #       gtkfileicons.h	\
@@ -99,7 +99,6 @@ gtkextra_public_h_sources = \
 #       gtkplotpixmap.h	\
 #       gtkplotprint.h	\
 #       gtkplotsegment.h	\
-#       gtksheet.h	\
 #       gtksheetcolumn.h	\
 #       gtktogglecombo.h
 
@@ -107,6 +106,7 @@ gtkextra_c_sources = 	\
 	gtkcharsel.c \
 	gtkdataentry.c	\
 	gtkdataformat.c	\
+	gtkdatatextview.c \
 	gtkfontcombo.c  \
 	gtkpsfont.c	\
         gtkextra.c \
@@ -119,7 +119,7 @@ gtkextra_c_sources = 	\
         gtkplotpc.c \
         gtkplotpolar.c \
         gtkplotsurface.c \
-	#gtkitementry.c	\
+	#gtksheet.c \
         #gtkplotcanvas.c
 
 #tkextra_c_sources = 	\
@@ -127,7 +127,6 @@ gtkextra_c_sources = 	\
 #       gtkcheckitem.c	\
 #       gtkcolorcombo.c	\
 #       gtkcombobutton.c	\
-#       gtkdatatextview.c	\
 #       gtkdirtree.c	\
 #       gtkfilelist.c	\
 #       gtkiconfilesel.c	\
@@ -147,7 +146,6 @@ gtkextra_c_sources = 	\
 #       gtkplotpixmap.c \
 #       gtkplotprint.c	\
 #       gtkplotsegment.c	\
-#       gtksheet.c	\
 #       gtksheetcolumn.c	\
 #       gtktogglecombo.c 
 

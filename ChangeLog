@@ -1,9 +1,17 @@
+2014-12-28 Fredy Paquet <mailbox AT opag.ch>
+	* global replace expose_event -> draw
+	* migrated GtkDataTextView
+	* scheduled GtkItemEntry for removal (replace with GtkDataEntry/GtkDataTextView)
+	* GtkSheet: replace backing pixmap with cairo surface
+	* GtkSheet: replace GdkColor -> GdkRGBA, GDK_TYPE_COLOR -> GDK_TYPE_RGBA
+	* GtkSheet: replace GdkStyle -> GdkStyleContext
+
 2014-12-27 Fredy Paquet <mailbox AT opag.ch>
 	* Clean out GtkObject, GtkObjectClass, GTK_OBJECT_CLASS(), GTK_OBJECT(),
 	gtk_object_destroy(), GTK_OBJECT_GET_CLASS(), 
 	gtk_object_get_data(), gtk_object_set_data()
 	* Clean up invalid transfer annotations
-	* Makefile.am: migrated GtkDataFormat, GtkDataEntry, added gtkextra.h
+	* migrated GtkDataFormat, GtkDataEntry, added gtkextra.h
 	* Clean out WidgetClass->size_request
 
 2014-12-26 Fredy Paquet <mailbox AT opag.ch>

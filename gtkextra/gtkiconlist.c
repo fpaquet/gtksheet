@@ -81,8 +81,7 @@ static void gtk_icon_list_size_allocate		(GtkWidget *widget,
                                                  GtkAllocation *allocation);
 
 static void gtk_icon_list_realize		(GtkWidget *widget);
-static gint gtk_icon_list_expose		(GtkWidget *widget, 
-						 GdkEventExpose *event);
+static gboolean gtk_icon_list_draw(GtkWidget *widget, cairo_t *cr);
 static gint gtk_icon_list_button_press		(GtkWidget *widget, 
 						 GdkEventButton *event);
 static gint deactivate_entry			(GtkIconList *iconlist);
@@ -213,7 +212,7 @@ gtk_icon_list_class_init (GtkIconListClass *klass)
 
   widget_class->realize = gtk_icon_list_realize;
   widget_class->size_allocate = gtk_icon_list_size_allocate;
-  widget_class->expose_event = gtk_icon_list_expose;
+  widget_class->draw = gtk_icon_list_draw;
   widget_class->button_press_event = gtk_icon_list_button_press;
   widget_class->destroy = gtk_icon_list_destroy;
 
@@ -647,7 +646,7 @@ sort_list(gpointer a, gpointer b)
 }
 
 static gboolean
-gtk_icon_list_expose (GtkWidget *widget, GdkEventExpose *event)
+gtk_icon_list_draw(GtkWidget *widget, cairo_t *cr)
 {
   GtkIconList *icon_list;
 
@@ -661,7 +660,8 @@ gtk_icon_list_expose (GtkWidget *widget, GdkEventExpose *event)
                       GTK_SHADOW_NONE, &event->area, widget, 
 		      "base", 0, 0, -1, -1);
 
-  GTK_WIDGET_CLASS(parent_class)->expose_event(widget, event);
+  if (GTK_WIDGET_CLASS(sheet_parent_class)->draw)
+      (*GTK_WIDGET_CLASS(sheet_parent_class)->draw)(widget, cr);
 
   if(icon_list->active_icon && icon_list->active_icon->entry){
 	GtkAllocation allocation;

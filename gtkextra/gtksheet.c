@@ -46,8 +46,6 @@
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtksignal.h>
-#include <gtk/gtkpixmap.h>
 #include <pango/pango.h>
 
 #define __GTKEXTRA_H_INSIDE__
@@ -122,6 +120,7 @@ gdk_cursor_get_cursor_type (GdkCursor *cursor)
   return cursor->type;
 }
 #endif
+
 /* sheet flags */
 enum _GtkSheetFlags
 {
@@ -321,7 +320,10 @@ typedef enum _GtkSheetArea
 
 #ifdef GTK_SHEET_DEBUG
 #   define GTK_SHEET_DEBUG_COLOR  "green"
-static GdkColor debug_color;
+
+static GdkRGBA debug_color;
+static GdkRGBA color_black;
+static GdkRGBA color_white;
 
 #   if 0
 #       include <stdarg.h>
@@ -355,8 +357,11 @@ static void g_debug_popup(char *fmt, ...)  /* used to intercept/debug drawing se
 guint
 _gtk_sheet_row_default_height(GtkWidget *widget)
 {
-    PangoFontDescription *font_desc = 
-	gtk_widget_get_style(GTK_WIDGET(widget))->font_desc;
+    PangoFontDescription *font_desc = NULL;
+    GtkStyleContext *style_context = gtk_widget_get_style_context(widget);
+
+    gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL,
+                       GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
     if (!font_desc)
 	return (GTK_SHEET_ROW_DEFAULT_HEIGHT);
@@ -375,8 +380,11 @@ _gtk_sheet_row_default_height(GtkWidget *widget)
 static inline guint
 _default_font_ascent(GtkWidget *widget)
 {
-    PangoFontDescription *font_desc = 
-	gtk_widget_get_style(GTK_WIDGET(widget))->font_desc;
+    PangoFontDescription *font_desc = NULL;
+    GtkStyleContext *style_context = gtk_widget_get_style_context(widget);
+
+    gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL,
+                       GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
     if (!font_desc)
 	return (GTK_SHEET_DEFAULT_FONT_ASCENT);
@@ -459,8 +467,11 @@ static void _get_string_extent(GtkSheet *sheet, GtkSheetColumn *colptr,
 static inline guint
 _default_font_descent(GtkWidget *widget)
 {
-    PangoFontDescription *font_desc = 
-	gtk_widget_get_style(GTK_WIDGET(widget))->font_desc;
+    PangoFontDescription *font_desc = NULL;
+    GtkStyleContext *style_context = gtk_widget_get_style_context(widget);
+
+    gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL,
+                       GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
     if (!font_desc)
 	return (GTK_SHEET_DEFAULT_FONT_DESCENT);
@@ -1011,8 +1022,7 @@ static void gtk_sheet_unrealize_handler(GtkWidget *widget);
 static void gtk_sheet_map_handler(GtkWidget *widget);
 static void gtk_sheet_unmap_handler(GtkWidget *widget);
 
-static gboolean gtk_sheet_expose_handler(GtkWidget *widget,
-    GdkEventExpose *event);
+static gboolean gtk_sheet_draw(GtkWidget *widget, cairo_t *cr);
 
 static void gtk_sheet_forall_handler(GtkContainer *container,
     gboolean include_internals,
@@ -2032,7 +2042,7 @@ gtk_sheet_class_init_properties(GObjectClass *gobject_class)
      */
     pspec = g_param_spec_boxed("bgcolor", "Background color",
 	"Background color of the sheet",
-	GDK_TYPE_COLOR,
+	GDK_TYPE_RGBA,
 	G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class, PROP_GTK_SHEET_BG_COLOR, pspec);
 
@@ -2054,7 +2064,7 @@ gtk_sheet_class_init_properties(GObjectClass *gobject_class)
      */
     pspec = g_param_spec_boxed("grid-color", "Grid color",
 	"Color of the grid",
-	GDK_TYPE_COLOR,
+	GDK_TYPE_RGBA,
 	G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class, PROP_GTK_SHEET_GRID_COLOR, pspec);
 
@@ -2937,7 +2947,7 @@ gtk_sheet_class_init(GtkSheetClass *klass)
     widget_class->button_release_event = gtk_sheet_button_release_handler;
     widget_class->motion_notify_event = gtk_sheet_motion_handler;
     widget_class->key_press_event = gtk_sheet_key_press_handler;
-    widget_class->expose_event = gtk_sheet_expose_handler;
+    widget_class->draw = gtk_sheet_draw;
     widget_class->get_preferred_width = gtk_sheet_get_preferred_width;
     widget_class->get_preferred_height = gtk_sheet_get_preferred_height;
     widget_class->size_allocate = gtk_sheet_size_allocate_handler;
@@ -3001,19 +3011,18 @@ gtk_sheet_init(GtkSheet *sheet)
     sheet->freeze_count = 0;
 
 #if GTK_SHEET_DEBUG_COLORS > 0
-    gdk_color_parse(GTK_SHEET_DEBUG_COLOR, &debug_color);
-    gdk_colormap_alloc_color(gdk_colormap_get_system(), &debug_color, FALSE, TRUE);
+    gdk_rgba_parse(&debug_color, GTK_SHEET_DEBUG_COLOR);
 #endif
 
-    gdk_color_parse(GTK_SHEET_DEFAULT_BG_COLOR, &sheet->bg_color);
-    gdk_colormap_alloc_color(gdk_colormap_get_system(), &sheet->bg_color, FALSE, TRUE);
+    gdk_rgba_parse(&color_black, "black");
+    gdk_rgba_parse(&color_white, "white");
 
-    gdk_color_parse(GTK_SHEET_DEFAULT_GRID_COLOR, &sheet->grid_color);
-    gdk_colormap_alloc_color(gdk_colormap_get_system(), &sheet->grid_color, FALSE, TRUE);
+    gdk_rgba_parse(&sheet->bg_color, GTK_SHEET_DEFAULT_BG_COLOR);
+
+    gdk_rgba_parse(&sheet->grid_color, GTK_SHEET_DEFAULT_GRID_COLOR);
     sheet->show_grid = TRUE;
 
-    gdk_color_parse(GTK_SHEET_DEFAULT_TM_COLOR, &sheet->tm_color);
-    gdk_colormap_alloc_color(gdk_colormap_get_system(), &sheet->tm_color, FALSE, TRUE);
+    gdk_rgba_parse(&sheet->tm_color, GTK_SHEET_DEFAULT_TM_COLOR);
 
     sheet->children = NULL;
 
@@ -3069,7 +3078,10 @@ gtk_sheet_init(GtkSheet *sheet)
     sheet->sheet_window_width = 0;
     sheet->sheet_window_height = 0;
 
-    sheet->pixmap = NULL;
+    sheet->bsurf = NULL;
+    sheet->bsurf_width = 0;
+    sheet->bsurf_height = 0;
+    sheet->bsurf_cr = NULL;
 
     sheet->hoffset = 0;
     sheet->voffset = 0;
@@ -3412,26 +3424,25 @@ gtk_sheet_grid_visible(GtkSheet *sheet)
 /**
  * gtk_sheet_set_background:
  * @sheet: a #GtkSheet
- * @color: a #GdkColor structure
+ * @color: a #GdkRGBA structure
  *
  * Sets the background color of the #GtkSheet.
  * If pass NULL, the sheet will be reset to the default color.
  */
 void
-gtk_sheet_set_background(GtkSheet *sheet, GdkColor *color)
+gtk_sheet_set_background(GtkSheet *sheet, GdkRGBA *color)
 {
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
     if (!color)
     {
-	gdk_color_parse(GTK_SHEET_DEFAULT_BG_COLOR, &sheet->bg_color);
+	gdk_rgba_parse(&sheet->bg_color, GTK_SHEET_DEFAULT_BG_COLOR);
     }
     else
     {
 	sheet->bg_color = *color;
     }
-    gdk_colormap_alloc_color(gdk_colormap_get_system(), &sheet->bg_color, FALSE, TRUE);
 
     if (!GTK_SHEET_IS_FROZEN(sheet))
 	_gtk_sheet_range_draw(sheet, NULL, TRUE);
@@ -3440,26 +3451,25 @@ gtk_sheet_set_background(GtkSheet *sheet, GdkColor *color)
 /**
  * gtk_sheet_set_grid:
  * @sheet: a #GtkSheet
- * @color: a #GdkColor structure
+ * @color: a #GdkRGBA structure
  *
  * Set the grid color.
  * If pass NULL, the grid will be reset to the default color.
  */
 void
-gtk_sheet_set_grid(GtkSheet *sheet, GdkColor *color)
+gtk_sheet_set_grid(GtkSheet *sheet, GdkRGBA *color)
 {
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
     if (!color)
     {
-	gdk_color_parse(GTK_SHEET_DEFAULT_GRID_COLOR, &sheet->grid_color);
+	gdk_rgba_parse(&sheet->grid_color, GTK_SHEET_DEFAULT_GRID_COLOR);
     }
     else
     {
 	sheet->grid_color = *color;
     }
-    gdk_colormap_alloc_color(gdk_colormap_get_system(), &sheet->grid_color, FALSE, TRUE);
 
     if (!GTK_SHEET_IS_FROZEN(sheet))
 	_gtk_sheet_range_draw(sheet, NULL, TRUE);
@@ -5570,28 +5580,28 @@ gtk_sheet_flash(gpointer data)
 
     gdk_draw_pixmap(sheet->sheet_window,
 	gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-	sheet->pixmap,
+	sheet->bsurf,
 	x, y,
 	x, y,
 	1, height);
 
     gdk_draw_pixmap(sheet->sheet_window,
 	gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-	sheet->pixmap,
+	sheet->bsurf,
 	x, y,
 	x, y,
 	width, 1);
 
     gdk_draw_pixmap(sheet->sheet_window,
 	gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-	sheet->pixmap,
+	sheet->bsurf,
 	x, y + height,
 	x, y + height,
 	width, 1);
 
     gdk_draw_pixmap(sheet->sheet_window,
 	gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-	sheet->pixmap,
+	sheet->bsurf,
 	x + width, y,
 	x + width, y,
 	1, height);
@@ -6038,9 +6048,8 @@ gtk_sheet_style_set_handler(GtkWidget *widget, GtkStyle  *previous_style)
 
     if (gtk_widget_get_realized(widget))
     {
-	gtk_style_set_background(gtk_widget_get_style(widget),
-	    gtk_widget_get_window(widget),
-	    gtk_widget_get_state(widget));
+	GtkStyleContext *style_context = gtk_widget_get_style_context(widget);
+	gtk_style_context_set_background(style_context, gtk_widget_get_window(widget));
     }
 }
 
@@ -6090,7 +6099,6 @@ gtk_sheet_realize_handler(GtkWidget *widget)
     attributes.wclass = GDK_INPUT_OUTPUT;
 
     attributes.visual = gtk_widget_get_visual(widget);
-    attributes.colormap = gtk_widget_get_colormap(widget);
 
     attributes.event_mask = gtk_widget_get_events(widget);
     attributes.event_mask |= (
@@ -6102,7 +6110,7 @@ gtk_sheet_realize_handler(GtkWidget *widget)
 	    GDK_POINTER_MOTION_HINT_MASK);
 
     attributes_mask = GDK_WA_X | GDK_WA_Y |
-	    GDK_WA_VISUAL | GDK_WA_COLORMAP | GDK_WA_CURSOR;
+	    GDK_WA_VISUAL | GDK_WA_CURSOR;
 
     attributes.cursor = gdk_cursor_new(GDK_TOP_LEFT_ARROW);
 
@@ -6113,13 +6121,8 @@ gtk_sheet_realize_handler(GtkWidget *widget)
 
     gdk_window_set_user_data(gtk_widget_get_window(widget), sheet);
 
-    gtk_widget_set_style(widget,
-	gtk_style_attach(gtk_widget_get_style(widget),
-	    gtk_widget_get_window(widget)));
-
-    gtk_style_set_background(gtk_widget_get_style(widget),
-	gtk_widget_get_window(widget),
-	GTK_STATE_NORMAL);
+    GtkStyleContext *style_context = gtk_widget_get_style_context(widget);
+    gtk_style_context_set_background(style_context, gtk_widget_get_window(widget));
 
     attributes.x = 0;
     if (sheet->row_titles_visible)
@@ -6133,8 +6136,9 @@ gtk_sheet_realize_handler(GtkWidget *widget)
 	gtk_widget_get_window(widget),
 	&attributes, attributes_mask);
     gdk_window_set_user_data(sheet->column_title_window, sheet);
-    gtk_style_set_background(gtk_widget_get_style(widget),
-	sheet->column_title_window, GTK_STATE_NORMAL);
+
+    GtkStyleContext *style_context = gtk_widget_get_style_context(widget);
+    gtk_style_context_set_background(style_context, sheet->column_title_window);
 
     attributes.x = 0;
     attributes.y = 0;
@@ -6148,8 +6152,9 @@ gtk_sheet_realize_handler(GtkWidget *widget)
 	gtk_widget_get_window(widget),
 	&attributes, attributes_mask);
     gdk_window_set_user_data(sheet->row_title_window, sheet);
-    gtk_style_set_background(gtk_widget_get_style(widget),
-	sheet->row_title_window, GTK_STATE_NORMAL);
+
+    GtkStyleContext *style_context = gtk_widget_get_style_context(widget);
+    gtk_style_context_set_background(style_context, sheet->row_title_window);
 
     /* sheet-window */
     attributes.cursor = gdk_cursor_new(GDK_PLUS);
@@ -6164,8 +6169,7 @@ gtk_sheet_realize_handler(GtkWidget *widget)
 	&attributes, attributes_mask);
     gdk_window_set_user_data(sheet->sheet_window, sheet);
 
-    gdk_window_set_background(sheet->sheet_window,
-	&(gtk_widget_get_style(widget)->white));
+    gdk_window_set_background_rgba(sheet->sheet_window, &color_white);
     gdk_window_show(sheet->sheet_window);
 
     /* backing_pixmap */
@@ -6181,9 +6185,6 @@ gtk_sheet_realize_handler(GtkWidget *widget)
     sheet->bg_gc = gdk_gc_new(gtk_widget_get_window(widget));
 
     colormap = gtk_widget_get_colormap(widget);
-
-    gdk_color_white(colormap, &(gtk_widget_get_style(widget)->white));
-    gdk_color_black(colormap, &(gtk_widget_get_style(widget)->black));
 
     gdk_gc_get_values(sheet->fg_gc, &auxvalues);
 
@@ -6350,10 +6351,15 @@ gtk_sheet_unrealize_handler(GtkWidget *widget)
     gdk_window_destroy(sheet->column_title_window);
     gdk_window_destroy(sheet->row_title_window);
 
-    if (sheet->pixmap)
+    if (sheet->bsurf)
     {
-	g_object_unref(G_OBJECT(sheet->pixmap));
-	sheet->pixmap = NULL;
+	cairo_destroy(sheet->bsurf_cr);
+	sheet->bsurf_cr = NULL;
+
+	cairo_surface_destroy(sheet->bsurf);
+	sheet->bsurf_width = sheet->bsurf_height = 0;
+
+	sheet->bsurf = NULL;
     }
 
     sheet->column_title_window = NULL;
@@ -6563,7 +6569,7 @@ gtk_sheet_draw_tooltip_marker(GtkSheet *sheet,
 		    p[2].y = p[1].y + GTK_SHEET_DEFAULT_TM_SIZE;
 
 		    /* draw cell tooltip marker */
-		    gdk_draw_polygon(sheet->pixmap,
+		    gdk_draw_polygon(sheet->bsurf,
 			sheet->bg_gc,
 			TRUE, p, 3);
 		}
@@ -6643,7 +6649,7 @@ static void
 _cell_draw_background(GtkSheet *sheet, gint row, gint col)
 {
     GtkWidget *widget;
-    GdkGC * fg_gc, *bg_gc;
+    cairo_t *fg_cr, *bg_cr;
     GdkRectangle area;
 
     g_return_if_fail(sheet != NULL);
@@ -6688,7 +6694,7 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col)
 #endif
 
     /* fill cell background */
-    gdk_draw_rectangle(sheet->pixmap,
+    gdk_draw_rectangle(sheet->bsurf,
 	bg_gc,
 	TRUE,
 	area.x, area.y,
@@ -6710,7 +6716,7 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col)
 #endif
 
 	/* draw grid rectangle */
-	gdk_draw_rectangle(sheet->pixmap,
+	gdk_draw_rectangle(sheet->bsurf,
 	    sheet->bg_gc,
 	    FALSE,
 	    area.x, area.y,
@@ -6724,7 +6730,7 @@ static void
 _cell_draw_border(GtkSheet *sheet, gint row, gint col, gint mask)
 {
     GtkWidget *widget;
-    GdkGC * fg_gc, *bg_gc;
+    cairo_t *fg_cr, *bg_cr;
     GdkRectangle area;
     guint width;
 
@@ -6769,24 +6775,24 @@ _cell_draw_border(GtkSheet *sheet, gint row, gint col, gint mask)
     {
 
 	if (attributes.border.mask & GTK_SHEET_LEFT_BORDER & mask)
-	    gdk_draw_line(sheet->pixmap, sheet->fg_gc,
+	    gdk_draw_line(sheet->bsurf, sheet->fg_gc,
 		area.x, area.y - width / 2,
 		area.x, area.y + area.height + width / 2 + 1);
 
 	if (attributes.border.mask & GTK_SHEET_RIGHT_BORDER & mask)
-	    gdk_draw_line(sheet->pixmap, sheet->fg_gc,
+	    gdk_draw_line(sheet->bsurf, sheet->fg_gc,
 		area.x + area.width, area.y - width / 2,
 		area.x + area.width,
 		area.y + area.height + width / 2 + 1);
 
 	if (attributes.border.mask & GTK_SHEET_TOP_BORDER & mask)
-	    gdk_draw_line(sheet->pixmap, sheet->fg_gc,
+	    gdk_draw_line(sheet->bsurf, sheet->fg_gc,
 		area.x - width / 2, area.y,
 		area.x + area.width + width / 2 + 1,
 		area.y);
 
 	if (attributes.border.mask & GTK_SHEET_BOTTOM_BORDER & mask)
-	    gdk_draw_line(sheet->pixmap, sheet->fg_gc,
+	    gdk_draw_line(sheet->bsurf, sheet->fg_gc,
 		area.x - width / 2, area.y + area.height,
 		area.x + area.width + width / 2 + 1,
 		area.y + area.height);
@@ -6804,7 +6810,6 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col)
     gint text_width, text_height, y;
     gint xoffset = 0;
     gint size, sizel, sizer;
-    GdkGC *gc;
     PangoLayout *layout;
     PangoRectangle rect;
     PangoFontMetrics *metrics;
@@ -6862,8 +6867,6 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col)
     /* select GC for background rectangle */
     gdk_gc_set_foreground(sheet->fg_gc, &attributes.foreground);
     gdk_gc_set_background(sheet->fg_gc, &attributes.background);
-
-    gc = sheet->fg_gc;
 
     area.x = _gtk_sheet_column_left_xpixel(sheet, col);
     area.y = _gtk_sheet_row_top_ypixel(sheet, row);
@@ -7095,7 +7098,13 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col)
 
     if (!gtk_sheet_clip_text(sheet))  /* text extends multiple cells */
 	clip_area = area;
-    gdk_gc_set_clip_rectangle(gc, &clip_area);
+
+    cairo_t *cr = sheet->bsurf_cr;
+
+    cairo_save(cr);
+
+    gdk_cairo_rectangle(cr, &clip_area);
+    cairo_clip (cr);
 
 #if GTK_SHEET_DEBUG_DRAW_LABEL>0
 #if 0
@@ -7105,34 +7114,43 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col)
 #endif
 #endif
 
+    GtkStyleContext *s_context = gtk_widget_get_style_context(GTK_WIDGET(sheet));
+    GtkStateFlags state = gtk_widget_get_state_flags (GTK_WIDGET(sheet));
+    GdkRGBA rgba;
+    gtk_style_context_get_color(s_context, state, &rgba);
+    gdk_cairo_set_source_rgba (cr, &rgba);
 
 #if GTK_SHEET_DEBUG_DRAW_LABEL>0
 #if 1
-    g_debug("_cell_draw_label(%d,%d): x %d y %d fg %s bg %s",
+    g_debug("_cell_draw_label(%d,%d): x %d y %d fg %s bg %s rgba %s",
 	row, col,
 	area.x + xoffset + CELLOFFSET, y,
 	gdk_color_to_string(&attributes.foreground),
-	gdk_color_to_string(&attributes.background)
+	gdk_color_to_string(&attributes.background),
+	gdk_rgba_to_string (&rgba)
 	);
 #endif
 #endif
 
-    gdk_draw_layout(sheet->pixmap, gc,
-	area.x + xoffset + CELLOFFSET, y,
-	layout);
+    cairo_move_to (cr, area.x + xoffset + CELLOFFSET, y);
+    pango_cairo_show_layout (cr, layout);
 
+    cairo_restore(cr);
+
+    /* dispose pango layout */
     g_object_unref(G_OBJECT(layout));
 
-    /* copy sheet->pixmap to window */
+    /* copy sheet->bsurf to window */
+    /* Note: this results in a bitmap copy each time a label is drawn!!!  */
 
-    gdk_draw_pixmap(sheet->sheet_window,
-	gc,
-	sheet->pixmap,
-	area.x, area.y,
-	area.x, area.y,
-	area.width, area.height);
+    cr = sheet->fg_cr;
+    cairo_save(cr);
 
-    gdk_gc_set_clip_rectangle(gc, NULL);
+    cairo_set_source_surface(cr, sheet->bsurf, area.x, area.y);
+    cairo_rectangle(cr, area.x, area.y, area.width, area.height);
+    cairo_fill(cr);
+
+    cairo_restore(cr);
 }
 
 
@@ -7197,7 +7215,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 	return;
 
 /*  
-   gdk_draw_rectangle (sheet->pixmap,
+   gdk_draw_rectangle (sheet->bsurf,
        GTK_WIDGET(sheet)->style->white_gc,
        TRUE,
        0,0,
@@ -7239,7 +7257,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 		&gtk_widget_get_style(GTK_WIDGET(sheet))->bg[GTK_STATE_NORMAL]);
 #endif
 
-	    gdk_draw_rectangle(sheet->pixmap,
+	    gdk_draw_rectangle(sheet->bsurf,
 		sheet->fg_gc,
 		TRUE,  /* filled */
 		area.x, area.y,
@@ -7247,7 +7265,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 
 	    gdk_draw_pixmap(sheet->sheet_window,
 		gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-		sheet->pixmap,
+		sheet->bsurf,
 		area.x, area.y,
 		area.x, area.y,
 		area.width, area.height);
@@ -7290,7 +7308,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 		&gtk_widget_get_style(GTK_WIDGET(sheet))->bg[GTK_STATE_NORMAL]);
 #endif
 
-	    gdk_draw_rectangle(sheet->pixmap,
+	    gdk_draw_rectangle(sheet->bsurf,
 		sheet->fg_gc,
 		TRUE,  /* filled */
 		area.x, area.y,
@@ -7298,7 +7316,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 
 	    gdk_draw_pixmap(sheet->sheet_window,
 		gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-		sheet->pixmap,
+		sheet->bsurf,
 		area.x, area.y,
 		area.x, area.y,
 		area.width, area.height);
@@ -7597,7 +7615,7 @@ gtk_sheet_draw_backing_pixmap(GtkSheet *sheet, GtkSheetRange range)
 
     gdk_draw_pixmap(sheet->sheet_window,
 	gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-	sheet->pixmap,
+	sheet->bsurf,
 	x, y,
 	x, y,
 	width + 1,
@@ -8717,7 +8735,7 @@ _gtk_sheet_hide_active_cell(GtkSheet *sheet)
 
     gdk_draw_pixmap(sheet->sheet_window,
 	gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-	sheet->pixmap,
+	sheet->bsurf,
 	_gtk_sheet_column_left_xpixel(sheet, col) - 1,
 	_gtk_sheet_row_top_ypixel(sheet, row) - 1,
 	_gtk_sheet_column_left_xpixel(sheet, col) - 1,
@@ -8856,7 +8874,6 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
 {
     GtkJustification justification = GTK_JUSTIFY_LEFT;
     gboolean editable;
-    GtkStyle *style;
     GtkSheetColumn *colptr = COLPTR(sheet, col);
 
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
@@ -8931,29 +8948,15 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
 #if 1
     if (gtk_widget_get_realized(entry_widget))
     {
-	style = gtk_widget_get_style(entry_widget);
-	if (!style)
-	    gtk_widget_ensure_style(entry_widget);  /* why this ?? */
-	style = gtk_widget_get_style(entry_widget);
+	gtk_widget_override_color (entry_widget, 
+	    GTK_STATE_FLAG_NORMAL, &attributes.foreground);
+	gtk_widget_override_background_color (entry_widget, 
+	    GTK_STATE_FLAG_NORMAL, &attributes.background);
 
-	style = gtk_style_copy(style);
-
-	style->bg[GTK_STATE_NORMAL] = attributes.background;
-	style->base[GTK_STATE_NORMAL] = attributes.background;
-	style->fg[GTK_STATE_NORMAL] = attributes.foreground;
-	style->text[GTK_STATE_NORMAL] = attributes.foreground;
-
-	style->bg[GTK_STATE_ACTIVE] = attributes.background;
-	style->base[GTK_STATE_ACTIVE] = attributes.background;
-	style->fg[GTK_STATE_ACTIVE] = attributes.foreground;
-	style->text[GTK_STATE_ACTIVE] = attributes.foreground;
-
-	pango_font_description_free(style->font_desc);
-	style->font_desc = pango_font_description_copy(attributes.font_desc);
-
-	gtk_widget_set_style(entry_widget, style);
-
-	g_object_unref(style); /* 22.06.13/fp */
+	gtk_widget_override_color (entry_widget, 
+	    GTK_STATE_FLAG_ACTIVE, &attributes.foreground);
+	gtk_widget_override_background_color (entry_widget, 
+	    GTK_STATE_FLAG_ACTIVE, &attributes.background);
     }
 #endif
 }
@@ -9085,8 +9088,6 @@ gtk_sheet_draw_active_cell(GtkSheet *sheet)
 static void
 gtk_sheet_make_backing_pixmap(GtkSheet *sheet, guint width, guint height)
 {
-    gint pixmap_width, pixmap_height;
-
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
 	return;
 
@@ -9096,29 +9097,33 @@ gtk_sheet_make_backing_pixmap(GtkSheet *sheet, guint width, guint height)
 	height = sheet->sheet_window_height + 80;
     }
 
-    if (!sheet->pixmap)
+    if (!sheet->bsurf)
     {
 	/* allocate */
-	sheet->pixmap = gdk_pixmap_new(sheet->sheet_window,
-	    width, height,
-	    -1);
+	sheet->bsurf = gdk_window_create_similar_surface(sheet->sheet_window,
+	    width, height, CAIRO_CONTENT_COLOR_ALPHA);
+
+	sheet->bsurf_width = width;
+	sheet->bsurf_height = height;
+	sheet->bsurf_cr = cairo_create(sheet->bsurf);
+
 	if (!GTK_SHEET_IS_FROZEN(sheet))
 	    _gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
-    else
+    else if ((sheet->bsurf_width != width) || (sheet->bsurf_height != height))
     {
-	/* reallocate if sizes don't match */
-	gdk_window_get_size(sheet->pixmap, &pixmap_width, &pixmap_height);
+	cairo_destroy(sheet->bsurf_cr);
+	cairo_surface_destroy(sheet->bsurf);
 
-	if ((pixmap_width != width) || (pixmap_height != height))
-	{
-	    g_object_unref(G_OBJECT(sheet->pixmap));
-	    sheet->pixmap = gdk_pixmap_new(sheet->sheet_window,
-		width, height,
-		-1);
-	    if (!GTK_SHEET_IS_FROZEN(sheet))
-		_gtk_sheet_range_draw(sheet, NULL, TRUE);
-	}
+	sheet->bsurf = gdk_window_create_similar_surface(sheet->sheet_window,
+	    width, height, CAIRO_CONTENT_COLOR_ALPHA);
+
+	sheet->bsurf_width = width;
+	sheet->bsurf_height = height;
+	sheet->bsurf_cr = cairo_create(sheet->bsurf);
+
+	if (!GTK_SHEET_IS_FROZEN(sheet))
+	    _gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
 }
 
@@ -9208,7 +9213,7 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 
 		    gdk_draw_pixmap(sheet->sheet_window,
 			gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-			sheet->pixmap,
+			sheet->bsurf,
 			x + 1,
 			y + 1,
 			x + 1,
@@ -9283,7 +9288,7 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 
 		gdk_draw_pixmap(sheet->sheet_window,
 		    gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-		    sheet->pixmap,
+		    sheet->bsurf,
 		    x + 1,
 		    y + 1,
 		    x + 1,
@@ -9467,7 +9472,7 @@ gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range)
 	y = _gtk_sheet_row_top_ypixel(sheet, range.row0);
 	gdk_draw_pixmap(sheet->sheet_window,
 	    gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-	    sheet->pixmap,
+	    sheet->bsurf,
 	    x - 1,
 	    y - 1,
 	    x - 1,
@@ -9495,7 +9500,7 @@ gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range)
 	}
 	gdk_draw_pixmap(sheet->sheet_window,
 	    gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-	    sheet->pixmap,
+	    sheet->bsurf,
 	    x - width,
 	    y - width,
 	    x - width,
@@ -9523,7 +9528,7 @@ gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range)
 	}
 	gdk_draw_pixmap(sheet->sheet_window,
 	    gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-	    sheet->pixmap,
+	    sheet->bsurf,
 	    x - width,
 	    y - width,
 	    x - width,
@@ -9550,7 +9555,7 @@ gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range)
 	    width = 3;
 	gdk_draw_pixmap(sheet->sheet_window,
 	    gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-	    sheet->pixmap,
+	    sheet->bsurf,
 	    x - width,
 	    y - width,
 	    x - width,
@@ -9768,7 +9773,7 @@ gtk_sheet_real_unselect_range(GtkSheet *sheet, GtkSheetRange *range)
  * @return TRUE to stop other handlers from being invoked for the event. FALSE to propagate the event further.
  */
 static gboolean
-gtk_sheet_expose_handler(GtkWidget *widget, GdkEventExpose *event)
+gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
 {
     GtkSheet *sheet;
     gint i;
@@ -9817,7 +9822,7 @@ gtk_sheet_expose_handler(GtkWidget *widget, GdkEventExpose *event)
 	    range.coli = _gtk_sheet_column_from_xpixel(sheet, event->area.x + event->area.width);
 
 #if GTK_SHEET_DEBUG_EXPOSE > 0
-	    g_debug("gtk_sheet_expose_handler: backing pixmap (%d,%d) (%d,%d)",
+	    g_debug("gtk_sheet_expose_handler: bsurf (%d,%d) (%d,%d)",
 		range.row0, range.col0, range.rowi, range.coli);
 #endif
 
@@ -9852,7 +9857,8 @@ gtk_sheet_expose_handler(GtkWidget *widget, GdkEventExpose *event)
     if (sheet->state != GTK_SHEET_NORMAL && GTK_SHEET_IN_SELECTION(sheet))
 	gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
-    (*GTK_WIDGET_CLASS(sheet_parent_class)->expose_event)(widget, event);
+    if (GTK_WIDGET_CLASS(sheet_parent_class)->draw)
+	(*GTK_WIDGET_CLASS(sheet_parent_class)->draw)(widget, cr);
 
     return (FALSE);
 }
@@ -10955,7 +10961,7 @@ gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column)
 
 	    gdk_draw_pixmap(sheet->sheet_window,
 		gtk_widget_get_style(GTK_WIDGET(sheet))->fg_gc[GTK_STATE_NORMAL],
-		sheet->pixmap,
+		sheet->bsurf,
 		_gtk_sheet_column_left_xpixel(sheet, c) - 1,
 		_gtk_sheet_row_top_ypixel(sheet, r) - 1,
 		_gtk_sheet_column_left_xpixel(sheet, c) - 1,
@@ -11700,8 +11706,8 @@ gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
 
     _gtk_sheet_recalc_view_range(sheet);
 
-    /* re-scale backing pixmap */
-    gtk_sheet_make_backing_pixmap(sheet, 0, 0);
+    /* re-scale backing bsurf */
+    gtk_sheet_make_backing_pixmap(sheet, 0, 0);  /* use default size */
     gtk_sheet_position_children(sheet);
 
     /* set the scrollbars adjustments */
@@ -12770,15 +12776,18 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
     gchar * label, label_buf[10];
     PangoAlignment pango_alignment = PANGO_ALIGN_LEFT;
     GtkSheetArea area = ON_SHEET_BUTTON_AREA;
-    PangoFontDescription *font_desc =
-	gtk_widget_get_style(GTK_WIDGET(sheet))->font_desc;
+    PangoFontDescription *font_desc = NULL;
     PangoRectangle extent;
+    GtkStyleContext *style_context = gtk_widget_get_style_context(GTK_WIDGET(sheet));
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
 	return;
 
     if ((row == -1) && (col == -1))
 	return;
+
+    gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL,
+                       GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
 #if GTK_SHEET_DEBUG_DRAW_BUTTON > 0
     g_debug("_gtk_sheet_draw_button: row %d col %d", row, col);
@@ -13978,14 +13987,14 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
  * gtk_sheet_range_set_background:
  * @sheet: a #GtkSheet.
  * @urange: a #GtkSheetRange.
- * @color: a #GdkColor.
+ * @color: a #GdkRGBA.
  *
  * Set background color of the given range.
  */
 void
 gtk_sheet_range_set_background(GtkSheet *sheet,
     const GtkSheetRange *urange,
-    const GdkColor *color)
+    const GdkRGBA *color)
 {
     gint i, j;
     GtkSheetRange range;
@@ -14013,8 +14022,6 @@ gtk_sheet_range_set_background(GtkSheet *sheet,
 	else
 	    attributes.background = sheet->bg_color;
 	
-	gdk_colormap_alloc_color(gdk_colormap_get_system(), &attributes.background, FALSE, TRUE);
-
 	gtk_sheet_set_cell_attributes(sheet, i, j, attributes);
     }
 
@@ -14026,14 +14033,14 @@ gtk_sheet_range_set_background(GtkSheet *sheet,
  * gtk_sheet_range_set_foreground:
  * @sheet: a #GtkSheet.
  * @urange: a #GtkSheetRange.
- * @color: a #GdkColor.
+ * @color: a #GdkRGBA.
  *
  * Set foreground color of the given range.
  */
 void
 gtk_sheet_range_set_foreground(GtkSheet *sheet,
     const GtkSheetRange *urange,
-    const GdkColor *color)
+    const GdkRGBA *color)
 {
     gint i, j;
     GtkSheetRange range;
@@ -14060,8 +14067,6 @@ gtk_sheet_range_set_foreground(GtkSheet *sheet,
 	    attributes.foreground = *color;
 	else
 	    gdk_color_black(gdk_colormap_get_system(), &attributes.foreground);
-
-	gdk_colormap_alloc_color(gdk_colormap_get_system(), &attributes.foreground, FALSE, TRUE);
 
 	gtk_sheet_set_cell_attributes(sheet, i, j, attributes);
     }
@@ -14240,14 +14245,14 @@ gtk_sheet_range_set_border(GtkSheet *sheet, const GtkSheetRange *urange, gint ma
  * gtk_sheet_range_set_border_color:
  * @sheet: a #GtkSheet.
  * @urange: a #GtkSheetRange where we set border color.
- * @color: a #GdkColor.
+ * @color: a #GdkRGBA.
  *
  * Set border color for the given range.
  */
 void
 gtk_sheet_range_set_border_color(GtkSheet *sheet,
     const GtkSheetRange *urange,
-    const GdkColor *color)
+    const GdkRGBA *color)
 {
     gint i, j;
     GtkSheetRange range;
@@ -14413,16 +14418,10 @@ static void
 init_attributes(GtkSheet *sheet, gint col, GtkSheetCellAttr *attributes)
 {
     /* DEFAULT VALUES */
-    attributes->foreground = gtk_widget_get_style(GTK_WIDGET(sheet))->black;
+    attributes->foreground = color_black;
     attributes->background = sheet->bg_color;
 
-    if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
-    {
-	GdkColormap *colormap;
-	colormap = gdk_colormap_get_system();
-	gdk_color_black(colormap, &attributes->foreground);
-	attributes->background = sheet->bg_color;
-    }
+    GtkStyleContext *style_context = gtk_widget_get_style_context(GTK_WIDGET(sheet));
 
     if (col < 0 || col > sheet->maxcol)
 	attributes->justification = GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION;
@@ -14434,13 +14433,13 @@ init_attributes(GtkSheet *sheet, gint col, GtkSheetCellAttr *attributes)
     attributes->border.cap_style = GDK_CAP_NOT_LAST;
     attributes->border.join_style = GDK_JOIN_MITER;
     attributes->border.mask = 0;
-    attributes->border.color = gtk_widget_get_style(GTK_WIDGET(sheet))->black;
+    attributes->border.color = color_black;
     attributes->is_editable = TRUE;
     attributes->is_visible = TRUE;
     attributes->font = gtk_widget_get_style(GTK_WIDGET(sheet))->private_font;
 
-    attributes->font_desc = 
-	gtk_widget_get_style(GTK_WIDGET(sheet))->font_desc;  /* no copy */
+    gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL,
+                       GTK_STYLE_PROPERTY_FONT, &attributes->font_desc, NULL);
     attributes->do_font_desc_free = FALSE;
 }
 
@@ -15203,6 +15202,11 @@ label_size_request(GtkSheet *sheet, gchar *label, GtkRequisition *req)
     gchar word[1000];
     gint n = 0;
     gint row_height = _gtk_sheet_row_default_height(GTK_WIDGET(sheet)) - 2 * CELLOFFSET + 2;
+    GtkStyleContext *style_context = gtk_widget_get_style_context(GTK_WIDGET(sheet));
+    PangoFontDescription *font_desc = NULL;
+
+    gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL,
+                       GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
     req->height = 0;
     req->width = 0;
@@ -15218,9 +15222,7 @@ label_size_request(GtkSheet *sheet, gchar *label, GtkRequisition *req)
 
 	    word[n] = '\0';
 
-	    _get_string_extent(sheet, NULL,
-		gtk_widget_get_style(GTK_WIDGET(sheet))->font_desc, 
-		word, &text_width, &text_height);
+	    _get_string_extent(sheet, NULL, font_desc, word, &text_width, &text_height);
 	    req->width = MAX(req->width, text_width);
 	    n = 0;
 	}

@@ -60,8 +60,7 @@ static void gtk_check_item_get_preferred_height (GtkWidget *widget,
 
 static void gtk_check_item_size_allocate       (GtkWidget           *widget,
 						GtkAllocation       *allocation);
-static gboolean gtk_check_item_expose          (GtkWidget           *widget,
-						GdkEventExpose      *event);
+static gboolean gtk_check_item_draw(GtkWidget *widget, cairo_t *cr);
 static void gtk_check_item_paint               (GtkWidget           *widget,
 						GdkRectangle        *area);
 static void gtk_check_item_draw_indicator      (GtkCheckItem      *check_item,
@@ -103,7 +102,7 @@ gtk_check_item_class_init (GtkCheckItemClass *klass)
   widget_class->get_preferred_width = gtk_check_item_get_preferred_width;
   widget_class->get_preferred_height = gtk_check_item_get_preferred_height;
   widget_class->size_allocate = gtk_check_item_size_allocate;
-  widget_class->expose_event = gtk_check_item_expose;
+  widget_class->draw = gtk_check_item_draw;
   
   klass->indicator_size = INDICATOR_SIZE;
   klass->indicator_spacing = INDICATOR_SPACING;
@@ -310,8 +309,7 @@ gtk_check_item_size_allocate (GtkWidget     *widget,
 }
 
 static gboolean
-gtk_check_item_expose (GtkWidget      *widget,
-			 GdkEventExpose *event)
+gtk_check_item_draw(GtkWidget *widget, cairo_t *cr)
 {
   GtkCheckItem *check_item;
   GtkToggleButton *toggle_button;
@@ -336,8 +334,8 @@ gtk_check_item_expose (GtkWidget      *widget,
                                             gtk_bin_get_child(bin),
                                             event);
         }
-      else if (GTK_WIDGET_CLASS (parent_class)->expose_event)
-        (* GTK_WIDGET_CLASS (parent_class)->expose_event) (widget, event);
+      else if (GTK_WIDGET_CLASS (parent_class)->draw)
+        (* GTK_WIDGET_CLASS (parent_class)->draw) (widget, cr);
     }
  
   return FALSE;

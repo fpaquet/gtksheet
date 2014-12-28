@@ -97,7 +97,7 @@ static void   gtk_item_entry_draw_frame(GtkWidget *widget);
 static void   gtk_item_entry_destroy(GtkWidget *widget);
 static void   gtk_item_entry_dispose(GObject *object);
 static void   gtk_item_entry_finalize(GObject *object);
-static gint   gtk_item_entry_expose(GtkWidget *widget, GdkEventExpose *event);
+static gboolean gtk_item_entry_draw(GtkWidget *widget, cairo_t *cr);
 static void   gtk_item_entry_grab_focus(GtkWidget *widget);
 static void   gtk_item_entry_style_set(GtkWidget *widget, GtkStyle *previous_style);
 static void   gtk_item_entry_direction_changed(GtkWidget *widget, GtkTextDirection previous_dir);
@@ -276,7 +276,7 @@ gtk_item_entry_class_init(GtkItemEntryClass *klass)
     widget_class->get_preferred_width = gtk_item_entry_get_preferred_width;
     widget_class->get_preferred_height = gtk_item_entry_get_preferred_height;
     widget_class->size_allocate = gtk_item_entry_size_allocate;
-    widget_class->expose_event = gtk_item_entry_expose;
+    widget_class->draw = gtk_item_entry_draw;
     widget_class->grab_focus = gtk_item_entry_grab_focus;
     widget_class->style_set = gtk_item_entry_style_set;
     widget_class->direction_changed = gtk_item_entry_direction_changed;
@@ -300,28 +300,17 @@ gtk_item_entry_editable_init(GtkEditableInterface *iface)
 }
 
 static void
-gtk_item_entry_init(GtkItemEntry *entry)
+gtk_item_entry_init(GtkItemEntry *ientry)
 {
-    entry->justification = GTK_JUSTIFY_LEFT;
-    entry->max_length_bytes = 0;
-    entry->text_max_size = 0;
-    entry->item_text_size = 0;
-    entry->item_n_bytes = 0;
-    GTK_ENTRY(entry)->has_frame = FALSE;
+    GtkEntry *entry = GTK_ENTRY(ientry);
 
-    g_object_unref(G_OBJECT(GTK_ENTRY(entry)->im_context));
+    ientry->justification = GTK_JUSTIFY_LEFT;
+    ientry->max_length_bytes = 0;
+    ientry->text_max_size = 0;
+    ientry->item_text_size = 0;
+    ientry->item_n_bytes = 0;
 
-    GTK_ENTRY(entry)->im_context = gtk_im_multicontext_new();
-
-    g_signal_connect(G_OBJECT(GTK_ENTRY(entry)->im_context), "commit",
-	G_CALLBACK(gtk_item_entry_commit_cb), entry);
-    g_signal_connect(G_OBJECT(GTK_ENTRY(entry)->im_context), "preedit_changed",
-	G_CALLBACK(gtk_item_entry_preedit_changed_cb), entry);
-    g_signal_connect(G_OBJECT(GTK_ENTRY(entry)->im_context), "retrieve_surrounding",
-	G_CALLBACK(gtk_item_entry_retrieve_surrounding_cb), entry);
-    g_signal_connect(G_OBJECT(GTK_ENTRY(entry)->im_context), "delete_surrounding",
-	G_CALLBACK(gtk_item_entry_delete_surrounding_cb), entry);
-
+    gtk_entry_set_has_frame(entry, FALSE);
 }
 
 static void
@@ -383,7 +372,7 @@ gtk_item_entry_realize(GtkWidget *widget)
 
     gdk_window_show(entry->text_area);
 
-    gtk_im_context_set_client_window(entry->im_context, entry->text_area);
+    //gtk_im_context_set_client_window(entry->im_context, entry->text_area);
 
     gtk_item_entry_adjust_scroll(entry);
 }
@@ -402,7 +391,7 @@ _item_entry_get_borders(GtkEntry *entry,
 	"focus-line-width", &focus_width,
 	NULL);
 
-    if (entry->has_frame)
+    if (gtk_entry_get_has_frame(entry))
     {
 	*xborder = gtk_widget_get_style(widget)->xthickness;
 	*yborder = gtk_widget_get_style(widget)->ythickness;
@@ -663,8 +652,8 @@ gtk_item_entry_finalize (GObject *object)
 }
 
 
-static gint
-gtk_item_entry_expose(GtkWidget *widget, GdkEventExpose *event)
+static gboolean
+gtk_item_entry_draw(GtkWidget *widget, cairo_t *cr)
 {
     GtkEntry *entry = GTK_ENTRY(widget);
     gfloat align = 0.0;
@@ -1248,62 +1237,6 @@ gtk_item_entry_delete_from_cursor(GtkEntry       *entry,
     }
 
     gtk_item_entry_pend_cursor_blink(entry);
-}
-
-/* IM Context Callbacks
- */
-
-static void
-gtk_item_entry_commit_cb(GtkIMContext *context,
-    const gchar  *str,
-    GtkEntry     *entry)
-{
-    gtk_item_entry_enter_text(entry, str);
-}
-
-static void
-gtk_item_entry_preedit_changed_cb(GtkIMContext *context,
-    GtkEntry     *entry)
-{
-    gchar *preedit_string;
-    gint cursor_pos;
-
-    gtk_im_context_get_preedit_string(entry->im_context,
-	&preedit_string, NULL,
-	&cursor_pos);
-    entry->preedit_length = strlen(preedit_string);
-    cursor_pos = CLAMP(cursor_pos, 0, g_utf8_strlen(preedit_string, -1));
-    entry->preedit_cursor = cursor_pos;
-    g_free(preedit_string);
-
-    gtk_item_entry_recompute(entry);
-}
-
-static gboolean
-gtk_item_entry_retrieve_surrounding_cb(GtkIMContext *context,
-    GtkEntry     *entry)
-{
-    GtkEntryBuffer *buffer = _item_entry_get_buffer(entry);
-
-    gtk_im_context_set_surrounding(context,
-	entry->text,
-	gtk_entry_buffer_get_bytes(buffer),
-	g_utf8_offset_to_pointer(entry->text, entry->current_pos) - entry->text);
-
-    return TRUE;
-}
-
-static gboolean
-gtk_item_entry_delete_surrounding_cb(GtkIMContext *slave,
-    gint          offset,
-    gint          n_chars,
-    GtkEntry     *entry)
-{
-    gtk_editable_delete_text(GTK_EDITABLE(entry),
-	entry->current_pos + offset,
-	entry->current_pos + offset + n_chars);
-
-    return TRUE;
 }
 
 
@@ -1963,18 +1896,6 @@ gtk_item_entry_queue_draw(GtkEntry *entry)
     if (gtk_widget_get_realized(GTK_WIDGET(entry)))
 	gdk_window_invalidate_rect(entry->text_area, NULL, FALSE);
 }
-
-#if GTK_CHECK_VERSION(2,21,0) == 0
-static void
-gtk_entry_reset_im_context(GtkEntry *entry)
-{
-    if (entry->need_im_reset)
-    {
-	entry->need_im_reset = 0;
-	gtk_im_context_reset(entry->im_context);
-    }
-}
-#endif // GTK_CHECK_VERSION(2,21,0) == 0
 
 static void
 gtk_item_entry_get_cursor_locations(GtkEntry   *entry,

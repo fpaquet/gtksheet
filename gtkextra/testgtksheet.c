@@ -568,7 +568,7 @@ void
     GtkWidget *show_button;
     GtkSheetRange range;
     GdkRectangle area;
-    GdkColor color;
+    GdkRGBA color;
     GdkColormap *colormap;
     gchar font_name1[]="Arial 36";
     gchar font_name2[]="Arial 28";
@@ -579,10 +579,10 @@ void
     sheet=GTK_SHEET(widget);
     colormap = gdk_colormap_get_system();
 
-    gdk_color_parse("light yellow", &color);
+    gdk_rgba_parse(&color, "light yellow");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_set_background(sheet, &color);
-    gdk_color_parse("light blue", &color);
+    gdk_rgba_parse(&color, "light blue");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_set_grid(sheet, &color);
 
@@ -617,7 +617,7 @@ void
     gtk_sheet_range_set_font(sheet, &range, font_desc);
     pango_font_description_free(font_desc);
 
-    gdk_color_parse("red", &color);
+    gdk_rgba_parse(&color, "red");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_foreground(sheet, &range, &color);
 
@@ -630,7 +630,7 @@ void
     gtk_sheet_range_set_font(sheet, &range, font_desc);
     pango_font_description_free(font_desc);
 
-    gdk_color_parse("blue", &color);
+    gdk_rgba_parse(&color, "blue");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_foreground(sheet, &range, &color);
 
@@ -640,10 +640,10 @@ void
     range.rowi=3;
     range.col0=0;
     range.coli=4;
-    gdk_color_parse("dark gray", &color);
+    gdk_rgba_parse(&color, "dark gray");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_background(sheet, &range, &color);
-    gdk_color_parse("green", &color);
+    gdk_rgba_parse(&color, "green");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_foreground(sheet, &range, &color);
 
@@ -767,7 +767,7 @@ void
 {
     GtkSheet *sheet;
     GtkSheetRange range;
-    GdkColor color;
+    GdkRGBA color;
     GtkWidget *b;
 
     sheet=GTK_SHEET(widget);
@@ -782,18 +782,18 @@ void
     range.col0=0;
     range.coli=sheet->maxcol;
     gtk_sheet_range_set_editable(sheet, &range, FALSE);
-    gdk_color_parse("light gray", &color);
+    gdk_rgba_parse(&color, "light gray");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_background(sheet, &range, &color);
-    gdk_color_parse("blue", &color);
+    gdk_rgba_parse(&color, "blue");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_foreground(sheet, &range, &color);
     range.row0=1;
-    gdk_color_parse("red", &color);
+    gdk_rgba_parse(&color, "red");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_foreground(sheet, &range, &color);
     range.row0=2;
-    gdk_color_parse("black", &color);
+    gdk_rgba_parse(&color, "black");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_foreground(sheet, &range, &color);
 
@@ -854,7 +854,7 @@ void
 {
     GtkSheet *sheet;
     GtkSheetRange range;
-    GdkColor color;
+    GdkRGBA color;
 
     sheet=GTK_SHEET(widget);
 
@@ -864,30 +864,30 @@ void
     range.rowi=10;
     range.col0=0;
     range.coli=6;
-    gdk_color_parse("orange", &color);
+    gdk_rgba_parse(&color, "orange");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_background(sheet, &range, &color);
-    gdk_color_parse("violet", &color);
+    gdk_rgba_parse(&color, "violet");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_foreground(sheet, &range, &color);
     range.row0=1;
-    gdk_color_parse("blue", &color);
+    gdk_rgba_parse(&color, "blue");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_background(sheet, &range, &color);
     range.coli=0;
-    gdk_color_parse("dark green", &color);
+    gdk_rgba_parse(&color, "dark green");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_background(sheet, &range, &color);
 
     range.row0=0; 
-    gdk_color_parse("dark blue", &color);
+    gdk_rgba_parse(&color, "dark blue");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_border_color(sheet, &range, &color);
     gtk_sheet_range_set_border(sheet, &range, GTK_SHEET_RIGHT_BORDER, 4, 1);
     range.coli=0;
     range.col0=0;
     range.rowi=0;
-    gdk_color_parse("red", &color);
+    gdk_rgba_parse(&color, "red");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_background(sheet, &range, &color);
     gtk_sheet_range_set_border(sheet, &range, GTK_SHEET_RIGHT_BORDER|
@@ -895,7 +895,7 @@ void
     range.rowi=0;
     range.col0=1;
     range.coli=6;
-    gdk_color_parse("dark blue", &color);
+    gdk_rgba_parse(&color, "dark blue");
     gdk_color_alloc(gtk_widget_get_colormap(widget), &color);
     gtk_sheet_range_set_border_color(sheet, &range, &color);
     gtk_sheet_range_set_border(sheet, &range, GTK_SHEET_BOTTOM_BORDER, 4, 1);
@@ -1232,7 +1232,7 @@ void
 
 
 void 
-    change_fg(GtkWidget *widget, gint i, GdkColor *color)
+    change_fg(GtkWidget *widget, gint i, GdkRGBA *color)
 {
     GtkSheet *current;
     gint cur_page;
@@ -1252,7 +1252,7 @@ void
 }
 
 void 
-    change_bg(GtkWidget *widget, gint i, GdkColor *color)
+    change_bg(GtkWidget *widget, gint i, GdkRGBA *color)
 {
     GtkSheet *current;
     gint cur_page;

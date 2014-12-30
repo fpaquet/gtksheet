@@ -72,7 +72,7 @@ enum
     GTK_SHEET_RIGHT_BORDER    = 1 << 1,
     GTK_SHEET_TOP_BORDER      = 1 << 2,
     GTK_SHEET_BOTTOM_BORDER   = 1 << 3
-};
+} GtkSheetBorderBits;
 
 /**
  * GtkSheetEntryType:
@@ -224,11 +224,12 @@ struct _GtkSheetButton
 struct _GtkSheetCellBorder
 {
     /*< private >*/
-    gint8 mask;
-    guint width;
-    //GdkLineStyle line_style;
-    //GdkCapStyle cap_style;
-    //GdkJoinStyle join_style;
+    gint8 mask;  /* GtkSheetBorderBits mask */
+    guint width;  /* -> cairo_set_line_width() */
+
+    cairo_line_cap_t cap_style;  /* -> cairo_set_line_cap() */
+    cairo_line_join_t join_style;  /* -> cairo_set_line_join() */
+
     GdkRGBA color;
 };
 
@@ -762,9 +763,12 @@ void gtk_sheet_range_set_visible(GtkSheet *sheet,
  * mask values are CELL_LEFT_BORDER, CELL_RIGHT_BORDER, CELL_TOP_BORDER,
  * CELL_BOTTOM_BORDER
  * width is the width of the border line in pixels 
- * line_style is the line_style for the border line */
+ * for cap_style and join_style see cairo docs
+ */
 void gtk_sheet_range_set_border(GtkSheet *sheet,
-                                const GtkSheetRange *urange, gint mask, guint width, gint line_style);
+    const GtkSheetRange *urange, gint mask,  guint width,
+    cairo_line_cap_t cap_style,
+    cairo_line_join_t join_style);
 
 /* set border color for the given range */
 void gtk_sheet_range_set_border_color(GtkSheet *sheet,

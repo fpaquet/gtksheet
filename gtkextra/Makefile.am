@@ -72,7 +72,6 @@ gtkextra_public_h_sources = \
 	#gtksheet.h \
         #gtkplotcanvas.h
 
-
 #tkextra_public_h_sources = \
 #       gtkbordercombo.h 	\
 #       gtkcheckitem.h	\

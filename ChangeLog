@@ -1,4 +1,11 @@
 2014-12-28 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: hacked xor_dc, fg_dc, bg_dc -> xor_cr, fg_cr, bg_cr
+	* GtkSheet: moved basic drawing routines to cairo
+	* GtkSheet: elimiated GdkLineStyle in GtkSheetCellBorder
+	* GtkSheet: still not yet finished
+	* GtkPlotCanvas, GtkPlotCanvasEllipse, GtkPlotCanvasLine: mig. gdk_gc_set_line_attributes()
+
+2014-12-28 Fredy Paquet <mailbox AT opag.ch>
 	* global replace expose_event -> draw
 	* migrated GtkDataTextView
 	* scheduled GtkItemEntry for removal (replace with GtkDataEntry/GtkDataTextView)

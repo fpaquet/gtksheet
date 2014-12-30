@@ -2180,7 +2180,12 @@ draw_selection(GtkPlotCanvas *canvas, GtkPlotCanvasChild *child, GtkAllocation a
        }
     }
   } else {
-    gdk_gc_set_line_attributes(xor_gc, 1, 1, 0 ,0 );
+    //gdk_gc_set_line_attributes(xor_gc, 1, 1, 0 ,0 );
+    cairo_set_line_width(xor_cr, 1.0);
+    cairo_set_line_cap(xor_cr, CAIRO_LINE_CAP_BUTT);
+    cairo_set_line_join(xor_cr, CAIRO_LINE_JOIN_MITER);
+    double dashes[] = { 1.0 };
+    cairo_set_dash(xor_cr, dashes, 1, 0.0);
   
     gdk_draw_rectangle (gtk_widget_get_window(GTK_WIDGET(canvas)),
                         xor_gc,

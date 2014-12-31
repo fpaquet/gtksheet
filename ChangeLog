@@ -1,4 +1,19 @@
-2014-12-28 Fredy Paquet <mailbox AT opag.ch>
+2014-12-31 Fredy Paquet <mailbox AT opag.ch>
+	* global replace gtk_widget_get_pointer() by gdk_window_get_device_position()
+	* global disable GDK_THREADS_ENTER from Gtk 3.6.0
+	* global replace gdk_cursor_destroy()
+	* global replace gtk_widget_size_request() by gtk_widget_get_preferred_size()
+	* global replace gdk_pointer_grab(), gdk_pointer_ungrab()
+	* global replace gdk_window_clear_area() with cairo_paint() / cairo_fill()
+	* replace GtkBoxChild with gtk_container_get_children()
+	* replace gtk_widget_get_child_requisition() with gtk_widget_get_preferred_size()
+	* GtkSheet: replace gtk_widget_set_state() with gtk_widget_set_state_flags()
+	* GtkSheet: set_scroll_adjustments_signal -> GtkScrollable interface
+	* retire GtkItemEntry
+	* removed gtk_color_alloc() from testgtksheet
+	* GtkSheet, GtkSheetColumn and testgtksheet compiles and runs
+
+2014-12-30 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: hacked xor_dc, fg_dc, bg_dc -> xor_cr, fg_cr, bg_cr
 	* GtkSheet: moved basic drawing routines to cairo
 	* GtkSheet: elimiated GdkLineStyle in GtkSheetCellBorder

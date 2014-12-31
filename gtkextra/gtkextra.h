@@ -32,12 +32,12 @@
 //#include <gtkextra/gtkcolorcombo.h>
 //#include <gtkextra/gtkcombobutton.h>
 #include <gtkextra/gtkdataentry.h>
+#include <gtkextra/gtkdatatextview.h>
 //#include <gtkextra/gtkdirtree.h>
 #include <gtkextra/gtkextrafeatures.h>
 //#include <gtkextra/gtkfilelist.h>
 #include <gtkextra/gtkfontcombo.h>
 //#include <gtkextra/gtkiconlist.h>
-//#include <gtkextra/gtkitementry.h>
 //#include <gtkextra/gtkiconfilesel.h>
 #include <gtkextra/gtkplot.h>
 #include <gtkextra/gtkplotpolar.h>
@@ -66,7 +66,7 @@
 #include <gtkextra/gtkplotpc.h>
 //#include <gtkextra/gtkplotprint.h>
 #include <gtkextra/gtkpsfont.h>
-//#include <gtkextra/gtksheet.h>
+#include <gtkextra/gtksheet.h>
 //#include <gtkextra/gtktogglecombo.h>
 
 #undef __GTKEXTRA_H_INSIDE__

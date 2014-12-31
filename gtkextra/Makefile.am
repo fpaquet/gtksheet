@@ -69,7 +69,8 @@ gtkextra_public_h_sources = \
         gtkplotpolar.h \
         gtkplotsurface.h \
         gtkpsfont.h \
-	#gtksheet.h \
+	gtksheet.h \
+	gtksheetcolumn.h \
         #gtkplotcanvas.h
 
 #tkextra_public_h_sources = \
@@ -98,7 +99,6 @@ gtkextra_public_h_sources = \
 #       gtkplotpixmap.h	\
 #       gtkplotprint.h	\
 #       gtkplotsegment.h	\
-#       gtksheetcolumn.h	\
 #       gtktogglecombo.h
 
 gtkextra_c_sources = 	\
@@ -118,7 +118,8 @@ gtkextra_c_sources = 	\
         gtkplotpc.c \
         gtkplotpolar.c \
         gtkplotsurface.c \
-	#gtksheet.c \
+	gtksheet.c \
+	gtksheetcolumn.c \
         #gtkplotcanvas.c
 
 #tkextra_c_sources = 	\
@@ -145,7 +146,6 @@ gtkextra_c_sources = 	\
 #       gtkplotpixmap.c \
 #       gtkplotprint.c	\
 #       gtkplotsegment.c	\
-#       gtksheetcolumn.c	\
 #       gtktogglecombo.c 
 
 gtkextra_private_h_sources = \
@@ -235,13 +235,13 @@ gtkextratypebuiltins.c: $(gtkextra_public_h_sources)
 # test programs, not to be installed
 
 if ENABLE_TESTS
-noinst_PROGRAMS = testgtkfont testcharsel
-#noinst_PROGRAMS = testgtksheet testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment
+noinst_PROGRAMS = testgtkfont testcharsel testgtksheet
+#noinst_PROGRAMS = testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment
 endif
 DEPS = $(gtkextratargetlib)
 LDADDS = $(gtkextratargetlib) $(GTK_LIBS)
 
-#testgtksheet_DEPENDENCIES = $(DEPS)
+testgtksheet_DEPENDENCIES = $(DEPS)
 #testgtkplot_DEPENDENCIES = $(DEPS)
 #testdt_DEPENDENCIES = $(DEPS)
 #testgtkplotdt_DEPENDENCIES = $(DEPS)
@@ -262,7 +262,7 @@ testcharsel_DEPENDENCIES = $(DEPS)
 #testiterator_DEPENDENCIES = $(DEPS)
 #testsegment_DEPENDENCIES = $(DEPS)
 #testgtkplotcanvas_DEPENDENCIES = $(DEPS)
-#testgtksheet_LDADD = $(LDADDS)
+testgtksheet_LDADD = $(LDADDS)
 #testgtkplot_LDADD = $(LDADDS)
 #testdt_LDADD = $(LDADDS)
 #testgtkplotdt_LDADD = $(LDADDS)

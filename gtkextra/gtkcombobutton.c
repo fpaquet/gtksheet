@@ -238,7 +238,7 @@ gtk_combo_button_init (GtkComboButton * combo_button)
   gtk_widget_realize (event_box);
   cursor = gdk_cursor_new (GDK_TOP_LEFT_ARROW);
   gdk_window_set_cursor (gtk_widget_get_window(event_box), cursor);
-  gdk_cursor_destroy (cursor);
+  g_object_unref(G_OBJECT(cursor));
 
   combo_button->frame = gtk_frame_new (NULL);
   gtk_container_add (GTK_CONTAINER (event_box), combo_button->frame);

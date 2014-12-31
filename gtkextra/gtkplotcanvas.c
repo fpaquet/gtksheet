@@ -1514,6 +1514,13 @@ gtk_plot_canvas_button_press(GtkWidget *widget, GdkEventButton *event)
                             GDK_BUTTON_RELEASE_MASK,
                             NULL, NULL, event->time);
 */ 
+	  gdk_device_grab (event->device, event->window,
+	      GDK_OWNERSHIP_WINDOW, FALSE,
+	      GDK_POINTER_MOTION_MASK | 
+	      GDK_BUTTON1_MOTION_MASK | 
+	      GDK_BUTTON_RELEASE_MASK,
+	      NULL, event->time);
+
           canvas->drag_point = pos;
  
           canvas->drag_x = x;
@@ -1553,6 +1560,13 @@ gtk_plot_canvas_button_press(GtkWidget *widget, GdkEventButton *event)
                         GDK_BUTTON_RELEASE_MASK,
                         NULL, NULL, event->time);
 */
+      gdk_device_grab (event->device, event->window,
+	  GDK_OWNERSHIP_WINDOW, FALSE,
+	  GDK_POINTER_MOTION_MASK | 
+	  GDK_BUTTON1_MOTION_MASK | 
+	  GDK_BUTTON_RELEASE_MASK,
+	  NULL, event->time);
+
       draw_selection(canvas, NULL, canvas->drag_area);
     }
   }
@@ -1607,9 +1621,8 @@ gtk_plot_canvas_button_release(GtkWidget *widget, GdkEventButton *event)
 
   canvas = GTK_PLOT_CANVAS(widget); 
 
-/*
-  gdk_pointer_ungrab(event->time);
-*/
+  //gdk_pointer_ungrab(event->time);
+  gdk_device_ungrab (event->device, event->time);
 
   if(gtk_widget_get_mapped(widget)){
       g_object_unref(canvas->cursor);
@@ -1858,9 +1871,9 @@ void
 gtk_plot_canvas_cancel_action (GtkPlotCanvas *plot_canvas)
 {
   gtk_plot_canvas_unselect(plot_canvas);
-/*
-  gdk_pointer_ungrab(GDK_CURRENT_TIME);
-*/
+
+  //gdk_pointer_ungrab(GDK_CURRENT_TIME);
+  gdk_device_ungrab (event->device, event->time);
 }
 
 

@@ -45,8 +45,7 @@ typedef enum
     GTK_SHEET_BORDER_COLOR,
     GTK_SHEET_IS_EDITABLE,
     GTK_SHEET_IS_VISIBLE
-}
-GtkSheetAttrType;
+} GtkSheetAttrType;
 
 /**
  * GtkSheetState:
@@ -93,9 +92,9 @@ enum
 typedef enum
 {
     GTK_SHEET_ENTRY_TYPE_DEFAULT,
-    GTK_SHEET_ENTRY_TYPE_GTK_ITEM_ENTRY,
     GTK_SHEET_ENTRY_TYPE_GTK_ENTRY,
     GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW,
+    GTK_SHEET_ENTRY_TYPE_GTK_DATA_ENTRY,
     GTK_SHEET_ENTRY_TYPE_GTK_DATA_TEXT_VIEW,
     GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON,
     GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX,
@@ -243,7 +242,6 @@ struct _GtkSheetCellAttr
 {
     /*< private >*/
     GtkJustification justification;
-    //GdkFont *font;
     PangoFontDescription *font_desc;
     GdkRGBA foreground;
     GdkRGBA background;
@@ -438,6 +436,11 @@ struct _GtkSheet
     /*scrollbars*/
     GtkAdjustment *hadjustment;
     GtkAdjustment *vadjustment;
+
+    /* GtkScrollablePolicy needs to be checked when
+     * driving the scrollable adjustment values */
+    guint hscroll_policy : 1;
+    guint vscroll_policy : 1;
 
     /* xor GC for the verticle drag line */
     cairo_t *xor_cr;

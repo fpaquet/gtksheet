@@ -1,5 +1,5 @@
 /* XPM */
-static char * bullet_xpm[] = {
+static char *bullet_xpm[] = {
 "16 16 26 1",
 " 	c #None",
 ".	c #000000000000",

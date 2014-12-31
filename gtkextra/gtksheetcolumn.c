@@ -35,14 +35,11 @@
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtksignal.h>
-#include <gtk/gtkpixmap.h>
 #include <pango/pango.h>
 
 #define __GTKEXTRA_H_INSIDE__
 
 #include "gtkextra-compat.h"
-#include "gtkitementry.h"
 #include "gtksheet.h"
 #include "gtksheetcolumn.h"
 #include "gtkextra-marshal.h"
@@ -406,8 +403,8 @@ gtk_sheet_column_get_property(GObject *object,
 
         case PROP_SHEET_COLUMN_ENTRY_TYPE:
             {
-                GtkSheetEntryType et = _gtk_sheet_entry_type_from_gtype(colobj->entry_type);
-                g_value_set_enum(value, et);
+                GtkSheetEntryType e = _gtk_sheet_entry_type_from_gtype(colobj->entry_type);
+                g_value_set_enum(value, e);
             }
             break;
 
@@ -962,14 +959,14 @@ _gtk_sheet_column_size_request(GtkSheet *sheet,
     while (children)
     {
         GtkSheetChild *child = (GtkSheetChild *)children->data;
-        GtkRequisition child_requisition;
 
         if (child->attached_to_cell && child->col == col &&
             child->row != -1 && !child->floating && !child->xshrink)
         {
-            gtk_widget_get_child_requisition(child->widget, &child_requisition);
+	    GtkRequisition child_min_size, child_nat_size;
+	    gtk_widget_get_preferred_size (child->widget, &child_min_size, &child_nat_size);
 
-            if (child_requisition.width + 2 * child->xpadding > *requisition) *requisition = child_requisition.width + 2 * child->xpadding;
+            if (child_min_size.width + 2 * child->xpadding > *requisition) *requisition = child_min_size.width + 2 * child->xpadding;
         }
         children = children->next;
     }
@@ -1034,9 +1031,13 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
                 mc, mx, cta->width-mx);
 #   endif
 #endif
-        gdk_window_clear_area(sheet->column_title_window,
-                              mx, 0,
-                              cta->width - mx, cta->height);
+
+	cairo_t *twin_cr = gdk_cairo_create(sheet->column_title_window);
+	cairo_rectangle(twin_cr, 
+	    (double) mx, (double) 0, (double) (cta->width - mx), (double) (cta->height));
+	gdk_cairo_set_source_rgba(twin_cr, &sheet->bg_color);
+	cairo_fill(twin_cr);
+	cairo_destroy(twin_cr);
     }
 
     if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return;

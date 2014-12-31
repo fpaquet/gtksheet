@@ -50,6 +50,15 @@ GType gtk_plot_gdk_cap_style_get_type (void);
 #define GTK_TYPE_PLOT_GDK_CAP_STYLE (gtk_plot_gdk_cap_style_get_type())
 GType gtk_plot_gdk_join_style_get_type (void);
 #define GTK_TYPE_PLOT_GDK_JOIN_STYLE (gtk_plot_gdk_join_style_get_type())
+/* enumerations from "gtksheet.h" */
+GType gtk_sheet_attr_type_get_type (void);
+#define GTK_TYPE_SHEET_ATTR_TYPE (gtk_sheet_attr_type_get_type())
+GType gtk_sheet_state_get_type (void);
+#define GTK_TYPE_SHEET_STATE (gtk_sheet_state_get_type())
+GType gtk_sheet_entry_type_get_type (void);
+#define GTK_TYPE_SHEET_ENTRY_TYPE (gtk_sheet_entry_type_get_type())
+GType gtk_sheet_vertical_justification_get_type (void);
+#define GTK_TYPE_SHEET_VERTICAL_JUSTIFICATION (gtk_sheet_vertical_justification_get_type())
 G_END_DECLS
 
 #endif /* __GTKEXTRA_TYPE_BUILTINS_H__ */

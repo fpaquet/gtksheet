@@ -37,7 +37,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <pango/pango.h>
 #include "gtkextra-compat.h"
-#include "gtkitementry.h"
 #include "gtkiconlist.h"
 #include "gtkextra-marshal.h"
 #include <math.h>
@@ -690,8 +689,7 @@ gtk_icon_list_button_press(GtkWidget *widget, GdkEventButton *event)
 
   iconlist = GTK_ICON_LIST(widget);
 
-
-  gtk_widget_get_pointer(widget, &x, &y);
+  gdk_window_get_device_position (event->window, event->device, &x, &y, NULL);
   item = gtk_icon_list_get_icon_at(iconlist, x , y );
 
   if(!item){ 
@@ -1423,7 +1421,7 @@ gtk_icon_list_put (GtkIconList *iconlist,
   icon->label = NULL;
   icon->entry_label = NULL;
   if(label) icon->label = g_strdup(label);
-  icon->entry = gtk_item_entry_new();
+  icon->entry = gtk_data_entry_new();
   icon->pixmap = gtk_image_new_from_pixmap(pixmap, mask);
   icon->link = data;
 

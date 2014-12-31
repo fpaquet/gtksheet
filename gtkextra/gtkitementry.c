@@ -1344,7 +1344,9 @@ _item_entry_recompute_idle_func(gpointer data)
 {
     GtkEntry *entry;
 
+#if GTK_CHECK_VERSION(3,6,0) == 0
     GDK_THREADS_ENTER();
+#endif
 
     entry = GTK_ENTRY(data);
 
@@ -1355,7 +1357,9 @@ _item_entry_recompute_idle_func(gpointer data)
 
     _item_entry_update_im_cursor_location(entry);
 
+#if GTK_CHECK_VERSION(3,6,0) == 0
     GDK_THREADS_LEAVE();
+#endif
 
     return FALSE;
 }
@@ -2590,7 +2594,9 @@ _item_entry_blink_cb(gpointer data)
 {
     GtkEntry *entry;
 
+#if GTK_CHECK_VERSION(3,6,0) == 0
     GDK_THREADS_ENTER();
+#endif
 
     entry = GTK_ENTRY(data);
 
@@ -2618,7 +2624,9 @@ _item_entry_blink_cb(gpointer data)
 	    NULL);
     }
 
+#if GTK_CHECK_VERSION(3,6,0) == 0
     GDK_THREADS_LEAVE();
+#endif
 
     /* Remove ourselves */
     return FALSE;

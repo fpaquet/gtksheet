@@ -62,7 +62,7 @@
 
 #ifdef DEBUG
 #   undef GTK_SHEET_DEBUG
-#define GTK_SHEET_DEBUG  0  /* define to activate debug output */
+#define GTK_SHEET_DEBUG  1  /* define to activate debug output */
 #endif
 
 #ifdef GTK_SHEET_DEBUG
@@ -72,19 +72,19 @@
 #   define GTK_SHEET_DEBUG_CELL_ACTIVATION  0
 #   define GTK_SHEET_DEBUG_CHILDREN  0
 #   define GTK_SHEET_DEBUG_CLICK  0
-#   define GTK_SHEET_DEBUG_COLORS  0
-#   define GTK_SHEET_DEBUG_DRAW  0
-#   define GTK_SHEET_DEBUG_DRAW_BACKGROUND  0
-#   define GTK_SHEET_DEBUG_DRAW_BUTTON  0
-#   define GTK_SHEET_DEBUG_DRAW_LABEL  0
+#   define GTK_SHEET_DEBUG_COLORS  1
+#   define GTK_SHEET_DEBUG_DRAW  1
+#   define GTK_SHEET_DEBUG_DRAW_BACKGROUND  1
+#   define GTK_SHEET_DEBUG_DRAW_BUTTON  1
+#   define GTK_SHEET_DEBUG_DRAW_LABEL  1
 #   define GTK_SHEET_DEBUG_ENTER_PRESSED   0
 #   define GTK_SHEET_DEBUG_ENTRY   0
-#   define GTK_SHEET_DEBUG_EXPOSE   0
+#   define GTK_SHEET_DEBUG_EXPOSE   1
 #   define GTK_SHEET_DEBUG_FINALIZE  0
 #   define GTK_SHEET_DEBUG_FONT_METRICS  0
 #   define GTK_SHEET_DEBUG_FREEZE   0
 #   define GTK_SHEET_DEBUG_KEYPRESS   0
-#   define GTK_SHEET_DEBUG_MOUSE  0
+#   define GTK_SHEET_DEBUG_MOUSE  1
 #   define GTK_SHEET_DEBUG_MOVE  0
 #   define GTK_SHEET_DEBUG_PIXEL_INFO  0
 #   define GTK_SHEET_DEBUG_PROPERTIES  0
@@ -92,6 +92,7 @@
 #   define GTK_SHEET_DEBUG_SELECTION  0
 #   define GTK_SHEET_DEBUG_SIGNALS   0
 #   define GTK_SHEET_DEBUG_SIZE  0
+#   define GTK_SHEET_DEBUG_SCROLL  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TEXT  0
 #endif
@@ -346,6 +347,17 @@ static void g_debug_popup(char *fmt, ...)  /* used to intercept/debug drawing se
     gtk_widget_destroy (dialog);
 }
 #   endif
+
+static void g_debug_style_context_list_classes(gchar *hint, GtkStyleContext *context)
+{
+    GList *l = gtk_style_context_list_classes (context);
+    while (l)
+    {
+	g_debug("%s: style_context class <%s>", hint, (gchar *) l->data);
+	l = l->next;
+    }
+    g_list_free(l);
+}
 
 #endif
 
@@ -3055,8 +3067,10 @@ gtk_sheet_init(GtkSheet *sheet)
 
     sheet->freeze_count = 0;
 
-#if GTK_SHEET_DEBUG_COLORS > 0
+#ifdef GTK_SHEET_DEBUG
     gdk_rgba_parse(&debug_color, GTK_SHEET_DEBUG_COLOR);
+    g_debug("debug_color: initialized to r %g g %g b %g a %g", 
+	debug_color.red, debug_color.green, debug_color.blue, debug_color.alpha);
 #endif
 
     gdk_rgba_parse(&color_black, "black");
@@ -3193,7 +3207,7 @@ _gtk_sheet_row_init(GtkSheetRow *row)
     row->top_ypixel = 0;
     row->max_extent_height = 0;
 
-    row->button.state = GTK_STATE_NORMAL;
+    row->button.state = GTK_STATE_FLAG_NORMAL;
     row->button.label = NULL;
     row->button.label_visible = TRUE;
     row->button.child = NULL;
@@ -4989,12 +5003,14 @@ gtk_sheet_row_set_sensitivity(GtkSheet *sheet, gint row,  gboolean sensitive)
     GTK_SHEET_ROW_SET_SENSITIVE(ROWPTR(sheet, row), sensitive);
 
     if (!sensitive)
-	sheet->row[row].button.state = GTK_STATE_INSENSITIVE;
+	sheet->row[row].button.state |= GTK_STATE_FLAG_INSENSITIVE;
     else
-	sheet->row[row].button.state = GTK_STATE_NORMAL;
+	sheet->row[row].button.state &= ~GTK_STATE_FLAG_INSENSITIVE;
 
-    if (gtk_widget_get_realized(GTK_WIDGET(sheet)) && !GTK_SHEET_IS_FROZEN(sheet))
+    if (gtk_widget_get_realized(GTK_WIDGET(sheet)) 
+	&& !GTK_SHEET_IS_FROZEN(sheet)) {
 	_gtk_sheet_draw_button(sheet, row, -1);
+    }
 }
 
 /**
@@ -5630,25 +5646,25 @@ gtk_sheet_flash(gpointer data)
 	(double) x, (double) y, (double) 1, (double) height);
     cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 	(double) x, (double) y);
-    cairo_paint(sheet->fg_cr);
+    //cairo_paint(sheet->fg_cr);
 
     cairo_rectangle(sheet->fg_cr, 
 	(double) x, (double) y, (double) width, (double) 1);
     cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 	(double) x, (double) y);
-    cairo_paint(sheet->fg_cr);
+    //cairo_paint(sheet->fg_cr);
 
     cairo_rectangle(sheet->fg_cr, 
 	(double) x, (double) (y + height), (double) width, (double) 1);
     cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 	(double) x, (double) (y + height));
-    cairo_paint(sheet->fg_cr);
+    //cairo_paint(sheet->fg_cr);
 
     cairo_rectangle(sheet->fg_cr, 
 	(double) (x + width), (double) y, (double) 1, (double) height);
     cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 	(double) (x + width), (double) y);
-    cairo_paint(sheet->fg_cr);
+    //cairo_paint(sheet->fg_cr);
 
     sheet->interval = sheet->interval + 1;
     if (sheet->interval == TIME_INTERVAL)
@@ -6757,8 +6773,8 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col)
     gtk_sheet_get_attributes(sheet, row, col, &attributes);
 
     /* select GC for background rectangle */
-    gdk_cairo_set_source_rgba(sheet->fg_cr, &attributes.foreground);
-    gdk_cairo_set_source_rgba(sheet->bg_cr, &attributes.background);
+    //gdk_cairo_set_source_rgba(sheet->fg_cr, &attributes.foreground);
+    gdk_cairo_set_source_rgba(sheet->fg_cr, &attributes.background);
 
     area.x = _gtk_sheet_column_left_xpixel(sheet, col);
     area.y = _gtk_sheet_row_top_ypixel(sheet, row);
@@ -6778,6 +6794,15 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col)
     gdk_cairo_rectangle(sheet->bsurf_cr, &area);
     cairo_fill(sheet->bsurf_cr);
 
+    {
+	/* debug */
+	cairo_t *cr = gdk_cairo_create(sheet->sheet_window);
+	gdk_cairo_set_source_rgba(cr, &debug_color);
+	cairo_rectangle(cr, 10, 20, 1300, 40);
+	cairo_fill(cr);
+	cairo_destroy(cr);
+    }
+
     cairo_set_line_width(sheet->fg_cr, 1.0);
     cairo_set_line_cap(sheet->fg_cr, CAIRO_LINE_CAP_BUTT);
     cairo_set_line_join(sheet->fg_cr, CAIRO_LINE_JOIN_MITER);
@@ -6785,14 +6810,14 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col)
 
     if (sheet->show_grid)
     {
-	gdk_cairo_set_source_rgba(sheet->bg_cr, &sheet->grid_color);
+	gdk_cairo_set_source_rgba(sheet->bsurf_cr, &sheet->grid_color);
 
 #if GTK_SHEET_DEBUG_DRAW_BACKGROUND>0
-#if 0
+#if 1
 	g_debug("_cell_draw_background(%d,%d): grid x %d y %d w %d h %d %s",
 		row, col,
 		area.x, area.y, area.width, area.height,
-		gdk_rgba_to_string(&attributes.background));
+		gdk_rgba_to_string(&sheet->grid_color));
 #endif
 #endif
 
@@ -7359,7 +7384,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 	    gdk_cairo_rectangle(sheet->fg_cr, &area);
 	    cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 		(double) area.x, (double) area.y);
-	    cairo_paint(sheet->fg_cr);
+	    //cairo_paint(sheet->fg_cr);
 	}
     }
 
@@ -7406,7 +7431,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 	    gdk_cairo_rectangle(sheet->fg_cr, &area);
 	    cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 		(double) area.x, (double) area.y);
-	    cairo_paint(sheet->fg_cr);
+	    //cairo_paint(sheet->fg_cr);
 	}
     }
 
@@ -7704,7 +7729,12 @@ gtk_sheet_draw_backing_pixmap(GtkSheet *sheet, GtkSheetRange range)
 	(double) x, (double) y, (double) (width + 1), (double) (height + 1));
     cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 	(double) x, (double) y);
-    cairo_paint(sheet->fg_cr);
+    //cairo_paint(sheet->fg_cr);
+#if GTK_SHEET_DEBUG_EXPOSE > 0
+    g_debug("gtk_sheet_draw_backing_pixmap2: x %d y %d w %d h %d",
+	x, y, width + 1, height + 1);
+#endif
+
 }
 
 static inline void
@@ -8826,7 +8856,7 @@ _gtk_sheet_hide_active_cell(GtkSheet *sheet)
     cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 	(double) (_gtk_sheet_column_left_xpixel(sheet, col) - 1), 
 	(double) (_gtk_sheet_row_top_ypixel(sheet, row) - 1));
-    cairo_paint(sheet->fg_cr);
+    //cairo_paint(sheet->fg_cr);
 
 #if 0
     /* why shoud we first set the cursor to the cell we want hide ? */
@@ -9317,7 +9347,7 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 		    cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 			(double) (x + 1), 
 			(double) (y + 1));
-		    cairo_paint(sheet->fg_cr);
+		    //cairo_paint(sheet->fg_cr);
 
 		    if (i != sheet->active_cell.row || j != sheet->active_cell.col)
 		    {
@@ -9392,7 +9422,7 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 		cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 		    (double) (x + 1), 
 		    (double) (y + 1));
-		cairo_paint(sheet->fg_cr);
+		//cairo_paint(sheet->fg_cr);
 	    }
 	}
     }
@@ -9584,7 +9614,7 @@ gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range)
 	cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 	    (double) (x - 1), 
 	    (double) (y - 1));
-	cairo_paint(sheet->fg_cr);
+	//cairo_paint(sheet->fg_cr);
 
 	cairo_rectangle(sheet->xor_cr, 
 	    (double) (x - 1), 
@@ -9615,7 +9645,7 @@ gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range)
 	cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 	    (double) (x - width), 
 	    (double) (y - width));
-	cairo_paint(sheet->fg_cr);
+	//cairo_paint(sheet->fg_cr);
 
 	cairo_rectangle(sheet->xor_cr, 
 	    (double) (x - width + width / 2), 
@@ -9646,7 +9676,7 @@ gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range)
 	cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 	    (double) (x - width), 
 	    (double) (y - width));
-	cairo_paint(sheet->fg_cr);
+	//cairo_paint(sheet->fg_cr);
 
 	cairo_rectangle(sheet->xor_cr, 
 	    (double) (x - width + width / 2), 
@@ -9676,7 +9706,7 @@ gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range)
 	cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 	    (double) (x - width), 
 	    (double) (y - width));
-	cairo_paint(sheet->fg_cr);
+	//cairo_paint(sheet->fg_cr);
 
 	cairo_rectangle(sheet->xor_cr, 
 	    (double) (x - width + width / 2), 
@@ -9898,6 +9928,10 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
     g_return_val_if_fail(GTK_IS_SHEET(widget), FALSE);
 
     sheet = GTK_SHEET(widget);
+
+    gdk_cairo_set_source_rgba(cr, &debug_color);
+    cairo_rectangle(cr, 100, 200, 1300, 40);
+    cairo_fill(cr);
 
     if (gtk_widget_is_drawable(widget))
     {
@@ -10215,10 +10249,17 @@ _gtk_sheet_scroll_to_pointer(gpointer data)
     GDK_THREADS_ENTER();
 #endif
 
+#if GTK_SHEET_DEBUG_SCROLL > 0
+    g_debug("_gtk_sheet_scroll_to_pointer");
+#endif
+
     //gtk_widget_get_pointer(GTK_WIDGET(sheet), &x, &y);
-    gdk_window_get_device_position (
-	gtk_widget_get_window(GTK_WIDGET(sheet)), 
-	gtk_get_current_event_device(), &x, &y, NULL);
+    GdkWindow *window = sheet->sheet_window;
+    GdkDisplay *display = gdk_window_get_display(window);
+    GdkDeviceManager *dev_manager = gdk_display_get_device_manager(display);
+    GdkDevice *dev_pointer = gdk_device_manager_get_client_pointer (dev_manager);
+    gdk_window_get_device_position (window, dev_pointer, &x, &y, NULL);
+
     gtk_sheet_get_pixel_info(sheet, NULL, x, y, &row, &column);
 
     if (GTK_SHEET_IN_SELECTION(sheet))
@@ -10684,6 +10725,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 
     gdk_window_get_device_position (event->window, event->device,
 	&x, &y, &mods);
+
     if (!(mods & GDK_BUTTON1_MASK))
 	return (FALSE);
 
@@ -11093,7 +11135,7 @@ gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column)
 	    cairo_set_source_surface(sheet->fg_cr, sheet->bsurf, 
 		(double) (_gtk_sheet_column_left_xpixel(sheet, c) - 1), 
 		(double) (_gtk_sheet_row_top_ypixel(sheet, r) - 1));
-	    cairo_paint(sheet->fg_cr);
+	    //cairo_paint(sheet->fg_cr);
 
 	    sheet->state = GTK_SHEET_RANGE_SELECTED;
 	    gtk_sheet_range_draw_selection(sheet, sheet->range);
@@ -11920,7 +11962,7 @@ size_allocate_row_title_buttons(GtkSheet *sheet)
 
 	cairo_t *rta_cr = gdk_cairo_create(sheet->row_title_window);
 	gdk_cairo_set_source_rgba(rta_cr, &sheet->bg_color);
-	cairo_paint(rta_cr);
+	//cairo_paint(rta_cr);
 	cairo_destroy(rta_cr);
     }
 
@@ -12703,24 +12745,34 @@ void gtk_sheet_entry_signal_disconnect_by_func(GtkSheet *sheet, GCallback handle
 static void
 row_button_set(GtkSheet *sheet, gint row)
 {
-    if (row < 0 || row > sheet->maxrow)
-	return;
-    if (sheet->row[row].button.state == GTK_STATE_ACTIVE)
-	return;
+    if (row < 0 || row > sheet->maxrow) return;
 
-    sheet->row[row].button.state = GTK_STATE_ACTIVE;
+    GtkSheetButton *button = &sheet->row[row].button;
+
+    if (button->state & GTK_STATE_FLAG_ACTIVE) return;
+
+#if GTK_SHEET_DEBUG_DRAW > 0
+    g_debug("row_button_set: row %d", row);
+#endif
+
+    button->state |= GTK_STATE_FLAG_ACTIVE;
     _gtk_sheet_draw_button(sheet, row, -1);
 }
 
 static void
 row_button_release(GtkSheet *sheet, gint row)
 {
-    if (row < 0 || row > sheet->maxrow)
-	return;
-    if (sheet->row[row].button.state == GTK_STATE_NORMAL)
-	return;
+    if (row < 0 || row > sheet->maxrow) return;
 
-    sheet->row[row].button.state = GTK_STATE_NORMAL;
+    GtkSheetButton *button = &sheet->row[row].button;
+ 
+    if (!(button->state & GTK_STATE_FLAG_ACTIVE)) return;
+
+#if GTK_SHEET_DEBUG_DRAW > 0
+    g_debug("row_button_release: row %d", row);
+#endif
+
+    button->state &= ~GTK_STATE_FLAG_ACTIVE;
     _gtk_sheet_draw_button(sheet, row, -1);
 }
 
@@ -12740,7 +12792,6 @@ void
 _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
 {
     GdkWindow *window = NULL;
-    GtkShadowType shadow_type;
     guint width = 0, height = 0;
     gint x = 0, y = 0;
     gint index = 0;
@@ -12749,7 +12800,6 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
     GtkSheetChild *child = NULL;
     GdkRectangle allocation;
     gboolean sensitive = FALSE;
-    gint state = 0;
     gchar * label, label_buf[10];
     PangoAlignment pango_alignment = PANGO_ALIGN_LEFT;
     GtkSheetArea area = ON_SHEET_BUTTON_AREA;
@@ -12833,37 +12883,33 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
     allocation.height = height;
 
     cairo_t *twin_cr = gdk_cairo_create(window);
-    gdk_cairo_rectangle(twin_cr, &allocation);
-    gdk_cairo_set_source_rgba(twin_cr, &sheet->bg_color);
-    cairo_fill(twin_cr);
-    cairo_destroy(twin_cr);
 
-    state = button->state;
-    if (!sensitive)
-	state = GTK_STATE_INSENSITIVE;
+    //gdk_cairo_rectangle(twin_cr, &allocation);
+    //gdk_cairo_set_source_rgba(twin_cr, &debug_color);
+    //cairo_fill(twin_cr);
 
-    if (state == GTK_STATE_ACTIVE)
-	shadow_type = GTK_SHADOW_IN;
-    else
-	shadow_type = GTK_SHADOW_OUT;
+    gtk_style_context_save (style_context);
 
-    GtkStyleContext *button_style_context = gtk_widget_get_style_context(sheet->button);
+    GtkStateFlags button_state = button->state;
 
-    //gtk_style_context_set_state(button_style_context, GTK_STATE_FLAG_ACTIVE);
+    gtk_style_context_set_state(style_context, button_state);
 
-    gtk_render_background (button_style_context, sheet->fg_cr,
+    gtk_style_context_add_class (style_context, GTK_STYLE_CLASS_VIEW);
+    gtk_style_context_add_class (style_context, GTK_STYLE_CLASS_BUTTON);
+    gtk_style_context_add_class (style_context, GTK_STYLE_REGION_COLUMN_HEADER);
+
+    //g_debug_style_context_list_classes("_gtk_sheet_draw_button", style_context);
+
+#if GTK_SHEET_DEBUG_DRAW_BUTTON > 0
+    g_debug("_gtk_sheet_draw_button: gtk_render_background: %d %d %d %d", 
+	x, y, width, height);
+#endif
+
+    gtk_render_background (style_context, twin_cr,
 	(double) x, (double) y, (double) width, (double) height);
 
-    if (state != GTK_STATE_NORMAL && state != GTK_STATE_INSENSITIVE)
-    {
-	gtk_render_frame(button_style_context, sheet->fg_cr,
-	    (double) x, (double) y, (double) width, (double) height);
-    }
-    else
-    {
-	gtk_render_frame(button_style_context, sheet->fg_cr,
-	    (double) x, (double) y, (double) width, (double) height);
-    }
+    gtk_render_frame(style_context, twin_cr,
+	(double) x, (double) y, (double) width, (double) height);
 
     if (button->label_visible)
     {
@@ -12873,16 +12919,16 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
 	text_height =
 	    _gtk_sheet_row_default_height(GTK_WIDGET(sheet)) - 2 * CELLOFFSET;
 
-	cairo_save(sheet->fg_cr);
-	cairo_rectangle(sheet->fg_cr, 
+	cairo_save(twin_cr);
+	cairo_rectangle(twin_cr, 
 	    (double) allocation.x,
 	    (double) allocation.y,
 	    (double) allocation.width,
 	    (double) allocation.height);
-	cairo_clip(sheet->fg_cr);
+	cairo_clip(twin_cr);
 
 	GtkBorder button_border;
-	gtk_style_context_get_border (button_style_context, state, &button_border);
+	gtk_style_context_get_border (style_context, button_state, &button_border);
 	y += button_border.top + button_border.bottom;
 
 	real_y = y;
@@ -12926,14 +12972,17 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
 	pango_layout_set_alignment(layout, pango_alignment);
 
 	gtk_render_layout (style_context,
-	    sheet->fg_cr,
+	    twin_cr,
 	    (gdouble) real_x, 
 	    (gdouble) real_y,
 	    layout);
 	g_object_unref(G_OBJECT(layout));
 
-	cairo_restore(sheet->fg_cr);
+	cairo_restore(twin_cr);
     }
+
+    cairo_destroy(twin_cr);
+    gtk_style_context_restore (style_context);
 
     gtk_sheet_draw_tooltip_marker(sheet, area, row, col);
 
@@ -12958,7 +13007,7 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
 	y = child->y;
 
 	//gtk_widget_set_state(child->widget, button->state);
-	gtk_widget_set_state_flags (child->widget, button->state, FALSE);
+	gtk_widget_set_state_flags (child->widget, button_state, FALSE);
 
 	if (gtk_widget_get_realized(GTK_WIDGET(sheet)) &&
 	    gtk_widget_get_mapped(child->widget))

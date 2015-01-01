@@ -1,3 +1,7 @@
+2015-01-01 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed cairo drawing within title areas - starting to work
+	* GtkSheet: debug for drawing enabled
+
 2014-12-31 Fredy Paquet <mailbox AT opag.ch>
 	* global replace gtk_widget_get_pointer() by gdk_window_get_device_position()
 	* global disable GDK_THREADS_ENTER from Gtk 3.6.0

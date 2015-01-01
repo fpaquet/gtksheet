@@ -48,12 +48,12 @@
 #undef GTK_SHEET_COL_DEBUG
 
 #ifdef DEBUG
-#define GTK_SHEET_COL_DEBUG 0  /* define to activate debug output */
+#define GTK_SHEET_COL_DEBUG 1  /* define to activate debug output */
 #endif
 
 #ifdef GTK_SHEET_COL_DEBUG
 #   define GTK_SHEET_COL_DEBUG_BUILDER   0
-#   define GTK_SHEET_COL_DEBUG_DRAW  0
+#   define GTK_SHEET_COL_DEBUG_DRAW  1
 #   define GTK_SHEET_COL_DEBUG_PROPERTIES  0
 #   define GTK_SHEET_COL_DEBUG_SIZE  0
 #endif
@@ -1719,13 +1719,16 @@ void
 _gtk_sheet_column_button_set(GtkSheet *sheet, gint col)
 {
     if (col < 0 || col > sheet->maxcol) return;
-    if (COLPTR(sheet, col)->button.state == GTK_STATE_ACTIVE) return;
+
+    GtkSheetButton *button = &COLPTR(sheet, col)->button;
+
+    if (button->state & GTK_STATE_FLAG_ACTIVE) return;
 
 #if GTK_SHEET_COL_DEBUG_DRAW > 0
     g_debug("_gtk_sheet_column_button_set: col %d", col);
 #endif
 
-    COLPTR(sheet, col)->button.state = GTK_STATE_ACTIVE;
+    button->state |= GTK_STATE_FLAG_ACTIVE;
     _gtk_sheet_draw_button(sheet, -1, col);
 }
 
@@ -1740,13 +1743,16 @@ void
 _gtk_sheet_column_button_release(GtkSheet *sheet, gint col)
 {
     if (col < 0 || col > sheet->maxcol) return;
-    if (COLPTR(sheet, col)->button.state == GTK_STATE_NORMAL) return;
+
+    GtkSheetButton *button = &COLPTR(sheet, col)->button;
+
+    if (!(button->state & GTK_STATE_FLAG_ACTIVE)) return;
 
 #if GTK_SHEET_COL_DEBUG_DRAW > 0
     g_debug("_gtk_sheet_column_button_release: col %d", col);
 #endif
 
-    COLPTR(sheet, col)->button.state = GTK_STATE_NORMAL;
+    button->state &= ~GTK_STATE_FLAG_ACTIVE;
     _gtk_sheet_draw_button(sheet, -1, col);
 }
 

@@ -204,7 +204,7 @@ struct _GtkSheetChild
 struct _GtkSheetButton
 {
     /*< private >*/
-    GtkStateType state;
+    GtkStateFlags state;
     gchar *label;
 
     gboolean label_visible;

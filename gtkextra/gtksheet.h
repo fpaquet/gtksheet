@@ -447,7 +447,6 @@ struct _GtkSheet
 
     /* gc for drawing unselected cells */
     cairo_t *fg_cr;
-    cairo_t *bg_cr;
 
     /* cursor used to indicate dragging */
     GdkCursor *cursor_drag;

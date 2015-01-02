@@ -14750,9 +14750,6 @@ cannot be modified by the user.</doc>
       <field name="fg_cr">
         <type name="cairo.Context" c:type="cairo_t*"/>
       </field>
-      <field name="bg_cr">
-        <type name="cairo.Context" c:type="cairo_t*"/>
-      </field>
       <field name="cursor_drag">
         <type name="Gdk.Cursor" c:type="GdkCursor*"/>
       </field>
@@ -15116,7 +15113,7 @@ FALSE to veto the movement.</doc>
       <doc xml:space="preserve">The GtkSheetButton struct contains only private data.
 It should only be accessed through the functions described below.</doc>
       <field name="state" readable="0" private="1">
-        <type name="Gtk.StateType" c:type="GtkStateType"/>
+        <type name="Gtk.StateFlags" c:type="GtkStateFlags"/>
       </field>
       <field name="label" readable="0" private="1">
         <type name="utf8" c:type="gchar*"/>

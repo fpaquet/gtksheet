@@ -1,3 +1,8 @@
+2015-01-02 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: background surface working again
+	* GtkSheet: fixed cell border pixel alignment
+	* GtkSheet: started work on interactive area selection (xor_cr)
+
 2015-01-01 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed cairo drawing within title areas - starting to work
 	* GtkSheet: debug for drawing enabled

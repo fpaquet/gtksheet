@@ -824,6 +824,43 @@ void
     gtk_sheet_attach(GTK_SHEET(sheets[1]), b, 12, 3, GTK_EXPAND, GTK_EXPAND, 5, 5); gtk_widget_show(b);
     b = gtk_button_new_with_label("GTK_SHRINK");
     gtk_sheet_attach(GTK_SHEET(sheets[1]), b, 12, 4, GTK_SHRINK, GTK_SHRINK, 5, 5); gtk_widget_show(b);
+
+    range.row0 = range.col0 = range.rowi = range.coli = 4;
+    gdk_rgba_parse(&color, "dark blue");
+    gtk_sheet_range_set_border_color(sheet, &range, &color);
+    gtk_sheet_range_set_border(sheet, &range, 
+	GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+	1, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+
+    range.row0 = range.col0 = range.rowi = range.coli = 5;
+    gdk_rgba_parse(&color, "dark blue");
+    gtk_sheet_range_set_border_color(sheet, &range, &color);
+    gtk_sheet_range_set_border(sheet, &range, 
+	GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+	2, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+
+    range.row0 = range.col0 = range.rowi = range.coli = 6;
+    gdk_rgba_parse(&color, "dark blue");
+    gtk_sheet_range_set_border_color(sheet, &range, &color);
+    gtk_sheet_range_set_border(sheet, &range, 
+	GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+	3, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+
+    range.row0 = range.col0 = range.rowi = range.coli = 7;
+    gdk_rgba_parse(&color, "dark blue");
+    gtk_sheet_range_set_border_color(sheet, &range, &color);
+    gtk_sheet_range_set_border(sheet, &range, 
+	GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+	4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+
+    range.row0 = range.col0 = range.rowi = range.coli = 8;
+    gdk_rgba_parse(&color, "dark blue");
+    gtk_sheet_range_set_border_color(sheet, &range, &color);
+    gtk_sheet_range_set_border(sheet, &range, 
+	GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+	5, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+
+
 }
 
 void
@@ -841,15 +878,18 @@ void
     range.rowi=10;
     range.col0=0;
     range.coli=6;
+
     gdk_rgba_parse(&color, "orange");
     gtk_sheet_range_set_background(sheet, &range, &color);
     gdk_rgba_parse(&color, "violet");
     gtk_sheet_range_set_foreground(sheet, &range, &color);
+
     range.row0=1;
-    gdk_rgba_parse(&color, "blue");
+    gdk_rgba_parse(&color, "light blue");
     gtk_sheet_range_set_background(sheet, &range, &color);
+
     range.coli=0;
-    gdk_rgba_parse(&color, "dark green");
+    gdk_rgba_parse(&color, "light green");
     gtk_sheet_range_set_background(sheet, &range, &color);
 
     range.row0=0; 
@@ -858,6 +898,7 @@ void
     gtk_sheet_range_set_border(sheet, &range, 
 	GTK_SHEET_RIGHT_BORDER, 
 	4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+
     range.coli=0;
     range.col0=0;
     range.rowi=0;
@@ -866,6 +907,7 @@ void
     gtk_sheet_range_set_border(sheet, &range, 
 	GTK_SHEET_RIGHT_BORDER|GTK_SHEET_BOTTOM_BORDER, 
 	4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+
     range.rowi=0;
     range.col0=1;
     range.coli=6;

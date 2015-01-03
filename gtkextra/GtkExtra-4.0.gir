@@ -14744,12 +14744,6 @@ cannot be modified by the user.</doc>
       <field name="vscroll_policy" bits="1">
         <type name="guint" c:type="guint"/>
       </field>
-      <field name="xor_cr">
-        <type name="cairo.Context" c:type="cairo_t*"/>
-      </field>
-      <field name="fg_cr">
-        <type name="cairo.Context" c:type="cairo_t*"/>
-      </field>
       <field name="cursor_drag">
         <type name="Gdk.Cursor" c:type="GdkCursor*"/>
       </field>

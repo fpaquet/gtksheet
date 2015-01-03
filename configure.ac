@@ -296,11 +296,11 @@ AC_ARG_ENABLE(glade,
 if test "x$enable_glade" != xno; then
     AC_MSG_RESULT(yes)
 
-    PKG_CHECK_MODULES([GLADE], [gladeui-1.0 >= 3.6])
+    PKG_CHECK_MODULES([GLADE], [gladeui-2.0 >= 3.10])
 
-    AC_SUBST(GLADE_CATALOG_DIR, `$PKG_CONFIG --variable=catalogdir gladeui-1.0`)
-    AC_SUBST(GLADE_MODULE_DIR, `$PKG_CONFIG --variable=moduledir gladeui-1.0`)
-    AC_SUBST(GLADE_PIXMAP_DIR, `$PKG_CONFIG --variable=pixmapdir gladeui-1.0`)
+    AC_SUBST(GLADE_CATALOG_DIR, `$PKG_CONFIG --variable=catalogdir gladeui-2.0`)
+    AC_SUBST(GLADE_MODULE_DIR, `$PKG_CONFIG --variable=moduledir gladeui-2.0`)
+    AC_SUBST(GLADE_PIXMAP_DIR, `$PKG_CONFIG --variable=pixmapdir gladeui-2.0`)
 
     #You must define GETTEXT_PACKAGE before including gi18n-lib.h
     GETTEXT_PACKAGE=AC_PACKAGE_NAME

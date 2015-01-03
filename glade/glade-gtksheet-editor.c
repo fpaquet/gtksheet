@@ -46,8 +46,10 @@ static void glade_sheet_editor_editable_init(GladeEditableIface *iface);
 static void glade_sheet_editor_realize(GtkWidget *widget);
 static void glade_sheet_editor_grab_focus(GtkWidget *widget);
 
+static GladeEditableIface *parent_editable_iface;
+
 G_DEFINE_TYPE_WITH_CODE (
-    GladeSheetEditor, glade_sheet_editor, GTK_TYPE_HBOX,
+    GladeSheetEditor, glade_sheet_editor, GTK_TYPE_BOX,
     G_IMPLEMENT_INTERFACE (GLADE_TYPE_EDITABLE, glade_sheet_editor_editable_init)
     );
 
@@ -74,7 +76,7 @@ static void
                  gboolean           execute,
                  GladeSheetEditor *view_editor)
 {
-    if (!GTK_WIDGET_MAPPED (view_editor)) return;
+    if (!gtk_widget_get_mapped(GTK_WIDGET(view_editor))) return;
 
     /* Reload on all commands */
     glade_editable_load (GLADE_EDITABLE (view_editor), view_editor->loaded_widget);
@@ -100,32 +102,8 @@ static void
     GladeSheetEditor *view_editor = GLADE_SHEET_EDITOR (editable);
     GladeWidget *model_widget;
 
-    /* Since we watch the project*/
-    if (view_editor->loaded_widget)
-    {
-        g_signal_handlers_disconnect_by_func (G_OBJECT (view_editor->loaded_widget->project),
-                                              G_CALLBACK (project_changed), view_editor);
-
-        /* The widget could die unexpectedly... */
-        g_object_weak_unref (G_OBJECT (view_editor->loaded_widget->project),
-                             (GWeakNotify)project_finalized,
-                             view_editor);
-    }
-
-    /* Mark our widget... */
-    view_editor->loaded_widget = widget;
-
-    if (view_editor->loaded_widget)
-    {
-        /* This fires for undo/redo */
-        g_signal_connect (G_OBJECT (view_editor->loaded_widget->project), "changed",
-                          G_CALLBACK (project_changed), view_editor);
-
-        /* The widget/project could die unexpectedly... */
-        g_object_weak_ref (G_OBJECT (view_editor->loaded_widget->project),
-                           (GWeakNotify) project_finalized,
-                           view_editor);
-    }
+    /* Chain up to default implementation */
+    parent_editable_iface->load (editable, widget);
 
     /* load the embedded editable... */
     if (view_editor->embed)
@@ -142,12 +120,12 @@ static void
         /* Finalize safe code here... */
         if (widget && (model_widget = get_model_widget (widget)))
         {
-            if (GTK_IS_LIST_STORE (model_widget->object))
+            if (GTK_IS_LIST_STORE (glade_widget_get_object (model_widget)))
             {
                 gtk_widget_show (view_editor->embed_list_store);
                 glade_editable_load (GLADE_EDITABLE (view_editor->embed_list_store), model_widget);
             }
-            else if (GTK_IS_TREE_STORE (model_widget->object))
+            else if (GTK_IS_TREE_STORE (glade_widget_get_object (model_widget)))
             {
                 gtk_widget_show (view_editor->embed_tree_store);
                 glade_editable_load (GLADE_EDITABLE (view_editor->embed_tree_store), model_widget);
@@ -170,6 +148,8 @@ static void
 static void
     glade_sheet_editor_editable_init (GladeEditableIface *iface)
 {
+    parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
+
     iface->load = glade_sheet_editor_load;
     iface->set_show_name = glade_sheet_editor_set_show_name;
 }
@@ -193,10 +173,11 @@ static void
     glade_sheet_editor_realize (GtkWidget *widget)
 {
     GladeSheetEditor *view_editor = GLADE_SHEET_EDITOR (widget);
+    GladeWidget *gwidget = glade_editable_loaded_widget (GLADE_EDITABLE (view_editor));
 
     GTK_WIDGET_CLASS (glade_sheet_editor_parent_class)->realize (widget);
 
-    glade_editable_load (GLADE_EDITABLE (view_editor), view_editor->loaded_widget);
+    glade_editable_load (GLADE_EDITABLE (view_editor), gwidget);
 }
 
 static void
@@ -223,11 +204,11 @@ GtkWidget *
     /* Pack the parent on the left... */
     gtk_box_pack_start (GTK_BOX (view_editor), GTK_WIDGET (embed), TRUE, TRUE, 8);
 
-    separator = gtk_vseparator_new ();
+    separator = gtk_separator_new (GTK_ORIENTATION_VERTICAL);
     gtk_box_pack_start (GTK_BOX (view_editor), separator, FALSE, FALSE, 0);
 
     /* ...and the vbox with datastore/label on the right */
-    vbox = gtk_vbox_new (FALSE, 0);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     gtk_box_pack_start (GTK_BOX (view_editor), vbox, TRUE, TRUE, 8);
 
     str = g_strdup_printf ("<b>%s</b>", _("XXX Choose a Data Model and define some\n"
@@ -324,7 +305,7 @@ static gchar *
     if (GTK_IS_TREE_VIEW_COLUMN (child))
         glade_widget_property_get (gchild, "title", &name);
     else
-        name = gchild->name;
+	name = (gchar *)glade_widget_get_name (gchild);
 
 #if GTK_SHEET_EDITOR_DEBUG_LAYOUT > 0
     g_debug("glade_gtk_sheet_layout_get_display_name: called <%s>", name ? name : "NULL");
@@ -338,12 +319,13 @@ static void
     glade_gtk_sheet_launch_editor(GObject  *sheet)
 {
     GladeWidget *widget = glade_widget_get_from_gobject (sheet);
+    GladeWidgetAdaptor *adaptor = glade_widget_get_adaptor (widget);
     GladeBaseEditor *editor;
     GladeEditable *sheet_editor;
     GtkWidget *window;
 
-    sheet_editor = glade_widget_adaptor_create_editable (widget->adaptor, GLADE_PAGE_GENERAL);
-    sheet_editor = (GladeEditable *) glade_sheet_editor_new (widget->adaptor, sheet_editor);
+    sheet_editor = glade_widget_adaptor_create_editable (adaptor, GLADE_PAGE_GENERAL);
+    sheet_editor = (GladeEditable *) glade_sheet_editor_new (adaptor, sheet_editor);
 
     /* Editor */
     editor = glade_base_editor_new (sheet, sheet_editor,
@@ -397,7 +379,7 @@ void
  */
 
 extern void
-    gtk_sheet_buildable_add_child_internal(GtkSheet *sheet, GtkSheetColumn *child, char *name);
+    gtk_sheet_buildable_add_child_internal(GtkSheet *sheet, GtkSheetColumn *child, const char *name);
 
 /*
 static void                                                              

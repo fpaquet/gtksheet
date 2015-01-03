@@ -1,3 +1,10 @@
+2015-01-03 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: resolved xor drawing by using backing surface restore
+	* GtkSheet: fixed flashing region
+	* GtkSheet: generally working now (sheet child icon visibility is still buggy)
+	* Glade Integration: fixed libgladeui version and compile errors
+	* Glade Integration: sheet child editor is still buggy
+
 2015-01-02 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: background surface working again
 	* GtkSheet: fixed cell border pixel alignment

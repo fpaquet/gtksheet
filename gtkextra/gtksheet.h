@@ -442,12 +442,6 @@ struct _GtkSheet
     guint hscroll_policy : 1;
     guint vscroll_policy : 1;
 
-    /* xor GC for the verticle drag line */
-    cairo_t *xor_cr;
-
-    /* gc for drawing unselected cells */
-    cairo_t *fg_cr;
-
     /* cursor used to indicate dragging */
     GdkCursor *cursor_drag;
 

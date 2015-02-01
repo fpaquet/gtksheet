@@ -5,6 +5,7 @@
 
 # The name of the module, e.g. 'glib'.
 DOC_MODULE=gtkextra
+DOC_MODULE_VERSION=$(GTK_EXTRA_MAJOR_VERSION)
 
 # The top-level SGML file. You can change this if you want to.
 DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml

@@ -1,3 +1,6 @@
+2015-02-01 Fredy Paquet <mailbox AT opag.ch>
+	* fixed docs install path (conflicts with gtkextra-2)
+
 2015-01-03 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: resolved xor drawing by using backing surface restore
 	* GtkSheet: fixed flashing region

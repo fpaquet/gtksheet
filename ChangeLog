@@ -1,3 +1,10 @@
+2015-02-01 Fredy Paquet <mailbox AT opag.ch>
+	* fixed docs install path (conflicts with gtkextra-2)
+
+2014-12-26 Fredy Paquet <mailbox AT opag.ch>
+	* updated gtkextra-3 version to 3.1.2, Libtool Revision 7.2.0
+	* published gtkextra-3 version 3.1.2
+
 2014-07-31 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed sheet editor contents when setting text of active cell PR#104553
 

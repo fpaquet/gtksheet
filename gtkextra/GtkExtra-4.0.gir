@@ -13134,9 +13134,11 @@ not editable, cell contents cannot be modified by the user.</doc>
         <doc xml:space="preserve">Scroll the viewing area of the sheet to the given column and row;
  
 row_align and col_align are between 0-1 representing the location
-the row should appear on the screnn, 0.0 being top or left,
-1.0 being bottom or right. passing row_align/col_align of
--1.0 will suppress movement in that direction.
+the row should appear on the screnn, 0 being top or left,
+1 being bottom or right.
+
+passing row_align/col_align of -1 will suppress movement in
+that direction.
  
 if row or column is negative then there is no change</doc>
         <return-value transfer-ownership="none">
@@ -13157,11 +13159,11 @@ if row or column is negative then there is no change</doc>
           </parameter>
           <parameter name="row_align" transfer-ownership="none">
             <doc xml:space="preserve">row alignment</doc>
-            <type name="gfloat" c:type="gfloat"/>
+            <type name="gint" c:type="gint"/>
           </parameter>
           <parameter name="col_align" transfer-ownership="none">
             <doc xml:space="preserve">column alignment</doc>
-            <type name="gfloat" c:type="gfloat"/>
+            <type name="gint" c:type="gint"/>
           </parameter>
         </parameters>
       </method>

@@ -598,7 +598,7 @@ void gtk_sheet_row_button_justify(GtkSheet *sheet, gint row, GtkJustification ju
  * location the row should appear on the screnn, 0.0 being top or left,
  * 1.0 being bottom or right; if row or column is negative then there
  * is no change */
-void gtk_sheet_moveto(GtkSheet *sheet, gint row, gint column, gfloat row_align, gfloat col_align);
+void gtk_sheet_moveto(GtkSheet *sheet, gint row, gint column, gint row_align, gint col_align);
 
 /* resize column/row titles window */
 void gtk_sheet_set_row_titles_width(GtkSheet *sheet, guint width);

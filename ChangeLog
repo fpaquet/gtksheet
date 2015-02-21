@@ -1,3 +1,6 @@
+2015-02-21 Fredy Paquet <mailbox AT opag.ch>
+	* fixed docs/reference library name
+
 2015-02-01 Fredy Paquet <mailbox AT opag.ch>
 	* fixed docs install path (conflicts with gtkextra-2)
 

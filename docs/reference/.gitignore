@@ -15,5 +15,7 @@ gtkextra.interfaces
 gtkextra.prerequisites
 gtkextra.signals
 
+gtkextra-scan.c
+
 *.stamp
 *.bak

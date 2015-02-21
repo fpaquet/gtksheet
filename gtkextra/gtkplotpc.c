@@ -33,64 +33,60 @@
 #include <gtk/gtk.h>
 
 #include "gtkplotpc.h"
-#include "gtkplotgdk.h"
-#include "gtkplot.h"
-#include "gtkpsfont.h"
-#include "gtkplotcanvas.h"
+//#include "gtkplotgdk.h"
+//#include "gtkplot.h"
+//#include "gtkpsfont.h"
+//#include "gtkplotcanvas.h"
 
 static void gtk_plot_pc_class_init                 (GtkPlotPCClass *klass);
 static void gtk_plot_pc_real_init                  (GtkPlotPC *pc);
 
-static GtkObjectClass *parent_class = NULL;
+static gpointer gtk_plot_pc_parent_class = NULL;
 
 GType
 gtk_plot_pc_get_type (void)
 {
-  static GType pc_type = 0;
-
-  if (!pc_type)
+  static volatile gsize g_define_type_id__volatile = 0;
+  if (g_once_init_enter (&g_define_type_id__volatile))
     {
-
-      pc_type = g_type_register_static_simple (
-		gtk_object_get_type(),
-		"GtkPlotPC",
-		sizeof (GtkPlotPCClass),
-		(GClassInitFunc) gtk_plot_pc_class_init,
-		sizeof (GtkPlotPC),
-		(GInstanceInitFunc) gtk_plot_pc_real_init,
-		0);
-    }
-  return pc_type;
+      GType g_define_type_id =
+        g_type_register_static_simple (G_TYPE_OBJECT,
+                                       g_intern_static_string ("GtkPlotPc"),
+                                       sizeof (GtkPlotPCClass),
+                                       (GClassInitFunc) gtk_plot_pc_class_init,
+                                       sizeof (GtkPlotPC),
+                                       (GInstanceInitFunc) gtk_plot_pc_real_init,
+                                       0);
+       g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
+  }
+  return g_define_type_id__volatile;
 }
 
 static void
 gtk_plot_pc_class_init (GtkPlotPCClass *klass)
 {
-  GtkObjectClass *object_class;
-  GtkPlotPCClass *pc_class;
-
-  parent_class = g_type_class_ref (gtk_object_get_type ());
-
-  object_class = (GtkObjectClass *) klass;
-  pc_class = (GtkPlotPCClass *) klass;
-
+  gtk_plot_pc_parent_class = g_type_class_peek_parent (klass); 
 }
 
 static void
 gtk_plot_pc_real_init (GtkPlotPC *pc)
 {
-  gdk_color_black(gdk_colormap_get_system(), &pc->color);
+  /* opaque black */
+  pc->color.red = 0.0;
+  pc->color.green = 0.0;
+  pc->color.blue = 0.0;
+  pc->color.alpha= 1.0;
 
   pc->width = pc->height = 0;
 
   pc->init_count = 0;
-  pc->use_pixmap = TRUE;
+  pc->use_surface = TRUE;
 }
 
-GtkObject *
+GObject *
 gtk_plot_pc_new				(void)
 {
-  GtkObject *object;
+  GObject *object;
 
   object = g_object_new (gtk_plot_pc_get_type(), NULL);
         
@@ -110,7 +106,7 @@ gboolean gtk_plot_pc_init                                   (GtkPlotPC *pc)
   pc->init_count++;
   if(pc->init_count > 1) return TRUE;
 
-  return(GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->init(pc));
+  return(GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->init(pc));
 }
 
 /**
@@ -124,7 +120,7 @@ void gtk_plot_pc_leave                                  (GtkPlotPC *pc)
   pc->init_count--;
   if(pc->init_count > 0) return;
 
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->leave(pc);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->leave(pc);
 }
 
 /**
@@ -139,7 +135,7 @@ void gtk_plot_pc_set_viewport (GtkPlotPC *pc, gdouble w, gdouble h)
 {
   pc->width = w;
   pc->height = h;
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->set_viewport(pc, w, h);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->set_viewport(pc, w, h);
 }
 
 /**
@@ -150,7 +146,7 @@ void gtk_plot_pc_set_viewport (GtkPlotPC *pc, gdouble w, gdouble h)
  */
 void gtk_plot_pc_gsave                                  (GtkPlotPC *pc)
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->gsave(pc);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->gsave(pc);
 }
 
 /**
@@ -161,7 +157,7 @@ void gtk_plot_pc_gsave                                  (GtkPlotPC *pc)
  */
 void gtk_plot_pc_grestore                               (GtkPlotPC *pc)
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->grestore(pc);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->grestore(pc);
 }
 
 /**
@@ -174,7 +170,7 @@ void gtk_plot_pc_grestore                               (GtkPlotPC *pc)
 void gtk_plot_pc_clip                                   (GtkPlotPC *pc,
                                                          GdkRectangle *area)
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->clip(pc, area);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->clip(pc, area);
 }
 
 /**
@@ -189,9 +185,9 @@ void gtk_plot_pc_clip                                   (GtkPlotPC *pc,
 void gtk_plot_pc_clip_mask                              (GtkPlotPC *pc,
 							 gdouble x,
 							 gdouble y,
-                                                         GdkBitmap *mask)
+                                                         cairo_surface_t *mask)
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->clip_mask(pc, x, y, mask);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->clip_mask(pc, x, y, mask);
 }
 
 /**
@@ -202,10 +198,10 @@ void gtk_plot_pc_clip_mask                              (GtkPlotPC *pc,
  *
  */
 void gtk_plot_pc_set_color                               (GtkPlotPC *pc,
-                                                          GdkColor *color)
+                                                          const GdkRGBA *color)
 {
   pc->color = *color;
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->set_color(pc, color);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->set_color(pc, color);
 }
 
 /**
@@ -220,11 +216,11 @@ void gtk_plot_pc_set_color                               (GtkPlotPC *pc,
  */
 void gtk_plot_pc_set_lineattr                    (GtkPlotPC *pc,
                                                  gfloat line_width,
-                                                 GdkLineStyle line_style,
-                                                 GdkCapStyle cap_style,
-                                                 GdkJoinStyle join_style)
+                                                 GtkPlotGdkLineStyle line_style,
+                                                 GtkPlotGdkCapStyle cap_style,
+                                                 GtkPlotGdkJoinStyle join_style)
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->set_lineattr(pc, line_width, line_style, cap_style, join_style);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->set_lineattr(pc, line_width, line_style, cap_style, join_style);
 }
 
 /**
@@ -241,7 +237,7 @@ void gtk_plot_pc_set_dash                                (GtkPlotPC *pc,
                                                          gdouble *values,
                                                          gint num_values)
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->set_dash(pc, offset_, values, num_values);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->set_dash(pc, offset_, values, num_values);
 }
 
 /**
@@ -258,7 +254,7 @@ void gtk_plot_pc_draw_line                               (GtkPlotPC *pc,
                                                          gdouble x1, gdouble y1,
                                                          gdouble x2, gdouble y2)
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_line(pc, x1, y1, x2, y2);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->draw_line(pc, x1, y1, x2, y2);
 }
 
 /**
@@ -273,7 +269,7 @@ void gtk_plot_pc_draw_lines                              (GtkPlotPC *pc,
                                                          gint numpoints)
 {
   if(!points || numpoints <= 1) return;
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_lines(pc, points, numpoints);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->draw_lines(pc, points, numpoints);
 }
 
 /**
@@ -287,7 +283,7 @@ void gtk_plot_pc_draw_lines                              (GtkPlotPC *pc,
 void gtk_plot_pc_draw_point                             (GtkPlotPC *pc,
                                                          gdouble x, gdouble y)
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_point(pc, x, y);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->draw_point(pc, x, y);
 }
 
 /**
@@ -307,7 +303,7 @@ void gtk_plot_pc_draw_rectangle                          (GtkPlotPC *pc,
                                                          gdouble width,
                                                          gdouble height) 
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_rectangle(pc, filled, x, y, width, height);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->draw_rectangle(pc, filled, x, y, width, height);
 }
 
 /**
@@ -324,7 +320,7 @@ void gtk_plot_pc_draw_polygon                            (GtkPlotPC *pc,
                                                          gint numpoints)
 {
   if(!points || numpoints < 1) return;
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_polygon(pc, filled, points, numpoints);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->draw_polygon(pc, filled, points, numpoints);
 }
 
 /**
@@ -342,7 +338,7 @@ void gtk_plot_pc_draw_circle                             (GtkPlotPC *pc,
                                                          gdouble x, gdouble y,
                                                          gdouble size)
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_circle(pc, filled, x, y, size);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->draw_circle(pc, filled, x, y, size);
 }
 
 /**
@@ -362,7 +358,7 @@ void gtk_plot_pc_draw_ellipse                            (GtkPlotPC *pc,
                                                          gdouble width,
                                                          gdouble height) 
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_ellipse(pc, filled, x, y, width, height);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->draw_ellipse(pc, filled, x, y, width, height);
 }
 
 /**
@@ -377,7 +373,7 @@ void gtk_plot_pc_set_font                                (GtkPlotPC *pc,
 							 GtkPSFont *psfont,
                                                          gint height)
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->set_font(pc, psfont, height);
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->set_font(pc, psfont, height);
 }
 
 /**
@@ -403,8 +399,8 @@ void gtk_plot_pc_set_font                                (GtkPlotPC *pc,
 void gtk_plot_pc_draw_string                             (GtkPlotPC *pc,
                                                          gint x, gint y,
                                                          gint angle,
-                                                         const GdkColor *fg,
-                                                         const GdkColor *bg,
+                                                         const GdkRGBA *fg,
+                                                         const GdkRGBA  *bg,
                                                          gboolean transparent,
                                                          gint border,
                                                          gint border_space,
@@ -419,7 +415,7 @@ void gtk_plot_pc_draw_string                             (GtkPlotPC *pc,
   if(!text) return;
   if(strlen(text) == 0) return;
 
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_string(pc, x, y, 
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->draw_string(pc, x, y, 
                                                        angle,
                                                        fg,
                                                        bg,
@@ -451,16 +447,16 @@ void gtk_plot_pc_draw_string                             (GtkPlotPC *pc,
  *
  *
  */
-void  gtk_plot_pc_draw_pixmap                           (GtkPlotPC *pc,
-                                                         GdkPixmap *pixmap,
-                                                         GdkBitmap *mask,
+void  gtk_plot_pc_draw_surface				(GtkPlotPC *pc,
+							 cairo_surface_t *surface,
+							 cairo_surface_t *mask,
                                                          gint xsrc, gint ysrc,
                                                          gint xdest, gint ydest,
                                                          gint width, gint height,
 							 gdouble scale_x, gdouble scale_y)
 {
-  GTK_PLOT_PC_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(pc)))->draw_pixmap(pc,
-                                                        pixmap,
+  GTK_PLOT_PC_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(pc)))->draw_surface(pc,
+                                                        surface,
                                                         mask,
                                                         xsrc, ysrc,
                                                         xdest, ydest,

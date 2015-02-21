@@ -76,24 +76,28 @@ typedef enum {
     CURSOR_DND
 } CursorType;
 
-/* GObject, GtkObject methods
+/* GObject methods
  */
 static void   gtk_item_entry_class_init(GtkItemEntryClass *klass);
 static void   gtk_item_entry_init(GtkItemEntry *entry);
-static void   gtk_item_entry_editable_init(GtkEditableClass *iface);
+static void   gtk_item_entry_editable_init(GtkEditableInterface *iface);
 
 /* GtkWidget methods
  */
 static void   gtk_item_entry_realize(GtkWidget *widget);
-static void   gtk_item_entry_size_request(GtkWidget *widget, 
+static void gtk_item_entry_size_request(GtkWidget *widget, 
     GtkRequisition *requisition);
+static void gtk_item_entry_get_preferred_width (GtkWidget *widget,
+	gint *minimal_width, gint *natural_width);
+static void gtk_item_entry_get_preferred_height (GtkWidget *widget,
+    gint *minimal_height, gint *natural_height);
 static void   gtk_item_entry_size_allocate(GtkWidget *widget,
     GtkAllocation *allocation);
 static void   gtk_item_entry_draw_frame(GtkWidget *widget);
-static void   gtk_item_entry_destroy(GtkObject *object);
+static void   gtk_item_entry_destroy(GtkWidget *widget);
 static void   gtk_item_entry_dispose(GObject *object);
 static void   gtk_item_entry_finalize(GObject *object);
-static gint   gtk_item_entry_expose(GtkWidget *widget, GdkEventExpose *event);
+static gboolean gtk_item_entry_draw(GtkWidget *widget, cairo_t *cr);
 static void   gtk_item_entry_grab_focus(GtkWidget *widget);
 static void   gtk_item_entry_style_set(GtkWidget *widget, GtkStyle *previous_style);
 static void   gtk_item_entry_direction_changed(GtkWidget *widget, GtkTextDirection previous_dir);
@@ -207,14 +211,16 @@ static GtkEntryClass *parent_class = NULL;
 //
 // rrankin AT ihug DOT com DOT au 21/12/09
 //
-typedef struct _GtkEntryPrivate GtkEntryPrivate;
+//typedef struct _GtkEntryPrivate GtkEntryPrivate;
 
+/*
 struct _GtkEntryPrivate
 {
     GtkEntryBuffer *buffer;
     // The remainder of this structure has been truncated
 
 };
+*/
 
 #   define GTK_ENTRY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), gtk_entry_get_type(), GtkEntryPrivate))
 
@@ -258,36 +264,32 @@ static void
 gtk_item_entry_class_init(GtkItemEntryClass *klass)
 {
     GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-    GtkObjectClass *gtk_object_class;
-    GtkWidgetClass *widget_class;
-    GtkEntryClass *entry_class;
+    GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
+    GtkEntryClass *entry_class = (GtkEntryClass *)klass;;
 
     gobject_class->dispose = gtk_item_entry_dispose;
     gobject_class->finalize = gtk_item_entry_finalize;
 
-    gtk_object_class = (GtkObjectClass *)klass;
-    widget_class = (GtkWidgetClass *)klass;
     parent_class = g_type_class_ref(gtk_entry_get_type());
-    entry_class = (GtkEntryClass *)klass;
 
     widget_class->realize = gtk_item_entry_realize;
-    widget_class->size_request = gtk_item_entry_size_request;
+    widget_class->get_preferred_width = gtk_item_entry_get_preferred_width;
+    widget_class->get_preferred_height = gtk_item_entry_get_preferred_height;
     widget_class->size_allocate = gtk_item_entry_size_allocate;
-    widget_class->expose_event = gtk_item_entry_expose;
+    widget_class->draw = gtk_item_entry_draw;
     widget_class->grab_focus = gtk_item_entry_grab_focus;
     widget_class->style_set = gtk_item_entry_style_set;
     widget_class->direction_changed = gtk_item_entry_direction_changed;
     widget_class->state_changed = gtk_item_entry_state_changed;
+    widget_class->destroy = gtk_item_entry_destroy;
 
     entry_class->move_cursor = gtk_item_entry_move_cursor;
     entry_class->insert_at_cursor = gtk_item_entry_insert_at_cursor;
     entry_class->delete_from_cursor = gtk_item_entry_delete_from_cursor;
-
-    gtk_object_class->destroy = gtk_item_entry_destroy;
 }
 
 static void
-gtk_item_entry_editable_init(GtkEditableClass *iface)
+gtk_item_entry_editable_init(GtkEditableInterface *iface)
 {
     iface->do_insert_text = gtk_item_entry_insert_text;
     iface->do_delete_text = gtk_item_entry_delete_text;
@@ -298,28 +300,17 @@ gtk_item_entry_editable_init(GtkEditableClass *iface)
 }
 
 static void
-gtk_item_entry_init(GtkItemEntry *entry)
+gtk_item_entry_init(GtkItemEntry *ientry)
 {
-    entry->justification = GTK_JUSTIFY_LEFT;
-    entry->max_length_bytes = 0;
-    entry->text_max_size = 0;
-    entry->item_text_size = 0;
-    entry->item_n_bytes = 0;
-    GTK_ENTRY(entry)->has_frame = FALSE;
+    GtkEntry *entry = GTK_ENTRY(ientry);
 
-    g_object_unref(G_OBJECT(GTK_ENTRY(entry)->im_context));
+    ientry->justification = GTK_JUSTIFY_LEFT;
+    ientry->max_length_bytes = 0;
+    ientry->text_max_size = 0;
+    ientry->item_text_size = 0;
+    ientry->item_n_bytes = 0;
 
-    GTK_ENTRY(entry)->im_context = gtk_im_multicontext_new();
-
-    g_signal_connect(G_OBJECT(GTK_ENTRY(entry)->im_context), "commit",
-	G_CALLBACK(gtk_item_entry_commit_cb), entry);
-    g_signal_connect(G_OBJECT(GTK_ENTRY(entry)->im_context), "preedit_changed",
-	G_CALLBACK(gtk_item_entry_preedit_changed_cb), entry);
-    g_signal_connect(G_OBJECT(GTK_ENTRY(entry)->im_context), "retrieve_surrounding",
-	G_CALLBACK(gtk_item_entry_retrieve_surrounding_cb), entry);
-    g_signal_connect(G_OBJECT(GTK_ENTRY(entry)->im_context), "delete_surrounding",
-	G_CALLBACK(gtk_item_entry_delete_surrounding_cb), entry);
-
+    gtk_entry_set_has_frame(entry, FALSE);
 }
 
 static void
@@ -381,7 +372,7 @@ gtk_item_entry_realize(GtkWidget *widget)
 
     gdk_window_show(entry->text_area);
 
-    gtk_im_context_set_client_window(entry->im_context, entry->text_area);
+    //gtk_im_context_set_client_window(entry->im_context, entry->text_area);
 
     gtk_item_entry_adjust_scroll(entry);
 }
@@ -400,7 +391,7 @@ _item_entry_get_borders(GtkEntry *entry,
 	"focus-line-width", &focus_width,
 	NULL);
 
-    if (entry->has_frame)
+    if (gtk_entry_get_has_frame(entry))
     {
 	*xborder = gtk_widget_get_style(widget)->xthickness;
 	*yborder = gtk_widget_get_style(widget)->ythickness;
@@ -451,6 +442,26 @@ gtk_item_entry_size_request(GtkWidget *widget, GtkRequisition *requisition)
     requisition->height = PANGO_PIXELS(entry->ascent + entry->descent) + yborder * 2;
 
     pango_font_metrics_unref(metrics);
+}
+
+static void
+gtk_item_entry_get_preferred_width (GtkWidget *widget,
+	gint *minimal_width, gint *natural_width)
+{
+  GtkRequisition requisition;
+  gtk_item_entry_size_request(widget, &requisition);
+
+  *minimal_width = *natural_width = requisition.width;
+}
+
+static void
+gtk_item_entry_get_preferred_height (GtkWidget *widget,
+    gint *minimal_height, gint *natural_height)
+{
+  GtkRequisition requisition;
+  gtk_item_entry_size_request(widget, &requisition);
+
+  *minimal_height = *natural_height = requisition.height;
 }
 
 static void
@@ -603,16 +614,17 @@ gtk_item_entry_draw_frame(GtkWidget *widget)
 }
 
 static void
-gtk_item_entry_destroy (GtkObject *object)
+gtk_item_entry_destroy (GtkWidget *widget)
 {
 #if GTK_ITEM_ENTRY_DEBUG_DESTUCTION>0
-  GtkItemEntry *ientry = GTK_ITEM_ENTRY(object);
+  GtkItemEntry *ientry = GTK_ITEM_ENTRY(widget);
 
   g_debug("gtk_item_entry_destroy %p %s", ientry, 
       gtk_widget_get_name(GTK_WIDGET(ientry)));
 #endif
 
-  GTK_OBJECT_CLASS (parent_class)->destroy(object);
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+      (* GTK_WIDGET_CLASS (parent_class)->destroy) (widget);
 }
 
 static void
@@ -640,8 +652,8 @@ gtk_item_entry_finalize (GObject *object)
 }
 
 
-static gint
-gtk_item_entry_expose(GtkWidget *widget, GdkEventExpose *event)
+static gboolean
+gtk_item_entry_draw(GtkWidget *widget, cairo_t *cr)
 {
     GtkEntry *entry = GTK_ENTRY(widget);
     gfloat align = 0.0;
@@ -1227,62 +1239,6 @@ gtk_item_entry_delete_from_cursor(GtkEntry       *entry,
     gtk_item_entry_pend_cursor_blink(entry);
 }
 
-/* IM Context Callbacks
- */
-
-static void
-gtk_item_entry_commit_cb(GtkIMContext *context,
-    const gchar  *str,
-    GtkEntry     *entry)
-{
-    gtk_item_entry_enter_text(entry, str);
-}
-
-static void
-gtk_item_entry_preedit_changed_cb(GtkIMContext *context,
-    GtkEntry     *entry)
-{
-    gchar *preedit_string;
-    gint cursor_pos;
-
-    gtk_im_context_get_preedit_string(entry->im_context,
-	&preedit_string, NULL,
-	&cursor_pos);
-    entry->preedit_length = strlen(preedit_string);
-    cursor_pos = CLAMP(cursor_pos, 0, g_utf8_strlen(preedit_string, -1));
-    entry->preedit_cursor = cursor_pos;
-    g_free(preedit_string);
-
-    gtk_item_entry_recompute(entry);
-}
-
-static gboolean
-gtk_item_entry_retrieve_surrounding_cb(GtkIMContext *context,
-    GtkEntry     *entry)
-{
-    GtkEntryBuffer *buffer = _item_entry_get_buffer(entry);
-
-    gtk_im_context_set_surrounding(context,
-	entry->text,
-	gtk_entry_buffer_get_bytes(buffer),
-	g_utf8_offset_to_pointer(entry->text, entry->current_pos) - entry->text);
-
-    return TRUE;
-}
-
-static gboolean
-gtk_item_entry_delete_surrounding_cb(GtkIMContext *slave,
-    gint          offset,
-    gint          n_chars,
-    GtkEntry     *entry)
-{
-    gtk_editable_delete_text(GTK_EDITABLE(entry),
-	entry->current_pos + offset,
-	entry->current_pos + offset + n_chars);
-
-    return TRUE;
-}
-
 
 /* Internal functions
  */
@@ -1388,7 +1344,9 @@ _item_entry_recompute_idle_func(gpointer data)
 {
     GtkEntry *entry;
 
+#if GTK_CHECK_VERSION(3,6,0) == 0
     GDK_THREADS_ENTER();
+#endif
 
     entry = GTK_ENTRY(data);
 
@@ -1399,7 +1357,9 @@ _item_entry_recompute_idle_func(gpointer data)
 
     _item_entry_update_im_cursor_location(entry);
 
+#if GTK_CHECK_VERSION(3,6,0) == 0
     GDK_THREADS_LEAVE();
+#endif
 
     return FALSE;
 }
@@ -1940,18 +1900,6 @@ gtk_item_entry_queue_draw(GtkEntry *entry)
     if (gtk_widget_get_realized(GTK_WIDGET(entry)))
 	gdk_window_invalidate_rect(entry->text_area, NULL, FALSE);
 }
-
-#if GTK_CHECK_VERSION(2,21,0) == 0
-static void
-gtk_entry_reset_im_context(GtkEntry *entry)
-{
-    if (entry->need_im_reset)
-    {
-	entry->need_im_reset = 0;
-	gtk_im_context_reset(entry->im_context);
-    }
-}
-#endif // GTK_CHECK_VERSION(2,21,0) == 0
 
 static void
 gtk_item_entry_get_cursor_locations(GtkEntry   *entry,
@@ -2646,7 +2594,9 @@ _item_entry_blink_cb(gpointer data)
 {
     GtkEntry *entry;
 
+#if GTK_CHECK_VERSION(3,6,0) == 0
     GDK_THREADS_ENTER();
+#endif
 
     entry = GTK_ENTRY(data);
 
@@ -2674,7 +2624,9 @@ _item_entry_blink_cb(gpointer data)
 	    NULL);
     }
 
+#if GTK_CHECK_VERSION(3,6,0) == 0
     GDK_THREADS_LEAVE();
+#endif
 
     /* Remove ourselves */
     return FALSE;

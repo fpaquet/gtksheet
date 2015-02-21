@@ -110,17 +110,16 @@ int main(int argc, char *argv[])
   gtk_box_pack_start(GTK_BOX(box), hide_button, TRUE, TRUE, 0);
   gtk_widget_show(hide_button);
 
-  g_signal_connect (GTK_OBJECT (filesel), "destroy",
-		      G_CALLBACK (quit), NULL);
+  g_signal_connect (GTK_WIDGET(filesel), "destroy", G_CALLBACK(quit), NULL);
 
-  g_signal_connect (GTK_OBJECT (GTK_ICON_FILESEL(filesel)->ok_button), 
+  g_signal_connect (G_OBJECT (GTK_ICON_FILESEL(filesel)->ok_button), 
                      "clicked",
 		      G_CALLBACK (ok_clicked), filesel);
 
-  g_signal_connect (GTK_OBJECT (show_button), "clicked",
+  g_signal_connect (G_OBJECT (show_button), "clicked",
 		      G_CALLBACK (show_tree), NULL);
 
-  g_signal_connect (GTK_OBJECT (hide_button), "clicked",
+  g_signal_connect (G_OBJECT (hide_button), "clicked",
 		      G_CALLBACK (hide_tree), NULL);
 
   gtk_widget_show(filesel);

@@ -1,38 +1,22 @@
 
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
 #include <glib.h>
 #include "gtkcharsel.h"
 
-GtkWidget *charsel;
-
-
-void
-quit ()
-{
-  gtk_main_quit();
-}
-
-void
-ok_clicked(GtkWidget *widget, gpointer data)
-{
-  GtkCharSelection *charsel;
-
-  charsel = GTK_CHAR_SELECTION(data);
-}
 
 int main(int argc, char *argv[]) 
 {
+  GtkWidget *charsel;
   gtk_init(&argc, &argv);
 
-  charsel=gtk_char_selection_new();
+  charsel = gtk_char_selection_new();
 
 
-  g_signal_connect (GTK_OBJECT (charsel), "destroy",
+  /*g_signal_connect (G_OBJECT (charsel), "destroy",
 		      (void *)quit, NULL);
-
+  */
 /*
-  g_signal_connect (GTK_OBJECT (GTK_CHAR_SELECTION(charsel)->ok_button), 
+  g_signal_connect (G_OBJECT (GTK_CHAR_SELECTION(charsel)->ok_button), 
                      "clicked",
 		      G_CALLBACK(ok_clicked), charsel);
 */
@@ -40,10 +24,17 @@ int main(int argc, char *argv[])
   gtk_char_selection_set_selection(GTK_CHAR_SELECTION(charsel), 25);
 */
 
-  gtk_widget_show(charsel);
-  gtk_main();
+  int result = gtk_dialog_run(GTK_DIALOG(charsel));
+  //gtk_main();
+  
+  if (result == GTK_RESPONSE_ACCEPT)
+  	printf("selected character: %c\n", gtk_char_selection_get_selection(GTK_CHAR_SELECTION(charsel)));
+  else 
+  	printf("dialog cancel button clicked or dialog was deleted\n");
 
-  return(0);
+  gtk_widget_destroy(charsel);
+
+  return 0;
 }
 
 

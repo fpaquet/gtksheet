@@ -100,16 +100,11 @@ gtk_plot_segment_get_type (void)
 static void
 gtk_plot_segment_class_init (GtkPlotSegmentClass *klass)
 {
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
-  GtkPlotDataClass *data_class;
+  GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
+  GtkPlotDataClass *data_class = (GtkPlotDataClass *) klass;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
   parent_class = g_type_class_ref (gtk_plot_data_get_type ());
-
-  object_class = (GtkObjectClass *) klass;
-  widget_class = (GtkWidgetClass *) klass;
-  data_class = (GtkPlotDataClass *) klass;
 
   gobject_class->set_property = gtk_plot_segment_set_property;
   gobject_class->get_property = gtk_plot_segment_get_property;

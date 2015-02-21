@@ -20,20 +20,20 @@
 #ifndef __GTK_PLOT_DATA_H__
 #define __GTK_PLOT_DATA_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
 
 #include "gtkplot.h"
 
-#define GTK_PLOT_DATA(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_data_get_type (), GtkPlotData)
-#define G_TYPE_PLOT_DATA   (gtk_plot_data_get_type ())
-#define GTK_PLOT_DATA_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_data_get_type(), GtkPlotDataClass)
-#define GTK_IS_PLOT_DATA(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_data_get_type ())
+G_BEGIN_DECLS
+
+#define GTK_TYPE_PLOT_DATA   		(gtk_plot_data_get_type ())
+#define GTK_PLOT_DATA(obj)        	(G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_TYPE_PLOT_DATA, GtkPlotData))
+#define GTK_PLOT_DATA_CLASS(klass) 	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT_DATA, GtkPlotDataClass))
+#define GTK_IS_PLOT_DATA(obj)     	(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT_DATA))
+#define GTK_IS_PLOT_DATA_CLASS(klass)  	(G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT_DATA))
+#define GTK_PLOT_DATA_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PLOT_DATA, GtkPlotDataClass))
 
 
 GType		gtk_plot_data_get_type		(void);
-GType   	gtk_plot_marker_get_type        (void);
 
 GtkWidget*	gtk_plot_data_new		(void);
 GtkWidget* 	gtk_plot_data_new_function 	(GtkPlotFunc function);
@@ -147,8 +147,8 @@ void		gtk_plot_data_labels_set_attributes	(GtkPlotData *data,
 							 const gchar *font,
 							 gint height,
 							 gint angle,
-							 const GdkColor *fg,
-							 const GdkColor *bg);
+							 const GdkRGBA *fg,
+							 const GdkRGBA *bg);
 void		gtk_plot_data_set_numpoints  	(GtkPlotData *dataset,
                                                  gint num_points);
 gint		gtk_plot_data_get_numpoints  	(GtkPlotData *data);
@@ -157,48 +157,48 @@ void		gtk_plot_data_set_symbol     	(GtkPlotData *dataset,
                                                  GtkPlotSymbolStyle style,
 						 gint size,
 						 gfloat line_width,
-						 const GdkColor *color,
-						 const GdkColor *border_color);
+						 const GdkRGBA *color,
+						 const GdkRGBA *border_color);
 void		gtk_plot_data_get_symbol   	(GtkPlotData *dataset,
                                                  GtkPlotSymbolType *type,
                                                  GtkPlotSymbolStyle *style,
 						 gint *size,
 						 gfloat *line_width,
-						 GdkColor *color,
-						 GdkColor *border_color);
+						 GdkRGBA *color,
+						 GdkRGBA *border_color);
 void		gtk_plot_data_set_connector     (GtkPlotData *dataset,
 						 GtkPlotConnector connector); 
 gint		gtk_plot_data_get_connector     (GtkPlotData *dataset);
 void		gtk_plot_data_set_line_attributes 	(GtkPlotData *dataset,
 						 	 GtkPlotLineStyle style,
-						 	 GdkCapStyle cap_style,
-						 	 GdkJoinStyle join_style,
+						 	 GtkPlotGdkCapStyle cap_style,
+						 	 GtkPlotGdkJoinStyle join_style,
 						 	 gfloat width,
-						 	 const GdkColor *color);
+						 	 const GdkRGBA *color);
 void		gtk_plot_data_get_line_attributes 	(GtkPlotData *dataset,
 						 	 GtkPlotLineStyle *style,
-						 	 GdkCapStyle *cap_style,
-						 	 GdkJoinStyle *join_style,
+						 	 GtkPlotGdkCapStyle *cap_style,
+						 	 GtkPlotGdkJoinStyle *join_style,
 						 	 gfloat *width,
-						 	 GdkColor *color);
+						 	 GdkRGBA *color);
 void		gtk_plot_data_set_x_attributes 		(GtkPlotData *dataset,
 						 	 GtkPlotLineStyle style,
-						 	 GdkCapStyle cap_style,
-						 	 GdkJoinStyle join_style,
+						 	 GtkPlotGdkCapStyle cap_style,
+						 	 GtkPlotGdkJoinStyle join_style,
 						 	 gfloat width,
-						 	 const GdkColor *color);
+						 	 const GdkRGBA *color);
 void		gtk_plot_data_set_y_attributes 		(GtkPlotData *dataset,
 						 	 GtkPlotLineStyle style,
-						 	 GdkCapStyle cap_style,
-						 	 GdkJoinStyle join_style,
+						 	 GtkPlotGdkCapStyle cap_style,
+						 	 GtkPlotGdkJoinStyle join_style,
 						 	 gfloat width,
-						 	 const GdkColor *color);
+						 	 const GdkRGBA *color);
 void		gtk_plot_data_set_z_attributes 		(GtkPlotData *dataset,
 						 	 GtkPlotLineStyle style,
-						 	 GdkCapStyle cap_style,
-						 	 GdkJoinStyle join_style,
+						 	 GtkPlotGdkCapStyle cap_style,
+						 	 GtkPlotGdkJoinStyle join_style,
 						 	 gfloat width,
-						 	 const GdkColor *color);
+						 	 const GdkRGBA *color);
 void		gtk_plot_data_show_xerrbars  		(GtkPlotData *dataset);
 void		gtk_plot_data_show_yerrbars 	 	(GtkPlotData *dataset);
 void		gtk_plot_data_show_zerrbars 	 	(GtkPlotData *dataset);
@@ -238,22 +238,22 @@ void		gtk_plot_data_gradient_autoscale_a	(GtkPlotData *data);
 void		gtk_plot_data_gradient_autoscale_da	(GtkPlotData *data);
 void		gtk_plot_data_gradient_autoscale_z	(GtkPlotData *data);
 void		gtk_plot_data_set_gradient_colors	(GtkPlotData *data,
-							 const GdkColor *min,
-							 const GdkColor *max);
+							 const GdkRGBA *min,
+							 const GdkRGBA *max);
 void		gtk_plot_data_get_gradient_colors	(GtkPlotData *data,
-							 GdkColor *min,
-							 GdkColor *max);
+							 GdkRGBA *min,
+							 GdkRGBA *max);
 void		gtk_plot_data_set_gradient_nth_color	(GtkPlotData *data,
 							 guint level,
-							 GdkColor *color);
-const GdkColor *gtk_plot_data_get_gradient_nth_color	(GtkPlotData *data,
+							 GdkRGBA *color);
+const GdkRGBA *gtk_plot_data_get_gradient_nth_color	(GtkPlotData *data,
 							 guint level);
 void		gtk_plot_data_set_gradient_outer_colors	(GtkPlotData *data,
-							 const GdkColor *min,
-							 const GdkColor *max);
+							 const GdkRGBA *min,
+							 const GdkRGBA *max);
 void		gtk_plot_data_get_gradient_outer_colors	(GtkPlotData *data,
-							 GdkColor *min,
-							 GdkColor *max);
+							 GdkRGBA *min,
+							 GdkRGBA *max);
 void		gtk_plot_data_set_gradient		(GtkPlotData *data,
 							 gdouble min,
 							 gdouble max,
@@ -266,7 +266,7 @@ void		gtk_plot_data_get_gradient		(GtkPlotData *data,
 							 gint *nsublevels);
 void 		gtk_plot_data_get_gradient_level 	(GtkPlotData *data,
 							 gdouble level,
-							 GdkColor *color);
+							 GdkRGBA *color);
 void		gtk_plot_data_gradient_set_style	(GtkPlotData *data,
 							 GtkPlotLabelStyle style,
 	                                                 gint precision);
@@ -284,7 +284,6 @@ gpointer	gtk_plot_data_get_link			(GtkPlotData *dataset);
 void		gtk_plot_data_remove_link		(GtkPlotData *dataset);
 
 /* Markers */
-
 GtkPlotMarker *	gtk_plot_data_add_marker		(GtkPlotData *data,
 							 guint point);
 gboolean	gtk_plot_data_remove_marker		(GtkPlotData *data,
@@ -294,9 +293,7 @@ void		gtk_plot_data_show_markers		(GtkPlotData *data,
 							 gboolean show);
 gboolean	gtk_plot_data_markers_visible		(GtkPlotData *data);
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 
 #endif /* __GTK_PLOT_DATA_H__ */

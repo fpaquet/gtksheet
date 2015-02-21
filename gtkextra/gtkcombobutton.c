@@ -41,7 +41,7 @@
 
 static void         gtk_combo_button_class_init      (GtkComboButtonClass *klass);
 static void         gtk_combo_button_init            (GtkComboButton      *combo_button);
-static void         gtk_combo_button_destroy         (GtkObject     *combo_button);
+static void gtk_combo_button_destroy(GtkWidget *widget);
 static void         gtk_combo_button_get_pos         (GtkComboButton      *combo_button, 
                                                	  gint          *x, 
                                                   gint          *y, 
@@ -55,36 +55,36 @@ static gint         gtk_combo_button_button_press    (GtkWidget     *widget,
                                                   gpointer data);
 static void         gtk_combo_button_size_allocate   (GtkWidget     *widget,
 					          GtkAllocation *allocation);
-static void         gtk_combo_button_size_request    (GtkWidget     *widget,
-					          GtkRequisition *requisition);
-
+static void gtk_combo_button_size_request(GtkWidget *widget, 
+    GtkRequisition *requisition);
+static void gtk_combo_button_get_preferred_width (GtkWidget *widget,
+    gint *minimal_width, gint *natural_width);
+static void gtk_combo_button_get_preferred_height (GtkWidget *widget,
+    gint *minimal_height, gint *natural_height);
 
 static GtkHBoxClass *parent_class = NULL;
 
 static void
 gtk_combo_button_class_init (GtkComboButtonClass * klass)
 {
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
+  GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
 
   parent_class = g_type_class_ref (gtk_hbox_get_type ());
-  object_class = (GtkObjectClass *) klass;
-  widget_class = (GtkWidgetClass *) klass;
-
-  object_class->destroy = gtk_combo_button_destroy;
   
   widget_class->size_allocate = gtk_combo_button_size_allocate;
-  widget_class->size_request = gtk_combo_button_size_request;
+  widget_class->get_preferred_width = gtk_combo_button_get_preferred_width;
+  widget_class->get_preferred_height = gtk_combo_button_get_preferred_height;
+  widget_class->destroy = gtk_combo_button_destroy;
 }
 
 static void
-gtk_combo_button_destroy (GtkObject * combo_button)
+gtk_combo_button_destroy (GtkWidget *widget)
 {
   gtk_widget_destroy (GTK_COMBO_BUTTON (combo_button)->popwin);
   g_object_unref (GTK_COMBO_BUTTON (combo_button)->popwin);
 
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (*GTK_OBJECT_CLASS (parent_class)->destroy) (combo_button);
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+      (*GTK_WIDGET_CLASS (parent_class)->destroy) (widget);
 }
 
 
@@ -221,7 +221,7 @@ gtk_combo_button_init (GtkComboButton * combo_button)
   gtk_widget_show (combo_button->button);
   gtk_widget_show (combo_button->arrow);
 
-  g_signal_connect (GTK_OBJECT (combo_button->arrow), "toggled",
+  g_signal_connect (G_OBJECT (combo_button->arrow), "toggled",
 		      (void *) gtk_combo_button_arrow_press, combo_button);
 
                        
@@ -238,14 +238,14 @@ gtk_combo_button_init (GtkComboButton * combo_button)
   gtk_widget_realize (event_box);
   cursor = gdk_cursor_new (GDK_TOP_LEFT_ARROW);
   gdk_window_set_cursor (gtk_widget_get_window(event_box), cursor);
-  gdk_cursor_destroy (cursor);
+  g_object_unref(G_OBJECT(cursor));
 
   combo_button->frame = gtk_frame_new (NULL);
   gtk_container_add (GTK_CONTAINER (event_box), combo_button->frame);
   gtk_frame_set_shadow_type (GTK_FRAME (combo_button->frame), GTK_SHADOW_OUT);
   gtk_widget_show (combo_button->frame);
 
-  g_signal_connect (GTK_OBJECT (combo_button->popwin), "button_press_event",
+  g_signal_connect (G_OBJECT (combo_button->popwin), "button_press_event",
 		      (void *)gtk_combo_button_button_press, combo_button);
   
 
@@ -312,13 +312,14 @@ gtk_combo_button_size_request (GtkWidget *widget,
 			   GtkRequisition *requisition)
 {
   GtkComboButton *combo_button;
-  GtkRequisition box_requisition;
+  GtkRequisition minimum_size, natural_size;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (GTK_IS_COMBO_BUTTON (widget));
   g_return_if_fail (requisition != NULL);
 
-  GTK_WIDGET_CLASS (parent_class)->size_request (widget, &box_requisition);
+  //GTK_WIDGET_CLASS (parent_class)->size_request (widget, &box_requisition);
+  gtk_widget_get_preferred_size (widget, &minimum_size, &natural_size);  
 
   combo_button=GTK_COMBO_BUTTON(widget);
 /*
@@ -329,8 +330,27 @@ gtk_combo_button_size_request (GtkWidget *widget,
   widget->requisition.height = size;
   widget->requisition.width = size + combo_button->arrow->requisition.width;
 */
-  gtk_widget_set_size_request(widget, box_requisition.width, 
-					box_requisition.height);
+  gtk_widget_set_size_request(widget, minimum_size.width, minimum_size.height);
+}
+
+static void
+gtk_combo_button_get_preferred_width (GtkWidget *widget,
+    gint *minimal_width, gint *natural_width)
+{
+  GtkRequisition requisition;
+  gtk_combo_button_size_request(widget, &requisition);
+
+  *minimal_width = *natural_width = requisition.width;
+}
+
+static void
+gtk_combo_button_get_preferred_height (GtkWidget *widget,
+    gint *minimal_height, gint *natural_height)
+{
+  GtkRequisition requisition;
+  gtk_combo_button_size_request(widget, &requisition);
+
+  *minimal_height = *natural_height = requisition.height;
 }
 
 

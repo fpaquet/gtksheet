@@ -93,16 +93,11 @@ gtk_plot_box_get_type (void)
 static void
 gtk_plot_box_class_init (GtkPlotBoxClass *klass)
 {
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
-  GtkPlotDataClass *data_class;
+  GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
+  GtkPlotDataClass *data_class = (GtkPlotDataClass *) klass;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
   parent_class = g_type_class_ref (gtk_plot_data_get_type ());
-
-  object_class = (GtkObjectClass *) klass;
-  widget_class = (GtkWidgetClass *) klass;
-  data_class = (GtkPlotDataClass *) klass;
 
   gobject_class->set_property = gtk_plot_box_set_property;
   gobject_class->get_property = gtk_plot_box_get_property;

@@ -20,19 +20,21 @@
 #ifndef __GTK_PLOT_ARRAY_H__
 #define __GTK_PLOT_ARRAY_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+#include <gtk/gtk.h>
 
-#define GTK_PLOT_ARRAY_LIST(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_array_list_get_type (), GtkPlotArrayList)
-#define G_TYPE_PLOT_ARRAY_LIST        (gtk_plot_array_list_get_type ())
-#define GTK_PLOT_ARRAY_LIST_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_array_list_get_type(), GtkPlotArrayListClass)
-#define GTK_IS_PLOT_ARRAY_LIST(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_array_list_get_type ())
+G_BEGIN_DECLS
 
-#define GTK_PLOT_ARRAY(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_array_get_type (), GtkPlotArray)
-#define G_TYPE_PLOT_ARRAY        (gtk_plot_array_get_type ())
-#define GTK_PLOT_ARRAY_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_array_get_type(), GtkPlotArrayClass)
-#define GTK_IS_PLOT_ARRAY(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_array_get_type ())
+#define GTK_TYPE_PLOT_ARRAY_LIST        	(gtk_plot_array_list_get_type ())
+#define GTK_PLOT_ARRAY_LIST(obj)        	(G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_TYPE_PLOT_ARRAY_LIST, GtkPlotArrayList))
+#define GTK_PLOT_ARRAY_LIST_CLASS(klass) 	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT_ARRAY_LIST, GtkPlotArrayListClass))
+#define GTK_IS_PLOT_ARRAY_LIST(obj)     	(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT_ARRAY_LIST))
+#define GTK_IS_PLOT_ARRAY_LIST_CLASS(obj)     	(G_CHECK_CLASS_TYPE (obj, GTK_TYPE_PLOT_ARRAY_LIST))
+
+#define GTK_TYPE_PLOT_ARRAY        		(gtk_plot_array_get_type ())
+#define GTK_PLOT_ARRAY(obj)        		(G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_TYPE_PLOT_ARRAY, GtkPlotArray))
+#define GTK_PLOT_ARRAY_CLASS(klass) 		(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT_ARRAY, GtkPlotArrayClass))
+#define GTK_IS_PLOT_ARRAY(obj)     		(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT_ARRAY))
+#define GTK_IS_PLOT_ARRAY_CLASS(obj)     	(G_CHECK_CLASS_TYPE (obj, GTK_TYPE_PLOT_ARRAY))
 
 typedef struct _GtkPlotArrayList          GtkPlotArrayList;
 typedef struct _GtkPlotArrayListClass     GtkPlotArrayListClass;
@@ -145,9 +147,7 @@ GtkPlotArray*	gtk_plot_array_list_get		(GtkPlotArrayList *set,
 						 const gchar *name);
 void		gtk_plot_array_list_clear	(GtkPlotArrayList *set);
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 
 #endif /* __GTK_PLOT_ARRAY_H__ */

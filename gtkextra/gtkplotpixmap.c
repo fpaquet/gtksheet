@@ -47,7 +47,7 @@ enum {
                                                                                 
 static void gtk_plot_pixmap_class_init 		(GtkPlotPixmapClass *klass);
 static void gtk_plot_pixmap_init 		(GtkPlotPixmap *data);
-static void gtk_plot_pixmap_destroy             (GtkObject *object);
+static void gtk_plot_pixmap_destroy(GtkWidget *widget);
 static void gtk_plot_pixmap_draw_symbol		(GtkPlotData *data,
                                                  gdouble x, 
                                                  gdouble y, 
@@ -100,23 +100,18 @@ gtk_plot_pixmap_get_type (void)
 static void
 gtk_plot_pixmap_class_init (GtkPlotPixmapClass *klass)
 {
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
-  GtkPlotDataClass *data_class;
+  GtkWidgetClass *widget_class = (GtkWidgetClass *) klass;
+  GtkPlotDataClass *data_class = (GtkPlotDataClass *) klass;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
   parent_class = g_type_class_ref (gtk_plot_data_get_type ());
-
-  object_class = (GtkObjectClass *) klass;
-  widget_class = (GtkWidgetClass *) klass;
-  data_class = (GtkPlotDataClass *) klass;
 
   data_class->clone = gtk_plot_pixmap_clone;
   data_class->draw_legend = gtk_plot_pixmap_draw_legend;
   data_class->get_legend_size = gtk_plot_pixmap_get_legend_size;
   data_class->draw_symbol = gtk_plot_pixmap_draw_symbol;
 
-  object_class->destroy = gtk_plot_pixmap_destroy;
+  widget_class->destroy = gtk_plot_pixmap_destroy;
 
   gobject_class->get_property = gtk_plot_pixmap_get_property;
   gobject_class->set_property = gtk_plot_pixmap_set_property;
@@ -222,14 +217,21 @@ gtk_plot_pixmap_construct(GtkPlotPixmap *data, GdkPixmap *pixmap, GdkBitmap *mas
 }
 
 static void
-gtk_plot_pixmap_destroy(GtkObject *object)
+gtk_plot_pixmap_destroy(GtkWidget *widget)
 {
   GtkPlotPixmap *pixmap = GTK_PLOT_PIXMAP(object);
                                                                                 
-  if(pixmap->pixmap) gdk_pixmap_unref(pixmap->pixmap);
-  if(pixmap->mask) gdk_bitmap_unref(pixmap->mask);
-  pixmap->pixmap = NULL;
-  pixmap->mask = NULL;
+  if(pixmap->pixmap) {
+      gdk_pixmap_unref(pixmap->pixmap);
+      pixmap->pixmap = NULL;
+  }
+  if(pixmap->mask) {
+      gdk_bitmap_unref(pixmap->mask);
+      pixmap->mask = NULL;
+  }
+
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+      (* GTK_WIDGET_CLASS (parent_class)->destroy) (widget);
 }
 
 static void

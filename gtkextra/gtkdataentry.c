@@ -505,7 +505,6 @@ gtk_data_entry_class_init(GtkDataEntryClass *klass)
     GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
 #if 0
-    GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
     GtkEntryClass *entry_class = GTK_ENTRY_CLASS (klass);
 #endif
 

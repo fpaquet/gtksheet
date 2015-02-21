@@ -5,6 +5,7 @@
 
 # The name of the module, e.g. 'glib'.
 DOC_MODULE=gtkextra
+DOC_MODULE_VERSION=$(GTK_EXTRA_MAJOR_VERSION)
 
 # The top-level SGML file. You can change this if you want to.
 DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
@@ -82,7 +83,7 @@ expand_content_files=				\
 # e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
 AM_CPPFLAGS =-I$(top_srcdir) -I$(top_srcdir)/gtkextra -I$(top_builddir) $(GTK_CFLAGS)
-GTKDOC_LIBS=$(top_builddir)/gtkextra/libgtkextra-x11-3.0.la $(GTK_LIBS)
+GTKDOC_LIBS=$(top_builddir)/gtkextra/$(gtkextratargetlib) $(GTK_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make

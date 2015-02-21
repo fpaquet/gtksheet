@@ -292,7 +292,13 @@ gtk_plot_canvas_ellipse_select(GtkPlotCanvas *canvas, GtkPlotCanvasChild *child,
                                 area.y + area.height);
   }
 
-  gdk_gc_set_line_attributes(xor_gc, 1, 1, 0, 0);
+  //gdk_gc_set_line_attributes(xor_gc, 1, 1, 0, 0);
+  cairo_set_line_width(xor_cr, 1.0);
+  cairo_set_line_cap(xor_cr, CAIRO_LINE_CAP_BUTT);
+  cairo_set_line_join(xor_cr, CAIRO_LINE_JOIN_MITER);
+  double dashes[] = { 1.0 };
+  cairo_set_dash(xor_cr, dashes, 1, 0.0);
+
   gdk_draw_arc (gtk_widget_get_window(GTK_WIDGET(canvas)), xor_gc,
                 FALSE,
                 roundint(area.x), roundint(area.y),

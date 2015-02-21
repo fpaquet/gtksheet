@@ -84,10 +84,12 @@ typedef enum
 #define GTK_PLOT_CANVAS_DND_FLAGS      (GTK_PLOT_CANVAS_CAN_SELECT_ITEM |  \
                                         GTK_PLOT_CANVAS_CAN_DND ) 
 
-#define GTK_PLOT_CANVAS(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_canvas_get_type (), GtkPlotCanvas)
-#define GTK_PLOT_CANVAS_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_canvas_get_type(), GtkPlotCanvasClass)
-#define GTK_IS_PLOT_CANVAS(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_canvas_get_type ())
-#define G_TYPE_PLOT_CANVAS (gtk_plot_canvas_get_type ())
+#define G_TYPE_PLOT_CANVAS 		(gtk_plot_canvas_get_type ())
+#define GTK_PLOT_CANVAS(obj)        	(G_TYPE_CHECK_INSTANCE_CAST (obj, G_TYPE_PLOT_CANVAS, GtkPlotCanvas))
+#define GTK_PLOT_CANVAS_CLASS(klass) 	(G_TYPE_CHECK_CLASS_CAST (klass, G_TYPE_PLOT_CANVAS, GtkPlotCanvasClass))
+#define GTK_IS_PLOT_CANVAS(obj)     	(G_TYPE_CHECK_INSTANCE_TYPE (obj, G_TYPE_PLOT_CANVAS))
+#define GTK_IS_PLOT_CANVAS_CLASS(klass) (G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT_CANVAS))
+#define GTK_PLOT_CANVAS_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PLOT_CANVAS, GtkPlotCanvasClass))
 
 #define GTK_PLOT_CANVAS_FLAGS(canvas)	  (GTK_PLOT_CANVAS(canvas)->flags)
 #define GTK_PLOT_CANVAS_SET_FLAGS(canvas, flags)  (GTK_PLOT_CANVAS_FLAGS(canvas) |= (flags))
@@ -98,11 +100,12 @@ typedef enum
 #define GTK_PLOT_CANVAS_CAN_SELECT_ITEM(canvas)  (GTK_PLOT_CANVAS_FLAGS(canvas) & GTK_PLOT_CANVAS_CAN_SELECT_ITEM)
 #define GTK_PLOT_CANVAS_CAN_SELECT(canvas)  (GTK_PLOT_CANVAS_FLAGS(canvas) & GTK_PLOT_CANVAS_CAN_SELECT)
 
-#define GTK_PLOT_CANVAS_CHILD(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_canvas_child_get_type (), GtkPlotCanvasChild)
-#define GTK_PLOT_CANVAS_CHILD_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_canvas_child_get_type(), GtkPlotCanvasChildClass)
-#define GTK_IS_PLOT_CANVAS_CHILD(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_canvas_child_get_type ())
-#define G_TYPE_PLOT_CANVAS_CHILD (gtk_plot_canvas_child_get_type ())
-
+#define G_TYPE_PLOT_CANVAS_CHILD 		(gtk_plot_canvas_child_get_type ())
+#define GTK_PLOT_CANVAS_CHILD(obj)        	(G_TYPE_CHECK_INSTANCE_CAST (obj, G_TYPE_PLOT_CANVAS_CHILD, GtkPlotCanvasChild))
+#define GTK_PLOT_CANVAS_CHILD_CLASS(klass) 	(G_TYPE_CHECK_CLASS_CAST (klass, G_TYPE_PLOT_CANVAS_CHILD, GtkPlotCanvasChildClass))
+#define GTK_IS_PLOT_CANVAS_CHILD(obj)     	(G_TYPE_CHECK_INSTANCE_TYPE (obj, G_TYPE_PLOT_CANVAS_CHILD))
+#define GTK_IS_PLOT_CANVAS_CHILD_CLASS(klass) 	(G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT_CANVAS_CHILD))
+#define GTK_PLOT_CANVAS_CHILD_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PLOT_CANVAS_CHILD, GtkPlotCanvasChildClass))
 
 typedef struct _GtkPlotCanvas	GtkPlotCanvas;
 typedef struct _GtkPlotCanvasClass	GtkPlotCanvasClass;
@@ -117,7 +120,7 @@ typedef struct _GtkPlotCanvasChildClass	GtkPlotCanvasChildClass;
  */
 struct _GtkPlotCanvasChild
 {
-  GtkObject object;
+  GObject object;
 
   GtkPlotCanvas *parent;
 
@@ -136,7 +139,7 @@ struct _GtkPlotCanvasChild
 
 struct _GtkPlotCanvasChildClass
 {
-  GtkObjectClass parent_class;
+  GObjectClass parent_class;
 
   void (*draw) (GtkPlotCanvas *canvas, GtkPlotCanvasChild *child);
   void (*draw_selection) (GtkPlotCanvas *canvas, GtkPlotCanvasChild *child, GtkAllocation allocation);
@@ -169,7 +172,7 @@ struct _GtkPlotCanvas
 
   guint freeze_count;
 
-  gint pixmap_width, pixmap_height;
+  gint surface_width, surface_height;
   gint width, height;
 
   gdouble magnification;
@@ -180,9 +183,9 @@ struct _GtkPlotCanvas
 
   GtkPlotCanvasAction action;
 
-  GdkPixmap *pixmap;
+  cairo_surface_t *surface;
 
-  GdkColor background;
+  GdkRGBA background;
   gboolean transparent;
 
   gdouble active_x, active_y;
@@ -250,7 +253,7 @@ void		gtk_plot_canvas_grid_set_step	(GtkPlotCanvas *canvas,
 void		gtk_plot_canvas_grid_set_attributes(GtkPlotCanvas *canvas,
                          			 GtkPlotLineStyle style,
                          			 gint width,
-                         			 const GdkColor *color);
+                         			 const GdkRGBA *color);
 void		gtk_plot_canvas_cancel_action	(GtkPlotCanvas *plot_canvas);
 void		gtk_plot_canvas_unselect	(GtkPlotCanvas *plot_canvas);
 
@@ -264,7 +267,7 @@ void 		gtk_plot_canvas_set_transparent (GtkPlotCanvas *canvas,
 						 gboolean transparent);
 gboolean 	gtk_plot_canvas_transparent 	(GtkPlotCanvas *canvas);
 void		gtk_plot_canvas_set_background  (GtkPlotCanvas *canvas,
-						 const GdkColor *bg_color);
+						 const GdkRGBA *bg_color);
 void            gtk_plot_canvas_get_pixel       (GtkPlotCanvas *canvas,
                                                  gdouble px, gdouble py,
                                                  gint *x, gint *y);

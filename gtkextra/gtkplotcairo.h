@@ -24,18 +24,15 @@
 #include <pango/pango.h>
 #include "gtkplotpc.h"
 #include "gtkpsfont.h"
-#include "cairo.h"
+#include <cairo.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+G_BEGIN_DECLS
 
-
-#define GTK_PLOT_CAIRO(obj)        G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_plot_cairo_get_type (), GtkPlotCairo)
-#define G_TYPE_PLOT_CAIRO   (gtk_plot_cairo_get_type ())
-
-#define GTK_PLOT_CAIRO_CLASS(klass) G_TYPE_CHECK_CLASS_CAST (klass, gtk_plot_cairo_get_type(), GtkPlotCairoClass)
-#define GTK_IS_PLOT_CAIRO(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_cairo_get_type ())
+#define GTK_TYPE_PLOT_CAIRO   		(gtk_plot_cairo_get_type ())
+#define GTK_PLOT_CAIRO(obj)        	(G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_TYPE_PLOT_CAIRO, GtkPlotCairo))
+#define GTK_PLOT_CAIRO_CLASS(klass) 	(G_TYPE_CHECK_CLASS_CAST (klass, GTK_TYPE_PLOT_CAIRO, GtkPlotCairoClass))
+#define GTK_IS_PLOT_CAIRO(obj)     	(G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_PLOT_CAIRO))
+#define GTK_IS_PLOT_CAIRO_CLASS(klass) 	(G_CHECK_CLASS_TYPE (klass, GTK_TYPE_PLOT_CAIRO))
 
 
     typedef struct _GtkPlotCairo GtkPlotCairo;
@@ -68,16 +65,14 @@ extern "C" {
     };
 
     GType    gtk_plot_cairo_get_type			(void);
-    GtkObject *gtk_plot_cairo_new (cairo_t *cairo);
-    GtkObject *gtk_plot_cairo_new_with_drawable (GdkDrawable *drawable);
+    GObject *gtk_plot_cairo_new (cairo_t *cairo);
+    GObject *gtk_plot_cairo_new_with_surface (cairo_surface_t *surface);
     void gtk_plot_cairo_construct(GtkPlotCairo *pc,
                                   cairo_t *cairo,
                                   PangoContext *context);
     void gtk_plot_cairo_set_cairo(GtkPlotCairo *pc,
                                   cairo_t *cairo);
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 
 #endif /* __GTK_PLOT_CAIRO_H__ */

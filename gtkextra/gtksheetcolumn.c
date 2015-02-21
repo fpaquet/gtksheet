@@ -35,14 +35,11 @@
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtksignal.h>
-#include <gtk/gtkpixmap.h>
 #include <pango/pango.h>
 
 #define __GTKEXTRA_H_INSIDE__
 
 #include "gtkextra-compat.h"
-#include "gtkitementry.h"
 #include "gtksheet.h"
 #include "gtksheetcolumn.h"
 #include "gtkextra-marshal.h"
@@ -51,12 +48,12 @@
 #undef GTK_SHEET_COL_DEBUG
 
 #ifdef DEBUG
-#define GTK_SHEET_COL_DEBUG 0  /* define to activate debug output */
+#define GTK_SHEET_COL_DEBUG 1  /* define to activate debug output */
 #endif
 
 #ifdef GTK_SHEET_COL_DEBUG
 #   define GTK_SHEET_COL_DEBUG_BUILDER   0
-#   define GTK_SHEET_COL_DEBUG_DRAW  0
+#   define GTK_SHEET_COL_DEBUG_DRAW  1
 #   define GTK_SHEET_COL_DEBUG_PROPERTIES  0
 #   define GTK_SHEET_COL_DEBUG_SIZE  0
 #endif
@@ -73,7 +70,7 @@
 #define GTK_DATA_TEXT_VIEW_BUFFER_MAX_SIZE (G_MAXINT / 2)
 
 
-static GtkObjectClass *sheet_column_parent_class = NULL;
+static GInitiallyUnowned *sheet_column_parent_class = NULL;
 
 enum _GtkSheetColumnProperties
 {
@@ -406,8 +403,8 @@ gtk_sheet_column_get_property(GObject *object,
 
         case PROP_SHEET_COLUMN_ENTRY_TYPE:
             {
-                GtkSheetEntryType et = _gtk_sheet_entry_type_from_gtype(colobj->entry_type);
-                g_value_set_enum(value, et);
+                GtkSheetEntryType e = _gtk_sheet_entry_type_from_gtype(colobj->entry_type);
+                g_value_set_enum(value, e);
             }
             break;
 
@@ -962,14 +959,14 @@ _gtk_sheet_column_size_request(GtkSheet *sheet,
     while (children)
     {
         GtkSheetChild *child = (GtkSheetChild *)children->data;
-        GtkRequisition child_requisition;
 
         if (child->attached_to_cell && child->col == col &&
             child->row != -1 && !child->floating && !child->xshrink)
         {
-            gtk_widget_get_child_requisition(child->widget, &child_requisition);
+	    GtkRequisition child_min_size, child_nat_size;
+	    gtk_widget_get_preferred_size (child->widget, &child_min_size, &child_nat_size);
 
-            if (child_requisition.width + 2 * child->xpadding > *requisition) *requisition = child_requisition.width + 2 * child->xpadding;
+            if (child_min_size.width + 2 * child->xpadding > *requisition) *requisition = child_min_size.width + 2 * child->xpadding;
         }
         children = children->next;
     }
@@ -1034,9 +1031,13 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
                 mc, mx, cta->width-mx);
 #   endif
 #endif
-        gdk_window_clear_area(sheet->column_title_window,
-                              mx, 0,
-                              cta->width - mx, cta->height);
+
+	cairo_t *twin_cr = gdk_cairo_create(sheet->column_title_window);
+	cairo_rectangle(twin_cr, 
+	    (double) mx, (double) 0, (double) (cta->width - mx), (double) (cta->height));
+	gdk_cairo_set_source_rgba(twin_cr, &sheet->bg_color);
+	cairo_fill(twin_cr);
+	cairo_destroy(twin_cr);
     }
 
     if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return;
@@ -1087,7 +1088,7 @@ gtk_sheet_set_column_width(GtkSheet *sheet, gint col, guint width)
         _gtk_sheet_entry_size_allocate(sheet);
         _gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
-    g_signal_emit_by_name(GTK_OBJECT(sheet), "new-column-width", col, width);
+    g_signal_emit_by_name(G_OBJECT(sheet), "new-column-width", col, width);
 }
 
 
@@ -1160,7 +1161,7 @@ gtk_sheet_column_button_add_label(GtkSheet *sheet, gint col, const gchar *label)
     {
         _gtk_sheet_draw_button(sheet, -1, col);
     }
-    g_signal_emit_by_name(GTK_OBJECT(sheet), "changed", -1, col);
+    g_signal_emit_by_name(G_OBJECT(sheet), "changed", -1, col);
 }
 
 /**
@@ -1718,13 +1719,16 @@ void
 _gtk_sheet_column_button_set(GtkSheet *sheet, gint col)
 {
     if (col < 0 || col > sheet->maxcol) return;
-    if (COLPTR(sheet, col)->button.state == GTK_STATE_ACTIVE) return;
+
+    GtkSheetButton *button = &COLPTR(sheet, col)->button;
+
+    if (button->state & GTK_STATE_FLAG_ACTIVE) return;
 
 #if GTK_SHEET_COL_DEBUG_DRAW > 0
     g_debug("_gtk_sheet_column_button_set: col %d", col);
 #endif
 
-    COLPTR(sheet, col)->button.state = GTK_STATE_ACTIVE;
+    button->state |= GTK_STATE_FLAG_ACTIVE;
     _gtk_sheet_draw_button(sheet, -1, col);
 }
 
@@ -1739,13 +1743,16 @@ void
 _gtk_sheet_column_button_release(GtkSheet *sheet, gint col)
 {
     if (col < 0 || col > sheet->maxcol) return;
-    if (COLPTR(sheet, col)->button.state == GTK_STATE_NORMAL) return;
+
+    GtkSheetButton *button = &COLPTR(sheet, col)->button;
+
+    if (!(button->state & GTK_STATE_FLAG_ACTIVE)) return;
 
 #if GTK_SHEET_COL_DEBUG_DRAW > 0
     g_debug("_gtk_sheet_column_button_release: col %d", col);
 #endif
 
-    COLPTR(sheet, col)->button.state = GTK_STATE_NORMAL;
+    button->state &= ~GTK_STATE_FLAG_ACTIVE;
     _gtk_sheet_draw_button(sheet, -1, col);
 }
 

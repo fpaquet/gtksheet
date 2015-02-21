@@ -29,9 +29,7 @@
 #ifndef __GTK_PS_FONT_H__
 #define __GTK_PS_FONT_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+G_BEGIN_DECLS
 
 
 /* List of names of the 35 default Adobe fonts 
@@ -98,7 +96,6 @@ GtkPSFont* 	gtk_psfont_get_by_name 		(const gchar *name);
 GtkPSFont* 	gtk_psfont_get_by_family        (const gchar *family_name, 
                                                  gboolean italic, 
                                                  gboolean bold);
-GdkFont*	gtk_psfont_get_gdkfont 		(GtkPSFont *font, gint height);
 PangoFontDescription*	gtk_psfont_get_font_description (GtkPSFont *font, 
 						         gint height);
 const gchar *	gtk_psfont_get_psfontname	(GtkPSFont *psfont);
@@ -117,17 +114,15 @@ void		gtk_psfont_add_i18n_font	(const char *fontname,
                                                  gboolean bold,
 						 gboolean vertical);
 void 		gtk_psfont_get_families		(GList **families, gint *num_families);
-void 		gtk_psfont_get_char_size	(GtkPSFont *psfont,
+/*void 		gtk_psfont_get_char_size	(GtkPSFont *psfont,
                         			 GdkFont *font,
                         			 GdkFont *latin_font,
                         			 GdkWChar wc,
                          			 gint *width,
                         			 gint *ascent,
-                        			 gint *descent);
+                        			 gint *descent);*/
 
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
+G_END_DECLS
 
 #endif /* __GTK_PS_FONT_H__ */

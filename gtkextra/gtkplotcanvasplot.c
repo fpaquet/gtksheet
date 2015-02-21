@@ -42,7 +42,7 @@
 
 static void gtk_plot_canvas_plot_init		(GtkPlotCanvasPlot *plot);
 static void gtk_plot_canvas_plot_class_init(GtkPlotCanvasChildClass *klass);
-static void gtk_plot_canvas_plot_destroy	(GtkObject *object);
+static void gtk_plot_canvas_plot_destroy(GtkWidget *widget);
 static void gtk_plot_canvas_plot_draw 		(GtkPlotCanvas *canvas,
 						 GtkPlotCanvasChild *child);
 static void gtk_plot_canvas_plot_move		(GtkPlotCanvas *canvas,
@@ -126,7 +126,7 @@ gtk_plot_canvas_plot_init (GtkPlotCanvasPlot *plot)
 static void
 gtk_plot_canvas_plot_class_init (GtkPlotCanvasChildClass *klass)
 {
-  GtkObjectClass *object_class = (GtkObjectClass *)klass;
+  GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
   parent_class = g_type_class_ref (gtk_plot_canvas_child_get_type ());
 
@@ -139,21 +139,23 @@ gtk_plot_canvas_plot_class_init (GtkPlotCanvasChildClass *klass)
   klass->unselect = gtk_plot_canvas_plot_unselect;
   klass->set_magnification = gtk_plot_canvas_plot_set_magnification; 
 
-  object_class->destroy = gtk_plot_canvas_plot_destroy;
+  widget_class->destroy = gtk_plot_canvas_plot_destroy;
 }
 
 static void
-gtk_plot_canvas_plot_destroy(GtkObject *object)
+gtk_plot_canvas_plot_destroy(GtkWidget *widget)
 {
-  GtkWidget *widget = GTK_WIDGET(GTK_PLOT_CANVAS_PLOT(object)->plot);
-  g_object_unref(widget);
+  GtkWidget *plot_widget = GTK_WIDGET(GTK_PLOT_CANVAS_PLOT(object)->plot);
+  g_object_unref(plot_widget);
 
   /* 28.06.13/fp - dropped the following line
      - do not access widget data after g_object_unref()
      - calling gtk_widget_unparent() before g_object_unref() -> invalid GObject warnings
    
-  widget->parent = NULL; 
+  plot_widget->parent = NULL; 
   */ 
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+      (* GTK_WIDGET_CLASS (parent_class)->destroy) (widget);
 }
 
 static void 
@@ -230,7 +232,7 @@ gtk_plot_canvas_plot_resize	(GtkPlotCanvas *canvas,
   if(!plot) return;
 
   gtk_plot_move_resize(plot, x1, y1, fabs(x2-x1), fabs(y2-y1));
-  GTK_PLOT_CANVAS_CHILD_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(child)))->size_allocate(canvas, child);
+  GTK_PLOT_CANVAS_CHILD_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(child)))->size_allocate(canvas, child);
   gtk_plot_canvas_paint(canvas);
   gtk_plot_canvas_refresh(canvas);
 }
@@ -372,7 +374,7 @@ gtk_plot_canvas_plot_button_release	(GtkPlotCanvas *canvas,
       child->drag_area = canvas->drag_area;
       gtk_plot_move_resize(plot, 
   		           x1, y1, fabs(x2-x1), fabs(y2-y1));
-      GTK_PLOT_CANVAS_CHILD_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(child)))->size_allocate(canvas, child);
+      GTK_PLOT_CANVAS_CHILD_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(child)))->size_allocate(canvas, child);
       break;
   }
   gtk_plot_canvas_paint(canvas);

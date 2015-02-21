@@ -110,8 +110,7 @@ int main(int argc, char *argv[]){
 
  gtk_widget_show(window1);
 
- g_signal_connect (GTK_OBJECT (window1), "destroy",
-		     G_CALLBACK (quit), NULL);
+ g_signal_connect (GTK_WIDGET(window1), "destroy", G_CALLBACK(quit), NULL);
 
  vbox1=gtk_vbox_new(FALSE,0);
  gtk_container_add(GTK_CONTAINER(window1),vbox1);

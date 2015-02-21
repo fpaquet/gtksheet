@@ -1,3 +1,87 @@
+2015-02-21 Fredy Paquet <mailbox AT opag.ch>
+	* fixed docs/reference library name
+
+2015-02-01 Fredy Paquet <mailbox AT opag.ch>
+	* fixed docs install path (conflicts with gtkextra-2)
+
+2015-01-03 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: resolved xor drawing by using backing surface restore
+	* GtkSheet: fixed flashing region
+	* GtkSheet: generally working now (sheet child icon visibility is still buggy)
+	* Glade Integration: fixed libgladeui version and compile errors
+	* Glade Integration: sheet child editor is still buggy
+
+2015-01-02 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: background surface working again
+	* GtkSheet: fixed cell border pixel alignment
+	* GtkSheet: started work on interactive area selection (xor_cr)
+
+2015-01-01 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed cairo drawing within title areas - starting to work
+	* GtkSheet: debug for drawing enabled
+
+2014-12-31 Fredy Paquet <mailbox AT opag.ch>
+	* global replace gtk_widget_get_pointer() by gdk_window_get_device_position()
+	* global disable GDK_THREADS_ENTER from Gtk 3.6.0
+	* global replace gdk_cursor_destroy()
+	* global replace gtk_widget_size_request() by gtk_widget_get_preferred_size()
+	* global replace gdk_pointer_grab(), gdk_pointer_ungrab()
+	* global replace gdk_window_clear_area() with cairo_paint() / cairo_fill()
+	* replace GtkBoxChild with gtk_container_get_children()
+	* replace gtk_widget_get_child_requisition() with gtk_widget_get_preferred_size()
+	* GtkSheet: replace gtk_widget_set_state() with gtk_widget_set_state_flags()
+	* GtkSheet: set_scroll_adjustments_signal -> GtkScrollable interface
+	* retire GtkItemEntry
+	* removed gtk_color_alloc() from testgtksheet
+	* GtkSheet, GtkSheetColumn and testgtksheet compiles and runs
+
+2014-12-30 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: hacked xor_dc, fg_dc, bg_dc -> xor_cr, fg_cr, bg_cr
+	* GtkSheet: moved basic drawing routines to cairo
+	* GtkSheet: elimiated GdkLineStyle in GtkSheetCellBorder
+	* GtkSheet: still not yet finished
+	* GtkPlotCanvas, GtkPlotCanvasEllipse, GtkPlotCanvasLine: mig. gdk_gc_set_line_attributes()
+
+2014-12-28 Fredy Paquet <mailbox AT opag.ch>
+	* global replace expose_event -> draw
+	* migrated GtkDataTextView
+	* scheduled GtkItemEntry for removal (replace with GtkDataEntry/GtkDataTextView)
+	* GtkSheet: replace backing pixmap with cairo surface
+	* GtkSheet: replace GdkColor -> GdkRGBA, GDK_TYPE_COLOR -> GDK_TYPE_RGBA
+	* GtkSheet: replace GdkStyle -> GdkStyleContext
+
+2014-12-27 Fredy Paquet <mailbox AT opag.ch>
+	* Clean out GtkObject, GtkObjectClass, GTK_OBJECT_CLASS(), GTK_OBJECT(),
+	gtk_object_destroy(), GTK_OBJECT_GET_CLASS(), 
+	gtk_object_get_data(), gtk_object_set_data()
+	* Clean up invalid transfer annotations
+	* migrated GtkDataFormat, GtkDataEntry, added gtkextra.h
+	* Clean out WidgetClass->size_request
+
+2014-12-26 Fredy Paquet <mailbox AT opag.ch>
+	* merged branch master and gtk3-tom into gtk3
+
+2014-11-23 Tom Schoonjans <Tom.Schoonjans@bam.de>
+	* GtkCharSelection migrated to Gtk3
+	* parent class is now GtkDialog instead of GtkWindow
+	* testcharsel updated
+	* TODO: provide more than just the default ASCII charset for the
+	current locale?
+	* TODO: add function that fetches the PangoFontDescription?
+	* GtkPlotArray migrated to Gtk3: untested but compiles fine
+	* Minimum required Gtk3 version set to 3.10.0
+	* GtkPlotDT migrated to Gtk3: untested but an example is available
+
+2014-11-21 Tom Schoonjans <Tom.Schoonjans@bam.de>
+	* Started transition to Gtk3 compatible version
+	* gtkfontcombo updated
+	* gtkpsfont updated
+	* testgtkfont updated
+
+2014-12-26 Fredy Paquet <mailbox AT opag.ch>
+	* updated gtkextra-3 version to 3.1.2, Libtool Revision 7.2.0
+	* published gtkextra-3 version 3.1.2
+
 2014-07-31 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed sheet editor contents when setting text of active cell PR#104553
 

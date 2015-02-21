@@ -45,8 +45,7 @@ typedef enum
     GTK_SHEET_BORDER_COLOR,
     GTK_SHEET_IS_EDITABLE,
     GTK_SHEET_IS_VISIBLE
-}
-GtkSheetAttrType;
+} GtkSheetAttrType;
 
 /**
  * GtkSheetState:
@@ -72,7 +71,7 @@ enum
     GTK_SHEET_RIGHT_BORDER    = 1 << 1,
     GTK_SHEET_TOP_BORDER      = 1 << 2,
     GTK_SHEET_BOTTOM_BORDER   = 1 << 3
-};
+} GtkSheetBorderBits;
 
 /**
  * GtkSheetEntryType:
@@ -93,9 +92,9 @@ enum
 typedef enum
 {
     GTK_SHEET_ENTRY_TYPE_DEFAULT,
-    GTK_SHEET_ENTRY_TYPE_GTK_ITEM_ENTRY,
     GTK_SHEET_ENTRY_TYPE_GTK_ENTRY,
     GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW,
+    GTK_SHEET_ENTRY_TYPE_GTK_DATA_ENTRY,
     GTK_SHEET_ENTRY_TYPE_GTK_DATA_TEXT_VIEW,
     GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON,
     GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX,
@@ -205,7 +204,7 @@ struct _GtkSheetChild
 struct _GtkSheetButton
 {
     /*< private >*/
-    GtkStateType state;
+    GtkStateFlags state;
     gchar *label;
 
     gboolean label_visible;
@@ -224,12 +223,13 @@ struct _GtkSheetButton
 struct _GtkSheetCellBorder
 {
     /*< private >*/
-    gint8 mask;
-    guint width;
-    GdkLineStyle line_style;
-    GdkCapStyle cap_style;
-    GdkJoinStyle join_style;
-    GdkColor color;
+    gint8 mask;  /* GtkSheetBorderBits mask */
+    guint width;  /* -> cairo_set_line_width() */
+
+    cairo_line_cap_t cap_style;  /* -> cairo_set_line_cap() */
+    cairo_line_join_t join_style;  /* -> cairo_set_line_join() */
+
+    GdkRGBA color;
 };
 
 /**
@@ -242,15 +242,15 @@ struct _GtkSheetCellAttr
 {
     /*< private >*/
     GtkJustification justification;
-    GdkFont *font;
     PangoFontDescription *font_desc;
-    GdkColor foreground;
-    GdkColor background;
+    GdkRGBA foreground;
+    GdkRGBA background;
     GtkSheetCellBorder border;
     gboolean is_editable;
     gboolean is_visible;
     gboolean do_font_desc_free;   /* TRUE if font_desc needs free */
 };
+
 
 /**
  * GtkSheetCell:
@@ -341,9 +341,9 @@ struct _GtkSheet
 
     guint freeze_count;
 
-    GdkColor bg_color;    /* cell background color */
-    GdkColor grid_color;  /* grid color */
-    GdkColor tm_color;    /* tooltip marker color */
+    GdkRGBA bg_color;    /* cell background color */
+    GdkRGBA grid_color;  /* grid color */
+    GdkRGBA tm_color;    /* tooltip marker color */
     gboolean show_grid;
 
     GList *children;    /* sheet children */
@@ -407,8 +407,10 @@ struct _GtkSheet
     guint sheet_window_width;
     guint sheet_window_height;
 
-    /* sheet backing pixmap */
-    GdkWindow *pixmap;
+    cairo_surface_t *bsurf;      /* sheet backing surface */
+    guint bsurf_width;
+    guint bsurf_height;
+    cairo_t *bsurf_cr;
 
     /* offsets for scrolling */
     gint hoffset;
@@ -435,12 +437,10 @@ struct _GtkSheet
     GtkAdjustment *hadjustment;
     GtkAdjustment *vadjustment;
 
-    /* xor GC for the verticle drag line */
-    GdkGC *xor_gc;
-
-    /* gc for drawing unselected cells */
-    GdkGC *fg_gc;
-    GdkGC *bg_gc;
+    /* GtkScrollablePolicy needs to be checked when
+     * driving the scrollable adjustment values */
+    guint hscroll_policy : 1;
+    guint vscroll_policy : 1;
 
     /* cursor used to indicate dragging */
     GdkCursor *cursor_drag;
@@ -578,8 +578,8 @@ void gtk_sheet_freeze(GtkSheet *sheet);
 void gtk_sheet_thaw(GtkSheet *sheet);
 
 /* Background colors */
-void gtk_sheet_set_background(GtkSheet *sheet, GdkColor *color);
-void gtk_sheet_set_grid(GtkSheet *sheet, GdkColor *color);
+void gtk_sheet_set_background(GtkSheet *sheet, GdkRGBA *color);
+void gtk_sheet_set_grid(GtkSheet *sheet, GdkRGBA *color);
 void gtk_sheet_show_grid(GtkSheet *sheet, gboolean show);
 gboolean gtk_sheet_grid_visible(GtkSheet *sheet);
 
@@ -733,11 +733,11 @@ void gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols);
 
 /* set abckground color of the given range */
 void gtk_sheet_range_set_background(GtkSheet *sheet,
-                                    const GtkSheetRange *urange, const GdkColor *color);
+                                    const GtkSheetRange *urange, const GdkRGBA *color);
 
 /* set foreground color (text color) of the given range */
 void gtk_sheet_range_set_foreground(GtkSheet *sheet,
-                                    const GtkSheetRange *urange, const GdkColor *color);
+                                    const GtkSheetRange *urange, const GdkRGBA *color);
 
 /* set text justification (GTK_JUSTIFY_LEFT, RIGHT, CENTER) of the given range.
  * The default value is GTK_JUSTIFY_LEFT. If autoformat is on, the
@@ -759,13 +759,16 @@ void gtk_sheet_range_set_visible(GtkSheet *sheet,
  * mask values are CELL_LEFT_BORDER, CELL_RIGHT_BORDER, CELL_TOP_BORDER,
  * CELL_BOTTOM_BORDER
  * width is the width of the border line in pixels 
- * line_style is the line_style for the border line */
+ * for cap_style and join_style see cairo docs
+ */
 void gtk_sheet_range_set_border(GtkSheet *sheet,
-                                const GtkSheetRange *urange, gint mask, guint width, gint line_style);
+    const GtkSheetRange *urange, gint mask,  guint width,
+    cairo_line_cap_t cap_style,
+    cairo_line_join_t join_style);
 
 /* set border color for the given range */
 void gtk_sheet_range_set_border_color(GtkSheet *sheet,
-                                      const GtkSheetRange *urange, const GdkColor *color);
+                                      const GtkSheetRange *urange, const GdkRGBA *color);
 
 /* set font for the given range */
 void gtk_sheet_range_set_font(GtkSheet *sheet,

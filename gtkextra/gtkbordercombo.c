@@ -78,7 +78,7 @@ static char *side001="             X ";
 
 static void         gtk_border_combo_class_init      (GtkBorderComboClass *klass);
 static void         gtk_border_combo_init            (GtkBorderCombo      *border_combo);
-static void         gtk_border_combo_destroy         (GtkObject     *border_combo);
+static void         gtk_border_combo_destroy         (GtkWidget *border_combo);
 static void         gtk_border_combo_realize         (GtkWidget *widget);
 static GtkWidget*   create_border_pixmap             (GtkBorderCombo *border_combo, 
                                                       gchar *border[18]);
@@ -88,17 +88,13 @@ static GtkComboButtonClass *parent_class = NULL;
 static void
 gtk_border_combo_class_init (GtkBorderComboClass * klass)
 {
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
+  GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
 
+  parent_class = g_type_class_ref (gtk_box_get_type ());
 
-  parent_class = g_type_class_ref (gtk_hbox_get_type ());
-  object_class = (GtkObjectClass *) klass;
-  widget_class = (GtkWidgetClass *) klass;
-
-  object_class->destroy = gtk_border_combo_destroy;
-  
   widget_class->realize = gtk_border_combo_realize;
+  widget_class->destroy = gtk_border_combo_destroy;
 
   /**
    * GtkBorderCombo::changed:
@@ -108,7 +104,7 @@ gtk_border_combo_class_init (GtkBorderComboClass * klass)
    * Emmited when the GtkBorderCombo's state is changed
    */ 
   border_combo_signals[CHANGED]=g_signal_new("changed",
- 			  G_OBJECT_CLASS_TYPE (object_class),
+ 			  G_OBJECT_CLASS_TYPE (gobject_class),
                           G_SIGNAL_RUN_FIRST,
                           G_STRUCT_OFFSET(GtkBorderComboClass, changed),
 			  NULL, NULL,
@@ -120,7 +116,7 @@ gtk_border_combo_class_init (GtkBorderComboClass * klass)
 }
 
 static void
-gtk_border_combo_destroy (GtkObject * border_combo)
+gtk_border_combo_destroy (GtkWidget * border_combo)
 {
   gint i,j;
 
@@ -142,8 +138,8 @@ gtk_border_combo_destroy (GtkObject * border_combo)
     GTK_BORDER_COMBO(border_combo)->table = NULL;
   }
 
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (*GTK_OBJECT_CLASS (parent_class)->destroy) (border_combo);
+  if (GTK_WIDGET_CLASS (parent_class)->destroy)
+    GTK_WIDGET_CLASS (parent_class)->destroy (border_combo);
 }
 
 
@@ -211,7 +207,7 @@ gtk_border_combo_update (GtkWidget * widget, GtkBorderCombo * border_combo)
 
       gtk_widget_queue_draw(GTK_COMBO_BUTTON(border_combo)->button);
       
-      g_signal_emit (GTK_OBJECT(border_combo), 
+      g_signal_emit (G_OBJECT(border_combo), 
 		border_combo_signals[CHANGED],
 		0,
                 new_row * border_combo->ncols + new_col);
@@ -221,7 +217,7 @@ gtk_border_combo_update (GtkWidget * widget, GtkBorderCombo * border_combo)
           gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(border_combo->button[row][column]), TRUE);
           gtk_widget_queue_draw(border_combo->button[row][column]);
 
-          g_signal_emit (GTK_OBJECT(border_combo),                     
+          g_signal_emit (G_OBJECT(border_combo),                     
                      border_combo_signals[CHANGED],
 		     0,
                      row * border_combo->ncols + column);
@@ -305,7 +301,7 @@ gtk_border_combo_realize(GtkWidget *widget)
   GtkComboButton *combo;
   GtkBorderCombo *border_combo;
   GtkWidget *pixmap;
-  GtkRequisition requisition;
+  GtkRequisition minimum_size, natural_size;
   GdkPixmap *border_pixmap;
   gint i,j;
   gchar *border[18];
@@ -338,7 +334,7 @@ gtk_border_combo_realize(GtkWidget *widget)
 
         gtk_widget_set_size_request(border_combo->button[i][j], 24, 24);
         gtk_widget_show(border_combo->button[i][j]); 
-        g_signal_connect (GTK_OBJECT (border_combo->button[i][j]), 
+        g_signal_connect (G_OBJECT (border_combo->button[i][j]), 
 			"toggled",
 		        (void *) gtk_border_combo_update, 
                         border_combo);
@@ -363,7 +359,9 @@ gtk_border_combo_realize(GtkWidget *widget)
        gtk_widget_show(pixmap);
   }
 
-  GTK_WIDGET_CLASS (parent_class)->size_request (widget, &requisition); 
+
+  //GTK_WIDGET_CLASS()->size_request(widget, &requisition); 
+  gtk_widget_get_preferred_size (widget, &minimum_size, &natural_size);  
 
   /* EMPTY */
   for(i=0; i<18; i++)
@@ -470,7 +468,7 @@ gtk_border_combo_realize(GtkWidget *widget)
   gtk_container_add(GTK_CONTAINER(border_combo->button[2][3]), pixmap);
   gtk_widget_show(pixmap);
 
-  g_signal_connect (GTK_OBJECT (combo->button), "clicked",
+  g_signal_connect (G_OBJECT (combo->button), "clicked",
 		      (void*) gtk_border_combo_update, 
                        border_combo);
 }

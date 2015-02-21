@@ -52,245 +52,245 @@ static GtkPSFont font_data[] =
     "Times-Roman",
     "Nimbus Roman No9 L, Regular",
     NULL,
-    FALSE, FALSE
+    FALSE, FALSE, FALSE
   },
   { "Times-Italic",
     "Times-Italic",
     "Times-Roman",
     "Nimbus Roman No9 L, Italic",
     NULL,
-    TRUE, FALSE
+    TRUE, FALSE, FALSE
   },
   { "Times-Bold",
     "Times-Bold",
     "Times-Roman",
     "Nimbus Roman No9 L, Bold",
     NULL,
-    FALSE, TRUE
+    FALSE, TRUE, FALSE
   },
   { "Times-BoldItalic",
     "Times-BoldItalic",
     "Times-Roman",
     "Nimbus Roman No9 L, Bold Italic",
     NULL,
-    TRUE, TRUE
+    TRUE, TRUE, FALSE
   },
   { "AvantGarde-Book",
     "AvantGarde-Book",
     "AvantGarde",
     "URW Gothic L, Book",
     NULL,
-    FALSE, FALSE
+    FALSE, FALSE, FALSE
   },
   { "AvantGarde-BookOblique",
     "AvantGarde-BookOblique",
     "AvantGarde",
     "URW Gothic L, Book Oblique",
     NULL,
-    TRUE, FALSE
+    TRUE, FALSE, FALSE
   },
   { "AvantGarde-Demi",
     "AvantGarde-Demi",
     "AvantGarde",
     "URW Gothic L, Demi",
     NULL,
-    FALSE, TRUE
+    FALSE, TRUE, FALSE
   },
   { "AvantGarde-DemiOblique",
     "AvantGarde-DemiOblique",
     "AvantGarde",
     "URW Gothic L, Demi Oblique",
     NULL,
-    TRUE, TRUE
+    TRUE, TRUE, FALSE
   },
   { "Bookman-Light",
     "Bookman-Light",
     "Bookman",
     "URW Bookman L, Light",
     NULL,
-    FALSE, FALSE
+    FALSE, FALSE, FALSE
   },
   { "Bookman-LightItalic",
     "Bookman-LightItalic",
     "Bookman",
     "URW Bookman L, Light Italic",
     NULL,
-    TRUE, FALSE
+    TRUE, FALSE, FALSE
   },
   { "Bookman-Demi",
     "Bookman-Demi",
     "Bookman",
     "URW Bookman L, Demi Bold",
     NULL,
-    FALSE, TRUE
+    FALSE, TRUE, FALSE
   },
   { "Bookman-DemiItalic",
     "Bookman-DemiItalic",
     "Bookman",
     "URW Bookman L, Demi Bold Italic",
     NULL,
-    TRUE, TRUE
+    TRUE, TRUE, FALSE
   },
   { "Courier",
     "Courier",
     "Courier",
     "Nimbus Mono L, Regular",
     NULL,
-    FALSE, FALSE
+    FALSE, FALSE, FALSE
   },
   { "Courier-Oblique",
     "Courier-Oblique",
     "Courier",
     "Nimbus Mono L, Regular Oblique",
     NULL,
-    TRUE, FALSE
+    TRUE, FALSE, FALSE
   },
   { "Courier-Bold",
     "Courier-Bold",
     "Courier",
     "Nimbus Mono L, Bold",
     NULL,
-    FALSE, TRUE
+    FALSE, TRUE, FALSE
   },
   { "Courier-BoldOblique",
     "Courier-BoldOblique",
     "Courier",
     "Nimbus Mono L, Bold Oblique",
     NULL,
-    TRUE, TRUE
+    TRUE, TRUE, FALSE
   },
   { "Helvetica",
     "Helvetica",
     "Helvetica",
     "Sans, Regular",
     NULL,
-    FALSE, FALSE
+    FALSE, FALSE, FALSE
   },
   { "Helvetica-Oblique",
     "Helvetica-Oblique",
     "Helvetica",
     "Sans, Regular Italic",
     NULL,
-    TRUE, FALSE
+    TRUE, FALSE, FALSE
   },
   { "Helvetica-Bold",
     "Helvetica-Bold",
     "Helvetica",
     "Sans, Bold",
     NULL,
-    FALSE, TRUE
+    FALSE, TRUE, FALSE
   },
   { "Helvetica-BoldOblique",
     "Helvetica-BoldOblique",
     "Helvetica",
     "Sans, Bold Italic",
     NULL,
-    TRUE, TRUE
+    TRUE, TRUE, FALSE
   },
   { "Helvetica-Narrow",
     "Helvetica-Narrow",
     "Helvetica-Narrow",
     "Sans, Regular Condensed",
     NULL,
-    FALSE, FALSE
+    FALSE, FALSE, FALSE
   },
   { "Helvetica-Narrow-Oblique",
     "Helvetica-Narrow-Oblique",
     "Helvetica-Narrow",
     "Sans, Regular Condensed Italic",
     NULL,
-    TRUE, FALSE
+    TRUE, FALSE, FALSE
   },
   { "Helvetica-Narrow-Bold",
     "Helvetica-Narrow-Bold",
     "Helvetica-Narrow",
     "Sans, Bold Condensed",
     NULL,
-    FALSE, TRUE
+    FALSE, TRUE, FALSE
   },
   { "Helvetica-Narrow-BoldOblique",
     "Helvetica-Narrow-BoldOblique",
     "Helvetica-Narrow",
     "Sans, Bold Condensed Italic",
     NULL,
-    TRUE, TRUE
+    TRUE, TRUE, FALSE
   },
   { "NewCenturySchoolbook-Roman",
     "NewCenturySchlbk-Roman",
     "NewCenturySchlbk",
     "Century Schoolbook L, Roman",
     NULL,
-    FALSE, FALSE
+    FALSE, FALSE, FALSE
   },
   { "NewCenturySchoolbook-Italic",
     "NewCenturySchlbk-Italic",
     "NewCenturySchlbk",
     "Century Schoolbook L, Italic",
     NULL,
-    TRUE, FALSE
+    TRUE, FALSE, FALSE
   },
   { "NewCenturySchoolbook-Bold",
     "NewCenturySchlbk-Bold",
     "NewCenturySchlbk",
     "Century Schoolbook L, Bold",
     NULL,
-    FALSE, TRUE
+    FALSE, TRUE, FALSE
   },
   { "NewCenturySchoolbook-BoldItalic",
     "NewCenturySchlbk-BoldItalic",
     "NewCenturySchlbk",
     "Century Schoolbook L, Bold Italic",
     NULL,
-    TRUE, TRUE
+    TRUE, TRUE, FALSE
   },
   { "Palatino-Roman",
     "Palatino-Roman",
     "Palatino",
     "URW Palladio L, Roman",
     NULL,
-    FALSE, FALSE
+    FALSE, FALSE, FALSE
   },
   { "Palatino-Italic",
     "Palatino-Italic",
     "Palatino",
     "URW Palladio L, Italic",
     NULL,
-    TRUE, FALSE
+    TRUE, FALSE, FALSE
   },
   { "Palatino-Bold",
     "Palatino-Bold",
     "Palatino",
     "URW Palladio L, Bold",
     NULL,
-    FALSE, TRUE
+    FALSE, TRUE, FALSE
   },
   { "Palatino-BoldItalic",
     "Palatino-BoldItalic",
     "Palatino",
     "URW Palladio L, Bold Italic",
     NULL,
-    TRUE, TRUE
+    TRUE, TRUE, FALSE
   },
   { "Symbol",
     "Symbol",
     "Symbol",
     "Standard Symbols L, Regular",
     NULL,
-    FALSE, FALSE
+    FALSE, FALSE, FALSE
   },
   { "ZapfChancery-MediumItalic",
     "ZapfChancery-MediumItalic",
     "ZapfChancery",
     "URW Chancery L, Medium Italic",
     NULL,
-    FALSE, FALSE
+    FALSE, FALSE, FALSE
   },
   { "ZapfDingbats",
     "ZapfDingbats",
     "ZapfDingbats",
     "Dingbats, Regular",
     NULL,
-    FALSE, FALSE
+    FALSE, FALSE, FALSE
   },
 };
 
@@ -425,7 +425,7 @@ gtk_psfont_unref()
  * 
  * Get PS Font by font name.
  *  
- * Returns: (transfer none) a #GtkPSFont pointer.
+ * Returns(transfer none): a #GtkPSFont pointer.
  */
 GtkPSFont *
 gtk_psfont_get_by_name(const gchar *name)
@@ -447,45 +447,6 @@ gtk_psfont_get_by_name(const gchar *name)
   return font;
 }
 
-/**
- * gtk_psfont_get_by_gdkfont:
- * @font: a #GtkPSFont 
- * @height: font height
- * 
- * Get #GdkFOnt by PS Font.
- *  
- * Returns: a #GdkFont pointer.
- */
-GdkFont *
-gtk_psfont_get_gdkfont(GtkPSFont *font, gint height)
-{
-  PangoFontDescription *font_desc;
-  GdkFont *gdkfont;
-
-  g_return_val_if_fail (font != NULL, NULL);
-
-  if (height <= 0) height = 1;
-
-  font_desc = gtk_psfont_get_font_description(font, height);
-  gdkfont = font_desc ? gdk_font_from_description(font_desc) : NULL;
-  if (font_desc)
-    pango_font_description_free(font_desc);
-
-  if (!gdkfont) {
-    font_desc = gtk_psfont_get_font_description(find_psfont(default_font), height);
-    gdkfont = font_desc ? gdk_font_from_description(font_desc) : NULL;
-    if (font_desc)
-      pango_font_description_free(font_desc);
-
-    if (gdkfont)
-      g_message ("Pango font %s %i (PS font %s) not found, using %s instead.",
-		 font->pango_description, height, font->fontname, default_font);
-    else
-      g_warning ("Error, couldn't locate default font. Shouldn't happen.");
-  }
-
-  return gdkfont;
-}
 
 /**
  * gtk_psfont_get_font_description:
@@ -729,7 +690,7 @@ find_psfont(const gchar *name)
  * 
  * Get #GtkPSFont by family. 
  *  
- * Returns: (transfer none) the #GtkPSFont 
+ * Returns(transfer none): the #GtkPSFont 
  */
 GtkPSFont *
 gtk_psfont_get_by_family(const gchar *family_name, gboolean italic, gboolean bold)
@@ -777,7 +738,7 @@ gtk_psfont_get_by_family(const gchar *family_name, gboolean italic, gboolean bol
 
 /**
  * gtk_psfont_get_families:
- * @families:  (element-type gchar*) font families
+ * @families:  font families, element-type is gchar*
  * @num_families: families number
  * 
  * Get #GtkPSFont by family. 
@@ -808,6 +769,7 @@ gtk_psfont_get_families(GList **families, gint *num_families)
  * 
  * Get font character size. 
  */
+/*
 void
 gtk_psfont_get_char_size(GtkPSFont *psfont,
                          GdkFont *font,
@@ -822,7 +784,7 @@ gtk_psfont_get_char_size(GtkPSFont *psfont,
 
   if (psfont->i18n_latinfamily && psfont->vertical && (wc > 0x7f)) {
     /* vertical-writing CJK postscript fonts. */
-    w = (font->ascent + font->descent);
+    /*w = (font->ascent + font->descent);
     w0 = gdk_char_width_wc(font, wc);
     d = w0 * font->descent / w;
     a = w0 - d;
@@ -839,5 +801,5 @@ gtk_psfont_get_char_size(GtkPSFont *psfont,
   if (width != NULL) *width = w;
   if (ascent != NULL) *ascent = a;
   if (descent != NULL) *descent = d;
-}
+}*/
 

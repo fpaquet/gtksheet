@@ -51,12 +51,16 @@
 
 static void gtk_check_item_class_init          (GtkCheckItemClass *klass);
 static void gtk_check_item_init                (GtkCheckItem      *check_item);
-static void gtk_check_item_size_request        (GtkWidget           *widget,
-						GtkRequisition      *requisition);
+static void gtk_check_item_size_request(GtkWidget *widget,
+    GtkRequisition *requisition);
+static void gtk_check_item_get_preferred_width (GtkWidget *widget,
+    gint *minimal_width, gint *natural_width);
+static void gtk_check_item_get_preferred_height (GtkWidget *widget,
+    gint *minimal_height, gint *natural_height);
+
 static void gtk_check_item_size_allocate       (GtkWidget           *widget,
 						GtkAllocation       *allocation);
-static gboolean gtk_check_item_expose          (GtkWidget           *widget,
-						GdkEventExpose      *event);
+static gboolean gtk_check_item_draw(GtkWidget *widget, cairo_t *cr);
 static void gtk_check_item_paint               (GtkWidget           *widget,
 						GdkRectangle        *area);
 static void gtk_check_item_draw_indicator      (GtkCheckItem      *check_item,
@@ -95,9 +99,10 @@ gtk_check_item_class_init (GtkCheckItemClass *klass)
   widget_class = (GtkWidgetClass*) klass;
   parent_class = g_type_class_ref (gtk_toggle_button_get_type ());
   
-  widget_class->size_request = gtk_check_item_size_request;
+  widget_class->get_preferred_width = gtk_check_item_get_preferred_width;
+  widget_class->get_preferred_height = gtk_check_item_get_preferred_height;
   widget_class->size_allocate = gtk_check_item_size_allocate;
-  widget_class->expose_event = gtk_check_item_expose;
+  widget_class->draw = gtk_check_item_draw;
   
   klass->indicator_size = INDICATOR_SIZE;
   klass->indicator_spacing = INDICATOR_SPACING;
@@ -198,8 +203,8 @@ gtk_check_item_paint (GtkWidget    *widget,
 }
 
 static void
-gtk_check_item_size_request (GtkWidget      *widget,
-			       GtkRequisition *requisition)
+gtk_check_item_size_request (GtkWidget *widget,
+    GtkRequisition *minimum_size, GtkRequisition *natural_size)
 {
   GtkToggleButton *toggle_button;
   gint temp;
@@ -210,19 +215,44 @@ gtk_check_item_size_request (GtkWidget      *widget,
   
   toggle_button = GTK_TOGGLE_BUTTON (widget);
   
-  if (GTK_WIDGET_CLASS (parent_class)->size_request)
-    (* GTK_WIDGET_CLASS (parent_class)->size_request) (widget, requisition);
+  //if (GTK_WIDGET_CLASS (parent_class)->size_request) 
+  //  (* GTK_WIDGET_CLASS (parent_class)->size_request) (widget, requisition);
+  gtk_widget_get_preferred_size (widget, &minimum_size, &natural_size);  
   
   if (toggle_button->draw_indicator)
     {
-      requisition->width += (GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_size +
+      minimum_size->width += (GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_size +
 			     GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_spacing * 3 + 2);
       
       temp = (GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_size +
 	      GTK_CHECK_ITEM_GET_CLASS (widget)->indicator_spacing * 2);
-      requisition->height = MAX (requisition->height, temp) + 2;
+
+      minimum_size->height = MAX (minimum_size->height, temp) + 2;
     }
 }
+
+static void
+gtk_check_item_get_preferred_width (GtkWidget *widget,
+    gint *minimal_width, gint *natural_width)
+{
+    GtkRequisition minimum_size, natural_size;
+    gtk_check_item_size_request (widget, &minimum_size, &natural_size);
+
+    *minimal_width = minimum_size.width;
+    *natural_width = natural_size.width;
+}
+
+static void
+gtk_check_item_get_preferred_height (GtkWidget *widget,
+    gint *minimal_height, gint *natural_height)
+{
+    GtkRequisition minimum_size, natural_size;
+    gtk_check_item_size_request (widget, &minimum_size, &natural_size);
+
+    *minimal_height = minimum_size.height;
+    *natural_height = natural_size.height;
+}
+
 
 static void
 gtk_check_item_size_allocate (GtkWidget     *widget,
@@ -279,8 +309,7 @@ gtk_check_item_size_allocate (GtkWidget     *widget,
 }
 
 static gboolean
-gtk_check_item_expose (GtkWidget      *widget,
-			 GdkEventExpose *event)
+gtk_check_item_draw(GtkWidget *widget, cairo_t *cr)
 {
   GtkCheckItem *check_item;
   GtkToggleButton *toggle_button;
@@ -305,8 +334,8 @@ gtk_check_item_expose (GtkWidget      *widget,
                                             gtk_bin_get_child(bin),
                                             event);
         }
-      else if (GTK_WIDGET_CLASS (parent_class)->expose_event)
-        (* GTK_WIDGET_CLASS (parent_class)->expose_event) (widget, event);
+      else if (GTK_WIDGET_CLASS (parent_class)->draw)
+        (* GTK_WIDGET_CLASS (parent_class)->draw) (widget, cr);
     }
  
   return FALSE;

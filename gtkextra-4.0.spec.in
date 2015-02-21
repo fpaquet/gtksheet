@@ -1,5 +1,5 @@
 
-%define name  gtkextra3
+%define name  gtkextra4
 %define major @GTK_EXTRA_MAJOR_VERSION@
 %define minor @GTK_EXTRA_MINOR_VERSION@
 %define micro @GTK_EXTRA_MICRO_VERSION@
@@ -15,11 +15,11 @@ Group: System Environment/Libraries
 Source: http://gtkextra.sourceforge.net/src/gtkextra-%version.tar.gz
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 URL: http://gtkextra.sourceforge.net
-Requires:        gtk2 >= 2.12.0
+Requires:        gtk3 >= 3.0.0
 Requires:        glib2 >= 2.12.0
 Requires:        pango
 Requires:        atk
-BuildRequires:   gtk2-devel
+BuildRequires:   gtk3-devel
 BuildRequires:   glib2-devel
 BuildRequires:   pango-devel
 BuildRequires:   atk-devel
@@ -33,7 +33,7 @@ GtkSheet, GtkPlot, and GtkIconList
 Summary: A library of gtk+ widgets
 Group: Development/Libraries
 Requires: %name = %{version}
-Requires:   gtk2-devel
+Requires:   gtk3-devel
 Requires:   glib2-devel
 Requires:   pango-devel
 Requires:   atk-devel
@@ -76,6 +76,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gtk-doc/html/gtkextra/*
 
 %changelog
+* Mon Nov 17 2014 Tom Schoonjans <Tom.Schoonjans@me.com>
+- Transitioning to gtkextra4, building against gtk3
+
 * Wed Apr 17 2013 Tom Schoonjans <Tom.Schoonjans@me.com>
 - Modified spec file in order to make it compatible with the latest RPM building recommendations
 

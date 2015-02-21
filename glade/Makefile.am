@@ -8,7 +8,7 @@ gladepixmapdir = @GLADE_PIXMAP_DIR@
 
 libgladegtkextra = $(top_builddir)/glade/libgladegtkextra.la
 
-GLADEUI_LIBS = `pkg-config --libs gladeui-1.0`
+GLADEUI_LIBS = `pkg-config --libs gladeui-2.0`
 
 # activate this to install into glade-3 modules dir
 glademodule_LTLIBRARIES = libgladegtkextra.la

@@ -19,28 +19,19 @@ gtkextra_win32res_lo =
 
 gtkextra-win32res.lo : gtkextra-win32.rc
 	$(LT_COMPILE_RESOURCE) gtkextra-win32.rc gtkextra-win32res.lo
-
-install-libtool-import-lib:
-	$(INSTALL) .libs/libgtkextra-win32-3.0.dll.a $(DESTDIR)$(libdir)
-uninstall-libtool-import-lib:
-	-rm $(DESTDIR)$(libdir)/libgtkextra-win32-3.0.dll.a
-install-exec-local: install-libtool-import-lib
-else
-install-libtool-import-lib:
-uninstall-libtool-import-lib:
 endif
 
 if MS_LIB_AVAILABLE
-noinst_DATA = gtkextra-win32-3.0.lib
+noinst_DATA = gtkextra-win32-4.0.lib
 
-gtkextra-win32-3.0.lib: libgtkextra-win32-3.0.la gtkextra.def
-	lib -name:libgtkextra-win32-3.0-@LT_CURRENT_MINUS_AGE@.dll -def:gtkextra.def -out:$@
+gtkextra-win32-4.0.lib: libgtkextra-win32-4.0.la gtkextra.def
+	lib -name:libgtkextra-win32-4.0-@LT_CURRENT_MINUS_AGE@.dll -def:gtkextra.def -out:$@
 
 install-ms-lib:
-	$(INSTALL) gtkextra-win32-3.0.lib $(DESTDIR)$(libdir)
+	$(INSTALL) gtkextra-win32-4.0.lib $(DESTDIR)$(libdir)
 
 uninstall-ms-lib:
-	-rm $(DESTDIR)$(libdir)/gtkextra-win32-3.0.lib
+	-rm $(DESTDIR)$(libdir)/gtkextra-win32-4.0.lib
 else
 install-ms-lib:
 uninstall-ms-lib:
@@ -49,7 +40,7 @@ endif
 # libtool stuff: set version and export symbols for resolving
 # since automake doesn't support conditionalized libsomething_la_LDFLAGS
 # we use the general approach here
-libgtkextraincludedir = $(includedir)/gtkextra-3.0/gtkextra
+libgtkextraincludedir = $(includedir)/gtkextra-4.0/gtkextra
 AM_LDFLAGS = \
 	-version-info $(LIBGTKEXTRA_SO_VERSION)    \
 	-export-dynamic                                         \
@@ -61,104 +52,101 @@ AM_LDFLAGS = \
 # setup source file variables
 #
 
-
 gtkextra_public_h_sources = \
-        gtkbordercombo.h 	\
-        gtkcharsel.h	\
-        gtkcheckitem.h	\
-        gtkcolorcombo.h	\
-        gtkcombobutton.h	\
-        gtkdataentry.h	\
-        gtkdataformat.h	\
-        gtkdatatextview.h	\
-        gtkdirtree.h	\
-        gtkextra.h	\
-        gtkextraicons.h	\
-        gtkfileicons.h	\
-        gtkfilelist.h	\
+	gtkcharsel.h \
+	gtkdataentry.h	\
+	gtkdataformat.h	\
+	gtkdatatextview.h \
+	gtkextra.h	\
         gtkfontcombo.h	\
-        gtkiconfilesel.h	\
-        gtkiconlist.h	\
-        gtkitementry.h	\
-        gtkplot.h	\
-        gtkplot3d.h	\
-        gtkplotarray.h	\
-        gtkplotbar.h	\
-        gtkplotbox.h	\
-        gtkplotbubble.h	\
-        gtkplotcairo.h	\
-        gtkplotcandle.h	\
-        gtkplotcanvas.h	\
-        gtkplotcanvasellipse.h \
-        gtkplotcanvasline.h \
-        gtkplotcanvaspixmap.h \
-        gtkplotcanvasplot.h \
-        gtkplotcanvasrectangle.h \
-        gtkplotcanvastext.h \
-        gtkplotcsurface.h	\
-        gtkplotdata.h	\
-        gtkplotdt.h	\
-        gtkplotflux.h	\
-        gtkplotgdk.h	\
-        gtkplotpc.h	\
-        gtkplotpixmap.h	\
-        gtkplotpolar.h	\
-        gtkplotprint.h	\
-        gtkplotps.h	\
-        gtkplotsegment.h	\
-        gtkplotsurface.h	\
-        gtkpsfont.h	\
-        gtksheet.h	\
-        gtksheetcolumn.h	\
-        gtktogglecombo.h
+        gtkplot.h \
+        gtkplot3d.h \
+        gtkplotarray.h \
+        gtkplotcairo.h \
+        gtkplotdata.h \
+        gtkplotdt.h \
+        gtkplotpc.h \
+        gtkplotpolar.h \
+        gtkplotsurface.h \
+        gtkpsfont.h \
+	gtksheet.h \
+	gtksheetcolumn.h \
+        #gtkplotcanvas.h
+
+#tkextra_public_h_sources = \
+#       gtkbordercombo.h 	\
+#       gtkcheckitem.h	\
+#       gtkcolorcombo.h	\
+#       gtkcombobutton.h	\
+#       gtkdirtree.h	\
+#       gtkextraicons.h	\
+#       gtkfileicons.h	\
+#       gtkfilelist.h	\
+#       gtkiconfilesel.h	\
+#       gtkiconlist.h	\
+#       gtkplotbar.h	\
+#       gtkplotbox.h	\
+#       gtkplotbubble.h	\
+#       gtkplotcandle.h	\
+#       gtkplotcanvasellipse.h \
+#       gtkplotcanvasline.h \
+#       gtkplotcanvaspixmap.h \
+#       gtkplotcanvasplot.h \
+#       gtkplotcanvasrectangle.h \
+#       gtkplotcanvastext.h \
+#       gtkplotcsurface.h	\
+#       gtkplotflux.h	\
+#       gtkplotpixmap.h	\
+#       gtkplotprint.h	\
+#       gtkplotsegment.h	\
+#       gtktogglecombo.h
 
 gtkextra_c_sources = 	\
-        gtkbordercombo.c	\
-        gtkcharsel.c	\
-        gtkcheckitem.c	\
-        gtkcolorcombo.c	\
-        gtkcombobutton.c	\
-        gtkdataentry.c	\
-        gtkdataformat.c	\
-        gtkdatatextview.c	\
-        gtkdirtree.c	\
-        gtkextra.c	\
-        gtkfilelist.c	\
-        gtkfontcombo.c	\
-        gtkiconfilesel.c	\
-        gtkiconlist.c	\
-        gtkitementry.c	\
-        gtkplot.c	\
-        gtkplot3d.c	\
-        gtkplotarray.c	\
-        gtkplotbar.c	\
-        gtkplotbox.c	\
-        gtkplotbubble.c	\
-        gtkplotcairo.c	\
-        gtkplotcandle.c	\
-        gtkplotcanvas.c	\
-        gtkplotcanvasellipse.c \
-        gtkplotcanvasline.c \
-        gtkplotcanvaspixmap.c \
-        gtkplotcanvasplot.c \
-        gtkplotcanvasrectangle.c \
-        gtkplotcanvastext.c \
-        gtkplotcsurface.c	\
-        gtkplotdata.c	\
-        gtkplotdt.c	\
-        gtkplotflux.c	\
-        gtkplotgdk.c	\
-        gtkplotpc.c	\
-        gtkplotpixmap.c \
-        gtkplotpolar.c	\
-        gtkplotprint.c	\
-        gtkplotps.c	\
-        gtkplotsegment.c	\
-        gtkplotsurface.c	\
-        gtkpsfont.c	\
-        gtksheet.c	\
-        gtksheetcolumn.c	\
-        gtktogglecombo.c 
+	gtkcharsel.c \
+	gtkdataentry.c	\
+	gtkdataformat.c	\
+	gtkdatatextview.c \
+	gtkfontcombo.c  \
+	gtkpsfont.c	\
+        gtkextra.c \
+        gtkplot.c \
+        gtkplot3d.c \
+        gtkplotarray.c \
+        gtkplotcairo.c \
+        gtkplotdata.c \
+        gtkplotdt.c \
+        gtkplotpc.c \
+        gtkplotpolar.c \
+        gtkplotsurface.c \
+	gtksheet.c \
+	gtksheetcolumn.c \
+        #gtkplotcanvas.c
+
+#tkextra_c_sources = 	\
+#       gtkbordercombo.c	\
+#       gtkcheckitem.c	\
+#       gtkcolorcombo.c	\
+#       gtkcombobutton.c	\
+#       gtkdirtree.c	\
+#       gtkfilelist.c	\
+#       gtkiconfilesel.c	\
+#       gtkiconlist.c	\
+#       gtkplotbar.c	\
+#       gtkplotbox.c	\
+#       gtkplotbubble.c	\
+#       gtkplotcandle.c	\
+#       gtkplotcanvasellipse.c \
+#       gtkplotcanvasline.c \
+#       gtkplotcanvaspixmap.c \
+#       gtkplotcanvasplot.c \
+#       gtkplotcanvasrectangle.c \
+#       gtkplotcanvastext.c \
+#       gtkplotcsurface.c	\
+#       gtkplotflux.c	\
+#       gtkplotpixmap.c \
+#       gtkplotprint.c	\
+#       gtkplotsegment.c	\
+#       gtktogglecombo.c 
 
 gtkextra_private_h_sources = \
 	gtkextra-compat.h \
@@ -183,26 +171,26 @@ AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) $(GTK_CFLAGS)
 # target platform:
 lib_LTLIBRARIES = $(gtkextratargetlib)
 
-gtkextraincludedir = $(includedir)/gtkextra-3.0/gtkextra
+gtkextraincludedir = $(includedir)/gtkextra-4.0/gtkextra
 gtkextrainclude_HEADERS = $(gtkextra_public_h_sources)
 nodist_gtkextrainclude_HEADERS = $(gtkextra_built_public_sources) gtkextrafeatures.h
 
-libgtkextra_x11_3_0_la_SOURCES = $(gtkextra_c_sources)
-nodist_libgtkextra_x11_3_0_la_SOURCES = $(gtkextra_built_sources)
-libgtkextra_linux_fb_3_0_la_SOURCES = $(gtkextra_c_sources)
-nodist_libgtkextra_linux_fb_3_0_la_SOURCES = $(gtkextra_built_sources)
-libgtkextra_win32_3_0_la_SOURCES = $(gtkextra_c_sources)
-nodist_libgtkextra_win32_3_0_la_SOURCES = $(gtkextra_built_sources)
-libgtkextra_quartz_3_0_la_SOURCES = $(gtkextra_c_sources)
-nodist_libgtkextra_quartz_3_0_la_SOURCES = $(gtkextra_built_sources)
+libgtkextra_x11_4_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_x11_4_0_la_SOURCES = $(gtkextra_built_sources)
+libgtkextra_linux_fb_4_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_linux_fb_4_0_la_SOURCES = $(gtkextra_built_sources)
+libgtkextra_win32_4_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_win32_4_0_la_SOURCES = $(gtkextra_built_sources)
+libgtkextra_quartz_4_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_quartz_4_0_la_SOURCES = $(gtkextra_built_sources)
 
-libgtkextra_win32_3_0_la_LIBADD = $(gtkextra_win32res_lo)
-libgtkextra_win32_3_0_la_DEPENDENCIES = $(gtkextra_def) $(gtkextra_win32res_lo)
+libgtkextra_win32_4_0_la_LIBADD = $(gtkextra_win32res_lo)
+libgtkextra_win32_4_0_la_DEPENDENCIES = $(gtkextra_def) $(gtkextra_win32res_lo)
 
 if USE_WIN32
 libgtkextra_target_ldflags = $(gtkextra_win32_symbols) -lwsock32
 endif
-EXTRA_LTLIBRARIES = libgtkextra-x11-3.0.la libgtkextra-linux-fb-3.0.la libgtkextra-win32-3.0.la libgtkextra-quartz-3.0.la
+EXTRA_LTLIBRARIES = libgtkextra-x11-4.0.la libgtkextra-linux-fb-4.0.la libgtkextra-win32-4.0.la libgtkextra-quartz-4.0.la
 
 MAINTAINERCLEANFILES = $(gtkextra_built_sources) 
 CLEANFILES = $(gtkextra_built_sources) 
@@ -212,7 +200,7 @@ EXTRA_DIST = $(gtkextra_private_h_sources) $(gtkextra_extra_sources)
 EXTRA_DIST += gtkextra.def sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
 
 
-$(libgtkextra_x11_3_0_la_OBJECTS) $(libgtkextra_linux_fb_3_0_la_OBJECTS) $(libgtkextra_win32_3_0_la_OBJECTS) $(libgtkextra_quartz_3_0_la_OBJECTS): ${gtkextra_built_public_sources} ${gtkextra_built_private_headers}
+$(libgtkextra_x11_4_0_la_OBJECTS) $(libgtkextra_linux_fb_4_0_la_OBJECTS) $(libgtkextra_win32_4_0_la_OBJECTS) $(libgtkextra_quartz_4_0_la_OBJECTS): ${gtkextra_built_public_sources} ${gtkextra_built_private_headers}
 
 gtkextra-marshal.h: $(builddir)/gtkextra-marshal.list
 	( @GLIB_GENMARSHAL@ --prefix=gtkextra $(srcdir)/gtkextra-marshal.list --header > gtkextra-marshal.tmp \
@@ -247,74 +235,73 @@ gtkextratypebuiltins.c: $(gtkextra_public_h_sources)
 # test programs, not to be installed
 
 if ENABLE_TESTS
-noinst_PROGRAMS = testgtksheet testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment testprintexport
+noinst_PROGRAMS = testgtkfont testcharsel testgtksheet
+#noinst_PROGRAMS = testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment
 endif
 DEPS = $(gtkextratargetlib)
 LDADDS = $(gtkextratargetlib) $(GTK_LIBS)
 
-testprintexport_DEPENDENCIES = $(DEPS)
 testgtksheet_DEPENDENCIES = $(DEPS)
-testgtkplot_DEPENDENCIES = $(DEPS)
-testdt_DEPENDENCIES = $(DEPS)
-testgtkplotdt_DEPENDENCIES = $(DEPS)
-testpolar_DEPENDENCIES = $(DEPS)
-testgtkplot3d_DEPENDENCIES = $(DEPS)
-testcontour_DEPENDENCIES = $(DEPS)
-testrealtime_DEPENDENCIES = $(DEPS)
-testgtkfilesel_DEPENDENCIES = $(DEPS)
-testgtkiconlist_DEPENDENCIES = $(DEPS)
-testgtkfont_DEPENDENCIES = $(DEPS)
-testbubbles_DEPENDENCIES = $(DEPS)
-testflux_DEPENDENCIES = $(DEPS)
-testboxes_DEPENDENCIES = $(DEPS)
-testcandles_DEPENDENCIES = $(DEPS)
-testpixmap_DEPENDENCIES = $(DEPS)
-testimage_DEPENDENCIES = $(DEPS)
+#testgtkplot_DEPENDENCIES = $(DEPS)
+#testdt_DEPENDENCIES = $(DEPS)
+#testgtkplotdt_DEPENDENCIES = $(DEPS)
+#testpolar_DEPENDENCIES = $(DEPS)
+#testgtkplot3d_DEPENDENCIES = $(DEPS)
+#testcontour_DEPENDENCIES = $(DEPS)
+#testrealtime_DEPENDENCIES = $(DEPS)
+#testgtkfilesel_DEPENDENCIES = $(DEPS)
+#testgtkiconlist_DEPENDENCIES = $(DEPS)
+#testgtkfont_DEPENDENCIES = $(DEPS)
+#testbubbles_DEPENDENCIES = $(DEPS)
+#testflux_DEPENDENCIES = $(DEPS)
+#testboxes_DEPENDENCIES = $(DEPS)
+#testcandles_DEPENDENCIES = $(DEPS)
+#testpixmap_DEPENDENCIES = $(DEPS)
+#testimage_DEPENDENCIES = $(DEPS)
 testcharsel_DEPENDENCIES = $(DEPS)
-testiterator_DEPENDENCIES = $(DEPS)
-testsegment_DEPENDENCIES = $(DEPS)
-testgtkplotcanvas_DEPENDENCIES = $(DEPS)
+#testiterator_DEPENDENCIES = $(DEPS)
+#testsegment_DEPENDENCIES = $(DEPS)
+#testgtkplotcanvas_DEPENDENCIES = $(DEPS)
 testgtksheet_LDADD = $(LDADDS)
-testgtkplot_LDADD = $(LDADDS)
-testdt_LDADD = $(LDADDS)
-testgtkplotdt_LDADD = $(LDADDS)
-testimage_LDADD = $(LDADDS)
+#testgtkplot_LDADD = $(LDADDS)
+#testdt_LDADD = $(LDADDS)
+#testgtkplotdt_LDADD = $(LDADDS)
+#testimage_LDADD = $(LDADDS)
 testcharsel_LDADD = $(LDADDS)
-testpixmap_LDADD = $(LDADDS)
-testpolar_LDADD = $(LDADDS)
-testgtkplot3d_LDADD = $(LDADDS)
-testcontour_LDADD = $(LDADDS)
-testrealtime_LDADD = $(LDADDS)
-testgtkfilesel_LDADD = $(LDADDS)
-testgtkiconlist_LDADD = $(LDADDS)
+#testpixmap_LDADD = $(LDADDS)
+#testpolar_LDADD = $(LDADDS)
+#testgtkplot3d_LDADD = $(LDADDS)
+#testcontour_LDADD = $(LDADDS)
+#testrealtime_LDADD = $(LDADDS)
+#testgtkfilesel_LDADD = $(LDADDS)
+#testgtkiconlist_LDADD = $(LDADDS)
 testgtkfont_LDADD = $(LDADDS)
-testbubbles_LDADD = $(LDADDS)
-testflux_LDADD = $(LDADDS)
-testboxes_LDADD = $(LDADDS)
-testcandles_LDADD = $(LDADDS)
-testiterator_LDADD = $(LDADDS)
-testsegment_LDADD = $(LDADDS)
-testgtkplotcanvas_LDADD = $(LDADDS)
-testprintexport_LDADD = $(LDADDS)
+#testbubbles_LDADD = $(LDADDS)
+#testflux_LDADD = $(LDADDS)
+#testboxes_LDADD = $(LDADDS)
+#testcandles_LDADD = $(LDADDS)
+#testiterator_LDADD = $(LDADDS)
+#testsegment_LDADD = $(LDADDS)
+#testgtkplotcanvas_LDADD = $(LDADDS)
 
 # gobject-introspection (begin)
 if ENABLE_INTROSPECTION
 -include $(INTROSPECTION_MAKEFILE)
 
-INTROSPECTION_GIRS = GtkExtra-3.0.gir
+INTROSPECTION_GIRS = GtkExtra-4.0.gir
 
 INTROSPECTION_SCANNER_ARGS = --accept-unprefixed --identifier-prefix="Gtk" --symbol-prefix="gtk" --warn-all --add-include-path=$(srcdir)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 introspection_sources = $(gtkextra_c_sources) $(gtkextra_public_h_sources)
 
-GtkExtra-3.0.gir: $(gtkextratargetlib)
-GtkExtra_3_0_gir_NAMESPACE = GtkExtra
-GtkExtra_3_0_gir_VERSION = $(GTK_EXTRA_VERSION)
-GtkExtra_3_0_gir_INCLUDES = GLib-2.0 GObject-2.0 Gtk-2.0
-GtkExtra_3_0_gir_CFLAGS = $(AM_CPPFLAGS)
-GtkExtra_3_0_gir_LIBS = $(gtkextratargetlib)
-GtkExtra_3_0_gir_FILES = $(introspection_sources)
+GtkExtra-4.0.gir: $(gtkextratargetlib)
+GtkExtra_4_0_gir_NAMESPACE = GtkExtra
+GtkExtra_4_0_gir_VERSION = $(GTK_EXTRA_VERSION)
+GtkExtra_4_0_gir_INCLUDES = GLib-2.0 GObject-2.0 Gtk-3.0
+GtkExtra_4_0_gir_CFLAGS = $(AM_CPPFLAGS)
+GtkExtra_4_0_gir_LIBS = $(gtkextratargetlib)
+GtkExtra_4_0_gir_FILES = $(introspection_sources)
 
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)

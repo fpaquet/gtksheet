@@ -487,7 +487,12 @@ gtk_plot_canvas_line_draw_selection 	(GtkPlotCanvas *canvas,
                        y1 + dy - DEFAULT_MARKER_SIZE / 2,
                        DEFAULT_MARKER_SIZE + 1, DEFAULT_MARKER_SIZE + 1);
 
-    gdk_gc_set_line_attributes(xor_gc, 1, 1, 0, 0);
+    //gdk_gc_set_line_attributes(xor_gc, 1, 1, 0, 0);
+    cairo_set_line_width(xor_cr, 1.0);
+    cairo_set_line_cap(xor_cr, CAIRO_LINE_CAP_BUTT);
+    cairo_set_line_join(xor_cr, CAIRO_LINE_JOIN_MITER);
+    double dashes[] = { 1.0 };
+    cairo_set_dash(xor_cr, dashes, 1, 0.0);
     gdk_draw_line(gtk_widget_get_window(GTK_WIDGET(canvas)), 
 			xor_gc, x2, y2, x1 + dx, y1 + dy);
  
@@ -504,7 +509,12 @@ gtk_plot_canvas_line_draw_selection 	(GtkPlotCanvas *canvas,
                        y2 + dy - DEFAULT_MARKER_SIZE / 2,
                        DEFAULT_MARKER_SIZE + 1, DEFAULT_MARKER_SIZE + 1);
 
-    gdk_gc_set_line_attributes(xor_gc, 1, 1, 0, 0);
+    //gdk_gc_set_line_attributes(xor_gc, 1, 1, 0, 0);
+    cairo_set_line_width(xor_cr, 1.0);
+    cairo_set_line_cap(xor_cr, CAIRO_LINE_CAP_BUTT);
+    cairo_set_line_join(xor_cr, CAIRO_LINE_JOIN_MITER);
+    double dashes[] = { 1.0 };
+    cairo_set_dash(xor_cr, dashes, 1, 0.0);
     gdk_draw_line(gtk_widget_get_window(GTK_WIDGET(canvas)), 
 			xor_gc, x1, y1, x2 + dx, y2 + dy);
  
@@ -522,7 +532,12 @@ gtk_plot_canvas_line_draw_selection 	(GtkPlotCanvas *canvas,
                        y2 + dy - DEFAULT_MARKER_SIZE / 2,
                        DEFAULT_MARKER_SIZE + 1, DEFAULT_MARKER_SIZE + 1);
 
-    gdk_gc_set_line_attributes(xor_gc, 1, 1, 0, 0);
+    //gdk_gc_set_line_attributes(xor_gc, 1, 1, 0, 0);
+    cairo_set_line_width(xor_cr, 1.0);
+    cairo_set_line_cap(xor_cr, CAIRO_LINE_CAP_BUTT);
+    cairo_set_line_join(xor_cr, CAIRO_LINE_JOIN_MITER);
+    double dashes[] = { 1.0 };
+    cairo_set_dash(xor_cr, dashes, 1, 0.0);
     gdk_draw_line(gtk_widget_get_window(GTK_WIDGET(canvas)), xor_gc, 
                  x1 + dx, y1 + dy, x2 + dx, y2 + dy);
   }
@@ -615,7 +630,7 @@ gtk_plot_canvas_line_resize             (GtkPlotCanvas *canvas,
   line->x2 = x2;
   line->y2 = y2;
                                                                                 
-  GTK_PLOT_CANVAS_CHILD_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(child)))->size_allocate(canvas, child);
+  GTK_PLOT_CANVAS_CHILD_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(child)))->size_allocate(canvas, child);
   gtk_plot_canvas_paint(canvas);
   gtk_plot_canvas_refresh(canvas);
 }
@@ -648,7 +663,7 @@ gtk_plot_canvas_line_button_release     (GtkPlotCanvas *canvas,
   child->rx2 = line->x2;
   child->ry2 = line->y2;
 
-  GTK_PLOT_CANVAS_CHILD_CLASS(GTK_OBJECT_GET_CLASS(GTK_OBJECT(child)))->size_allocate(canvas, child);
+  GTK_PLOT_CANVAS_CHILD_CLASS(G_OBJECT_GET_CLASS(G_OBJECT(child)))->size_allocate(canvas, child);
   gtk_plot_canvas_paint(canvas);
   gtk_plot_canvas_refresh(canvas);
 }

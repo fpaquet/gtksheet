@@ -21,17 +21,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <gtk/gtk.h>
-#include "gtkplot.h"
-#include "gtkplot3d.h"
-#include "gtkplotdata.h"
 #include "gtkplotarray.h"
-#include "gtkpsfont.h"
 
 #define P_(string) string
 
-static void gtk_plot_array_class_init 	(GtkPlotArrayClass *klass);
-static void gtk_plot_array_init 	(GtkPlotArray *array);
 static void gtk_plot_array_finalize 	(GObject *object);
 static void gtk_plot_array_set_property (GObject *object,
                                          guint            prop_id,
@@ -41,12 +34,10 @@ static void gtk_plot_array_get_property (GObject *object,
                                          guint            prop_id,
                                          GValue    *value,
                                          GParamSpec      *pspec);
-static void gtk_plot_array_list_class_init (GtkPlotArrayListClass *klass);
-static void gtk_plot_array_list_init 	(GtkPlotArrayList *array_list);
 static void gtk_plot_array_list_finalize (GObject *object);
 
-static GObjectClass *array_parent_class = NULL;
-static GObjectClass *array_list_parent_class = NULL;
+G_DEFINE_TYPE(GtkPlotArray, gtk_plot_array, G_TYPE_OBJECT);
+G_DEFINE_TYPE(GtkPlotArrayList, gtk_plot_array_list, G_TYPE_OBJECT);
 
 enum {
   PROP_0,
@@ -62,42 +53,12 @@ enum {
   PROP_OWN,
 };
 
-GType
-gtk_plot_array_get_type (void)
-{
-  static GType array_type = 0;
-
-  if (!array_type)
-    {
-      static const GTypeInfo array_info =
-      {
-        sizeof (GtkPlotArrayClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gtk_plot_array_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GtkPlotArray),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gtk_plot_array_init,
-        NULL,
-      };
-                                                                                
-      array_type = g_type_register_static (G_TYPE_OBJECT,
-				"GtkPlotArray",
-                                 &array_info, 0);
-    }
-                                                                                
-  return array_type;
-}
 
 static void
 gtk_plot_array_class_init (GtkPlotArrayClass *klass)
 {
   GtkPlotArrayClass *array_class;
   GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
-
-  array_parent_class = g_type_class_peek_parent (klass);
 
   array_class = (GtkPlotArrayClass *) klass;
 
@@ -493,7 +454,7 @@ gtk_plot_array_get_int(GtkPlotArray *array)
  * gtk_plot_array_get_string:
  * @array:  the #GtkPlotArray
  * 
- * Returns: (transfer none) the data string array
+ * Returns(transfer none): the data string array
  */
 gchar **
 gtk_plot_array_get_string(GtkPlotArray *array)
@@ -506,7 +467,7 @@ gtk_plot_array_get_string(GtkPlotArray *array)
  * gtk_plot_array_get_pointer:
  * @array:  the #GtkPlotArray
  * 
- * Returns: (transfer none) the data pointer array
+ * Returns(transfer none): the data pointer array
  */
 gpointer *
 gtk_plot_array_get_pointer(GtkPlotArray *array)
@@ -515,41 +476,11 @@ gtk_plot_array_get_pointer(GtkPlotArray *array)
   return array->data.data_pointer;
 }
 
-GType
-gtk_plot_array_list_get_type (void)
-{
-  static GType array_list_type = 0;
-
-  if (!array_list_type)
-    {
-      static const GTypeInfo data_info =
-      {
-        sizeof (GtkPlotArrayListClass),
-        NULL,           /* base_init */
-        NULL,           /* base_finalize */
-        (GClassInitFunc) gtk_plot_array_list_class_init,
-        NULL,           /* class_finalize */
-        NULL,           /* class_data */
-        sizeof (GtkPlotArray),
-        0,              /* n_preallocs */
-        (GInstanceInitFunc) gtk_plot_array_list_init,
-        NULL
-      };
-                                                                                
-      array_list_type = g_type_register_static (G_TYPE_OBJECT, 
-					"GtkPlotArrayList",
-                                         &data_info, 0);
-    }
-  return array_list_type;
-}
-
 static void
 gtk_plot_array_list_class_init (GtkPlotArrayListClass *klass)
 {
   GObjectClass *gobject_class;
   GtkPlotArrayListClass *array_list_class;
-
-  array_list_parent_class = g_type_class_peek_parent (klass);
 
   gobject_class = (GObjectClass *) klass;
   array_list_class = (GtkPlotArrayListClass *) klass;
@@ -630,7 +561,7 @@ gtk_plot_array_list_remove(GtkPlotArrayList *array_list, GtkPlotArray *array)
  * @set: a #GtkPlotArrayList
  * @name:       the name to be searched for
  * 
- * Returns: (transfer none) the named #GtkPlotArray or NULL
+ * Returns(transfer none): the named #GtkPlotArray or NULL
  */
 GtkPlotArray *
 gtk_plot_array_list_get(GtkPlotArrayList *set, const gchar *name)

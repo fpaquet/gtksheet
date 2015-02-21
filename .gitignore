@@ -31,6 +31,6 @@ stamp-h1
 .libs
 .deps
 
-gtkextra-3.0.pc
-gtkextra-3.0.spec
+gtkextra-*.pc
+gtkextra-*.spec
 configure

@@ -329,7 +329,6 @@ gtk_data_text_view_class_init(GtkDataTextViewClass *klass)
     GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 #if 0
     GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
-    GtkObjectClass *object_class = GTK_OBJECT_CLASS (klass);
     GtkTextViewClass *text_view_class = GTK_TEXT_VIEW_CLASS (klass);
 #endif
 

@@ -64,7 +64,7 @@
 
 #ifdef DEBUG
 #   undef GTK_SHEET_DEBUG
-#define GTK_SHEET_DEBUG  1  /* define to activate debug output */
+#define GTK_SHEET_DEBUG  0  /* define to activate debug output */
 #endif
 
 #ifdef GTK_SHEET_DEBUG
@@ -86,13 +86,13 @@
 #   define GTK_SHEET_DEBUG_FONT_METRICS  0
 #   define GTK_SHEET_DEBUG_FREEZE   0
 #   define GTK_SHEET_DEBUG_KEYPRESS   0
-#   define GTK_SHEET_DEBUG_MOUSE  1
-#   define GTK_SHEET_DEBUG_MOVE  1
+#   define GTK_SHEET_DEBUG_MOUSE  0
+#   define GTK_SHEET_DEBUG_MOVE  0
 #   define GTK_SHEET_DEBUG_MOTION  0
 #   define GTK_SHEET_DEBUG_PIXEL_INFO  0
 #   define GTK_SHEET_DEBUG_PROPERTIES  0
 #   define GTK_SHEET_DEBUG_REALIZE  0
-#   define GTK_SHEET_DEBUG_SELECTION  1
+#   define GTK_SHEET_DEBUG_SELECTION  0
 #   define GTK_SHEET_DEBUG_SIGNALS   0
 #   define GTK_SHEET_DEBUG_SIZE  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0

@@ -10141,8 +10141,9 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	{
 	    if (sheet->state == GTK_STATE_NORMAL)
 	    {
-		row = sheet->active_cell.row;
-		column = sheet->active_cell.col;
+		gint row = sheet->active_cell.row;  /* PR#203012 */
+		gint column = sheet->active_cell.col;  /* PR#203012 */
+
 		if (!gtk_sheet_deactivate_cell(sheet))
 		    return (FALSE);
 		sheet->active_cell.row = row;
@@ -10169,8 +10170,9 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	{
 	    if (sheet->state == GTK_STATE_NORMAL)
 	    {
-		row = sheet->active_cell.row;
-		column = sheet->active_cell.col;
+		gint row = sheet->active_cell.row;  /* PR#203012 */
+		gint column = sheet->active_cell.col;  /* PR#203012 */
+
 		if (!gtk_sheet_deactivate_cell(sheet))
 		    return (FALSE);
 		sheet->active_cell.row = row;
@@ -11023,7 +11025,8 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 
 #define _HUNT_VISIBLE_DOWN(row) \
 	while (row < sheet->maxrow \
-	  && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row++; \
+	  && ((row < 0) || !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) ) \
+	       row++; \
 	if (row > sheet->maxrow) row = sheet->maxrow; \
 	while (row > 0 \
 	  && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row--; \
@@ -13681,6 +13684,9 @@ draw_xor_rectangle(GtkSheet *sheet, GtkSheetRange range, gboolean draw)
 {
     gint i;
     GdkRectangle clip_area, area;
+
+    if (range.col0 < 0 || range.coli < 0 || range.row0 < 0 || range.rowi < 0)
+	return;  /* PR#203012 */
 
     area.x = _gtk_sheet_column_left_xpixel(sheet, range.col0);
     area.y = _gtk_sheet_row_top_ypixel(sheet, range.row0);

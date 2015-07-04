@@ -1,3 +1,7 @@
+2015-07-04 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fix SEGV in draw_xor_rectangle() PR#203012,201893,203139,204742
+	* GtkSheet: fix Invalid read of size 4 in _gtk_sheet_move_query()
+
 2015-02-21 Fredy Paquet <mailbox AT opag.ch>
 	* fixed docs/reference library name
 	* cleanup types in docs/reference (work in progress) - build runs through now

@@ -73,9 +73,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*a
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
-%{_datadir}/gtk-doc/html/gtkextra/*
+%{_datadir}/gtk-doc/html/gtkextra-3/*
 
 %changelog
+* Fri May 29 2015 Tom Schoonjans <Tom.Schoonjans@me.com>
+- Renamed doc folder
+
 * Wed Apr 17 2013 Tom Schoonjans <Tom.Schoonjans@me.com>
 - Modified spec file in order to make it compatible with the latest RPM building recommendations
 

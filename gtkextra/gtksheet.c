@@ -64,7 +64,7 @@
 
 #ifdef DEBUG
 #   undef GTK_SHEET_DEBUG
-#define GTK_SHEET_DEBUG  0  /* define to activate debug output */
+#define GTK_SHEET_DEBUG  1  /* define to activate debug output */
 #endif
 
 #ifdef GTK_SHEET_DEBUG
@@ -86,13 +86,13 @@
 #   define GTK_SHEET_DEBUG_FONT_METRICS  0
 #   define GTK_SHEET_DEBUG_FREEZE   0
 #   define GTK_SHEET_DEBUG_KEYPRESS   0
-#   define GTK_SHEET_DEBUG_MOUSE  0
-#   define GTK_SHEET_DEBUG_MOVE  0
+#   define GTK_SHEET_DEBUG_MOUSE  1
+#   define GTK_SHEET_DEBUG_MOVE  1
 #   define GTK_SHEET_DEBUG_MOTION  0
 #   define GTK_SHEET_DEBUG_PIXEL_INFO  0
 #   define GTK_SHEET_DEBUG_PROPERTIES  0
 #   define GTK_SHEET_DEBUG_REALIZE  0
-#   define GTK_SHEET_DEBUG_SELECTION  0
+#   define GTK_SHEET_DEBUG_SELECTION  1
 #   define GTK_SHEET_DEBUG_SIGNALS   0
 #   define GTK_SHEET_DEBUG_SIZE  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0
@@ -9961,8 +9961,9 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	if (row < 0 && column < 0) return(FALSE);  /* chain up to global button press handler*/
 
 #if GTK_SHEET_DEBUG_MOUSE > 0
-	g_debug("gtk_sheet_button_press_handler: pointer grab (%d,%d) r %d c %d", 
-	    x, y, row, column);
+	g_debug("gtk_sheet_button_press_handler: pointer grab (%d,%d) r %d c %d mr %d mc %d", 
+	    x, y, row, column, sheet->maxrow, sheet->maxcol
+	    );
 #endif
 	gdk_pointer_grab(sheet->sheet_window, FALSE,
 	    GDK_POINTER_MOTION_HINT_MASK |
@@ -9982,8 +9983,9 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	{
 	    if (sheet->state == GTK_STATE_NORMAL)
 	    {
-		row = sheet->active_cell.row;
-		column = sheet->active_cell.col;
+		gint row = sheet->active_cell.row;  /* PR#203012 */
+		gint column = sheet->active_cell.col;  /* PR#203012 */
+
 		if (!gtk_sheet_deactivate_cell(sheet))
 		    return (FALSE);
 		sheet->active_cell.row = row;
@@ -10009,8 +10011,9 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	{
 	    if (sheet->state == GTK_STATE_NORMAL)
 	    {
-		row = sheet->active_cell.row;
-		column = sheet->active_cell.col;
+		gint row = sheet->active_cell.row;  /* PR#203012 */
+		gint column = sheet->active_cell.col;  /* PR#203012 */
+
 		if (!gtk_sheet_deactivate_cell(sheet))
 		    return (FALSE);
 		sheet->active_cell.row = row;
@@ -10032,6 +10035,14 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    sheet->drag_cell.row = row;
 	    sheet->drag_cell.col = column;
 	    sheet->drag_range = sheet->range;
+#if GTK_SHEET_DEBUG_MOUSE > 0
+	    g_debug("gtk_sheet_button_press_handler: drag_range r %d c %d (%d,%d, %d, %d) mr %d mc %d", 
+		sheet->drag_cell.row, sheet->drag_cell.col, 
+		sheet->drag_range.row0, sheet->drag_range.rowi, 
+		sheet->drag_range.col0, sheet->drag_range.coli, 
+		sheet->maxrow, sheet->maxcol
+	    );
+#endif
 	    draw_xor_rectangle(sheet, sheet->drag_range);
 	    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_DRAG);
 	}
@@ -10847,7 +10858,8 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 
 #define _HUNT_VISIBLE_DOWN(row) \
 	while (row < sheet->maxrow \
-	  && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row++; \
+	  && ((row < 0) || !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) ) \
+	       row++; \
 	if (row > sheet->maxrow) row = sheet->maxrow; \
 	while (row > 0 \
 	  && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row--; \
@@ -13583,6 +13595,9 @@ draw_xor_rectangle(GtkSheet *sheet, GtkSheetRange range)
     gint i;
     GdkRectangle clip_area, area;
     GdkGCValues values;
+
+    if (range.col0 < 0 || range.coli < 0 || range.row0 < 0 || range.rowi < 0)
+	return;  /* PR#203012 */
 
     area.x = _gtk_sheet_column_left_xpixel(sheet, range.col0);
     area.y = _gtk_sheet_row_top_ypixel(sheet, range.row0);

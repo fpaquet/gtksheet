@@ -1,3 +1,8 @@
+2015-08-01 Fredy Paquet <mailbox AT opag.ch>
+	* GtkDataEntry: fix dataformat race condition in gtk_data_entry_get_text() PR#205431
+	* updated gtkextra-3 version to 3.1.5, Libtool Revision 7.5.0
+	* published gtkextra-3 version 3.1.5
+
 2015-07-04 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fix SEGV in draw_xor_rectangle() PR#203012,201893,203139,204742
 	* GtkSheet: fix Invalid read of size 4 in _gtk_sheet_move_query()

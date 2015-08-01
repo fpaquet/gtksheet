@@ -236,10 +236,8 @@ gtk_data_entry_get_text(GtkDataEntry *data_entry)
 
     text = (gchar *)gtk_entry_get_text(GTK_ENTRY(data_entry));
 
-    if (!gtk_widget_has_focus(GTK_WIDGET(data_entry)))
-    {
+/* if (!gtk_widget_has_focus(GTK_WIDGET(data_entry)  -- PR#205431 */
 	text = gtk_data_format_remove(text, data_entry->data_format);
-    }
 
 #if GTK_DATA_ENTRY_DEBUG
     g_debug("gtk_data_entry_get_text: %s", text ? text : "");

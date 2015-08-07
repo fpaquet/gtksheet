@@ -690,14 +690,19 @@ gtk_plot_candle_get_type
 <FILE>gtkplotcanvas</FILE>
 <TITLE>GtkPlotCanvas</TITLE>
 GtkPlotCanvas
-GtkPlotCanvasChild
+GtkPlotCanvasFlags
 GtkPlotCanvasAction
 GtkPlotCanvasFlag
 GtkPlotCanvasSelection
 GtkPlotCanvasSelectionMode
 GtkPlotCanvasPos
+GtkPlotCanvasChild
+GtkPlotCanvasChildFlags
 gtk_plot_canvas_new
 gtk_plot_canvas_construct
+gtk_plot_canvas_flags
+gtk_plot_canvas_set_flags
+gtk_plot_canvas_unset_flags
 gtk_plot_canvas_set_pc
 gtk_plot_canvas_paint
 gtk_plot_canvas_refresh
@@ -802,8 +807,12 @@ gtk_plot_canvas_pixmap_get_type
 <FILE>gtkplotcanvasplot</FILE>
 <TITLE>GtkPlotCanvasPlot</TITLE>
 GtkPlotCanvasPlot
+GtkPlotCanvasPlotFlags
 GtkPlotCanvasPlotPos
 gtk_plot_canvas_plot_new
+gtk_plot_canvas_plot_flags
+gtk_plot_canvas_plot_set_flags
+gtk_plot_canvas_plot_unset_flags
 <SUBSECTION Standard>
 GTK_PLOT_CANVAS_PLOT
 GTK_IS_PLOT_CANVAS_PLOT

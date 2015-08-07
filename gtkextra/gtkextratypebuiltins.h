@@ -44,10 +44,14 @@ GType gtk_plot_side_get_type (void);
 GType gtk_plot_bar_units_get_type (void);
 #define GTK_TYPE_PLOT_BAR_UNITS (gtk_plot_bar_units_get_type())
 /* enumerations from "gtkplotcanvas.h" */
+GType gtk_plot_canvas_flags_get_type (void);
+#define GTK_TYPE_PLOT_CANVAS_FLAGS (gtk_plot_canvas_flags_get_type())
 GType gtk_plot_canvas_action_get_type (void);
 #define GTK_TYPE_PLOT_CANVAS_ACTION (gtk_plot_canvas_action_get_type())
 GType gtk_plot_canvas_flag_get_type (void);
 #define GTK_TYPE_PLOT_CANVAS_FLAG (gtk_plot_canvas_flag_get_type())
+GType gtk_plot_canvas_child_flags_get_type (void);
+#define GTK_TYPE_PLOT_CANVAS_CHILD_FLAGS (gtk_plot_canvas_child_flags_get_type())
 GType gtk_plot_canvas_selection_get_type (void);
 #define GTK_TYPE_PLOT_CANVAS_SELECTION (gtk_plot_canvas_selection_get_type())
 GType gtk_plot_canvas_selection_mode_get_type (void);
@@ -60,6 +64,8 @@ GType gtk_plot_canvas_arrow_get_type (void);
 /* enumerations from "gtkplotcanvasplot.h" */
 GType gtk_plot_canvas_plot_pos_get_type (void);
 #define GTK_TYPE_PLOT_CANVAS_PLOT_POS (gtk_plot_canvas_plot_pos_get_type())
+GType gtk_plot_canvas_plot_flags_get_type (void);
+#define GTK_TYPE_PLOT_CANVAS_PLOT_FLAGS (gtk_plot_canvas_plot_flags_get_type())
 /* enumerations from "gtkplotcsurface.h" */
 GType gtk_plot_projection_get_type (void);
 #define GTK_TYPE_PLOT_PROJECTION (gtk_plot_projection_get_type())

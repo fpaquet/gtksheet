@@ -276,6 +276,21 @@ gtk_plot_bar_units_get_type (void)
 
 /* enumerations from "gtkplotcanvas.h" */
 GType
+gtk_plot_canvas_flags_get_type (void)
+{
+  static GType etype = 0;
+  if (etype == 0) {
+    static const GFlagsValue values[] = {
+      { GTK_PLOT_CANVAS_CAN_SELECT, "GTK_PLOT_CANVAS_CAN_SELECT", "select" },
+      { GTK_PLOT_CANVAS_CAN_SELECT_ITEM, "GTK_PLOT_CANVAS_CAN_SELECT_ITEM", "select-item" },
+      { GTK_PLOT_CANVAS_CAN_DND, "GTK_PLOT_CANVAS_CAN_DND", "dnd" },
+      { 0, NULL, NULL }
+    };
+    etype = g_flags_register_static ("GtkPlotCanvasFlags", values);
+  }
+  return etype;
+}
+GType
 gtk_plot_canvas_action_get_type (void)
 {
   static GType etype = 0;
@@ -303,6 +318,21 @@ gtk_plot_canvas_flag_get_type (void)
       { 0, NULL, NULL }
     };
     etype = g_flags_register_static ("GtkPlotCanvasFlag", values);
+  }
+  return etype;
+}
+GType
+gtk_plot_canvas_child_flags_get_type (void)
+{
+  static GType etype = 0;
+  if (etype == 0) {
+    static const GFlagsValue values[] = {
+      { GTK_PLOT_CANVAS_CHILD_FROZEN, "GTK_PLOT_CANVAS_CHILD_FROZEN", "frozen" },
+      { GTK_PLOT_CANVAS_CHILD_CAN_MOVE, "GTK_PLOT_CANVAS_CHILD_CAN_MOVE", "can-move" },
+      { GTK_PLOT_CANVAS_CHILD_CAN_RESIZE, "GTK_PLOT_CANVAS_CHILD_CAN_RESIZE", "can-resize" },
+      { 0, NULL, NULL }
+    };
+    etype = g_flags_register_static ("GtkPlotCanvasChildFlags", values);
   }
   return etype;
 }
@@ -393,6 +423,20 @@ gtk_plot_canvas_plot_pos_get_type (void)
       { 0, NULL, NULL }
     };
     etype = g_enum_register_static ("GtkPlotCanvasPlotPos", values);
+  }
+  return etype;
+}
+GType
+gtk_plot_canvas_plot_flags_get_type (void)
+{
+  static GType etype = 0;
+  if (etype == 0) {
+    static const GFlagsValue values[] = {
+      { GTK_PLOT_CANVAS_PLOT_SELECT_POINT, "GTK_PLOT_CANVAS_PLOT_SELECT_POINT", "select-point" },
+      { GTK_PLOT_CANVAS_PLOT_DND_POINT, "GTK_PLOT_CANVAS_PLOT_DND_POINT", "dnd-point" },
+      { 0, NULL, NULL }
+    };
+    etype = g_flags_register_static ("GtkPlotCanvasPlotFlags", values);
   }
   return etype;
 }

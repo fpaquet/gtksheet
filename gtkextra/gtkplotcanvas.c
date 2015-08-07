@@ -487,8 +487,8 @@ gtk_plot_canvas_child_set_property (GObject      *object,
 static void
 gtk_plot_canvas_child_init(GtkPlotCanvasChild *child)
 {
-  child->flags = GTK_PLOT_CANVAS_CAN_MOVE | 
-                 GTK_PLOT_CANVAS_CAN_RESIZE;
+  child->flags = GTK_PLOT_CANVAS_CHILD_CAN_MOVE | 
+                 GTK_PLOT_CANVAS_CHILD_CAN_RESIZE;
 
   child->min_width = -1;
   child->min_height = -1;
@@ -670,18 +670,19 @@ gtk_plot_canvas_class_init (GtkPlotCanvasClass *klass)
   klass->delete_item = NULL;
   klass->select_region = NULL;
 
+  GParamSpec *pspec;
+
   /**
    * GtkPlotCanvas:flags:
    *
-   *
+   * PlotCanvas flags control selection and DND,
+   * see #GtkPlotCanvasFlags.
    **/
-  g_object_class_install_property (gobject_class,
-                           ARG_CANVAS_FLAGS,
-  g_param_spec_int ("flags",
-                           P_(""),
-                           P_(""),
-                           0,G_MAXINT,0,
-                           G_PARAM_READABLE|G_PARAM_WRITABLE));
+  pspec = g_param_spec_int ("flags", P_("Flags"),
+      P_("Canvas flags"),
+      0,G_MAXINT,0,
+      G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, ARG_CANVAS_FLAGS, pspec);
 
   /**
    * GtkPlotCanvas:magnification:
@@ -921,6 +922,25 @@ gtk_plot_canvas_init (GtkPlotCanvas *plot_canvas)
 
   plot_canvas->pixmap = NULL;
 }
+
+GtkPlotCanvasFlags gtk_plot_canvas_flags(GtkPlotCanvas *canvas)
+{
+  g_return_val_if_fail(canvas != NULL, 0);
+  return(canvas->flags);
+}
+
+void gtk_plot_canvas_set_flags(GtkPlotCanvas *canvas, GtkPlotCanvasFlags flags)
+{
+  g_return_if_fail(canvas != NULL);
+  canvas->flags |= flags;
+}
+
+void gtk_plot_canvas_unset_flags(GtkPlotCanvas *canvas, GtkPlotCanvasFlags flags)
+{
+  g_return_if_fail(canvas != NULL);
+  canvas->flags &= ~flags;
+}
+
 
 void
 gtk_plot_canvas_set_pc(GtkPlotCanvas *canvas, GtkPlotPC *pc)
@@ -1272,7 +1292,7 @@ gtk_plot_canvas_motion (GtkWidget *widget, GdkEventMotion *event)
   canvas = GTK_PLOT_CANVAS(widget);
   gtk_widget_get_pointer(widget, &x, &y);
 
-  if(canvas->active_item && canvas->active_item->flags == GTK_PLOT_CANVAS_FROZEN) return TRUE;
+  if(canvas->active_item && canvas->active_item->flags == GTK_PLOT_CANVAS_CHILD_FROZEN) return TRUE;
 
   if(canvas->active_item){
     area = canvas->active_item->drag_area;
@@ -1341,7 +1361,7 @@ gtk_plot_canvas_motion (GtkWidget *widget, GdkEventMotion *event)
 
   switch(canvas->action){
      case GTK_PLOT_CANVAS_ACTION_DRAG:
-       if(canvas->active_item && canvas->active_item->flags & GTK_PLOT_CANVAS_CAN_MOVE){
+       if(canvas->active_item && canvas->active_item->flags & GTK_PLOT_CANVAS_CHILD_CAN_MOVE){
          gint dx, dy;
 
          gtk_plot_canvas_child_draw_selection(canvas, canvas->active_item, canvas->drag_area);
@@ -1359,12 +1379,12 @@ gtk_plot_canvas_motion (GtkWidget *widget, GdkEventMotion *event)
        switch(canvas->drag_point){
             case GTK_PLOT_CANVAS_TOP_LEFT: 
             case GTK_PLOT_CANVAS_TOP_RIGHT:
-               if(canvas->active_item && canvas->active_item->flags & GTK_PLOT_CANVAS_CAN_RESIZE){
+               if(canvas->active_item && canvas->active_item->flags & GTK_PLOT_CANVAS_CHILD_CAN_RESIZE){
                     new_x = MIN(x, pivot_x);
                     new_width = abs(x - pivot_x);
                }
             case GTK_PLOT_CANVAS_TOP:
-               if(canvas->active_item && canvas->active_item->flags & GTK_PLOT_CANVAS_CAN_RESIZE){
+               if(canvas->active_item && canvas->active_item->flags & GTK_PLOT_CANVAS_CHILD_CAN_RESIZE){
                     new_y = MIN(y, pivot_y);
                     new_height = abs(y - pivot_y);
                }
@@ -1374,19 +1394,19 @@ gtk_plot_canvas_motion (GtkWidget *widget, GdkEventMotion *event)
                break;
             case GTK_PLOT_CANVAS_BOTTOM_LEFT:
             case GTK_PLOT_CANVAS_BOTTOM_RIGHT:
-               if(canvas->active_item && canvas->active_item->flags & GTK_PLOT_CANVAS_CAN_RESIZE){
+               if(canvas->active_item && canvas->active_item->flags & GTK_PLOT_CANVAS_CHILD_CAN_RESIZE){
                     new_x = MIN(x, pivot_x);
                     new_width = abs(x - pivot_x);
                }
             case GTK_PLOT_CANVAS_BOTTOM:
-               if(canvas->active_item && canvas->active_item->flags & GTK_PLOT_CANVAS_CAN_RESIZE){
+               if(canvas->active_item && canvas->active_item->flags & GTK_PLOT_CANVAS_CHILD_CAN_RESIZE){
                     new_y = MIN(y, pivot_y);
                     new_height = abs(y - pivot_y);
                }
                break;
             case GTK_PLOT_CANVAS_LEFT:
             case GTK_PLOT_CANVAS_RIGHT:
-               if(canvas->active_item && canvas->active_item->flags & GTK_PLOT_CANVAS_CAN_RESIZE){
+               if(canvas->active_item && canvas->active_item->flags & GTK_PLOT_CANVAS_CHILD_CAN_RESIZE){
                     new_x = MIN(x, pivot_x);
                     new_width = abs(x - pivot_x);
                }
@@ -1404,11 +1424,11 @@ gtk_plot_canvas_motion (GtkWidget *widget, GdkEventMotion *event)
                 gtk_plot_canvas_child_draw_selection(canvas, canvas->active_item, canvas->drag_area);
                 canvas->pointer_x = x;
                 canvas->pointer_y = y;
-                if(canvas->active_item->flags & GTK_PLOT_CANVAS_CAN_MOVE || canvas->active_item->flags & GTK_PLOT_CANVAS_CAN_RESIZE){
+                if(canvas->active_item->flags & GTK_PLOT_CANVAS_CHILD_CAN_MOVE || canvas->active_item->flags & GTK_PLOT_CANVAS_CHILD_CAN_RESIZE){
                   area.x = new_x;
                   area.y = new_y;
                 }
-                if(canvas->active_item->flags & GTK_PLOT_CANVAS_CAN_RESIZE){
+                if(canvas->active_item->flags & GTK_PLOT_CANVAS_CHILD_CAN_RESIZE){
                   area.width = new_width;
                   area.height = new_height;
                 }
@@ -1545,7 +1565,7 @@ gtk_plot_canvas_button_press(GtkWidget *widget, GdkEventButton *event)
                canvas->action = GTK_PLOT_CANVAS_ACTION_DRAG;
                break;
            default:
-               if(active_item->flags & GTK_PLOT_CANVAS_CAN_RESIZE)
+               if(active_item->flags & GTK_PLOT_CANVAS_CHILD_CAN_RESIZE)
                   canvas->action = GTK_PLOT_CANVAS_ACTION_RESIZE;
                else
                   canvas->action = GTK_PLOT_CANVAS_ACTION_DRAG;

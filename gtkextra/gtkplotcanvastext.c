@@ -157,7 +157,7 @@ gtk_plot_canvas_text_init (GtkPlotCanvasText *text)
                                                                                 
   text_attr->text = NULL;
 
-  GTK_PLOT_CANVAS_CHILD(text)->flags = GTK_PLOT_CANVAS_CAN_MOVE;
+  GTK_PLOT_CANVAS_CHILD(text)->flags = GTK_PLOT_CANVAS_CHILD_CAN_MOVE;
 }
 
 static void

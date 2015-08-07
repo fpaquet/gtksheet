@@ -4725,7 +4725,7 @@ gtk_plot_data_connect_points(GtkPlotData *dataset, gint npoints)
  * @data: a #GtkPlotData widget.
  * @name: dimension name to be searched for
  *
- * Return value: (transfer none): the #GtkPlotArray with the 
+ * Return value: (transfer none) the #GtkPlotArray with the 
  * given name 
  */
 GtkPlotArray *
@@ -4964,11 +4964,11 @@ gtk_plot_data_draw_points(GtkPlotData *data, gint npoints)
 /**
  * gtk_plot_data_set_points:
  * @data: a #GtkPlotData widget.
- * @x:
- * @y:
- * @dx:
- * @dy:
- * num_points:
+ * @x: (transfer none) array of gdouble x-values
+ * @y: (transfer none) array of gdouble y-values
+ * @dx: (transfer none) array of gdouble delta-x-values (null)
+ * @dy:(transfer none) array of gdouble delta-x-values (null)
+ * @num_points: number of points = length of arrays
  *
  *
  */
@@ -4988,13 +4988,15 @@ gtk_plot_data_set_points(GtkPlotData *data,
 /**
  * gtk_plot_data_get_points:
  * @dataset: a #GtkPlotData widget.
- * @x:
- * @y:
- * @dx:
- * @dy:
- * @num_points:
+ * @x: (transfer none) where to store result pointer
+ * @y: (transfer none) where to store result pointer
+ * @dx: (transfer none) where to store result pointer
+ * @dy: (transfer none) where to store result pointer
+ * @num_points: (transfer none) where to store number of points
  *
- *
+ * 
+ * Retrieves pointers to internal plot data. Beware: The plot
+ * data belongs to the caller of #gtk_plot_data_set_points()
  */
 void
 gtk_plot_data_get_points(GtkPlotData *dataset,
@@ -5082,9 +5084,13 @@ gtk_plot_data_get_point(GtkPlotData *dataset, gint n,
 
 /**
  * gtk_plot_data_set_x:
- * @data: a #GtkPlotData widget.
- * @x: value to be updated
- *
+ * @data: a #GtkPlotData widget. 
+ * @x: (transfer none) pointer to plot data
+ * 
+ * Set pointer to plot data (x-values). The plot data is not
+ * duplicated. It belongs to the caller of
+ * #gtk_plot_data_set_x().
+ * 
  * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
@@ -5099,8 +5105,12 @@ gtk_plot_data_set_x(GtkPlotData *data,
 /**
  * gtk_plot_data_set_y:
  * @data: a #GtkPlotData widget.
- * @y: value to be updated 
- *
+ * @y: (transfer none) pointer to plot data
+ * 
+ * Set pointer to plot data (y-values). The plot data is not
+ * duplicated. It belongs to the caller of
+ * #gtk_plot_data_set_y().
+ * 
  * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
@@ -5115,8 +5125,12 @@ gtk_plot_data_set_y(GtkPlotData *data,
 /**
  * gtk_plot_data_set_z:
  * @data: a #GtkPlotData widget.
- * @z: value to be updated 
- *
+ * @z: (transfer none) pointer to plot data
+ * 
+ * Set pointer to plot data (z-values). The plot data is not
+ * duplicated. It belongs to the caller of
+ * #gtk_plot_data_set_z().
+ * 
  * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
@@ -5131,8 +5145,12 @@ gtk_plot_data_set_z(GtkPlotData *data,
 /**
  * gtk_plot_data_set_a:
  * @data: a #GtkPlotData widget.
- * @a: value to be updated 
- *
+ * @a: (transfer none) pointer to plot data
+ * 
+ * Set pointer to plot data (a-values). The plot data is not
+ * duplicated. It belongs to the caller of
+ * #gtk_plot_data_set_a().
+ * 
  * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
@@ -5147,8 +5165,12 @@ gtk_plot_data_set_a(GtkPlotData *data,
 /**
  * gtk_plot_data_set_dx:
  * @data: a #GtkPlotData widget.
- * @dx: value to be updated 
- *
+ * @dx:  (transfer none) pointer to plot data
+ * 
+ * Set pointer to plot data (x-error). The plot data is not
+ * duplicated. It belongs to the caller of
+ * #gtk_plot_data_set_dx().
+ * 
  * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
@@ -5163,8 +5185,12 @@ gtk_plot_data_set_dx(GtkPlotData *data,
 /**
  * gtk_plot_data_set_dy:
  * @data: a #GtkPlotData widget.
- * @dy: value to be updated 
- *
+ * @dy: (transfer none) pointer to plot data
+ * 
+ * Set pointer to plot data (y-error). The plot data is not
+ * duplicated. It belongs to the caller of
+ * #gtk_plot_data_set_dy().
+ * 
  * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
@@ -5179,8 +5205,12 @@ gtk_plot_data_set_dy(GtkPlotData *data,
 /**
  * gtk_plot_data_set_dz:
  * @data: a #GtkPlotData widget.
- * @dz: value to be updated 
- *
+ * @dz: (transfer none) pointer to plot data
+ * 
+ * Set pointer to plot data (z-error). The plot data is not
+ * duplicated. It belongs to the caller of
+ * #gtk_plot_data_set_dz().
+ * 
  * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
@@ -5195,8 +5225,12 @@ gtk_plot_data_set_dz(GtkPlotData *data,
 /**
  * gtk_plot_data_set_da:
  * @data: a #GtkPlotData widget.
- * @da: value to be updated
- *
+ * @da: (transfer none) pointer to plot data
+ * 
+ * Set pointer to plot data (a-error). The plot data is not
+ * duplicated. It belongs to the caller of
+ * #gtk_plot_data_set_da().
+ * 
  * Return value: (transfer none) the affected #GtkPlotArray
  */
 GtkPlotArray *
@@ -5246,12 +5280,13 @@ gtk_plot_data_set_labels(GtkPlotData *data,
 
 /**
  * gtk_plot_data_get_x:
- * @dataset: a #GtkPlotData widget.
- * @num_points:
- *
- *
- *
- * Return value:
+ * @dataset: a #GtkPlotData widget. 
+ * @num_points: place to store number of points
+ * 
+ * Retrieves a pointer to internal plot data. The plot data
+ * belongs to the caller of  of #gtk_plot_data_set_x().
+ * 
+ * Return value: (transfer none) pointer to internal plot data
  */
 gdouble *
 gtk_plot_data_get_x(GtkPlotData *dataset, gint *num_points)
@@ -5268,11 +5303,12 @@ gtk_plot_data_get_x(GtkPlotData *dataset, gint *num_points)
 /**
  * gtk_plot_data_get_y:
  * @dataset: a #GtkPlotData widget.
- * @num_points:
- *
- *
- *
- * Return value:
+ * @num_points: place to store number of points
+ * 
+ * Retrieves a pointer to internal plot data. The plot data
+ * belongs to the caller of  of #gtk_plot_data_set_x().
+ * 
+ * Return value: (transfer none) pointer to internal plot data
  */
 gdouble *
 gtk_plot_data_get_y(GtkPlotData *dataset, gint *num_points)
@@ -5289,11 +5325,12 @@ gtk_plot_data_get_y(GtkPlotData *dataset, gint *num_points)
 /**
  * gtk_plot_data_get_z:
  * @dataset: a #GtkPlotData widget.
- * @num_points:
- *
- *
- *
- * Return value:
+ * @num_points: place to store number of points
+ * 
+ * Retrieves a pointer to internal plot data. The plot data
+ * belongs to the caller of  of #gtk_plot_data_set_x().
+ * 
+ * Return value: (transfer none) pointer to internal plot data
  */
 gdouble *
 gtk_plot_data_get_z(GtkPlotData *dataset, gint *num_points)
@@ -5310,11 +5347,12 @@ gtk_plot_data_get_z(GtkPlotData *dataset, gint *num_points)
 /**
  * gtk_plot_data_get_a:
  * @dataset: a #GtkPlotData widget.
- * @num_points:
- *
- *
- *
- * Return value:
+ * @num_points: place to store number of points
+ * 
+ * Retrieves a pointer to internal plot data. The plot data
+ * belongs to the caller of  of #gtk_plot_data_set_x().
+ * 
+ * Return value: (transfer none) pointer to internal plot data
  */
 gdouble *
 gtk_plot_data_get_a(GtkPlotData *dataset, gint *num_points)
@@ -5331,11 +5369,12 @@ gtk_plot_data_get_a(GtkPlotData *dataset, gint *num_points)
 /**
  * gtk_plot_data_get_dx:
  * @dataset: a #GtkPlotData widget.
- * @num_points:
- *
- *
- *
- * Return value:
+ * @num_points: place to store number of points
+ * 
+ * Retrieves a pointer to internal plot data. The plot data
+ * belongs to the caller of  of #gtk_plot_data_set_x().
+ * 
+ * Return value: (transfer none) pointer to internal plot data
  */
 gdouble *
 gtk_plot_data_get_dx(GtkPlotData *dataset, gint *num_points)
@@ -5352,11 +5391,12 @@ gtk_plot_data_get_dx(GtkPlotData *dataset, gint *num_points)
 /**
  * gtk_plot_data_get_dy:
  * @dataset: a #GtkPlotData widget.
- * @num_points:
- *
- *
- *
- * Return value:
+ * @num_points: place to store number of points
+ * 
+ * Retrieves a pointer to internal plot data. The plot data
+ * belongs to the caller of  of #gtk_plot_data_set_x().
+ * 
+ * Return value: (transfer none) pointer to internal plot data
  */
 gdouble *
 gtk_plot_data_get_dy(GtkPlotData *dataset, gint *num_points)
@@ -5373,11 +5413,12 @@ gtk_plot_data_get_dy(GtkPlotData *dataset, gint *num_points)
 /**
  * gtk_plot_data_get_dz:
  * @dataset: a #GtkPlotData widget.
- * @num_points:
- *
- *
- *
- * Return value:
+ * @num_points: place to store number of points
+ * 
+ * Retrieves a pointer to internal plot data. The plot data
+ * belongs to the caller of  of #gtk_plot_data_set_x().
+ * 
+ * Return value: (transfer none) pointer to internal plot data
  */
 gdouble *
 gtk_plot_data_get_dz(GtkPlotData *dataset, gint *num_points)
@@ -5394,11 +5435,12 @@ gtk_plot_data_get_dz(GtkPlotData *dataset, gint *num_points)
 /**
  * gtk_plot_data_get_da:
  * @dataset: a #GtkPlotData widget.
- * @num_points:
- *
- *
- *
- * Return value:
+ * @num_points: place to store number of points
+ * 
+ * Retrieves a pointer to internal plot data. The plot data
+ * belongs to the caller of  of #gtk_plot_data_set_x().
+ * 
+ * Return value: (transfer none) pointer to internal plot data
  */
 gdouble *
 gtk_plot_data_get_da(GtkPlotData *dataset, gint *num_points)

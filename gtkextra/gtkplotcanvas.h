@@ -29,13 +29,21 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/* canvas flags */
-enum
+/**
+ * GtkPlotCanvasFlags:
+ * @GTK_PLOT_CANVAS_CAN_SELECT: Select region
+ * @GTK_PLOT_CANVAS_CAN_SELECT_ITEM: Select items
+ * @GTK_PLOT_CANVAS_CAN_DND: DnD items
+ *
+ * Selection and DND mode of #GtkPlotCanvas
+ *
+ **/
+typedef enum
 {
-      GTK_PLOT_CANVAS_CAN_SELECT	=	1 << 0, /* Select region */
-      GTK_PLOT_CANVAS_CAN_SELECT_ITEM	=	1 << 1, /* Select item */
-      GTK_PLOT_CANVAS_CAN_DND		=	1 << 2, /* DnD item */
-};
+      GTK_PLOT_CANVAS_CAN_SELECT	=	1 << 0,
+      GTK_PLOT_CANVAS_CAN_SELECT_ITEM	=	1 << 1,
+      GTK_PLOT_CANVAS_CAN_DND		=	1 << 2,
+} GtkPlotCanvasFlags;
 
 
 /* canvas actions */
@@ -47,12 +55,47 @@ typedef enum
       GTK_PLOT_CANVAS_ACTION_RESIZE,
 } GtkPlotCanvasAction;
 
+/**
+ * GtkPlotCanvasFlag: 
+ * @GTK_PLOT_CANVAS_FROZEN: Child is frozen
+ * @GTK_PLOT_CANVAS_CAN_MOVE: Child can be moved
+ * @GTK_PLOT_CANVAS_CAN_RESIZE: Child can be resized
+ *  
+ * Deprecated, Used for GtkPlotCanvasChild. Use 
+ * #GtkPlotCanvasChildFlags instead. 
+ *  
+ * Deprecated: 3.1.6: use #GtkPlotCanvasChildFlags
+ **/
+
+#ifndef DISABLE_DEPRECATED
+
 typedef enum
 {
+    /*< private >*/
       GTK_PLOT_CANVAS_FROZEN            = 0,
       GTK_PLOT_CANVAS_CAN_MOVE          = 1 << 0,
       GTK_PLOT_CANVAS_CAN_RESIZE	= 1 << 1,
 } GtkPlotCanvasFlag;
+
+#endif
+
+/**
+ * GtkPlotCanvasChildFlags:
+ * @GTK_PLOT_CANVAS_CHILD_FROZEN: Child is frozen
+ * @GTK_PLOT_CANVAS_CHILD_CAN_MOVE: Child can be moved
+ * @GTK_PLOT_CANVAS_CHILD_CAN_RESIZE: Child can be resized
+ *
+ * move/resize-mode of #GtkPlotCanvasChild
+ *
+ **/
+typedef enum
+{
+      GTK_PLOT_CANVAS_CHILD_FROZEN            = 0,
+      GTK_PLOT_CANVAS_CHILD_CAN_MOVE          = 1 << 0,
+      GTK_PLOT_CANVAS_CHILD_CAN_RESIZE	= 1 << 1,
+} GtkPlotCanvasChildFlags;
+
+
 
 typedef enum
 {
@@ -89,9 +132,14 @@ typedef enum
 #define GTK_IS_PLOT_CANVAS(obj)     G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_plot_canvas_get_type ())
 #define G_TYPE_PLOT_CANVAS (gtk_plot_canvas_get_type ())
 
-#define GTK_PLOT_CANVAS_FLAGS(canvas)	  (GTK_PLOT_CANVAS(canvas)->flags)
-#define GTK_PLOT_CANVAS_SET_FLAGS(canvas, flags)  (GTK_PLOT_CANVAS_FLAGS(canvas) |= (flags))
-#define GTK_PLOT_CANVAS_UNSET_FLAGS(canvas, flags)  (GTK_PLOT_CANVAS_FLAGS(canvas) &= ~(flags))
+/* Public flags, for compatibility */
+
+#define GTK_PLOT_CANVAS_FLAGS(canvas)	  gtk_plot_canvas_flags(canvas)
+#define GTK_PLOT_CANVAS_SET_FLAGS(canvas, flags)  \
+    gtk_plot_canvas_set_flags(canvas, flags)
+#define GTK_PLOT_CANVAS_UNSET_FLAGS(canvas, flags)  \
+    gtk_plot_canvas_unset_flags(canvas,flags)
+
 #define GTK_PLOT_CANVAS_CAN_DND_POINT(canvas)  (GTK_PLOT_CANVAS_FLAGS(canvas) & GTK_PLOT_CANVAS_CAN_DND_POINT)
 #define GTK_PLOT_CANVAS_CAN_DND(canvas)  (GTK_PLOT_CANVAS_FLAGS(canvas) & GTK_PLOT_CANVAS_CAN_DND)
 #define GTK_PLOT_CANVAS_CAN_SELECT_POINT(canvas)  (GTK_PLOT_CANVAS_FLAGS(canvas) & GTK_PLOT_CANVAS_CAN_SELECT_POINT)
@@ -129,7 +177,7 @@ struct _GtkPlotCanvasChild
 
   guint state;
 
-  GtkPlotCanvasFlag flags;
+  GtkPlotCanvasChildFlags flags;
   GtkPlotCanvasSelection selection;
   GtkPlotCanvasSelectionMode mode;
 };
@@ -164,7 +212,7 @@ struct _GtkPlotCanvas
 {
   GtkFixed fixed;
 
-  guint16 flags;
+  GtkPlotCanvasFlags flags;
   guint state;
 
   guint freeze_count;
@@ -239,6 +287,11 @@ void		gtk_plot_canvas_construct       (GtkPlotCanvas *canvas,
                                                  gdouble magnification);
 void		gtk_plot_canvas_set_pc          (GtkPlotCanvas *canvas,
 						 GtkPlotPC *pc);
+
+GtkPlotCanvasFlags gtk_plot_canvas_flags(GtkPlotCanvas *canvas);
+void gtk_plot_canvas_set_flags(GtkPlotCanvas *canvas, GtkPlotCanvasFlags flags);
+void gtk_plot_canvas_unset_flags(GtkPlotCanvas *canvas, GtkPlotCanvasFlags flags);
+
 void		gtk_plot_canvas_paint           (GtkPlotCanvas *canvas);
 void		gtk_plot_canvas_refresh         (GtkPlotCanvas *canvas);
 void 		gtk_plot_canvas_freeze		(GtkPlotCanvas *canvas);

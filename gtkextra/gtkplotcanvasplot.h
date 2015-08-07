@@ -55,12 +55,19 @@ typedef enum
   GTK_PLOT_CANVAS_PLOT_IN_MARKER,
 } GtkPlotCanvasPlotPos;
 
-/* child flags */
-enum
+/**
+ * GtkPlotCanvasPlotFlags:
+ * @GTK_PLOT_CANVAS_PLOT_SELECT_POINT: Select point
+ * @GTK_PLOT_CANVAS_PLOT_DND_POINT: DnD point
+ *
+ * Selection and DND mode of #GtkPlotCanvas
+ *
+ **/
+typedef enum
 {
       GTK_PLOT_CANVAS_PLOT_SELECT_POINT  =       1 << 0, /* Select point */
       GTK_PLOT_CANVAS_PLOT_DND_POINT     =       1 << 1, /* DnD point */
-};
+} GtkPlotCanvasPlotFlags;
 
 /**
  * GtkPlotCanvasPlot:
@@ -79,7 +86,7 @@ struct _GtkPlotCanvasPlot
   GtkPlotMarker *marker;
   gint datapoint;
 
-  guint flags;
+  GtkPlotCanvasPlotFlags flags;
 
   GtkPlot *plot;
 };
@@ -89,9 +96,14 @@ struct _GtkPlotCanvasPlotClass
   GtkPlotCanvasChildClass parent_class;
 };
 
+
 GType 		gtk_plot_canvas_plot_get_type	(void);
 GtkPlotCanvasChild * 
 		gtk_plot_canvas_plot_new	(GtkPlot *plot);
+
+GtkPlotCanvasPlotFlags gtk_plot_canvas_plot_flags(GtkPlotCanvasPlot *plot);
+void gtk_plot_canvas_plot_set_flags(GtkPlotCanvasPlot *plot, GtkPlotCanvasPlotFlags flags);
+void gtk_plot_canvas_plot_unset_flags(GtkPlotCanvasPlot *plot, GtkPlotCanvasPlotFlags flags);
 
 #ifdef __cplusplus
 }

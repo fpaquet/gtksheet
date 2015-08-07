@@ -1,3 +1,6 @@
+2015-08-07 Fredy Paquet <mailbox AT opag.ch>
+	* GtkPlot*: fixed types and annotations for interface generation via Gir file
+
 2015-08-01 Fredy Paquet <mailbox AT opag.ch>
 	* GtkDataEntry: fix dataformat race condition in gtk_data_entry_get_text() PR#205431
 	* updated gtkextra-3 version to 3.1.5, Libtool Revision 7.5.0

@@ -156,6 +156,27 @@ gtk_plot_canvas_plot_destroy(GtkObject *object)
   */ 
 }
 
+GtkPlotCanvasPlotFlags gtk_plot_canvas_plot_flags(GtkPlotCanvasPlot *plot)
+{
+  g_return_val_if_fail(plot != NULL, 0);
+  return(plot->flags);
+}
+
+void gtk_plot_canvas_plot_set_flags(GtkPlotCanvasPlot *plot, 
+    GtkPlotCanvasPlotFlags flags)
+{
+  g_return_if_fail(plot != NULL);
+  plot->flags |= flags;
+}
+
+void gtk_plot_canvas_plot_unset_flags(GtkPlotCanvasPlot *plot,
+    GtkPlotCanvasPlotFlags flags)
+{
+  g_return_if_fail(plot != NULL);
+  plot->flags &= ~flags;
+}
+
+
 static void 
 gtk_plot_canvas_plot_draw 		(GtkPlotCanvas *canvas,
 					 GtkPlotCanvasChild *child)
@@ -204,7 +225,7 @@ reset_plot_allocation(GtkPlotCanvas *canvas, GtkPlotCanvasPlot *child)
 /*
   GTK_PLOT_CANVAS_CHILD(child)->selection = GTK_PLOT_CANVAS_SELECT_MARKERS;
   GTK_PLOT_CANVAS_CHILD(child)->mode = GTK_PLOT_CANVAS_SELECT_CLICK_2;
-  GTK_PLOT_CANVAS_CHILD(child)->flags = GTK_PLOT_CANVAS_CAN_MOVE | GTK_PLOT_CANVAS_CAN_RESIZE;
+  GTK_PLOT_CANVAS_CHILD(child)->flags = GTK_PLOT_CANVAS_CHILD_CAN_MOVE | GTK_PLOT_CANVAS_CHILD_CAN_RESIZE;
 */
 }
 
@@ -466,7 +487,7 @@ canvas_unselect(GtkPlotCanvas *canvas, GtkPlotCanvasChild *child)
   reset_plot_allocation(canvas, GTK_PLOT_CANVAS_PLOT(child));
   GTK_PLOT_CANVAS_CHILD(child)->selection = GTK_PLOT_CANVAS_SELECT_MARKERS;
   GTK_PLOT_CANVAS_CHILD(child)->mode = GTK_PLOT_CANVAS_SELECT_CLICK_2;
-  GTK_PLOT_CANVAS_CHILD(child)->flags = GTK_PLOT_CANVAS_CAN_MOVE | GTK_PLOT_CANVAS_CAN_RESIZE;
+  GTK_PLOT_CANVAS_CHILD(child)->flags = GTK_PLOT_CANVAS_CHILD_CAN_MOVE | GTK_PLOT_CANVAS_CHILD_CAN_RESIZE;
 }
 
 static GtkPlotCanvasPos 
@@ -495,7 +516,7 @@ gtk_plot_canvas_plot_button_press(GtkPlotCanvas *canvas,
     GTK_PLOT_CANVAS_PLOT(child)->pos = GTK_PLOT_CANVAS_PLOT_IN_LEGENDS;
     child->selection = GTK_PLOT_CANVAS_SELECT_MARKERS;
     child->mode = GTK_PLOT_CANVAS_SELECT_CLICK_2;
-    child->flags = GTK_PLOT_CANVAS_CAN_MOVE;
+    child->flags = GTK_PLOT_CANVAS_CHILD_CAN_MOVE;
     child->state = GTK_STATE_SELECTED;
     return pos;
   }
@@ -521,7 +542,7 @@ gtk_plot_canvas_plot_button_press(GtkPlotCanvas *canvas,
       GTK_PLOT_CANVAS_PLOT(child)->data = data;
       child->selection = GTK_PLOT_CANVAS_SELECT_MARKERS;
       child->mode = GTK_PLOT_CANVAS_SELECT_CLICK_2;
-      child->flags = GTK_PLOT_CANVAS_CAN_MOVE;
+      child->flags = GTK_PLOT_CANVAS_CHILD_CAN_MOVE;
       child->state = GTK_STATE_SELECTED;
       return pos;
     }
@@ -581,7 +602,7 @@ gtk_plot_canvas_plot_button_press(GtkPlotCanvas *canvas,
           GTK_PLOT_CANVAS_PLOT(child)->axis = axis[i];
           child->selection = GTK_PLOT_CANVAS_SELECT_MARKERS;
           child->mode = GTK_PLOT_CANVAS_SELECT_CLICK_2;
-          child->flags = GTK_PLOT_CANVAS_CAN_MOVE;
+          child->flags = GTK_PLOT_CANVAS_CHILD_CAN_MOVE;
           child->state = GTK_STATE_SELECTED;
           return pos;
         }
@@ -605,7 +626,7 @@ gtk_plot_canvas_plot_button_press(GtkPlotCanvas *canvas,
     GTK_PLOT_CANVAS_PLOT(child)->pos = GTK_PLOT_CANVAS_PLOT_IN_PLOT;
     child->selection = GTK_PLOT_CANVAS_SELECT_MARKERS;
     child->mode = GTK_PLOT_CANVAS_SELECT_CLICK_2;
-    child->flags = GTK_PLOT_CANVAS_CAN_MOVE;
+    child->flags = GTK_PLOT_CANVAS_CHILD_CAN_MOVE;
     child->state = GTK_STATE_SELECTED;
     return pos;
   }
@@ -654,7 +675,7 @@ gtk_plot_canvas_plot_button_press(GtkPlotCanvas *canvas,
         GTK_PLOT_CANVAS_PLOT(child)->pos = GTK_PLOT_CANVAS_PLOT_IN_AXIS;
         GTK_PLOT_CANVAS_PLOT(child)->axis = axis[i];
         child->state = GTK_STATE_SELECTED;
-        child->flags = GTK_PLOT_CANVAS_FROZEN;
+        child->flags = GTK_PLOT_CANVAS_CHILD_FROZEN;
         child->selection = GTK_PLOT_CANVAS_SELECT_MARKERS;
         child->mode = GTK_PLOT_CANVAS_SELECT_CLICK_2;
         return pos;
@@ -702,7 +723,7 @@ gtk_plot_canvas_plot_button_press(GtkPlotCanvas *canvas,
           child->drag_area.height = 20;
           canvas->drag_area = child->drag_area;
           child->state = GTK_STATE_SELECTED;
-          child->flags = GTK_PLOT_CANVAS_CAN_MOVE;
+          child->flags = GTK_PLOT_CANVAS_CHILD_CAN_MOVE;
           child->selection = GTK_PLOT_CANVAS_SELECT_TARGET;
           child->mode = GTK_PLOT_CANVAS_SELECT_CLICK_1;
           return GTK_PLOT_CANVAS_IN;
@@ -754,9 +775,9 @@ gtk_plot_canvas_plot_button_press(GtkPlotCanvas *canvas,
             child->drag_area.height = 2*DEFAULT_MARKER_SIZE;
             canvas->drag_area = child->drag_area;
             child->state = GTK_STATE_SELECTED;
-            child->flags = GTK_PLOT_CANVAS_FROZEN;
+            child->flags = GTK_PLOT_CANVAS_CHILD_FROZEN;
             if(GTK_PLOT_CANVAS_PLOT_DND_POINT(GTK_PLOT_CANVAS_PLOT(child)))
-              child->flags = GTK_PLOT_CANVAS_CAN_MOVE;
+              child->flags = GTK_PLOT_CANVAS_CHILD_CAN_MOVE;
             child->selection = GTK_PLOT_CANVAS_SELECT_TARGET;
             child->mode = GTK_PLOT_CANVAS_SELECT_CLICK_1;
             return GTK_PLOT_CANVAS_IN;

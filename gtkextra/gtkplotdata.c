@@ -21,7 +21,16 @@
  * SECTION: gtkplotdata
  * @short_description: 
  *
- * FIXME:: Need long description.
+ * A #GtkPlotData object contains multiple dimensions of data
+ * for GtkPlots. Each dimension has a name, a label, a
+ * description and an array of typed values.
+ *  
+ * Each #GtkPlot can display multiple #GtkPlotData sets. 
+ * 
+ * Predefined dimension names are: "x" for X values, "y" for Y
+ * values, "z" for Z values, "a" for Symbol size, "dx" for X
+ * error, "dy" for Y error, "dz" for Z error, "da" for amplitude
+ * values, "labels" for value labels
  */
 
 #include <stdlib.h>
@@ -5146,10 +5155,10 @@ gtk_plot_data_set_z(GtkPlotData *data,
  * gtk_plot_data_set_a:
  * @data: a #GtkPlotData widget.
  * @a: (transfer none) pointer to plot data
- * 
- * Set pointer to plot data (a-values). The plot data is not
- * duplicated. It belongs to the caller of
- * #gtk_plot_data_set_a().
+ *  
+ * Set pointer to plot data (Symbol size). The plot data is not
+ * duplicated. It belongs to the caller of 
+ * #gtk_plot_data_set_a(). 
  * 
  * Return value: (transfer none) the affected #GtkPlotArray
  */
@@ -5227,8 +5236,8 @@ gtk_plot_data_set_dz(GtkPlotData *data,
  * @data: a #GtkPlotData widget.
  * @da: (transfer none) pointer to plot data
  * 
- * Set pointer to plot data (a-error). The plot data is not
- * duplicated. It belongs to the caller of
+ * Set pointer to plot data (Amplitude). The plot data is not 
+ * duplicated. It belongs to the caller of 
  * #gtk_plot_data_set_da().
  * 
  * Return value: (transfer none) the affected #GtkPlotArray
@@ -5576,12 +5585,12 @@ gtk_plot_data_get_numpoints(GtkPlotData *dataset)
 /**
  * gtk_plot_data_set_symbol:
  * @dataset: a #GtkPlotData widget.
- * @type:
- * @style:
- * @size:
- * @line_width:
- * @color:
- * @border_color:
+ * @type: symbol type, see #GtkPlotSymbolType
+ * @style: symbol style, see #GtkPlotSymbolStyle
+ * @size: symbol size
+ * @line_width: symbol line width 
+ * @color: fill color
+ * @border_color: border color
  *
  *
  */
@@ -5630,11 +5639,11 @@ gtk_plot_data_get_symbol (GtkPlotData *dataset,
 /**
  * gtk_plot_data_set_line_attributes:
  * @dataset: a #GtkPlotData widget.
- * @style:
- * @cap_style:
- * @join_style:
- * @width:
- * @color:
+ * @style: a #GtkPlotLineStyle
+ * @cap_style: a #GdkCapStyle
+ * @join_style: a #GdkJoinStyle
+ * @width: line width
+ * @color: line color
  *
  *
  */

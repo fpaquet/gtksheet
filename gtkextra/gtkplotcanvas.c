@@ -687,104 +687,89 @@ gtk_plot_canvas_class_init (GtkPlotCanvasClass *klass)
   /**
    * GtkPlotCanvas:magnification:
    *
-   *
+   * PlotCanvas magnification factor
    **/
-  g_object_class_install_property (gobject_class,
-                           ARG_CANVAS_MAGNIFICATION,
-  g_param_spec_double ("magnification",
-                           P_(""),
-                           P_(""),
-                           0,G_MAXDOUBLE,1.0,
-                           G_PARAM_READABLE|G_PARAM_WRITABLE));
+  pspec = g_param_spec_double ("magnification", P_("Magnification"),
+      P_("Canvas magnification"),
+      0,G_MAXDOUBLE,1.0,
+      G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, ARG_CANVAS_MAGNIFICATION, pspec
+  );
 
   /**
    * GtkPlotCanvas:width:
    *
-   *
+   * PlotCanvas width in pixels.
    **/
-  g_object_class_install_property (gobject_class,
-                           ARG_CANVAS_WIDTH,
-  g_param_spec_int ("width",
-                           P_(""),
-                           P_(""),
-                           0,G_MAXINT,1,
-                           G_PARAM_READABLE|G_PARAM_WRITABLE));
+  pspec = g_param_spec_int ("width", P_("Width"),
+      P_("Canvas width"),
+      0,G_MAXINT,1,
+      G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, ARG_CANVAS_WIDTH, pspec);
 
   /**
    * GtkPlotCanvas:height:
    *
-   *
+   * PlotCanvas height in pixels.
    **/
-  g_object_class_install_property (gobject_class,
-                           ARG_CANVAS_HEIGHT,
-  g_param_spec_int ("height",
-                           P_(""),
-                           P_(""),
-                           0,G_MAXINT,1,
-                           G_PARAM_READABLE|G_PARAM_WRITABLE));
+  pspec = g_param_spec_int ("height", P_("Height"),
+      P_("Canvas height"),
+      0,G_MAXINT,1,
+      G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, ARG_CANVAS_HEIGHT, pspec);
 
   /**
    * GtkPlotCanvas:show_grid:
    *
-   *
+   * Show grid lines.
    **/
-  g_object_class_install_property (gobject_class,
-                           ARG_CANVAS_SHOW_GRID,
-  g_param_spec_boolean ("show_grid",
-                           P_(""),
-                           P_(""),
+  pspec = g_param_spec_boolean ("show_grid", P_("Show grid"),
+                           P_("Show grid"),
                            FALSE,
-                           G_PARAM_READABLE|G_PARAM_WRITABLE));
+                           G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, ARG_CANVAS_SHOW_GRID, pspec);
 
   /**
    * GtkPlotCanvas:grid_step:
    *
-   *
+   * Distance between grid lines.
    **/
-  g_object_class_install_property (gobject_class,
-                           ARG_CANVAS_GRID_STEP,
-  g_param_spec_double ("grid_step",
-                           P_(""),
-                           P_(""),
+  pspec = g_param_spec_double ("grid_step", P_("Grid step"),
+                           P_("Distance between grid lines"),
                            0,G_MAXDOUBLE,0.0,
-                           G_PARAM_READABLE|G_PARAM_WRITABLE));
+                           G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, ARG_CANVAS_GRID_STEP, pspec);
 
   /**
    * GtkPlotCanvas:line_grid:
    *
-   *
+   * Line grid pattern.
    **/
-  g_object_class_install_property (gobject_class,
-                           ARG_CANVAS_LINE_GRID,
-  g_param_spec_pointer ("line_grid",
-                           P_(""),
-                           P_(""),
-                           G_PARAM_READABLE|G_PARAM_WRITABLE));
+  pspec = g_param_spec_pointer ("line_grid", P_("Line Grid"),
+                           P_("Canvas line grid"),
+                           G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, ARG_CANVAS_LINE_GRID, pspec);
 
   /**
    * GtkPlotCanvas:color_bg:
    *
-   *
+   * Background color.
    **/
-  g_object_class_install_property (gobject_class,
-                           ARG_CANVAS_COLOR_BG,
-  g_param_spec_pointer ("color_bg",
-                           P_(""),
-                           P_(""),
-                           G_PARAM_READABLE|G_PARAM_WRITABLE));
+  pspec = g_param_spec_pointer ("color_bg", P_("Background"),
+                           P_("Background color"),
+                           G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, ARG_CANVAS_COLOR_BG, pspec);
 
   /**
    * GtkPlotCanvas:transparent:
    *
-   *
+   * Canvas transparency
    **/
-  g_object_class_install_property (gobject_class,
-                           ARG_CANVAS_TRANSPARENT,
-  g_param_spec_boolean ("transparent",
-                           P_(""),
-                           P_(""),
+  pspec = g_param_spec_boolean ("transparent", P_("Transparent"),
+                           P_("Canvas transparency"),
                            TRUE,
-                           G_PARAM_READABLE|G_PARAM_WRITABLE));
+                           G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, ARG_CANVAS_TRANSPARENT, pspec);
 }
 
 static void

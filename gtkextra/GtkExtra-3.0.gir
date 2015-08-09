@@ -7141,21 +7141,25 @@ see #GtkPlotCanvasFlags.</doc>
         <type name="gdouble"/>
       </property>
       <property name="height" writable="1" transfer-ownership="none">
+        <doc xml:whitespace="preserve">PlotCanvas height in pixels.</doc>
         <type name="gint"/>
       </property>
       <property name="line-grid" writable="1" transfer-ownership="none">
         <type name="gpointer"/>
       </property>
       <property name="magnification" writable="1" transfer-ownership="none">
+        <doc xml:whitespace="preserve">PlotCanvas magnification factor</doc>
         <type name="gdouble"/>
       </property>
       <property name="show-grid" writable="1" transfer-ownership="none">
         <type name="gboolean"/>
       </property>
       <property name="transparent" writable="1" transfer-ownership="none">
+        <doc xml:whitespace="preserve">Canvas transparency</doc>
         <type name="gboolean"/>
       </property>
       <property name="width" writable="1" transfer-ownership="none">
+        <doc xml:whitespace="preserve">PlotCanvas width in pixels.</doc>
         <type name="gint"/>
       </property>
       <field name="fixed">
@@ -7869,6 +7873,13 @@ It should only be accessed through the functions described below.</doc>
               c:type="GtkPlotCanvasFlag">
       <doc xml:whitespace="preserve">Deprecated, Used for GtkPlotCanvasChild. Use 
 #GtkPlotCanvasChildFlags instead.</doc>
+      <member name="frozen" value="0" c:identifier="GTK_PLOT_CANVAS_FROZEN"/>
+      <member name="can_move"
+              value="1"
+              c:identifier="GTK_PLOT_CANVAS_CAN_MOVE"/>
+      <member name="can_resize"
+              value="2"
+              c:identifier="GTK_PLOT_CANVAS_CAN_RESIZE"/>
     </bitfield>
     <bitfield name="PlotCanvasFlags" c:type="GtkPlotCanvasFlags">
       <doc xml:whitespace="preserve">Selection and DND mode of #GtkPlotCanvas</doc>
@@ -8066,7 +8077,9 @@ It should only be accessed through the functions described below.</doc>
            glib:type-name="GtkPlotCanvasPlot"
            glib:get-type="gtk_plot_canvas_plot_get_type"
            glib:type-struct="PlotCanvasPlotClass">
-      <doc xml:whitespace="preserve">FIXME:: need long description</doc>
+      <doc xml:whitespace="preserve">A #GtkPlotCanvas object is an interactive container for
+GtkPlots and some graphic primitives that can be used to
+illustrate the plots (see #GtkCanvasChild).</doc>
       <constructor name="new" c:identifier="gtk_plot_canvas_plot_new">
         <return-value transfer-ownership="none">
           <type name="PlotCanvasChild" c:type="GtkPlotCanvasChild*"/>
@@ -8906,7 +8919,16 @@ It should only be accessed through the functions described below.</doc>
            glib:type-name="GtkPlotData"
            glib:get-type="gtk_plot_data_get_type"
            glib:type-struct="PlotDataClass">
-      <doc xml:whitespace="preserve">FIXME:: Need long description.</doc>
+      <doc xml:whitespace="preserve">A #GtkPlotData object contains multiple dimensions of data
+for GtkPlots. Each dimension has a name, a label, a
+description and an array of typed values.
+ 
+Each #GtkPlot can display multiple #GtkPlotData sets. 
+
+Predefined dimension names are: "x" for X values, "y" for Y
+values, "z" for Z values, "a" for Symbol size, "dx" for X
+error, "dy" for Y error, "dz" for Z error, "da" for amplitude
+values, "labels" for value labels</doc>
       <implements name="Atk.ImplementorIface"/>
       <implements name="Gtk.Buildable"/>
       <constructor name="new" c:identifier="gtk_plot_data_new">
@@ -9846,8 +9868,8 @@ belongs to the caller of  of #gtk_plot_data_set_x().</doc>
         </return-value>
       </method>
       <method name="set_a" c:identifier="gtk_plot_data_set_a">
-        <doc xml:whitespace="preserve">Set pointer to plot data (a-values). The plot data is not
-duplicated. It belongs to the caller of
+        <doc xml:whitespace="preserve">Set pointer to plot data (Symbol size). The plot data is not
+duplicated. It belongs to the caller of 
 #gtk_plot_data_set_a().</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">the affected #GtkPlotArray</doc>
@@ -9881,8 +9903,8 @@ duplicated. It belongs to the caller of
         </parameters>
       </method>
       <method name="set_da" c:identifier="gtk_plot_data_set_da">
-        <doc xml:whitespace="preserve">Set pointer to plot data (a-error). The plot data is not
-duplicated. It belongs to the caller of
+        <doc xml:whitespace="preserve">Set pointer to plot data (Amplitude). The plot data is not 
+duplicated. It belongs to the caller of 
 #gtk_plot_data_set_da().</doc>
         <return-value transfer-ownership="none">
           <doc xml:whitespace="preserve">the affected #GtkPlotArray</doc>
@@ -10074,18 +10096,23 @@ duplicated. It belongs to the caller of
         </return-value>
         <parameters>
           <parameter name="style" transfer-ownership="none">
+            <doc xml:whitespace="preserve">a #GtkPlotLineStyle</doc>
             <type name="PlotLineStyle" c:type="GtkPlotLineStyle"/>
           </parameter>
           <parameter name="cap_style" transfer-ownership="none">
+            <doc xml:whitespace="preserve">a #GdkCapStyle</doc>
             <type name="Gdk.CapStyle" c:type="GdkCapStyle"/>
           </parameter>
           <parameter name="join_style" transfer-ownership="none">
+            <doc xml:whitespace="preserve">a #GdkJoinStyle</doc>
             <type name="Gdk.JoinStyle" c:type="GdkJoinStyle"/>
           </parameter>
           <parameter name="width" transfer-ownership="none">
+            <doc xml:whitespace="preserve">line width</doc>
             <type name="gfloat" c:type="gfloat"/>
           </parameter>
           <parameter name="color" transfer-ownership="none">
+            <doc xml:whitespace="preserve">line color</doc>
             <type name="Gdk.Color" c:type="const GdkColor*"/>
           </parameter>
         </parameters>
@@ -10153,21 +10180,27 @@ duplicated. It belongs to the caller of
         </return-value>
         <parameters>
           <parameter name="type" transfer-ownership="none">
+            <doc xml:whitespace="preserve">symbol type, see #GtkPlotSymbolType</doc>
             <type name="PlotSymbolType" c:type="GtkPlotSymbolType"/>
           </parameter>
           <parameter name="style" transfer-ownership="none">
+            <doc xml:whitespace="preserve">symbol style, see #GtkPlotSymbolStyle</doc>
             <type name="PlotSymbolStyle" c:type="GtkPlotSymbolStyle"/>
           </parameter>
           <parameter name="size" transfer-ownership="none">
+            <doc xml:whitespace="preserve">symbol size</doc>
             <type name="gint" c:type="gint"/>
           </parameter>
           <parameter name="line_width" transfer-ownership="none">
+            <doc xml:whitespace="preserve">symbol line width</doc>
             <type name="gfloat" c:type="gfloat"/>
           </parameter>
           <parameter name="color" transfer-ownership="none">
+            <doc xml:whitespace="preserve">fill color</doc>
             <type name="Gdk.Color" c:type="const GdkColor*"/>
           </parameter>
           <parameter name="border_color" transfer-ownership="none">
+            <doc xml:whitespace="preserve">border color</doc>
             <type name="Gdk.Color" c:type="const GdkColor*"/>
           </parameter>
         </parameters>

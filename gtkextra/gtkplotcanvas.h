@@ -55,6 +55,8 @@ typedef enum
       GTK_PLOT_CANVAS_ACTION_RESIZE,
 } GtkPlotCanvasAction;
 
+#ifndef DISABLE_DEPRECATED
+
 /**
  * GtkPlotCanvasFlag: 
  * @GTK_PLOT_CANVAS_FROZEN: Child is frozen
@@ -66,12 +68,8 @@ typedef enum
  *  
  * Deprecated: 3.1.6: use #GtkPlotCanvasChildFlags
  **/
-
-#ifndef DISABLE_DEPRECATED
-
 typedef enum
 {
-    /*< private >*/
       GTK_PLOT_CANVAS_FROZEN            = 0,
       GTK_PLOT_CANVAS_CAN_MOVE          = 1 << 0,
       GTK_PLOT_CANVAS_CAN_RESIZE	= 1 << 1,

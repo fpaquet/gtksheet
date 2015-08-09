@@ -21,7 +21,9 @@
  * SECTION: gtkplotcanvasplot
  * @short_description: 
  *
- * FIXME:: need long description
+ * A #GtkPlotCanvas object is an interactive container for
+ * GtkPlots and some graphic primitives that can be used to
+ * illustrate the plots (see #GtkCanvasChild).
  */
 
 

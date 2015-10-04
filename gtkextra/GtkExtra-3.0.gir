@@ -17,8 +17,8 @@ and/or use gtk-doc annotations.  -->
   <include name="Pango" version="1.0"/>
   <include name="cairo" version="1.0"/>
   <namespace name="GtkExtra"
-             version="3.1.5"
-             shared-library="libgtkextra-x11-3.0.so.7"
+             version="3.2.0"
+             shared-library="libgtkextra-x11-3.0.so.8"
              c:identifier-prefixes="Gtk"
              c:symbol-prefixes="gtk">
     <class name="BorderCombo"

@@ -1,3 +1,11 @@
+2015-10-03 Fredy Paquet <mailbox AT opag.ch>
+	* GtkPlot*: merged api fixes to support binding generation via Gir-File
+	* GtkPlotCanvas: new enum GtkPlotCanvasChildFlags
+	* GtkPlotCanvas: changed type of a struct member in _GtkPlotCanvasChild from
+ GtkPlotCanvasFlag to GtkPlotCanvasChildFlags
+	* updated gtkextra-3 version to 3.2.0, Libtool Revision 8.0.0
+	* published gtkextra-3 version 3.2.0
+
 2015-08-07 Fredy Paquet <mailbox AT opag.ch>
 	* GtkPlot*: fixed types and annotations for interface generation via Gir file
 

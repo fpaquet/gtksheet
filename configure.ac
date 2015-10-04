@@ -8,7 +8,7 @@
 # - http://www.linuxselfhelp.com/gnu/autoconf/html_chapter/autoconf_7.html
 #
 
-AC_INIT([gtkextra], [3.1.5])
+AC_INIT([gtkextra], [3.2.0])
 AC_LANG([C])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -22,8 +22,8 @@ AC_DIVERT_PUSH(NOTICE)dnl
 # http://gtkextra.sourceforge.net/cms/index.php?option=com_content&view=article&id=44&Itemid=22
 
 GTK_EXTRA_MAJOR_VERSION=3
-GTK_EXTRA_MINOR_VERSION=1
-GTK_EXTRA_MICRO_VERSION=5
+GTK_EXTRA_MINOR_VERSION=2
+GTK_EXTRA_MICRO_VERSION=0
 
 GTK_EXTRA_VERSION=$GTK_EXTRA_MAJOR_VERSION.$GTK_EXTRA_MINOR_VERSION.$GTK_EXTRA_MICRO_VERSION
 
@@ -39,8 +39,8 @@ AC_SUBST(GTK_EXTRA_VERSION_SHORT)
 
 # libtool versioning
 
-LT_CURRENT=7
-LT_REVISION=5
+LT_CURRENT=8
+LT_REVISION=0
 LT_AGE=0
 
 AC_SUBST(LT_CURRENT)

@@ -1,0 +1,44 @@
+--- gtkextra-3.2.0/gtkextra/gtkplotdata.c	2015-10-04 10:33:58.000000000 +0100
++++ gtkextra/gtkplotdata.c	2015-10-12 10:07:27.343073424 +0100
+@@ -53,7 +53,7 @@
+ 
+ static void gtk_plot_data_class_init 		(GtkPlotDataClass *klass);
+ static void gtk_plot_data_init 			(GtkPlotData *data);
+-static void gtk_plot_data_destroy		(GtkObject *object);
++static void gtk_plot_data_finalize		(GObject *object);
+ static void gtk_plot_data_get_property         (GObject      *object,
+                                                  guint            prop_id,
+                                                  GValue          *value,
+@@ -324,8 +324,7 @@
+   widget_class = (GtkWidgetClass *) klass;
+   data_class = (GtkPlotDataClass *) klass;
+ 
+-  object_class->destroy = gtk_plot_data_destroy;
+-
++  gobject_class->finalize = gtk_plot_data_finalize;
+   gobject_class->set_property = gtk_plot_data_set_property;
+   gobject_class->get_property = gtk_plot_data_get_property;
+ 
+@@ -1677,7 +1675,7 @@
+ }
+ 
+ static void
+-gtk_plot_data_destroy (GtkObject *object)
++gtk_plot_data_finalize (GObject *object)
+ {
+   GtkPlotData *data;
+ 
+@@ -1710,13 +1708,7 @@
+     data->data = NULL;
+   }
+ 
+-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
+-        (*GTK_OBJECT_CLASS (parent_class)->destroy) (GTK_OBJECT(data));
+-
+   gtk_psfont_unref();
+-
+-  if ( GTK_OBJECT_CLASS (parent_class)->destroy )
+-    (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+ }
+ 
+ static void

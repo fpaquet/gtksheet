@@ -1,3 +1,6 @@
+2015-10-18 Fredy Paquet <mailbox AT opag.ch>
+	* Patch 22 applied - memory leaks in GtkPlotData
+
 2015-08-01 Fredy Paquet <mailbox AT opag.ch>
 	* GtkDataEntry: fix dataformat race condition in gtk_data_entry_get_text() PR#205431
 

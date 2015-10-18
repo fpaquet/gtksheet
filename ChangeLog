@@ -1,3 +1,6 @@
+2015-10-18 Fredy Paquet <mailbox AT opag.ch>
+        * Patch 22 applied - memory leaks in GtkPlotData
+
 2015-10-03 Fredy Paquet <mailbox AT opag.ch>
 	* GtkPlot*: merged api fixes to support binding generation via Gir-File
 	* GtkPlotCanvas: new enum GtkPlotCanvasChildFlags

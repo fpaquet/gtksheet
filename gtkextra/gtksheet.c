@@ -720,7 +720,7 @@ static inline void _gtk_sheet_count_visible(GtkSheet *sheet,
 
 
 /**
- * _gtk_sheet_height: 
+ * gtk_sheet_height: 
  * @sheet:  the #GtkSheet 
  * 
  * returns the total height of the sheet 
@@ -728,8 +728,8 @@ static inline void _gtk_sheet_count_visible(GtkSheet *sheet,
  * returns: total height of all visible rows, including 
  * col_titles area 
  */
-static inline gint
-_gtk_sheet_height(GtkSheet *sheet)
+gint
+gtk_sheet_height(GtkSheet *sheet)
 {
     gint i, cx;
 
@@ -745,7 +745,7 @@ _gtk_sheet_height(GtkSheet *sheet)
 }
 
 /**
- * _gtk_sheet_width: 
+ * gtk_sheet_width: 
  * @sheet:  the #GtkSheet 
  * 
  * total width of the sheet 
@@ -753,8 +753,8 @@ _gtk_sheet_height(GtkSheet *sheet)
  * returns: total width of all visible columns, including 
  * row_titles area 
  */
-static inline gint
-_gtk_sheet_width(GtkSheet *sheet)
+gint
+gtk_sheet_width(GtkSheet *sheet)
 {
     gint i, cx;
 
@@ -13111,7 +13111,7 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
     {
 	GtkAdjustment *va = sheet->vadjustment;
 
-	gint upper = _gtk_sheet_height(sheet) + 80;
+	gint upper = gtk_sheet_height(sheet) + 80;
 	gint page_size = sheet->sheet_window_height;
 
 	gtk_adjustment_configure(va,
@@ -13161,8 +13161,8 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
     {
 	GtkAdjustment *ha = sheet->hadjustment;
 
-	/* gint upper = _gtk_sheet_width(sheet) * 3 / 2; */
-	gint upper = _gtk_sheet_width(sheet) + 80;
+	/* gint upper = gtk_sheet_width(sheet) * 3 / 2; */
+	gint upper = gtk_sheet_width(sheet) + 80;
 	gint page_size = sheet->sheet_window_width;
 
 	gtk_adjustment_configure(ha,

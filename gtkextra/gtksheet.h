@@ -785,6 +785,9 @@ void gtk_sheet_move_child(GtkSheet *sheet, GtkWidget *widget, gint x, gint y);
 const GtkSheetChild *gtk_sheet_get_child_at(GtkSheet *sheet, gint row, gint col);
 void gtk_sheet_button_attach(GtkSheet *sheet, GtkWidget *widget, gint row, gint col);
 
+gint gtk_sheet_width( GtkSheet *sheet );
+gint gtk_sheet_height( GtkSheet *sheet );
+
 /*< private >*/
 
 void _gtk_sheet_range_fixup(GtkSheet *sheet, GtkSheetRange *range);

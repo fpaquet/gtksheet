@@ -1319,6 +1319,8 @@ gtk_sheet_set_locked
 gtk_sheet_set_title
 gtk_sheet_get_description
 gtk_sheet_set_description
+gtk_sheet_height
+gtk_sheet_width
 gtk_sheet_is_frozen
 gtk_sheet_freeze
 gtk_sheet_thaw

@@ -15910,6 +15910,13 @@ area/outside).</doc>
           <type name="gboolean" c:type="gboolean"/>
         </return-value>
       </method>
+      <method name="height" c:identifier="gtk_sheet_height">
+        <doc xml:whitespace="preserve">returns the total height of the sheet</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">total height of all visible rows, including col_titles area</doc>
+          <type name="gint" c:type="gint"/>
+        </return-value>
+      </method>
       <method name="hide_column_titles"
               c:identifier="gtk_sheet_hide_column_titles">
         <doc xml:whitespace="preserve">Hide column titles .</doc>
@@ -17041,6 +17048,13 @@ The updates will occure in a more efficient way than if you made them on a unfro
         <doc xml:whitespace="preserve">Unselect the current selected range and clears the bounds in sheet-&gt;range.</doc>
         <return-value transfer-ownership="none">
           <type name="none" c:type="void"/>
+        </return-value>
+      </method>
+      <method name="width" c:identifier="gtk_sheet_width">
+        <doc xml:whitespace="preserve">total width of the sheet</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">total width of all visible columns, including row_titles area</doc>
+          <type name="gint" c:type="gint"/>
         </return-value>
       </method>
       <property name="autoresize"

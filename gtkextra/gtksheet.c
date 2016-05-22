@@ -225,6 +225,7 @@ typedef enum _GtkSheetArea
 #define GTK_SHEET_ROW_IS_SENSITIVE(rowptr)  ((rowptr)->is_sensitive)
 #define GTK_SHEET_ROW_SET_SENSITIVE(rowptr, value) ((rowptr)->is_sensitive = (value))
 #define GTK_SHEET_ROW_CAN_FOCUS(rowptr) GTK_SHEET_ROW_IS_SENSITIVE(rowptr)
+#define GTK_SHEET_COLUMN_CAN_FOCUS(colptr) GTK_SHEET_COLUMN_IS_SENSITIVE(colptr)
 
 
 #define MIN_VIEW_ROW(sheet)  (sheet->view.row0)
@@ -10885,29 +10886,29 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 #define _HUNT_FOCUS_LEFT(col) \
 	while (col > 0 \
 	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-		  || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) ) \
+	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet,col)))) \
 		  col--; \
 	if (col < 0) col = 0; \
 	while (col < sheet->maxcol \
 	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-		  || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) ) \
+	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col))) ) \
 		  col++; \
 	if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-		|| !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))) ) \
+	    || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) ) \
 		col = -1;
 
 #define _HUNT_FOCUS_RIGHT(col) \
 	while (col < sheet->maxcol \
 	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-		  || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) ) \
+	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col))) ) \
 		col++; \
         if (col > sheet->maxcol) col = sheet->maxcol; \
 	while (col > 0 \
 	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-		  || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) ) \
+	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col))) ) \
 		col--; \
 	if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-		|| !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))) ) \
+	    || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) ) \
 		col = -1;
 
 #define _HUNT_FOCUS_UP(row) \
@@ -11554,6 +11555,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		|| (count == GTK_DIR_TAB_BACKWARD))  /* Tab horizontal backward */
 	    {
 		gint old_col = col;
+		gint old_row = row;
 
 		if (col > 0)  /* move left within line */
 		{
@@ -11562,11 +11564,14 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		}
 		if (col == old_col && row > 0) /* wrap at eol */
 		{
-		    col = sheet->maxcol;
-		    _HUNT_FOCUS_LEFT(col);
-
 		    row = row - 1;
 		    _HUNT_FOCUS_UP(row);
+
+		    if (row != old_row) 
+		    {
+			col = sheet->maxcol;
+			_HUNT_FOCUS_LEFT(col);
+		    }
 		}
 	    }
 	    else if ((count == GTK_DIR_RIGHT)  /* Tab horizontal forward */
@@ -11591,6 +11596,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 	    else if (count == GTK_DIR_UP)  /* Tab vertical backward */
 	    {
 		gint old_row = row;
+		gint old_col = col;
 
 		if (row > 0)  /* move up within column */
 		{
@@ -11599,16 +11605,20 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		}
 		if (row == old_row && col > 0) /* wrap at eol */
 		{
-		    row = sheet->maxrow;
-		    _HUNT_FOCUS_UP(row);
-
 		    col = col - 1;
 		    _HUNT_FOCUS_LEFT(col);
+
+		    if (col != old_col)
+		    { 
+			row = sheet->maxrow;
+			_HUNT_FOCUS_UP(row);
+		    } 
 		}
 	    }
 	    else if (count == GTK_DIR_DOWN)  /* Tab vertical forward */
 	    {
 		gint old_row = row;
+		gint old_col = col;
 
 		if (row < sheet->maxrow)  /* move down within column */
 		{
@@ -11617,11 +11627,14 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		}
 		if (row == old_row && col < sheet->maxcol) /* wrap at eol */
 		{
-		    row = 0;
-		    _HUNT_FOCUS_DOWN(row);
-
 		    col = col + 1;
 		    _HUNT_FOCUS_RIGHT(col);
+
+		    if (col != old_col)
+		    { 
+			row = 0;
+			_HUNT_FOCUS_DOWN(row);
+		    } 
 		}
 	    }
 	    gtk_sheet_click_cell(sheet, row, col, &veto);

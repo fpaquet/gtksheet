@@ -3730,6 +3730,12 @@ static void _gtk_sheet_recalc_extent_width(GtkSheet *sheet, gint col)
 	    }
 	}
     }
+
+#if GTK_SHEET_DEBUG_SIZE > 0
+    g_debug("_gtk_sheet_recalc_extent_width[%d]: new_width %d",
+            col, new_width);
+#endif
+
     COLPTR(sheet, col)->max_extent_width = new_width;
 }
 
@@ -3775,6 +3781,11 @@ static void _gtk_sheet_recalc_extent_height(GtkSheet *sheet, gint row)
 	    }
 	}
     }
+
+#if GTK_SHEET_DEBUG_SIZE > 0
+    g_debug("_gtk_sheet_recalc_extent_height[%d]: new_height %d",
+            col, new_height);
+#endif
 
     ROWPTR(sheet, row)->max_extent_height = new_height;
 }
@@ -3840,7 +3851,7 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
     if (!GTK_SHEET_ROW_IS_VISIBLE(rowptr))
 	return;
 
-    if (new_extent_width > old_extent.width)  /* wider */
+    if (new_extent_width >= old_extent.width)  /* wider */
     {
 	if (new_extent_width > colptr->max_extent_width)
 	{
@@ -3852,7 +3863,7 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
 	_gtk_sheet_recalc_extent_width(sheet, col);
     }
 
-    if (new_extent_height > old_extent.height)  /* higher */
+    if (new_extent_height >= old_extent.height)  /* higher */
     {
 	if (new_extent_height > rowptr->max_extent_height)
 	{
@@ -8014,7 +8025,7 @@ static void
 gtk_sheet_real_range_clear(GtkSheet *sheet, const GtkSheetRange *range,
     gboolean delete)
 {
-    gint i, j;
+    gint row, col;
     GtkSheetRange clear;
 
     if (!range)
@@ -8034,12 +8045,17 @@ gtk_sheet_real_range_clear(GtkSheet *sheet, const GtkSheetRange *range,
     clear.rowi = MIN(clear.rowi, sheet->maxallocrow);
     clear.coli = MIN(clear.coli, sheet->maxalloccol);
 
-    for (i = clear.row0; i <= clear.rowi; i++)
+    for (row = clear.row0; row <= clear.rowi; row++)
     {
-	for (j = clear.col0; j <= clear.coli; j++)
+	for (col = clear.col0; col <= clear.coli; col++)
 	{
-	    gtk_sheet_real_cell_clear(sheet, i, j, delete);
+	    gtk_sheet_real_cell_clear(sheet, row, col, delete);
 	}
+	_gtk_sheet_recalc_extent_height(sheet, row);
+    }
+    for (col = clear.col0; col <= clear.coli; col++)
+    {
+	_gtk_sheet_recalc_extent_width(sheet, col);
     }
 
     _gtk_sheet_range_draw(sheet, NULL, TRUE);
@@ -13764,8 +13780,8 @@ gtk_sheet_set_row_height(GtkSheet *sheet, gint row, guint height)
 	return;
 
     gtk_sheet_row_size_request(sheet, row, &min_height);
-    if (height < min_height)
-	return;
+
+    if (height < min_height) height = min_height;
 
     sheet->row[row].height = height;
 

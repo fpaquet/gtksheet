@@ -1073,7 +1073,7 @@ gtk_sheet_set_column_width(GtkSheet *sheet, gint col, guint width)
 
     _gtk_sheet_column_size_request(sheet, col, &min_width);
 
-    if (width < min_width) return;
+    if (width < min_width) width = min_width;
 
     COLPTR(sheet, col)->width = width;
 

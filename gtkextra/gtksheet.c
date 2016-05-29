@@ -165,6 +165,7 @@ enum _GtkSheetProperties
     PROP_GTK_SHEET_ROW_TITLES_WIDTH,  /* gtk_sheet_set_row_titles_width() */
     PROP_GTK_SHEET_ENTRY_TYPE,  /* gtk_sheet_change_entry() */
     PROP_GTK_SHEET_VJUST,  /* gtk_sheet_set_vjustification() */
+    PROP_GTK_SHEET_TRAVERSE_TYPE, /* gtk_sheet_set_traverse_type() */
 };
 
 /* Signals */
@@ -224,7 +225,27 @@ typedef enum _GtkSheetArea
 #define GTK_SHEET_ROW_SET_VISIBLE(rowptr, value) ((rowptr)->is_visible = (value))
 #define GTK_SHEET_ROW_IS_SENSITIVE(rowptr)  ((rowptr)->is_sensitive)
 #define GTK_SHEET_ROW_SET_SENSITIVE(rowptr, value) ((rowptr)->is_sensitive = (value))
-#define GTK_SHEET_ROW_CAN_FOCUS(rowptr) GTK_SHEET_ROW_IS_SENSITIVE(rowptr)
+#define GTK_SHEET_ROW_IS_READONLY(rowptr) (((rowptr)->is_readonly))
+#define GTK_SHEET_ROW_SET_READONLY(rowptr, value) ((rowptr)->is_readonly = (value))
+#define GTK_SHEET_ROW_CAN_FOCUS(rowptr) (((rowptr)->can_focus))
+#define GTK_SHEET_ROW_SET_CAN_FOCUS(rowptr, value) ((rowptr)->can_focus = (value))
+
+#define GTK_SHEET_ROW_CAN_GRAB_FOCUS(rowptr) \
+        (GTK_SHEET_ROW_IS_VISIBLE(rowptr) ? \
+              (GTK_SHEET_ROW_IS_SENSITIVE(rowptr) ? \
+                  GTK_SHEET_ROW_CAN_FOCUS(rowptr) : FALSE) \
+                                           : FALSE)
+
+#define GTK_SHEET_CELL_IS_VISIBLE(sheet,row,col) \
+        (gtk_sheet_cell_get_visible(sheet,row,col))
+#define GTK_SHEET_CELL_IS_SENSITIVE(sheet,row,col) \
+        (gtk_sheet_cell_get_sensitive(sheet,row,col))
+#define GTK_SHEET_CELL_CAN_FOCUS(sheet,row,col) \
+        (gtk_sheet_cell_get_can_focus(sheet,row,col))      
+
+#define GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col) \
+        (((sheet)->traverse_type == GTK_SHEET_TRAVERSE_ALL) ? TRUE : \
+           gtk_sheet_cell_get_editable((sheet),(row),(col)))
 
 #define MIN_VIEW_ROW(sheet)  (sheet->view.row0)
 #define MAX_VIEW_ROW(sheet)  (sheet->view.rowi)  /* beware: MAX_VISIBLE_ROW() can be maxrow+1 */
@@ -1765,6 +1786,10 @@ gtk_sheet_set_property(GObject *object,
 	    gtk_sheet_set_vjustification(sheet, g_value_get_enum(value));
 	    break;
 
+        case PROP_GTK_SHEET_TRAVERSE_TYPE:
+            gtk_sheet_set_traverse_type(sheet, g_value_get_enum(value));
+            break;
+
 	default:
 	    /* We don't have any other property... */
 	    G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
@@ -1876,6 +1901,10 @@ gtk_sheet_get_property(GObject    *object,
 
 	case PROP_GTK_SHEET_VJUST:
 	    g_value_set_enum(value, sheet->vjust);
+	    break;
+
+	case PROP_GTK_SHEET_TRAVERSE_TYPE:
+	    g_value_set_enum(value, sheet->traverse_type);
 	    break;
 
 	default:
@@ -2159,6 +2188,19 @@ gtk_sheet_class_init_properties(GObjectClass *gobject_class)
 	G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
 	PROP_GTK_SHEET_VJUST, pspec);
+
+    /**
+     * GtkSheet:traverse_type:
+     *
+     * Default traverse all cells
+     */
+    pspec = g_param_spec_enum("traverse-type", "Traversal type",
+	"Default sheet traversal type",
+	gtk_sheet_traverse_type_get_type(),
+	GTK_SHEET_TRAVERSE_ALL,
+	G_PARAM_READWRITE);
+    g_object_class_install_property(gobject_class,
+	PROP_GTK_SHEET_TRAVERSE_TYPE, pspec);
 }
 
 #if GTK_SHEET_DEBUG_SIGNALS > 0
@@ -3161,6 +3203,8 @@ _gtk_sheet_row_init(GtkSheetRow *row)
 
     GTK_SHEET_ROW_SET_VISIBLE(row, TRUE);
     GTK_SHEET_ROW_SET_SENSITIVE(row, TRUE);
+    GTK_SHEET_ROW_SET_READONLY(row, FALSE);
+    GTK_SHEET_ROW_SET_CAN_FOCUS(row, TRUE);
 }
 
 static void
@@ -4145,6 +4189,40 @@ gtk_sheet_get_vjustification(GtkSheet *sheet)
     g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
 
     return (sheet->vjust);
+}
+
+/**
+ * gtk_sheet_set_traverse_type:
+ * @sheet: a #GtkSheet
+ * @ttype: a #GtkSheetTraverseType
+ *
+ * Set the default traversal type for cursor movement in a 
+ * #GtkSheet. 
+ */
+void
+gtk_sheet_set_traverse_type(GtkSheet *sheet, GtkSheetTraverseType ttype)
+{
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    sheet->traverse_type = ttype;
+}
+
+/**
+ * gtk_sheet_get_traverse_type:
+ * @sheet: a #GtkSheet
+ *
+ * Get the default cell traversal type from #GtkSheet. 
+ *
+ * Returns: the default #GtkSheetTraverseType
+ */
+GtkSheetTraverseType
+gtk_sheet_get_traverse_type(GtkSheet *sheet)
+{
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
+
+    return (sheet->traverse_type);
 }
 
 
@@ -5241,6 +5319,86 @@ void gtk_sheet_row_set_tooltip_text(GtkSheet *sheet,
 }
 
 /**
+ * gtk_sheet_row_get_readonly: 
+ * @sheet:  a #GtkSheet. 
+ * @row: row index 
+ *  
+ * Gets the row readonly flag 
+ *  
+ * Returns:	the readonly flag
+ */
+gboolean gtk_sheet_row_get_readonly(GtkSheet *sheet, const gint row)
+{
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
+
+    if (row < 0 || row > sheet->maxrow) return (FALSE);
+
+    return (ROWPTR(sheet, row)->is_readonly);
+}
+
+/**
+ * gtk_sheet_row_set_readonly: 
+ * @sheet:  a #GtkSheet.
+ * @row: row index 
+ * @is_readonly:  the row is_readonly flag 
+ *  
+ * Sets the row readonly flag. 
+ * A cell is editable if the sheet is not locked, the row is 
+ * not readonly and the cell (-range) was set to editable. 
+ */
+void gtk_sheet_row_set_readonly(GtkSheet *sheet, const gint row,
+                                   const gboolean is_readonly)
+{
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (row < 0 || row > sheet->maxrow) return;
+
+    ROWPTR(sheet, row)->is_readonly = is_readonly;
+}
+
+/**
+ * gtk_sheet_row_get_can_focus: 
+ * @sheet:  a #GtkSheet. 
+ * @row: row index 
+ *  
+ * Gets the row can_focus flag 
+ *  
+ * Returns:	the can_focus flag
+ */
+gboolean gtk_sheet_row_get_can_focus(GtkSheet *sheet, const gint row)
+{
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
+
+    if (row < 0 || row > sheet->maxrow) return (FALSE);
+
+    return (ROWPTR(sheet, row)->can_focus);
+}
+
+/**
+ * gtk_sheet_row_set_can_focus: 
+ * @sheet:  a #GtkSheet.
+ * @row: row index 
+ * @can_focus:  the row can_focus flag 
+ *  
+ * Sets the row can_focus flag. 
+ * Note: Does not check row visiblity, sensitivity, etc. Use the
+ * macro GTK_SHEET_ROW_CAN_GRAB_FOCUS() for dependency checking.
+ */
+void gtk_sheet_row_set_can_focus(GtkSheet *sheet, const gint row,
+                                   const gboolean can_focus)
+{
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (row < 0 || row > sheet->maxrow) return;
+
+    ROWPTR(sheet, row)->can_focus = can_focus;
+}
+
+/**
  * gtk_sheet_cell_get_tooltip_markup: 
  * @sheet:  a #GtkSheet. 
  * @row: row index 
@@ -5377,6 +5535,298 @@ void gtk_sheet_cell_set_tooltip_text(GtkSheet *sheet,
     cell->tooltip_text = g_strdup(text);
 }
 
+/**
+ * gtk_sheet_cell_get_editable: 
+ * @sheet:  a #GtkSheet. 
+ * @row: row index 
+ * @col: column index 
+ * 
+ * Check editable status of sheet, row, column and cell to decide
+ * if a sheet cell is editable 
+ *  
+ * Returns:	TRUE if editable, FALSE if blocked by any level.
+ *  NOTE: this routine also checks if the sheet row/column/cell 
+ *  can receive focus. A cell may be editable, but not focusable 
+ *  still rendering it unable to be changed by the user.
+ *
+ *  To check only the editable attribute on the cell, 
+ *  use #gtk_sheet_get_attributes() to fetch cell attributes and
+ *  examine them.
+ */
+gboolean gtk_sheet_cell_get_editable(GtkSheet *sheet,
+    const gint row, const gint col)
+{
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
+
+    if (col < 0 || col > sheet->maxcol)
+	return (FALSE);
+    if (row < 0 || row > sheet->maxrow)
+	return (FALSE);
+
+    GtkSheetColumn *colptr = COLPTR(sheet,col);
+    GtkSheetRow *rowptr = ROWPTR(sheet,row);
+    GtkSheetCellAttr myattr;
+
+    /* if the sheet is locked, or the row/col are
+     * readonly, then the cell is automatically 
+     * not editable, even if its local edit flag allows it.
+     * NOTE: the cell may be still not visible if the row/col
+     * is marked as not visible.
+     */
+    if( GTK_SHEET_IS_LOCKED(sheet)
+       || GTK_SHEET_ROW_IS_READONLY(rowptr)
+       || GTK_SHEET_COLUMN_IS_READONLY(colptr)
+       || !GTK_SHEET_ROW_CAN_FOCUS(rowptr)
+       || !GTK_SHEET_COLUMN_CAN_FOCUS(colptr) )
+        return FALSE;
+
+    gtk_sheet_get_attributes(sheet,row,col,&myattr);
+    if( !myattr.is_editable || !myattr.can_focus )
+        return FALSE;
+
+    return TRUE;
+}
+
+/**
+ * gtk_sheet_cell_set_editable: 
+ * @sheet:  a #GtkSheet.
+ * @row: row index 
+ * @col: column index 
+ * @is_editable:  value for the editable status of the cell 
+ *  
+ * Sets cell editable status in cell attributes.
+ */
+void gtk_sheet_cell_set_editable(GtkSheet *sheet,
+    const gint row, const gint col,
+    const gboolean is_editable)
+{
+    GtkSheetCellAttr myattr;
+
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (col < 0 || col > sheet->maxcol)
+	return;
+    if (row < 0 || row > sheet->maxrow)
+	return;
+
+    gtk_sheet_get_attributes(sheet,row,col,&myattr);
+    myattr.is_editable = is_editable;
+    gtk_sheet_set_cell_attributes(sheet,row,col,myattr);
+    return;
+}
+
+/**
+ * gtk_sheet_cell_get_sensitive 
+ * @sheet:  a #GtkSheet. 
+ * @row: row index 
+ * @col: column index 
+ * 
+ * Check sensitivity status of sheet, row, column and cell to decide
+ * if a sheet cell can receive focus.
+ *  
+ * Returns:	TRUE if cell is not sensitive, FALSE if it is marked
+ * sensitive at any level.
+ */
+gboolean gtk_sheet_cell_get_sensitive(GtkSheet *sheet,
+    const gint row, const gint col)
+{
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
+
+    if (col < 0 || col > sheet->maxcol)
+	return (FALSE);
+    if (row < 0 || row > sheet->maxrow)
+	return (FALSE);
+
+    GtkSheetColumn *colptr = COLPTR(sheet,col);
+    GtkSheetRow *rowptr = ROWPTR(sheet,row);
+    GtkSheetCellAttr myattr;
+
+    /* if the widget/row/col are insensitive, then the 
+     * cell is automatically not sensitive, even if
+     * its local flag allows it.
+     */
+    if(!gtk_widget_get_sensitive(GTK_WIDGET(sheet)) 
+       || !GTK_SHEET_ROW_IS_SENSITIVE(rowptr)
+       || !GTK_SHEET_COLUMN_IS_SENSITIVE(colptr) )
+        return FALSE;
+
+    gtk_sheet_get_attributes(sheet,row,col,&myattr);
+    if( !myattr.is_sensitive )
+        return FALSE;
+
+    return TRUE;
+}
+
+/**
+ * gtk_sheet_cell_set_sensitive: 
+ * @sheet:  a #GtkSheet.
+ * @row: row index 
+ * @col: column index 
+ * @is_sensitive:  value for the sensitive status of the cell 
+ *  
+ * Sets cell sensitive status
+ */
+void gtk_sheet_cell_set_sensitive(GtkSheet *sheet,
+    const gint row, const gint col,
+    const gboolean is_sensitive)
+{
+    GtkSheetCellAttr myattr;
+
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (col < 0 || col > sheet->maxcol)
+	return;
+    if (row < 0 || row > sheet->maxrow)
+	return;
+
+    gtk_sheet_get_attributes(sheet,row,col,&myattr);
+    myattr.is_sensitive = is_sensitive;
+    gtk_sheet_set_cell_attributes(sheet,row,col,myattr);
+    return;
+}
+
+
+/**
+ * gtk_sheet_cell_get_can_focus: 
+ * @sheet:  a #GtkSheet. 
+ * @row: row index 
+ * @col: column index 
+ * 
+ * Check ability of cell to grab focus. Check includes 
+ * checking for blocks at row/column/sheet level.
+ *  
+ * Returns:	TRUE if the cell can focus, FALSE if blocked by any level
+ */
+gboolean gtk_sheet_cell_get_can_focus(GtkSheet *sheet,
+    const gint row, const gint col)
+{
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
+
+    if (col < 0 || col > sheet->maxcol)
+	return (FALSE);
+    if (row < 0 || row > sheet->maxrow)
+	return (FALSE);
+
+    GtkSheetColumn *colptr = COLPTR(sheet,col);
+    GtkSheetRow *rowptr = ROWPTR(sheet,row);
+    GtkSheetCellAttr myattr;
+
+    /* if the sheet row/col are invisible, insensitive or not
+     * allowing focus, then the cell is automatically 
+     * not focusable, even if its local edit flag allows it.
+     */
+    if(!GTK_SHEET_ROW_CAN_GRAB_FOCUS(rowptr)
+       || !GTK_SHEET_COLUMN_CAN_GRAB_FOCUS(colptr) )
+        return FALSE;
+
+    gtk_sheet_get_attributes(sheet,row,col,&myattr);
+    if( !myattr.can_focus )
+        return FALSE;
+
+    return TRUE;
+}
+
+/**
+ * gtk_sheet_cell_set_can_focus: 
+ * @sheet:  a #GtkSheet.
+ * @row: row index 
+ * @col: column index 
+ * @can_focus:  value for the editable status of the cell 
+ *  
+ * Sets cell can_focus flag
+ */
+void gtk_sheet_cell_set_can_focus(GtkSheet *sheet,
+    const gint row, const gint col,
+    const gboolean can_focus)
+{
+    GtkSheetCellAttr myattr;
+
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (col < 0 || col > sheet->maxcol)
+	return;
+    if (row < 0 || row > sheet->maxrow)
+	return;
+
+    gtk_sheet_get_attributes(sheet,row,col,&myattr);
+    myattr.can_focus = can_focus;
+    gtk_sheet_set_cell_attributes(sheet,row,col,myattr);
+    return;
+}
+
+/**
+ * gtk_sheet_cell_get_visible: 
+ * @sheet:  a #GtkSheet. 
+ * @row: row index 
+ * @col: column index 
+ * 
+ * Check visiblity of cell. 
+ *  
+ * Returns:	TRUE if the cell is visible, FALSE otherwise.
+ */
+gboolean gtk_sheet_cell_get_visible(GtkSheet *sheet,
+    const gint row, const gint col)
+{
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
+
+    if (col < 0 || col > sheet->maxcol)
+	return (FALSE);
+    if (row < 0 || row > sheet->maxrow)
+	return (FALSE);
+
+    GtkSheetColumn *colptr = COLPTR(sheet,col);
+    GtkSheetRow *rowptr = ROWPTR(sheet,row);
+    GtkSheetCellAttr myattr;
+
+    /* if the sheet row/col are invisible, 
+     * then so is the cell, even if its local flag allows it.
+     */
+    if(!GTK_SHEET_ROW_IS_VISIBLE(rowptr)
+       || !GTK_SHEET_COLUMN_IS_VISIBLE(colptr) )
+        return FALSE;
+
+    gtk_sheet_get_attributes(sheet,row,col,&myattr);
+    if( !myattr.is_visible )
+        return FALSE;
+
+    return TRUE;
+}
+
+/**
+ * gtk_sheet_cell_set_visible: 
+ * @sheet:  a #GtkSheet.
+ * @row: row index 
+ * @col: column index 
+ * @is_visible:  value for the visibility status of the cell 
+ *  
+ * Sets cell is_visible flag
+ */
+void gtk_sheet_cell_set_visible(GtkSheet *sheet,
+    const gint row, const gint col,
+    const gboolean is_visible)
+{
+    GtkSheetCellAttr myattr;
+
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (col < 0 || col > sheet->maxcol)
+	return;
+    if (row < 0 || row > sheet->maxrow)
+	return;
+
+    gtk_sheet_get_attributes(sheet,row,col,&myattr);
+    myattr.is_visible = is_visible;
+    gtk_sheet_set_cell_attributes(sheet,row,col,myattr);
+    return;
+}
 
 /**
  * gtk_sheet_select_row:
@@ -8877,6 +9327,7 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
     gboolean editable;
     GtkStyle *style;
     GtkSheetColumn *colptr = COLPTR(sheet, col);
+    GtkSheetRow *rowptr = ROWPTR(sheet, row);
 
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
     g_debug("_gtk_sheet_entry_setup: row %d col %d", row, col);
@@ -8893,7 +9344,8 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
 
     editable = !(gtk_sheet_locked(sheet)
 	|| !attributes.is_editable
-	|| colptr->is_readonly);
+	|| colptr->is_readonly 
+        || rowptr->is_readonly);
 
     gtk_sheet_set_entry_editable(sheet, editable);
 
@@ -10167,12 +10619,20 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
     if (col >= 0 && row >= 0)
     {
 	if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) ||
-	    !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)))
+	    !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))    || 
+            !GTK_SHEET_CELL_IS_VISIBLE(sheet,row,col)        ||
+            !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet,col))||
+            !GTK_SHEET_ROW_IS_SENSITIVE(ROWPTR(sheet,row))   || 
+            !GTK_SHEET_CELL_IS_SENSITIVE(sheet,row,col)      ||
+            !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet,col))   ||
+            !GTK_SHEET_ROW_CAN_FOCUS(ROWPTR(sheet,row))      ||
+            !GTK_SHEET_CELL_CAN_FOCUS(sheet,row,col)         )
 	{
 	    *veto = FALSE;
 	    return;
 	}
     }
+
 
     /* if we do not grab focus here, some entry widgets (i.e. GtkSpinButton)
        will not format contents correctly on field exit */
@@ -10880,68 +11340,73 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	  && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row--; \
 	if (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row = -1;
 
-#define _HUNT_FOCUS_LEFT(col) \
-	while (col > 0 \
-	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet,col)) \
-	      || !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet,col))) ) \
-		  col--; \
-	if (col < 0) col = 0; \
-	while (col < sheet->maxcol \
-	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) \
-	      || !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col))) ) \
-		  col++; \
-	if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-	    || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) \
-	    || !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col)) ) \
-		col = -1;
+#define _HUNT_FOCUS_LEFT(row,col) \
+ 	while (col > 0 \
+ 	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
+	      || !GTK_SHEET_COLUMN_CAN_GRAB_FOCUS(COLPTR(sheet,col)) \
+	      || !GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col))) \
+ 		  col--; \
+ 	if (col < 0) col = 0; \
+ 	while (col < sheet->maxcol \
+ 	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
+	      || !GTK_SHEET_COLUMN_CAN_GRAB_FOCUS(COLPTR(sheet, col)) \
+              || !GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col)) ) \
+ 		  col++; \
+ 	if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
+	    || !GTK_SHEET_COLUMN_CAN_GRAB_FOCUS(COLPTR(sheet, col)) \
+            || !GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col) ) \
+ 		col = -1;
 
-#define _HUNT_FOCUS_RIGHT(col) \
-	while (col < sheet->maxcol \
-	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) \
-	      || !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col))) ) \
-		col++; \
-        if (col > sheet->maxcol) col = sheet->maxcol; \
-	while (col > 0 \
-	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) \
-	      || !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col))) ) \
-		col--; \
-	if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-	    || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) \
-	    || !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col)) ) \
-		col = -1;
+#define _HUNT_FOCUS_RIGHT(row,col) \
+ 	while (col < sheet->maxcol \
+ 	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
+	      || !GTK_SHEET_COLUMN_CAN_GRAB_FOCUS(COLPTR(sheet, col)) \
+              || !GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col)) ) \
+ 		col++; \
+         if (col > sheet->maxcol) col = sheet->maxcol; \
+ 	while (col > 0 \
+ 	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
+	      || !GTK_SHEET_COLUMN_CAN_GRAB_FOCUS(COLPTR(sheet, col)) \
+              || !GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col)) ) \
+ 		col--; \
+ 	if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
+	    || !GTK_SHEET_COLUMN_CAN_GRAB_FOCUS(COLPTR(sheet, col)) \
+            || !GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col) ) \
+ 		col = -1;
 
-#define _HUNT_FOCUS_UP(row) \
-	while (row > 0 \
-	  && (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) \
-	      || !GTK_SHEET_ROW_CAN_FOCUS(ROWPTR(sheet, row)))) \
-	      row--; \
-	if (row < 0) row = 0; \
-	while (row < sheet->maxrow \
-	  && (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) \
-	      || !GTK_SHEET_ROW_CAN_FOCUS(ROWPTR(sheet, row)))) \
-	    row++; \
-	if (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) \
-	    || !GTK_SHEET_ROW_CAN_FOCUS(ROWPTR(sheet, row))) \
-	    row = -1;
+#define _HUNT_FOCUS_UP(row,col) \
+ 	while (row > 0 \
+ 	  && (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) \
+	      || !GTK_SHEET_ROW_CAN_GRAB_FOCUS(ROWPTR(sheet, row)) \
+              || !GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col))) \
+ 	      row--; \
+ 	if (row < 0) row = 0; \
+ 	while (row < sheet->maxrow \
+ 	  && (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) \
+	      || !GTK_SHEET_ROW_CAN_GRAB_FOCUS(ROWPTR(sheet, row)) \
+              || !GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col))) \
+ 	    row++; \
+ 	if (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) \
+	    || !GTK_SHEET_ROW_CAN_GRAB_FOCUS(ROWPTR(sheet, row)) \
+            || !GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col)) \
+ 	    row = -1;
 
-#define _HUNT_FOCUS_DOWN(row) \
-	while (row < sheet->maxrow \
-	  && (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) \
-	      || !GTK_SHEET_ROW_CAN_FOCUS(ROWPTR(sheet, row)))) \
-	       row++; \
-	if (row > sheet->maxrow) row = sheet->maxrow; \
-	while (row > 0 \
-	  && (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) \
-	      || !GTK_SHEET_ROW_CAN_FOCUS(ROWPTR(sheet, row)))) \
-	    row--; \
-	if (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) \
-	    || !GTK_SHEET_ROW_CAN_FOCUS(ROWPTR(sheet, row))) \
-	    row = -1;
-
+#define _HUNT_FOCUS_DOWN(row,col) \
+ 	while (row < sheet->maxrow \
+ 	  && (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) \
+	      || !GTK_SHEET_ROW_CAN_GRAB_FOCUS(ROWPTR(sheet, row)) \
+              || !GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col))) \
+ 	       row++; \
+ 	if (row > sheet->maxrow) row = sheet->maxrow; \
+ 	while (row > 0 \
+ 	  && (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) \
+	      || !GTK_SHEET_ROW_CAN_GRAB_FOCUS(ROWPTR(sheet, row)) \
+              || !GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col))) \
+ 	    row--; \
+ 	if (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) \
+	    || !GTK_SHEET_ROW_CAN_GRAB_FOCUS(ROWPTR(sheet, row)) \
+            || !GTK_SHEET_CELL_TRAVERSABLE(sheet,row,col)) \
+ 	    row = -1;
 
 static gint
 _gtk_sheet_move_query(GtkSheet *sheet, gint row, gint column, 
@@ -10984,7 +11449,7 @@ _gtk_sheet_move_query(GtkSheet *sheet, gint row, gint column,
 	row_align = 1;  /* bottom */
 	if (need_focus)
 	{
-	    _HUNT_FOCUS_DOWN(new_row);
+	    _HUNT_FOCUS_DOWN(new_row,new_col);
 	}
 	else
 	{
@@ -11011,7 +11476,7 @@ _gtk_sheet_move_query(GtkSheet *sheet, gint row, gint column,
 	row_align = 0;  /* top */
 	if (need_focus)
 	{
-	    _HUNT_FOCUS_UP(new_row);
+	    _HUNT_FOCUS_UP(new_row,new_col);
 	}
 	else
 	{
@@ -11031,7 +11496,7 @@ _gtk_sheet_move_query(GtkSheet *sheet, gint row, gint column,
 	col_align = 1;  /* right */
 	if (need_focus)
 	{
-	    _HUNT_FOCUS_RIGHT(new_col);
+	    _HUNT_FOCUS_RIGHT(new_row,new_col);
 	}
 	else
 	{
@@ -11058,7 +11523,7 @@ _gtk_sheet_move_query(GtkSheet *sheet, gint row, gint column,
 	col_align = 0;  /* left */
 	if (need_focus)
 	{
-	    _HUNT_FOCUS_LEFT(new_col);
+	    _HUNT_FOCUS_LEFT(new_row,new_col);
 	}
 	else
 	{
@@ -11330,7 +11795,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		{
 		    if (sheet->state == GTK_STATE_NORMAL)
 		    {
-			gtk_sheet_click_cell(sheet, row, col, &veto);
+			if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
 			    break;
 		    }
@@ -11351,7 +11816,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		if (row > 0)
 		{
 		    row = row + count;
-		    _HUNT_FOCUS_UP(row);
+		    _HUNT_FOCUS_UP(row,col);
 		}
 	    }
 	    else if (count > 0) /* Move Down */
@@ -11360,7 +11825,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		{
 		    if (sheet->state == GTK_STATE_NORMAL)
 		    {
-			gtk_sheet_click_cell(sheet, row, col, &veto);
+			if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
 			    break;
 		    }
@@ -11381,10 +11846,10 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		if (row < sheet->maxrow)
 		{
 		    row = row + count;
-		    _HUNT_FOCUS_DOWN(row);
+		    _HUNT_FOCUS_DOWN(row,col);
 		}
 	    }
-	    gtk_sheet_click_cell(sheet, row, col, &veto);
+	    if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 	    break;
 
 	case GTK_MOVEMENT_HORIZONTAL_PAGES:
@@ -11399,7 +11864,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		{
 		    if (sheet->state == GTK_STATE_NORMAL)
 		    {
-			gtk_sheet_click_cell(sheet, row, col, &veto);
+			if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
 			    break;
 		    }
@@ -11420,7 +11885,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		if (col > 0)
 		{
 		    col = col + count;
-		    _HUNT_FOCUS_LEFT(col);
+		    _HUNT_FOCUS_LEFT(row,col);
 		}
 	    }
 	    else if (count > 0) /* Move Right */
@@ -11429,7 +11894,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		{
 		    if (sheet->state == GTK_STATE_NORMAL)
 		    {
-			gtk_sheet_click_cell(sheet, row, col, &veto);
+			if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
 			    break;
 		    }
@@ -11449,11 +11914,16 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 
 		if (col < sheet->maxcol)
 		{
+		    /* after sheet initialisation, row is -1
+		       when called from gtk_sheet_focus()
+		       */
+		    if (row < 0) row = 0;
+
 		    col = col + count;
-		    _HUNT_FOCUS_RIGHT(col);
+		    _HUNT_FOCUS_RIGHT(row,col);
 		}
 	    }
-	    gtk_sheet_click_cell(sheet, row, col, &veto);
+	    if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 	    break;
 
 	case GTK_MOVEMENT_BUFFER_ENDS:
@@ -11463,7 +11933,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		{
 		    if (sheet->state == GTK_STATE_NORMAL)
 		    {
-			gtk_sheet_click_cell(sheet, row, col, &veto);
+			if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
 			    break;
 		    }
@@ -11476,7 +11946,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		    return;
 		}
 		row = 0;
-		_HUNT_FOCUS_UP(row);
+		_HUNT_FOCUS_UP(row,col);
 	    }
 	    else if (count > 0)  /* Last Row */
 	    {
@@ -11484,7 +11954,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		{
 		    if (sheet->state == GTK_STATE_NORMAL)
 		    {
-			gtk_sheet_click_cell(sheet, row, col, &veto);
+			if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
 			    break;
 		    }
@@ -11497,9 +11967,9 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		    return;
 		}
 		row = sheet->maxrow;
-		_HUNT_FOCUS_DOWN(row);
+		_HUNT_FOCUS_DOWN(row,col);
 	    }
-	    gtk_sheet_click_cell(sheet, row, col, &veto);
+	    if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 	    break;
 
 	case GTK_MOVEMENT_DISPLAY_LINE_ENDS:
@@ -11509,7 +11979,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		{
 		    if (sheet->state == GTK_STATE_NORMAL)
 		    {
-			gtk_sheet_click_cell(sheet, row, col, &veto);
+			if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
 			    break;
 		    }
@@ -11522,7 +11992,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		    return;
 		}
 		col = 0;
-		_HUNT_FOCUS_LEFT(col);
+		_HUNT_FOCUS_LEFT(row,col);
 	    }
 	    else if (count > 0)  /* Last Column */
 	    {
@@ -11530,7 +12000,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		{
 		    if (sheet->state == GTK_STATE_NORMAL)
 		    {
-			gtk_sheet_click_cell(sheet, row, col, &veto);
+			if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
 			    break;
 		    }
@@ -11543,9 +12013,9 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		    return;
 		}
 		col = sheet->maxcol;
-		_HUNT_FOCUS_RIGHT(col);
+		_HUNT_FOCUS_RIGHT(row,col);
 	    }
-	    gtk_sheet_click_cell(sheet, row, col, &veto);
+	    if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 	    break;
 
 	case GTK_MOVEMENT_LOGICAL_POSITIONS:
@@ -11563,17 +12033,17 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		if (col > 0)  /* move left within line */
 		{
 		    col = col - 1;
-		    _HUNT_FOCUS_LEFT(col);
+		    _HUNT_FOCUS_LEFT(row,col);
 		}
 		if (col == old_col && row > 0) /* wrap at eol */
 		{
 		    row = row - 1;
-		    _HUNT_FOCUS_UP(row);
+		    _HUNT_FOCUS_UP(row,col);
 
 		    if (row != old_row) 
 		    {
 			col = sheet->maxcol;
-			_HUNT_FOCUS_LEFT(col);
+			_HUNT_FOCUS_LEFT(row,col);
 		    }
 		}
 	    }
@@ -11585,15 +12055,15 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		if (col < sheet->maxcol)  /* move right within line */
 		{
 		    col = col + 1;
-		    _HUNT_FOCUS_RIGHT(col);
+		    _HUNT_FOCUS_RIGHT(row,col);
 		}
 		if (col == old_col && row < sheet->maxrow) /* wrap at eol */
 		{
 		    col = 0;
-		    _HUNT_FOCUS_RIGHT(col);
+		    _HUNT_FOCUS_RIGHT(row,col);
 
 		    row = row + 1;
-		    _HUNT_FOCUS_DOWN(row);
+		    _HUNT_FOCUS_DOWN(row,col);
 		}
 	    }
 	    else if (count == GTK_DIR_UP)  /* Tab vertical backward */
@@ -11604,17 +12074,17 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		if (row > 0)  /* move up within column */
 		{
 		    row = row - 1;
-		    _HUNT_FOCUS_UP(row);
+		    _HUNT_FOCUS_UP(row,col);
 		}
 		if (row == old_row && col > 0) /* wrap at eol */
 		{
 		    col = col - 1;
-		    _HUNT_FOCUS_LEFT(col);
+		    _HUNT_FOCUS_LEFT(row,col);
 
 		    if (col != old_col)
 		    { 
 			row = sheet->maxrow;
-			_HUNT_FOCUS_UP(row);
+			_HUNT_FOCUS_UP(row,col);
 		    } 
 		}
 	    }
@@ -11626,21 +12096,21 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 		if (row < sheet->maxrow)  /* move down within column */
 		{
 		    row = row + 1;
-		    _HUNT_FOCUS_DOWN(row);
+		    _HUNT_FOCUS_DOWN(row,col);
+
 		}
 		if (row == old_row && col < sheet->maxcol) /* wrap at eol */
 		{
 		    col = col + 1;
-		    _HUNT_FOCUS_RIGHT(col);
-
+		    _HUNT_FOCUS_RIGHT(row,col);
 		    if (col != old_col)
 		    { 
 			row = 0;
-			_HUNT_FOCUS_DOWN(row);
+			_HUNT_FOCUS_DOWN(row,col);
 		    } 
 		}
 	    }
-	    gtk_sheet_click_cell(sheet, row, col, &veto);
+	    if( (row>=0) && (col>=0) ) gtk_sheet_click_cell(sheet, row, col, &veto);
 	    break;
 
 	default:
@@ -11838,7 +12308,7 @@ static gboolean gtk_sheet_focus(GtkWidget *widget,
     GtkSheet *sheet = GTK_SHEET(widget);
 
     if (!gtk_widget_is_sensitive(GTK_WIDGET(sheet))) {
-	g_debug("gtk_sheet_focus: X"); 
+	g_debug("gtk_sheet_focus: not sensitive"); 
 	return(FALSE);
     }
 
@@ -14562,6 +15032,8 @@ init_attributes(GtkSheet *sheet, gint col, GtkSheetCellAttr *attributes)
     attributes->border.mask = 0;
     attributes->border.color = gtk_widget_get_style(GTK_WIDGET(sheet))->black;
     attributes->is_editable = TRUE;
+    attributes->is_sensitive = TRUE;
+    attributes->can_focus = TRUE;
     attributes->is_visible = TRUE;
     attributes->font = gtk_widget_get_style(GTK_WIDGET(sheet))->private_font;
 

@@ -122,6 +122,16 @@ struct _GtkSheetColumnClass
 #define GTK_SHEET_COLUMN_SET_CAN_FOCUS(colptr, value) \
         (gtk_widget_set_can_focus(GTK_WIDGET(colptr), value))
 
+#define GTK_SHEET_COLUMN_IS_READONLY(colptr) \
+        ((colptr)->is_readonly)
+
+#define GTK_SHEET_COLUMN_SET_READONLY(colptr, value) \
+        ((colptr)->is_readonly =  (value))
+
+#define GTK_SHEET_COLUMN_CAN_GRAB_FOCUS(colptr)  \
+        (GTK_SHEET_COLUMN_IS_VISIBLE(colptr) ?    \
+            (GTK_SHEET_COLUMN_IS_SENSITIVE(colptr) ? \
+                GTK_SHEET_COLUMN_CAN_FOCUS(colptr) : FALSE) : FALSE)
 /* methods */
 
 GType gtk_sheet_column_get_type(void);

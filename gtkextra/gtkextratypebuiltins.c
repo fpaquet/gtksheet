@@ -598,6 +598,20 @@ gtk_sheet_vertical_justification_get_type (void)
   }
   return etype;
 }
+GType
+gtk_sheet_traverse_type_get_type (void)
+{
+  static GType etype = 0;
+  if (etype == 0) {
+    static const GEnumValue values[] = {
+      { GTK_SHEET_TRAVERSE_ALL, "GTK_SHEET_TRAVERSE_ALL", "all" },
+      { GTK_SHEET_TRAVERSE_EDITABLE, "GTK_SHEET_TRAVERSE_EDITABLE", "editable" },
+      { 0, NULL, NULL }
+    };
+    etype = g_enum_register_static ("GtkSheetTraverseType", values);
+  }
+  return etype;
+}
 
 
 

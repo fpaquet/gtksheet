@@ -2,6 +2,7 @@
 	* GtkSheet: tab/backtab fix PR#210301
 	* GtkSheet: moved GTK_SHEET_COLUMN_CAN_FOCUS() to gtksheetcolumn.h
 	* GtkSheet: added GTK_SHEET_COLUMN_SET_CAN_FOCUS()
+	* GtkSheet: new feature GtkSheetTraverseType to control wether tab/backtab moves to editable cells only (thanks to Shiva Ramabadran <shiva.ramabadran@gmail.com>)
 
 2016-05-22 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed row/column extent calculation (thanks to Shiva Ramabadran <shiva.ramabadran@gmail.com>)

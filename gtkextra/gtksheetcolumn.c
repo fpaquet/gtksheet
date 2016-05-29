@@ -691,7 +691,7 @@ gtk_sheet_column_init(GtkSheetColumn *column)
 
     GTK_SHEET_COLUMN_SET_VISIBLE(column, TRUE);
     GTK_SHEET_COLUMN_SET_SENSITIVE(column, TRUE);
-    gtk_widget_set_can_focus(GTK_WIDGET(column), TRUE);
+    GTK_SHEET_COLUMN_SET_CAN_FOCUS(column, TRUE);
 
     gtk_widget_set_has_window(GTK_WIDGET(column), FALSE);
 }

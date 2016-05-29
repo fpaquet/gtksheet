@@ -225,8 +225,6 @@ typedef enum _GtkSheetArea
 #define GTK_SHEET_ROW_IS_SENSITIVE(rowptr)  ((rowptr)->is_sensitive)
 #define GTK_SHEET_ROW_SET_SENSITIVE(rowptr, value) ((rowptr)->is_sensitive = (value))
 #define GTK_SHEET_ROW_CAN_FOCUS(rowptr) GTK_SHEET_ROW_IS_SENSITIVE(rowptr)
-#define GTK_SHEET_COLUMN_CAN_FOCUS(colptr) GTK_SHEET_COLUMN_IS_SENSITIVE(colptr)
-
 
 #define MIN_VIEW_ROW(sheet)  (sheet->view.row0)
 #define MAX_VIEW_ROW(sheet)  (sheet->view.rowi)  /* beware: MAX_VISIBLE_ROW() can be maxrow+1 */
@@ -8424,7 +8422,7 @@ gtk_sheet_set_active_cell(GtkSheet *sheet, gint row, gint col)
 	return (FALSE);
     }
 
-    if (col >= 0 && !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))))
+    if (col >= 0 && !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)))
     {
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
 	g_debug("gtk_sheet_set_active_cell: row %d col %d abort: sheet column, can-focus false", row, col);
@@ -8785,7 +8783,7 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
 	return (FALSE);
     }
 
-    if (!gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))))
+    if (!GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)))
     {
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
 	g_debug("gtk_sheet_activate_cell: row %d col %d abort: sheet column, can-focus false", row, col);
@@ -10244,7 +10242,7 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	    return;
 	}
 
-	if (!gtk_widget_get_can_focus(GTK_WIDGET(colp)))
+	if (!GTK_SHEET_COLUMN_CAN_FOCUS(colp))
 	{
 #if GTK_SHEET_DEBUG_CLICK > 0
 	    g_debug("gtk_sheet_click_cell: row %d col %d VETO: sheet column, can-focus false", row, col);
@@ -10882,33 +10880,38 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	  && !GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row--; \
 	if (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) row = -1;
 
-
 #define _HUNT_FOCUS_LEFT(col) \
 	while (col > 0 \
 	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet,col)))) \
+	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet,col)) \
+	      || !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet,col))) ) \
 		  col--; \
 	if (col < 0) col = 0; \
 	while (col < sheet->maxcol \
 	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col))) ) \
+	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) \
+	      || !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col))) ) \
 		  col++; \
 	if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-	    || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) ) \
+	    || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) \
+	    || !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col)) ) \
 		col = -1;
 
 #define _HUNT_FOCUS_RIGHT(col) \
 	while (col < sheet->maxcol \
 	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col))) ) \
+	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) \
+	      || !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col))) ) \
 		col++; \
         if (col > sheet->maxcol) col = sheet->maxcol; \
 	while (col > 0 \
 	  && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col))) ) \
+	      || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) \
+	      || !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col))) ) \
 		col--; \
 	if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-	    || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) ) \
+	    || !GTK_SHEET_COLUMN_CAN_FOCUS(COLPTR(sheet, col)) \
+	    || !GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col)) ) \
 		col = -1;
 
 #define _HUNT_FOCUS_UP(row) \

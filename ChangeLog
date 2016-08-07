@@ -1,3 +1,6 @@
+2016-08-07 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed clear active cell when scrolling PR#211566
+
 2016-05-29 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: tab/backtab fix PR#210301
 	* GtkSheet: moved GTK_SHEET_COLUMN_CAN_FOCUS() to gtksheetcolumn.h

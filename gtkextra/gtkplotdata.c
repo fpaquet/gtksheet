@@ -53,7 +53,7 @@ static gchar DEFAULT_FONT[] = "Helvetica";
 
 static void gtk_plot_data_class_init 		(GtkPlotDataClass *klass);
 static void gtk_plot_data_init 			(GtkPlotData *data);
-static void gtk_plot_data_destroy		(GtkObject *object);
+static void gtk_plot_data_finalize		(GObject *object);
 static void gtk_plot_data_get_property         (GObject      *object,
                                                  guint            prop_id,
                                                  GValue          *value,
@@ -324,8 +324,7 @@ gtk_plot_data_class_init (GtkPlotDataClass *klass)
   widget_class = (GtkWidgetClass *) klass;
   data_class = (GtkPlotDataClass *) klass;
 
-  object_class->destroy = gtk_plot_data_destroy;
-
+  gobject_class->finalize = gtk_plot_data_finalize;
   gobject_class->set_property = gtk_plot_data_set_property;
   gobject_class->get_property = gtk_plot_data_get_property;
 
@@ -1664,7 +1663,6 @@ gtk_plot_data_init (GtkPlotData *dataset)
   dataset->redraw_pending = TRUE;
 
   dataset->data = GTK_PLOT_ARRAY_LIST(gtk_plot_array_list_new());
-  g_object_ref(G_OBJECT(dataset->data));
 
   gtk_plot_data_add_dimension(dataset, "x", "X" , "X points", G_TYPE_DOUBLE, TRUE, TRUE);
   gtk_plot_data_add_dimension(dataset, "y", "Y" , "Y points", G_TYPE_DOUBLE, TRUE, FALSE);
@@ -1678,7 +1676,7 @@ gtk_plot_data_init (GtkPlotData *dataset)
 }
 
 static void
-gtk_plot_data_destroy (GtkObject *object)
+gtk_plot_data_finalize (GObject *object)
 {
   GtkPlotData *data;
 
@@ -1711,13 +1709,7 @@ gtk_plot_data_destroy (GtkObject *object)
     data->data = NULL;
   }
 
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-        (*GTK_OBJECT_CLASS (parent_class)->destroy) (GTK_OBJECT(data));
-
   gtk_psfont_unref();
-
-  if ( GTK_OBJECT_CLASS (parent_class)->destroy )
-    (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
 
 static void
@@ -4784,6 +4776,7 @@ gtk_plot_data_add_dimension(GtkPlotData *data,
     gtk_plot_array_set_required(dim, required);
     gtk_plot_array_set_independent(dim, independent);
     gtk_plot_array_list_add(data->data, dim);
+    g_object_unref(G_OBJECT(dim));
   }
 }
 

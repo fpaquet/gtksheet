@@ -1,4 +1,9 @@
 2016-08-07 Fredy Paquet <mailbox AT opag.ch>
+	* updated gtkextra-3 version to 3.3.1, Libtool Revision 9.1.1
+	* published gtkextra-3 version 3.3.1
+	* merged branch bugfix into master
+
+2016-08-07 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed clear active cell when scrolling PR#211566
 	* GtkSheet: merged branch traverse-type into master
 	* updated gtkextra-3 version to 3.3.0, Libtool Revision 9.0.1
@@ -14,6 +19,9 @@
 	* GtkSheet: fixed row/column extent calculation (thanks to Shiva Ramabadran <shiva.ramabadran@gmail.com>)
 	* GtkSheet: expose gtk_sheet_width() and gtk_sheet_height() (thanks to Shiva Ramabadran <shiva.ramabadran@gmail.com>)
 	* GtkSheet: tab/backtab fix (thanks to Shiva Ramabadran <shiva.ramabadran@gmail.com>)
+
+2015-10-18 Fredy Paquet <mailbox AT opag.ch>
+        * Patch 22 applied - memory leaks in GtkPlotData
 
 2015-10-03 Fredy Paquet <mailbox AT opag.ch>
 	* GtkPlot*: merged api fixes to support binding generation via Gir-File

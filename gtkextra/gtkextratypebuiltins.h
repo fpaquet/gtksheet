@@ -88,6 +88,8 @@ GType gtk_sheet_entry_type_get_type (void);
 #define GTK_TYPE_SHEET_ENTRY_TYPE (gtk_sheet_entry_type_get_type())
 GType gtk_sheet_vertical_justification_get_type (void);
 #define GTK_TYPE_SHEET_VERTICAL_JUSTIFICATION (gtk_sheet_vertical_justification_get_type())
+GType gtk_sheet_traverse_type_get_type (void);
+#define GTK_TYPE_SHEET_TRAVERSE_TYPE (gtk_sheet_traverse_type_get_type())
 G_END_DECLS
 
 #endif /* __GTKEXTRA_TYPE_BUILTINS_H__ */

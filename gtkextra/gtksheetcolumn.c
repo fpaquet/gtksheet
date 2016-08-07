@@ -589,7 +589,7 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
      */
     pspec = g_param_spec_boolean("visible", "Column is visible",
                                  "Wether the column is visible",
-                                 FALSE,
+                                 TRUE,
                                  G_PARAM_READWRITE);
     g_object_class_install_property(gobject_class,
                                     PROP_SHEET_COLUMN_VISIBLE, pspec);

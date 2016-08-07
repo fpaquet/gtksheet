@@ -961,9 +961,12 @@ gtk_plot_data_set_legend_precision
 gtk_plot_data_get_legend_precision
 gtk_plot_data_set_name
 gtk_plot_data_gradient
+gtk_plot_data_gradient_set_title
+gtk_plot_data_gradient_show_lt_gt
 gtk_plot_data_get_gradient_allocation
 gtk_plot_data_move_gradient
 gtk_plot_data_set_gradient_size
+gtk_plot_data_set_gradient_show_lt_gt
 gtk_plot_data_reset_gradient
 gtk_plot_data_reset_gradient_colors
 gtk_plot_data_gradient_use_custom_colors
@@ -1276,6 +1279,7 @@ GtkSheetCellBorder
 GtkSheetAttrType
 GtkSheetState
 GtkSheetEntryType
+GtkSheetTraverseType
 GtkSheetVerticalJustification
 gtk_sheet_new
 gtk_sheet_construct
@@ -1329,6 +1333,8 @@ gtk_sheet_set_background
 gtk_sheet_set_grid
 gtk_sheet_grid_visible
 gtk_sheet_show_grid
+gtk_sheet_get_traverse_type
+gtk_sheet_set_traverse_type
 gtk_sheet_get_hadjustment
 gtk_sheet_set_hadjustment
 gtk_sheet_get_vadjustment
@@ -1377,6 +1383,10 @@ gtk_sheet_row_get_tooltip_markup
 gtk_sheet_row_set_tooltip_markup
 gtk_sheet_row_get_tooltip_text
 gtk_sheet_row_set_tooltip_text
+gtk_sheet_row_get_can_focus
+gtk_sheet_row_set_can_focus
+gtk_sheet_row_get_readonly
+gtk_sheet_row_set_readonly
 
 gtk_sheet_set_cell
 gtk_sheet_set_cell_text
@@ -1388,6 +1398,12 @@ gtk_sheet_cell_get_tooltip_markup
 gtk_sheet_cell_set_tooltip_markup
 gtk_sheet_cell_get_tooltip_text
 gtk_sheet_cell_set_tooltip_text
+gtk_sheet_cell_get_can_focus
+gtk_sheet_cell_set_can_focus
+gtk_sheet_cell_get_editable
+gtk_sheet_cell_set_editable
+gtk_sheet_cell_get_sensitive
+gtk_sheet_cell_set_sensitive
 gtk_sheet_get_cell_area
 gtk_sheet_get_pixel_info
 
@@ -1539,6 +1555,11 @@ GTK_SHEET_COLUMN_IS_VISIBLE
 GTK_SHEET_COLUMN_MIN_WIDTH
 GTK_SHEET_COLUMN_SET_SENSITIVE
 GTK_SHEET_COLUMN_SET_VISIBLE
+GTK_SHEET_COLUMN_CAN_FOCUS
+GTK_SHEET_COLUMN_CAN_GRAB_FOCUS
+GTK_SHEET_COLUMN_IS_READONLY
+GTK_SHEET_COLUMN_SET_CAN_FOCUS
+GTK_SHEET_COLUMN_SET_READONLY
 
 </SECTION>
 

@@ -121,6 +121,20 @@ typedef enum
     GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM,
 } GtkSheetVerticalJustification;
 
+/**
+ * GtkSheetTraverseType:
+ * @GTK_SHEET_TRAVERSE_ALL: default 
+ * @GTK_SHEET_TRAVERSE_EDITABLE: only writable cells 
+ *
+ * Traverse type for cursor movements. 
+ *
+ **/
+typedef enum
+{
+    GTK_SHEET_TRAVERSE_ALL,
+    GTK_SHEET_TRAVERSE_EDITABLE,
+} GtkSheetTraverseType;
+
 
 #define G_TYPE_SHEET \
     (gtk_sheet_get_type ())
@@ -249,6 +263,8 @@ struct _GtkSheetCellAttr
     GtkSheetCellBorder border;
     gboolean is_editable;
     gboolean is_visible;
+    gboolean is_sensitive;
+    gboolean can_focus;
     gboolean do_font_desc_free;   /* TRUE if font_desc needs free */
 };
 
@@ -310,6 +326,8 @@ struct _GtkSheetRow
     GtkSheetButton button;
     gboolean is_sensitive;
     gboolean is_visible;
+    gboolean is_readonly;   /* to override cell editable */
+    gboolean can_focus;     /* to allow keyboard/mouse focus */
 
     gchar *tooltip_markup; /* tooltip, which is marked up with the Pango text markup language */
     gchar *tooltip_text;  /* tooltip, without markup */
@@ -420,6 +438,9 @@ struct _GtkSheet
     GtkShadowType shadow_type;
 
     GtkSheetVerticalJustification vjust;   /* default vertical text justification */
+
+    /* traverse type for gtksheet movement */
+    GtkSheetTraverseType traverse_type;
 
     /* Column Titles */
     GdkRectangle column_title_area;
@@ -560,6 +581,8 @@ void gtk_sheet_set_justify_entry(GtkSheet *sheet, gboolean justify);
 gboolean gtk_sheet_justify_entry(GtkSheet *sheet);
 void gtk_sheet_set_vjustification(GtkSheet *sheet, GtkSheetVerticalJustification vjust);
 GtkSheetVerticalJustification gtk_sheet_get_vjustification(GtkSheet *sheet);
+void gtk_sheet_set_traverse_type(GtkSheet *sheet, GtkSheetTraverseType ttype);
+GtkSheetTraverseType gtk_sheet_get_traverse_type(GtkSheet *sheet);
 void gtk_sheet_set_locked(GtkSheet *sheet, gboolean locked);
 gboolean gtk_sheet_locked(GtkSheet *sheet);
 
@@ -640,6 +663,14 @@ void gtk_sheet_row_set_tooltip_markup(GtkSheet *sheet, const gint row, const gch
 gchar *gtk_sheet_row_get_tooltip_text(GtkSheet *sheet, const gint row);
 void gtk_sheet_row_set_tooltip_text(GtkSheet *sheet, const gint row, const gchar *text);
 
+/* row readonly */
+gboolean gtk_sheet_row_get_readonly(GtkSheet *sheet, const gint row);
+void gtk_sheet_row_set_readonly(GtkSheet *sheet, const gint row, const gboolean is_readonly);
+
+/* row focus flag */
+gboolean gtk_sheet_row_get_can_focus(GtkSheet *sheet, const gint row);
+void gtk_sheet_row_set_can_focus(GtkSheet *sheet, const gint row, const gboolean can_focus);
+
 /* cell tooltips */
 gchar *gtk_sheet_cell_get_tooltip_markup(GtkSheet *sheet, const gint row, const gint col);
 void gtk_sheet_cell_set_tooltip_markup(GtkSheet *sheet,
@@ -647,6 +678,18 @@ void gtk_sheet_cell_set_tooltip_markup(GtkSheet *sheet,
 gchar *gtk_sheet_cell_get_tooltip_text(GtkSheet *sheet, const gint row, const gint col);
 void gtk_sheet_cell_set_tooltip_text(GtkSheet *sheet,
                                      const gint row, const gint col, const gchar *text);
+
+/* cell editable */
+gboolean gtk_sheet_cell_get_editable(GtkSheet *sheet, const gint row, const gint col);
+void gtk_sheet_cell_set_editable(GtkSheet *sheet, const gint row, const gint col, const gboolean is_editable);
+
+/* cell sensitive */
+gboolean gtk_sheet_cell_get_sensitive(GtkSheet *sheet, const gint row, const gint col);
+void gtk_sheet_cell_set_sensitive(GtkSheet *sheet, const gint row, const gint col, const gboolean is_sensitive);
+
+/* cell can_focus */
+gboolean gtk_sheet_cell_get_can_focus(GtkSheet *sheet, const gint row, const gint col);
+void gtk_sheet_cell_set_can_focus(GtkSheet *sheet, const gint row, const gint col, const gboolean can_focus);
 
 /* selection range. The range gets highlighted, and its bounds are stored in sheet->range  */
 void gtk_sheet_select_row(GtkSheet *sheet, gint row);

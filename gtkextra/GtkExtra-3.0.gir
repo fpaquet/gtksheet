@@ -14736,6 +14736,63 @@ height, or you delete of add row/columns</doc>
           </parameter>
         </parameters>
       </method>
+      <method name="cell_get_can_focus"
+              c:identifier="gtk_sheet_cell_get_can_focus">
+        <doc xml:whitespace="preserve">Check ability of cell to grab focus. Check includes 
+checking for blocks at row/column/sheet level.</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">TRUE if the cell can focus, FALSE if blocked by any level</doc>
+          <type name="gboolean" c:type="gboolean"/>
+        </return-value>
+        <parameters>
+          <parameter name="row" transfer-ownership="none">
+            <doc xml:whitespace="preserve">row index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+          <parameter name="col" transfer-ownership="none">
+            <doc xml:whitespace="preserve">column index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="cell_get_editable"
+              c:identifier="gtk_sheet_cell_get_editable">
+        <doc xml:whitespace="preserve">Check editable status of sheet, row, column and cell to decide
+if a sheet cell is editable</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">TRUE if editable, FALSE if blocked by any level. NOTE: this routine also checks if the sheet row/column/cell can receive focus. A cell may be editable, but not focusable still rendering it unable to be changed by the user.  To check only the editable attribute on the cell, use #gtk_sheet_get_attributes() to fetch cell attributes and examine them.</doc>
+          <type name="gboolean" c:type="gboolean"/>
+        </return-value>
+        <parameters>
+          <parameter name="row" transfer-ownership="none">
+            <doc xml:whitespace="preserve">row index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+          <parameter name="col" transfer-ownership="none">
+            <doc xml:whitespace="preserve">column index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="cell_get_sensitive"
+              c:identifier="gtk_sheet_cell_get_sensitive">
+        <doc xml:whitespace="preserve">Check sensitivity status of sheet, row, column and cell to decide
+if a sheet cell can receive focus.</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">TRUE if cell is not sensitive, FALSE if it is marked sensitive at any level.</doc>
+          <type name="gboolean" c:type="gboolean"/>
+        </return-value>
+        <parameters>
+          <parameter name="row" transfer-ownership="none">
+            <doc xml:whitespace="preserve">row index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+          <parameter name="col" transfer-ownership="none">
+            <doc xml:whitespace="preserve">column index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+        </parameters>
+      </method>
       <method name="cell_get_state" c:identifier="gtk_sheet_cell_get_state">
         <doc xml:whitespace="preserve">Get status of a cell.</doc>
         <return-value transfer-ownership="none">
@@ -14803,6 +14860,69 @@ height, or you delete of add row/columns</doc>
           <parameter name="col" transfer-ownership="none">
             <doc xml:whitespace="preserve">column index</doc>
             <type name="gint" c:type="const gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="cell_set_can_focus"
+              c:identifier="gtk_sheet_cell_set_can_focus">
+        <doc xml:whitespace="preserve">Sets cell can_focus flag</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="row" transfer-ownership="none">
+            <doc xml:whitespace="preserve">row index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+          <parameter name="col" transfer-ownership="none">
+            <doc xml:whitespace="preserve">column index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+          <parameter name="can_focus" transfer-ownership="none">
+            <doc xml:whitespace="preserve">value for the editable status of the cell</doc>
+            <type name="gboolean" c:type="const gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="cell_set_editable"
+              c:identifier="gtk_sheet_cell_set_editable">
+        <doc xml:whitespace="preserve">Sets cell editable status in cell attributes.</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="row" transfer-ownership="none">
+            <doc xml:whitespace="preserve">row index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+          <parameter name="col" transfer-ownership="none">
+            <doc xml:whitespace="preserve">column index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+          <parameter name="is_editable" transfer-ownership="none">
+            <doc xml:whitespace="preserve">value for the editable status of the cell</doc>
+            <type name="gboolean" c:type="const gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="cell_set_sensitive"
+              c:identifier="gtk_sheet_cell_set_sensitive">
+        <doc xml:whitespace="preserve">Sets cell sensitive status</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="row" transfer-ownership="none">
+            <doc xml:whitespace="preserve">row index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+          <parameter name="col" transfer-ownership="none">
+            <doc xml:whitespace="preserve">column index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+          <parameter name="is_sensitive" transfer-ownership="none">
+            <doc xml:whitespace="preserve">value for the sensitive status of the cell</doc>
+            <type name="gboolean" c:type="const gboolean"/>
           </parameter>
         </parameters>
       </method>
@@ -15873,6 +15993,14 @@ area/outside).</doc>
           <type name="utf8" c:type="gchar*"/>
         </return-value>
       </method>
+      <method name="get_traverse_type"
+              c:identifier="gtk_sheet_get_traverse_type">
+        <doc xml:whitespace="preserve">Get the default cell traversal type from #GtkSheet.</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">the default #GtkSheetTraverseType</doc>
+          <type name="SheetTraverseType" c:type="GtkSheetTraverseType"/>
+        </return-value>
+      </method>
       <method name="get_vadjustment" c:identifier="gtk_sheet_get_vadjustment">
         <doc xml:whitespace="preserve">Get vertical scroll adjustments.</doc>
         <return-value transfer-ownership="none">
@@ -16323,6 +16451,34 @@ The default value is GTK_JUSTIFY_LEFT. If autoformat is on, the default justific
           </parameter>
         </parameters>
       </method>
+      <method name="row_get_can_focus"
+              c:identifier="gtk_sheet_row_get_can_focus">
+        <doc xml:whitespace="preserve">Gets the row can_focus flag</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">the can_focus flag</doc>
+          <type name="gboolean" c:type="gboolean"/>
+        </return-value>
+        <parameters>
+          <parameter name="row" transfer-ownership="none">
+            <doc xml:whitespace="preserve">row index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="row_get_readonly"
+              c:identifier="gtk_sheet_row_get_readonly">
+        <doc xml:whitespace="preserve">Gets the row readonly flag</doc>
+        <return-value transfer-ownership="none">
+          <doc xml:whitespace="preserve">the readonly flag</doc>
+          <type name="gboolean" c:type="gboolean"/>
+        </return-value>
+        <parameters>
+          <parameter name="row" transfer-ownership="none">
+            <doc xml:whitespace="preserve">row index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+        </parameters>
+      </method>
       <method name="row_get_tooltip_markup"
               c:identifier="gtk_sheet_row_get_tooltip_markup">
         <doc xml:whitespace="preserve">Gets the contents of the tooltip (markup) for the column</doc>
@@ -16378,6 +16534,44 @@ The default value is GTK_JUSTIFY_LEFT. If autoformat is on, the default justific
           <parameter name="row" transfer-ownership="none">
             <doc xml:whitespace="preserve">row number</doc>
             <type name="gint" c:type="gint"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="row_set_can_focus"
+              c:identifier="gtk_sheet_row_set_can_focus">
+        <doc xml:whitespace="preserve">Sets the row can_focus flag. 
+Note: Does not check row visiblity, sensitivity, etc. Use the
+macro GTK_SHEET_ROW_CAN_GRAB_FOCUS() for dependency checking.</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="row" transfer-ownership="none">
+            <doc xml:whitespace="preserve">row index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+          <parameter name="can_focus" transfer-ownership="none">
+            <doc xml:whitespace="preserve">the row can_focus flag</doc>
+            <type name="gboolean" c:type="const gboolean"/>
+          </parameter>
+        </parameters>
+      </method>
+      <method name="row_set_readonly"
+              c:identifier="gtk_sheet_row_set_readonly">
+        <doc xml:whitespace="preserve">Sets the row readonly flag. 
+A cell is editable if the sheet is not locked, the row is 
+not readonly and the cell (-range) was set to editable.</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="row" transfer-ownership="none">
+            <doc xml:whitespace="preserve">row index</doc>
+            <type name="gint" c:type="const gint"/>
+          </parameter>
+          <parameter name="is_readonly" transfer-ownership="none">
+            <doc xml:whitespace="preserve">the row is_readonly flag</doc>
+            <type name="gboolean" c:type="const gboolean"/>
           </parameter>
         </parameters>
       </method>
@@ -16979,6 +17173,20 @@ up with the Pango text markup language.</doc>
           </parameter>
         </parameters>
       </method>
+      <method name="set_traverse_type"
+              c:identifier="gtk_sheet_set_traverse_type">
+        <doc xml:whitespace="preserve">Set the default traversal type for cursor movement in a 
+#GtkSheet.</doc>
+        <return-value transfer-ownership="none">
+          <type name="none" c:type="void"/>
+        </return-value>
+        <parameters>
+          <parameter name="ttype" transfer-ownership="none">
+            <doc xml:whitespace="preserve">a #GtkSheetTraverseType</doc>
+            <type name="SheetTraverseType" c:type="GtkSheetTraverseType"/>
+          </parameter>
+        </parameters>
+      </method>
       <method name="set_vadjustment" c:identifier="gtk_sheet_set_vadjustment">
         <doc xml:whitespace="preserve">Change vertical scroll adjustments.</doc>
         <return-value transfer-ownership="none">
@@ -17158,6 +17366,12 @@ cannot be modified by the user.</doc>
         <doc xml:whitespace="preserve">The sheets title string</doc>
         <type name="utf8"/>
       </property>
+      <property name="traverse-type"
+                introspectable="0"
+                writable="1"
+                transfer-ownership="none">
+        <type/>
+      </property>
       <property name="vjust"
                 introspectable="0"
                 writable="1"
@@ -17314,6 +17528,9 @@ cannot be modified by the user.</doc>
       <field name="vjust">
         <type name="SheetVerticalJustification"
               c:type="GtkSheetVerticalJustification"/>
+      </field>
+      <field name="traverse_type">
+        <type name="SheetTraverseType" c:type="GtkSheetTraverseType"/>
       </field>
       <field name="column_title_area">
         <type name="Gdk.Rectangle" c:type="GdkRectangle"/>
@@ -17783,6 +18000,12 @@ It should only be accessed through the functions described below.</doc>
         <type name="gboolean" c:type="gboolean"/>
       </field>
       <field name="is_visible" readable="0" private="1">
+        <type name="gboolean" c:type="gboolean"/>
+      </field>
+      <field name="is_sensitive" readable="0" private="1">
+        <type name="gboolean" c:type="gboolean"/>
+      </field>
+      <field name="can_focus" readable="0" private="1">
         <type name="gboolean" c:type="gboolean"/>
       </field>
       <field name="do_font_desc_free" readable="0" private="1">
@@ -18440,6 +18663,12 @@ It should only be accessed through the functions described below.</doc>
       <field name="is_visible" readable="0" private="1">
         <type name="gboolean" c:type="gboolean"/>
       </field>
+      <field name="is_readonly" readable="0" private="1">
+        <type name="gboolean" c:type="gboolean"/>
+      </field>
+      <field name="can_focus" readable="0" private="1">
+        <type name="gboolean" c:type="gboolean"/>
+      </field>
       <field name="tooltip_markup" readable="0" private="1">
         <type name="utf8" c:type="gchar*"/>
       </field>
@@ -18459,6 +18688,13 @@ It should only be accessed through the functions described below.</doc>
       <member name="range_selected"
               value="3"
               c:identifier="GTK_SHEET_RANGE_SELECTED"/>
+    </enumeration>
+    <enumeration name="SheetTraverseType" c:type="GtkSheetTraverseType">
+      <doc xml:whitespace="preserve">Traverse type for cursor movements.</doc>
+      <member name="all" value="0" c:identifier="GTK_SHEET_TRAVERSE_ALL"/>
+      <member name="editable"
+              value="1"
+              c:identifier="GTK_SHEET_TRAVERSE_EDITABLE"/>
     </enumeration>
     <enumeration name="SheetVerticalJustification"
                  c:type="GtkSheetVerticalJustification">

@@ -1,5 +1,8 @@
 2016-08-07 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: fixed clear active cell when scrolling PR#211566
+	* GtkSheet: merged branch traverse-type into master
+	* updated gtkextra-3 version to 3.3.0, Libtool Revision 9.0.1
+	* published gtkextra-3 version 3.3.0
 
 2016-05-29 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: tab/backtab fix PR#210301

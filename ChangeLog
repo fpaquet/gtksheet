@@ -1,4 +1,8 @@
 2016-09-18 Fredy Paquet <mailbox AT opag.ch>
+	* updated gtkextra-3 version to 3.3.2, Libtool Revision 9.2.1
+	* published gtkextra-3 version 3.3.2
+
+2016-09-18 Fredy Paquet <mailbox AT opag.ch>
 	* GtkSheet: support for number grouping (India)
 
 2016-08-07 Fredy Paquet <mailbox AT opag.ch>

@@ -18890,26 +18890,26 @@ A combo row may be selected with gtk_toggle_combo_select().The current selection
       </field>
     </record>
     <function name="data_format" c:identifier="gtk_data_format">
-      <doc xml:whitespace="preserve">format @str according to @dataformat. 
+      <doc xml:whitespace="preserve">format @str according to @dataformat.
 
-formatting instructions: 
+formatting instructions:
 
 '' (the empty string) does no formatting at all.
 
-'int8' is formatted as a singed 8-bit integer value with 
-optional '-' sign. 
+'int8' is formatted as a singed 8-bit integer value with
+optional '-' sign.
 
 'int16' is formatted as a signed 16-bit integer with optional
-'-' sign. 
+'-' sign.
 
 'int32' is formatted as a signed 32-bit integer with optional
 '-' sign.
 
-'money' is formatted as a double float value with 2 decimal 
-digits and 1000s-separators 
+'money' is formatted as a double float value with 2 decimal
+digits and 1000s-separators
 
 'float,N' is formatted as a double float value with N decimal
-digits and 1000s-separators 
+digits and 1000s-separators
 
 'bit' is formatted as a boolean value [0,1].</doc>
       <return-value transfer-ownership="full">
@@ -18928,7 +18928,7 @@ digits and 1000s-separators
       </parameters>
     </function>
     <function name="data_format_remove" c:identifier="gtk_data_format_remove">
-      <doc xml:whitespace="preserve">reverse the effect of #gtk_data_format, i.e. remove all 
+      <doc xml:whitespace="preserve">reverse the effect of #gtk_data_format, i.e. remove all
 formatting characters, apply trailing dash</doc>
       <return-value transfer-ownership="full">
         <doc xml:whitespace="preserve">a pointer to an internal static buffer, with the unformatted data</doc>

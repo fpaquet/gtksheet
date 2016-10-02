@@ -1,3 +1,6 @@
+2016-10-02 Fredy Paquet <mailbox AT opag.ch>
+	* gtkdataformat.c - fixed thousands_sep (utf8) PR#212243
+
 2016-09-18 Fredy Paquet <mailbox AT opag.ch>
 	* updated gtkextra-3 version to 3.3.2, Libtool Revision 9.2.1
 	* published gtkextra-3 version 3.3.2

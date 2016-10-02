@@ -66,6 +66,52 @@
 
 #define SIGNIFICANT_DIGITS  16
 
+/* Cached locale data */
+static gchar *radix_str = NULL;
+static gchar *thousands_c = NULL;
+static guchar *grouping = NULL;
+
+static void _cache_localedata_utf8(gboolean recheck)
+{
+    if (radix_str && ! recheck) return;
+
+    struct lconv *lc = localeconv();
+    GError *err = NULL;
+
+    gchar *r = (lc && lc->decimal_point) ?
+	lc->decimal_point : DEFAULT_DECIMAL_POINT;
+
+    if (radix_str) { g_free(radix_str); radix_str = NULL; }
+    radix_str = g_locale_to_utf8(r, strlen(r), NULL, NULL, &err);
+
+    if (!radix_str && err) {
+        g_warning("_get_localedata_utf8: failed to convert decimal_point <%s> to UTF8", r);
+        radix_str = g_strdup(r);
+    }
+
+    gchar *tc = (lc && lc->thousands_sep) ?
+	lc->thousands_sep : DEFAULT_THOUSANDS_SEP;
+
+    if (thousands_c) { g_free(thousands_c); thousands_c = NULL; }
+    thousands_c = g_locale_to_utf8(tc, strlen(r), NULL, NULL, &err);
+
+    if (!thousands_c && err) {
+        g_warning("_get_localedata_utf8: failed to convert thousands_setp <%s> to UTF8", tc);
+        thousands_c = g_strdup(tc);
+    }
+
+    guchar *gp = (guchar *) (
+      (lc && lc->grouping && lc->grouping[0]) ? 
+        lc->grouping : DEFAULT_GROUPING);
+
+    if (grouping) { g_free(grouping); grouping = NULL; }
+    grouping = (guchar *) g_strdup((gchar *) gp);
+
+#if GTK_DATA_FORMAT_DEBUG>0
+    g_debug("_cache_localedata_utf8: <%s> <%s>", radix_str, thousands_c);
+#endif
+}
+
 static gchar *insert_thousands_seps(const gchar *cp)
 {
     static gchar buf[MAX_NUM_STRLEN];
@@ -73,15 +119,11 @@ static gchar *insert_thousands_seps(const gchar *cp)
     const gchar *src;
     gint pos;  /* position of radix_str */
     gint tpos;  /* position of next thousands_sep */
-    struct lconv *lc = localeconv();
-    gchar *radix_str = (lc && lc->decimal_point) ?
-	lc->decimal_point : DEFAULT_DECIMAL_POINT;
-    gchar *thousands_c = (lc && lc->thousands_sep) ?
-	lc->thousands_sep : DEFAULT_THOUSANDS_SEP;
+
+    _cache_localedata_utf8(FALSE);
+
     gint thousands_len = strlen(thousands_c);
-    guchar *grp_ptr = (guchar *) (
-      (lc && lc->grouping && lc->grouping[0]) ? 
-        lc->grouping : DEFAULT_GROUPING);
+    guchar *grp_ptr = grouping;
     gint grp_size = *grp_ptr++;
     gint len = strlen(cp);
 
@@ -138,9 +180,9 @@ static gchar *remove_thousands_seps(const gchar *src)
     gchar *dst = buf;
     gboolean found=FALSE;
     gint i=0, l = strlen(src);
-    struct lconv *lc = localeconv();
-    gchar *thousands_c = (lc && lc->thousands_sep) ?
-	lc->thousands_sep : DEFAULT_THOUSANDS_SEP;
+
+    _cache_localedata_utf8(FALSE);
+
     gint thousands_len = strlen(thousands_c);
 
     if (!src) return((gchar *) src);

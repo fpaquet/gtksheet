@@ -1,3 +1,6 @@
+2016-10-16 Fredy Paquet <mailbox AT opag.ch>
+	* gtkitementry.c - fixed ABORT on missing focus-out PR#212710
+
 2016-10-02 Fredy Paquet <mailbox AT opag.ch>
 	* gtkdataformat.c - fixed thousands_sep (utf8) PR#212243
 

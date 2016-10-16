@@ -2650,7 +2650,18 @@ _item_entry_blink_cb(gpointer data)
 
     entry = GTK_ENTRY(data);
 
-    g_assert(gtk_widget_has_focus(GTK_WIDGET(entry)));
+    if (!gtk_widget_has_focus(GTK_WIDGET(entry)))
+    {
+        g_warning (
+            "GtkItemEntry - did not receive focus-out-event. If you\n"
+            "connect a handler to this signal, it must return\n"
+            "FALSE so the entry gets the event as well");
+
+        /* gtk_item_entry_check_cursor_blink (entry); */
+
+        return FALSE;
+    }
+
     g_assert(entry->selection_bound == entry->current_pos);
 
     if (entry->cursor_visible)

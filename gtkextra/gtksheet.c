@@ -9047,7 +9047,7 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
     sheet->active_cell.col = -1;
 
     GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IS_FROZEN);
-g_debug("1");
+
     text = gtk_sheet_get_entry_text(sheet);
     gtk_sheet_set_cell_text(sheet, row, col, text);
     g_free(text);

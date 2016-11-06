@@ -4017,6 +4017,14 @@ static void gtk_sheet_autoresize_all(GtkSheet *sheet)
     g_debug("gtk_sheet_autoresize_all: running");
 #endif
 
+    gboolean need_freeze = (
+                            !GTK_SHEET_IS_FROZEN(sheet)
+                            && (gtk_sheet_autoresize_columns(sheet) 
+                                || gtk_sheet_autoresize_rows(sheet))
+                            );
+    
+    if (need_freeze) gtk_sheet_freeze(sheet);
+        
     if (gtk_sheet_autoresize_columns(sheet))
     {
 	gint col;
@@ -4050,6 +4058,8 @@ static void gtk_sheet_autoresize_all(GtkSheet *sheet)
 	    }
 	}
     }
+
+    if (need_freeze) gtk_sheet_thaw(sheet);
 }
 
 /**
@@ -14310,7 +14320,8 @@ gtk_sheet_set_row_height(GtkSheet *sheet, gint row, guint height)
 
     _gtk_sheet_recalc_top_ypixels(sheet);
 
-    if (gtk_widget_get_realized(GTK_WIDGET(sheet)) && !GTK_SHEET_IS_FROZEN(sheet))
+    if (gtk_widget_get_realized(GTK_WIDGET(sheet)) 
+        && !GTK_SHEET_IS_FROZEN(sheet))
     {
 	size_allocate_row_title_buttons(sheet);
 	_gtk_sheet_scrollbar_adjust(sheet);
@@ -14318,7 +14329,8 @@ gtk_sheet_set_row_height(GtkSheet *sheet, gint row, guint height)
 	_gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
 
-    g_signal_emit(GTK_OBJECT(sheet), sheet_signals[NEW_ROW_HEIGHT], 0, row, height);
+    g_signal_emit(GTK_OBJECT(sheet), 
+                  sheet_signals[NEW_ROW_HEIGHT], 0, row, height);
 }
 
 /**

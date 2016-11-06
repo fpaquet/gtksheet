@@ -1,3 +1,6 @@
+2016-11-06 Fredy Paquet <mailbox AT opag.ch>
+	* gtksheet.c - reduce flicker in autoresize rows/cells PR#213228
+
 2016-11-01 Fredy Paquet <mailbox AT opag.ch>
 	* gtksheet.c - disabled unconditional g_debug PR#213205
 

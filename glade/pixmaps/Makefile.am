@@ -38,14 +38,27 @@ PIXMAPS_22 = \
     $(P22DIR)/widget-gtkextra-gtkiconlist.png \
     $(P22DIR)/widget-gtkextra-gtkitementry.png \
     $(P22DIR)/widget-gtkextra-gtkplot.png \
+    $(P22DIR)/widget-gtkextra-gtkplotarray.png \
+    $(P22DIR)/widget-gtkextra-gtkplotarraylist.png \
     $(P22DIR)/widget-gtkextra-gtkplotaxis.png \
+    $(P22DIR)/widget-gtkextra-gtkplotbar.png \
     $(P22DIR)/widget-gtkextra-gtkplotbox.png \
     $(P22DIR)/widget-gtkextra-gtkplotbubble.png \
     $(P22DIR)/widget-gtkextra-gtkplotcandle.png \
     $(P22DIR)/widget-gtkextra-gtkplotcanvas.png \
+    $(P22DIR)/widget-gtkextra-gtkplotcanvaschild.png \
+    $(P22DIR)/widget-gtkextra-gtkplotcanvasellipse.png \
+    $(P22DIR)/widget-gtkextra-gtkplotcanvasline.png \
+    $(P22DIR)/widget-gtkextra-gtkplotcanvaspixmap.png \
+    $(P22DIR)/widget-gtkextra-gtkplotcanvasplot.png \
+    $(P22DIR)/widget-gtkextra-gtkplotcanvasrectangle.png \
+    $(P22DIR)/widget-gtkextra-gtkplotcanvastext.png \
+    $(P22DIR)/widget-gtkextra-gtkplotcsurface.png \
+    $(P22DIR)/widget-gtkextra-gtkplotdata.png \
     $(P22DIR)/widget-gtkextra-gtkplotflux.png \
     $(P22DIR)/widget-gtkextra-gtkplotpixmap.png \
     $(P22DIR)/widget-gtkextra-gtkplotpolar.png \
+    $(P22DIR)/widget-gtkextra-gtkplotsurface.png \
     $(P22DIR)/widget-gtkextra-gtksheet.png \
     $(P22DIR)/widget-gtkextra-gtksheetcolumn.png \
     $(P22DIR)/widget-gtkextra-gtktogglecombo.png

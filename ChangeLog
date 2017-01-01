@@ -1,3 +1,6 @@
+2017-01-01 Fredy Paquet <mailbox AT opag.ch>
+	* Glade-Integration: got new icons, thanks to <droli@thebajors.com>
+
 2016-11-06 Fredy Paquet <mailbox AT opag.ch>
 	* gtksheet.c - reduce flicker in autoresize rows/cells PR#213228
 	* updated gtkextra-3 version to 3.3.3, Libtool Revision 9.3.1

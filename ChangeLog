@@ -1,3 +1,8 @@
+2017-06-22 Fredy Paquet <mailbox AT opag.ch>
+        * GtkDataEntry - memory hole fixed PR#217304
+        * GtkDataEntry - fixed max_len_bytes check on paste PR#217304
+        * GtkDataEntry - added input filters Ignore(), Accept(), Reject()
+
 2017-01-01 Fredy Paquet <mailbox AT opag.ch>
 	* Glade-Integration: got new icons, thanks to <droli@thebajors.com>
 

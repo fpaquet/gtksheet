@@ -53,6 +53,10 @@ struct _GtkDataEntry
     gchar *data_format;        /* cell content formatting template */
     gchar *description;         /* column description */
     gint max_length_bytes;   /* maximum length in bytes */
+
+    gchar *vlist_ignore;    /* validation list for Ignore() */
+    gchar *vlist_accept;    /* validation list for Accept() */
+    gchar *vlist_reject;    /* validation list for Reject() */
 };
 
 struct _GtkDataEntryClass

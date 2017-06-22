@@ -120,12 +120,142 @@ gtk_data_entry_get_description(GtkDataEntry *data_entry)
     return data_entry->description;
 }
 
+#define GTK_DATA_ENTRY_VLIST_IGNORE "Ignore("
+#define GTK_DATA_ENTRY_VLIST_ACCEPT "Accept("
+#define GTK_DATA_ENTRY_VLIST_REJECT "Reject("
+#define GTK_DATA_ENTRY_VLIST_END ")"
+
+/**
+ * dealloc_string_ptr
+ * 
+ * deallocate string pointer and set pointer to NULL
+ * 
+ * @p:      address of string pointer
+ */
+static void dealloc_string_ptr(gchar **p)
+{
+    if (*p) 
+    {
+        g_free(*p);
+        *p = NULL;
+    }
+}
+
+/**
+ * Find character validation list in string.
+ * 
+ * @desc: haystack to search for definition string
+ * @pat: definition keyword to search for, including leading 
+ *         quote
+ * 
+ * Returns: pointer to validation list or NULL
+ */
+static gchar *get_vlist(const gchar *desc, gchar *pat)
+{
+    gchar *p = g_strstr_len(desc, -1, pat);
+    g_debug("get_vlist p %s", p);
+
+    if (p)
+    {
+        p += strlen(pat);
+        gchar *endp = g_strstr_len(p, -1, GTK_DATA_ENTRY_VLIST_END);
+
+        if (!endp || endp <= p)  /* length > 0 */
+        {
+            return NULL;
+        }
+
+        GString *result = g_string_sized_new (endp - p + 1);
+
+        while (p < endp)
+        {
+            if (*p == '\\')
+            {
+                switch(*++p)
+                {
+                    case 'a': g_string_append_c (result, '\a'); break;
+                    case 'b': g_string_append_c (result, '\b'); break;
+                    case 'f': g_string_append_c (result, '\f'); break;
+                    case 'n': g_string_append_c (result, '\n'); break;
+                    case 'r': g_string_append_c (result, '\r'); break;
+                    case 't': g_string_append_c (result, '\t'); break;
+                    case 'v': g_string_append_c (result, '\v'); break;
+                    case '\\': g_string_append_c (result, '\\'); break;
+                    default:
+                        g_string_append_c (result, '\\'); 
+                        continue;
+                }
+                p++;
+                continue;
+            }
+
+            char buf[7];
+            gunichar ch = g_utf8_get_char (p);
+            gint buflen = g_unichar_to_utf8 (ch, buf);
+            g_string_append_len (result, buf, buflen);
+
+            p = g_utf8_next_char (p);
+        }
+        g_string_append_c (result, '\0');
+
+        return g_string_free (result, FALSE);
+    }
+    return NULL;
+}
+
+static void update_validation_lists(GtkDataEntry *data_entry)
+{
+    g_return_if_fail(data_entry != NULL);
+    g_return_if_fail(GTK_IS_DATA_ENTRY(data_entry));
+
+    dealloc_string_ptr(&data_entry->vlist_ignore);
+    dealloc_string_ptr(&data_entry->vlist_accept);
+    dealloc_string_ptr(&data_entry->vlist_reject);
+
+    gchar *desc = data_entry->description;
+
+    if (desc)
+    {
+        data_entry->vlist_ignore = get_vlist(
+            desc, GTK_DATA_ENTRY_VLIST_IGNORE);
+
+        data_entry->vlist_accept = get_vlist(
+            desc, GTK_DATA_ENTRY_VLIST_ACCEPT);
+
+        data_entry->vlist_reject = get_vlist(
+            desc, GTK_DATA_ENTRY_VLIST_REJECT);
+
+        g_debug("Got Ignore list <%s>\n", data_entry->vlist_ignore);
+        g_debug("Got Accept list <%s>\n", data_entry->vlist_accept);
+        g_debug("Got Rehect list <%s>\n", data_entry->vlist_reject);
+    }
+}
+
 /**
  * gtk_data_entry_set_description: 
  * @data_entry:  a #GtkDataEntry
  * @description:  the description or NULL 
  *  
  * Sets the GtkDataEntry description. 
+ *  
+ * Basically, you can use the description for your own 
+ * programming purpose. The #GtkDataEntry recognizes the 
+ * keywords below, which have a special meaning. 
+ *  
+ * - Ignore(vString) - silently ignore all characters in vString 
+ *  
+ * - Accept(vString) - accept only characters in eString, sound
+ *   bell for invalid characters
+ *  
+ * - Reject(vString) - ignore all characters in vString, sound 
+ *   bell for invalid characters
+ * 
+ *  vString is a literate character list, it may contain valid
+ *  utf-8 character sequences and one of the following escape
+ *  sequences: \a, \b, \f, \n, \r, \t, \v, \\. The vString can
+ *  not be quoted like a normal C string, it is delimited by
+ *  round brackets.
+ *  
  */
 void gtk_data_entry_set_description(GtkDataEntry *data_entry,
     const gchar *description)
@@ -135,7 +265,9 @@ void gtk_data_entry_set_description(GtkDataEntry *data_entry,
 
     if (data_entry->description)
 	g_free(data_entry->description);
+
     data_entry->description = g_strdup(description);
+    update_validation_lists(data_entry);
 }
 
 /**
@@ -348,7 +480,6 @@ gtk_data_entry_get_type(void)
     return (data_entry_type);
 }
 
-
 static void
 gtk_data_entry_set_property(GObject *object,
     guint prop_id,
@@ -401,7 +532,9 @@ gtk_data_entry_set_property(GObject *object,
 		{
 		    if (data_entry->description)
 			g_free(data_entry->description);
-		    data_entry->description = g_strdup(description);
+
+                    data_entry->description = g_strdup(description);
+                    update_validation_lists(data_entry);
 		}
 		else
 		{
@@ -497,6 +630,37 @@ gtk_data_entry_focus_out(GtkWidget *widget, GdkEventFocus *event)
     return ((*GTK_WIDGET_CLASS(parent_class)->focus_out_event)(widget, event));
 }
 
+ /*
+ * gtk_data_entry_finalize_handler:
+ * 
+ * this is the #GtkDataEntry object class "finalize" signal handler
+ * 
+ * @param object the #GtkDataEntry
+ */
+static void
+gtk_data_entry_finalize_handler(GObject *object)
+{
+    g_return_if_fail(object != NULL);
+    g_return_if_fail(GTK_IS_DATA_ENTRY(object));
+
+    GtkDataEntry *data_entry = GTK_DATA_ENTRY(object);
+
+    dealloc_string_ptr(&(data_entry->data_type));
+    dealloc_string_ptr(&(data_entry->data_format));
+    dealloc_string_ptr(&(data_entry->description));
+
+    dealloc_string_ptr(&(data_entry->vlist_ignore));
+    dealloc_string_ptr(&(data_entry->vlist_accept));
+    dealloc_string_ptr(&data_entry->vlist_reject);
+
+    /* not sure if this is needed 22.06.17/fp
+    data_entry_parent_class = g_type_class_peek_parent(klass);
+
+    if (G_OBJECT_CLASS(data_entry_parent_class)->finalize)
+        (*G_OBJECT_CLASS(data_entry_parent_class)->finalize)(object); 
+    */ 
+}
+
 static void
 gtk_data_entry_class_init(GtkDataEntryClass *klass)
 {
@@ -508,6 +672,8 @@ gtk_data_entry_class_init(GtkDataEntryClass *klass)
 #endif
 
     parent_class = g_type_class_ref(gtk_entry_get_type());
+
+    gobject_class->finalize = gtk_data_entry_finalize_handler;
 
     gobject_class->set_property = gtk_data_entry_set_property;
     gobject_class->get_property = gtk_data_entry_get_property;
@@ -598,34 +764,171 @@ gtk_data_entry_class_init(GtkDataEntryClass *klass)
 	    G_PARAM_READWRITE));
 }
 
-/* Signal interception */
+/**
+ * process_vlists
+ * 
+ * handle all vlists
+ * 
+ * vlist_ignore -> chars are silently ignored
+ * vlist_accept -> chars are accepted, beep, precedence over vlist_reject
+ * vlist_reject -> chars are rejected, beep
+ * 
+ * @param data_entry the #GtkDataEntry
+ * @param str        the text to be inserted
+ * @param length     the length of the text in bytes, or -1
+ * 
+ * @return sanitized text or NULL
+ */
+static gchar *
+process_vlists(GtkDataEntry *data_entry,
+    const gchar *str, 
+    gint length)
+{
+    if (length < 0) length = strlen(str);
 
+    GString *result = g_string_sized_new(length + 1);
+    const gchar *p = str;
+    const gchar *endp = str + length;
+    gboolean modified = FALSE;
+    gboolean beep = FALSE;
+
+    gchar *vlist_ignore = data_entry->vlist_ignore;
+    gchar *vlist_accept = data_entry->vlist_accept;
+    gchar *vlist_reject = data_entry->vlist_reject;
+
+    while (p < endp)
+    {
+        gunichar ch = g_utf8_get_char(p);
+
+        if (vlist_ignore && g_utf8_strchr(vlist_ignore, -1, ch))
+        {
+            modified = TRUE;
+        }
+        else if ( (vlist_accept && !g_utf8_strchr(vlist_accept, -1, ch))
+                 || (vlist_reject && g_utf8_strchr(vlist_reject, -1, ch)) )
+        {
+            modified = TRUE;
+            beep = TRUE;
+        }
+        else
+        {
+            char buf[7];
+            gint buflen = g_unichar_to_utf8(ch, buf);
+            g_string_append_len(result, buf, buflen);
+        }
+        p = g_utf8_next_char(p);
+    }
+    g_string_append_c(result, '\0');
+
+    if (modified)
+    {
+        if (beep) gdk_beep();
+        return g_string_free(result, FALSE);
+    }
+
+    g_string_free(result, TRUE);
+    return NULL;
+}
+
+/**
+ * _gtk_data_entry_insert_text_handler
+ * 
+ * Details see #gtk_editable_insert_text
+ * 
+ * @editable:  a #GtkEditable
+ * @new_text:  the text to append
+ * @new_text_length: the length of the text in bytes, or -1 
+ * @position:  location of the position text will be inserted 
+ *          at.
+ * @user_data: user data
+ */
 static void _gtk_data_entry_insert_text_handler(GtkEditable *editable,
     gchar *new_text, gint  new_text_length,
     gpointer position, gpointer user_data)   
 {
+    gchar *my_text = new_text;
+    if (new_text_length < 0) new_text_length = strlen(my_text);
+
     GtkDataEntry *data_entry = GTK_DATA_ENTRY(editable);
-    gint max_len = data_entry->max_length_bytes;
 
-    if (!max_len) return;
+    gchar *sanitized_str = process_vlists(
+        data_entry, new_text, new_text_length);
 
-    const gchar *old_text = gtk_data_entry_get_text(data_entry);
-    gint old_length = strlen(old_text);
+    g_debug("IT nl %d T<%s> S<%s> ", 
+        new_text_length, new_text, sanitized_str);
 
-    if (new_text_length < 0) new_text_length = strlen(new_text);
-
-#if GTK_DATA_ENTRY_DEBUG_SIGNAL > 0
-    g_debug("_gtk_data_entry_insert_text_handler(bytes): cl %d max %d new %d", 
-	old_length, max_len, new_text_length);
-#endif
-	
-    if (old_length + new_text_length > max_len)
+    if (sanitized_str)
     {
-	gdk_beep();
-	g_signal_stop_emission_by_name(editable, "insert-text");
+        my_text = sanitized_str;
+        new_text_length = strlen(my_text);
     }
-}
 
+    /* check max_length_bytes */
+
+    gint max_len_bytes = data_entry->max_length_bytes;
+
+    gchar *bc_text = NULL;  /* text assembled with byte length check */
+
+    if (max_len_bytes > 0) 
+    {
+        const gchar *old_text = gtk_data_entry_get_text(data_entry);
+        gint old_length = strlen(old_text);
+
+        g_debug("_gtk_data_entry_insert_text_handler: o %d m %d n %d", 
+            old_length, max_len_bytes, new_text_length);
+            
+        if (old_length + new_text_length > max_len_bytes)
+        {
+            gdk_beep();
+
+            /* assemble a fitting text fragment */
+            GString *bc_wrk_str = g_string_sized_new(new_text_length + 1);
+            const gchar *p = my_text;
+            const gchar *endp = my_text + new_text_length;
+            gint assembly_len = 0;
+
+            while (p < endp)
+            {
+                gunichar ch = g_utf8_get_char(p);
+
+                char buf[7];
+                gint buflen = g_unichar_to_utf8(ch, buf);
+
+                assembly_len += buflen;
+
+                if (old_length + assembly_len > max_len_bytes) 
+                    break;
+                
+                g_string_append_len(bc_wrk_str, buf, buflen);
+                p = g_utf8_next_char(p);
+            }
+            g_string_append_c(bc_wrk_str, '\0');
+            
+            bc_text = g_string_free(bc_wrk_str, FALSE);
+            my_text = bc_text;
+            new_text_length = strlen(my_text);
+        }
+    }
+
+    g_debug("Re-invoking insert handler");
+
+    g_signal_handlers_block_by_func(G_OBJECT(editable),
+        G_CALLBACK(_gtk_data_entry_insert_text_handler),
+        user_data);
+    gtk_editable_insert_text(editable, 
+        my_text, new_text_length, 
+        position);
+    g_signal_handlers_unblock_by_func(G_OBJECT(editable),
+        G_CALLBACK(_gtk_data_entry_insert_text_handler),
+        user_data);
+    g_signal_stop_emission_by_name(G_OBJECT(editable), "insert_text");
+
+    g_debug("Back from insert handler");
+
+    /* cleanup */
+    if (sanitized_str) g_free(sanitized_str);
+    if (bc_text) g_free(bc_text);
+}
 
 static void
 gtk_data_entry_init(GtkDataEntry *data_entry)
@@ -638,6 +941,10 @@ gtk_data_entry_init(GtkDataEntry *data_entry)
     data_entry->data_type = NULL;
     data_entry->data_format = NULL;
     data_entry->max_length_bytes = 0;
+
+    data_entry->vlist_ignore = NULL;
+    data_entry->vlist_accept = NULL;
+    data_entry->vlist_reject = NULL;
 
 #if GTK_DATA_ENTRY_DEBUG > 0
     g_debug("gtk_data_entry_init");

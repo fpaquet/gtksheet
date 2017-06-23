@@ -57,6 +57,9 @@ struct _GtkDataEntry
     gchar *vlist_ignore;    /* validation list for Ignore() */
     gchar *vlist_accept;    /* validation list for Accept() */
     gchar *vlist_reject;    /* validation list for Reject() */
+
+    gchar *map_from;    /* source list for Map() */
+    gunichar *map_to;   /* destination list for Map() */
 };
 
 struct _GtkDataEntryClass

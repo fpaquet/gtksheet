@@ -1,3 +1,6 @@
+2017-06-23 Fredy Paquet <mailbox AT opag.ch>
+        * GtkDataEntry - added character input mapping Map()
+
 2017-06-22 Fredy Paquet <mailbox AT opag.ch>
         * GtkDataEntry - memory hole fixed PR#217304
         * GtkDataEntry - fixed max_len_bytes check on paste PR#217304

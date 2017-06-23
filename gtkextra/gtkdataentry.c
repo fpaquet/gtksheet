@@ -79,6 +79,7 @@
 
 #if GTK_DATA_ENTRY_DEBUG
 #define GTK_DATA_ENTRY_DEBUG_SIGNAL  0  /* debug signal handlers */
+#define GTK_DATA_ENTRY_DEBUG_VLIST  0  /* debug field validation */
 #endif
 
 
@@ -123,16 +124,18 @@ gtk_data_entry_get_description(GtkDataEntry *data_entry)
 #define GTK_DATA_ENTRY_VLIST_IGNORE "Ignore("
 #define GTK_DATA_ENTRY_VLIST_ACCEPT "Accept("
 #define GTK_DATA_ENTRY_VLIST_REJECT "Reject("
+#define GTK_DATA_ENTRY_VLIST_MAP "Map("
+#define GTK_DATA_ENTRY_VLIST_SEP "|"
 #define GTK_DATA_ENTRY_VLIST_END ")"
 
 /**
  * dealloc_string_ptr
  * 
- * deallocate string pointer and set pointer to NULL
+ * free allocated memory and set pointer to NULL
  * 
- * @p:      address of string pointer
+ * @p:      address of pointer
  */
-static void dealloc_string_ptr(gchar **p)
+static void dealloc_generic_ptr(void **p)
 {
     if (*p) 
     {
@@ -142,24 +145,84 @@ static void dealloc_string_ptr(gchar **p)
 }
 
 /**
- * Find character validation list in string.
+ * utf8_to_unichar - convert utf8 string to unichar array
  * 
- * @desc: haystack to search for definition string
+ * Convert a string from UTF-8 to a unichar fixed width representation. 
+ * A trailing 0 character will be added to the string after the converted text.
+ * 
+ * similar to g_utf8_to_ucs4()
+ * 
+ * @str:        a UTF-8 encoded string
+ * @len:        the maximum length of str to use, in bytes. If 
+ *             len < 0, then the string is nul-terminated.
+ * @items_written:
+ *                   location to store number of characters written or NULL.
+ *                   The value here stored does not include the
+ *                   trailing 0 character.
+ * 
+ * Returns a pointer to a newly allocated unicode string. This 
+ * value must be freed with g_free(). If an error occurs, NULL 
+ * will be returned. 
+ */
+static gunichar *utf8_to_unichar (
+    const gchar *str,
+    glong len,
+    glong *items_written)
+{
+    if (len < 0 ) len = strlen(str);
+    const gchar *endp = str + len;
+
+    if (len <= 0) return NULL;
+    
+    gint nc = g_utf8_strlen(str, -1);
+    gunichar *result = (gunichar *) g_malloc0_n(nc+1, sizeof(gunichar));
+    gunichar *dst = result;
+
+    while (str < endp)
+    {
+        gunichar ch = g_utf8_get_char(str);
+        *dst++ = ch;
+        str = g_utf8_next_char(str);
+    }
+
+    if (items_written)
+        *items_written = (dst - result);
+
+    *dst = (gunichar) 0; /* terminator */
+    return result;
+}
+
+/**
+ * Extract character list from string. 
+ *  
+ * the search starts at str and ends at the first occurance 
+ * of enstr. 
+ * 
+ * @str: starting point of search for enstr
+ * @endpp: pointer to store end of haystack or NULL
  * @pat: definition keyword to search for, including leading 
  *         quote
+ * @endstr: list termination string
  * 
  * Returns: pointer to validation list or NULL
  */
-static gchar *get_vlist(const gchar *desc, gchar *pat)
+static gchar *get_vlist(
+    const gchar *str, 
+    const gchar **endpp, 
+    gchar *pat, 
+    gchar *endstr)
 {
-    gchar *p = g_strstr_len(desc, -1, pat);
+    gchar *p = g_strstr_len(str, -1, pat);
+#if GTK_DATA_ENTRY_DEBUG_VLIST>0
     g_debug("get_vlist p %s", p);
+#endif
 
     if (p)
     {
         p += strlen(pat);
-        gchar *endp = g_strstr_len(p, -1, GTK_DATA_ENTRY_VLIST_END);
-
+        gchar *endp = g_strstr_len(p, -1, endstr);
+        if (endpp) *endpp = endp;  /* save end of list pointer */
+        
         if (!endp || endp <= p)  /* length > 0 */
         {
             return NULL;
@@ -189,7 +252,7 @@ static gchar *get_vlist(const gchar *desc, gchar *pat)
                 continue;
             }
 
-            char buf[7];
+            gchar buf[7];
             gunichar ch = g_utf8_get_char (p);
             gint buflen = g_unichar_to_utf8 (ch, buf);
             g_string_append_len (result, buf, buflen);
@@ -208,26 +271,78 @@ static void update_validation_lists(GtkDataEntry *data_entry)
     g_return_if_fail(data_entry != NULL);
     g_return_if_fail(GTK_IS_DATA_ENTRY(data_entry));
 
-    dealloc_string_ptr(&data_entry->vlist_ignore);
-    dealloc_string_ptr(&data_entry->vlist_accept);
-    dealloc_string_ptr(&data_entry->vlist_reject);
+    dealloc_generic_ptr((void *) &data_entry->vlist_ignore);
+    dealloc_generic_ptr((void *) &data_entry->vlist_accept);
+    dealloc_generic_ptr((void *) &data_entry->vlist_reject);
+    dealloc_generic_ptr((void *) &data_entry->map_from);
+    dealloc_generic_ptr((void *) &data_entry->map_to);
 
     gchar *desc = data_entry->description;
 
     if (desc)
     {
         data_entry->vlist_ignore = get_vlist(
-            desc, GTK_DATA_ENTRY_VLIST_IGNORE);
+            desc, NULL, 
+            GTK_DATA_ENTRY_VLIST_IGNORE,
+            GTK_DATA_ENTRY_VLIST_END);
 
         data_entry->vlist_accept = get_vlist(
-            desc, GTK_DATA_ENTRY_VLIST_ACCEPT);
+            desc, NULL, 
+            GTK_DATA_ENTRY_VLIST_ACCEPT,
+            GTK_DATA_ENTRY_VLIST_END);
 
         data_entry->vlist_reject = get_vlist(
-            desc, GTK_DATA_ENTRY_VLIST_REJECT);
+            desc, NULL, 
+            GTK_DATA_ENTRY_VLIST_REJECT,
+            GTK_DATA_ENTRY_VLIST_END);
 
-        g_debug("Got Ignore list <%s>\n", data_entry->vlist_ignore);
-        g_debug("Got Accept list <%s>\n", data_entry->vlist_accept);
-        g_debug("Got Rehect list <%s>\n", data_entry->vlist_reject);
+#if GTK_DATA_ENTRY_DEBUG_VLIST>0
+        g_debug("Got Ignore list <%s>", data_entry->vlist_ignore);
+        g_debug("Got Accept list <%s>", data_entry->vlist_accept);
+        g_debug("Got Reject list <%s>", data_entry->vlist_reject);
+#endif
+
+        const gchar *map_from_endp = NULL;
+        data_entry->map_from = get_vlist(
+            desc, &map_from_endp,
+            GTK_DATA_ENTRY_VLIST_MAP,
+            GTK_DATA_ENTRY_VLIST_SEP);
+
+#if GTK_DATA_ENTRY_DEBUG_VLIST>0
+        g_debug("Got Map From <%s>", data_entry->map_from);
+#endif
+
+        if (data_entry->map_from)
+        {
+            const gchar *map_to_endp = NULL;
+            gchar *map_to = get_vlist(
+                map_from_endp, &map_to_endp,
+                GTK_DATA_ENTRY_VLIST_SEP,
+                GTK_DATA_ENTRY_VLIST_END);
+
+#if GTK_DATA_ENTRY_DEBUG_VLIST>0
+            g_debug("Got Map From <%s>", data_entry->map_from);
+#endif
+
+            if (map_to)
+            {
+                long och = 0;
+                data_entry->map_to = utf8_to_unichar(
+                    map_to, -1, &och);
+
+#if GTK_DATA_ENTRY_DEBUG_VLIST>0
+                g_debug("Got Map To <%s> %ld unichars", map_to, och);
+#endif
+                g_free(map_to);
+            }
+            else  /* junk map_from */
+            {
+                dealloc_generic_ptr((void *) &data_entry->map_from);
+#if GTK_DATA_ENTRY_DEBUG_VLIST>0
+                g_debug("No Map To - Map From junked");
+#endif
+            }
+        }
     }
 }
 
@@ -244,18 +359,22 @@ static void update_validation_lists(GtkDataEntry *data_entry)
  *  
  * - Ignore(vString) - silently ignore all characters in vString 
  *  
- * - Accept(vString) - accept only characters in eString, sound
+ * - Map(vString1|vString) - map each character in vString1 to 
+ *   the corresponding character in vString2 with the same index
+ *  
+ * - Accept(vString) - accept only characters in vString, sound
  *   bell for invalid characters
  *  
  * - Reject(vString) - ignore all characters in vString, sound 
  *   bell for invalid characters
- * 
- *  vString is a literate character list, it may contain valid
- *  utf-8 character sequences and one of the following escape
- *  sequences: \a, \b, \f, \n, \r, \t, \v, \\. The vString can
- *  not be quoted like a normal C string, it is delimited by
- *  round brackets.
  *  
+ * Evaluation order: Ignore, Map, not Accept or Reject 
+ * 
+ * vString's are a literate character lists. They may contain
+ * valid utf-8 character sequences and one of the following
+ * escape sequences: \a, \b, \f, \n, \r, \t, \v, \\. vStrings
+ * are not quoted like a normal C string, they are delimited by 
+ * round brackets or the pipe symbol, see above. 
  */
 void gtk_data_entry_set_description(GtkDataEntry *data_entry,
     const gchar *description)
@@ -645,13 +764,15 @@ gtk_data_entry_finalize_handler(GObject *object)
 
     GtkDataEntry *data_entry = GTK_DATA_ENTRY(object);
 
-    dealloc_string_ptr(&(data_entry->data_type));
-    dealloc_string_ptr(&(data_entry->data_format));
-    dealloc_string_ptr(&(data_entry->description));
+    dealloc_generic_ptr((void *) &(data_entry->data_type));
+    dealloc_generic_ptr((void *) &(data_entry->data_format));
+    dealloc_generic_ptr((void *) &(data_entry->description));
 
-    dealloc_string_ptr(&(data_entry->vlist_ignore));
-    dealloc_string_ptr(&(data_entry->vlist_accept));
-    dealloc_string_ptr(&data_entry->vlist_reject);
+    dealloc_generic_ptr((void *) &(data_entry->vlist_ignore));
+    dealloc_generic_ptr((void *) &(data_entry->vlist_accept));
+    dealloc_generic_ptr((void *) &data_entry->vlist_reject);
+    dealloc_generic_ptr((void *) &data_entry->map_from);
+    dealloc_generic_ptr((void *) &data_entry->map_to);
 
     /* not sure if this is needed 22.06.17/fp
     data_entry_parent_class = g_type_class_peek_parent(klass);
@@ -771,7 +892,8 @@ gtk_data_entry_class_init(GtkDataEntryClass *klass)
  * 
  * vlist_ignore -> chars are silently ignored
  * vlist_accept -> chars are accepted, beep, precedence over vlist_reject
- * vlist_reject -> chars are rejected, beep
+ * vlist_reject -> chars are rejected, beep 
+ * vlist_map_from -> vlist_map_to 
  * 
  * @param data_entry the #GtkDataEntry
  * @param str        the text to be inserted
@@ -795,24 +917,46 @@ process_vlists(GtkDataEntry *data_entry,
     gchar *vlist_ignore = data_entry->vlist_ignore;
     gchar *vlist_accept = data_entry->vlist_accept;
     gchar *vlist_reject = data_entry->vlist_reject;
+    gchar *map_from = data_entry->map_from;
 
     while (p < endp)
     {
         gunichar ch = g_utf8_get_char(p);
+        gchar buf[7];
 
         if (vlist_ignore && g_utf8_strchr(vlist_ignore, -1, ch))
         {
             modified = TRUE;
+            p = g_utf8_next_char(p);
+            continue;
         }
-        else if ( (vlist_accept && !g_utf8_strchr(vlist_accept, -1, ch))
-                 || (vlist_reject && g_utf8_strchr(vlist_reject, -1, ch)) )
+
+        if (map_from)
+        {
+            gchar *pos = g_utf8_strchr(map_from, -1, ch);
+            if (pos)  /* found mapping entry */
+            {
+                gint idx = g_utf8_strlen(map_from, pos - map_from);
+#if GTK_DATA_ENTRY_DEBUG_VLIST>0
+                g_debug("Map: found at idx %d", idx);
+#endif
+                gunichar nchar = data_entry->map_to[idx];
+                if (nchar)  /* transliteration exists */
+                {
+                    ch = nchar;
+                    if (ch) modified = TRUE;
+                }
+            }
+        }
+
+        if ( (vlist_accept && !g_utf8_strchr(vlist_accept, -1, ch))
+            || (vlist_reject && g_utf8_strchr(vlist_reject, -1, ch)) )
         {
             modified = TRUE;
             beep = TRUE;
         }
         else
         {
-            char buf[7];
             gint buflen = g_unichar_to_utf8(ch, buf);
             g_string_append_len(result, buf, buflen);
         }
@@ -854,8 +998,10 @@ static void _gtk_data_entry_insert_text_handler(GtkEditable *editable,
     gchar *sanitized_str = process_vlists(
         data_entry, new_text, new_text_length);
 
+#if GTK_DATA_ENTRY_DEBUG_VLIST>0
     g_debug("IT nl %d T<%s> S<%s> ", 
         new_text_length, new_text, sanitized_str);
+#endif
 
     if (sanitized_str)
     {
@@ -874,8 +1020,10 @@ static void _gtk_data_entry_insert_text_handler(GtkEditable *editable,
         const gchar *old_text = gtk_data_entry_get_text(data_entry);
         gint old_length = strlen(old_text);
 
+#if GTK_DATA_ENTRY_DEBUG_VLIST>0
         g_debug("_gtk_data_entry_insert_text_handler: o %d m %d n %d", 
             old_length, max_len_bytes, new_text_length);
+#endif
             
         if (old_length + new_text_length > max_len_bytes)
         {
@@ -891,7 +1039,7 @@ static void _gtk_data_entry_insert_text_handler(GtkEditable *editable,
             {
                 gunichar ch = g_utf8_get_char(p);
 
-                char buf[7];
+                gchar buf[7];
                 gint buflen = g_unichar_to_utf8(ch, buf);
 
                 assembly_len += buflen;
@@ -910,7 +1058,9 @@ static void _gtk_data_entry_insert_text_handler(GtkEditable *editable,
         }
     }
 
+#if GTK_DATA_ENTRY_DEBUG_VLIST>0
     g_debug("Re-invoking insert handler");
+#endif
 
     g_signal_handlers_block_by_func(G_OBJECT(editable),
         G_CALLBACK(_gtk_data_entry_insert_text_handler),
@@ -923,7 +1073,9 @@ static void _gtk_data_entry_insert_text_handler(GtkEditable *editable,
         user_data);
     g_signal_stop_emission_by_name(G_OBJECT(editable), "insert_text");
 
+#if GTK_DATA_ENTRY_DEBUG_VLIST>0
     g_debug("Back from insert handler");
+#endif
 
     /* cleanup */
     if (sanitized_str) g_free(sanitized_str);
@@ -945,6 +1097,8 @@ gtk_data_entry_init(GtkDataEntry *data_entry)
     data_entry->vlist_ignore = NULL;
     data_entry->vlist_accept = NULL;
     data_entry->vlist_reject = NULL;
+    data_entry->map_from = NULL;
+    data_entry->map_to = NULL;
 
 #if GTK_DATA_ENTRY_DEBUG > 0
     g_debug("gtk_data_entry_init");

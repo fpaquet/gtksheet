@@ -371,7 +371,7 @@ static void update_validation_lists(GtkDataEntry *data_entry)
  * Evaluation order: Ignore, Map, not Accept or Reject 
  * 
  * vString's are a literate character lists. They may contain
- * valid utf-8 character sequences and one of the following
+ * valid utf-8 character sequences and the following
  * escape sequences: \a, \b, \f, \n, \r, \t, \v, \\. vStrings
  * are not quoted like a normal C string, they are delimited by 
  * round brackets or the pipe symbol, see above. 

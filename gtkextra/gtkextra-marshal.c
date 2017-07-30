@@ -64,9 +64,9 @@ gtkextra_BOOLEAN__INT_INT_POINTER_POINTER (GClosure     *closure,
                                                                      gpointer     arg_3,
                                                                      gpointer     arg_4,
                                                                      gpointer     data2);
-  register GMarshalFunc_BOOLEAN__INT_INT_POINTER_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__INT_INT_POINTER_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -107,9 +107,9 @@ gtkextra_BOOLEAN__BOXED_POINTER (GClosure     *closure,
                                                            gpointer     arg_1,
                                                            gpointer     arg_2,
                                                            gpointer     data2);
-  register GMarshalFunc_BOOLEAN__BOXED_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__BOXED_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -148,9 +148,9 @@ gtkextra_BOOLEAN__BOXED_STRING (GClosure     *closure,
                                                           gpointer     arg_1,
                                                           gpointer     arg_2,
                                                           gpointer     data2);
-  register GMarshalFunc_BOOLEAN__BOXED_STRING callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__BOXED_STRING callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -189,9 +189,9 @@ gtkextra_BOOLEAN__BOXED_BOXED (GClosure     *closure,
                                                          gpointer     arg_1,
                                                          gpointer     arg_2,
                                                          gpointer     data2);
-  register GMarshalFunc_BOOLEAN__BOXED_BOXED callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__BOXED_BOXED callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -231,9 +231,9 @@ gtkextra_BOOLEAN__BOXED_DOUBLE_DOUBLE (GClosure     *closure,
                                                                  gdouble      arg_2,
                                                                  gdouble      arg_3,
                                                                  gpointer     data2);
-  register GMarshalFunc_BOOLEAN__BOXED_DOUBLE_DOUBLE callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__BOXED_DOUBLE_DOUBLE callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -273,9 +273,9 @@ gtkextra_BOOLEAN__POINTER_POINTER (GClosure     *closure,
                                                              gpointer     arg_1,
                                                              gpointer     arg_2,
                                                              gpointer     data2);
-  register GMarshalFunc_BOOLEAN__POINTER_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__POINTER_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -314,9 +314,9 @@ gtkextra_BOOLEAN__POINTER_BOXED (GClosure     *closure,
                                                            gpointer     arg_1,
                                                            gpointer     arg_2,
                                                            gpointer     data2);
-  register GMarshalFunc_BOOLEAN__POINTER_BOXED callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__POINTER_BOXED callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -355,9 +355,9 @@ gtkextra_BOOLEAN__POINTER_STRING (GClosure     *closure,
                                                             gpointer     arg_1,
                                                             gpointer     arg_2,
                                                             gpointer     data2);
-  register GMarshalFunc_BOOLEAN__POINTER_STRING callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__POINTER_STRING callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -395,9 +395,9 @@ gtkextra_BOOLEAN__POINTER (GClosure     *closure,
   typedef gboolean (*GMarshalFunc_BOOLEAN__POINTER) (gpointer     data1,
                                                      gpointer     arg_1,
                                                      gpointer     data2);
-  register GMarshalFunc_BOOLEAN__POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -434,9 +434,9 @@ gtkextra_BOOLEAN__BOXED (GClosure     *closure,
   typedef gboolean (*GMarshalFunc_BOOLEAN__BOXED) (gpointer     data1,
                                                    gpointer     arg_1,
                                                    gpointer     data2);
-  register GMarshalFunc_BOOLEAN__BOXED callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__BOXED callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -474,9 +474,9 @@ gtkextra_BOOLEAN__INT_INT (GClosure     *closure,
                                                      gint         arg_1,
                                                      gint         arg_2,
                                                      gpointer     data2);
-  register GMarshalFunc_BOOLEAN__INT_INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__INT_INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -517,9 +517,9 @@ gtkextra_VOID__INT_STRING (GClosure     *closure,
                                                  gint         arg_1,
                                                  gpointer     arg_2,
                                                  gpointer     data2);
-  register GMarshalFunc_VOID__INT_STRING callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__INT_STRING callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -562,9 +562,9 @@ gtkextra_VOID__INT_BOXED (GClosure     *closure,
                                                 gint         arg_1,
                                                 gpointer     arg_2,
                                                 gpointer     data2);
-  register GMarshalFunc_VOID__INT_BOXED callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__INT_BOXED callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -599,9 +599,9 @@ gtkextra_VOID__INT_INT (GClosure     *closure,
                                               gint         arg_1,
                                               gint         arg_2,
                                               gpointer     data2);
-  register GMarshalFunc_VOID__INT_INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__INT_INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -636,9 +636,9 @@ gtkextra_VOID__INT_POINTER (GClosure     *closure,
                                                   gint         arg_1,
                                                   gpointer     arg_2,
                                                   gpointer     data2);
-  register GMarshalFunc_VOID__INT_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__INT_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -673,9 +673,9 @@ gtkextra_VOID__POINTER_POINTER (GClosure     *closure,
                                                       gpointer     arg_1,
                                                       gpointer     arg_2,
                                                       gpointer     data2);
-  register GMarshalFunc_VOID__POINTER_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__POINTER_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -710,9 +710,9 @@ gtkextra_VOID__BOXED_POINTER (GClosure     *closure,
                                                     gpointer     arg_1,
                                                     gpointer     arg_2,
                                                     gpointer     data2);
-  register GMarshalFunc_VOID__BOXED_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__BOXED_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -747,9 +747,9 @@ gtkextra_VOID__BOXED_BOXED (GClosure     *closure,
                                                   gpointer     arg_1,
                                                   gpointer     arg_2,
                                                   gpointer     data2);
-  register GMarshalFunc_VOID__BOXED_BOXED callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__BOXED_BOXED callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -786,9 +786,9 @@ gtkextra_VOID__OBJECT_OBJECT (GClosure     *closure,
                                                     gpointer     arg_1,
                                                     gpointer     arg_2,
                                                     gpointer     data2);
-  register GMarshalFunc_VOID__OBJECT_OBJECT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__OBJECT_OBJECT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -825,9 +825,9 @@ gtkextra_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE (GClosure     *closure,
                                                                   gdouble      arg_3,
                                                                   gdouble      arg_4,
                                                                   gpointer     data2);
-  register GMarshalFunc_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__DOUBLE_DOUBLE_DOUBLE_DOUBLE callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 5);
 
@@ -865,9 +865,9 @@ gtkextra_VOID__ENUM_INT_BOOLEAN (GClosure     *closure,
                                                        gint         arg_2,
                                                        gboolean     arg_3,
                                                        gpointer     data2);
-  register GMarshalFunc_VOID__ENUM_INT_BOOLEAN callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__ENUM_INT_BOOLEAN callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 4);
 

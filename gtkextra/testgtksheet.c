@@ -1343,6 +1343,8 @@ void
 
 }
 
+//30.07.17/fp - font_combo is obsolete
+/*
 void
     new_font(GtkFontCombo *font_combo, gpointer data)
 {
@@ -1354,6 +1356,7 @@ void
 
     gtk_sheet_range_set_font(current, &current->range, gtk_font_combo_get_font_description(font_combo));
 }
+*/
 
 int main(int argc, char *argv[]) 
 {
@@ -1424,16 +1427,17 @@ int main(int argc, char *argv[])
 
     gtk_toolbar_insert(GTK_TOOLBAR(toolbar), gtk_separator_tool_item_new(), -1);
 
-    font_combo = gtk_font_combo_new();
-    GtkToolItem *font_item = gtk_tool_item_new();
-    gtk_widget_show(GTK_WIDGET(font_item));
-    gtk_container_add(GTK_CONTAINER(font_item), GTK_WIDGET(font_combo));
-    gtk_toolbar_insert(GTK_TOOLBAR(toolbar), font_item, -1);
+    //30.07.17/fp - font_combo is obsolete
+    //font_combo = gtk_font_combo_new();
+    //GtkToolItem *font_item = gtk_tool_item_new();
+    //gtk_widget_show(GTK_WIDGET(font_item));
+    //gtk_container_add(GTK_CONTAINER(font_item), GTK_WIDGET(font_combo));
+    //gtk_toolbar_insert(GTK_TOOLBAR(toolbar), font_item, -1);
 
-    gtk_widget_set_size_request(GTK_FONT_COMBO(font_combo)->italic_button, 32, 32);
-    gtk_widget_set_size_request(GTK_FONT_COMBO(font_combo)->bold_button, 32, 32);
-    gtk_widget_show(font_combo);
-    g_signal_connect(G_OBJECT(font_combo), "changed", G_CALLBACK(new_font), NULL);
+    //gtk_widget_set_size_request(GTK_FONT_COMBO(font_combo)->italic_button, 32, 32);
+    //gtk_widget_set_size_request(GTK_FONT_COMBO(font_combo)->bold_button, 32, 32);
+    //gtk_widget_show(font_combo);
+    //g_signal_connect(G_OBJECT(font_combo), "changed", G_CALLBACK(new_font), NULL);
 
     gtk_toolbar_insert(GTK_TOOLBAR(toolbar), gtk_separator_tool_item_new(), -1);
 

@@ -53,27 +53,16 @@ AM_LDFLAGS = \
 #
 
 gtkextra_public_h_sources = \
-	gtkcharsel.h \
 	gtkdataentry.h	\
 	gtkdataformat.h	\
 	gtkdatatextview.h \
 	gtkextra.h	\
-        gtkfontcombo.h	\
-        gtkplot.h \
-        gtkplot3d.h \
-        gtkplotarray.h \
-        gtkplotcairo.h \
-        gtkplotdata.h \
-        gtkplotdt.h \
-        gtkplotpc.h \
-        gtkplotpolar.h \
-        gtkplotsurface.h \
-        gtkpsfont.h \
 	gtksheet.h \
 	gtksheetcolumn.h \
         #gtkplotcanvas.h
 
 #tkextra_public_h_sources = \
+#	gtkcharsel.h \
 #       gtkbordercombo.h 	\
 #       gtkcheckitem.h	\
 #       gtkcolorcombo.h	\
@@ -82,8 +71,18 @@ gtkextra_public_h_sources = \
 #       gtkextraicons.h	\
 #       gtkfileicons.h	\
 #       gtkfilelist.h	\
+#       gtkfontcombo.h	\
 #       gtkiconfilesel.h	\
 #       gtkiconlist.h	\
+#       gtkplot.h \
+#       gtkplot3d.h \
+#       gtkplotarray.h \
+#       gtkplotcairo.h \
+#       gtkplotdt.h \
+#       gtkplotpc.h \
+#       gtkplotpolar.h \
+#       gtkplotsurface.h \
+#       gtkpsfont.h \
 #       gtkplotbar.h	\
 #       gtkplotbox.h	\
 #       gtkplotbubble.h	\
@@ -95,6 +94,7 @@ gtkextra_public_h_sources = \
 #       gtkplotcanvasrectangle.h \
 #       gtkplotcanvastext.h \
 #       gtkplotcsurface.h	\
+#       gtkplotdata.h \
 #       gtkplotflux.h	\
 #       gtkplotpixmap.h	\
 #       gtkplotprint.h	\
@@ -102,35 +102,34 @@ gtkextra_public_h_sources = \
 #       gtktogglecombo.h
 
 gtkextra_c_sources = 	\
-	gtkcharsel.c \
 	gtkdataentry.c	\
 	gtkdataformat.c	\
 	gtkdatatextview.c \
-	gtkfontcombo.c  \
-	gtkpsfont.c	\
         gtkextra.c \
-        gtkplot.c \
-        gtkplot3d.c \
-        gtkplotarray.c \
-        gtkplotcairo.c \
-        gtkplotdata.c \
-        gtkplotdt.c \
-        gtkplotpc.c \
-        gtkplotpolar.c \
-        gtkplotsurface.c \
 	gtksheet.c \
 	gtksheetcolumn.c \
         #gtkplotcanvas.c
 
 #tkextra_c_sources = 	\
+#	gtkcharsel.c \
 #       gtkbordercombo.c	\
 #       gtkcheckitem.c	\
 #       gtkcolorcombo.c	\
 #       gtkcombobutton.c	\
 #       gtkdirtree.c	\
 #       gtkfilelist.c	\
+#	gtkfontcombo.c  \
 #       gtkiconfilesel.c	\
 #       gtkiconlist.c	\
+#	gtkpsfont.c	\
+#       gtkplot.c \
+#       gtkplot3d.c \
+#       gtkplotarray.c \
+#       gtkplotcairo.c \
+#       gtkplotdt.c \
+#       gtkplotpc.c \
+#       gtkplotpolar.c \
+#       gtkplotsurface.c \
 #       gtkplotbar.c	\
 #       gtkplotbox.c	\
 #       gtkplotbubble.c	\
@@ -142,6 +141,7 @@ gtkextra_c_sources = 	\
 #       gtkplotcanvasrectangle.c \
 #       gtkplotcanvastext.c \
 #       gtkplotcsurface.c	\
+#       gtkplotdata.c \
 #       gtkplotflux.c	\
 #       gtkplotpixmap.c \
 #       gtkplotprint.c	\
@@ -235,8 +235,8 @@ gtkextratypebuiltins.c: $(gtkextra_public_h_sources)
 # test programs, not to be installed
 
 if ENABLE_TESTS
-noinst_PROGRAMS = testgtkfont testcharsel testgtksheet
-#noinst_PROGRAMS = testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment
+noinst_PROGRAMS = testgtksheet
+#noinst_PROGRAMS = testcharsel testgtkiconlist testgtkfilesel testgtkplot testgtkfont testgtkplotcanvas testrealtime testiterator testpolar testgtkplot3d testcontour testbubbles testflux testboxes testcandles testimage testpixmap testcharsel testdt testgtkplotdt testsegment
 endif
 DEPS = $(gtkextratargetlib)
 LDADDS = $(gtkextratargetlib) $(GTK_LIBS)
@@ -258,7 +258,7 @@ testgtksheet_DEPENDENCIES = $(DEPS)
 #testcandles_DEPENDENCIES = $(DEPS)
 #testpixmap_DEPENDENCIES = $(DEPS)
 #testimage_DEPENDENCIES = $(DEPS)
-testcharsel_DEPENDENCIES = $(DEPS)
+#testcharsel_DEPENDENCIES = $(DEPS)
 #testiterator_DEPENDENCIES = $(DEPS)
 #testsegment_DEPENDENCIES = $(DEPS)
 #testgtkplotcanvas_DEPENDENCIES = $(DEPS)
@@ -267,7 +267,7 @@ testgtksheet_LDADD = $(LDADDS)
 #testdt_LDADD = $(LDADDS)
 #testgtkplotdt_LDADD = $(LDADDS)
 #testimage_LDADD = $(LDADDS)
-testcharsel_LDADD = $(LDADDS)
+#testcharsel_LDADD = $(LDADDS)
 #testpixmap_LDADD = $(LDADDS)
 #testpolar_LDADD = $(LDADDS)
 #testgtkplot3d_LDADD = $(LDADDS)
@@ -275,7 +275,7 @@ testcharsel_LDADD = $(LDADDS)
 #testrealtime_LDADD = $(LDADDS)
 #testgtkfilesel_LDADD = $(LDADDS)
 #testgtkiconlist_LDADD = $(LDADDS)
-testgtkfont_LDADD = $(LDADDS)
+#testgtkfont_LDADD = $(LDADDS)
 #testbubbles_LDADD = $(LDADDS)
 #testflux_LDADD = $(LDADDS)
 #testboxes_LDADD = $(LDADDS)

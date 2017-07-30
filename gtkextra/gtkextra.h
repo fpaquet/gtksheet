@@ -27,7 +27,7 @@
 #define __GTKEXTRA_H_INSIDE__
 
 //#include <gtkextra/gtkbordercombo.h>
-#include <gtkextra/gtkcharsel.h>
+//#include <gtkextra/gtkcharsel.h>
 //#include <gtkextra/gtkcheckitem.h>
 //#include <gtkextra/gtkcolorcombo.h>
 //#include <gtkextra/gtkcombobutton.h>
@@ -36,17 +36,17 @@
 //#include <gtkextra/gtkdirtree.h>
 #include <gtkextra/gtkextrafeatures.h>
 //#include <gtkextra/gtkfilelist.h>
-#include <gtkextra/gtkfontcombo.h>
+//#include <gtkextra/gtkfontcombo.h>
 //#include <gtkextra/gtkiconlist.h>
 //#include <gtkextra/gtkiconfilesel.h>
-#include <gtkextra/gtkplot.h>
-#include <gtkextra/gtkplotpolar.h>
-#include <gtkextra/gtkplot3d.h>
+//#include <gtkextra/gtkplot.h>
+//#include <gtkextra/gtkplotpolar.h>
+//#include <gtkextra/gtkplot3d.h>
 //#include <gtkextra/gtkplotbubble.h>
-#include <gtkextra/gtkplotdata.h>
-#include <gtkextra/gtkplotarray.h>
-#include <gtkextra/gtkplotsurface.h>
-#include <gtkextra/gtkplotcairo.h>
+//#include <gtkextra/gtkplotdata.h>
+//#include <gtkextra/gtkplotarray.h>
+//#include <gtkextra/gtkplotsurface.h>
+//#include <gtkextra/gtkplotcairo.h>
 //#include <gtkextra/gtkplotcandle.h>
 //#include <gtkextra/gtkplotcsurface.h>
 //#include <gtkextra/gtkplotcanvas.h>
@@ -58,14 +58,14 @@
 //#include <gtkextra/gtkplotcanvastext.h>
 //#include <gtkextra/gtkplotbar.h>
 //#include <gtkextra/gtkplotbox.h>
-#include <gtkextra/gtkplotdt.h>
+//#include <gtkextra/gtkplotdt.h>
 //#include <gtkextra/gtkplotflux.h>
 //#include <gtkextra/gtkplotsegment.h>
 //#include <gtkextra/gtkplotpixmap.h>
 //#include <gtkextra/gtkplotgdk.h>
-#include <gtkextra/gtkplotpc.h>
+//#include <gtkextra/gtkplotpc.h>
 //#include <gtkextra/gtkplotprint.h>
-#include <gtkextra/gtkpsfont.h>
+//#include <gtkextra/gtkpsfont.h>
 #include <gtkextra/gtksheet.h>
 //#include <gtkextra/gtktogglecombo.h>
 

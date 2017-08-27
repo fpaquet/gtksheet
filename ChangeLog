@@ -1,3 +1,6 @@
+2017-08-27 Fredy Paquet <mailbox AT opag.ch>
+        * GtkSheet glade editor fixed, bugzilla.gnome.org bug-id 786190
+
 2017-07-30 Fredy Paquet <mailbox AT opag.ch>
 	* fixed compilation problems by removing all plot widgets from build targets
 

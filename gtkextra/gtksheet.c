@@ -326,12 +326,13 @@ typedef enum _GtkSheetArea
 
 #define GTK_SHEET_PAGE_OVERLAP 1  /* rows to stay visible with PageUp/Dn */
 
+static GdkRGBA color_black;
+static GdkRGBA color_white;
+
 #ifdef GTK_SHEET_DEBUG
 #   define GTK_SHEET_DEBUG_COLOR  "green"
 
 static GdkRGBA debug_color;
-static GdkRGBA color_black;
-static GdkRGBA color_white;
 
 #   if 0
 #       include <stdarg.h>

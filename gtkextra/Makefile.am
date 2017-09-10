@@ -183,6 +183,10 @@ libgtkextra_win32_4_0_la_SOURCES = $(gtkextra_c_sources)
 nodist_libgtkextra_win32_4_0_la_SOURCES = $(gtkextra_built_sources)
 libgtkextra_quartz_4_0_la_SOURCES = $(gtkextra_c_sources)
 nodist_libgtkextra_quartz_4_0_la_SOURCES = $(gtkextra_built_sources)
+libgtkextra_broadway_4_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_broadway_4_0_la_SOURCES = $(gtkextra_built_sources)
+libgtkextra_wayland_4_0_la_SOURCES = $(gtkextra_c_sources)
+nodist_libgtkextra_wayland_4_0_la_SOURCES = $(gtkextra_built_sources)
 
 libgtkextra_win32_4_0_la_LIBADD = $(gtkextra_win32res_lo)
 libgtkextra_win32_4_0_la_DEPENDENCIES = $(gtkextra_def) $(gtkextra_win32res_lo)
@@ -190,7 +194,7 @@ libgtkextra_win32_4_0_la_DEPENDENCIES = $(gtkextra_def) $(gtkextra_win32res_lo)
 if USE_WIN32
 libgtkextra_target_ldflags = $(gtkextra_win32_symbols) -lwsock32
 endif
-EXTRA_LTLIBRARIES = libgtkextra-x11-4.0.la libgtkextra-linux-fb-4.0.la libgtkextra-win32-4.0.la libgtkextra-quartz-4.0.la
+EXTRA_LTLIBRARIES = libgtkextra-x11-4.0.la libgtkextra-linux-fb-4.0.la libgtkextra-win32-4.0.la libgtkextra-quartz-4.0.la libgtkextra-broadway-4.0.la libgtkextra-wayland-4.0.la
 
 MAINTAINERCLEANFILES = $(gtkextra_built_sources) 
 CLEANFILES = $(gtkextra_built_sources) 
@@ -200,7 +204,7 @@ EXTRA_DIST = $(gtkextra_private_h_sources) $(gtkextra_extra_sources)
 EXTRA_DIST += gtkextra.def sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
 
 
-$(libgtkextra_x11_4_0_la_OBJECTS) $(libgtkextra_linux_fb_4_0_la_OBJECTS) $(libgtkextra_win32_4_0_la_OBJECTS) $(libgtkextra_quartz_4_0_la_OBJECTS): ${gtkextra_built_public_sources} ${gtkextra_built_private_headers}
+$(libgtkextra_x11_4_0_la_OBJECTS) $(libgtkextra_linux_fb_4_0_la_OBJECTS) $(libgtkextra_win32_4_0_la_OBJECTS) $(libgtkextra_quartz_4_0_la_OBJECTS) $(libgtkextra_broadway_4_0_la_OBJECTS) $(libgtkextra_wayland_4_0_la_OBJECTS): ${gtkextra_built_public_sources} ${gtkextra_built_private_headers}
 
 gtkextra-marshal.h: $(builddir)/gtkextra-marshal.list
 	( @GLIB_GENMARSHAL@ --prefix=gtkextra $(srcdir)/gtkextra-marshal.list --header > gtkextra-marshal.tmp \

@@ -1,3 +1,8 @@
+2017-09.24 Fredy Paquet <mailbox AT opag.ch>
+	* merged branch pc217304
+	* updated gtkextra-3 version to 3.3.4, Libtool Revision 9.4.1
+	* published gtkextra-3 version 3.3.4
+
 2017-06-23 Fredy Paquet <mailbox AT opag.ch>
         * GtkDataEntry - added character input mapping Map()
 

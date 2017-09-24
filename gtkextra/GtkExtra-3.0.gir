@@ -17,7 +17,7 @@ and/or use gtk-doc annotations.  -->
   <include name="Pango" version="1.0"/>
   <include name="cairo" version="1.0"/>
   <namespace name="GtkExtra"
-             version="3.3.3"
+             version="3.3.4"
              shared-library="libgtkextra-x11-3.0.so.8"
              c:identifier-prefixes="Gtk"
              c:symbol-prefixes="gtk">
@@ -625,7 +625,30 @@ See gtk_data_format() for details.</doc>
       </method>
       <method name="set_description"
               c:identifier="gtk_data_entry_set_description">
-        <doc xml:whitespace="preserve">Sets the GtkDataEntry description.</doc>
+        <doc xml:whitespace="preserve">Sets the GtkDataEntry description. 
+ 
+Basically, you can use the description for your own 
+programming purpose. The #GtkDataEntry recognizes the 
+keywords below, which have a special meaning. 
+ 
+- Ignore(vString) - silently ignore all characters in vString 
+ 
+- Map(vString1|vString) - map each character in vString1 to 
+  the corresponding character in vString2 with the same index
+ 
+- Accept(vString) - accept only characters in vString, sound
+  bell for invalid characters
+ 
+- Reject(vString) - ignore all characters in vString, sound 
+  bell for invalid characters
+ 
+Evaluation order: Ignore, Map, not Accept or Reject 
+
+vString's are a literate character lists. They may contain
+valid utf-8 character sequences and the following
+escape sequences: \a, \b, \f, \n, \r, \t, \v, \\. vStrings
+are not quoted like a normal C string, they are delimited by 
+round brackets or the pipe symbol, see above.</doc>
         <return-value transfer-ownership="none">
           <type name="none" c:type="void"/>
         </return-value>
@@ -713,6 +736,21 @@ string length in bytes. When setting both limits, max-length
       </field>
       <field name="max_length_bytes" readable="0" private="1">
         <type name="gint" c:type="gint"/>
+      </field>
+      <field name="vlist_ignore" readable="0" private="1">
+        <type name="utf8" c:type="gchar*"/>
+      </field>
+      <field name="vlist_accept" readable="0" private="1">
+        <type name="utf8" c:type="gchar*"/>
+      </field>
+      <field name="vlist_reject" readable="0" private="1">
+        <type name="utf8" c:type="gchar*"/>
+      </field>
+      <field name="map_from" readable="0" private="1">
+        <type name="utf8" c:type="gchar*"/>
+      </field>
+      <field name="map_to" readable="0" private="1">
+        <type name="gunichar" c:type="gunichar*"/>
       </field>
     </class>
     <record name="DataEntryClass"

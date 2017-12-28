@@ -1,4 +1,7 @@
 2017-09-10 Fredy Paquet <mailbox AT opag.ch>
+	* fixed gdk target list handling in glade and docs subdirs (GNU make required)
+
+2017-09-10 Fredy Paquet <mailbox AT opag.ch>
 	* fixed gdk target list for broadway+wayland, thanks to Thomas Rønshof
 
 2017-09-02 Fredy Paquet <mailbox AT opag.ch>

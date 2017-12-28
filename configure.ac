@@ -60,7 +60,7 @@ PACKAGE=gtkextra
 
 AC_CONFIG_AUX_DIR([build-aux])
 # Initialize automake stuff
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall -Werror -Wno-portability foreign])
 #AM_SILENT_RULES([yes])
 
 # Specify a configuration file

@@ -33,7 +33,7 @@ libgladegtkextra_la_CFLAGS =  \
 libgladegtkextra_la_SOURCES = glade-gtksheet-editor.c
 
 libgladegtkextra_la_LDFLAGS = -module -avoid-version $(AM_LDFLAGS) $(GLADEUI_LIBS)
-libgladegtkextra_la_LIBADD = ../gtkextra/@gtkextratargetlib@ 
+libgladegtkextra_la_LIBADD = $(addprefix ../gtkextra/,$(gtkextratargetlib))
 
 if PLATFORM_WIN32
 libgladegtkextra_la_LDFLAGS += -no-undefined

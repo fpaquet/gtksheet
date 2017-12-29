@@ -11,7 +11,7 @@ and/or use gtk-doc annotations.  -->
   <include name="Gtk" version="3.0"/>
   <namespace name="GtkExtra"
              version="4.0.0"
-             shared-library="libgtkextra-x11-4.0.so.0"
+             shared-library="libgtkextra-x11-4.0.so.0,libgtkextra-broadway-4.0.so.0"
              c:identifier-prefixes="Gtk"
              c:symbol-prefixes="gtk">
     <class name="DataEntry"

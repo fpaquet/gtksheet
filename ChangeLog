@@ -1,4 +1,7 @@
-2017-09-10 Fredy Paquet <mailbox AT opag.ch>
+2017-12-29 Fredy Paquet <mailbox AT opag.ch>
+	* fixed gdk target list handling in gtkextra-4.0.pc
+
+2017-12-28 Fredy Paquet <mailbox AT opag.ch>
 	* fixed gdk target list handling in glade and docs subdirs (GNU make required)
 
 2017-09-10 Fredy Paquet <mailbox AT opag.ch>

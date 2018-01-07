@@ -1,3 +1,8 @@
+2018-01-07 Fredy Paquet <mailbox AT opag.ch>
+	* fixed sheet->state type mismatch
+	* do not propagate draw to class parent
+	* fixed style context state in _gtk_sheet_draw_button()
+
 2017-12-29 Fredy Paquet <mailbox AT opag.ch>
 	* fixed gdk target list handling in gtkextra-4.0.pc
 

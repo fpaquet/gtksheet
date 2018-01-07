@@ -72,19 +72,19 @@
 #   define GTK_SHEET_DEBUG_CELL_ACTIVATION  0
 #   define GTK_SHEET_DEBUG_CHILDREN  0
 #   define GTK_SHEET_DEBUG_CLICK  0
-#   define GTK_SHEET_DEBUG_COLORS  1
-#   define GTK_SHEET_DEBUG_DRAW  1
-#   define GTK_SHEET_DEBUG_DRAW_BACKGROUND  1
-#   define GTK_SHEET_DEBUG_DRAW_BUTTON  1
-#   define GTK_SHEET_DEBUG_DRAW_LABEL  1
+#   define GTK_SHEET_DEBUG_COLORS  0
+#   define GTK_SHEET_DEBUG_DRAW  0
+#   define GTK_SHEET_DEBUG_DRAW_BACKGROUND  0
+#   define GTK_SHEET_DEBUG_DRAW_BUTTON  0
+#   define GTK_SHEET_DEBUG_DRAW_LABEL  0
 #   define GTK_SHEET_DEBUG_ENTER_PRESSED   0
 #   define GTK_SHEET_DEBUG_ENTRY   0
-#   define GTK_SHEET_DEBUG_EXPOSE   1
+#   define GTK_SHEET_DEBUG_EXPOSE   0
 #   define GTK_SHEET_DEBUG_FINALIZE  0
 #   define GTK_SHEET_DEBUG_FONT_METRICS  0
 #   define GTK_SHEET_DEBUG_FREEZE   0
 #   define GTK_SHEET_DEBUG_KEYPRESS   0
-#   define GTK_SHEET_DEBUG_MOUSE  1
+#   define GTK_SHEET_DEBUG_MOUSE  0
 #   define GTK_SHEET_DEBUG_MOVE  0
 #   define GTK_SHEET_DEBUG_MOTION  0
 #   define GTK_SHEET_DEBUG_PIXEL_INFO  0
@@ -4501,7 +4501,7 @@ gtk_sheet_thaw(GtkSheet *sheet)
 
     _gtk_sheet_redraw_internal(sheet, TRUE, TRUE);
 
-    if (sheet->state == GTK_STATE_NORMAL)
+    if (sheet->state == GTK_SHEET_NORMAL)
     {
 	if (sheet->sheet_entry && gtk_widget_get_mapped(sheet->sheet_entry))
 	{
@@ -5616,8 +5616,11 @@ static void _get_sheet_clip_area(GtkSheet *sheet, GdkRectangle *clip_area)
     clip_area->y = MAX(clip_area->y, 
 	sheet->column_titles_visible ? sheet->column_title_area.height : 0);
 
-    g_debug("clip %d %d %d %d", 
-	clip_area->x, clip_area->y, clip_area->width, clip_area->height);
+#if GTK_SHEET_DEBUG_DRAW > 0
+    g_debug("_get_sheet_clip_area %d %d %d %d", 
+	clip_area->x, clip_area->y, clip_area->width, 
+            clip_area->height);
+#endif
 }
 
 
@@ -7236,6 +7239,13 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 #endif
 
     gdk_cairo_rectangle(sheet->bsurf_cr, &clip_area);
+
+#if GTK_SHEET_DEBUG_EXPOSE > 0
+#if 0
+    gdk_cairo_set_source_rgba(sheet->bsurf_cr, &debug_color);
+    cairo_stroke_preserve(sheet->bsurf_cr);
+#endif
+#endif
     cairo_clip(sheet->bsurf_cr);
 
     gdk_cairo_set_source_rgba (sheet->bsurf_cr, &attributes.foreground);
@@ -7569,7 +7579,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
     }
 
     if (activate_active_cell &&
-	sheet->state == GTK_STATE_NORMAL &&
+	sheet->state == GTK_SHEET_NORMAL &&
 	sheet->active_cell.row >= drawing_range.row0 &&
 	sheet->active_cell.row <= drawing_range.rowi &&
 	sheet->active_cell.col >= drawing_range.col0 &&
@@ -8693,7 +8703,7 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
 
     if (!gtk_widget_get_visible(gtk_sheet_get_entry_widget(sheet)))
 	return;
-    if (sheet->state != GTK_STATE_NORMAL)
+    if (sheet->state != GTK_SHEET_NORMAL)
 	return;
 
     row = sheet->active_cell.row;
@@ -9082,14 +9092,16 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
 	gtk_entry_set_max_length(entry, colptr->max_length);
     }
 
-#if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-    g_debug("_gtk_sheet_entry_setup: style bg color %s",
-	gdk_rgba_to_string(&attributes.background));
-#endif
-
 #if 1
     if (gtk_widget_get_realized(entry_widget))
     {
+#if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
+        g_debug("_gtk_sheet_entry_setup: style fg color %s",
+                gdk_rgba_to_string(&attributes.foreground));
+        g_debug("_gtk_sheet_entry_setup: style bg color %s",
+                gdk_rgba_to_string(&attributes.background));
+#endif
+
 	gtk_widget_override_color (entry_widget, 
 	    GTK_STATE_FLAG_NORMAL, &attributes.foreground);
 	gtk_widget_override_background_color (entry_widget, 
@@ -10003,10 +10015,12 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
     if (sheet->state != GTK_SHEET_NORMAL && GTK_SHEET_IN_SELECTION(sheet))
 	gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
-    if (GTK_WIDGET_CLASS(sheet_parent_class)->draw)
-	(*GTK_WIDGET_CLASS(sheet_parent_class)->draw)(widget, cr);
+    /* do not propagate draw to class parent (recursive drawing)
+       */
+    //if (GTK_WIDGET_CLASS(sheet_parent_class)->draw)
+    //	(*GTK_WIDGET_CLASS(sheet_parent_class)->draw)(widget, cr);
 
-    return (FALSE);
+    return (GDK_EVENT_PROPAGATE);
 }
 
 
@@ -10140,7 +10154,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    && !GTK_SHEET_IN_SELECTION(sheet) 
 	    && !GTK_SHEET_IN_RESIZE(sheet))
 	{
-	    if (sheet->state == GTK_STATE_NORMAL)
+	    if (sheet->state == GTK_SHEET_NORMAL)
 	    {
 		gint row = sheet->active_cell.row;  /* PR#203012 */
 		gint column = sheet->active_cell.col;  /* PR#203012 */
@@ -10169,7 +10183,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 		 && !GTK_SHEET_IN_SELECTION(sheet) 
 		 && !GTK_SHEET_IN_DRAG(sheet))
 	{
-	    if (sheet->state == GTK_STATE_NORMAL)
+	    if (sheet->state == GTK_SHEET_NORMAL)
 	    {
 		gint row = sheet->active_cell.row;  /* PR#203012 */
 		gint column = sheet->active_cell.col;  /* PR#203012 */
@@ -10338,7 +10352,7 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 
     if (!*veto)
     {
-	if (sheet->state == GTK_STATE_NORMAL)
+	if (sheet->state == GTK_SHEET_NORMAL)
 	    return;
 
 	row = sheet->active_cell.row;
@@ -10374,7 +10388,7 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	sheet->active_cell.row = 0;
 	sheet->active_cell.col = 0;
 
-	if (sheet->state != GTK_STATE_NORMAL)   /* if any range is selected, clear it */
+	if (sheet->state != GTK_SHEET_NORMAL)   /* if any range is selected, clear it */
 	    gtk_sheet_unselect_range(sheet);
 	else
 	    gtk_sheet_select_range(sheet, NULL);
@@ -10599,7 +10613,7 @@ gtk_sheet_button_release_handler(GtkWidget *widget, GdkEventButton *event)
 	sheet->range = sheet->drag_range;
 	sheet->drag_range = old_range;
 
-	if (sheet->state == GTK_STATE_NORMAL)
+	if (sheet->state == GTK_SHEET_NORMAL)
 	    sheet->state = GTK_SHEET_RANGE_SELECTED;
 	g_signal_emit(G_OBJECT(sheet), sheet_signals[RESIZE_RANGE], 0,
 	    &sheet->drag_range, &sheet->range);
@@ -11480,7 +11494,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 	    {
 		if (extend_selection)
 		{
-		    if (sheet->state == GTK_STATE_NORMAL)
+		    if (sheet->state == GTK_SHEET_NORMAL)
 		    {
 			gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
@@ -11510,7 +11524,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 	    {
 		if (extend_selection)
 		{
-		    if (sheet->state == GTK_STATE_NORMAL)
+		    if (sheet->state == GTK_SHEET_NORMAL)
 		    {
 			gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
@@ -11549,7 +11563,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 	    {
 		if (extend_selection)
 		{
-		    if (sheet->state == GTK_STATE_NORMAL)
+		    if (sheet->state == GTK_SHEET_NORMAL)
 		    {
 			gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
@@ -11579,7 +11593,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 	    {
 		if (extend_selection)
 		{
-		    if (sheet->state == GTK_STATE_NORMAL)
+		    if (sheet->state == GTK_SHEET_NORMAL)
 		    {
 			gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
@@ -11613,7 +11627,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 	    {
 		if (extend_selection)
 		{
-		    if (sheet->state == GTK_STATE_NORMAL)
+		    if (sheet->state == GTK_SHEET_NORMAL)
 		    {
 			gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
@@ -11634,7 +11648,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 	    {
 		if (extend_selection)
 		{
-		    if (sheet->state == GTK_STATE_NORMAL)
+		    if (sheet->state == GTK_SHEET_NORMAL)
 		    {
 			gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
@@ -11659,7 +11673,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 	    {
 		if (extend_selection)
 		{
-		    if (sheet->state == GTK_STATE_NORMAL)
+		    if (sheet->state == GTK_SHEET_NORMAL)
 		    {
 			gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
@@ -11680,7 +11694,7 @@ static void _gtk_sheet_move_cursor(GtkSheet *sheet,
 	    {
 		if (extend_selection)
 		{
-		    if (sheet->state == GTK_STATE_NORMAL)
+		    if (sheet->state == GTK_SHEET_NORMAL)
 		    {
 			gtk_sheet_click_cell(sheet, row, col, &veto);
 			if (!veto)
@@ -12917,9 +12931,6 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
 
     if ((row == -1) && (col == -1)) return;
 
-    gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL,
-                       GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
-
 #if GTK_SHEET_DEBUG_DRAW_BUTTON > 0
     g_debug("_gtk_sheet_draw_button: row %d col %d", row, col);
 #endif
@@ -12997,6 +13008,9 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
     GtkStateFlags button_state = button->state;
 
     gtk_style_context_set_state(style_context, button_state);
+
+    gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL,
+                       GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
     gtk_style_context_add_class (style_context, GTK_STYLE_CLASS_VIEW);
     gtk_style_context_add_class (style_context, GTK_STYLE_CLASS_BUTTON);
@@ -14257,7 +14271,8 @@ gtk_sheet_range_set_foreground(GtkSheet *sheet,
 	gdk_rgba_to_string(color), range.row0, range.rowi, range.col0, range.coli);
 #endif
 
-    for (i = range.row0; i <= range.rowi; i++) for (j = range.col0; j <= range.coli; j++)
+    for (i = range.row0; i <= range.rowi; i++) 
+        for (j = range.col0; j <= range.coli; j++)
     {
 	GtkSheetCellAttr attributes;
 	gtk_sheet_get_attributes(sheet, i, j, &attributes);

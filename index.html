@@ -1,136 +1,115 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
-<head>
-  <title>gtkheet Library Homepage</title>
-
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="default.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body>
-<div id=outer>
-	<div id="header">
-		<h1><a href="#">gtksheet</a></h1>
-		<h2>a matrix widget for GTK+</h2>
-	</div>
-	<div id="menu">
-		<ul>
-			<li class="first"><a href="#" accesskey="1" title="">Home</a></li>
-			<li><a href="http://github.com/vhernandez/gtksheet" accesskey="2" title="Project home">Project home</a></li>
-			<li><a href="tutorial/index.html" accesskey="3" title="GtkSheet Tutorial">Tutorial</a></li>
-			<li><a href="reference/index.html" accesskey="4" title="API Reference">Reference</a></li>
-			<li><a href="http://github.com/vhernandez/gtksheet/issues" accesskey="5" title="Report problems/request features">Report issues</a></li>
-		</ul>
-	</div>
-
-    <div id="content">
-
-	<div id="tertiaryContent">
-		<h3>Links</h3>
-		<ul>
-			<li><a href="http://github.com/vhernandez/pygtksheet">PyGtkSheet</a></li>
-			<li><a href="http://gtkextra.sourceforge.net">Gtk+Extra</a></li>
+  <head>
+    <title>gtkheet Library Homepage</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div id="outer">
+      <div id="header">
+        <h1><a href="#">gtksheet</a></h1>
+        <h2>a matrix widget for GTK+</h2>
+      </div>
+      <div id="menu">
+        <ul>
+          <li class="first"><a href="#" accesskey="1" title="">Home</a></li>
+          <li><a href="https://github.com/fpaquet/gtksheet"
+              accesskey="2" title="Project home">Project home</a></li>
+          <li><a href="tutorial/index.html" accesskey="3"
+              title="GtkSheet Tutorial">Tutorial</a></li>
+          <li><a href="reference/index.html" accesskey="4" title="API
+              Reference">Reference</a></li>
+          <li><a href="https://github.com/fpaquet/gtksheet/issues"
+              accesskey="5" title="Report problems/request features">Report
+              issues</a></li>
+        </ul>
+      </div>
+      <div id="content">
+        <div id="tertiaryContent">
+          <h3>Links</h3>
+          <ul>
+            <li><a href="http://github.com/vhernandez/pygtksheet">PyGtkSheet</a></li>
+            <li><a href="http://gtkextra.sourceforge.net">Gtk+Extra</a></li>
             <li><a href="http://python-gtkextra.sourceforge.net/">python-gtkextra</a></li>
-            <li><a href="http://sourceforge.net/mailarchive/forum.php?forum_name=scigraphica-gtkextra">Gtk+Extra mailing list</a></li>
-			<li><a href="http://www.gtk.org">Gtk+</a></li>
-		</ul>
-    </div>
-
-	<div id="primaryContentContainer">
-	    <div id="primaryContent">
-
+            <li><a href="http://www.gtk.org">Gtk+</a></li>
+          </ul>
+        </div>
+        <div id="primaryContentContainer">
+          <div id="primaryContent">
             <h2><a name="top"></a>General Information</h2>
-            <p>
-            The gtksheet library is a fork of the GtkSheet widget
-            included in the <a href="http://gtkextra.sourceforge.net">GTK+extra</a> library. 
-            It includes the GtkSheet widget, a widget displaying a spreadsheet-like matrix
-            and GtkItemEntry widget, a GtkEntry derivative to display data in the GtkSheet.
+            <p> The gtksheet library is a fork of the GtkSheet widget
+              included in the <a href="http://gtkextra.sourceforge.net">GTK+extra</a>
+              library. It includes the GtkSheet widget, a widget
+              displaying a spreadsheet-like matrix.<br>
             </p>
-            <p>
-            The library is writeen in C and requires GTK+ version 2.x. However python 
-            bindings for this library are
-            <a href="http://github.com/vhernandez/python-gtksheet">available</a>.
+            <p> The library is written in C and requires GTK+ version
+              2.x or 3.x.<br>
             </p>
-
+            <p>NOTE: This fork was reset and updated&nbsp; on
+              05.04.2018. The project homepage and code cleanup is still
+              under work.<br>
+            </p>
             <h2><a name="download"></a>Getting gtksheet</h2>
-            <p>
-            You can download the latest gtksheet releases
-            <a href="http://github.com/vhernandez/gtksheet/downloads">
-            here</a>. 
+            <p> You can download the latest gtksheet releases <a
+                href="http://github.com/vhernandez/gtksheet/downloads">
+                here</a>. </p>
+            <p>The latest gtksheet release is gtksheet version 0.2.0: <a
+href="http://cloud.github.com/downloads/vhernandez/gtksheet/gtksheet-0.2.0.tar.gz">
+                gtksheet-0.2.0.tar.gz</a> </p>
+            <p> Finally, you can download the latest development code
+              from the github.com repository using git: </p>
+            <p><code>$ git clone <a
+                  href="https://github.com/fpaquet/gtksheet.git">https://github.com/fpaquet/gtksheet.git</a></code>
+              <meta http-equiv="content-type" content="text/html;
+                charset=UTF-8">
             </p>
-            <p>The latest gtksheet release is gtksheet version 0.2.0:
-            <a href="http://cloud.github.com/downloads/vhernandez/gtksheet/gtksheet-0.2.0.tar.gz">
-            gtksheet-0.2.0.tar.gz</a>
-            </p>
-            <p>
-            Finally, you can download the latest development code from the
-            github.com repository using git:
-            </p>
-            <p><code>$ git clone 
-            <a href="git://github.com/vhernandez/gtksheet.git">
-            git://github.com/vhernandez/gtksheet.git</a>
-            </code></p>
-            
-
+            <pre style="box-sizing: border-box; text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.24) 0px 0px 0px !important; font-family: SFMono-Regular, Consolas, &quot;Liberation Mono&quot;, Menlo, Courier, monospace; font-size: 12px; margin-top: 0px; margin-bottom: 0px; color: rgb(36, 41, 46); font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; width: 1px; height: 1px; position: fixed; top: 5px;">https://github.com/fpaquet/gtksheet.git</pre>
             <h2><a name="docs"></a>Documentation</h2>
-            <p>
-            GtkSheet documentation, written mainly by Victor Mierla is included
-            with the source code and, for your convenience, it's available online here:
-            </p>
+            <p> GtkSheet documentation, written mainly by Victor Mierla
+              is included with the source code and, for your
+              convenience, it's available online here: </p>
             <dl>
-              <dt> 
-                <a href="tutorial/index.html" title="GtkSheet tutorial">
-                    GtkSheet tutorial
-                </a>
-              </dt>
+              <dt> <a href="tutorial/index.html" title="GtkSheet
+                  tutorial"> GtkSheet tutorial </a> </dt>
               <dd> Guide on how to use GtkSheet library.</dd>
-              <dt> 
-                <a href="reference/index.html" title="GtkSheet API reference">
-                    GtkSheet reference
-                </a>
-              </dt>
+              <dt> <a href="reference/index.html" title="GtkSheet API
+                  reference"> GtkSheet reference </a> </dt>
               <dd> Reference documentatoin of the GtkSheet library API.</dd>
             </dl>
             <p></p>
-
             <h2><a name="issues"></a>Reporting issues, getting support</h2>
-            <p>Report problems using this software or request features in the 
-            <a href="http://github.com/vhernandez/gtksheet/issues">
-            issue tracker</a> at github.com.</p>
-
+            <p>Report problems using this software or request features
+              in the <a
+                href="https://github.com/fpaquet/gtksheet/issues"> issue
+                tracker</a> at github.com.</p>
             <h2><a name="license"></a>License</h2>
-            <p>gtksheet is distributed under the 
-            <a href="http://www.gnu.org/licenses/old-licenses/library.txt">
-            GNU Library General Public License (LGPL) version 2.0</a>. 
-            See COPYING file in the sources for details.
-            </p>
-            <p>gtksheet documentation is distributed under the 
-            <a href="http://www.gnu.org/licenses/fdl-1.1.txt">
-            GNU Free Documentation License (GFDL) version 1.1</a>. 
-            See docs/COPYING file in the sources for details.
-            </p>
-
+            <p>gtksheet is distributed under the <a
+                href="http://www.gnu.org/licenses/old-licenses/library.txt">
+                GNU Library General Public License (LGPL) version 2.0</a>.
+              See COPYING file in the sources for details. </p>
+            <p>gtksheet documentation is distributed under the <a
+                href="http://www.gnu.org/licenses/fdl-1.1.txt"> GNU Free
+                Documentation License (GFDL) version 1.1</a>. See
+              docs/COPYING file in the sources for details. </p>
+          </div>
         </div>
-    </div>
-
-	<div id="secondaryContent">
-		<h3>Contents</h3>
-		<ul>
-			<li><a href="#top">General information</a></li>
-			<li><a href="#download">Getting gtksheet</a></li>
+        <div id="secondaryContent">
+          <h3>Contents</h3>
+          <ul>
+            <li><a href="#top">General information</a></li>
+            <li><a href="#download">Getting gtksheet</a></li>
             <li><a href="#docs">Documentation</a></li>
             <li><a href="#issues">Support</a></li>
             <li><a href="#license">License</a></li>
-
-		</ul>
-	</div>
-
-	<div class="clear"></div>
+          </ul>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div id="footer">
+        <p>Designed by <a href="http://www.freecsstemplates.org">Free
+            CSS Templates</a></p>
+      </div>
     </div>
-
-	<div id="footer">
-		<p>Copyright &copy; 2009 Víctor M. Hernández-Rocamora. Designed by <a href="http://www.freecsstemplates.org">Free CSS Templates</a></p>
-	</div>
-</div>
-</body>
+  </body>
 </html>

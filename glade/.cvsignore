@@ -1,0 +1,9 @@
+.deps
+.libs
+.libs_mingw
+Makefile
+Makefile.in
+*.lo
+*.la
+*.ps
+

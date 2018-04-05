@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+setenv GLADE_CATALOG_PATH /home/devel/Z/gtk
+setenv GLADE_MODULE_PATH /home/devel/Z/gtk/gtk+extra-2.1.2/gtkextra/.libs
+glade-3
+-->
+<glade-catalog name="gtkextra" library="@libgladegtkextra_soname@" depends="gtk+">
+
+  <book>gtkextra</book>
+
+    <glade-widget-classes>
+        <glade-widget-class name="GtkCharSelection" generic-name="gtkcharselection" title="GtkCharSelection - a widget which contains all the characters in a font" />
+
+        <glade-widget-class name="GtkSheet" generic-name="gtksheet" title="GtkSheet - a spreadsheet widget" >
+            <!-- The next line is experimental -->
+            <action-activate-function>glade_gtk_sheet_action_activate</action-activate-function>
+            <get-children-function>glade_gtk_sheet_get_children</get-children-function>
+
+            <get-children-function>glade_gtk_sheet_get_children</get-children-function>
+            <add-child-function>glade_gtk_sheet_add_child</add-child-function>
+            <remove-child-function>glade_gtk_sheet_remove_child</remove-child-function>
+            <replace-child-function>glade_gtk_sheet_replace_child</replace-child-function>
+
+            <actions>
+                <action stock="gtk-edit" important="True" id="launch_editor" name="Edit&#8230;"></action>
+            </actions>
+            <properties>
+                <property query="True" id="title" default="GtkSheet" />
+                <property save="False" query="False" needs-sync="True" id="n-cols" default="0" />
+                <property save-always="True" query="True" needs-sync="True" id="n-rows" default="1" />
+                <property id="locked" default="False" />
+                <property id="selection-mode">
+                    <displayable-values>
+                        <value id="GTK_SELECTION_NONE" name="None" disable="True"></value>
+                        <value id="GTK_SELECTION_SINGLE" name="Single"></value>
+                        <value id="GTK_SELECTION_BROWSE" name="Browse"></value>
+                    </displayable-values>
+                </property>
+                <property id="autoresize" default="False" />
+                <property id="autoscroll" default="True" />
+                <property id="clip-text" default="False" />
+                <property id="bgcolor" default="White"/>
+                <property id="grid-visible" default="True" />
+                <property id="grid-color" default="Gray"/>
+                <property id="col-titles-visible" default="True" />
+                <property id="col-titles-height" />
+                <property id="columns-resizable" default="True" />
+                <property id="row-title-visible" default="True" />
+                <property id="row-title-width" />
+                <property id="rows-resizable" default="True" />
+            </properties>
+        </glade-widget-class>
+
+        <glade-widget-class name="GtkSheetColumn" libglade-unsupported="True" generic-name="gtksheetcolumn" title="GtkSheetColumn - a Sheet Column" >
+<!--        <set-property-function>glade_gtk_sheet_column_set_property</set-property-function>-->
+<!--        <get-property-function>glade_gtk_sheet_column_set_property</get-property-function>-->
+            <properties>
+                <property id="visible" save-always="True" default="True"/>
+                <property id="position" visible="False" name="Position"/>
+<!--        <property id="width-request" needs-sync="True" />-->
+            </properties>
+        </glade-widget-class>
+
+    <glade-widget-class name="GtkDataEntry" libglade-unsupported="True" generic-name="gtkdataentry" title="GtkDataEntry - a data entry Widget" >
+    </glade-widget-class>
+    <glade-widget-class name="GtkDataTextView" libglade-unsupported="True" generic-name="gtkdatatextview" title="GtkDataTextView - a multiline data entry Widget" >
+    </glade-widget-class>
+
+        <glade-widget-class name="GtkCheckItem" generic-name="gtkcheckitem" title="GtkCheckItem - CheckButton-hack with the look and feel of the Redmond95 theme" />
+        <glade-widget-class name="GtkItemEntry" generic-name="gtkitementry" title="GtkItemEntry" />
+        <glade-widget-class name="GtkToggleCombo" generic-name="gtktogglecombo" title="GtkToggleCombo - toggle combo widget" />
+
+        <glade-widget-class name="GtkBorderCombo" generic-name="gtkbordercombo" title="GtkBorderCombo - variety of border styles in the popdown window arranged in a table of togglebuttons" />
+        <glade-widget-class name="GtkColorCombo" generic-name="gtkcolorcombo" title="GtkColorCombo - composite widget with two buttons, one with an arrow to display a popdown window where you can pack whatever you want, from a calendar to a clist" />
+        <glade-widget-class name="GtkComboButton" generic-name="gtkcombobutton" title="GtkComboButton - Color Combo Widget" />
+        <glade-widget-class name="GtkFontCombo" generic-name="gtkfontcombo" title="GtkFontCombo - GtkToolBar subclass with two combos to select among the 35 standard Adobe PostScript fonts with different sizes" />
+
+        <glade-widget-class name="GtkDirTree" generic-name="gtkdirtree" title="GtkDirTree - subclass that allows you to navigate the file-system" />
+        <glade-widget-class name="GtkFileList" generic-name="gtkfilelist" title="GtkFileList - a GtkIconList subclass that displays the contents of a given directory using fancy icons for different types of files" />
+        <!--    <glade-widget-class name="GtkIconFileSel" generic-name="gtkiconfilesel" title="GtkIconFileSel - nice looking file selection dialog using icons" />-->
+        <glade-widget-class name="GtkIconList" generic-name="gtkiconlist" title="GtkIconList - a GtkFixed subclass that allows you to display a table of xpm icons with editable labels" />
+
+        <glade-widget-class name="GtkPlot" generic-name="gtkplot" title="GtkPlot - 2d scientific plots widget" />
+        <glade-widget-class name="GtkPlotData" generic-name="gtkplotdata" title="GtkPlotData - 2d scientific plots widget" />
+        <glade-widget-class name="GtkPlotAxis" generic-name="gtkplotaxis" title="GtkPlotAxis - GtkPlotAxis" />
+        <!--    <glade-widget-class name="GtkPlot3D" generic-name="gtkplot3d" title="GtkPlot3D - 3d scientific plots widget" />-->
+        <glade-widget-class name="GtkPlotArrayList" generic-name="gtkplotarraylist" title="GtkPlotArrayList" />
+        <glade-widget-class name="GtkPlotArray" generic-name="gtkplotarray" title="GtkPlotArray" />
+        <glade-widget-class name="GtkPlotBar" generic-name="gtkplotbar" title="GtkPlotBar - bar plots widget" />
+        <glade-widget-class name="GtkPlotBox" generic-name="gtkplotbox" title="GtkPlotBox - box plots widget" />
+        <glade-widget-class name="GtkPlotBubble" generic-name="gtkplotbubble" title="GtkPlotBubble" />
+        <glade-widget-class name="GtkPlotCandle" generic-name="gtkplotcandle" title="GtkPlotCandle" />
+        <glade-widget-class name="GtkPlotCanvas" generic-name="gtkplotcanvas" title="GtkPlotCanvas - gtkplot canvas widget" />
+        <glade-widget-class name="GtkPlotCanvasChild" generic-name="gtkplotcanvaschild" title="GtkPlotCanvasChild" />
+        <glade-widget-class name="GtkPlotCanvasEllipse" generic-name="gtkplotcanvasellipse" title="GtkPlotCanvasEllipse" />
+        <glade-widget-class name="GtkPlotCanvasLine" generic-name="gtkplotcanvasline" title="GtkPlotCanvasLine" />
+        <glade-widget-class name="GtkPlotCanvasPixmap" generic-name="gtkplotcanvaspixmap" title="GtkPlotCanvasPixmap" />
+        <glade-widget-class name="GtkPlotCanvasPlot" generic-name="gtkplotcanvasplot" title="GtkPlotCanvasPlot" />
+        <glade-widget-class name="GtkPlotCanvasRectangle" generic-name="gtkplotcanvasrectangle" title="GtkPlotCanvasRectangle" />
+        <glade-widget-class name="GtkPlotCanvasText" generic-name="gtkplotcanvastext" title="GtkPlotCanvasText" />
+        <glade-widget-class name="GtkPlotCSurface" generic-name="gtkplotcsurface" title="GtkPlotCSurface - csurface plots widget" />
+        <glade-widget-class name="GtkPlotDT" generic-name="gtkplotdt" title="GtkPlotDT - delaunay triangulization algorithm" />
+        <glade-widget-class name="GtkPlotFlux" generic-name="gtkplotflux" title="GtkPlotFlux - flux plots widget" />
+        <glade-widget-class name="GtkPlotGdk" generic-name="gtkplotgdk" title="GtkPlotGdk" />
+        <glade-widget-class name="GtkPlotPC" generic-name="gtkplotpc" title="GtkPlotPC - gtkplot print context - a renderer for printing functions" />
+        <glade-widget-class name="GtkPlotPixmap" generic-name="gtkplotpixmap" title="GtkPlotPixmap - pixmap plots widget" />
+        <glade-widget-class name="GtkPlotPolar" generic-name="gtkplotpolar" title="GtkPlotPolar - polar plots widget" />
+        <glade-widget-class name="GtkPlotPS" generic-name="gtkplotps" title="GtkPlotPS - postscript driver" />
+        <glade-widget-class name="GtkPlotSegment" generic-name="gtkplotsegment" title="GtkPlotSegment" />
+        <glade-widget-class name="GtkPlotSurface" generic-name="gtkplotsurface" title="GtkPlotSurface - 3d scientific plots widget for gtk+" />
+    </glade-widget-classes>
+
+    <glade-widget-group name="gtkextra-widgets" title="GtkExtra Sheet Widgets">
+        <glade-widget-class-ref name="GtkCharSelection" />
+
+        <glade-widget-class-ref name="GtkSheet" />
+        <glade-widget-class-ref name="GtkItemEntry" />
+        <glade-widget-class-ref name="GtkDataEntry" />
+        <glade-widget-class-ref name="GtkDataTextView" />
+        <glade-widget-class-ref name="GtkCheckItem" />
+
+        <glade-widget-class-ref name="GtkColorCombo" />
+        <glade-widget-class-ref name="GtkBorderCombo" />
+        <glade-widget-class-ref name="GtkToggleCombo" />
+        <glade-widget-class-ref name="GtkComboButton" />
+        <glade-widget-class-ref name="GtkFontCombo" />
+
+        <glade-widget-class-ref name="GtkDirTree" />
+        <glade-widget-class-ref name="GtkFileList" />
+        <!--    <glade-widget-class-ref name="GtkIconFileSel" />-->
+        <glade-widget-class-ref name="GtkIconList" />
+    </glade-widget-group>
+
+    <glade-widget-group name="gtkextra-widgets" title="GtkExtra Plot Widgets">
+        <glade-widget-class-ref name="GtkPlot" />
+        <glade-widget-class-ref name="GtkPlotData" />
+        <glade-widget-class-ref name="GtkPlotAxis" />
+        <!--    <glade-widget-class-ref name="GtkPlot3D" />-->
+        <glade-widget-class-ref name="GtkPlotArrayList" />
+        <glade-widget-class-ref name="GtkPlotArray" />
+        <glade-widget-class-ref name="GtkPlotBar" />
+        <glade-widget-class-ref name="GtkPlotBox" />
+        <glade-widget-class-ref name="GtkPlotBubble" />
+        <glade-widget-class-ref name="GtkPlotCandle" />
+        <glade-widget-class-ref name="GtkPlotCanvas" />
+        <glade-widget-class-ref name="GtkPlotCanvasChild" />
+        <glade-widget-class-ref name="GtkPlotCanvasEllipse" />
+        <glade-widget-class-ref name="GtkPlotCanvasLine" />
+        <glade-widget-class-ref name="GtkPlotCanvasPixmap" />
+        <glade-widget-class-ref name="GtkPlotCanvasPlot" />
+        <glade-widget-class-ref name="GtkPlotCanvasRectangle" />
+        <glade-widget-class-ref name="GtkPlotCanvasText" />
+        <glade-widget-class-ref name="GtkPlotCSurface" />
+        <glade-widget-class-ref name="GtkPlotDT" />
+        <glade-widget-class-ref name="GtkPlotFlux" />
+        <glade-widget-class-ref name="GtkPlotGdk" />
+        <glade-widget-class-ref name="GtkPlotPC" />
+        <glade-widget-class-ref name="GtkPlotPixmap" />
+        <glade-widget-class-ref name="GtkPlotPolar" />
+        <glade-widget-class-ref name="GtkPlotPS" />
+        <glade-widget-class-ref name="GtkPlotSegment" />
+        <glade-widget-class-ref name="GtkPlotSurface" />
+    </glade-widget-group>
+
+</glade-catalog>
+

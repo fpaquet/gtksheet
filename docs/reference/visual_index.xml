@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!DOCTYPE para PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+]>
+<para role="gallery">
+  <link linkend="GtkBorderCombo">
+    <inlinegraphic fileref="gtkbordercombo.jpg" format="JPG"></inlinegraphic>
+  </link> 
+  <link linkend="GtkCharSelection">
+    <inlinegraphic fileref="gtkcharsel.jpg" format="JPG"></inlinegraphic>
+  </link>
+  <link linkend="GtkCheckItem">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkColorCombo">
+    <inlinegraphic fileref="gtkcolorcombo.jpg" format="JPG"></inlinegraphic>
+  </link>
+  <link linkend="GtkComboButton">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkDirTree">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkFileList">
+    <inlinegraphic fileref="gtkfilelist.jpg" format="JPG"></inlinegraphic>
+  </link>
+  <link linkend="GtkFontCombo">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkIconFileSelection">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkIconList">
+    <inlinegraphic fileref="gtkiconlist.jpg" format="JPG"></inlinegraphic>
+  </link>
+  <link linkend="GtkItemEntry">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlot3D">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotArray">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotBar">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotBox">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotBubble">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlot">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link> 
+  <link linkend="GtkPlotCairo">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotCandle">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link> 
+  <link linkend="GtkPlotCanvas">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link> 
+  <link linkend="GtkPlotCanvasEllipse">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotCanvasLine">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotCanvasPixmap">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotCsurface">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotData">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotDt">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotFlux">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotPC">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotPolar">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotPS">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPlotSegment">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link> 
+  <link linkend="GtkPlotSurface">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkPsFont">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkSheet">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+  <link linkend="GtkToggleCombo">
+    <inlinegraphic fileref="" format="PNG"></inlinegraphic>
+  </link>
+</para>

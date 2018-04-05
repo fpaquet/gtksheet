@@ -1,0 +1,194 @@
+GtkPlot-5.0
+===========
+
+Major changes and many bugfixes:
+
+- Removal of most of the flags, now use
+  gtk_plot_axis/grids_set_visibility to show/hide axis
+
+- Added masks for minor ticks
+
+- Replacement of GtkPlotFont by GtkPSFont
+
+- Redefinition of GtkPlotFunction. 
+  Now it passes the plot and dataset as arguments (see headers).
+
+- Lots of memory leaks fixed by Theodore Roth.
+
+- Bug fixes.
+
+
+Thanks to:
+ Carl Lejjdfors <Calle.Lejdfors@teokem.lu.se>
+ Aaron Lehmann <aaronl@vitelus.com>
+ Theodore Roth <troth@verinet.com>
+ Sanjay Bhatnagar <sanjay@ncra.tifr.res.in>
+ Wolfgang Glas <Wolfgang.Glas@hfm.tu-graz.ac.at>
+
+and many others...
+
+
+GtkPlot-4.1
+===========
+
+- New real time demo (realdemo).
+
+- New functions:
+  * gtk_plot_layout_refresh 
+    Redraws the plots and backing pixmap, much faster 
+    than GtkLayout, recomended for real time simulations and fast updates.
+
+  * gtk_plot_paint 
+    Redraws the plot on the backing pixmap, which can be
+    displayed using gtk_plot_refresh. Actually, gtk_plot_draw is a combination
+    of both.
+
+  * gtk_plot_set/get_xrange.
+  * gtk_plot_set/get_yrange.
+
+  * gtk_plot_dataset_show/hide_legend (added by Wolfgang Gas, see below)
+
+
+- Three patches posted by Wolfgang Glas <Wolfgang.Glas@hfm.tu-graz.ac.at>:
+
+  * Fixes for the warnings compiling on win32.
+  * Hiding/showing datasets' legends.
+  * fixes in gtkplot.c and gtkplotprint.c
+
+  Thanks a lot, Wolfgang! 
+
+- Thanks to Clark E. Dorman <dorman@s3i.com> for his fixes with ticks.
+
+- Thanks to Sunjay Bhatnagar <sanjay@ncra.tifr.res.in> for all his comments
+  and suggestions
+
+
+GtkPlot-4.0
+===========
+
+- Lots of bugfixes and enhancements.
+
+- Improvements in printing drivers.
+
+- New representation for data using arrays for x, y, dx, dy values.
+  Each set of values is stored in an array:
+    gdouble x[];
+    gdouble y[];
+    gdouble dx[];
+    gdouble dy[];
+  You can use the same x values for two different datasets.
+  (See examples in the demo program)
+
+_ GtkPlotPoint structure removed.
+
+- New functions
+  gtk_plot_dataset_set_x.
+  gtk_plot_dataset_set_y.
+  gtk_plot_dataset_set_dx.
+  gtk_plot_dataset_set_dy.
+  gtk_plot_dataset_get_x.
+  gtk_plot_dataset_get_y.
+  gtk_plot_dataset_get_dx.
+  gtk_plot_dataset_get_dy.
+  gtk_plot_dataset_set_numpoints.
+  gtk_plot_dataset_get_numpoints.
+
+- Changes in some functions:
+  gtk_plot_dataset_set_points.
+  gtk_plot_axis_set_ticks.
+
+
+GtkPlot-3.1
+===========
+
+- New action:
+  Select region with the mouse. The signal "select_region"
+  will return the coordinates of the selected area: 
+  xmin, xmax, ymin, ymax. Useful if you want to implement zoom.
+
+- Text with justification.
+
+- Centered axis titles.
+
+- Bugfixes in gtkplotps.
+
+
+GtkPlot-3.0
+===========
+
+- New Font policy. 
+  Fonts are identified by a user_name and/or the standard PostScript name.
+  The 35 names are listed in gtkplotfont.h
+  All function requiring font settings need the font name and
+  font height instead of a GdkFont.
+  You can add your own user fonts using gtk_plot_font_add(...) declaring
+  both names and two possible Xfonts used to display them on the X window.
+
+- PostScript Driver.
+  Completely separated from the widget main code in gtkplotps.
+  Exporting functions:
+     * gtk_plot_export_ps
+     * gtk_plot_layout_export_ps
+  (It would probably need some fixes, I'll be waiting for your reports).
+  The demo program generates plotdemo.ps as example.
+
+- Some internal changes (bugfixes and enhancements).
+
+Thanks to Alexander Larsson and Arjan Molenaar, authors of DiaCanvas and
+Dia, for allowing me to borrow some ideas from his code for the 
+PostScript driver and fonts handling.
+
+Special thanks to Roberto Alameda <ral1@ibm.net>, author of FontViewer 
+http://www.geocities.com/SiliconValley/Foothills/1458/
+for his illuminating ideas and helpful tips about fonts.
+
+GtkPlot-2.0
+===========
+
+Sorry for not being very explicit, but I'll describe only an outline of 
+the latest changes because is difficult to keep track of all of them.
+To move from 1.x to 2.x you'll have to change some few function calls
+concerning to the attributes settings. It's easy to realize the changes
+during compilation time, just take a look at the headers when you get an error.
+
+- New GtkPlotCanvas widget which allows DnD. See demo.
+
+- Lots of changes in internal routines for optimization and versatility. 
+
+- Changed some function calls.
+  Sometimes you'll need to give a GdkColor * value. If you set NULL,
+  means using defaults: black for foregrounds and transparent for backgrounds.
+  If you set gc == NULL, means using default gc. 
+
+- New functions added.
+  gtk_plot_refresh,
+  gtk_plot_show_labels,
+  gtk_plot_layout_put_text,
+  etc, etc.
+
+- typedef GtkPlotFunc for drawing functions.
+
+- New signals: plot->moved, plot->resized.
+  Your signals handlers must return TRUE if you want the changes 
+  to be accepted. Same is valid for GtkPlotCanvas signals.
+
+- Some minor bugfixes.
+  gtk_plot_put_text. (I recommend gtk_plot_layout_put_text, instead).
+  Fixed rounding errors in axis, ticks marks, and grids drawing routines.
+
+- New demo program.
+
+
+GtkPlot-1.1
+===========
+
+- You can change background color for gtkplot and gtkplotlayout using
+
+  gtk_plot_layout_set_background(GtkPlotLayout *layout, GdkColor color);
+  gtk_plot_set_background(GtkPlot *plot, GdkColor color);
+
+- Many functions modified to set foreground and background colors for
+  labels and titles.
+
+- Fixes in the GtkPlotLayout scrolling.
+

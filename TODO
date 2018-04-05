@@ -1,0 +1,3 @@
+
+- Deprecate widgets already implemented in Gtk 2.14.x
+- Convert all documentation from HTML to GtkDoc format

@@ -1,0 +1,54 @@
+<informaltable pgwide=1 frame="none">
+<tgroup cols="4">
+<colspec colwidth="1*">
+<colspec colwidth="1*">
+<colspec colwidth="1*">
+<colspec colwidth="1*">
+<tbody><row>
+<entry><literallayout>
+<emphasis> GtkExtra Widgets</emphasis>
+    <link linkend="GtkBorderCombo">GtkBorderCombo</link>
+    <link linkend="GtkCharSelection">GtkCharSelection</link>
+    <link linkend="GtkCheckItem">GtkCheckItem</link>
+    <link linkend="GtkColorCombo">GtkColorCombo</link>
+    <link linkend="GtkComboButton">GtkComboButton</link>
+    <link linkend="GtkDirTree">GtkDirTree</link>
+    <link linkend="GtkFileList">GtkFileList</link>
+    <link linkend="GtkFontCombo">GtkFontCombo</link>
+    <link linkend="GtkIconFileSel">GtkIconFileSel</link>
+    <link linkend="GtkIconList">GtkIconList</link>
+    <link linkend="GtkItemEntry">GtkItemEntry</link>
+    <link linkend="GtkPlot">GtkPlot</link>
+    <link linkend="GtkPlot3D">GtkPlot3D</link>
+    <link linkend="GtkPlotArray">GtkPlotArray</link>
+    <link linkend="GtkPlotBar">GtkPlotBar</link>
+    <link linkend="GtkPlotBox">GtkPlotBox</link>
+    <link linkend="GtkPlotBubble">GtkPlotBubble</link>
+    <link linkend="GtkPlotCairo">GtkPlotCairo</link>
+    <link linkend="GtkPlotCandle">GtkPlotCandle</link>
+    <link linkend="GtkPlotCsurface">GtkPlotCsurface</link>
+    <link linkend="GtkPlotCanvas">GtkPlotCanvas</link>
+    <link linkend="GtkPlotCanvasEllipse">GtkPlotCanvasEllipse</link>
+    <link linkend="GtkPlotCanvasLine">GtkPlotCanvasLine</link>
+    <link linkend="GtkPlotCanvasRectangle">GtkPlotCanvasRectangle</link>
+    <link linkend="GtkPlotCanvasPixmap">GtkPlotCanvasPixmap</link>
+    <link linkend="GtkPlotCanvasText">GtkPlotCanvasText</link>
+    <link linkend="GtkPlotCanvasPlot">GtkPlotCanvasPlot</link>
+    <link linkend="GtkPlotData">GtkPlotData</link>
+    <link linkend="GtkPlotDt">GtkPlotDt</link>
+    <link linkend="GtkPlotDTriangle">GtkPlotDTriangle</link>
+    <link linkend="GtkPlotFlux">GtkPlotFlux</link>
+    <link linkend="GtkPlotGdk">GtkPlotGdk</link>
+    <link linkend="GtkPlotPC">GtkPlotPC</link>
+    <link linkend="GtkPlotPixmap">GtkPlotPixmap</link>
+    <link linkend="GtkPlotPolar">GtkPlotPolar</link>
+    <link linkend="GtkPlotPrint">GtkPlotPrint</link>
+    <link linkend="GtkPlotPS">GtkPlotPS</link>
+    <link linkend="GtkPlotSegment">GtkPlotSegment</link>
+    <link linkend="GtkPlotSurface">GtkPlotSurface</link>
+    <link linkend="GtkPlotPSFont">GtkPlotPSFont</link>
+    <link linkend="GtkSheet">GtkSheet</link>
+    <link linkend="GtkToggleCombo">GtkToggleCombo</link>
+</literallayout></entry>
+</row>
+</tbody></tgroup></informaltable>

@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+<!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+<!ENTITY version SYSTEM "version.xml">
+]>
+<!--ENTITY index-Objects-Grouped SYSTEM "objects_grouped.sgml"-->
+<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
+    <bookinfo>
+        <title>GtkExtra Reference Manual</title>
+        <releaseinfo>for GtkExtra &version;</releaseinfo>
+    </bookinfo>
+
+    <part id="gtkextra">
+        <title>GtkExtra Overview</title>
+        <partintro>
+            <para>
+GtkExtra is a useful set of widgets for creating GUI's for the Xwindow system using GTK+.
+You can use it complementary to GTK+ and it is written in C. It is also Free Software and released under the LGPL license.
+            </para>
+            <para>
+The library includes the following widgets:
+                <variablelist>
+                    <varlistentry>
+                        <term>GtkSheet</term>
+                        <listitem>
+                            <para>
+GtkSheet is a matrix widget for GTK+. It consists of an scrollable grid of cells where you can allocate text.
+Cell contents can be edited interactively through a specially designed entry, GtkItemEntry.
+It is also a container subclass, allowing you to display buttons, curves, pixmaps and any other widget in it.
+You can also set many attributes as: border, foreground and background color, text justification, and more.
+ The testgtksheet program shows how easy is to create a spreadsheet-like GUI using this widget set.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+
+                    <varlistentry>
+                        <term>GtkPlot</term>
+                        <listitem>
+                            <para>
+GtkPlot is a widget for GTK+.
+It allows to draw high quality scientific plots in two dimensions with a look and feel very similar to Microcal Origin for Windows.
+                            </para>
+                            <para>
+The distribution includes GtkPlotCanvas subclass, and a demo program showing two layered plots with different kind of curves.
+You can choose between a number of symbol types, lines, connectors -straight lines, steps, splines-, and change their attributes -color, size, width-.
+You can also plot functions, add error bars, edit legends, rotate and move axis titles, change axis properties, etc.
+                            </para>
+                            <para>
+The package also includes GtkPlot3D and GtkPlotPolar.
+                            </para>
+                            <para>
+GtkPlotCanvas is a GtkFixed subclass and allows to DnD plots, points, and child objects (text, axis titles). You can move them or resize your plots dragging with the mouse!
+                            </para>
+                            <para>
+The distribution includes also a PostScript driver.
+All the features are demonstrated in testgtkplot and testrealtime.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+
+                    <varlistentry>
+                        <term>GtkIconList</term>
+                        <listitem>
+                            <para>
+GtkIconList is a GtkFixed subclass that allows you to display a table of xpm icons with editable labels.
+It's completely designed from scratch with some ideas borrowed from gnome-icon-list. It contains almost all of its features and more.
+It can be used for file browsers and as a replacement of gnome-icon-list (without the need of using gnome libraries).
+Like GtkSheet, it uses the widget GtkItemEntry to edit the text fields.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+
+                    <varlistentry>
+                        <term>GtkDirTree</term>
+                        <listitem>
+                            <para>
+It is a GtkCTree subclass that allows you to navigate the file-system.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+
+                    <varlistentry>
+                        <term>GtkFileList</term>
+                        <listitem>
+                            <para>
+It is a GtkIconList subclass that displays the contents of a given directory using fancy icons for different types of files.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+
+                    <varlistentry>
+                        <term>GtkIconFileSelection</term>
+                        <listitem>
+                            <para>
+It is a nice looking file selection dialog using icons.
+It combines GtkDirTree and GtkFileList to navigate the file system and select files.
+It has also two entries to select the file and filter.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+
+                    <varlistentry>
+                        <term>GtkItemEntry</term>
+                        <listitem>
+                            <para>
+It is a GtkEntry subclass. It can have fixed size or can be dinamically resized when the text is entered.
+You can change text justification to centered, left, or right, and change the foreground and background colors very easily.
+ It only displays the text and has no borders.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+
+                    <varlistentry>
+                        <term>GtkFontCombo</term>
+                        <listitem>
+                            <para>
+It is a GtkToolBar subclass with two combos to select among the 35 standard Adobe PostScript fonts with different sizes.
+It has also two buttons to select bold and italics. When you select a new font, it returns the name of the corresponding Postscript font and the equivalent Xfont.
+This is what we all expect to have on the top of a GUI for a spreadsheet or word processor.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+
+                    <varlistentry>
+                        <term>GtkComboBox</term>
+                        <listitem>
+                            <para>
+It is a composite widget with two buttons, one with an arrow to display a popdown window where you can pack whatever you want, from a calendar to a clist.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+
+                    <varlistentry>
+                        <term>GtkColorCombo</term>
+                        <listitem>
+                            <para>
+It is a GtkComboBox subclass with a pallette of colors in the popdown window to pickup the one you like the most.
+It has a default pallette, but it's completelly customizable.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+
+                    <varlistentry>
+                        <term>GtkBorderCombo</term>
+                        <listitem>
+                            <para>
+It is a GtkComboBox subclass with a variety of border styles in the popdown window arranged in a table of togglebuttons.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+
+                    <varlistentry>
+                        <term>GtkCheckItem</term>
+                        <listitem>
+                            <para>
+It is a GtkCheckButton hack with the look and feel of the Redmond95 theme.
+                            </para>
+                        </listitem>
+                    </varlistentry>
+                </variablelist>
+            </para>
+        </partintro>
+
+        <xi:include href="compiling.sgml" />
+        <xi:include href="resources.sgml" />
+    </part>
+
+    <part  id="gtkextrabase">
+        <title>GtkExtra Widgets and Objects</title>
+
+        <chapter>
+            <title>Object Hierarchy</title>
+            <xi:include href="xml/tree_index.sgml" />
+        </chapter>
+
+        <chapter>
+            <title>Widget Gallery</title>
+            <xi:include href="visual_index.xml" />
+        </chapter>
+
+        <chapter>
+            <title>Widgets</title>
+            <xi:include href="xml/gtkbordercombo.xml" />
+            <xi:include href="xml/gtkcharsel.xml" />
+            <xi:include href="xml/gtkcheckitem.xml" />
+            <xi:include href="xml/gtkcolorcombo.xml" />
+            <xi:include href="xml/gtkcombobutton.xml" />
+            <xi:include href="xml/gtkdataentry.xml" />
+            <xi:include href="xml/gtkdatatextview.xml" />
+            <xi:include href="xml/gtkdirtree.xml" />
+            <xi:include href="xml/gtkfilelist.xml" />
+            <xi:include href="xml/gtkfontcombo.xml" />
+            <xi:include href="xml/gtkiconfilesel.xml" />
+            <xi:include href="xml/gtkiconlist.xml" />
+            <xi:include href="xml/gtkitementry.xml" />
+            <xi:include href="xml/gtkplot.xml" />
+            <xi:include href="xml/gtkplot3d.xml" />
+            <xi:include href="xml/gtkplotarray.xml" />
+            <xi:include href="xml/gtkplotbar.xml" />
+            <xi:include href="xml/gtkplotbox.xml" />
+            <xi:include href="xml/gtkplotbubble.xml" />
+            <xi:include href="xml/gtkplotcairo.xml" />
+            <xi:include href="xml/gtkplotcandle.xml" />
+            <xi:include href="xml/gtkplotcsurface.xml" />
+            <xi:include href="xml/gtkplotcanvas.xml" />
+            <xi:include href="xml/gtkplotcanvasellipse.xml" />
+            <xi:include href="xml/gtkplotcanvasline.xml" />
+            <xi:include href="xml/gtkplotcanvasrectangle.xml" />
+            <xi:include href="xml/gtkplotcanvaspixmap.xml" />
+            <xi:include href="xml/gtkplotcanvastext.xml" />
+            <xi:include href="xml/gtkplotcanvasplot.xml" />
+            <xi:include href="xml/gtkplotdata.xml" />
+            <xi:include href="xml/gtkplotdt.xml" />
+            <xi:include href="xml/gtkplotdtriangle.xml" />
+            <xi:include href="xml/gtkplotflux.xml" />
+            <xi:include href="xml/gtkplotgdk.xml" />
+            <xi:include href="xml/gtkplotpc.xml" />
+            <xi:include href="xml/gtkplotpixmap.xml" />
+            <xi:include href="xml/gtkplotpolar.xml" />
+            <xi:include href="xml/gtkplotprint.xml" />
+            <xi:include href="xml/gtkplotps.xml" />
+            <xi:include href="xml/gtkplotsegment.xml" />
+            <xi:include href="xml/gtkplotsurface.xml" />
+            <xi:include href="xml/gtkpsfont.xml" />
+            <xi:include href="xml/gtksheet.xml" />
+            <xi:include href="xml/gtksheetcolumn.xml" />
+            <xi:include href="xml/gtktogglecombo.xml" />
+        </chapter>
+
+        <chapter>
+            <title>Data Formatter</title>
+            <xi:include href="xml/gtkdataformat.xml" />
+        </chapter>
+
+        <chapter>
+            <title>GtkExtra Versioning</title>
+            <xi:include href="xml/gtkextrafeatures.xml" />
+        </chapter>
+    </part>
+
+
+
+
+
+
+</book>

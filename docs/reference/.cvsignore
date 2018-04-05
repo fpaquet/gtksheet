@@ -1,0 +1,7 @@
+Makefile
+Makefile.in
+*.stamp
+.libs
+html
+tmpl
+xml

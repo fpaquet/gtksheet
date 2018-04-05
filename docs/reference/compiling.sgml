@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+]>
+<refentry id="compiling" revision="22 Oct 2008">
+<refmeta>
+<refentrytitle>Compiling GtkExtra Applications</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GtkExtra Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Compiling GtkExtra Applications</refname>
+<refpurpose>
+How to compile your GtkExtra+ application
+</refpurpose>
+</refnamediv>
+
+<refsect1>
+<title>Compiling GtkExtra Applications on UNIX</title>
+
+<para>
+To compile a GtkExtra application, you need to tell the compiler where to 
+find the GtkExtra header files and libraries. This is done with the
+<literal>pkg-config</literal> utility.
+</para>
+<para>
+The following interactive shell session demonstrates how
+<literal>pkg-config</literal> is used (the actual output on 
+your system may be different):
+<programlisting>
+$ pkg-config --cflags gtkextra-3.0 
+-Iusr/include/gtkextra-3.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/libpng12 -I/usr/include/pixman-1  
+$ pkg-config --libs gtkextra-3.0
+-lgtkextra-x11-3.0 -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lpango-1.0 -lcairo -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
+
+</programlisting>
+</para>
+<para>
+The simplest way to compile a program is to use the "backticks"
+feature of the shell. If you enclose a command in backticks
+(<emphasis>not single quotes</emphasis>), then its output will be
+substituted into the command line before execution. So to compile 
+a GtkExtra program, you would type the following:
+<programlisting>
+$ cc `pkg-config --cflags --libs gtkextra-3.0` hello.c -o hello
+</programlisting>
+</para>
+
+
+<para>
+The recommended way of using GtkExtra has always been to only include the
+toplevel headers <filename>gtkextra.h</filename>.
+</para>
+
+</refsect1>
+</refentry>
+
+
+
+

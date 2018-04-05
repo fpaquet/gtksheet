@@ -1,0 +1,2064 @@
+2017-09.24 Fredy Paquet <mailbox AT opag.ch>
+	* merged branch pc217304
+	* updated gtkextra-3 version to 3.3.4, Libtool Revision 9.4.1
+	* published gtkextra-3 version 3.3.4
+
+2017-06-23 Fredy Paquet <mailbox AT opag.ch>
+        * GtkDataEntry - added character input mapping Map()
+
+2017-06-22 Fredy Paquet <mailbox AT opag.ch>
+        * GtkDataEntry - memory hole fixed PR#217304
+        * GtkDataEntry - fixed max_len_bytes check on paste PR#217304
+        * GtkDataEntry - added input filters Ignore(), Accept(), Reject()
+
+2017-01-01 Fredy Paquet <mailbox AT opag.ch>
+	* Glade-Integration: got new icons, thanks to <droli@thebajors.com>
+
+2016-11-06 Fredy Paquet <mailbox AT opag.ch>
+	* gtksheet.c - reduce flicker in autoresize rows/cells PR#213228
+	* updated gtkextra-3 version to 3.3.3, Libtool Revision 9.3.1
+	* published gtkextra-3 version 3.3.3
+
+2016-11-01 Fredy Paquet <mailbox AT opag.ch>
+	* gtksheet.c - disabled unconditional g_debug PR#213205
+
+2016-10-16 Fredy Paquet <mailbox AT opag.ch>
+	* gtkitementry.c - fixed ABORT on missing focus-out PR#212710
+
+2016-10-02 Fredy Paquet <mailbox AT opag.ch>
+	* gtkdataformat.c - fixed thousands_sep (utf8) PR#212243
+
+2016-09-18 Fredy Paquet <mailbox AT opag.ch>
+	* updated gtkextra-3 version to 3.3.2, Libtool Revision 9.2.1
+	* published gtkextra-3 version 3.3.2
+
+2016-09-18 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: support for number grouping (India)
+
+2016-08-07 Fredy Paquet <mailbox AT opag.ch>
+	* updated gtkextra-3 version to 3.3.1, Libtool Revision 9.1.1
+	* published gtkextra-3 version 3.3.1
+	* merged branch bugfix into master
+
+2016-08-07 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed clear active cell when scrolling PR#211566
+	* GtkSheet: merged branch traverse-type into master
+	* updated gtkextra-3 version to 3.3.0, Libtool Revision 9.0.1
+	* published gtkextra-3 version 3.3.0
+
+2016-05-29 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: tab/backtab fix PR#210301
+	* GtkSheet: moved GTK_SHEET_COLUMN_CAN_FOCUS() to gtksheetcolumn.h
+	* GtkSheet: added GTK_SHEET_COLUMN_SET_CAN_FOCUS()
+	* GtkSheet: new feature GtkSheetTraverseType to control wether tab/backtab moves to editable cells only (thanks to Shiva Ramabadran <shiva.ramabadran@gmail.com>)
+
+2016-05-22 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed row/column extent calculation (thanks to Shiva Ramabadran <shiva.ramabadran@gmail.com>)
+	* GtkSheet: expose gtk_sheet_width() and gtk_sheet_height() (thanks to Shiva Ramabadran <shiva.ramabadran@gmail.com>)
+	* GtkSheet: tab/backtab fix (thanks to Shiva Ramabadran <shiva.ramabadran@gmail.com>)
+
+2015-10-18 Fredy Paquet <mailbox AT opag.ch>
+        * Patch 22 applied - memory leaks in GtkPlotData
+
+2015-10-03 Fredy Paquet <mailbox AT opag.ch>
+	* GtkPlot*: merged api fixes to support binding generation via Gir-File
+	* GtkPlotCanvas: new enum GtkPlotCanvasChildFlags
+	* GtkPlotCanvas: changed type of a struct member in _GtkPlotCanvasChild from
+ GtkPlotCanvasFlag to GtkPlotCanvasChildFlags
+	* updated gtkextra-3 version to 3.2.0, Libtool Revision 8.0.0
+	* published gtkextra-3 version 3.2.0
+
+2015-08-07 Fredy Paquet <mailbox AT opag.ch>
+	* GtkPlot*: fixed types and annotations for interface generation via Gir file
+
+2015-08-01 Fredy Paquet <mailbox AT opag.ch>
+	* GtkDataEntry: fix dataformat race condition in gtk_data_entry_get_text() PR#205431
+	* updated gtkextra-3 version to 3.1.5, Libtool Revision 7.5.0
+	* published gtkextra-3 version 3.1.5
+
+2015-07-04 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fix SEGV in draw_xor_rectangle() PR#203012,201893,203139,204742
+	* GtkSheet: fix Invalid read of size 4 in _gtk_sheet_move_query()
+	* updated gtkextra-3 version to 3.1.4, Libtool Revision 7.4.0
+	* published gtkextra-3 version 3.1.4
+
+2015-05-29 Tom Schoonjans <Tom.Schoonjans AT me.com>
+	* spec file: docs install path updated
+
+2015-02-07 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed auto-scrolling for invisible columns PR#202688
+	* GtkSheet: changed gtk_sheet_moveto() enum params from gdouble to gint
+	* updated gtkextra-3 version to 3.1.3, Libtool Revision 7.3.0
+	* published gtkextra-3 version 3.1.3
+
+2015-02-01 Fredy Paquet <mailbox AT opag.ch>
+	* fixed docs install path (conflicts with gtkextra-2)
+
+2014-12-26 Fredy Paquet <mailbox AT opag.ch>
+	* updated gtkextra-3 version to 3.1.2, Libtool Revision 7.2.0
+	* published gtkextra-3 version 3.1.2
+
+2014-07-31 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed sheet editor contents when setting text of active cell PR#104553
+
+2014-07-13 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed dataformat on cell deactivation PR#104167
+
+2014-05-31 Fredy Paquet <mailbox AT opag.ch>
+	* GtkPSFont, GtkSheet, GtkSheetColumn: fixed some compiler warnings
+
+2014-03-16 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed several critical warnings during object destruction PR#102114
+
+2014-03-09 Fredy Paquet <mailbox AT opag.ch>
+	* Merged bugfix branch
+	* updated gtkextra-3 version to 3.1.1, Libtool Revision 7.1.0
+
+2014-03-08 Fredy Paquet <mailbox AT opag.ch>
+	* GtkItemEntry: prefix all functions with "_item_entry" to prevent confusion with GtkEntry
+	* GtkItemEntry: fix SEGV, correctly chain up object destruction, PR#101967, PR#101214, PR#100847, PR#101004
+
+2014-02-02 Fredy Paquet <mailbox AT opag.ch>
+	* Reworked libtool versioning scheme, now documented in developer CMS
+	* configure.ac - re-initialized libtool versioning
+	   removed GTK_EXTRA_INTERFACE_AGE and GTK_EXTRA_BINARY_AGE
+	* updated gtkextra-3 version to 3.1.0, Libtool Revision 7.0.0
+	* published gtkextra-3 version 3.1.0
+
+2013-12-31 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed SEGV caused by missing child reference counting PR#100392
+	* GtkSheet: added parameter checks to gtk_sheet_attach()
+	* GtkSheet: optimized scrolling behaviour with many sheet childs PR#99118
+	* GtkSheet: fixed SEGV in _get_string_extent()
+	* GtkSheet: set focus when tabbing into the sheet (prevent invisible focus) PR#95144
+
+2013-12-30 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed warnings and SEGV in gtk_sheet_forall_handler() for invalid childs
+
+2013-12-08 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed maximum autosized row height
+	* GtkSheet: fixed typo, reworked debug output
+	* GtkDataTextView: cut too long texts when pasting into length limited buffer
+	* GtkSheet: finished GtkSheetColumn->wrap_mode in cell drawing PR#95931
+	* GtkSheet: fixed SEGV in _gtk_sheet_entry_size_allocate
+	* GtkSheet: fixed vertical scrolling problems
+
+2013-07-19 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheetColumn: fixed sheet realized check that caused SEGV
+
+2013-07-02 Fredy Paquet <mailbox AT opag.ch>
+	* merged branch gtk3 into master
+
+2013-06-28 Fredy Paquet <mailbox AT opag.ch>
+	* replaced deprecated accessor: GtkWidget->parent 
+	* replaced deprecated accessor: GdkCursor->type
+	* replaced deprecated accessor: GtkContainer->border_width
+	* replaced deprecated accessor: GtkEntry->is_cell_renderer
+	* GtkSheet: fixed custom sheet_entry assignment, update testgtksheet
+	* GtkDataTextView: fixed entry setup during cell activation
+
+2013-06-27 Fredy Paquet <mailbox AT opag.ch>
+	* replaced deprecated GTK_SIGNAL_FUNC with G_CALLBACK
+	* disabled deprecated GTK_TYPE_COMBO_BOX_ENTRY from Gtk 2.24
+	* disabled deprecated GTK_TYPE_COMBO from Gtk 2.4 (yes, 2.4!)
+	* GtkSheet: clean out deprecated GtkAdjustment accessors
+
+2013-06-26 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: pango font description handling rewritten to prevent occasional crashes
+	* GtkSheet: fixed memory leak in font description handling
+	* merged branch GtkDataTextView into master
+	* GtkSheet: doc fix
+
+2013-06-25 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: code cleanup, GtkDataTextView key binding in sheet fixed
+
+2013-06-24 Fredy Paquet <mailbox AT opag.ch>
+	* GtkDataTextView: new subclass of GtkTextView to limit multiline text length
+	* GtkDataEntry: resolved deprecated G_CONST_RETURN
+	* GtkItemEntry: added internal max_length_bytes property
+	* GtkSheetColumn: added max_length, max_length_bytes, wrap_mode properties
+	* GtkSheet: added new sheet_entry-editor GtkDataTextView
+	* GtkSheet: reworked editor type switching for GtkDataTextView
+	* GtkSheet: update new editor properties in sheet-entry
+
+2013-06-23 Fredy Paquet <mailbox AT opag.ch>
+	* GtkItemEntry: fixed UTF-8 character insertion, killing trailing text (PR#96868)
+	* new branch GtkDataTextView for development of property enhancements 
+	* GtkDataEntry: added new property max-length-bytes
+	* Glade-Integration: added <book> tag to catalog
+
+2013-06-22 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed memory leak in _gtk_sheet_entry_setup()
+	* GtkSheet: fixed memory leak in DeleteRow()
+	* GtkSheet: fixed memory leak in DeleteColumn()
+	* GtkSheet: fixed cell activation in gtk_sheet_delete_columns()
+
+2013-06-19 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: signal documentation fixed
+
+2013-05-26 Fredy Paquet <mailbox AT opag.ch>
+	* published gtkextra-3 version 3.0.5
+	* updated gtkextra-3 version to 3.0.6
+
+2013-05-26 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed drawing with invisible columns at realize PR#92947
+	* GtkSheet: cleanup debug defines
+
+2013-05-19 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: added 'window' param to gtk_sheet_get_pixel_info()
+	   - enabling correct decoding of clicks into the row/column header area
+	* GtkSheet: reworked global sheet button press handler
+	   - will only handle single-press button1 events internally
+	   - propagate all other button-press-events to the sheet
+	   - allows you to connect your own handler to process right-clicks now
+
+2013-05-18 Fredy Paquet <mailbox AT opag.ch>
+	* Merged Tom Schoonjans packaging branch into master
+	* packages can now be created using:
+	   rpmbuild on Fedora/Centos/ScientificLinux
+	   dh_make on Debian/Ubuntu
+
+2013-04-19 Fredy Paquet <mailbox AT opag.ch>
+	* Glade Integration: added gtk+extra-catalog.xml to .gitignore (generated)
+
+2013-04-07 Fredy Paquet <mailbox AT opag.ch>
+	* Glade Integration: fixed soname generation in glade catalog xml for win32
+
+2013-03-23 Fredy Paquet <mailbox AT opag.ch>
+	* published gtkextra-3 version 3.0.4
+	* updated gtkextra-3 git version to 3.0.5
+
+2013-03-23 Fredy Paquet <mailbox AT opag.ch>
+	* GtkItemEntry: remove debug output when debug is off
+	* GtkSheet: fixed h/voffset when deleting rows PR#90224, PR#95088
+	* GtkSheet: fixed horizontal scrollbar size
+	* GtkExtra: removed Makefile.mingw, config.h.win32
+	* GtkExtra: cleanup extra distribution files
+
+2013-03-19 Daisuke Shimamura <daisuke_shimamura AT nifty.com>
+	* GtkPlot: patch for UTF-8 string handling
+
+2013-03-17 Fredy Paquet <mailbox AT opag.ch>
+	* MinGW: fixed autoconf environment, reworked Git exceptions
+	* Glade integration: fixed build problems in MinGW
+
+2013-03-16 Fredy Paquet <mailbox AT opag.ch>
+	* cleanup build environment
+	* migration to git repo
+	* cleanup handling of generated files for git
+
+2013-03-13 Tom Schoonjans <Tom.Schoonjans AT me.com>
+	* fixed build problem of 3.0.3
+	* upgraded configure.in script to latest autoconf standards including
+	rename to configure.ac
+	* removed several non-essential buildscript files that can be generated by the
+	developer with autoreconf
+	* removed several non-essential source files that can be generated by the
+	user when running make
+
+2013-03-10 Fredy Paquet <mailbox AT opag.ch>
+	* cleanup configure.in and automake problems on MinGW
+
+2013-03-10 Fredy Paquet <mailbox AT opag.ch>
+	* published gtkextra-3 version 3.0.3
+	* updated gtkextra-3 cvs version to 3.0.4
+
+2013-03-10 Fredy Paquet <mailbox AT opag.ch>
+	* GtkPlot: doc update
+
+2013-03-10 Daisuke Shimamura <daisuke_shimamura AT nifty.com>
+	* GtkPlot: patch to fix MinGW missing drawing problem Bug ID: 3182951
+	* GtkPlot: patch for SEGV in gtk_plot_cairo_draw_pixmap()
+	* GtkPlot: patch for image size in testgtkplot.c
+
+2013-03-03 Fredy Paquet <mailbox AT opag.ch>
+	* published gtkextra-3 version 3.0.2
+	* updated gtkextra-3 cvs version to 3.0.3
+
+2013-02-17 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed vertical and horizontal GtkItemEntry alignment
+	* GtkSheet: fixed dirty text redraw when clip_text is off
+
+2012-12-20 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed SEGV when deleting rows with unrealized childs
+
+2012-11-30 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed entry_type switching when moving around the sheet
+
+2012-11-25 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: new signal GtkSheet::enter-pressed to intercept default action
+
+2012-11-11 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed update of sheet_entry style when moving around colored cells
+	* GtkItemEntry: fixed justification propagation to GtkEntry alignment
+	* GtkSheet: fixed clipping of active cell border
+	* GtkSheet: fixed sheet_move_query check when tabbing around w/scrollbars
+	* GtkSheet: fixed set_active_cell to scroll active cell into view range
+	* GtkSheet: fixed signal documentation bug: NEW_ROW_HEIGHT, NEW_COL_WIDTH
+
+2012-10-04 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: new signal #GtkSheet::populate-popup propagates sheet_entry signal
+
+2012-10-03 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: auto-resize on window size modification fixed
+	* GtkSheet: cleanup debug defines
+
+2012-09-28 Fredy Paquet <mailbox AT opag.ch>
+	* GtkDataEntry, GtkSheetColumn: fixed removal of thousands separator
+
+2012-09-14 Fredy Paquet <mailbox AT opag.ch>
+	* GtkDataEntry, GtkSheetColumn: fixed formatting for non POSIX/C locales (UTF-8)
+
+2012-09-09 Fredy Paquet <mailbox AT opag.ch>
+	* GtkDataEntry, GtkSheetColumn: fixed formatting for non POSIX/C locales
+	* GtkSheet: experimental support for cell text preselection (incomplete)
+	* GtkSheet: fixed missing return value in _gtk_sheet_move_query()
+	* GtkSheet: fixed return type of _gtk_sheet_count_visible()
+
+2012-09-01 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: reworked drag/resize of sheet selection w/invisible columns
+
+2012-09-01 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed drawing, dirty edges beyond rightmost column
+	* GtkSheet: use style background for area beyond outmost row/column
+	* GtkSheet: reworked drag/resize of sheet selection w/invisible columns
+
+2012-08-01 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed extent calculation and autoresize w/unrealized window
+	* added misc/gtkextra.vpj (slickedit project file)
+	* GtkSheet: horizontal adjustment partially fixed
+
+2012-07-31 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: removed obsolete Sheet::changed signal emissions
+	   for column width modifications connect to Sheet::new-column-width
+	   for row height modifications connect to Sheet::new-column-width
+	* GtkSheet: reworked emission of Sheet::changed
+	   gtk_sheet_column_button_add_label() always emitted (even when frozen)
+	   gtk_sheet_column_button_justify() no longer emitted (contents unchanged)
+	   gtk_sheet_column_label_set_visibility() no longer emitted (contents unchanged)
+	   gtk_sheet_row_button_add_label() always emitted (even when frozen)
+	   gtk_sheet_row_label_set_visibility() no longer emitted (contents unchanged)
+	   gtk_sheet_row_button_justify() no longer emitted (contents unchanged)
+	* GtkSheet: sheet button drawing reworked and optimized
+	* GtkSheet: autoresize completely rewritten and optimized
+
+2012-07-29 Fredy Paquet <mailbox AT opag.ch>
+	* gtkplot.h: replaced callbacks in _GtkPlotAxis with function typedefs
+	  https://bugzilla.gnome.org/show_bug.cgi?id=674002
+	* cleanup documentation tags (introspection warnings)
+	* re-generated GtkExtra-3.0.gir, added GtkExtra-3.0.typelib
+	* GtkSheet: new properties autoresize-rows, autoresize-cells
+	* GtkSheet: experimental support for autoresize-rows (not optimized)
+
+2012-07-22 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: improved autoresize columns (max width limit)
+
+2012-06-04 Fredy Paquet <mailbox AT opag.ch>
+	* fixed autoconf m4 includedir in autogen.sh - Bug ID 3471311
+
+2012-06-04 Fredy Paquet <mailbox AT opag.ch>
+	* fixed autoconf m4 includedir - Bug ID 3471311
+
+2012-06-03 Fredy Paquet <mailbox AT opag.ch>
+	* Added m4/introspection.m4 to the distribution - Bug ID 3471311
+	* fixed dimension name dz - Bug ID 3450154
+
+2012-04-28 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: reworked KeyBindings to use Alt-Mod instead of Super-Mod (collisions on Win7)
+
+2012-04-22 Fredy Paquet <mailbox AT opag.ch>
+	* Gtk+3 Migration: Prepare: cleanup single includes
+
+2012-04-15 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed redraw problems when mapping a hidden, modified sheet
+
+2012-04-12 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: rewritten key event processing code to use GtkBindings
+	* GtkSheet: new move-cursor signal to support GtkBindings
+	* GtkSheet: advanced TAB control via gtk_sheet_set_tab_direction()
+	* GtkSheet: documented default bindings 
+	  http://gtkextra.sourceforge.net/cms/index.php?option=com_content&view=article&id=33&Itemid=19
+	* support for gobject-introspection V1.31.20
+	* build with --enable-introspection is broken (g-ir-compiler crashes)
+	* GtkExtra: raised version to 3.0.2
+
+2012-04-06 Fredy Paquet <mailbox AT opag.ch>
+	* replaced all keysyms with new names GDK_KEY_ (from Gtk 2.22, with compatibility support)
+
+2012-03-31 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed uninitialized memory access in gtk_sheet_realize_handler()
+
+2012-03-30 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: eliminated ** CRITICAL **: gtk_sheet_set_title: assertion `title != NULL' failed
+	* GtkSheet: fixed invalid memory access in gtk_sheet_cell_draw_label()
+
+2012-03-11 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed memory corruption in gtk_sheet_realize_handler()
+
+2012-02-19 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: prevent drawing outside of sheet area
+
+2012-01-04 Fredy Paquet <mailbox AT opag.ch>
+	* GtkItemEntry: incorporated patch from Bug ID 3439972
+
+2011-12-25 Fredy Paquet <mailbox AT opag.ch>
+	* GtkDataEntry: formatted display of contents is working now
+	* data formatter documented
+
+2011-12-24 Fredy Paquet <mailbox AT opag.ch>
+	* split gtksheet.[ch] into smaller pieces: gtksheetcolumn.[ch]
+	* added data formatting library (gtkdataformat.[ch])
+	* GtkSheet: new - formatted display of numeric cell data is now possible!
+
+2011-12-18 Roy Rankin <rrankin AT ihug DOT com DOT au>
+	* gtkextra/gtkcolorcombo.c: Fix array overflow - Bug ID 3316408
+
+2011-11-26 Fredy Paquet <mailbox AT opag.ch>
+	* fixed configure options - Bug ID 3414011
+
+2011-11-16 Fredy Paquet <mailbox AT opag.ch>
+	* fixed include problem with glib V2.31.0 (only glib.h can be included directly)
+
+2011-10-30 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: improved column button redraw, reduced flickering
+
+2011-10-29 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed dirty text display w/ clip_text off and ivisible columns
+	* GtkSheet: fixed gtk_sheet_set_active_cell() into invisible columns
+
+2011-10-09 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed gtk warning in gtk_sheet_set_active_cell()
+	* GtkSheet: new property 'description' for application use
+	* GtkSheetColumn: new method gtk_sheet_column_get() to get GtkSheetColumn objects
+
+2011-10-08 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed gtk_sheet_cell_get_tooltip_text()
+	* GtkSheet: global button press now toggles sheet selection
+	* GtkSheet: optimize: removed double cell activation on map
+	* GtkSheet, GtkSheetColumn: honor can-focus widget properties
+	* GtkSheetColumn: changed can-focus default setting to TRUE
+	* GtkSheet: fixed critical warning upon unmap
+
+2011-09-17 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed redraw problems when switching row/columns visible on/off
+	* GtkSheet: disable active cell when hiding active row/column
+	* GtkSheet: fixed sheet range when switching row/columns visible on/off
+
+2011-09-16 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed application crash when making hidden sheet columns visible
+
+2011-09-10 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed colormap allocation problem in gtk_sheet_range_set_background, gtk_sheet_range_set_foreground
+	* GtkSheet: optimized pixmap copy in gtk_sheet_cell_draw_label
+
+2011-08-19 Fredy Paquet <mailbox AT opag.ch>
+	* fixed more redraw problems on sheets without scrollbars
+
+2011-08-14 Fredy Paquet <mailbox AT opag.ch>
+	* modified GtkSheetColumn property 'datatype' to match GtkDataEntry definition
+	* replaced 'class' by 'klass' - as class is a registered c++ keyword
+
+2011-08-12 Fredy Paquet <mailbox AT opag.ch>
+        * new GtkDataEntry widget with formatting capabilities, not yet finished
+	* added GtkExtra-3.0.gir to the CVS repo
+
+2011-08-07 Fredy Paquet <mailbox AT opag.ch>
+        * documentation update - added own page for GtkSheetColumn and related
+	* updated documentation on sf project web
+	   http://gtkextra.sourceforge.net/docs/reference/index.html
+	* old reference manual moved to a subdirectory:
+	   http://gtkextra.sourceforge.net/docs/reference/gtkextra-2/index.html
+
+2011-08-05 Fredy Paquet <mailbox AT opag.ch>
+        * gtksheet.c: gtk_sheet_thaw() fixed redraw range and execution
+
+2011-05-01 Fredy Paquet <mailbox AT opag.ch>
+	* updated gtkextra-3 version to 3.0.1
+	* added Makefile.mingw in glade support files
+	   works together with a fresh build of glade3-3.8.0 on MinGW
+	* fixed bug ID 3250296: added gtkextra-compat.h to the gtkextra-3 distribution
+	* eliminated autoconf warnings on LT_CURRENT, LT_REVISION, LT_AGE
+	   ref: http://bugs.gentoo.org/show_bug.cgi?id=230199
+
+2011-04-10 Fredy Paquet <mailbox AT opag.ch>
+	* ./configure: better CFLAGS handling, respect environment and do not combine -g -O2 (it kills the debugger)
+
+2011-03-24 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: allow gtk_sheet_set_active_cell(sheet, -1, -1) to deactivate current cell
+
+2011-03-23 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed unwanted entry activation during hide_active_cell()
+		which lead to multiple focus signal emissions
+
+2011-03-22 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: new signals entry-focus-in, entry-focus-out 
+		in order to be able to track focus on the underlying sheet-entry
+
+2011-03-20 Fredy Paquet <mailbox AT opag.ch>
+	* gtkitementry.c: fixed bug ID: 3170287 in gtkextra-3
+
+2011-02-1 Fredy Paquet <mailbox AT opag.ch>
+	* added Makefile.mingw install target
+
+2011-02-1 Fredy Paquet <mailbox AT opag.ch>
+	* fixed Windows build environment
+	   tested on a fresh MinGW installation
+	   see build instructions in Makefile.mingw
+	* replaced Makefile.win32 by Makefile.mingw
+
+2011-01-09 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheetColumn: fixed abort() during gtk_widget_set_parent()
+	* replaced some deprecated GtkWidget macros
+
+2011-01-08 Fredy Paquet <mailbox AT opag.ch>
+	* fixed library naming in docs
+
+2011-01-07 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheetColumn: setup correct parent widget
+
+2010-12-17 Fredy Paquet <mailbox AT opag.ch>
+	* fixed library naming, now corresponding to V3.0 and the content of gtkextra-3.0.pc
+	* fixed gobject-introspection to include Gtk-2.0.gir
+	* Linux compilation tested
+	* fixed missing GLIB_GENMARSHAL in configure.in
+	* added missing VOID:INT,BOXED to gtkextra-marshal.list
+
+2010-11-30 Fredy Paquet <mailbox AT opag.ch>
+	* doc/tutorial/Makefile.am: fixed automake warnings
+	*** GtkSheet: new feature: added optional GObject-Introspection
+	   Reference: http://live.gnome.org/GObjectIntrospection
+	* added new ./configure option --enable-introspection
+	   to build GtkExtra-3.0.gir: cd gtkextra ; make GtkExtra-3.0.gir
+
+2010-10-18 Fredy Paquet <mailbox AT opag.ch>
+	*** GtkItemEntry: fixed major crash source in item entry buffer handling
+
+2010-10-15 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed cell and row/column deactivation while paging around
+	* GtkSheet: fixed background redraw when outmost column is invisible
+
+2010-08-21 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: new public interface function gtk_sheet_get_selection()
+
+2010-08-20 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: eliminated recursive call to from hide/show active cell (SEGV)
+	* GtkSheet: fixed auto-switch entry with active sheet range selections
+	* GtkSheet: added a set of signal debugging functions (GTK_SHEET_DEBUG_SIGNALS)
+
+2010-08-14 Fredy Paquet <mailbox AT opag.ch>
+	*** GtkSheet: auto-switch column sheet entry, if defined
+	   auto-switching will only take place, if the column or sheet entry_type is explicitly set
+	* GtkSheet: fixed GtkTextView positioning
+	* GtkSheet: fixed set-cell signal
+	* gtkextra/Makefile.am: fixed Bug ID 3021754
+
+2010-08-13 Fredy Paquet <mailbox AT opag.ch>
+	*** GtkSheetColumn: new properties: vertical cell text justification
+	* GtkSheet: fixed SEGV on global button press
+
+2010-08-07 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: reworked "changed" signal emission, cell data updates and cell redraw
+	* testgtksheet.c: reworked sheet_entry change, GtkSpinButton works now
+
+2010-08-07 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: replaced deprecated signal "pressed" on the global sheet button
+	*** GtkSheet: new feature: entry of multiline text via GtkTextView as sheet_entry
+	* GtkSheet: reworked sheet_entry widget processing
+	* GtkSheet: new public interface functions gtk_sheet_*entry* to access 
+	* testgtksheet.c: use GtkTextView for editing of column 3 in sheet 2
+
+2010-08-06 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: created a new GtkSheetEntryType in order to control it from glade-3
+	* GtkSheet: replaced column is_multiline property with entry_type
+	* GtkSheet: new public interface function gtk_sheet_get_entry_type()
+	* GtkSheet: re-activated sheet entry justification property, it works
+
+2010-08-05 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: added row and column tooltip markers
+	*** GtkSheetColumn: new properties is_key, is_readonly, is_multiline, data_format, data_type, description
+	    is_key, description have only informational character for the application
+	    is_readonly is implemented, others not yet
+	* GtkSheet: new public interface function to get/set the new properties
+	* gtkextra/*.c: documentation fixes - no more warnings by docgen
+
+2010-08-04 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: new tooltip feature, added to sheet, column, row and cell
+	* GtkSheet: new public interface functions to get/set tooltips on sheet, column, row and cell
+	* GtkSheet: added a small red triangle in the top right cell corner, if there is a tooltip attached
+	* gtksheettest: added some tooltips to the first sheet
+	* GtkSheet: fixed a bug in AddRow() which was destroying column data
+	* GtkSheet: reworked cell data allocation and deallocation
+	* GtkSheet: the cell is no longer cleared, when the text is deleted manually, 
+	    so attributes, tooltips, links remain in the cell, when you press the delete key
+	* GtkSheet: Calling gtk_sheet_cell_clear() function erases all data in the cells,
+	    to remove only the text, call gtk_sheet_set_cell_text() with NULL
+
+2010-08-03 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: Glade-3: cut/paste of sheets now works without dropping all columns
+	* GtkSheetColumn: new properties 'width', 'justification', also working with glade-3
+	* GtkSheetColumn: added column icons
+
+2010-07-30 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed cursor key handling in rightmost column
+	* GtkSheet: fixed deactivation of active cell on row deletion
+
+2010-07-30 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed cell editor width
+	* GtkSheet: fixed active cell redraw conditions
+
+2010-07-23 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed SEGV when resizing columns and there is no scrolled window below
+	* GtkSheet: fixed SEGV when resizing columns and there is no active cell
+	* GtkSheet: fixed redraw of visible cell area when row or column titles are switched off
+
+2010-07-16 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed: placement of the cell editor when clicking into empty cells
+	* GtkSheetColumn: defintively using visibility property of the underlying GtkWidget now
+	* GtkSheetColumn: using sensitivity property of the underlying GtkWidget now
+        * GtkSheet: new interface functions:
+		gtk_sheet_column_visible() 
+		gtk_sheet_row_visible()
+		gtk_sheet_column_sensitive()
+		gtk_sheet_row_sensitive()
+	* GtkSheet: resizeability of rows/cols was coupled to the sensitive property, 
+		rows/cols can now always be resized, independent of the sensitive property
+	* GtkSheet: fixed: the last row of the sheet could not be resized
+	* GtkSheet: fixed: left/right and up/down scrolling during sheet range selection
+
+2010-07-09 Fredy Paquet <mailbox AT opag.ch>
+        * new include file gtkextra-compat.h to maintain backward compatibility for older gtk releases
+	* added Pixmaps for Glade-3 integration: glade/pixmaps/hicolor
+	* GtkSheet: fixed SEGV when extending cell selection beyond sheet boundaries
+	* GtkSheet: double click between column titles will now always fit column width, not only enlarge
+
+2010-07-07 Roy Rankin <rrankin AT ihug DOT com DOT au>
+	* gtkextra/*.c : Remove instances of direct bin, widget usage
+
+2010-07-05 Roy Rankin <rrankin AT ihug DOT com DOT au>
+	* gtkextra/* : start remove depreciated GTK calls
+
+2010-06-26 Roy Rankin <rrankin AT ihug DOT com DOT au>
+	* configure.in : link with math lib required by Fedora 13
+
+2010-06-12 Roy Rankin <rrankin AT ihug DOT com DOT au>
+        * gtkextra/gtkitementry.c : patch to allow build with gtk2-21
+
+2010-05-22 Fredy Paquet <mailbox AT opag.ch>
+	*** GtkSheet: glade column editor implemented
+	* GtkSheet: still more SEGV fixed, concerning empty sheets (no cols, no rows)
+
+2010-05-21 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed sheet_editor size request
+	* GtkSheet: reworked resizing a cell selection range (better, but still not very good)
+
+2010-05-20 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed lots of SEGV in empty sheets (no rows, no cols)
+	* GtkSheet: moved all glade integration procs into glade-gtksheet-editor.c
+	* GtkSheet: removed all sheet debug output ifndef DEBUG
+	* GtkSheet: reworked selection range dragging code (more failsafe)
+
+2010-05-19 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed several SEGV in glade gtkextra integration
+	* GtkSheet: adding/removing columns from within glade works now
+	* GtkSheet: setting column property 'label' now works with GtkBuilder 
+	* GtkSheet: moved column visibility flag from GtkSheetColumn into the embedded GtkWidget
+	* GtkSheet: SEGV in keyboard processing fixed
+	*** added new ./configure option --enable-glade
+	* GtkSheet: added glade sheet editor source (not yet finished)
+	* GtkSheet: added po directory (glade support needs gettext installed)                    
+
+2010-05-18 Fredy Paquet <mailbox AT opag.ch>
+	*** GtkSheet: changed GtkSheetColumn into an object, subtype of GtkWidget
+	* GtkSheet: fixed several SEGV errors, most of them incorrect boundary handling
+	* GtkSheet: fixed scrollbar behaviour near the end of the sheet
+	* GtkSheet: experimental integration into GtkBuilder - not yet finished
+
+2010-05-14 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed gtk_sheet_get_child_at(): returned wrong child under certain conditions
+	* GtkSheet: fixed some function declarations
+	* GtkSheet: fixed some +1/-1 problems that caused SEGV
+	* GtkSheet: fixed some doc tags
+
+2010-05-12 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet: fixed doc generation - there is still a problem with gtk_plot_marker_get_type
+	* GtkSheet: fixed redraw problems on sheets with 0 rows or 0 columns
+	* GtkSheet: fixed doc comments in gtksheet
+
+2010-05-11 Fredy Paquet <mailbox AT opag.ch>
+	* GtkSheet properties completed
+	* GtkSheet: bugfix: default grid color is now uniq
+	* GtkSheet: replaced obsolete function gdk_color_alloc()
+	* GtkSheet: fixed gtk_sheet_set_selection_mode() parameter type
+
+2010-05-09 Fredy Paquet <mailbox AT opag.ch>
+	* changed --enable-debug option to non destructive behaviour
+	*** Added initial Glade support to GtkSheet
+	  * properties "title", "n-rows", "n-cols"
+	  * class initialisation code adapted
+	* GtkSheet: some drawing problems need fixing when the sheet gets 0 rows/cols
+
+2010-05-08 Fredy Paquet <mailbox AT opag.ch>
+	*** added --enable-debug option to the configure script, default is off (-O2).
+	* GtkSheet: Fixed a crash when double clicking between column headers
+
+2010-05-04 Fredy Paquet <mailbox AT opag.ch>
+	* Fixed some minor portability issues:
+	  * test -e is not available in /bin/sh
+	  * echo -n doesn't work with all versions of 'echo'
+	* Added some portability checks to configure.in (using autoscan)
+	* Fixed spaces in front of two make commandlines (@GLIB_GENMARSHAL@)
+
+2010-04-20 Roy Rankin <rrankin AT ihug DOT com DOT au>
+	* gtkitementry.h gtkitementry.c gtksheet.c gtkplotbox.c:
+	  add gtkextra-2 patches to work with gtk+2.18
+
+2006-05-15 Jacek Sieka jsieka at memphite.se , from Memphite AB 
+	* Fixed memory leak in gtk_plot_canvas_destroy
+	* Fixed font names for Windows in gtkpsfont.c
+
+2005-09-19  Stefan Kost  <ensonic@users.sf.net>
+
+	* gtkextra/gtksheet.c: (gtk_sheet_range_get_type),
+	(gtk_sheet_class_init):
+          example inline docs
+
+2005-09-19  Stefan Kost  <ensonic@users.sf.net>
+
+	* .cvsignore:
+	* autogen.sh:
+	* configure.in:
+	* docs/Makefile.am:
+	* docs/reference/Makefile.am:
+	* docs/reference/gtkextra-docs.sgml:
+	* docs/reference/gtkextra-sections.txt:
+	* docs/reference/gtkextra.types:
+	* gtkextra/gtkextrafeatures.h:
+	* gtkextra/gtkextratypebuiltins.h:
+          added gtk-doc api doc generation
+
+2005-5-17 Adrian Feiguin
+
+* Port to gtk+-2                                                                               
+* So many changes, it's hard to keep track of:
+                                                                               
+  - GtkArgs
+  - widgetization of canvas items
+  - dozens of fixes and improvements
+
+
+2002-5-21 Patches by Michael S. Noble (mnoble@space.mit.edu)
+
+*    gtkplotcanvas.c:
+
+     Support the creation of polygon children, via
+
+        gtk_plot_canvas_put_polygon()
+        gtk_plot_canvas_polygon_set_attributes()
+
+     These mirror similar functions for rectangles and ellipses, and
+     so require points in canvas-space (not pixel- or data-space),
+     only more of them.  The draw child code will automatically
+     scale/move/etc the polygons when required.
+
+*    The following functions were also added to gtkplotcanvas.c
+
+        gtk_plot_canvas_child_get_position()
+        gtk_plot_canvas_get_active_item_data()
+        gtk_plot_canvas_get_active_item_type()
+
+     to permit language bindings to query the "current/active item" on
+     the canvas, without referencing canvas/child struct internals.
+
+*    gtkplot3d.c:
+*    gtkplotsurface.c:
+
+     Moved _sqrt() from gtkplot3d.c to gtkplotsurface.c.  It was referenced
+     only in the latter file, but having it in the former could cause symbol
+     referencing problems (an inlined static) with SparWorks 6.2 (cc
+     version 5.3) on Solaris 8.
+
+*    gtkplotps.c:  the inclusion
+
+        #include <wctype.h>
+
+    causes problems with gcc (GCC) 3.1 20020420 (prerelease) bundled with
+    the Mac OS/X 10.2 developers toolkit (the file is missing).  Since none
+    of the wide character functions from wctype.h are actually being used
+    within gtkplotps.c, it was simply removed.
+
+*   gtkplotdt.c: the inclusion
+
+        #include <malloc.h>
+
+    causes similar problems with gcc (GCC) 3.1 20020420 (prerelease) bundled
+    with the Mac OS/X 10.2 developers toolkit (again, the file is missing).
+    Since malloc.h is not a standard C header file (stdlib.h should be used
+    instead), and none of the malloc.h functions are even being used in the
+
+    source module, it was removed.
+
+*   gtkextra.c:  At line 123 the statement
+
+                gboolean *result = *(gboolean **)var_args;
+
+    is unportable to platforms on which va_list is not a void* (e.g.,
+    Compaq True64 Unix).  In correcting this problem the GValue collection
+    logic was simplified.
+
+    *** Of all the mods this one needs perhaps the most careful review. ***
+
+*   gtkpsfont.c: There's no point in allowing gtk_psfont_unref() to drop
+    refcount below zero.  It can cause spurious font init warnings later.
+
+*   gtkplotdata.c: performance enhancement for spline connectors.
+
+    Namely to precompute the number of points and alloate the spline array
+    outside of the spline_eval loop.  This simplifies the code and avoids
+    numerous repetition of trivial g_realloc(previous_size+2) calls.
+
+    There are other instances in the code where this optimization can be
+    applied.  The peformance hit becomes moe apparent when dataset sizes
+    scale to 500,000+ points (even on my dual 2-Ghz cpu desktop).
+
+
+2002-12-31  Toby D. Reeves  <toby@solidstatescientific.com>
+
+       * docs/Makefile.am, gtkextra/Makefile.am : Ensured variables set with == before using +=.
+
+       * gtkextra.spec.in : Make the rpm name a variable. Set rpm name to gtk+extra2
+       allowing both 0.99.x and 1.1.x to be installed on same machine.
+
+       * gtkextra/gtkplotcsurface.c : Changed function names to those found function prototypes.
+       gtk_plot_csurface_get_level_attributes => gtk_plot_csurface_get_levels_attributes
+       gtk_plot_csurface_set_level_attributes => gtk_plot_csurface_set_levels_attributes
+       gtk_plot_csurface_get_sublevel_attributes => gtk_plot_csurface_get_sublevels_attributes
+       gtk_plot_csurface_set_sublevel_attributes => gtk_plot_csurface_set_sublevels_attributes
+
+
+2002-07-21  Allin Cottrell <cottrell@wfu.edu>
+
+	- Fix breakage in application of earlier gtkiconfilesel patch
+
+2002-07-18  Toby D. Reeves  <toby@solidstatescientific.com>
+
+	* gtkextra.spec.in : Corrected %install to use DESTDIR.
+	Make gtk+extra-devel package require gtk+extra.
+	Added *.so to devel files.
+
+	* gtkextra/Makefile.am : Added generated files 	gtkextratypebuiltins.[hc].
+	Necessary for proper Python wrappers.
+	
+	* gtkextra/gtkextra.c : gtk_extra_check_version --to-- gtkextra_check_version
+	* gtkextra/gtkextra.h : Commented addition of "#include <gtkextra/gtkextratypebuiltins.h>".
+	Unless Makefile.am is changed to use stamp files, would cause massive
+	code rebuilds to often.
+	
+	* gtkextra/gtkiconlist.h : Identified an anonymous enum that should be named. Did not know
+	what developers might choose. Needed for proper Python wrappers.
+	
+	* gtkextra/gtkplotdt.c : gtk_plot_dt_set_quatrilateral --to-- gtk_plot_dt_set_quadrilateral
+
+	* gtkextra/gtkplotdt.h : gtk_plot_dt_set_quadtrilateral --to-- gtk_plot_dt_set_quadrilateral
+
+	* gtkextra/gtkpsfont.[hc] : changed return type of gtk_psfont_get_psfontname() to 
+	"const gchar *" instead of "gchar *".
+ 
+	* gtkextra/gtksheet.h : gtk_sheet_row_resizable --to-- gtk_sheet_rows_resizable
+
+
+Allin Cottrell <cottrell@wfu.edu>
+- Update signal handling in gtkiconfilesel.c to avoid segfault in
+  gtk_icon_file_selection_set_filter().
+
+
+11/20/2001 Summary of changes
+
+- gtkextrafeatures.h is now generated automatically by the configure script
+through gtkextrafeatures.h.in
+
+- gtkextra.h includes the new headers for gtkplotdt.h
+
+GtkIconFileSel
+==============
+
+- New history combo to jump directly to a directory of choice, either
+typing in, or using the previous entries.
+
+GtkPlotCanvas
+=============
+
+- New child: CANVAS_MARKERS to handle dataset markers (see gtkplotdata below)
+
+- New selection stretegy.
+
+- New function gtk_plot_set_pc
+
+- gtk_plot_canvas_freeze/thaw methods
+
+GtkPlotCSurface
+===============
+
+- Gradient with sublevels.
+
+GtkPlotSurface
+==============
+
+- Use new Delaunay triangulization algorithm (gtkplotdt)
+
+- New functions to colour the surface using a gradient proportional to 
+  the height field:
+
+  void            gtk_plot_surface_use_height_gradient (GtkPlotSurface *data,
+                                                 gboolean use_gradient);
+  void            gtk_plot_surface_set_transparent(GtkPlotSurface *data,
+                                                 gboolean transparent);
+
+GtkPlotData
+===========
+
+- New alternative to retrieve data points trough a callback function 
+using gtk_plot_data_new_iterator(...). See demo program testiterator.c
+
+- Scale points size using gtk_plot_data_set_a/da_scale(...)
+  This is actually aplicable only for bubbles, boxes and arrows.
+
+- New functions:
+
+  void          gtk_plot_data_draw_gradient             (GtkPlotData *data,
+                                                         gint x, gint y);
+  void          gtk_plot_data_gradient_autoscale_a      (GtkPlotData *data);
+  void          gtk_plot_data_gradient_autoscale_da     (GtkPlotData *data);
+  void          gtk_plot_data_gradient_autoscale_z      (GtkPlotData *data);
+
+  to autoscale gradient according to field.
+
+- gtk_plot_data_get_point() to retrieve values
+
+- Data markers:
+
+  GtkPlotMarker *       gtk_plot_data_add_marker        (GtkPlotData *data,
+                                                         guint point);
+  gboolean      gtk_plot_data_remove_marker             (GtkPlotData *data,
+                                                         GtkPlotMarker *marker);
+  void          gtk_plot_data_remove_markers            (GtkPlotData *data);
+  void          gtk_plot_data_show_markers              (GtkPlotData *data,
+                                                         gboolean show);
+  gboolean      gtk_plot_data_markers_visible           (GtkPlotData *data);
+
+GtkPlot
+=======
+
+- Eric Monsler <emonsler@beamreachnetworks.net>
+  Fixes for autoscaling.
+
+- New function gtk_plot_set_pc
+
+- New signal "tick_label" to retrieve axes tick labels.
+
+- New functions to handle axes labels:
+
+  void          gtk_plot_axis_set_labels_offset         (GtkPlot *plot,
+                                                         GtkPlotAxisPos axis,
+                                                         gint offset);
+  gint          gtk_plot_axis_get_labels_offset         (GtkPlot *plot,
+                                                         GtkPlotAxisPos axis);
+GtkPlotPC
+=========
+
+- New function
+  void gtk_plot_pc_set_viewport                         (GtkPlotPC *pc,
+                                                         gdouble w, gdouble h);
+
+- Bugfixes and enhancements after working on gtkplotart (a driver for libart)
+ and gtkplotgnome (a driver for gnomt-print) for SciGraphica.
+
+GtkSheet
+========
+
+- New function
+  GtkWidget * gtk_sheet_get_entry_widget            (GtkSheet *sheet);
+
+- Background colors and grid handling using:
+  void gtk_sheet_set_background              (GtkSheet *sheet,
+                                              GdkColor *bg_color);
+  void gtk_sheet_set_grid                    (GtkSheet *sheet,
+                                              GdkColor *grid_color);
+  void gtk_sheet_show_grid                   (GtkSheet *sheet,
+                                              gboolean show);
+  gboolean gtk_sheet_grid_visible            (GtkSheet *sheet);
+
+
+08/08/2001 Summary of changes
+
+- some minor cleanups to the cvs repository: 
+	copied autogen.sh from scigraphica and
+	removed all files generated through autogen.sh/configure
+
+GtkPlotPC
+=========
+
+- Tobias Rapp's (<yahuxo@gmx.de>) patch for numpoints < 1 in draw_polygon/lines
+- Several enhancements.
+
+GtkPlotDT 
+=========
+
+- fixed memory leak
+- test for triangle bounding box before testing if node is inside
+  triangle -> speedup of factor 2!
+- calculate triangle area and emtpy circle when they are actually 
+  needed. -> minor speedup
+- skip nodes with same (x,y) as already inserted node.
+
+- bugfix for triangle bounding box calculation
+- added testgtkplotdtflux.c for displaying the generated mesh
+  (testgtkplotdt.in can be used as test data!)
+	
+08/08/2001 Summary of changes
+
+GtkPlotDT 
+=========
+
+- added gtkplotdt.h, gtkplotdt.c (delaunay triangulization algorithm)
+- added testgtkplotdt.c, testgtkplotdt.in to test the above
+- added Makefile rule "testdt" to access this test
+	
+24/07/2001 Summary of changes
+
+GtkSheet 
+========
+
+- bugfix in gtk_sheet_thaw
+- bugfix: FALSE return value after "deactivate" signal
+
+GtkPlotGdk
+==========
+
+- memory leak in draw_lines/draw_polygon, 
+  by Damian Gilmurray <dgilmurray@cambridgebroadband.com>
+
+GtkPlotCanvas
+=============
+
+- memory leaks,  
+  by Damian Gilmurray <dgilmurray@cambridgebroadband.com>
+
+GtkPlot
+=======
+
+- memory leaks,  
+  by Damian Gilmurray <dgilmurray@cambridgebroadband.com>
+
+- New functions: 
+void            gtk_plot_grids_set_on_top               (GtkPlot *plot,
+                                                         gboolean on_top);
+gboolean        gtk_plot_grids_on_top                   (GtkPlot *plot);
+
+  display grids on top/below data.
+
+
+27/06/2001 Summary of changes
+
+Gtk+Extra-0.99.15 includes new widgets, and important bugfixes and enhancements. 
+
+GtkFileList
+===========
+
+- New "gnome-like" icons.
+- Option to show/hide hidden files (name starting with ".")/directories
+- New functions (example in testgtkfilesel.c):
+gboolean        gtk_file_list_open_dir       (GtkFileList *file_list,
+                                              const gchar *path);
+gint            gtk_file_list_get_filetype   (GtkFileList *file_list);
+gint            gtk_file_list_add_type       (GtkFileList *file_list,
+                                              const gchar **pixmap_data);
+void            gtk_file_list_add_type_filter(GtkFileList *file_list,
+                                              gint type,
+                                              const gchar *filter);
+
+GtkIconFileSelection
+====================
+
+- Enhancements and bugfixes.
+- Horizontal scrollbar only.
+- Directories in the iconlist and hidden files.
+- New option (example in testgtkfilesel.c):
+void     gtk_icon_file_selection_show_tree      (GtkIconFileSel *filesel,
+                                                 gboolean show);
+
+GtkIconList
+===========
+
+- New function:
+
+GtkIconListItem *gtk_icon_list_add_from_pixmap        (GtkIconList *icon_list,
+                                                       GdkPixmap *pixmap,
+                                                       GdkBitmap *bitmap,
+                                                       const gchar *label,
+                                                       gpointer link);
+
+- Enhancements and bugfixes.
+
+GtkPlot
+=======
+
+- New function (example in testimage.c):
+
+ void          gtk_plot_set_background_pixmap  (GtkPlot *plot,
+                                                GdkPixmap *pixmap);
+
+- FLAGS removed an replaced by:
+ void          gtk_plot_set_transparent        (GtkPlot *plot,
+                                                gboolean transparent);
+ gboolean      gtk_plot_is_transparent         (GtkPlot *plot);
+
+- text borders (example in testgtkplot.c):
+ void          gtk_plot_text_set_border        (GtkPlotText *text,
+                                                GtkPlotBorderStyle border,
+                                                gint border_space,
+                                                gint border_width,
+                                                gint shadow_width);
+
+- Enhancements and bugfixes: memory leaks, WYSIWYG.
+
+
+GtkPlotCanvas
+============
+
+- New Canvas child GTK_PLOT_CANVAS_PIXMAP (example in testgtkplot.c):
+ GtkPlotCanvasChild *
+               gtk_plot_canvas_put_pixmap      (GtkPlotCanvas *canvas,
+                                                GdkPixmap *pixmap,
+                                                gdouble x1, gdouble y1);
+
+GtkPlotFlux
+===========
+
+- New option to center vectors:
+
+ void          gtk_plot_flux_center            (GtkPlotFlux *flux,
+                                                gboolean center);
+ gboolean      gtk_plot_flux_is_centered       (GtkPlotFlux *flux);
+
+
+GtkPlotPC, GtkPlotGDK, GtkPlotPS
+================================
+
+- New functions to draw pixmaps:
+
+ void gtk_plot_pc_clip_mask                            (GtkPlotPC *pc,
+                                                        gdouble x,
+                                                        gdouble y,
+                                                        GdkBitmap *mask);
+
+ void  gtk_plot_pc_draw_pixmap                         (GtkPlotPC *pc,
+                                                        GdkPixmap *pixmap,
+                                                        gint xsrc, gint ysrc,
+                                                        gint xdest, gint ydest,
+                                                        gint width,
+                                                        gint height,
+                                                        gdouble scale_x,
+                                                        gdouble scale_y);
+
+GtkPlotPrint
+============
+
+- Important bugfixes concerning the WYSIWYG behavior.
+
+
+GtkSheet
+========
+
+- bugfix in gtk_sheet_thaw.
+
+
+New widgets:
+
+GtkPlotPixmap
+=============
+
+GtkPlotData subclass for using pixmaps as symbols. Demo example
+in testpixmap.c
+
+GtkCharSelection
+================
+
+A table of togglebuttons to select a symbol among several fontsets.
+
+
+
+17/04/2001 Summary of changes
+
+GtkSheet
+========
+
+- Bugfixes removing widgets, and memory leaks. By Chris Howell (Applix)
+
+
+
+09/03/2001 Summary of changes
+
+21/02/2001:
+
+- GtkExtra version checks. gtkextra.c
+
+15/02/2001:
+Murray Cumming:
+- Made GdkColor* and GtkSheetRange* args const in most set_ functions.
+- Fixed some "may have been used uninitialised" and "not handled in switch" warnings.
+- Change Plot style args to GtkPlotLineStyle from gint.
+
+
+GtkSheet
+========
+
+- Bugfixes in DeleteColumn/DeleteRow
+
+- Bugfix in delete_columns/delete_rows
+
+
+25/02/2001:
+Murray Cumming:
+  - Changed some function args to guint from gint.
+  - Changed some gint funtion returns to gboolean.
+
+GtkPlot
+=======
+
+- Return values in gtk_plot_get_pixel are gdouble.
+
+- For consistency, the functions gtk_plot_axis_labels_set... were renamed 
+  as gtk_plot_axis_set_labels...
+
+New functions:
+
+- You can set axis labels suffix and prefix using
+    gtk_plot_axis_set_labels_prefix/suffix
+
+
+GtkPlot
+=======
+
+- Return values in gtk_plot3d_get_pixel are gdouble.
+
+- Fixed problem with declaration of gtk_plot_axis_get_type
+
+- Fixes in logscale
+
+
+GtkPlotPC, GtkPlotGdk, GtkPlotPS
+================================
+
+- All arguments in drawing methods changed to gdouble to improve 
+  quality of PostScript output.
+
+
+GtkPlotData
+===========
+
+- Silly bug with gtk_widget_show/hide
+
+- gtk_plot_data_draw_symbol has gdouble arguments now
+
+
+GtkIconList
+===========
+
+New functions:
+void            gtk_icon_list_set_mode          (GtkIconList *iconlist,
+                                                 guint mode);
+guint           gtk_icon_list_get_mode          (GtkIconList *iconlist);
+void            gtk_icon_list_set_row_spacing   (GtkIconList *iconlist,
+                                                 guint spacing);
+guint           gtk_icon_list_get_row_spacing   (GtkIconList *iconlist);
+void            gtk_icon_list_set_col_spacing   (GtkIconList *iconlist,
+                                                 guint spacing);
+guint           gtk_icon_list_get_col_spacing   (GtkIconList *iconlist);
+void            gtk_icon_list_set_text_space    (GtkIconList *iconlist,
+                                                 guint space);
+guint           gtk_icon_list_get_text_space    (GtkIconList *iconlist);
+void            gtk_icon_list_set_icon_border   (GtkIconList *iconlist,
+                                                 guint space);
+guint           gtk_icon_list_get_icon_border   (GtkIconList *iconlist);
+void            gtk_icon_list_set_icon_width    (GtkIconList *iconlist,
+                                                 guint space);
+guint           gtk_icon_list_get_icon_width    (GtkIconList *iconlist);
+
+
+06/12/2000 Summary of changes
+
+- Construct functions added to all the widgets. Useful for C++ and other 
+language bindings. By Murray Cumming <murrayc@usa.net> 
+
+GtkIconFileSel
+==============
+
+New functions:
+
+- gtk_icon_file_selection_show_hidden(GTK_ICON_FILESEL(filesel), TRUE);
+
+    It allows to show files with names beggining in "."
+
+- gtk_icon_file_selection_set_filter(GtkIconFileSel *filesel,
+                                     const gchar *filter);
+
+    Sets the filter but also displays it.
+
+  Both by Allin Cotrell <cottrell@wfu.edu>
+
+GtkDirTree
+==========
+
+- Fix to display directories beggining with "."
+
+- Fix to move to the selected directory at start time.
+
+  Also by Allin Cotrell <cottrell@wfu.edu>
+
+
+GtkPlot
+=======
+
+- New Function:
+
+  gtk_plot_clip_data
+
+    If TRUE, the data is clipped to fit the frame.
+
+- GtkPlotAxis is now a GtkObject subclass
+
+- gtk_plot_axis_set_tick_labels removed.
+
+- New method for setting custom labels: connect the signal "tick_label" using
+  gtk_signal_connect(GTK_OBJECT(axis), "tick_label", 
+                     GTK_SIGNAL_FUNC(parse_tick_label), NULL);
+
+  the return value is a string with the customized label generated in  
+  "parse_tick_label", a function defined by the user
+
+  Thanks to Alexander Haväng" <eel@musiknet.se> for the suggestion and
+  the patches.
+
+- gtk_plot_data_show/hide removed. We use gtk_widget_show/hide instead.
+
+- All functions called ..._get_visible are now ..._visible 
+
+- The order of the arguments in gtk_plot_put_text is now
+  font, height, angle.
+
+
+GtkPlot3D
+=========
+
+- All functions called ..._get_visible are now ..._visible 
+
+
+GtkPlotCanvas
+=============
+
+- gtk_plot_canvas_get_active_point returns -1 if no point is active
+
+- The order of the arguments in gtk_plot_canvas_put_text is now
+  font, height, angle.
+
+
+GtkPlotData
+===========
+
+- gtk_plot_data_gradient_set/get_mask renamed as 
+  gtk_plot_data_set/get_gradient_mask
+
+- All functions called ..._get_visible are now ..._visible 
+
+
+21/11/2000 Summary of changes
+
+ - New plot subclasses for 3D and polar plots: GtkPlot3d and GtkPlotPolar. 
+
+   GtkPlot3D has its own API, but GtkPlotPolar can be casted as a GtkPlot 
+ considering the equivalence x->r, y->angle.
+
+ - GtkPlotData is a widget. The API is almost the same. You may have to
+ cast the widget using data = GTK_PLOT_DATA(gtk_plot_data_new());
+
+ - The other Data subclasses are Bar, Box, Flux, Surface and
+ CSurface.
+
+ - I added new arguments to the datasets (z, dz, a, da): z is obviously for 
+ 3d plots. However, it is used in GtkPlotBox to specify the size of the boxes.
+ "a" is used to determine the size of the symbols, and "da", the color.
+
+ - The color of the symbols, when "da" is specified, is detemined using the
+ gradient. the gradient has (min, max) values, and corresponding colors. The
+ symbol's color is interpolated between these values using hue/saturation/value
+ depending on the gradient_mask.
+
+ - GtkOrientation was replaced with GtkPlotOrientation
+ (GTK_PLOT_AXIS_X/Y/Z)
+
+ - the fields xticks and yticks were removed from gtkplot.
+
+ - GtkPlotSymbol has a new field GtkPlotLine border and you set/get the
+ attributes with gtk_plot_data_set/get_symbol
+
+ - I removed the symbol type: GTK_PLOT_SYMBOL_BAR, because this is a new
+ data subclass. I added TRIANGLE_LEFT/RIGHT and DOT.
+
+ - After gtk_plot_canvas_paint, you have to use gtk_plot_canvas_refresh to
+ refresh the pixmap in the window. This is because paint can be
+ used to print or save plots in other formats, depending on the GtkPlotPC
+ you are using (see below).
+
+ - The drawing engine, called GtkPlotPC has been rewritten. Now
+ it's a GtkObject, and you can derive subclasses as GtkPlotGdk and
+ GtkPlotPS in our case (You can define your own if you want to use a
+ different library to draw your plots!). 
+
+ How does it work:
+ 1) Instead of creating a GdkGC, you create either a GtkPlotGdk or
+ GtkPlotPS.
+ 2) you do the following replacements:
+
+ gdk_gc_set_foreground -> gtk_plot_pc_set_color
+ gdk_gc_set_dash -> gtk_plot_pc_set_dash
+ gdk_gc_set_line_attributes -> gtk_plot_pc_set_lineattr
+ gdk_gc_draw_... -> gtk_plot_pc_draw_...
+
+ The output will be either on a drawable or a file according to the
+ GtkPlotPC you chose.
+
+ All the redundant code for the PS output in gtkplotprint was eliminated!
+ Elegant, isn't it?
+
+ - I also added a new widget: gtktogglecombo, a gtkcombobox subclass (See it
+ in action in testgtksheet)
+
+ - New demos are included.
+
+
+01/09/2000 Summary of changes
+
+BugFixes in GtkColorCombo, and improvements GtkPlotCanvas.
+
+
+29/08/2000 Summary of changes
+
+BugFixes in GtkColorCombo, GtkSheet, Gtkplot, GtkPlotCanvas and GtkPlotPS.
+
+GtkIconList
+===========
+
+- More memory leaks
+
+GtkDirTree & GtkFileList
+========================
+
+- Modifications for Win32 compatibility, due to
+  Hans Breuer <hans@Breuer.org>
+
+
+04/08/2000 Summary of changes
+
+Bugfixes in GtkSheet, GtkPlot, and GtkPlotCanvas.
+
+GtkIconList
+===========
+
+- New function: 
+  gtk_icon_list_update(GtkIconList *iconlist)
+  Reorders the icons.
+
+- Memory leaks.
+
+
+05/06/2000 Summary of changes
+
+GtkPlot
+=======
+
+- New element in the struct GtkPlotData 
+  gpointer link;
+
+  It allows to link data to the dataset.
+
+- New functions:
+  gtk_plot_data_set_link
+  gtk_plot_data_get_link
+  gtk_plot_data_remove_link
+  gtk_plot_data_draw_points (draws last n points). See example of use in testrealdemo.c
+
+GtkIconList
+===========
+
+- Went back to version before Allin Cottrell's changes until I am back from Argentina.
+
+
+28/06/2000 Summary of changes
+
+Misc:
+=====
+
+- Andreas Voegele sent the patches to add the following functions:
+  gtk_sheet_range_get_type();
+  gtk_plot_canvas_child_get_type();
+  gtk_icon_list_item_get_type();
+ 
+  and the corresponding macros
+
+  GTK_TYPE_SHEET_RANGE,
+  GTK_TYPE_PLOT_CANVAS_CHILD,
+  GTK_TYPE_ICON_LIST_ITEM.
+
+
+GtkSheet
+========
+
+- Argument GtkSheetRange changed to GtkSheetRange *:
+  (Arnaud Charlet, GtkAda team)
+  gtk_sheet_clip_range, gtk_sheet_range_set_background,
+  gtk_sheet_range_set_foreground, gtk_sheet_range_set_justification,
+  gtk_sheet_range_set_editable, gtk_sheet_range_set_visible,
+  gtk_sheet_range_set_border, gtk_sheet_range_set_border_color,
+  gtk_sheet_range_set_font
+
+- gtk_sheet_get_max_alloc_col/row removed.
+  (Murray Cumming)
+
+- gtk_sheet_get_maxcol/maxrow cnaged to gtk_sheet_get_columns/row_count
+  (Murray Cumming)
+
+- gtk_sheet_unselect_range. Bugfixes, and GtkSheetRange * argument removed.
+  It unselects the selection, and reactivates the editing entry.  
+
+- New flag: GTK_SHEET_JUSTIFY_ENTRY
+  Justifies entry's text according to the cell attributes.
+  If unset, the entry's text is left justified as a normal entry.
+  Default value: ON
+
+- Memory leaks in DeleteRow/Column fixed by Allin Cottrell <cottrell@wfu.edu>
+
+GtkItemEntry
+============
+
+- Bugfixes by Chris Howell (Applix team).
+
+GtkPlot
+=======
+
+- Argument GtkPlotText changed to GtkPlotText *:
+  (Arnaud Charlet, GtkAda team)
+  gtk_plot_text_get_size, gtk_plot_text_get_area.
+
+- Bugfixes
+
+GtkPlotCanvas
+=============
+
+- child->draw/print changed to child->draw/print_child to avoid compatibility 
+  problems with other languages.
+
+- Bugfixes.
+
+GtkIconList
+===========
+
+- Memory leaks fixed by Allin Cottrell <cottrell@wfu.edu>
+
+
+
+12/06/2000 Summary of changes
+
+GtkPlotCanvas
+=============
+
+- GtkPlotCanvasItem struct removed and replaced by GtkPlotCanvasChild
+
+- New policy for handling canvas child objects:
+  GtkPlotCanvas has a field GList *childs, replacing the old GList *text.
+  Now, it can contain diferent kind of objects, like 
+  GTK_PLOT_CANVAS_TEXT,
+  GTK_PLOT_CANVAS_LINE,
+  GTK_PLOT_CANVAS_RECTANGLE,
+  GTK_PLOT_CANVAS_ELLIPSE.
+
+  These childs are predefined in the code, and you don't have to care about.
+  You just use the new functions:
+  gtk_plot_canvas_put_line
+  gtk_plot_canvas_put_rectangle
+  gtk_plot_canvas_put_ellipse
+
+  I have included also the type GTK_PLOT_CANVAS_CUSTOM. It allows to
+  define your custom childs, like the pixmap in testgtkplot.
+  To do this, you should use
+
+  child = gtk_plot_canvas_child_new(GTK_PLOT_CANVAS_CUSTOM);
+  
+  and define your drawing and printing routines and redirect as
+
+  child->data = my_data;
+  child->draw = my_drawing_code;
+  child->print = my_printing_code;
+
+  This should allow to insert images in the plots.
+  By default, the child can only be moved. If you also want to allow to
+  resize it, you should set the child->flags.
+  
+- You can use the following functions to set the childs' attributes
+  gtk_plot_line/rectangle/ellipse_set_attributes
+
+- I added guiding grids to the canvas. This grids can be displayed in the 
+  canvas to guide the eyes, but they are not printed.
+
+  To do so use:
+  gtk_plot_canvas_grid_set_visible
+  gtk_plot_canvas_grid_set_step
+  gtk_plot_canvas_grid_set_attributes
+
+- Signal handling for "select_item" has changed. Now the signal handler returns
+  a GtkPlotCanvasChild struct. The contentd of the selection are in 
+  child->data, and the type is declared in child->type. See the demo.
+
+- gtk_plot_canvas_put_text has a new field "transparent". If TRUE, the text 
+  background is not drawn.
+
+
+GtkPlot
+=======
+
+- Silly bugfixes
+
+- gtk_plot_put_text has a new field "transparent". If TRUE, the text 
+  background is not drawn.
+
+
+GtkSheet
+========
+
+- New functions
+  gtk_sheet_row/column_label_set_visibility
+  gtk_sheet_rows/columns_labels_set_visibility
+
+
+GtkPSFont
+=========
+
+- New handling to avoid memory leaks: 
+  Every time you plan to use PSfonts you should initialize the tables and
+  lists using gtk_psfont_init(); inmediately after gtk_init, or at the
+  begining of a subroutine.
+  At the end of the program or subroutine you should use gtk_psfont_unref();
+
+GtkFontCombo
+============
+
+- Changed to complain the new gtkpsfont concept.
+
+GtkComboBox
+===========
+
+- Bugfix in the size allocation routine.
+
+
+08/05/2000 Summary of changes
+
+GtkPlotCanvas
+=============
+
+- GtkPlotLayout was merged with GtkPlotCanvas and removed from the dirtribution.
+  All the gtk_plot_layout... functions are now called gtk_plot_canvas...
+
+- GtkPlotCanvas has been changed to be a GtkFixed subclass.
+
+- gtk_plot_canvas_new has a new argument "magnification"
+
+ Magnification: 
+  With gtk_plot_canvas_set_magnification you can choose the page
+  magnification. The page, and all the plots contained are rescaled.
+  It's completely WYSIWYG. 
+
+GtkPlotLayout
+=============
+
+Removed from the distribution.
+
+
+GtkPlot
+=======
+
+- All the functions "gtk_plot_dataset..." are now "gtk_plot_data..."
+
+- Magnification
+
+- Data labels: you can add individual labels to each point.
+
+- New functions:
+  gtk_plot_set_magnification
+  gtk_plot_data_set_labels
+  gtk_plot_data_labels_set_attributes
+  gtk_plot_data_show/hide labels
+
+
+GtkItemEntry
+============
+
+- GtkIEntry is now called GtkItemEntry. 
+
+- GTK_IENTRY is now GTK_ITEM_ENTRY
+
+GtkIconList
+===========
+
+- GtkIconList was changed to be a GtkFixed subclass. Much, much faster...
+  GtkIconFileSelection is now very usable.
+
+
+19/04/2000 Summary of changes
+
+GtkPlotCanvas
+=============
+
+Completely redesigned and re-written, almost from scratch, using the same API.
+The new changes will make easier to add new objects in the future, like arrows.
+
+- New structure GtkPlotCanvasItem:
+
+  item->type                     item->data 
+------------------------------------------------
+GTK_PLOT_CANVAS_PLOT		 GtkPlot *
+GTK_PLOT_CANVAS_TITLE		 GtkPlotAxis *
+GTK_PLOT_CANVAS_AXIS		 GtkPlotAxis *
+GTK_PLOT_CANVAS_LEGEND		 GtkPlot *
+GTK_PLOT_CANVAS_TEXT		 GtkPlotText *
+
+- Signals: "select_item", "move_item", "resize_item", "select_region"
+
+- FLAGS: 
+  GTK_PLOT_CANVAS_CAN_SELECT       allows to select a region,
+                                   a simple box inside a plot.
+  GTK_PLOT_CANVAS_CAN_SELECT_ITEM  allows to select objects, 
+                                   but not datapoints. 
+  GTK_PLOT_CANVAS_CAN_SELECT_POINT allows to select datapoints, 
+                                   but not other objects. 
+  GTK_PLOT_CANVAS_CAN_DND          allows to DnD objects, 
+                                   once selected. 
+  GTK_PLOT_CANVAS_CAN_DND_POINT    allows to DnD datapoints, 
+                                   once selected. 
+
+If you want to use DnD, you have to set both flags:
+GTK_PLOT_CANVAS_CAN_SELECT_ITEM and GTK_PLOT_CANVAS_CAN_DND.
+If you set only CAN_SETECT_ITEM, you won't be able to DnD.
+If you set only CAN_DND, it won't work if CAN_SELECT_ITEM is off.
+Same for datapoints.
+
+You already know that if your signal handler returns the value FALSE,
+the selection or action will be ignored.
+
+
+GtkPlot 
+=======
+
+- Memory leaks fixed in gtk_plot_finalize.
+
+- New function: gtk_plot_remove_text.
+
+GtkPlotLayout 
+=============
+
+- Memory leaks fixed in gtk_plot_layout_finalize.
+
+- New function: gtk_plot_layout_remove_text.
+
+GtkPSFont
+=========
+
+- Patched to handle multi-enconded character sets
+  by Hiroyuki ARAKI <Hiroyuki.Araki@msdw.com>
+
+GtkSheet
+========
+
+- Macro GTK_TYPE_SHEET added.
+
+
+10/04/2000 Summary of changes
+
+GtkSheet
+========
+
+- GtkSheetAttr removed. 
+  New strategy for cell attributes, using cell->attributes, now. 
+  Cells and their attributes are allocated.
+
+- Memory leaks 
+  Thanks to the contributions by the Applix team:
+  Chris Howell, Eric Ding, and Geoffrey.
+
+- New function: 
+  gtk_sheet_button_attach. Attach widgets to the buttons (like the pixmap in
+  the demo). You can also use gtk_sheet_attach.
+
+
+GtkPlot (and GtkPlotPrint)
+=======
+
+- gdk_font_unrefs added.
+
+- Improvements in the WYSIWYG output.
+
+- Bugfixes. More about tickmarks.
+
+
+GtkPlotCanvas
+=============
+
+- New signals:
+  "move_text", "move_legends", "move_plot", "resize_plot"
+
+- BugFixes.
+
+
+GtkPSFont
+=========
+
+- Bugfixes. Patches by Andreas Voegele.
+
+
+GtkColorCombo
+=============
+
+-Bugfixes. Size of arrays, by Andreas Voegele.
+
+
+GtkIconList
+===========
+
+- gtk_icon_list_destroy fixes memory leaks.
+
+
+MISC
+====
+
+- Patches to pixmaps.h by Andreas Voegele.
+
+- spec.in file by Conrad Steenberg <conrad@srl.caltech.edu>
+
+- more const and gboolean patches by Murray Cumming <murrayc@usa.net>
+
+- testgtksheet.c modified to show pixmaps in buttons.
+
+- testgtkcheck. Simple demo for gtkcheckitem by Stephen Witkop 
+
+14/03/2000 Summary of changes
+
+GtkPlot (and GtkPlotPrint)
+=======
+
+- Bugfixes:
+     - Minor ticks drawing out of the plot frame.
+     - points' xy lines drawing out of the plot frame.
+
+
+GtkComboBox
+===========
+
+- size allocation.
+
+
+13/03/2000 Summary of changes
+
+GtkDirTree
+==========
+
+- Bugfixes:
+     - open_dir when the path does not end with a "/"
+
+
+GtkIconFileSelection
+====================
+
+- Bugfixes
+
+- Added a label on the top-left corner with the current path.
+
+GtkPlotCanvas
+=============
+
+- Replaced GTK_TYPE_POINTER by GTK_TYPE_GDK_EVENT in signals deffinitions.
+  (Andreas Voegele)
+ 
+GtkPlot
+=======
+
+- Bugfixes:
+     - Minor ticks drawing out of the plot frame.
+
+
+10/03/2000 Summary of changes
+
+- Fixes for ANSI C, by Aaron Lehman<aaronl@vitelus.com> and 
+  Arnaud Charlet <charlet@ACT-Europe.FR>
+
+GtkSheet
+--------
+- gchar* arguments replaced by const gchar* (Murray Cumming <murrayc@usa.net>)
+
+- enums have a type
+
+- Bugfixes:
+     - top-left corner button drawing.
+     - gtk_sheet_get_link.  (Andreas Voegele <andreas.voegele@gmx.de>)
+     - initialization and GrowSheet. (Chris Howell <chris@applix.com>)
+     - fixes when frozen. Ralf Forsberg <rfg@home.se>
+
+
+GtkIconList
+-----------
+- GdkColor argument replaced by GdkColor *
+  (Emmanuel Briot <briot@gnat.com>)
+
+- gchar* arguments replaced by const gchar* (Murray Cumming <murrayc@usa.net>)
+
+
+- Bugfixes:
+     - signal handlers.  (Andreas Voegele <andreas.voegele@gmx.de>)
+     - icon selection.
+
+GtkPSFont
+---------
+
+- New function names: 
+     gtk_psfont_add_font
+     gtk_psfont_get_font
+
+GtkFontCombo
+------------
+
+- Default size set to 12 
+  (Andreas Voegele <andreas.voegele@gmx.de>)
+
+- New functions:
+    gtk_font_combo_select
+    gtk_font_combo_select_nth
+
+GtkPlotPC
+---------
+- GdkColor argument replaced by GdkColor *
+  (Emmanuel Briot <briot@gnat.com>)
+
+- pc->drawstring has new arguments (font, height)
+
+GtkPlot
+-------
+- gtk_plot_paint argument changed to GtkPlot* 
+
+- GdkColor argument replaced by GdkColor*
+  (Emmanuel Briot <briot@gnat.com>)
+
+- gchar* arguments replaced by const gchar* (Murray Cumming <murrayc@usa.net>)
+
+- gtk_plot_dataset_get_points (Andreas Voegele)
+
+- enums have a type
+
+- Logarithmic scales (Torsten Luettgert <shaitan@physik.TU-Berlin.DE>)
+
+- Autoscale function: gtk_plot_autoscale
+  Rearranges the visible range to display all dataset points.
+  (Thanks to Aaron Lehmann <aaronl@vitelus.com> and 
+   Peter Wurmsdobler <peterw@cetehor.com>. 
+   Finally I did it in my own way)
+ 
+
+- Text formatting. 
+  Special characters:
+                     \B : bold
+                     \i : italics
+                     \g or \8 : greek
+                     \s or \_: subindices
+                     \S or \^: supraindices
+                     \+ : increment size
+                     \- : decrement size
+                     \b : backspace
+                     \N : normal
+                     \0, \1, \2, \3, \4, \5, \6, \7, \8, \9 : font foundry 
+       
+- New tick labels format GTK_PLOT_LABEL_POW. in powers of 10 with
+  the exponent as a supraindex.
+
+- gtk_plot_axis_set_ticks changed: You have to set the number of 
+  minor ticks between major ticks.
+
+- New functions:
+  - gtk_plot_autoscale
+  - gtk_plot_axis_set_labels
+  - gtk_plot_axis_use_custom_tick_labels
+  - gtk_plot_set_legends_border
+  - gtk_plot_show/hide_legends
+  - gtk_plot_set_x_attrributes
+  - gtk_plot_set_y_attrributes
+  - gtk_plot_axis_set_major_ticks
+  - gtk_plot_axis_set_minor_ticks
+  
+- Bugfixes.
+
+GtkPlotLayout
+------------- 
+- GdkColor argument replaced by GdkColor*
+  (Emmanuel Briot <briot@gnat.com>)
+
+- gchar* arguments replaced by const gchar* (Murray Cumming <murrayc@usa.net>)
+
+- New function gtk_plot_layout_set_size.
+
+GtkPlotCanvas
+------------- 
+
+- New function gtk_plot_canvas_set_size.
+  Rescales resizing all plots to fit into the canvas with the same ratio.
+
+- Bugfixes:
+   - signal handlers (Andreas Voegele)
+   - signal emission
+
+GtkComboBox
+-----------
+
+- New function: gtk_combo_box_hide_popdown_window
+
+
+21/12/1999 Adrian E. Feiguin <adrian@ifir.edu.ar>
+
+	* gtkplotlayout.c : new function gtk_plot_layout_set_size
+
+	* gtkplotcanvas.c : new function gtk_plot_canvas_set_size
+
+	* gtkpsfont.c : fixes for min_height in get_gdkfont
+
+
+17/12/1999 Adrian E. Feiguin <adrian@ifir.edu.ar>
+	
+	* Released GtkExtra 0.99.0
+
+ 
+17/12/1999 Adrian E. Feiguin <adrian@ifir.edu.ar>
+
+	* Configure script based on the ones provided by
+	  Andreas Voegele <andreas.voegele@gmx.de> for GtkSheet and
+	  Peter Lerner <peter.lerner@bnbt.de> for GtkPlot,
+	  and GTK+.
+
+
+15/12/1999 <fancois.petitjean@bureauveritas.com>
+
+	* gtkplotpc.c : memory leaks fixes.
+
+
+15/12/1999 Adrian E. Feiguin <adrian@ifir.edu.ar>
+
+	* gtkiconlist.c : entry_out removed.
+
+	* gtkplot.c : several functions renamed for consistence 
+          gtk_plot_axis_set/get_visible,
+          gtk_plot_grids_set/get_visible,
+          gtk_plot_x0/y0_set/get_visible.
+           

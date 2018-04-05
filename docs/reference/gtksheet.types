@@ -1,7 +1,0 @@
-#include <gtksheet.h>
-
-gtk_sheet_get_type
-gtk_sheet_range_get_type
-gtk_sheet_cell_border_get_type
-gtk_sheet_cell_attr_get_type
-gtk_item_entry_get_type

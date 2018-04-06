@@ -1,4 +1,4 @@
-/* gtkextra - set of widgets for gtk+
+/* gtksheet - set of widgets for gtk+
  * Copyright 1999-2001  Adrian E. Feiguin <feiguin@ifir.edu.ar>
  *
  * This library is free software; you can redistribute it and/or
@@ -28,9 +28,9 @@ extern "C" {
 /* GtkExtra version.
  */
 
-#define GTKEXTRA_MAJOR_VERSION			(3)
-#define GTKEXTRA_MINOR_VERSION			(3)
-#define GTKEXTRA_MICRO_VERSION			(4)
+#define GTKEXTRA_MAJOR_VERSION			(@GTK_EXTRA_MAJOR_VERSION@)
+#define GTKEXTRA_MINOR_VERSION			(@GTK_EXTRA_MINOR_VERSION@)
+#define GTKEXTRA_MICRO_VERSION			(@GTK_EXTRA_MICRO_VERSION@)
 
 #define GTKEXTRA_CHECK_VERSION(major,minor,micro)    \
    (GTKEXTRA_MAJOR_VERSION > (major) || \
@@ -39,12 +39,12 @@ extern "C" {
      GTKEXTRA_MICRO_VERSION >= (micro)))
 
 
-extern const guint gtkextra_major_version;
-extern const guint gtkextra_minor_version;
-extern const guint gtkextra_micro_version;
-extern const guint gtkextra_binary_age;
-extern const guint gtkextra_interface_age;
-gchar* gtkextra_check_version (guint required_major,
+extern const guint gtksheet_major_version;
+extern const guint gtksheet_minor_version;
+extern const guint gtksheet_micro_version;
+extern const guint gtksheet_binary_age;
+extern const guint gtksheet_interface_age;
+gchar* gtksheet_check_version (guint required_major,
                                guint required_minor,
                                guint required_micro);
 

@@ -1,8 +1,8 @@
 
 %define name  gtkextra3
-%define major @GTK_EXTRA_MAJOR_VERSION@
-%define minor @GTK_EXTRA_MINOR_VERSION@
-%define micro @GTK_EXTRA_MICRO_VERSION@
+%define major @GTK_SHEET_MAJOR_VERSION@
+%define minor @GTK_SHEET_MINOR_VERSION@
+%define micro @GTK_SHEET_MICRO_VERSION@
 %define ver   %major.%minor.%micro
 %define rel      1
 
@@ -12,9 +12,9 @@ Version: %ver
 Release: %rel%{?dist}
 License: LGPL
 Group: System Environment/Libraries
-Source: http://gtkextra.sourceforge.net/src/gtkextra-%version.tar.gz
+Source: https://github.com/fpaquet/gtksheet/archive/V%version.tar.gz
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-URL: http://gtkextra.sourceforge.net
+URL: https://fpaquet.github.io/gtksheet/
 Requires:        gtk2 >= 2.12.0
 Requires:        glib2 >= 2.12.0
 Requires:        pango
@@ -39,11 +39,11 @@ Requires:   pango-devel
 Requires:   atk-devel
 
 %description devel
-The gtk+extra-devel package includes the static libraries, header files,
-and documentation for compiling programs that use gtk+extra widgets.
+The gtksheet-devel package includes the static libraries, header files,
+and documentation for compiling programs that use gtksheet widgets.
 
 %prep
-%setup -q -n gtkextra-%{version}
+%setup -q -n gtksheet-%{version}
 
 %build
 export CFLAGS="$RPM_OPT_FLAGS" 
@@ -65,7 +65,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 
 %doc INSTALL README docs/*.ChangeLog
-%{_libdir}/libgtkextra*.so.*
+%{_libdir}/libgtksheet*.so.*
 
 %files devel
 %defattr(-, root, root)
@@ -73,7 +73,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*a
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
-%{_datadir}/gtk-doc/html/gtkextra-3/*
+%{_datadir}/gtk-doc/html/gtksheet-3/*
 
 %changelog
 * Fri May 29 2015 Tom Schoonjans <Tom.Schoonjans@me.com>
@@ -83,18 +83,18 @@ rm -rf $RPM_BUILD_ROOT
 - Modified spec file in order to make it compatible with the latest RPM building recommendations
 
 * Fri Jan 21 2005 Adrian E. Feiguin <afeiguin@uci.edu>
-- First version for gtkextra-2
+- First version for gtksheet-2
 
 * Fri Dec 20 2002 Toby D. Reeves <toby@solidstatescientific.com>
 - Make the rpm name a variable.
-- Set rpm name to gtk+extra allowing both 0.99.x and 1.1.x to be installed.
+- Set rpm name to gtksheet allowing both 0.99.x and 1.1.x to be installed.
 
 * Mon Jul 22 2002 Toby D. Reeves <toby@solidstatescientific.com>
 - Corrected for use of pkg-config
 
 * Wed Jul 17 2002 Toby D. Reeves <toby@solidstatescientific.com>
 - Corrected -install to use DESTDIR
-- Make gtk+extra-devel package require gtk+extra
+- Make gtksheet-devel package require gtksheet
 - Added *.so to devel files
 
 * Wed Mar 15  2000 Conrad Steenberg <conrad@srl.caltech.edu>

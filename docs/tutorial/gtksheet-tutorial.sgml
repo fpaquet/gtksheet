@@ -5,18 +5,18 @@
 
 <bookinfo>
     <date>October 24th, 2008</date>
-    <title>GtkExtra 3.0 Tutorial</title>
+    <title>GtkSheet Tutorial</title>
     <authorgroup>
       <author>
         <firstname>Victor</firstname>
         <surname>Mierla</surname>
       </author>
       <author>
-	<firstname>&amp; the GtkExtra team</firstname>
+	<firstname>&amp; the GtkSheet team</firstname>
       </author>
     </authorgroup>
     <abstract>
-      <para>This is a tutorial on how to use GtkExtra through its C interface.
+      <para>This is a tutorial on how to use GtkSheet through its C interface.
       </para>
     </abstract>
   </bookinfo>
@@ -28,11 +28,11 @@
 <title>Tutorial Availability</title>
 
 <para>A copy of this tutorial in SGML and HTML is distributed with each
-source code release of GtkExtra. For binary distributions, please check with
+source code release of GtkSheet. For binary distributions, please check with
 your vendor.</para>
 
 <para>A copy is available online for reference at <ulink 
-url="http://gtkextra.sourceforge.net/">http://gtkextra.sourceforge.net</ulink>.</para>
+url="https://fpaquet.github.io/gtksheet/">https://fpaquet.github.io/gtksheet/</ulink>.</para>
 
 </chapter>
 
@@ -46,16 +46,16 @@ It is licensed using the LGPL license, so you can develop
 open software, free software, or even commercial non-free software
 using GTK without having to spend anything for licenses or royalties.</para>
 
-<para>GtkExtra is essentially an object oriented application programmers
+<para>GtkSheet is essentially an object oriented application programmers
 interface (API). Although written completely in C, it is implemented
 using the idea of classes and callback functions (pointers to
 functions).</para>
 
 
 <para>This document is a "work in progress". Please look for updates on CVS at 
-<ulink url="http://gtkextra.sourceforge.net/">http://gtkextra.sourceforge,net/</ulink>.</para>
+<ulink url="https://fpaquet.github.io/gtksheet/">https://fpaquet.github.io/gtksheet/</ulink>.</para>
 
-<para>I would very much like to hear of any problems you have learning GtkExtra
+<para>I would very much like to hear of any problems you have learning GtkSheet
 from this document, and would appreciate input as to how it may be
 improved. Please see the section on <link linkend="ch-Contributing">Contributing
 </link> for further information.</para>
@@ -63,13 +63,13 @@ improved. Please see the section on <link linkend="ch-Contributing">Contributing
 </chapter>
 
 <!-- ***************************************************************** -->
-<chapter id="ch-GettingGtkExtra">
-<title>Getting GtkExtra</title>
+<chapter id="ch-GettingGtkSheet">
+<title>Getting GtkSheet</title>
 
-<para>The first thing to do, of course, is download the GtkExtra source and
+<para>The first thing to do, of course, is download the GtkSheet source and
 install it. You can always get the latest version from <ulink 
-url="http://gtkextra.sourceforge.net">gtkextra.sourceforge.net</ulink>. 
-GtkExtra uses GNU autoconf for configuration. Once untar'd, type 
+url="https://fpaquet.github.io/gtksheet/">https://fpaquet.github.io/gtksheet/</ulink>. 
+GtkSheet uses GNU autoconf for configuration. Once untar'd, type 
 <literal>./configure --help</literal> to see a list of options.</para>
 
 </chapter>
@@ -198,7 +198,7 @@ The most used signals  are :<emphasis> ACTIVATE,DEACTIVATE,TRAVERSE </emphasis>.
 
 <para>
 Callback functions for different signals have different parameters.
-For a correct use you should check out the Gtk-Extra Reference Manual , the examples or GtkExtra source code.
+For a correct use you should check out the Gtk-Extra Reference Manual , the examples or GtkSheet source code.
 Incorrect use of the callback function parameters will have an undefined result(in the worst case).
 </para>
 
@@ -286,7 +286,7 @@ The traverse signal is useful when you need to know  what cell have you previous
 
 <para>
 The explanation for the the other signals is quite straightforward so if you want more details you should check 
-GtkExtra Reference Manual or the GtkExtra source code.
+GtkSheet Reference Manual or the GtkSheet source code.
 </para>
 
 </sect1>
@@ -320,7 +320,7 @@ void gtk_sheet_set_cell_text (GtkSheet *sheet,
 </programlisting>
 
 <para>
-The text string will be strdup()ed by the gtkextra library so you may free your string after this line.
+The text string will be strdup()ed by the gtksheet library so you may free your string after this line.
 Do not free the internally allocated string !
 This will be done by the library at the destruction of the sheet or when the gtk_sheet_set_cell is called again.
 </para>
@@ -388,7 +388,7 @@ combo_items=g_list_append (combo_items, "NOT NULL");
 gtk_combo_set_popdown_strings (GTK_COMBO (nul_combo), combo_items);
 g_list_free(combo_items);
 
-// From GtkExtra 1.0 the cell may be resized automatically to fit the widget
+// From GtkSheet 1.0 the cell may be resized automatically to fit the widget
 gtk_sheet_attach_default (GTK_SHEET(sheet), current_combo, row, col,0,0);
 </programlisting>
 <para>
@@ -546,7 +546,7 @@ void gtk_sheet_thaw (GtkSheet *sheet); /*thaw means unfreeze*/
 void gtk_sheet_range_set_editable	(GtkSheet *sheet, const GtkSheetRange *range, gint editable);
 </programlisting>
 
-<para><emphasis role="bold">Remark: </emphasis>From GtkExtra 1.0 sheet   state will be set with functions: </para>
+<para><emphasis role="bold">Remark: </emphasis>From GtkSheet 1.0 sheet   state will be set with functions: </para>
 <programlisting role="C">
 void gtk_sheet_set_autoresize (GtkSheet *sheet, gboolean autoresize);
 gboolean gtk_sheet_autoresize (GtkSheet *sheet);
@@ -570,7 +570,7 @@ void gtk_sheet_set_justify_entry (GtkSheet *sheet, gboolean justify);
 gboolean gtk_sheet_justify_entry (GtkSheet *sheet);
 </programlisting>
 
-<para>Up to (including) GtkExtra 0.99.17  Sheet state is mainly set by<emphasis role="bold"> a set of macros. </emphasis> </para>
+<para>Up to (including) GtkSheet 0.99.17  Sheet state is mainly set by<emphasis role="bold"> a set of macros. </emphasis> </para>
 <programlisting role="C">
 GTK_SHEET_AUTORESIZE(sheet)
 GTK_SHEET_ROW_FROZEN(sheet)   
@@ -636,19 +636,10 @@ guint gtk_sheet_get_rows_count (GtkSheet *sheet);
 </chapter>
 
 <!-- ***************************************************************** -->
-<chapter id="ch-GtkPlot">
-<title>GtkPlot</title>
-
-<para><emphasis role="bold"> THIS SECTION IS A STUB!! PLEASE CONTRIBUTE ! </emphasis> </para>
-
-</chapter>
-
-
-<!-- ***************************************************************** -->
 <chapter id="ch-Credits">
 <title>Credits</title>
 
-<para>GtkExtra documentation authors are:</para>
+<para>GtkSheet documentation authors are:</para>
 
 <itemizedlist>
 <listitem><simpara>Victor Mierla, <literal><ulink url="mailto:victor.mierla@flash.ro">victor.mierla@flash.ro</ulink></literal> GtkSheet tutorial.</simpara>
@@ -678,10 +669,10 @@ programs, and copies of this document may be distributed at will, etc.</para>
 
 <!-- ***************************************************************** -->
 <chapter id="ch-Tips">
-<title>Tips For Writing GtkExtra Applications</title>
+<title>Tips For Writing GtkSheet Applications</title>
 
 <para>This section is simply a gathering of wisdom, general style guidelines
-and hints to creating good GtkExtra applications. Currently this section
+and hints to creating good GtkSheet applications. Currently this section
 is very short, but I hope it will get longer in future editions of
 this tutorial.</para>
 

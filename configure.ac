@@ -4,7 +4,7 @@
 # autoreconf -f -i
 #
 
-AC_INIT([gtksheet], [3.3.5])
+AC_INIT([GtkSheet], [3.3.5])
 AC_LANG([C])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -356,6 +356,7 @@ gtksheet/Makefile
 gtksheet/gtksheetfeatures.h
 docs/Makefile
 docs/reference/Makefile
+docs/reference/xml/gtkdocentities.ent
 docs/tutorial/Makefile
 gtksheet-3.0.spec
 gtksheet-3.0.pc

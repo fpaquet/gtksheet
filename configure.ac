@@ -1,14 +1,7 @@
-# Process this file with autoconf to produce a configure script.
-#
-# Help for autoconf:
-# - http://www.linuxselfhelp.com/gnu/autoconf/html_chapter/autoconf_toc.html
-# Option Syntax:
-# - http://www.linuxselfhelp.com/gnu/autoconf/html_chapter/autoconf_12.html
-# Printing Messages:
-# - http://www.linuxselfhelp.com/gnu/autoconf/html_chapter/autoconf_7.html
+# Process this file with GNU autoconf to produce a configure script.
 #
 
-AC_INIT([gtkextra], [4.0.0])
+AC_INIT([GtkSheet], [4.0.0])
 
 AC_LANG([C])
 AC_CONFIG_MACRO_DIR([m4])
@@ -19,27 +12,27 @@ CFLAGS=${CFLAGS:-""}
 
 AC_DIVERT_PUSH(NOTICE)dnl
 
-# GtkExtra versioning: before making releases, be sure to read
-# http://gtkextra.sourceforge.net/cms/index.php?option=com_content&view=article&id=44&Itemid=22
+# GtkSheet versioning: before making releases, be sure to read
+# https://github.com/fpaquet/gtksheet/wiki/GtkSheet-Version-Numbering
 
-GTK_EXTRA_MAJOR_VERSION=4
-GTK_EXTRA_MINOR_VERSION=0
-GTK_EXTRA_MICRO_VERSION=0
+GTK_SHEET_MAJOR_VERSION=4
+GTK_SHEET_MINOR_VERSION=0
+GTK_SHEET_MICRO_VERSION=0
 
-GTK_EXTRA_INTERFACE_AGE=0
-GTK_EXTRA_BINARY_AGE=0
+GTK_SHEET_INTERFACE_AGE=0
+GTK_SHEET_BINARY_AGE=0
 
-GTK_EXTRA_VERSION=$GTK_EXTRA_MAJOR_VERSION.$GTK_EXTRA_MINOR_VERSION.$GTK_EXTRA_MICRO_VERSION
+GTK_SHEET_VERSION=$GTK_SHEET_MAJOR_VERSION.$GTK_SHEET_MINOR_VERSION.$GTK_SHEET_MICRO_VERSION
 
-GTK_EXTRA_VERSION_SHORT=$GTK_EXTRA_MAJOR_VERSION.$GTK_EXTRA_MINOR_VERSION
+GTK_SHEET_VERSION_SHORT=$GTK_SHEET_MAJOR_VERSION.$GTK_SHEET_MINOR_VERSION
 
 AC_DIVERT_POP()dnl
 
-AC_SUBST(GTK_EXTRA_MAJOR_VERSION)
-AC_SUBST(GTK_EXTRA_MINOR_VERSION)
-AC_SUBST(GTK_EXTRA_MICRO_VERSION)
-AC_SUBST(GTK_EXTRA_VERSION)
-AC_SUBST(GTK_EXTRA_VERSION_SHORT)
+AC_SUBST(GTK_SHEET_MAJOR_VERSION)
+AC_SUBST(GTK_SHEET_MINOR_VERSION)
+AC_SUBST(GTK_SHEET_MICRO_VERSION)
+AC_SUBST(GTK_SHEET_VERSION)
+AC_SUBST(GTK_SHEET_VERSION_SHORT)
 
 # libtool versioning
 
@@ -51,12 +44,12 @@ AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
 AC_SUBST(LT_AGE)
 
-LIBGTKEXTRA_SO_VERSION=$LT_CURRENT:$LT_REVISION:$LT_AGE
-AC_SUBST(LIBGTKEXTRA_SO_VERSION)
+LIBGTKSHEET_SO_VERSION=$LT_CURRENT:$LT_REVISION:$LT_AGE
+AC_SUBST(LIBGTKSHEET_SO_VERSION)
 
 # For automake
-VERSION=$GTK_EXTRA_VERSION
-PACKAGE=gtkextra
+VERSION=$GTK_SHEET_VERSION
+PACKAGE=gtksheet
 
 AC_CONFIG_AUX_DIR([build-aux])
 # Initialize automake stuff
@@ -336,9 +329,9 @@ AM_CONDITIONAL(ENABLE_INTROSPECTION, test x$enable_introspection != xno)
 
 
 if test "$platform_win32" = "yes"; then
-  AC_SUBST(libgladegtkextra_soname, [libgladegtkextra.dll])
+  AC_SUBST(libgladegtksheet_soname, [libgladegtksheet.dll])
 else
-  AC_SUBST(libgladegtkextra_soname, [libgladegtkextra.so])
+  AC_SUBST(libgladegtksheet_soname, [libgladegtksheet.so])
 fi
 
 
@@ -346,19 +339,19 @@ fi
 AC_SUBST(gdktarget, `$PKG_CONFIG --variable=targets gtk+-3.0`)
 #gtk3 provides support for multiple targets!
 
-gtkextratargetlib=""
-gtkextralinklist=""
+gtksheettargetlib=""
+gtksheetlinklist=""
 
 for i in $gdktarget
 do
-  gtkextratargetlib+="libgtkextra-$i-$GTK_EXTRA_VERSION_SHORT.la "
-  gtkextralinklist+="-lgtkextra-$i-$GTK_EXTRA_VERSION_SHORT "
+  gtksheettargetlib+="libgtksheet-$i-$GTK_SHEET_VERSION_SHORT.la "
+  gtksheetlinklist+="-lgtksheet-$i-$GTK_SHEET_VERSION_SHORT "
 done
 
-#gtkextratargetlib=libgtkextra-$gdktarget-$GTK_EXTRA_VERSION_SHORT.la
+#gtksheettargetlib=libgtksheet-$gdktarget-$GTK_SHEET_VERSION_SHORT.la
 
-AC_SUBST(gtkextratargetlib)
-AC_SUBST(gtkextralinklist)
+AC_SUBST(gtksheettargetlib)
+AC_SUBST(gtksheetlinklist)
 AC_CHECK_LIB(m, sqrt)
 
 if test "x$gdktarget" = "xwin32"; then
@@ -374,14 +367,14 @@ AC_CONFIG_FILES(
 Makefile
 glade/Makefile
 glade/pixmaps/Makefile
-glade/gtk+extra-catalog.xml
-gtkextra/Makefile
-gtkextra/gtkextrafeatures.h
+glade/gtksheet-catalog.xml
+gtksheet/Makefile
+gtksheet/gtksheetfeatures.h
 docs/Makefile
 docs/reference/Makefile
 docs/tutorial/Makefile
-gtkextra-4.0.spec
-gtkextra-4.0.pc
+gtksheet-4.0.spec
+gtksheet-4.0.pc
 )
 
 AC_OUTPUT

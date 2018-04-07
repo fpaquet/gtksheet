@@ -1,3 +1,7 @@
+2018-04-05 Fredy Paquet <mailbox AT opag.ch>
+* renamed GtkExtra to GtkSheet
+* removed Plot widgets and related stuff
+
 2017-09.24 Fredy Paquet <mailbox AT opag.ch>
 	* merged branch pc217304
 	* updated gtkextra-3 version to 3.3.4, Libtool Revision 9.4.1

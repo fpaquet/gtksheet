@@ -1,0 +1,11 @@
+GtkWidget AtkImplementorIface GtkBuildable
+GtkEntry AtkImplementorIface GtkBuildable GtkEditable GtkCellEditable
+GtkDataEntry AtkImplementorIface GtkBuildable GtkEditable GtkCellEditable
+GtkContainer AtkImplementorIface GtkBuildable
+GtkTextView AtkImplementorIface GtkBuildable
+GtkDataTextView AtkImplementorIface GtkBuildable
+GtkSheet AtkImplementorIface GtkBuildable
+GtkMenuShell AtkImplementorIface GtkBuildable
+GtkMenu AtkImplementorIface GtkBuildable
+GtkSheetColumn AtkImplementorIface GtkBuildable
+GdkPixbuf GIcon GLoadableIcon

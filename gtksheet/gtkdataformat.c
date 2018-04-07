@@ -29,9 +29,9 @@
 #include <locale.h>
 #include <gtk/gtk.h>
 
-#define __GTKEXTRA_H_INSIDE__
+#define __GTKSHEET_H_INSIDE__
 
-#include "gtkextra-compat.h"
+#include "gtksheet-compat.h"
 #include "gtkdataformat.h"
 
 #ifdef DEBUG

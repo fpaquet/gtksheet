@@ -1,0 +1,42 @@
+GObject
+  GInitiallyUnowned
+    GtkObject
+      GtkWidget
+        GtkEntry
+          GtkDataEntry
+        GtkContainer
+          GtkTextView
+            GtkDataTextView
+          GtkSheet
+          GtkMenuShell
+            GtkMenu
+        GtkSheetColumn
+      GtkAdjustment
+  GtkStyle
+  GdkDrawable
+    GdkWindow
+  GdkDragContext
+  GtkTooltip
+  GdkScreen
+  GtkEntryBuffer
+  GdkPixbuf
+  GtkTextBuffer
+GInterface
+  GTypePlugin
+  AtkImplementorIface
+  GtkBuildable
+  GtkEditable
+  GtkCellEditable
+  GIcon
+  GLoadableIcon
+GBoxed
+  GValueArray
+  GtkSheetRange
+  GtkRequisition
+  GdkRectangle
+  GdkEvent
+  GtkSelectionData
+  GdkColor
+  GtkBorder
+  PangoTabArray
+  GStrv

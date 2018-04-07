@@ -68,7 +68,6 @@ gtksheet_public_h_sources = \
         gtksheet.h	\
         gtksheeticons.h	\
         gtkitementry.h	\
-        gtksheet.h	\
         gtksheetcolumn.h
 
 gtksheet_c_sources = 	\
@@ -77,7 +76,6 @@ gtksheet_c_sources = 	\
         gtkdatatextview.c	\
         gtksheet.c	\
         gtkitementry.c	\
-        gtksheet.c	\
         gtksheetcolumn.c 
 
 gtksheet_private_h_sources = \
@@ -214,5 +212,4 @@ test: testgtksheet
 	$(SHELL) $$top_builddir/libtool --mode=execute gdb $$builddir/testgtksheet;
 
 clean-local:
-	rm -rf gtksheetfeatures.h
 

@@ -1,0 +1,460 @@
+<ARG>
+<NAME>GtkDataEntry::dataformat</NAME>
+<TYPE>gchar*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Data format</NICK>
+<BLURB>A formatting string that controls what you see when the widget doesn't contain input focus.</BLURB>
+<DEFAULT>""</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkDataEntry::datatype</NAME>
+<TYPE>gchar*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Datatype</NICK>
+<BLURB>Data type for application use.</BLURB>
+<DEFAULT>""</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkDataEntry::description</NAME>
+<TYPE>gchar*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Description</NICK>
+<BLURB>Description of entry contents.</BLURB>
+<DEFAULT>""</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkDataEntry::max-length-bytes</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[0,65535]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Maximum bytes length</NICK>
+<BLURB>The maximum number of bytes for this entry. Zero if no maximum.</BLURB>
+<DEFAULT>0</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkDataEntry::text</NAME>
+<TYPE>gchar*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Text</NICK>
+<BLURB>The contents of the data_entry.</BLURB>
+<DEFAULT>""</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkDataTextView::description</NAME>
+<TYPE>gchar*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Description</NICK>
+<BLURB>Description of textview contents.</BLURB>
+<DEFAULT>""</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkDataTextView::max-length</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[0,1073741823]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Maximum character length</NICK>
+<BLURB>The maximum number of characters for this textview. Zero if no maximum.</BLURB>
+<DEFAULT>0</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkDataTextView::max-length-bytes</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[0,1073741823]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Maximum bytes length</NICK>
+<BLURB>The maximum number of bytes for this textview. Zero if no maximum.</BLURB>
+<DEFAULT>0</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::dataformat</NAME>
+<TYPE>gchar*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Data format</NICK>
+<BLURB>A formatting string that controls what you see when the widget doesn't contain input focus.</BLURB>
+<DEFAULT>""</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::datatype</NAME>
+<TYPE>gchar*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Data type</NICK>
+<BLURB>Data type for application use.</BLURB>
+<DEFAULT>""</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::description</NAME>
+<TYPE>gchar*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Description</NICK>
+<BLURB>Description of column contents.</BLURB>
+<DEFAULT>""</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::entry-type</NAME>
+<TYPE>GtkSheetEntryType</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Entry Type</NICK>
+<BLURB>Supersedes sheet entry type, if not default.</BLURB>
+<DEFAULT>GTK_SHEET_ENTRY_TYPE_DEFAULT</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::iskey</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Key column</NICK>
+<BLURB>Wether this is a key column.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::justification</NAME>
+<TYPE>GtkJustification</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Justification</NICK>
+<BLURB>Column justification (GTK_JUSTIFY_LEFT, RIGHT, CENTER).</BLURB>
+<DEFAULT>GTK_JUSTIFY_LEFT</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::label</NAME>
+<TYPE>gchar*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Column Button Label</NICK>
+<BLURB>Label of the column button.</BLURB>
+<DEFAULT>""</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::max-length</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[0,1073741823]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Maximum char length</NICK>
+<BLURB>Maximum number orf characters in this column, Zero if no maximum.</BLURB>
+<DEFAULT>0</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::max-length-bytes</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[0,1073741823]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Maximum bytes length</NICK>
+<BLURB>The maximum number of bytes for this entry. Zero if no maximum.</BLURB>
+<DEFAULT>0</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::position</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[0,1024]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Position</NICK>
+<BLURB>Packing position.</BLURB>
+<DEFAULT>0</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::readonly</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Readonly</NICK>
+<BLURB>Column contents are locked for editing.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::visible</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Column is visible</NICK>
+<BLURB>Wether the column is visible.</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::vjust</NAME>
+<TYPE>GtkSheetVerticalJustification</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Vertical justification</NICK>
+<BLURB>Supersedes sheet vertical cell text justification.</BLURB>
+<DEFAULT>GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::width</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[-1,8192]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Width</NICK>
+<BLURB>Width of the column.</BLURB>
+<DEFAULT>-1</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheetColumn::wrap-mode</NAME>
+<TYPE>GtkWrapMode</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Wrap-mode</NICK>
+<BLURB>Whether to wrap lines never, at word boundaries, or at character boundaries.</BLURB>
+<DEFAULT>GTK_WRAP_NONE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::autoresize</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Autoresize cells</NICK>
+<BLURB>Autoreisize rows and columns while typing.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::autoresize-cols</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Autoresize cols</NICK>
+<BLURB>Autoreisize columns while typing.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::autoresize-rows</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Autoresize rows</NICK>
+<BLURB>Autoreisize rows while typing.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::autoscroll</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Autoscroll sheet</NICK>
+<BLURB>The sheet will be automatically scrolled when you move beyond the last row/column.</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::bgcolor</NAME>
+<TYPE>GdkColor*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Background color</NICK>
+<BLURB>Background color of the sheet.</BLURB>
+<DEFAULT></DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::clip-text</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Clip cell text</NICK>
+<BLURB>Clip text in cells.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::col-titles-height</NAME>
+<TYPE>guint</TYPE>
+<RANGE><= 1024</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Column titles height</NICK>
+<BLURB>Height of the column title area.</BLURB>
+<DEFAULT>24</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::col-titles-visible</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Column titles visible</NICK>
+<BLURB>Visibility of the column titles.</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::columns-resizable</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Columns resizable</NICK>
+<BLURB>Columns resizable.</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::description</NAME>
+<TYPE>gchar*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Sheet description</NICK>
+<BLURB>The sheets description and further information for application use.</BLURB>
+<DEFAULT>""</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::entry-type</NAME>
+<TYPE>GtkSheetEntryType</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Entry Type</NICK>
+<BLURB>Sheet entry type, if not default.</BLURB>
+<DEFAULT>GTK_SHEET_ENTRY_TYPE_DEFAULT</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::grid-color</NAME>
+<TYPE>GdkColor*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Grid color</NICK>
+<BLURB>Color of the grid.</BLURB>
+<DEFAULT></DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::grid-visible</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Grid visible</NICK>
+<BLURB>Sets the visibility of grid.</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::justify-entry</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Justify cell entry</NICK>
+<BLURB>Adapt cell entry editor to the cell justification.</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::locked</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Locked</NICK>
+<BLURB>If the sheet is locked, it is not editable, cell contents cannot be modified by the user.</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::n-rows</NAME>
+<TYPE>gint</TYPE>
+<RANGE>[0,1000000]</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Number of rows</NICK>
+<BLURB>Number of rows in the sheet.</BLURB>
+<DEFAULT>0</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::row-titles-visible</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Row titles visible</NICK>
+<BLURB>Row titles visible.</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::row-titles-width</NAME>
+<TYPE>guint</TYPE>
+<RANGE><= 2048</RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Row titles width</NICK>
+<BLURB>Width of the row title area.</BLURB>
+<DEFAULT>80</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::rows-resizable</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Rows resizable</NICK>
+<BLURB>Rows resizable.</BLURB>
+<DEFAULT>TRUE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::selection-mode</NAME>
+<TYPE>GtkSelectionMode</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Selection mode</NICK>
+<BLURB>Sets the selection mode of the cells in a sheet.</BLURB>
+<DEFAULT>GTK_SELECTION_BROWSE</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::title</NAME>
+<TYPE>gchar*</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Sheet title</NICK>
+<BLURB>The sheets title string.</BLURB>
+<DEFAULT>"GtkSheet"</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::traverse-type</NAME>
+<TYPE>GtkSheetTraverseType</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Traversal type</NICK>
+<BLURB>Default sheet traversal type.</BLURB>
+<DEFAULT>GTK_SHEET_TRAVERSE_ALL</DEFAULT>
+</ARG>
+
+<ARG>
+<NAME>GtkSheet::vjust</NAME>
+<TYPE>GtkSheetVerticalJustification</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Vertical justification</NICK>
+<BLURB>Default sheet vertical cell text justification.</BLURB>
+<DEFAULT>GTK_SHEET_VERTICAL_JUSTIFICATION_TOP</DEFAULT>
+</ARG>
+

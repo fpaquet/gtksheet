@@ -27,7 +27,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <glib.h>
 #include <string.h>
-#include "gtkextra.h"
+#include "gtksheet.h"
 #include "pixmaps.h"
 
 #define DEFAULT_PRECISION 3
@@ -60,6 +60,7 @@ GtkWidget *smile;
 GtkWidget *curve;
 GtkWidget *popup;
 
+#define GTKEXTRA_DEPRECATED 0
 
 void
     quit ()
@@ -1322,7 +1323,7 @@ void
 }
 
 void
-    new_font(GtkFontCombo *font_combo, gpointer data)
+    new_font(GtkFontButton *font_button, gpointer data)
 {
     GtkSheet *current; 
     gint cur_page;
@@ -1330,7 +1331,11 @@ void
     cur_page=gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
     current=GTK_SHEET(sheets[cur_page]);
 
-    gtk_sheet_range_set_font(current, &current->range, gtk_font_combo_get_font_description(font_combo));
+    gchar *font_name = gtk_font_button_get_font_name(font_button);
+    PangoFontDescription *font_desc = pango_font_description_from_string(font_name);
+
+    gtk_sheet_range_set_font(
+        current, &current->range, font_desc);
 }
 
 int main(int argc, char *argv[]) 
@@ -1341,7 +1346,7 @@ int main(int argc, char *argv[])
     GtkWidget *hide_column_titles; 
     GtkWidget *show_row_titles; 
     GtkWidget *show_column_titles;
-    GtkWidget *font_combo;
+    GtkWidget *font_button;
     GtkWidget *toggle_combo;
     GdkColormap *colormap;
     gint i;
@@ -1406,14 +1411,14 @@ int main(int argc, char *argv[])
 
     gtk_toolbar_append_space(GTK_TOOLBAR(toolbar));
 
-    font_combo = gtk_font_combo_new();
-    gtk_toolbar_append_widget(GTK_TOOLBAR(toolbar),
-                              font_combo, "font", "font");
+    font_button = gtk_font_button_new();
 
-    gtk_widget_set_size_request(GTK_FONT_COMBO(font_combo)->italic_button, 32, 32);
-    gtk_widget_set_size_request(GTK_FONT_COMBO(font_combo)->bold_button, 32, 32);
-    gtk_widget_show(font_combo);
-    g_signal_connect(GTK_OBJECT(font_combo), "changed", G_CALLBACK(new_font), NULL);
+    gtk_toolbar_append_widget(
+        GTK_TOOLBAR(toolbar), font_button, "font", "font");
+    gtk_widget_show(font_button);
+
+    g_signal_connect(
+        GTK_OBJECT(font_button), "font-set", G_CALLBACK(new_font), NULL);
 
     gtk_toolbar_append_space(GTK_TOOLBAR(toolbar));
 
@@ -1444,6 +1449,7 @@ int main(int argc, char *argv[])
 
     gtk_toolbar_append_space(GTK_TOOLBAR(toolbar));
 
+#if GTKEXTRA_DEPRECATED > 0
     bordercombo=gtk_border_combo_new();
     gtk_toolbar_append_widget(GTK_TOOLBAR(toolbar),
                               bordercombo, "border", "border");
@@ -1452,9 +1458,11 @@ int main(int argc, char *argv[])
 
     g_signal_connect(GTK_OBJECT(bordercombo),
                      "changed", (void *)change_border, NULL);
+#endif
 
     gtk_toolbar_append_space(GTK_TOOLBAR(toolbar));
 
+#if GTKEXTRA_DEPRECATED > 0
     fgcolorcombo=gtk_color_combo_new();
     gtk_toolbar_append_widget(GTK_TOOLBAR(toolbar),
                               fgcolorcombo, "font color", "font color");
@@ -1472,14 +1480,17 @@ int main(int argc, char *argv[])
 
     g_signal_connect(GTK_OBJECT(bgcolorcombo),
                      "changed", (void *)change_bg, NULL);
+#endif
 
     gtk_toolbar_append_space(GTK_TOOLBAR(toolbar));
 
+#if GTKEXTRA_DEPRECATED > 0
     toggle_combo = gtk_toggle_combo_new(5, 5);
     gtk_toolbar_append_widget(GTK_TOOLBAR(toolbar),
                               toggle_combo, "test", "test");
     gtk_widget_set_size_request(GTK_COMBO_BUTTON(toggle_combo)->button, 32, 32);
     gtk_widget_show(toggle_combo);
+#endif
 
     gtk_box_pack_start(GTK_BOX(main_vbox), toolbar, FALSE, TRUE, 0);
     gtk_widget_show(toolbar);
@@ -1569,28 +1580,36 @@ int main(int argc, char *argv[])
     gdk_pixmap_unref(pixmap);
     gdk_bitmap_unref(mask);
 
-    pixmap=gdk_pixmap_colormap_create_from_xpm_d(NULL, colormap, &mask, NULL,
-                                                 paint);
+#if GTKEXTRA_DEPRECATED > 0
+    pixmap=gdk_pixmap_colormap_create_from_xpm_d(
+        NULL, colormap, &mask, NULL, paint);
 
     bg_pixmap=gtk_image_new_from_pixmap(pixmap, mask);
-    gtk_container_add(GTK_CONTAINER(GTK_COMBO_BUTTON(bgcolorcombo)->button),
-                      bg_pixmap);
+
+    gtk_container_add(
+        GTK_CONTAINER(GTK_COMBO_BUTTON(bgcolorcombo)->button),
+        bg_pixmap);
 
     gtk_widget_show(bg_pixmap);
     gdk_pixmap_unref(pixmap);
     gdk_bitmap_unref(mask);
+#endif
 
-    pixmap=gdk_pixmap_colormap_create_from_xpm_d(NULL, colormap, &mask, NULL,
-                                                 font);
-
+#if GTKEXTRA_DEPRECATED > 0
+    pixmap=gdk_pixmap_colormap_create_from_xpm_d(
+        NULL, colormap, &mask, NULL,
+        font);
 
     fg_pixmap=gtk_image_new_from_pixmap(pixmap, mask);
-    gtk_container_add(GTK_CONTAINER(GTK_COMBO_BUTTON(fgcolorcombo)->button),
-                      fg_pixmap);
+
+    gtk_container_add(
+        GTK_CONTAINER(GTK_COMBO_BUTTON(fgcolorcombo)->button),
+        fg_pixmap);
 
     gtk_widget_show(fg_pixmap);
     gdk_pixmap_unref(pixmap);
     gdk_bitmap_unref(mask);
+#endif
 
     gtk_widget_show(window);
 

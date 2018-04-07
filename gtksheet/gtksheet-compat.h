@@ -1,4 +1,4 @@
-/* gtkextra-compat - gtk version compatibility stuff
+/* gtksheet-compat - gtk version compatibility stuff
  * Copyright 1999-2001  Adrian E. Feiguin <feiguin@ifir.edu.ar>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,8 +17,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GTK_EXTRA_COMPAT_H
-#define GTK_EXTRA_COMPAT_H
+#ifndef GTK_SHEET_COMPAT_H
+#define GTK_SHEET_COMPAT_H
 
 #include <gtk/gtk.h>
 
@@ -86,4 +86,4 @@
 #endif
 
 
-#endif /* GTK_EXTRA_COMPAT_H */
+#endif /* GTK_SHEET_COMPAT_H */

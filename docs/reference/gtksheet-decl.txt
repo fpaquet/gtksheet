@@ -1,0 +1,1894 @@
+<MACRO>
+<NAME>GTK_TYPE_DATA_ENTRY</NAME>
+#define GTK_TYPE_DATA_ENTRY              (gtk_data_entry_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_ENTRY</NAME>
+#define GTK_DATA_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_DATA_ENTRY, GtkDataEntry))
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_ENTRY_CLASS</NAME>
+#define GTK_DATA_ENTRY_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_DATA_ENTRY, GtkDataEntryClass))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_DATA_ENTRY</NAME>
+#define GTK_IS_DATA_ENTRY(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_DATA_ENTRY))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_DATA_ENTRY_CLASS</NAME>
+#define GTK_IS_DATA_ENTRY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_DATA_ENTRY))
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_ENTRY_GET_CLASS</NAME>
+#define GTK_DATA_ENTRY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_DATA_ENTRY, GtkDataEntryClass))
+</MACRO>
+<STRUCT>
+<NAME>GtkDataEntry</NAME>
+struct _GtkDataEntry
+{
+    /*< private >*/
+    GtkEntry entry;
+
+    gchar *data_type;           /* data type for application use */
+    gchar *data_format;        /* cell content formatting template */
+    gchar *description;         /* column description */
+    gint max_length_bytes;   /* maximum length in bytes */
+
+    gchar *vlist_ignore;    /* validation list for Ignore() */
+    gchar *vlist_accept;    /* validation list for Accept() */
+    gchar *vlist_reject;    /* validation list for Reject() */
+
+    gchar *map_from;    /* source list for Map() */
+    gunichar *map_to;   /* destination list for Map() */
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkDataEntryClass</NAME>
+struct _GtkDataEntryClass
+{
+    GtkEntryClass parent_class;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gtk_data_entry_get_type</NAME>
+<RETURNS>GType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_new</NAME>
+<RETURNS>GtkDataEntry  *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_description</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_description</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, const gchar *description
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_data_type</NAME>
+<RETURNS>const gchar *</RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_data_type</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, const gchar *data_type
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_data_format</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_data_format</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, const gchar *data_format
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_text</NAME>
+<RETURNS>const gchar *</RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_text</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, const gchar *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_max_length_bytes</NAME>
+<RETURNS>gint  </RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_max_length_bytes</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, gint max_length_bytes
+</FUNCTION>
+<MACRO>
+<NAME>G_TYPE_ITEM_ENTRY</NAME>
+#define G_TYPE_ITEM_ENTRY \
+    (gtk_item_entry_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GTK_ITEM_ENTRY</NAME>
+#define GTK_ITEM_ENTRY(obj)  \
+    (G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_item_entry_get_type (), GtkItemEntry))
+</MACRO>
+<MACRO>
+<NAME>GTK_ITEM_ENTRY_CLASS</NAME>
+#define GTK_ITEM_ENTRY_CLASS(klass) \
+    (G_TYPE_CHECK_CLASS_CAST (klass, gtk_item_entry_get_type (), GtkItemEntryClass))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_ITEM_ENTRY</NAME>
+#define GTK_IS_ITEM_ENTRY(obj) \
+    (G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_item_entry_get_type ()))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_ITEM_ENTRY_CLASS</NAME>
+#define GTK_IS_ITEM_ENTRY_CLASS(klass) \
+    (GTK_CHECK_CLASS_TYPE ((klass), gtk_entry_get_type()))
+</MACRO>
+<STRUCT>
+<NAME>GtkItemEntry</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GtkItemEntryClass</NAME>
+</STRUCT>
+<ENUM>
+<NAME>GtkSheetAttrType</NAME>
+typedef enum
+{
+    GTK_SHEET_FOREGROUND,
+    GTK_SHEET_BACKGROUND,
+    GTK_SHEET_FONT,
+    GTK_SHEET_JUSTIFICATION,
+    GTK_SHEET_BORDER,
+    GTK_SHEET_BORDER_COLOR,
+    GTK_SHEET_IS_EDITABLE,
+    GTK_SHEET_IS_VISIBLE
+}
+GtkSheetAttrType;
+</ENUM>
+<ENUM>
+<NAME>GtkSheetState</NAME>
+typedef enum
+{
+    GTK_SHEET_NORMAL,
+    GTK_SHEET_ROW_SELECTED,
+    GTK_SHEET_COLUMN_SELECTED,
+    GTK_SHEET_RANGE_SELECTED
+} GtkSheetState;
+</ENUM>
+<ENUM>
+<NAME>GtkSheetEntryType</NAME>
+typedef enum
+{
+    GTK_SHEET_ENTRY_TYPE_DEFAULT,
+    GTK_SHEET_ENTRY_TYPE_GTK_ITEM_ENTRY,
+    GTK_SHEET_ENTRY_TYPE_GTK_ENTRY,
+    GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW,
+    GTK_SHEET_ENTRY_TYPE_GTK_DATA_TEXT_VIEW,
+    GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON,
+    GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX,
+    GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX_ENTRY,
+    GTK_SHEET_ENTRY_TYPE_GTK_COMBO,
+} GtkSheetEntryType;
+</ENUM>
+<ENUM>
+<NAME>GtkSheetVerticalJustification</NAME>
+typedef enum
+{
+    GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT,
+    GTK_SHEET_VERTICAL_JUSTIFICATION_TOP,
+    GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE,
+    GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM,
+} GtkSheetVerticalJustification;
+</ENUM>
+<ENUM>
+<NAME>GtkSheetTraverseType</NAME>
+typedef enum
+{
+    GTK_SHEET_TRAVERSE_ALL,
+    GTK_SHEET_TRAVERSE_EDITABLE,
+} GtkSheetTraverseType;
+</ENUM>
+<MACRO>
+<NAME>G_TYPE_SHEET</NAME>
+#define G_TYPE_SHEET \
+    (gtk_sheet_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET</NAME>
+#define GTK_SHEET(obj) \
+    (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_SHEET, GtkSheet))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_SHEET</NAME>
+#define GTK_IS_SHEET(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_SHEET))
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_CLASS</NAME>
+#define GTK_SHEET_CLASS(klass) \
+    (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_SHEET, GtkSheetClass))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_SHEET_CLASS</NAME>
+#define GTK_IS_SHEET_CLASS(klass) \
+    (G_TYPE_CHECK_CLASS_TYPE ((klass), G_TYPE_SHEET))
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_GET_CLASS</NAME>
+#define GTK_SHEET_GET_CLASS(obj) \
+    (G_TYPE_INSTANCE_GET_CLASS ((obj), G_TYPE_SHEET, GtkSheetClass))
+</MACRO>
+<MACRO>
+<NAME>G_TYPE_SHEET_RANGE</NAME>
+#define G_TYPE_SHEET_RANGE \
+    (gtk_sheet_range_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_IS_LOCKED</NAME>
+#define GTK_SHEET_IS_LOCKED(sheet)       gtk_sheet_locked(sheet)
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_ROW_FROZEN</NAME>
+#define GTK_SHEET_ROW_FROZEN(sheet)      !gtk_sheet_rows_resizable(sheet)
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_FROZEN</NAME>
+#define GTK_SHEET_COLUMN_FROZEN(sheet)   !gtk_sheet_columns_resizable(sheet)
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_AUTORESIZE</NAME>
+#define GTK_SHEET_AUTORESIZE(sheet)      gtk_sheet_autoresize(sheet)
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_CLIP_TEXT</NAME>
+#define GTK_SHEET_CLIP_TEXT(sheet)       gtk_sheet_clip_text(sheet)
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_ROW_TITLES_VISIBLE</NAME>
+#define GTK_SHEET_ROW_TITLES_VISIBLE(sheet)   gtk_sheet_row_titles_visible(sheet)
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COL_TITLES_VISIBLE</NAME>
+#define GTK_SHEET_COL_TITLES_VISIBLE(sheet)   gtk_sheet_column_titles_visible(sheet)
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_AUTO_SCROLL</NAME>
+#define GTK_SHEET_AUTO_SCROLL(sheet)     gtk_sheet_autoscroll(sheet)
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_JUSTIFY_ENTRY</NAME>
+#define GTK_SHEET_JUSTIFY_ENTRY(sheet)   gtk_sheet_justify_entry(sheet)
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_OPTIMIZE_COLUMN_DRAW</NAME>
+#define GTK_SHEET_OPTIMIZE_COLUMN_DRAW  0  /* 0=off, 1=on */
+</MACRO>
+<STRUCT>
+<NAME>GtkSheetChild</NAME>
+struct _GtkSheetChild
+{
+    /*< private >*/
+    GtkWidget *widget;
+    gint x,y;
+    gboolean attached_to_cell;
+    gboolean floating;
+    gint row, col;
+    guint16 xpadding;
+    guint16 ypadding;
+    gboolean xexpand;
+    gboolean yexpand;
+    gboolean xshrink;
+    gboolean yshrink;
+    gboolean xfill;
+    gboolean yfill;
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkSheetButton</NAME>
+struct _GtkSheetButton
+{
+    /*< private >*/
+    GtkStateType state;
+    gchar *label;
+
+    gboolean label_visible;
+    GtkSheetChild *child;
+
+    GtkJustification justification;
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkSheetCellBorder</NAME>
+struct _GtkSheetCellBorder
+{
+    /*< private >*/
+    gint8 mask;
+    guint width;
+    GdkLineStyle line_style;
+    GdkCapStyle cap_style;
+    GdkJoinStyle join_style;
+    GdkColor color;
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkSheetCellAttr</NAME>
+struct _GtkSheetCellAttr
+{
+    /*< private >*/
+    GtkJustification justification;
+    GdkFont *font;
+    PangoFontDescription *font_desc;
+    GdkColor foreground;
+    GdkColor background;
+    GtkSheetCellBorder border;
+    gboolean is_editable;
+    gboolean is_visible;
+    gboolean is_sensitive;
+    gboolean can_focus;
+    gboolean do_font_desc_free;   /* TRUE if font_desc needs free */
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkSheetCell</NAME>
+struct _GtkSheetCell
+{
+    /*< private >*/
+    GdkRectangle extent;  /* extent of pango layout + cell attributes.border (used for column auto-resize) */
+
+    gint row;
+    gint col;
+
+    GtkSheetCellAttr *attributes;
+
+    gchar *text;
+    gpointer link;
+
+    gchar *tooltip_markup; /* tooltip, which is marked up with the Pango text markup language */
+    gchar *tooltip_text;  /* tooltip, without markup */
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkSheetRange</NAME>
+struct _GtkSheetRange
+{
+    /*< public >*/
+    gint row0,col0; /* upper-left cell */
+    gint rowi,coli; /* lower-right cell */
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkSheetRow</NAME>
+struct _GtkSheetRow
+{
+    /*< private >*/
+    gchar *name;
+    gint height;
+    guint16 requisition;
+    gint top_ypixel;
+    gint max_extent_height;  /* := max(Cell.extent.height) */
+
+    GtkSheetButton button;
+    gboolean is_sensitive;
+    gboolean is_visible;
+    gboolean is_readonly;   /* to override cell editable */
+    gboolean can_focus;     /* to allow keyboard/mouse focus */
+
+    gchar *tooltip_markup; /* tooltip, which is marked up with the Pango text markup language */
+    gchar *tooltip_text;  /* tooltip, without markup */
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkSheet</NAME>
+struct _GtkSheet
+{
+    GtkContainer container;    /* parent instance */
+
+    guint16 flags;
+
+    GtkSelectionMode selection_mode;
+    gboolean autoresize_columns;
+    gboolean autoresize_rows;
+    gboolean autoscroll;
+    gboolean clip_text;
+    gboolean justify_entry;
+    gboolean locked;
+
+    guint freeze_count;
+
+    GdkColor bg_color;    /* cell background color */
+    GdkColor grid_color;  /* grid color */
+    GdkColor tm_color;    /* tooltip marker color */
+    gboolean show_grid;
+
+    GList *children;    /* sheet children */
+
+    /* allocation rectangle after the container_border_width
+       and the width of the shadow border */
+    GdkRectangle internal_allocation;
+
+    gchar *title;
+    gchar *description;         /* sheet description and further information for application use */
+
+    GtkSheetRow *row;
+    GtkSheetColumn **column;  /* flexible array of column pointers */
+
+    gboolean rows_resizable;
+    gboolean columns_resizable;
+
+    /* max number of diplayed cells */
+    gint maxrow;
+    gint maxcol;
+
+    /* Displayed range */
+
+    GtkSheetRange view;
+
+    /* sheet data: dynamically allocated array of cell pointers */
+    GtkSheetCell ***data;
+
+    /* max number of allocated cells in **data */
+    gint maxallocrow;
+    gint maxalloccol;
+
+    /* active cell */
+    GtkSheetCell active_cell;
+    GtkWidget *sheet_entry;
+
+    GType entry_type;  /* wanted entry type */
+    GType installed_entry_type;  /* installed entry type */
+
+    /* expanding selection */
+    GtkSheetCell selection_cell;
+
+    /* timer for automatic scroll during selection */
+    gint32 timer;
+    /* timer for flashing clipped range */
+    gint32 clip_timer;
+    gint interval;
+
+    /* global selection button */
+    GtkWidget *button;
+
+    /* sheet state */
+    GtkSheetState state;
+
+    /* selected range */
+    GtkSheetRange range;
+
+    /*the scrolling window and it's height and width to
+     * make things a little speedier */
+    GdkWindow *sheet_window;
+    guint sheet_window_width;
+    guint sheet_window_height;
+
+    /* sheet backing pixmap */
+    GdkWindow *pixmap;
+
+    /* offsets for scrolling */
+    gint hoffset;
+    gint voffset;
+    gfloat old_hadjustment;
+    gfloat old_vadjustment;
+
+    /* border shadow style */
+    GtkShadowType shadow_type;
+
+    GtkSheetVerticalJustification vjust;   /* default vertical text justification */
+
+    /* traverse type for gtksheet movement */
+    GtkSheetTraverseType traverse_type;
+
+    /* Column Titles */
+    GdkRectangle column_title_area;
+    GdkWindow *column_title_window;
+    gboolean column_titles_visible;
+
+    /* Row Titles */
+    GdkRectangle row_title_area;
+    GdkWindow *row_title_window;
+    gboolean row_titles_visible;
+
+    /*scrollbars*/
+    GtkAdjustment *hadjustment;
+    GtkAdjustment *vadjustment;
+
+    /* xor GC for the verticle drag line */
+    GdkGC *xor_gc;
+
+    /* gc for drawing unselected cells */
+    GdkGC *fg_gc;
+    GdkGC *bg_gc;
+
+    /* cursor used to indicate dragging */
+    GdkCursor *cursor_drag;
+
+    /* the current x-pixel location of the xor-drag vline */
+    gint x_drag;
+
+    /* the current y-pixel location of the xor-drag hline */
+    gint y_drag;
+
+    /* current cell being dragged */
+    GtkSheetCell drag_cell;
+    /* current range being dragged */
+    GtkSheetRange drag_range;
+
+    /* clipped range */
+    GtkSheetRange clip_range;
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkSheetClass</NAME>
+struct _GtkSheetClass
+{
+    GtkContainerClass parent_class;
+
+    void (*set_scroll_adjustments)(GtkSheet *sheet,
+                                   GtkAdjustment *hadjustment, GtkAdjustment *vadjustment);
+
+    void (*select_row)(GtkSheet *sheet, gint row);
+    void (*select_column)(GtkSheet *sheet, gint column);
+    void (*select_range)(GtkSheet *sheet, GtkSheetRange *range);
+    void (*clip_range)(GtkSheet *sheet, GtkSheetRange *clip_range);
+
+    void (*resize_range)(GtkSheet *sheet,
+                         GtkSheetRange *old_range, GtkSheetRange *new_range);
+
+    void (*move_range)(GtkSheet *sheet,
+                       GtkSheetRange *old_range, GtkSheetRange *new_range);
+
+    gboolean(*traverse)(GtkSheet *sheet,
+                        gint row, gint column, gint *new_row, gint *new_column);
+
+    gboolean(*deactivate)(GtkSheet *sheet, gint row, gint column);
+    gboolean(*activate)(GtkSheet *sheet, gint row, gint column);
+
+    void (*set_cell)(GtkSheet *sheet, gint row, gint column);
+    void (*clear_cell)(GtkSheet *sheet, gint row, gint column);
+    void (*changed)(GtkSheet *sheet, gint row, gint column);
+    void (*new_column_width)(GtkSheet *sheet, gint col, guint width);
+    void (*new_row_height)(GtkSheet *sheet, gint row, guint height);
+
+    gboolean(*focus_in_event)(GtkSheet *sheet, GdkEventFocus *event);
+    gboolean(*focus_out_event)(GtkSheet *sheet, GdkEventFocus *event);
+
+    void (*move_cursor)(GtkSheet *sheet,
+                        GtkMovementStep step,
+                        gint count,
+                        gboolean extend_selection);
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gtk_sheet_get_type</NAME>
+<RETURNS>GType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_range_get_type</NAME>
+<RETURNS>GType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+guint rows, guint columns, const gchar *title
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_construct</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, guint rows, guint columns, const gchar *title
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_new_browser</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+guint rows, guint columns, const gchar *title
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_construct_browser</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, guint rows, guint columns, const gchar *title
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_new_with_custom_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+guint rows, guint columns, const gchar *title, GType entry_type
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_construct_with_custom_entry</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, guint rows, guint columns, const gchar *title, GType entry_type
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_hadjustment</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GtkAdjustment *adjustment
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_vadjustment</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GtkAdjustment *adjustment
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_change_entry</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GType entry_type
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_entry_type</NAME>
+<RETURNS>GType  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_entry_widget</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_entry_text</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_entry_text</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gchar *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_entry_editable</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gboolean editable
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_entry_select_region</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint start_pos, gint end_pos
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_entry_signal_connect_changed</NAME>
+<RETURNS>gulong  </RETURNS>
+GtkSheet *sheet, GCallback handler
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_entry_signal_disconnect_by_func</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GCallback handler
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_state</NAME>
+<RETURNS>GtkSheetState  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_rows_count</NAME>
+<RETURNS>guint  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_columns_count</NAME>
+<RETURNS>guint  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_visible_range</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GtkSheetRange *range
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_selection</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, GtkSheetState *state, GtkSheetRange *range
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_selection_mode</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GtkSelectionMode mode
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_autoresize</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean autoresize
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_autoresize_columns</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean autoresize
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_autoresize_rows</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean autoresize
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_autoresize</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_autoresize_columns</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_autoresize_rows</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_autoscroll</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean autoscroll
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_autoscroll</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_clip_text</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean clip_text
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_clip_text</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_justify_entry</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean justify
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_justify_entry</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_vjustification</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GtkSheetVerticalJustification vjust
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_vjustification</NAME>
+<RETURNS>GtkSheetVerticalJustification  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_traverse_type</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GtkSheetTraverseType ttype
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_traverse_type</NAME>
+<RETURNS>GtkSheetTraverseType  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_locked</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean locked
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_locked</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_title</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gchar *title
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_description</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gchar *description
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_description</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkSheet *sheet, const gchar *description
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_is_frozen</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_freeze</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_thaw</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_background</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_grid</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_show_grid</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean show
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_grid_visible</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_row_title</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row, const gchar *title
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_row_title</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkSheet *sheet, gint row
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_button_add_label</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet,  gint row, const gchar *label
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_button_get_label</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkSheet *sheet,  gint row
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_button_justify</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row, GtkJustification justification
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_moveto</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row, gint column, gint row_align, gint col_align
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_row_titles_width</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, guint width
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_show_row_titles</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_hide_row_titles</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_titles_visible</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_sensitive</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, gint row
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_set_sensitivity</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row,  gboolean sensitive
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_rows_set_sensitivity</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean sensitive
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_rows_resizable</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_rows_set_resizable</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean resizable
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_visible</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, gint row
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_set_visibility</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row, gboolean visible
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_label_set_visibility</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row, gboolean visible
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_rows_labels_set_visibility</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean visible
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_tooltip_markup</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_tooltip_markup</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gchar *markup
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_tooltip_text</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_tooltip_text</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gchar *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_get_tooltip_markup</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet, const gint row
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_set_tooltip_markup</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint row, const gchar *markup
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_get_tooltip_text</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet, const gint row
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_set_tooltip_text</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint row, const gchar *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_get_readonly</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, const gint row
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_set_readonly</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint row, const gboolean is_readonly
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_get_can_focus</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, const gint row
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_row_set_can_focus</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint row, const gboolean can_focus
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_get_tooltip_markup</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet, const gint row, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_set_tooltip_markup</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint row, const gint col, const gchar *markup
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_get_tooltip_text</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet, const gint row, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_set_tooltip_text</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint row, const gint col, const gchar *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_get_editable</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, const gint row, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_set_editable</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint row, const gint col, const gboolean is_editable
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_get_sensitive</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, const gint row, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_set_sensitive</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint row, const gint col, const gboolean is_sensitive
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_get_can_focus</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, const gint row, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_set_can_focus</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint row, const gint col, const gboolean can_focus
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_select_row</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_select_column</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint column
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_select_range</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GtkSheetRange *range
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_clip_range</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GtkSheetRange *clip_range
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_unclip_range</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_in_clip</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_vadjustment</NAME>
+<RETURNS>GtkAdjustment  *</RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_hadjustment</NAME>
+<RETURNS>GtkAdjustment  *</RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_unselect_range</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_active_cell</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, gint row, gint column
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_active_cell</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint *row, gint *column
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_tab_direction</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GtkDirectionType dir
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_cell</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row, gint col, GtkJustification justification, const gchar *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_cell_text</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row, gint col, const gchar *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_get_text</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet, gint row, gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_clear</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row, gint column
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_delete</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row, gint column
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_range_clear</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GtkSheetRange *range
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_range_delete</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GtkSheetRange *range
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_cell_get_state</NAME>
+<RETURNS>GtkStateType  </RETURNS>
+GtkSheet *sheet, gint row, gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_link_cell</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row, gint col, gpointer link
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_link</NAME>
+<RETURNS>gpointer  </RETURNS>
+GtkSheet *sheet, gint row, gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_remove_link</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row, gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_pixel_info</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, GdkWindow *window, gint x, gint y, gint *row, gint *column
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_cell_area</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, gint row, gint column, GdkRectangle *area
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_row_height</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint row, guint height
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_add_column</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, guint ncols
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_add_row</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, guint nrows
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_insert_rows</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, guint row, guint nrows
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_insert_columns</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, guint col, guint ncols
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_delete_rows</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, guint row, guint nrows
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_delete_columns</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, guint col, guint ncols
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_range_set_background</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GtkSheetRange *urange, const GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_range_set_foreground</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GtkSheetRange *urange, const GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_range_set_justification</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GtkSheetRange *urange, GtkJustification just
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_range_set_editable</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GtkSheetRange *urange, gint editable
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_range_set_visible</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GtkSheetRange *urange, gboolean visible
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_range_set_border</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GtkSheetRange *urange, gint mask, guint width, gint line_style
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_range_set_border_color</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GtkSheetRange *urange, const GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_range_set_font</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const GtkSheetRange *urange, PangoFontDescription *font_desc
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_attributes</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, gint row, gint col, GtkSheetCellAttr *attributes
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_put</NAME>
+<RETURNS>GtkSheetChild  *</RETURNS>
+GtkSheet *sheet, GtkWidget *child, gint x, gint y
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_attach_floating</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GtkWidget *widget, gint row, gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_attach_default</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GtkWidget *widget, gint row, gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_attach</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GtkWidget *widget, gint row, gint col, gint xoptions, gint yoptions, gint xpadding, gint ypadding
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_move_child</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GtkWidget *widget, gint x, gint y
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_child_at</NAME>
+<RETURNS>const GtkSheetChild  *</RETURNS>
+GtkSheet *sheet, gint row, gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_button_attach</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, GtkWidget *widget, gint row, gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_width</NAME>
+<RETURNS>gint  </RETURNS>
+ GtkSheet *sheet 
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_height</NAME>
+<RETURNS>gint  </RETURNS>
+ GtkSheet *sheet 
+</FUNCTION>
+<STRUCT>
+<NAME>GtkSheetColumn</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GtkSheetColumnClass</NAME>
+</STRUCT>
+<FUNCTION>
+<NAME>gtk_data_format</NAME>
+<RETURNS>gchar  *</RETURNS>
+const gchar *str, const gchar *dataformat
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_format_remove</NAME>
+<RETURNS>gchar  *</RETURNS>
+const gchar *str, const gchar *dataformat
+</FUNCTION>
+<MACRO>
+<NAME>GTK_TYPE_DATA_TEXT_VIEW</NAME>
+#define GTK_TYPE_DATA_TEXT_VIEW              (gtk_data_text_view_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_TEXT_VIEW</NAME>
+#define GTK_DATA_TEXT_VIEW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_DATA_TEXT_VIEW, GtkDataTextView))
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_TEXT_VIEW_CLASS</NAME>
+#define GTK_DATA_TEXT_VIEW_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_DATA_TEXT_VIEW, GtkDataTextViewClass))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_DATA_TEXT_VIEW</NAME>
+#define GTK_IS_DATA_TEXT_VIEW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_DATA_TEXT_VIEW))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_DATA_TEXT_VIEW_CLASS</NAME>
+#define GTK_IS_DATA_TEXT_VIEW_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_DATA_TEXT_VIEW))
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_TEXT_VIEW_GET_CLASS</NAME>
+#define GTK_DATA_TEXT_VIEW_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_DATA_TEXT_VIEW, GtkDataTextViewClass))
+</MACRO>
+<STRUCT>
+<NAME>GtkDataTextView</NAME>
+struct _GtkDataTextView
+{
+    /*< private >*/
+    GtkTextView textview;
+
+    gchar *description;         /* column description */
+    gint max_length;   /* maximum length in characters */
+    gint max_length_bytes;   /* maximum length in bytes */
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkDataTextViewClass</NAME>
+struct _GtkDataTextViewClass
+{
+    GtkTextViewClass parent_class;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gtk_data_text_view_get_type</NAME>
+<RETURNS>GType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_new</NAME>
+<RETURNS>GtkDataTextView  *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_get_description</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkDataTextView *data_text_view
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_set_description</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataTextView *data_text_view, const gchar *description
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_get_max_length</NAME>
+<RETURNS>gint  </RETURNS>
+GtkDataTextView *data_text_view
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_set_max_length</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataTextView *data_text_view, gint max_length
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_get_max_length_bytes</NAME>
+<RETURNS>gint  </RETURNS>
+GtkDataTextView *data_text_view
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_set_max_length_bytes</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataTextView *data_text_view, gint max_length_bytes
+</FUNCTION>
+<STRUCT>
+<NAME>GtkSheetColumn</NAME>
+struct _GtkSheetColumn
+{
+    /*< private >*/
+    GtkWidget parent;
+
+    GtkSheet *sheet;  /* the sheet this column belongs to */
+
+    gchar *title;
+    gint width;
+    guint16 requisition;
+    gint left_xpixel;   /* left edge of the column*/
+    gint max_extent_width;  /* := max(Cell.extent.width) */
+
+    GtkSheetButton button;
+
+#if GTK_SHEET_OPTIMIZE_COLUMN_DRAW>0
+    gint left_text_column;      /* min left column displaying text on this column */
+    gint right_text_column;    /* max right column displaying text on this column */
+#endif
+
+    GtkJustification justification;    /* horizontal text justification */
+    GtkSheetVerticalJustification vjust;   /* vertical text justification */
+
+    gboolean is_key;             /* marker for key columns */
+    gboolean is_readonly;    /* flag to supersede cell.attributes.is_editable */
+    gchar *data_type;           /* data type for application use */
+    gchar *data_format;        /* cell content formatting template */
+    gchar *description;         /* column description and further information about the column */
+
+    GType entry_type;     /* Column entry_type or G_TYPE_NONE */
+
+    gint max_length;   /* maximum character length */
+    gint max_length_bytes;   /* maximum byte length */
+    GtkWrapMode wrap_mode;  /* wrap-mode */
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkSheetColumnClass</NAME>
+struct _GtkSheetColumnClass
+{
+    GtkWidgetClass parent_class;
+
+    /*< private >*/
+};
+</STRUCT>
+<MACRO>
+<NAME>G_TYPE_SHEET_COLUMN</NAME>
+#define G_TYPE_SHEET_COLUMN \
+        (gtk_sheet_column_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN</NAME>
+#define GTK_SHEET_COLUMN(obj) \
+        (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_SHEET_COLUMN, GtkSheetColumn))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_SHEET_COLUMN</NAME>
+#define GTK_IS_SHEET_COLUMN(obj) \
+        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_SHEET_COLUMN))
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_CLASS</NAME>
+#define GTK_SHEET_COLUMN_CLASS(klass) \
+        (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_SHEET_COLUMN, GtkSheetColumnClass))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_SHEET_COLUMN_CLASS</NAME>
+#define GTK_IS_SHEET_COLUMN_CLASS(klass) \
+        (G_TYPE_CHECK_CLASS_TYPE ((klass), G_TYPE_SHEET_COLUMN))
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_GET_CLASS</NAME>
+#define GTK_SHEET_COLUMN_GET_CLASS(obj) \
+        (G_TYPE_INSTANCE_GET_CLASS ((obj), G_TYPE_SHEET_COLUMN, GtkSheetColumnClass))
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_MIN_WIDTH</NAME>
+#define GTK_SHEET_COLUMN_MIN_WIDTH 10
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_DEFAULT_WIDTH</NAME>
+#define GTK_SHEET_COLUMN_DEFAULT_WIDTH 80
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION</NAME>
+#define GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION GTK_JUSTIFY_LEFT
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_IS_VISIBLE</NAME>
+#define GTK_SHEET_COLUMN_IS_VISIBLE(colptr)  \
+        (gtk_widget_get_visible(GTK_WIDGET(colptr)))
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_SET_VISIBLE</NAME>
+#define GTK_SHEET_COLUMN_SET_VISIBLE(colptr, value) \
+        (gtk_widget_set_visible(GTK_WIDGET(colptr), value))
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_IS_SENSITIVE</NAME>
+#define GTK_SHEET_COLUMN_IS_SENSITIVE(colptr) \
+        (gtk_widget_is_sensitive(GTK_WIDGET(colptr)))
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_SET_SENSITIVE</NAME>
+#define GTK_SHEET_COLUMN_SET_SENSITIVE(colptr, value) \
+        (gtk_widget_set_sensitive(GTK_WIDGET(colptr), value))
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_CAN_FOCUS</NAME>
+#define GTK_SHEET_COLUMN_CAN_FOCUS(colptr) \
+        (gtk_widget_get_can_focus(GTK_WIDGET(colptr)))
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_SET_CAN_FOCUS</NAME>
+#define GTK_SHEET_COLUMN_SET_CAN_FOCUS(colptr, value) \
+        (gtk_widget_set_can_focus(GTK_WIDGET(colptr), value))
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_IS_READONLY</NAME>
+#define GTK_SHEET_COLUMN_IS_READONLY(colptr) \
+        ((colptr)->is_readonly)
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_SET_READONLY</NAME>
+#define GTK_SHEET_COLUMN_SET_READONLY(colptr, value) \
+        ((colptr)->is_readonly =  (value))
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_COLUMN_CAN_GRAB_FOCUS</NAME>
+#define GTK_SHEET_COLUMN_CAN_GRAB_FOCUS(colptr)  \
+        (GTK_SHEET_COLUMN_IS_VISIBLE(colptr) ?    \
+            (GTK_SHEET_COLUMN_IS_SENSITIVE(colptr) ? \
+                GTK_SHEET_COLUMN_CAN_FOCUS(colptr) : FALSE) : FALSE)
+</MACRO>
+<FUNCTION>
+<NAME>gtk_sheet_column_get_type</NAME>
+<RETURNS>GType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_get</NAME>
+<RETURNS>GtkSheetColumn  *</RETURNS>
+GtkSheet *sheet, gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_get_index</NAME>
+<RETURNS>gint  </RETURNS>
+GtkSheetColumn *colobj
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_column_width</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint column, guint width
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_column_width</NAME>
+<RETURNS>const gint  </RETURNS>
+GtkSheet *sheet, gint column
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_set_justification</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint col, GtkJustification just
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_get_justification</NAME>
+<RETURNS>GtkJustification  </RETURNS>
+GtkSheet *sheet, gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_set_vjustification</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint col, GtkSheetVerticalJustification vjust
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_get_vjustification</NAME>
+<RETURNS>GtkSheetVerticalJustification  </RETURNS>
+GtkSheet *sheet, gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_get_iskey</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_set_iskey</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint col, const gboolean is_key
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_get_readonly</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_set_readonly</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint col, const gboolean is_readonly
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_get_format</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_set_format</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint col, const gchar *format
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_get_datatype</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_set_datatype</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint col, const gchar *data_type
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_get_description</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_set_description</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint col, const gchar *description
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_get_entry_type</NAME>
+<RETURNS>GType  </RETURNS>
+GtkSheet *sheet, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_set_entry_type</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint col, const GType entry_type
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_get_tooltip_markup</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_set_tooltip_markup</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint col, const gchar *markup
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_get_tooltip_text</NAME>
+<RETURNS>gchar  *</RETURNS>
+GtkSheet *sheet, const gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_set_tooltip_text</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, const gint col, const gchar *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_sensitive</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, gint column
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_set_sensitivity</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint column, gboolean sensitive
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_columns_set_sensitivity</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean sensitive
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_columns_resizable</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_columns_set_resizable</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean resizable
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_visible</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet, gint column
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_set_visibility</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint column, gboolean visible
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_button_justify</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint col, GtkJustification justification
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_button_get_label</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkSheet *sheet, gint col
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_label_set_visibility</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint col, gboolean visible
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_columns_labels_set_visibility</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gboolean visible
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_button_add_label</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet,  gint col, const gchar *label
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_column_titles_height</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, guint height
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_show_column_titles</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_hide_column_titles</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_column_titles_visible</NAME>
+<RETURNS>gboolean  </RETURNS>
+GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_get_column_title</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkSheet *sheet, gint column
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_column_title</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gint column, const gchar *title
+</FUNCTION>
+<MACRO>
+<NAME>GTKSHEET_MAJOR_VERSION</NAME>
+#define GTKSHEET_MAJOR_VERSION			(3)
+</MACRO>
+<MACRO>
+<NAME>GTKSHEET_MINOR_VERSION</NAME>
+#define GTKSHEET_MINOR_VERSION			(3)
+</MACRO>
+<MACRO>
+<NAME>GTKSHEET_MICRO_VERSION</NAME>
+#define GTKSHEET_MICRO_VERSION			(4)
+</MACRO>
+<MACRO>
+<NAME>GTKSHEET_CHECK_VERSION</NAME>
+#define GTKSHEET_CHECK_VERSION(major,minor,micro)    \
+   (GTKSHEET_MAJOR_VERSION > (major) || \
+    (GTKSHEET_MAJOR_VERSION == (major) && GTKSHEET_MINOR_VERSION > (minor)) || \
+    (GTKSHEET_MAJOR_VERSION == (major) && GTKSHEET_MINOR_VERSION == (minor) && \
+     GTKSHEET_MICRO_VERSION >= (micro)))
+</MACRO>
+<VARIABLE>
+<NAME>gtksheet_major_version</NAME>
+extern const guint gtksheet_major_version;
+</VARIABLE>
+<VARIABLE>
+<NAME>gtksheet_minor_version</NAME>
+extern const guint gtksheet_minor_version;
+</VARIABLE>
+<VARIABLE>
+<NAME>gtksheet_micro_version</NAME>
+extern const guint gtksheet_micro_version;
+</VARIABLE>
+<VARIABLE>
+<NAME>gtksheet_binary_age</NAME>
+extern const guint gtksheet_binary_age;
+</VARIABLE>
+<VARIABLE>
+<NAME>gtksheet_interface_age</NAME>
+extern const guint gtksheet_interface_age;
+</VARIABLE>
+<FUNCTION>
+<NAME>gtksheet_check_version</NAME>
+<RETURNS>gchar * </RETURNS>
+guint required_major, guint required_minor, guint required_micro
+</FUNCTION>
+<MACRO>
+<NAME>gtk_widget_get_realized</NAME>
+#  define gtk_widget_get_realized GTK_WIDGET_REALIZED
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_get_mapped</NAME>
+#  define gtk_widget_get_mapped GTK_WIDGET_MAPPED
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_get_requisition</NAME>
+#  define gtk_widget_get_requisition(widget, requisitionptr) \
+        *(requisitionptr) = GTK_WIDGET(widget)->requisition
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_set_realized_true</NAME>
+#   define gtk_widget_set_realized_true(widget)  \
+        GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED)
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_set_realized_false</NAME>
+#   define gtk_widget_set_realized_false(widget)  \
+        GTK_WIDGET_UNSET_FLAGS(widget, GTK_REALIZED)
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_set_mapped_true</NAME>
+#   define gtk_widget_set_mapped_true(widget)  \
+        GTK_WIDGET_SET_FLAGS(widget, GTK_MAPPED)
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_set_mapped_false</NAME>
+#   define gtk_widget_set_mapped_false(widget)  \
+        GTK_WIDGET_UNSET_FLAGS(widget, GTK_MAPPED)
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Return</NAME>
+#   define  GDK_KEY_Return   GDK_Return
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_KP_Enter</NAME>
+#   define  GDK_KEY_KP_Enter   GDK_KP_Enter
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Escape</NAME>
+#   define  GDK_KEY_Escape   GDK_Escape
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Tab</NAME>
+#   define  GDK_KEY_Tab   GDK_Tab
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_ISO_Left_Tab</NAME>
+#   define  GDK_KEY_ISO_Left_Tab   GDK_ISO_Left_Tab
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_BackSpace</NAME>
+#   define  GDK_KEY_BackSpace   GDK_BackSpace
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Up</NAME>
+#   define  GDK_KEY_Up   GDK_Up
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Down</NAME>
+#   define  GDK_KEY_Down   GDK_Down
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Left</NAME>
+#   define  GDK_KEY_Left   GDK_Left
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Right</NAME>
+#   define  GDK_KEY_Right   GDK_Right
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Home</NAME>
+#   define  GDK_KEY_Home   GDK_Home
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_End</NAME>
+#   define  GDK_KEY_End   GDK_End
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Page_Up</NAME>
+#   define  GDK_KEY_Page_Up   GDK_Page_Up
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Page_Down</NAME>
+#   define  GDK_KEY_Page_Down   GDK_Page_Down
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Control_L</NAME>
+#   define  GDK_KEY_Control_L   GDK_Control_L
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Control_R</NAME>
+#   define  GDK_KEY_Control_R   GDK_Control_R
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Shift_L</NAME>
+#   define  GDK_KEY_Shift_L   GDK_Shift_L
+</MACRO>
+<MACRO>
+<NAME>GDK_KEY_Shift_R</NAME>
+#   define  GDK_KEY_Shift_R   GDK_Shift_R
+</MACRO>

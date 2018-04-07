@@ -39,14 +39,14 @@
 #include <gtk/gtkpixmap.h>
 #include <pango/pango.h>
 
-#define __GTKEXTRA_H_INSIDE__
+#define __GTKSHEET_H_INSIDE__
 
-#include "gtkextra-compat.h"
+#include "gtksheet-compat.h"
 #include "gtkitementry.h"
 #include "gtksheet.h"
 #include "gtksheetcolumn.h"
-#include "gtkextra-marshal.h"
-#include "gtkextratypebuiltins.h"
+#include "gtksheet-marshal.h"
+#include "gtksheettypebuiltins.h"
 
 #undef GTK_SHEET_COL_DEBUG
 

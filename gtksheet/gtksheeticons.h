@@ -1,8 +1,8 @@
-/* gtkextraicons - icons for file selection dialog 
+/* gtksheeticons - icons for file selection dialog 
  */
 
-#ifndef __GTK_EXTRA_ICONS_H__
-#define __GTK_EXTRA_ICONS_H__
+#ifndef __GTK_SHEET_ICONS_H__
+#define __GTK_SHEET_ICONS_H__
 
 /* XPM */
 static char *home_xpm[]={
@@ -607,5 +607,5 @@ static char *ok_xpm[]={
 ".....#S#............",
 "......#.............",
 "...................."};
-#endif /* __GTK_EXTRA_ICONS_H__ */
+#endif /* __GTK_SHEET_ICONS_H__ */
 

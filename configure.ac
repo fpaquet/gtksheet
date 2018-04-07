@@ -356,7 +356,7 @@ gtksheet/Makefile
 gtksheet/gtksheetfeatures.h
 docs/Makefile
 docs/reference/Makefile
-docs/reference/xml/gtkdocentities.ent
+docs/reference/gtkdocentities.ent
 docs/tutorial/Makefile
 gtksheet-3.0.spec
 gtksheet-3.0.pc

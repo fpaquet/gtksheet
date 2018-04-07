@@ -372,6 +372,7 @@ gtksheet/Makefile
 gtksheet/gtksheetfeatures.h
 docs/Makefile
 docs/reference/Makefile
+docs/reference/gtkdocentities.ent
 docs/tutorial/Makefile
 gtksheet-4.0.spec
 gtksheet-4.0.pc

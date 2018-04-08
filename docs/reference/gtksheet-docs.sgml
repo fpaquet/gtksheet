@@ -58,7 +58,7 @@ It only displays the text and has no borders.
     <xi:include href="resources.sgml"/>
   </part>
 
-  <part id="gtkextrabase">
+  <part id="gtksheetobjects">
     <title>GtkSheet Widgets and Objects</title>
 
     <chapter>

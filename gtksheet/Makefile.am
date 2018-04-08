@@ -175,20 +175,20 @@ testgtksheet_LDADD = $(LDADDS)
 if ENABLE_INTROSPECTION
 -include $(INTROSPECTION_MAKEFILE)
 
-INTROSPECTION_GIRS = GtkExtra-3.0.gir
+INTROSPECTION_GIRS = GtkSheet-3.0.gir
 
 INTROSPECTION_SCANNER_ARGS = --accept-unprefixed --identifier-prefix="Gtk" --symbol-prefix="gtk" --warn-all --add-include-path=$(srcdir)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 introspection_sources = $(gtksheet_c_sources) $(gtksheet_public_h_sources)
 
-GtkExtra-3.0.gir: $(gtksheettargetlib)
-GtkExtra_3_0_gir_NAMESPACE = GtkExtra
-GtkExtra_3_0_gir_VERSION = $(GTK_SHEET_VERSION)
-GtkExtra_3_0_gir_INCLUDES = GLib-2.0 GObject-2.0 Gtk-2.0
-GtkExtra_3_0_gir_CFLAGS = $(AM_CPPFLAGS)
-GtkExtra_3_0_gir_LIBS = $(gtksheettargetlib)
-GtkExtra_3_0_gir_FILES = $(introspection_sources)
+GtkSheet-3.0.gir: $(gtksheettargetlib)
+GtkSheet_3_0_gir_NAMESPACE = GtkSheet
+GtkSheet_3_0_gir_VERSION = $(GTK_SHEET_VERSION)
+GtkSheet_3_0_gir_INCLUDES = GLib-2.0 GObject-2.0 Gtk-2.0
+GtkSheet_3_0_gir_CFLAGS = $(AM_CPPFLAGS)
+GtkSheet_3_0_gir_LIBS = $(gtksheettargetlib)
+GtkSheet_3_0_gir_FILES = $(introspection_sources)
 
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)

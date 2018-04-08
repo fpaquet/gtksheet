@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- for debugging, use
+setenv GLADE_CATALOG_PATH /home/contrib/gtk
+setenv GLADE_MODULE_PATH /home/contrib/gtk/gtksheet/gtksheet/.libs
+glade-3
+-->
+<glade-catalog name="gtksheet" library="@libgladegtksheet_soname@"
+  depends="gtk+">
+
+  <book>gtksheet</book>
+
+  <glade-widget-classes>
+    <glade-widget-class name="GtkCharSelection" generic-name="gtkcharselection"
+      title="GtkCharSelection - a widget which contains all the characters in a font"/>
+
+    <glade-widget-class name="GtkSheet" generic-name="gtksheet"
+      title="GtkSheet - a spreadsheet widget">
+      <!-- The next line is experimental -->
+      <action-activate-function>glade_gtk_sheet_action_activate</action-activate-function>
+      <get-children-function>glade_gtk_sheet_get_children</get-children-function>
+
+      <get-children-function>glade_gtk_sheet_get_children</get-children-function>
+      <add-child-function>glade_gtk_sheet_add_child</add-child-function>
+      <remove-child-function>glade_gtk_sheet_remove_child</remove-child-function>
+      <replace-child-function>glade_gtk_sheet_replace_child</replace-child-function>
+
+      <actions>
+        <action stock="gtk-edit" important="True" id="launch_editor"
+          name="Edit&#8230;"></action>
+      </actions>
+      <properties>
+        <property query="True" id="title" default="GtkSheet"/>
+        <property save="False" query="False" needs-sync="True" id="n-cols"
+          default="0"/>
+        <property save-always="True" query="True" needs-sync="True" id="n-rows"
+          default="1"/>
+        <property id="locked" default="False"/>
+        <property id="selection-mode">
+          <displayable-values>
+            <value id="GTK_SELECTION_NONE" name="None" disable="True"></value>
+            <value id="GTK_SELECTION_SINGLE" name="Single"></value>
+            <value id="GTK_SELECTION_BROWSE" name="Browse"></value>
+          </displayable-values>
+        </property>
+        <property id="autoresize" default="False"/>
+        <property id="autoscroll" default="True"/>
+        <property id="clip-text" default="False"/>
+        <property id="bgcolor" default="White"/>
+        <property id="grid-visible" default="True"/>
+        <property id="grid-color" default="Gray"/>
+        <property id="col-titles-visible" default="True"/>
+        <property id="col-titles-height"/>
+        <property id="columns-resizable" default="True"/>
+        <property id="row-title-visible" default="True"/>
+        <property id="row-title-width"/>
+        <property id="rows-resizable" default="True"/>
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkSheetColumn" libglade-unsupported="True"
+      generic-name="gtksheetcolumn" title="GtkSheetColumn - a Sheet Column">
+      <!--        <set-property-function>glade_gtk_sheet_column_set_property</set-property-function>-->
+      <!--        <get-property-function>glade_gtk_sheet_column_set_property</get-property-function>-->
+      <properties>
+        <property id="visible" save-always="True" default="True"/>
+        <property id="position" visible="False" name="Position"/>
+        <!--        <property id="width-request" needs-sync="True" />-->
+      </properties>
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkDataEntry" libglade-unsupported="True"
+      generic-name="gtkdataentry" title="GtkDataEntry - a data entry Widget">
+    </glade-widget-class>
+    <glade-widget-class name="GtkDataTextView" libglade-unsupported="True"
+      generic-name="gtkdatatextview"
+      title="GtkDataTextView - a multiline data entry Widget">
+    </glade-widget-class>
+
+    <glade-widget-class name="GtkItemEntry" generic-name="gtkitementry"
+      title="GtkItemEntry"/>
+
+  </glade-widget-classes>
+
+  <glade-widget-group name="gtksheet-widgets" title="GtkSheet Widgets">
+    <glade-widget-class-ref name="GtkCharSelection"/>
+
+    <glade-widget-class-ref name="GtkSheet"/>
+    <glade-widget-class-ref name="GtkItemEntry"/>
+    <glade-widget-class-ref name="GtkDataEntry"/>
+    <glade-widget-class-ref name="GtkDataTextView"/>
+  </glade-widget-group>
+
+</glade-catalog>
+

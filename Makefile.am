@@ -6,7 +6,7 @@ if ENABLE_GLADE
     GLADE_SUBDIR = glade
 endif
 
-SRC_SUBDIRS = gtkextra  $(GLADE_SUBDIR)
+SRC_SUBDIRS = gtksheet $(GLADE_SUBDIR)
 SUBDIRS = $(SRC_SUBDIRS) docs
 
 # require automake 1.7
@@ -14,12 +14,12 @@ SUBDIRS = $(SRC_SUBDIRS) docs
 
 EXTRA_DIST = \
 	TODO \
-	gtkextra-3.0.m4 \
+	gtksheet-3.0.m4 \
 	makecopyright \
-	gtkextra-3.0.spec 
+	gtksheet-3.0.spec 
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA= gtkextra-3.0.pc
+pkgconfig_DATA= gtksheet-3.0.pc
 
 .PHONY: files release sanity snapshot
 

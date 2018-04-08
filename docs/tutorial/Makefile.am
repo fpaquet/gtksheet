@@ -1,6 +1,6 @@
 
 EXTRA_DIST = \
-	gtkextra-tutorial.sgml	\
+	gtksheet-tutorial.sgml	\
 	images/gtksheet_cell_text.jpg	\
 	images/gtksheet_new_sheet.jpg	\
 	images/gtksheet_pack_combo.jpg \
@@ -12,16 +12,16 @@ all: html
 html:
 	if test -w $(srcdir); then \
 	  (cd $(srcdir); \
-	   db2html gtkextra-tutorial.sgml; \
+	   db2html gtksheet-tutorial.sgml; \
 	   test -d html && rm -r html; \
-	   mv gtkextra-tutorial html; \
+	   mv gtksheet-tutorial html; \
 	   mkdir html/images; \
 	   cp images/*.* html/images); \
 	fi
 
 pdf:
 	if test -w $(srcdir); then \
-	  (cd $(srcdir); db2pdf gtkextra-tutorial.sgml); \
+	  (cd $(srcdir); db2pdf gtksheet-tutorial.sgml); \
 	fi
 
 dist-hook: html

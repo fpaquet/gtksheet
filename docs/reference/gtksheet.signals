@@ -1,0 +1,175 @@
+<SIGNAL>
+<NAME>GtkSheet::activate</NAME>
+<RETURNS>gboolean</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+gint  arg1
+gint  arg2
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::changed</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+gint  arg1
+gint  arg2
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::clear-cell</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+gint  arg1
+gint  arg2
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::clip-range</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+GtkSheetRange *arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::deactivate</NAME>
+<RETURNS>gboolean</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+gint  arg1
+gint  arg2
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::enter-pressed</NAME>
+<RETURNS>gboolean</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+GdkEvent *arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::entry-focus-in</NAME>
+<RETURNS>gboolean</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+GdkEvent *arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::entry-focus-out</NAME>
+<RETURNS>gboolean</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+GdkEvent *arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::move-cursor</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>la</FLAGS>
+GtkSheet *sheet
+GtkMovementStep  arg1
+gint  arg2
+gboolean  arg3
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::move-range</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+GtkSheetRange *arg1
+GtkSheetRange *arg2
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::new-column-width</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+gint  arg1
+gint  arg2
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::new-row-height</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+gint  arg1
+gint  arg2
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::populate-popup</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+GtkMenu *arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::resize-range</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+GtkSheetRange *arg1
+GtkSheetRange *arg2
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::select-column</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+gint  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::select-range</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+GtkSheetRange *arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::select-row</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+gint  arg1
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::set-cell</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+gint  arg1
+gint  arg2
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::set-scroll-adjustments</NAME>
+<RETURNS>void</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+GtkAdjustment *arg1
+GtkAdjustment *arg2
+</SIGNAL>
+
+<SIGNAL>
+<NAME>GtkSheet::traverse</NAME>
+<RETURNS>gboolean</RETURNS>
+<FLAGS>l</FLAGS>
+GtkSheet *sheet
+gint  arg1
+gint  arg2
+gpointer  arg3
+gpointer  arg4
+</SIGNAL>
+

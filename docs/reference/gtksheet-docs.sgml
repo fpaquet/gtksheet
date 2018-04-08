@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY % gtkdocentities SYSTEM "gtkdocentities.ent">
+  %gtkdocentities;
+]>
+<book id="index">
+  <bookinfo>
+    <title>&package_name; Reference Manual</title>
+    <releaseinfo>
+      for &package_string;.
+      The latest version of this documentation can be found on-line at
+      <ulink role="online-location"
+        url="https://fpaquet.github.io/gtksheet/reference/index.html">https://fpaquet.github.io/gtksheet/reference/</ulink>.
+    </releaseinfo>
+  </bookinfo>
+
+  <part id="gtksheet">
+    <title>GtkSheet Overview</title>
+    <partintro>
+      <para>
+GtkSheet is a useful set of widgets for creating GUI's for GTK+.
+You can use it complementary to GTK+ and it is written in C. It is also Free Software and released under the LGPL license.
+      </para>
+      <para>
+The library includes the following widgets:
+        <variablelist>
+          <varlistentry>
+            <term>GtkSheet</term>
+            <listitem>
+              <para>
+GtkSheet is a matrix widget for GTK+. It consists of an scrollable grid of cells where you can allocate text.
+Cell contents can be edited interactively through a specially designed entry, GtkItemEntry.
+It is also a container subclass, allowing you to display buttons, curves, pixmaps and any other widget in it.
+You can also set many attributes as: border, foreground and background color, text justification, and more.
+The testgtksheet program shows how easy is to create a spreadsheet-like GUI using this widget set.
+              </para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>GtkItemEntry</term>
+            <listitem>
+              <para>
+It is a GtkEntry subclass. It can have fixed size or can be dinamically resized when the text is entered.
+You can change text justification to centered, left, or right, and change the foreground and background colors very easily.
+It only displays the text and has no borders.
+              </para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </para>
+    </partintro>
+
+    <xi:include href="compiling.sgml"/>
+    <xi:include href="resources.sgml"/>
+  </part>
+
+  <part id="gtkextrabase">
+    <title>GtkSheet Widgets and Objects</title>
+
+    <chapter>
+      <title>GtkSheet widgets and objects</title>
+      <xi:include href="xml/gtksheet.xml"/>
+      <xi:include href="xml/gtksheetcolumn.xml"/>
+      <xi:include href="xml/gtkdataformat.xml"/>
+      <xi:include href="xml/gtkdataentry.xml"/>
+      <xi:include href="xml/gtkdatatextview.xml"/>
+      <xi:include href="xml/gtkitementry.xml"/>
+      <xi:include href="xml/gtksheet-compat.xml"/>
+      <xi:include href="xml/gtksheetfeatures.xml"/>
+    </chapter>
+  </part>
+
+  <chapter id="object-tree">
+    <title>Object Hierarchy</title>
+    <xi:include href="xml/tree_index.sgml"/>
+  </chapter>
+
+  <index id="api-index-full">
+    <title>API Index</title>
+    <xi:include href="xml/api-index-full.xml"><xi:fallback/></xi:include>
+  </index>
+
+  <index id="deprecated-api-index" role="deprecated">
+    <title>Index of deprecated API</title>
+    <xi:include href="xml/api-index-deprecated.xml"><xi:fallback/></xi:include>
+  </index>
+
+  <xi:include href="xml/annotation-glossary.xml"><xi:fallback/></xi:include>
+</book>

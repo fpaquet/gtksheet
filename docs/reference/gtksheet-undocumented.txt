@@ -1,0 +1,65 @@
+86% symbol docs coverage.
+352 symbols documented.
+1 symbols incomplete.
+58 not documented.
+
+
+GDK_KEY_BackSpace
+GDK_KEY_Control_L
+GDK_KEY_Control_R
+GDK_KEY_Down
+GDK_KEY_End
+GDK_KEY_Escape
+GDK_KEY_Home
+GDK_KEY_ISO_Left_Tab
+GDK_KEY_KP_Enter
+GDK_KEY_Left
+GDK_KEY_Page_Down
+GDK_KEY_Page_Up
+GDK_KEY_Return
+GDK_KEY_Right
+GDK_KEY_Shift_L
+GDK_KEY_Shift_R
+GDK_KEY_Tab
+GDK_KEY_Up
+GTKSHEET_CHECK_VERSION
+GTKSHEET_MAJOR_VERSION
+GTKSHEET_MICRO_VERSION
+GTKSHEET_MINOR_VERSION
+GTK_SHEET_AUTORESIZE
+GTK_SHEET_AUTO_SCROLL
+GTK_SHEET_CLIP_TEXT
+GTK_SHEET_COLUMN_CAN_FOCUS
+GTK_SHEET_COLUMN_CAN_GRAB_FOCUS
+GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION
+GTK_SHEET_COLUMN_DEFAULT_WIDTH
+GTK_SHEET_COLUMN_FROZEN
+GTK_SHEET_COLUMN_MIN_WIDTH
+GTK_SHEET_COLUMN_SET_CAN_FOCUS
+GTK_SHEET_COL_TITLES_VISIBLE
+GTK_SHEET_JUSTIFY_ENTRY
+GTK_SHEET_OPTIMIZE_COLUMN_DRAW
+GTK_SHEET_ROW_FROZEN
+GTK_SHEET_ROW_TITLES_VISIBLE
+GtkSheetAttrType (<items>)
+GtkSheetColumnClass
+_gtk_sheet_move_cursor
+_gtk_sheet_row_default_height
+gtk_widget_get_mapped
+gtk_widget_get_realized
+gtk_widget_get_requisition
+gtk_widget_set_mapped_false
+gtk_widget_set_mapped_true
+gtk_widget_set_realized_false
+gtk_widget_set_realized_true
+gtksheet_binary_age
+gtksheet_check_version
+gtksheet_interface_age
+gtksheet_major_version
+gtksheet_micro_version
+gtksheet_minor_version
+quote
+
+gtksheet-compat:Long_Description
+gtksheet-compat:Short_Description
+gtksheetfeatures:Short_Description

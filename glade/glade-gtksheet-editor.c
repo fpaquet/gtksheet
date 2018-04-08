@@ -28,7 +28,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #include "glade-gtksheet-editor.h"
-#include "gtkextra/gtksheet.h"
+#include "gtksheet/gtksheet.h"
 
 #undef GTK_SHEET_EDITOR_DEBUG
 

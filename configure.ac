@@ -1,14 +1,10 @@
-# Process this file with autoconf to produce a configure script.
+# Process this file with GNU autoconf to produce a configure script.
 #
-# Help for autoconf:
-# - http://www.linuxselfhelp.com/gnu/autoconf/html_chapter/autoconf_toc.html
-# Option Syntax:
-# - http://www.linuxselfhelp.com/gnu/autoconf/html_chapter/autoconf_12.html
-# Printing Messages:
-# - http://www.linuxselfhelp.com/gnu/autoconf/html_chapter/autoconf_7.html
+# Use the following command to recreate build env:
+# autoreconf -f -i
 #
 
-AC_INIT([gtkextra], [3.3.4])
+AC_INIT([GtkSheet], [3.5.0])
 AC_LANG([C])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -18,41 +14,41 @@ CFLAGS=${CFLAGS:-""}
 
 AC_DIVERT_PUSH(NOTICE)dnl
 
-# GtkExtra versioning: before making releases, be sure to read
-# http://gtkextra.sourceforge.net/cms/index.php?option=com_content&view=article&id=44&Itemid=22
+# GtkSheet versioning: before making releases, be sure to read
+# https://github.com/fpaquet/gtksheet/wiki/GtkSheet-Version-Numbering
 
-GTK_EXTRA_MAJOR_VERSION=3
-GTK_EXTRA_MINOR_VERSION=3
-GTK_EXTRA_MICRO_VERSION=4
+GTK_SHEET_MAJOR_VERSION=3
+GTK_SHEET_MINOR_VERSION=5
+GTK_SHEET_MICRO_VERSION=0
 
-GTK_EXTRA_VERSION=$GTK_EXTRA_MAJOR_VERSION.$GTK_EXTRA_MINOR_VERSION.$GTK_EXTRA_MICRO_VERSION
+GTK_SHEET_VERSION=$GTK_SHEET_MAJOR_VERSION.$GTK_SHEET_MINOR_VERSION.$GTK_SHEET_MICRO_VERSION
 
-GTK_EXTRA_VERSION_SHORT=$GTK_EXTRA_MAJOR_VERSION.$GTK_EXTRA_MINOR_VERSION
+GTK_SHEET_VERSION_SHORT=$GTK_SHEET_MAJOR_VERSION.$GTK_SHEET_MINOR_VERSION
 
 AC_DIVERT_POP()dnl
 
-AC_SUBST(GTK_EXTRA_MAJOR_VERSION)
-AC_SUBST(GTK_EXTRA_MINOR_VERSION)
-AC_SUBST(GTK_EXTRA_MICRO_VERSION)
-AC_SUBST(GTK_EXTRA_VERSION)
-AC_SUBST(GTK_EXTRA_VERSION_SHORT)
+AC_SUBST(GTK_SHEET_MAJOR_VERSION)
+AC_SUBST(GTK_SHEET_MINOR_VERSION)
+AC_SUBST(GTK_SHEET_MICRO_VERSION)
+AC_SUBST(GTK_SHEET_VERSION)
+AC_SUBST(GTK_SHEET_VERSION_SHORT)
 
 # libtool versioning
 
-LT_CURRENT=9
-LT_REVISION=4
-LT_AGE=1
+LT_CURRENT=10
+LT_REVISION=0
+LT_AGE=0
 
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
 AC_SUBST(LT_AGE)
 
-LIBGTKEXTRA_SO_VERSION=$LT_CURRENT:$LT_REVISION:$LT_AGE
-AC_SUBST(LIBGTKEXTRA_SO_VERSION)
+LIBGTKSHEET_SO_VERSION=$LT_CURRENT:$LT_REVISION:$LT_AGE
+AC_SUBST(LIBGTKSHEET_SO_VERSION)
 
 # For automake
-VERSION=$GTK_EXTRA_VERSION
-PACKAGE=gtk+extra
+VERSION=$GTK_SHEET_VERSION
+PACKAGE=gtksheet
 
 AC_CONFIG_AUX_DIR([build-aux])
 # Initialize automake stuff
@@ -147,8 +143,6 @@ else
 fi
 AM_CONDITIONAL(ENABLE_TESTS, test x$enable_tests = xyes)
 
-
-
 changequote(,)dnl
 if test "x$GCC" = "xyes"; then
   case " $CFLAGS " in
@@ -198,11 +192,9 @@ AC_TRY_COMPILE([#include <dirent.h>], [DIR *dir;],
     CFLAGS=$gtk_save_CFLAGS
     AC_MSG_WARN([Could not determine POSIX flag. (-posix didn't work.)])))
 
-
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_C_INLINE
-
 
 ##################################################
 # Checks for gtk-doc and docbook-tools
@@ -332,18 +324,18 @@ AM_CONDITIONAL(ENABLE_INTROSPECTION, test x$enable_introspection != xno)
 
 
 if test "$platform_win32" = "yes"; then
-  AC_SUBST(libgladegtkextra_soname, [libgladegtkextra.dll])
+  AC_SUBST(libgladegtksheet_soname, [libgladegtksheet.dll])
 else
-  AC_SUBST(libgladegtkextra_soname, [libgladegtkextra.so])
+  AC_SUBST(libgladegtksheet_soname, [libgladegtksheet.so])
 fi
 
 
 
 AC_SUBST(gdktarget, `$PKG_CONFIG --variable=target gtk+-2.0`)
 
-gtkextratargetlib=libgtkextra-$gdktarget-3.0.la
+gtksheettargetlib=libgtksheet-$gdktarget-3.0.la
 
-AC_SUBST(gtkextratargetlib)
+AC_SUBST(gtksheettargetlib)
 AC_CHECK_LIB(m, sqrt)
 
 if test "x$gdktarget" = "xwin32"; then
@@ -359,14 +351,15 @@ AC_CONFIG_FILES(
 Makefile
 glade/Makefile
 glade/pixmaps/Makefile
-glade/gtk+extra-catalog.xml
-gtkextra/Makefile
-gtkextra/gtkextrafeatures.h
+glade/gtksheet-catalog.xml
+gtksheet/Makefile
+gtksheet/gtksheetfeatures.h
 docs/Makefile
 docs/reference/Makefile
+docs/reference/gtkdocentities.ent
 docs/tutorial/Makefile
-gtkextra-3.0.spec
-gtkextra-3.0.pc
+gtksheet-3.0.spec
+gtksheet-3.0.pc
 )
 
 AC_OUTPUT

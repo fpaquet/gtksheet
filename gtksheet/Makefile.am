@@ -92,26 +92,16 @@ gtksheetincludedir = $(includedir)/gtksheet-4.0/gtksheet
 gtksheetinclude_HEADERS = $(gtksheet_public_h_sources)
 nodist_gtksheetinclude_HEADERS = $(gtksheet_built_public_sources) gtksheetfeatures.h
 
-libgtksheet_x11_4_0_la_SOURCES = $(gtksheet_c_sources)
-nodist_libgtksheet_x11_4_0_la_SOURCES = $(gtksheet_built_sources)
-libgtksheet_linux_fb_4_0_la_SOURCES = $(gtksheet_c_sources)
-nodist_libgtksheet_linux_fb_4_0_la_SOURCES = $(gtksheet_built_sources)
-libgtksheet_win32_4_0_la_SOURCES = $(gtksheet_c_sources)
-nodist_libgtksheet_win32_4_0_la_SOURCES = $(gtksheet_built_sources)
-libgtksheet_quartz_4_0_la_SOURCES = $(gtksheet_c_sources)
-nodist_libgtksheet_quartz_4_0_la_SOURCES = $(gtksheet_built_sources)
-libgtksheet_broadway_4_0_la_SOURCES = $(gtksheet_c_sources)
-nodist_libgtksheet_broadway_4_0_la_SOURCES = $(gtksheet_built_sources)
-libgtksheet_wayland_4_0_la_SOURCES = $(gtksheet_c_sources)
-nodist_libgtksheet_wayland_4_0_la_SOURCES = $(gtksheet_built_sources)
-
-libgtksheet_win32_4_0_la_LIBADD = $(gtksheet_win32res_lo)
-libgtksheet_win32_4_0_la_DEPENDENCIES = $(gtksheet_def) $(gtksheet_win32res_lo)
+libgtksheet_4_0_la_SOURCES = $(gtksheet_c_sources)
+nodist_libgtksheet_4_0_la_SOURCES = $(gtksheet_built_sources)
 
 if USE_WIN32
+libgtksheet_4_0_la_LIBADD = $(gtksheet_win32res_lo)
+libgtksheet_4_0_la_DEPENDENCIES = $(gtksheet_def) $(gtksheet_win32res_lo)
+
 libgtksheet_target_ldflags = $(gtksheet_win32_symbols) -lwsock32
 endif
-EXTRA_LTLIBRARIES = libgtksheet-x11-4.0.la libgtksheet-linux-fb-4.0.la libgtksheet-win32-4.0.la libgtksheet-quartz-4.0.la libgtksheet-broadway-4.0.la libgtksheet-wayland-4.0.la
+EXTRA_LTLIBRARIES = libgtksheet-4.0.la
 
 MAINTAINERCLEANFILES = $(gtksheet_built_sources) 
 CLEANFILES = $(gtksheet_built_sources) 
@@ -121,7 +111,7 @@ EXTRA_DIST = $(gtksheet_private_h_sources) $(gtksheet_sheet_sources)
 EXTRA_DIST += gtksheet.def sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
 
 
-$(libgtksheet_x11_4_0_la_OBJECTS) $(libgtksheet_linux_fb_4_0_la_OBJECTS) $(libgtksheet_win32_4_0_la_OBJECTS) $(libgtksheet_quartz_4_0_la_OBJECTS) $(libgtksheet_broadway_4_0_la_OBJECTS) $(libgtksheet_wayland_4_0_la_OBJECTS): ${gtksheet_built_public_sources} ${gtksheet_built_private_headers}
+$(libgtksheet_4_0_la_OBJECTS): ${gtksheet_built_public_sources} ${gtksheet_built_private_headers}
 
 gtksheet-marshal.h: $(builddir)/gtksheet-marshal.list
 	( @GLIB_GENMARSHAL@ --prefix=gtksheet $(srcdir)/gtksheet-marshal.list --header > gtksheet-marshal.tmp \
@@ -158,6 +148,7 @@ gtksheettypebuiltins.c: $(gtksheet_public_h_sources)
 if ENABLE_TESTS
 noinst_PROGRAMS = testgtksheet
 endif
+
 DEPS = $(gtksheettargetlib)
 LDADDS = $(gtksheettargetlib) $(GTK_LIBS)
 

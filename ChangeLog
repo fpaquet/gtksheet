@@ -1,3 +1,9 @@
+2018-04-08 Fredy Paquet <mailbox AT opag.ch>
+* Fixed Gir output file naming, cleanup old files, minor doc fixes
+* Fixed library list in build environment
+* updated gtksheet-4 version to 4.1.0, Libtool Revision 1.0.0
+* published gtksheet-4 version 4.1.0
+
 2018-04-05 Fredy Paquet <mailbox AT opag.ch>
 * renamed GtkExtra to GtkSheet
 * removed Plot widgets and related stuff

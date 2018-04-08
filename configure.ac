@@ -1,7 +1,7 @@
 # Process this file with GNU autoconf to produce a configure script.
 #
 
-AC_INIT([GtkSheet], [4.0.0])
+AC_INIT([GtkSheet], [4.1.0])
 
 AC_LANG([C])
 AC_CONFIG_MACRO_DIR([m4])
@@ -16,7 +16,7 @@ AC_DIVERT_PUSH(NOTICE)dnl
 # https://github.com/fpaquet/gtksheet/wiki/GtkSheet-Version-Numbering
 
 GTK_SHEET_MAJOR_VERSION=4
-GTK_SHEET_MINOR_VERSION=0
+GTK_SHEET_MINOR_VERSION=1
 GTK_SHEET_MICRO_VERSION=0
 
 GTK_SHEET_INTERFACE_AGE=0
@@ -36,7 +36,7 @@ AC_SUBST(GTK_SHEET_VERSION_SHORT)
 
 # libtool versioning
 
-LT_CURRENT=0
+LT_CURRENT=1
 LT_REVISION=0
 LT_AGE=0
 
@@ -342,13 +342,13 @@ AC_SUBST(gdktarget, `$PKG_CONFIG --variable=targets gtk+-3.0`)
 gtksheettargetlib=""
 gtksheetlinklist=""
 
-for i in $gdktarget
-do
-  gtksheettargetlib+="libgtksheet-$i-$GTK_SHEET_VERSION_SHORT.la "
-  gtksheetlinklist+="-lgtksheet-$i-$GTK_SHEET_VERSION_SHORT "
-done
+#for i in $gdktarget
+#do
+#  gtksheettargetlib+="libgtksheet-$i-4.0.la "
+#  gtksheetlinklist+="-lgtksheet-$i-4.0 "
+#done
 
-#gtksheettargetlib=libgtksheet-$gdktarget-$GTK_SHEET_VERSION_SHORT.la
+gtksheettargetlib=libgtksheet-4.0.la
 
 AC_SUBST(gtksheettargetlib)
 AC_SUBST(gtksheetlinklist)

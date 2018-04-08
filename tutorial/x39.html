@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML
 ><HEAD
 ><TITLE
@@ -8,7 +8,7 @@ NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
 REL="HOME"
 TITLE="GtkSheet Tutorial"
-HREF="index.html"><LINK
+HREF="book1.html"><LINK
 REL="UP"
 TITLE="GtkSheet"
 HREF="c32.html"><LINK
@@ -17,7 +17,7 @@ TITLE="GtkSheet"
 HREF="c32.html"><LINK
 REL="NEXT"
 TITLE="Sheet Signals"
-HREF="x59.html"></HEAD
+HREF="x52.html"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -47,21 +47,21 @@ VALIGN="bottom"
 ><A
 HREF="c32.html"
 ACCESSKEY="P"
->Prev</A
+>&#60;&#60;&#60; Previous</A
 ></TD
 ><TD
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. GtkSheet</TD
+>GtkSheet</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="x59.html"
+HREF="x52.html"
 ACCESSKEY="N"
->Next</A
+>Next &#62;&#62;&#62;</A
 ></TD
 ></TR
 ></TABLE
@@ -74,11 +74,17 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="SEC-CREATINGASHEET"
->4.2. Creating a Sheet</A
+>Creating a Sheet</A
 ></H1
 ><P
 >The first step is to create the sheet widget and to pack it into a scrolled window.
 If you pack the sheet into a normal window you will receive some warnings about adjustment signals.</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="PROGRAMLISTING"
 >window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -94,18 +100,39 @@ gtk_container_add(GTK_CONTAINER(scrolled_window), sheet);
 
 
 gtk_widget_show_all(window);</PRE
+></TD
+></TR
+></TABLE
 ><P
 >You should set the GTK_SHEET_AUTORESIZE flag so the cell would resize as you type.
 GtkSheet can be created with a custom entry widget. You can use GtkEntry or a GtkEntry subclass 
 (e.g.  GtkSheetEntry, GtkSpinButton) or a box or table containing a GtkEntry subclass (e.g. GtkCombo)</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="PROGRAMLISTING"
 >gtk_sheet_new_with_custom_entry  (gint nrows, gint ncols, GtkType *entry_type);</PRE
+></TD
+></TR
+></TABLE
 ><P
 >if you want to construct a non-editable spreadsheet ( called "browser sheet") , just fow viewing purposes use:</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="PROGRAMLISTING"
 >gtk_sheet_construct_browser(GtkSheet *sheet,guint rows,guint columns, const gchar *title);</PRE
+></TD
+></TR
+></TABLE
 ><P
 >The lines and columns(white coloured by default) are numbered from 0 to max row/col number.
 The gray row/col are numbered -1 .
@@ -135,14 +162,14 @@ VALIGN="top"
 ><A
 HREF="c32.html"
 ACCESSKEY="P"
->Prev</A
+>&#60;&#60;&#60; Previous</A
 ></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="index.html"
+HREF="book1.html"
 ACCESSKEY="H"
 >Home</A
 ></TD
@@ -151,9 +178,9 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="x59.html"
+HREF="x52.html"
 ACCESSKEY="N"
->Next</A
+>Next &#62;&#62;&#62;</A
 ></TD
 ></TR
 ><TR

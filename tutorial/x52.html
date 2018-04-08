@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML
 ><HEAD
 ><TITLE
@@ -8,16 +8,16 @@ NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
 REL="HOME"
 TITLE="GtkSheet Tutorial"
-HREF="index.html"><LINK
+HREF="book1.html"><LINK
 REL="UP"
 TITLE="GtkSheet"
 HREF="c32.html"><LINK
 REL="PREVIOUS"
 TITLE="Creating a Sheet"
-HREF="x46.html"><LINK
+HREF="x39.html"><LINK
 REL="NEXT"
 TITLE="Modifying cell contents"
-HREF="x121.html"></HEAD
+HREF="x114.html"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -45,23 +45,23 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="x46.html"
+HREF="x39.html"
 ACCESSKEY="P"
->Prev</A
+>&#60;&#60;&#60; Previous</A
 ></TD
 ><TD
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. GtkSheet</TD
+>GtkSheet</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="x121.html"
+HREF="x114.html"
 ACCESSKEY="N"
->Next</A
+>Next &#62;&#62;&#62;</A
 ></TD
 ></TR
 ></TABLE
@@ -74,7 +74,7 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="SEC-SHEETSIGNALS"
->4.3. Sheet Signals</A
+>Sheet Signals</A
 ></H1
 ><P
 >The interaction between user and sheet is done(as in all Gtk programs) through signals.
@@ -185,27 +185,25 @@ CLASS="LITERAL"
 ><P
 >If you want  to catch these signals , you must connect them to a callback(function that treats the signal/event).</P
 ><P
->The most used signals  are :<SPAN
-CLASS="emphasis"
-><I
+>The most used signals  are :<I
 CLASS="EMPHASIS"
 > ACTIVATE,DEACTIVATE,TRAVERSE </I
-></SPAN
 >.</P
 ><P
 >Callback functions for different signals have different parameters.
-For a correct use you should check out the GtkSheet Reference Manual and the
-examples or GtkSheet source code.
-Incorrect use of the callback function parameters will have an undefined result 
-(in the worst case).</P
+For a correct use you should check out the Gtk-Extra Reference Manual , the examples or GtkSheet source code.
+Incorrect use of the callback function parameters will have an undefined result(in the worst case).</P
 ><P
->The <SPAN
-CLASS="emphasis"
-><I
+>The <I
 CLASS="EMPHASIS"
 >ACTIVATE</I
-></SPAN
 > signal should be connected if you want to do something when a cell is clicked:</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="PROGRAMLISTING"
 >g_signal_connect(G_OBJECT(sheet),
@@ -220,9 +218,18 @@ gint alarm_activate(GtkWidget *sheet,
 {
 ................
 }</PRE
+></TD
+></TR
+></TABLE
 ><P
 >If you have different functions that require the same cell to behave in a different way , I suggest that 
 instead of writing "n" alarm_activate() callbacks , write just one callback function that looks like this:</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="PROGRAMLISTING"
 >g_signal_connect(G_OBJECT(sheet),
@@ -243,18 +250,24 @@ gint alarm_activate(GtkWidget *sheet,
                .....do_other_stuf()
      }
 }</PRE
+></TD
+></TR
+></TABLE
 ><P
 >In this way , you will  have a much cleaner code  with fewer functions as possible.
 It is better to have a single callback function that treats all posible behaviour cases ,
 instead of many functions which make the code harder to read.</P
 ><P
->A very important signal is <SPAN
-CLASS="emphasis"
-><I
+>A very important signal is <I
 CLASS="EMPHASIS"
 >TRAVERSE</I
-></SPAN
 >.</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="PROGRAMLISTING"
 >gtk_signal_connect(G_OBJECT(sheet),
@@ -272,16 +285,17 @@ gint alarm_traverse(GtkWidget *widget,
 {
 ...........
 }</PRE
+></TD
+></TR
+></TABLE
 ><P
->The "traverse" signal  is emited before "deactivate_cell" and allows to veto the
-movement. In such case, the entry will remain in the site, and the other signals
-will not be emited.</P
+>The "traverse" signal  is emited before "deactivate_cell" and allows to veto the movement.
+In such case, the entry will remain in the site, and the other signals will not be emited.</P
 ><P
->The traverse signal is useful when you need to know  what cell have you
-previously clicked or what was selected. </P
+>The traverse signal is useful when you need to know  what cell have you previously clicked or what was selected. </P
 ><P
->The explanation for the other signals is quite straightforward so if you want
-more details you should check GtkSheet Reference Manual or the GtkSheet source code.</P
+>The explanation for the the other signals is quite straightforward so if you want more details you should check 
+GtkSheet Reference Manual or the GtkSheet source code.</P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -299,16 +313,16 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="x46.html"
+HREF="x39.html"
 ACCESSKEY="P"
->Prev</A
+>&#60;&#60;&#60; Previous</A
 ></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="index.html"
+HREF="book1.html"
 ACCESSKEY="H"
 >Home</A
 ></TD
@@ -317,9 +331,9 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="x121.html"
+HREF="x114.html"
 ACCESSKEY="N"
->Next</A
+>Next &#62;&#62;&#62;</A
 ></TD
 ></TR
 ><TR

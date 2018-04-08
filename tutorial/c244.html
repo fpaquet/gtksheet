@@ -1,17 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML
 ><HEAD
 ><TITLE
->Contributing</TITLE
+>Tips For Writing GtkSheet Applications</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
 REL="HOME"
 TITLE="GtkSheet Tutorial"
-HREF="index.html"><LINK
+HREF="book1.html"><LINK
 REL="PREVIOUS"
-TITLE="Credits"
-HREF="c236.html"></HEAD
+TITLE="Contributing"
+HREF="c237.html"></HEAD
 ><BODY
 CLASS="CHAPTER"
 BGCOLOR="#FFFFFF"
@@ -39,9 +39,9 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="c236.html"
+HREF="c237.html"
 ACCESSKEY="P"
->Prev</A
+>&#60;&#60;&#60; Previous</A
 ></TD
 ><TD
 WIDTH="80%"
@@ -62,30 +62,27 @@ WIDTH="100%"></DIV
 CLASS="CHAPTER"
 ><H1
 ><A
-NAME="CH-CONTRIBUTING"
+NAME="CH-TIPS"
 ></A
->Chapter 6. Contributing</H1
+>Tips For Writing GtkSheet Applications</H1
 ><P
->This document, like so much other great software out there, was
-created for free by volunteers.  If you are at all knowledgeable about
-any aspect of GTK that does not already have documentation, please
-consider contributing to this document.</P
+>This section is simply a gathering of wisdom, general style guidelines
+and hints to creating good GtkSheet applications. Currently this section
+is very short, but I hope it will get longer in future editions of
+this tutorial.</P
 ><P
->If you do decide to contribute, please visit our website at 
-<TT
-CLASS="LITERAL"
-><A
-HREF="http://github.com/vhernandez/gtksheet"
-TARGET="_top"
->http://github.com/vhernandez/gtksheet</A
-></TT
->. 
-Also, be aware that the entirety of this
-document is free, and any addition by you provide must also be
-free. That is, people may use any portion of your examples in their
-programs, and copies of this document may be distributed at will, etc.</P
+>Use GNU autoconf and automake! They are your friends :) Automake
+examines C files, determines how they depend on each other, and
+generates a Makefile so the files can be compiled in the correct
+order. Autoconf permits automatic configuration of software
+installation, handling a large number of system quirks to increase
+portability. I am planning to make a quick intro on them here.</P
 ><P
->Thank you.</P
+>When writing C code, use only C comments (beginning with "/*" and
+ending with "*/"), and don't use C++-style comments ("//").  Although
+many C compilers understand C++ comments, others don't, and the ANSI C
+standard does not require that C++-style comments be processed as
+comments.</P
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -103,16 +100,16 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="c236.html"
+HREF="c237.html"
 ACCESSKEY="P"
->Prev</A
+>&#60;&#60;&#60; Previous</A
 ></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="index.html"
+HREF="book1.html"
 ACCESSKEY="H"
 >Home</A
 ></TD
@@ -127,7 +124,7 @@ VALIGN="top"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Credits</TD
+>Contributing</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"

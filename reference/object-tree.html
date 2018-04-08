@@ -2,57 +2,43 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Object Hierarchy</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GtkSheet Reference Manual">
-<link rel="up" href="gtksheetbase.html" title="Part II. ">
-<link rel="prev" href="gtksheet-GtkSheet-Versioning.html" title="GtkSheet Versioning">
+<title>Object Hierarchy: GtkSheet Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="GtkSheet Reference Manual">
+<link rel="up" href="index.html" title="GtkSheet Reference Manual">
+<link rel="prev" href="gtksheet-gtksheetfeatures.html" title="gtksheetfeatures">
 <link rel="next" href="api-index-full.html" title="API Index">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="gtksheet.html" title="Part I. Gtksheet Overview">
-<link rel="part" href="gtksheetbase.html" title="Part II. ">
-<link rel="chapter" href="ch01.html" title="Widgets">
-<link rel="chapter" href="ch02.html" title="GtkSheet Versioning">
-<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
-<link rel="index" href="api-index-full.html" title="API Index">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="gtksheet-GtkSheet-Versioning.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="gtksheetbase.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GtkSheet Reference Manual</th>
-<td><a accesskey="n" href="api-index-full.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><img src="up-insensitive.png" width="16" height="16" border="0"></td>
+<td><a accesskey="p" href="gtksheet-gtksheetfeatures.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="api-index-full.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="chapter" lang="en">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="object-tree"></a>Object Hierarchy</h2></div></div></div>
+<div class="chapter">
+<div class="titlepage"><div><div><h1 class="title">
+<a name="object-tree"></a>Object Hierarchy</h1></div></div></div>
 <pre class="screen">
-    <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GObject"
->GObject</a>
-        <a
-href="/usr/share/gtk-doc/html/gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned"
->GInitiallyUnowned</a>
-            <a
-href="/usr/share/gtk-doc/html/gtk/GtkObject.html"
->GtkObject</a>
-                <a
-href="/usr/share/gtk-doc/html/gtk/GtkWidget.html"
->GtkWidget</a>
-                    <a
-href="/usr/share/gtk-doc/html/gtk/GtkContainer.html"
->GtkContainer</a>
-                        <a class="link" href="GtkSheet.html" title="GtkSheet">GtkSheet</a>
-                    <a
-href="/usr/share/gtk-doc/html/gtk/GtkEntry.html"
->GtkEntry</a>
-                        <a class="link" href="GtkItemEntry.html" title="GtkItemEntry">GtkItemEntry</a>
+    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="/opt/casy/gtk/.Linux.3.x86_64/share/gtk-doc/html/gtk2GtkObject.html#GtkObject-struct">GtkObject</a>
+            <span class="lineart">╰──</span> <a href="../gtk3/GtkWidget.html#GtkWidget-struct">GtkWidget</a>
+                <span class="lineart">├──</span> <a href="../gtk3/GtkEntry.html#GtkEntry-struct">GtkEntry</a>
+                <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="GtkDataEntry.html" title="GtkDataEntry">GtkDataEntry</a>
+                <span class="lineart">├──</span> <a href="../gtk3/GtkContainer.html#GtkContainer-struct">GtkContainer</a>
+                <span class="lineart">│</span>   <span class="lineart">├──</span> <a href="../gtk3/GtkTextView.html#GtkTextView-struct">GtkTextView</a>
+                <span class="lineart">│</span>   <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="GtkDataTextView.html" title="GtkDataTextView">GtkDataTextView</a>
+                <span class="lineart">│</span>   <span class="lineart">╰──</span> <a class="link" href="GtkSheet.html" title="GtkSheet">GtkSheet</a>
+                <span class="lineart">╰──</span> <a class="link" href="GtkSheet.html#GtkSheetColumn">GtkSheetColumn</a>
+    <a href="/opt/casy/gtk/.Linux.3.x86_64/share/gtk-doc/html/gobject/gobject-Boxed-Types.html">GBoxed</a>
+    <span class="lineart">╰──</span> <a class="link" href="GtkSheet.html#GtkSheetRange">GtkSheetRange</a>
 </pre>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.11</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

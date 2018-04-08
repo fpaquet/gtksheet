@@ -2,62 +2,74 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>GtkSheet Screenshots</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="GtkSheet Reference Manual">
-<link rel="up" href="gtksheet.html" title="Part I. Gtksheet Overview">
-<link rel="prev" href="resources.html" title="Mailing lists and bug reports">
-<link rel="next" href="gtksheetbase.html" title="Part II. ">
-<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<title>Compiling GtkSheet Applications: GtkSheet Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="GtkSheet Reference Manual">
+<link rel="up" href="gtksheet.html" title="Part I. GtkSheet Overview">
+<link rel="prev" href="gtksheet.html" title="Part I. GtkSheet Overview">
+<link rel="next" href="resources.html" title="Bug reports">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
-<link rel="part" href="gtksheet.html" title="Part I. Gtksheet Overview">
-<link rel="part" href="gtksheetbase.html" title="Part II. ">
-<link rel="chapter" href="ch01.html" title="Widgets">
-<link rel="chapter" href="ch02.html" title="GtkSheet Versioning">
-<link rel="chapter" href="object-tree.html" title="Object Hierarchy">
-<link rel="index" href="api-index-full.html" title="API Index">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2"><tr valign="middle">
-<td><a accesskey="p" href="resources.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
-<td><a accesskey="u" href="gtksheet.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
-<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
-<th width="100%" align="center">GtkSheet Reference Manual</th>
-<td><a accesskey="n" href="gtksheetbase.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="gtksheet.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="gtksheet.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="resources.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
-<div class="refentry" lang="en">
+<div class="refentry">
 <a name="compiling"></a><div class="titlepage"></div>
 <div class="refnamediv"><table width="100%"><tr>
 <td valign="top">
-<h2><span class="refentrytitle">GtkSheet Screenshots</span></h2>
-<p>GtkSheet Screenshots — 
-Screenshots of an example GtkSheet application
+<h2><span class="refentrytitle">Compiling GtkSheet Applications</span></h2>
+<p>Compiling GtkSheet Applications — 
+How to compile your GtkSheet+ application
 </p>
 </td>
-<td valign="top" align="right"></td>
+<td class="gallery_image" valign="top" align="right"></td>
 </tr></table></div>
-<div class="refsect1" lang="en">
-<a name="id2706638"></a><h2>GtkSheet Screenshots</h2>
+<div class="refsect1">
+<a name="id-1.2.3.3"></a><h2>Compiling GtkSheet Applications on UNIX</h2>
 <p>
-You can see some screenshots here:
+To compile a GtkSheet application, you need to tell the compiler where to 
+find the GtkSheet header files and libraries. This is done with the
+<code class="literal">pkg-config</code> utility.
 </p>
-<div class="container">
-<div class="gallery-spacer"></div>
-  <div class="gallery-float">
-    <img src="gtksheet1.png">
-  </div>
-  <div class="gallery-float">
-    <img src="gtksheet2.png">
-  </div>
-  <div class="gallery-float">
-    <img src="gtksheet3.png">
-  </div>
-<div class="gallery-spacer"></div>
-</div>
+<p>
+The following interactive shell session demonstrates how
+<code class="literal">pkg-config</code> is used (the actual output on 
+your system may be different):
+</p>
+<pre class="programlisting">
+$ pkg-config --cflags gtksheet-3.0 
+-Iusr/include/gtksheet-3.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/libpng12 -I/usr/include/pixman-1  
+$ pkg-config --libs gtksheet-3.0
+-lgtksheet-x11-3.0 -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgdk_pixbuf-2.0 -lm -lpangocairo-1.0 -lpango-1.0 -lcairo -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
+
+</pre>
+<p>
+</p>
+<p>
+The simplest way to compile a program is to use the "backticks"
+feature of the shell. If you enclose a command in backticks
+(<span class="emphasis"><em>not single quotes</em></span>), then its output will be
+substituted into the command line before execution. So to compile 
+a GtkSheet program, you would type the following:
+</p>
+<pre class="programlisting">
+$ cc `pkg-config --cflags --libs gtksheet-3.0` hello.c -o hello
+</pre>
+<p>
+</p>
+<p>
+The recommended way of using GtkSheet has always been to only include the
+toplevel headers <code class="filename">gtksheet.h</code>.
+</p>
 </div>
 </div>
 <div class="footer">
-<hr>
-          Generated by GTK-Doc V1.11</div>
+<hr>Generated by GTK-Doc V1.25</div>
 </body>
 </html>

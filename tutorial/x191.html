@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML
 ><HEAD
 ><TITLE
@@ -8,16 +8,16 @@ NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
 REL="HOME"
 TITLE="GtkSheet Tutorial"
-HREF="index.html"><LINK
+HREF="book1.html"><LINK
 REL="UP"
 TITLE="GtkSheet"
 HREF="c32.html"><LINK
 REL="PREVIOUS"
 TITLE="Modifying cell contents"
-HREF="x121.html"><LINK
+HREF="x114.html"><LINK
 REL="NEXT"
 TITLE="Selections"
-HREF="x212.html"></HEAD
+HREF="x205.html"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -45,23 +45,23 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="x121.html"
+HREF="x114.html"
 ACCESSKEY="P"
->Prev</A
+>&#60;&#60;&#60; Previous</A
 ></TD
 ><TD
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. GtkSheet</TD
+>GtkSheet</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="x212.html"
+HREF="x205.html"
 ACCESSKEY="N"
->Next</A
+>Next &#62;&#62;&#62;</A
 ></TD
 ></TR
 ></TABLE
@@ -74,39 +74,54 @@ CLASS="SECT1"
 CLASS="SECT1"
 ><A
 NAME="SEC-MODIFYINGSHEETSTATE"
->4.5. Modifying sheet state</A
+>Modifying sheet state</A
 ></H1
 ><P
->You can <SPAN
-CLASS="bold"
-><B
+>You can <I
 CLASS="EMPHASIS"
->freeze/unfreeze </B
-></SPAN
+>freeze/unfreeze </I
 > the sheet by: </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="PROGRAMLISTING"
 >void gtk_sheet_freeze (GtkSheet *sheet); 
 void gtk_sheet_thaw (GtkSheet *sheet); /*thaw means unfreeze*/</PRE
+></TD
+></TR
+></TABLE
 ><P
->Set if cell contents <SPAN
-CLASS="bold"
-><B
+>Set if cell contents <I
 CLASS="EMPHASIS"
->can be edited </B
-></SPAN
+>can be edited </I
 > or not in the given range: </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="PROGRAMLISTING"
 >void gtk_sheet_range_set_editable	(GtkSheet *sheet, const GtkSheetRange *range, gint editable);</PRE
+></TD
+></TR
+></TABLE
 ><P
-><SPAN
-CLASS="bold"
-><B
+><I
 CLASS="EMPHASIS"
->Remark: </B
-></SPAN
->Sheet state can be set with these functions: </P
+>Remark: </I
+>From GtkSheet 1.0 sheet   state will be set with functions: </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="PROGRAMLISTING"
 >void gtk_sheet_set_autoresize (GtkSheet *sheet, gboolean autoresize);
@@ -129,16 +144,20 @@ gboolean gtk_sheet_column_titles_visible (GtkSheet *sheet);
 gboolean gtk_sheet_row_titles_visible (GtkSheet *sheet);
 void gtk_sheet_set_justify_entry (GtkSheet *sheet, gboolean justify);
 gboolean gtk_sheet_justify_entry (GtkSheet *sheet);</PRE
+></TD
+></TR
+></TABLE
 ><P
->A set of macros, provided for compatibility with the GtkExtra versions 
-prior to 1.0, also allows setting the state of the sheet. Their use in newly
-written code is <SPAN
-CLASS="bold"
-><B
+>Up to (including) GtkSheet 0.99.17  Sheet state is mainly set by<I
 CLASS="EMPHASIS"
->deprecated</B
-></SPAN
->. </P
+> a set of macros. </I
+> </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="PROGRAMLISTING"
 >GTK_SHEET_AUTORESIZE(sheet)
@@ -149,6 +168,9 @@ GTK_SHEET_AUTO_SCROLL(sheet)
 GTK_SHEET_JUSTIFY_ENTRY(sheet)   
 GTK_SHEET_ROW_TITLES_VISIBLE(sheet)
 GTK_SHEET_COL_TITLES_VISIBLE(sheet)</PRE
+></TD
+></TR
+></TABLE
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -166,16 +188,16 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="x121.html"
+HREF="x114.html"
 ACCESSKEY="P"
->Prev</A
+>&#60;&#60;&#60; Previous</A
 ></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="index.html"
+HREF="book1.html"
 ACCESSKEY="H"
 >Home</A
 ></TD
@@ -184,9 +206,9 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="x212.html"
+HREF="x205.html"
 ACCESSKEY="N"
->Next</A
+>Next &#62;&#62;&#62;</A
 ></TD
 ></TR
 ><TR

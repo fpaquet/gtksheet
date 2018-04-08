@@ -1,0 +1,2172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>GtkSheetColumn: GtkSheet Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.78.1">
+<link rel="home" href="index.html" title="GtkSheet Reference Manual">
+<link rel="up" href="ch01.html" title="GtkSheet widgets and objects">
+<link rel="prev" href="GtkSheet.html" title="GtkSheet">
+<link rel="next" href="gtksheet-gtkdataformat.html" title="gtkdataformat">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#GtkSheetColumn.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#GtkSheetColumn.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#GtkSheetColumn.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#GtkSheetColumn.properties" class="shortcut">Properties</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="GtkSheet.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="gtksheet-gtkdataformat.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="GtkSheetColumn"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="GtkSheetColumn.top_of_page"></a>GtkSheetColumn</span></h2>
+<p>GtkSheetColumn — A spreadsheet column widget for <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a></p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="GtkSheetColumn.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#GTK-SHEET-COLUMN-CAN-FOCUS:CAPS" title="GTK_SHEET_COLUMN_CAN_FOCUS()">GTK_SHEET_COLUMN_CAN_FOCUS</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#GTK-SHEET-COLUMN-SET-CAN-FOCUS:CAPS" title="GTK_SHEET_COLUMN_SET_CAN_FOCUS()">GTK_SHEET_COLUMN_SET_CAN_FOCUS</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#GTK-SHEET-COLUMN-CAN-GRAB-FOCUS:CAPS" title="GTK_SHEET_COLUMN_CAN_GRAB_FOCUS()">GTK_SHEET_COLUMN_CAN_GRAB_FOCUS</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="GtkSheet.html#GtkSheetColumn"><span class="returnvalue">GtkSheetColumn</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-get" title="gtk_sheet_column_get ()">gtk_sheet_column_get</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-get-index" title="gtk_sheet_column_get_index ()">gtk_sheet_column_get_index</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-set-column-width" title="gtk_sheet_set_column_width ()">gtk_sheet_set_column_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-get-column-width" title="gtk_sheet_get_column_width ()">gtk_sheet_get_column_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-set-justification" title="gtk_sheet_column_set_justification ()">gtk_sheet_column_set_justification</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../gtk3/gtk3-Standard-Enumerations.html#GtkJustification"><span class="returnvalue">GtkJustification</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-get-justification" title="gtk_sheet_column_get_justification ()">gtk_sheet_column_get_justification</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-set-vjustification" title="gtk_sheet_column_set_vjustification ()">gtk_sheet_column_set_vjustification</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="GtkSheet.html#GtkSheetVerticalJustification" title="enum GtkSheetVerticalJustification"><span class="returnvalue">GtkSheetVerticalJustification</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-get-vjustification" title="gtk_sheet_column_get_vjustification ()">gtk_sheet_column_get_vjustification</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-get-iskey" title="gtk_sheet_column_get_iskey ()">gtk_sheet_column_get_iskey</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-set-iskey" title="gtk_sheet_column_set_iskey ()">gtk_sheet_column_set_iskey</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-get-readonly" title="gtk_sheet_column_get_readonly ()">gtk_sheet_column_get_readonly</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-set-readonly" title="gtk_sheet_column_set_readonly ()">gtk_sheet_column_set_readonly</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-get-format" title="gtk_sheet_column_get_format ()">gtk_sheet_column_get_format</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-set-format" title="gtk_sheet_column_set_format ()">gtk_sheet_column_set_format</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-get-datatype" title="gtk_sheet_column_get_datatype ()">gtk_sheet_column_get_datatype</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-set-datatype" title="gtk_sheet_column_set_datatype ()">gtk_sheet_column_set_datatype</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-get-description" title="gtk_sheet_column_get_description ()">gtk_sheet_column_get_description</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-set-description" title="gtk_sheet_column_set_description ()">gtk_sheet_column_set_description</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../gobject/gobject-Type-Information.html#GType"><span class="returnvalue">GType</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-get-entry-type" title="gtk_sheet_column_get_entry_type ()">gtk_sheet_column_get_entry_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-set-entry-type" title="gtk_sheet_column_set_entry_type ()">gtk_sheet_column_set_entry_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-get-tooltip-markup" title="gtk_sheet_column_get_tooltip_markup ()">gtk_sheet_column_get_tooltip_markup</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-set-tooltip-markup" title="gtk_sheet_column_set_tooltip_markup ()">gtk_sheet_column_set_tooltip_markup</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-get-tooltip-text" title="gtk_sheet_column_get_tooltip_text ()">gtk_sheet_column_get_tooltip_text</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-set-tooltip-text" title="gtk_sheet_column_set_tooltip_text ()">gtk_sheet_column_set_tooltip_text</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-sensitive" title="gtk_sheet_column_sensitive ()">gtk_sheet_column_sensitive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-set-sensitivity" title="gtk_sheet_column_set_sensitivity ()">gtk_sheet_column_set_sensitivity</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-columns-set-sensitivity" title="gtk_sheet_columns_set_sensitivity ()">gtk_sheet_columns_set_sensitivity</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-columns-resizable" title="gtk_sheet_columns_resizable ()">gtk_sheet_columns_resizable</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-columns-set-resizable" title="gtk_sheet_columns_set_resizable ()">gtk_sheet_columns_set_resizable</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-visible" title="gtk_sheet_column_visible ()">gtk_sheet_column_visible</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-set-visibility" title="gtk_sheet_column_set_visibility ()">gtk_sheet_column_set_visibility</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-button-justify" title="gtk_sheet_column_button_justify ()">gtk_sheet_column_button_justify</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-button-get-label" title="gtk_sheet_column_button_get_label ()">gtk_sheet_column_button_get_label</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-label-set-visibility" title="gtk_sheet_column_label_set_visibility ()">gtk_sheet_column_label_set_visibility</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-columns-labels-set-visibility" title="gtk_sheet_columns_labels_set_visibility ()">gtk_sheet_columns_labels_set_visibility</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-button-add-label" title="gtk_sheet_column_button_add_label ()">gtk_sheet_column_button_add_label</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-set-column-titles-height" title="gtk_sheet_set_column_titles_height ()">gtk_sheet_set_column_titles_height</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-show-column-titles" title="gtk_sheet_show_column_titles ()">gtk_sheet_show_column_titles</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-hide-column-titles" title="gtk_sheet_hide_column_titles ()">gtk_sheet_hide_column_titles</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-column-titles-visible" title="gtk_sheet_column_titles_visible ()">gtk_sheet_column_titles_visible</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-get-column-title" title="gtk_sheet_get_column_title ()">gtk_sheet_get_column_title</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="GtkSheetColumn.html#gtk-sheet-set-column-title" title="gtk_sheet_set_column_title ()">gtk_sheet_set_column_title</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GtkSheetColumn.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--dataformat" title="The “dataformat” property">dataformat</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--datatype" title="The “datatype” property">datatype</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--description" title="The “description” property">description</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="GtkSheet.html#GtkSheetEntryType" title="enum GtkSheetEntryType"><span class="type">GtkSheetEntryType</span></a></td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--entry-type" title="The “entry-type” property">entry-type</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--iskey" title="The “iskey” property">iskey</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="../gtk3/gtk3-Standard-Enumerations.html#GtkJustification"><span class="type">GtkJustification</span></a></td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--justification" title="The “justification” property">justification</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--label" title="The “label” property">label</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--max-length" title="The “max-length” property">max-length</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--max-length-bytes" title="The “max-length-bytes” property">max-length-bytes</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--position" title="The “position” property">position</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--readonly" title="The “readonly” property">readonly</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--visible" title="The “visible” property">visible</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="GtkSheet.html#GtkSheetVerticalJustification" title="enum GtkSheetVerticalJustification"><span class="type">GtkSheetVerticalJustification</span></a></td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--vjust" title="The “vjust” property">vjust</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a></td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--width" title="The “width” property">width</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a href="../gtk3/GtkTextView.html#GtkWrapMode"><span class="type">GtkWrapMode</span></a></td>
+<td class="property_name"><a class="link" href="GtkSheet.html#GtkSheetColumn--wrap-mode" title="The “wrap-mode” property">wrap-mode</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GtkSheetColumn.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="GtkSheet.html#GtkSheetColumn-struct" title="GtkSheetColumn">GtkSheetColumn</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="GtkSheetColumn.html#GTK-SHEET-COLUMN-MIN-WIDTH:CAPS" title="GTK_SHEET_COLUMN_MIN_WIDTH">GTK_SHEET_COLUMN_MIN_WIDTH</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="GtkSheetColumn.html#GTK-SHEET-COLUMN-DEFAULT-WIDTH:CAPS" title="GTK_SHEET_COLUMN_DEFAULT_WIDTH">GTK_SHEET_COLUMN_DEFAULT_WIDTH</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="GtkSheetColumn.html#GTK-SHEET-COLUMN-DEFAULT-JUSTIFICATION:CAPS" title="GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION">GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="GtkSheetColumn.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="../gobject/gobject-The-Base-Object-Type.html#GObject-struct">GObject</a>
+    <span class="lineart">╰──</span> <a href="../gobject/gobject-The-Base-Object-Type.html#GInitiallyUnowned">GInitiallyUnowned</a>
+        <span class="lineart">╰──</span> <a href="/opt/casy/gtk/.Linux.3.x86_64/share/gtk-doc/html/gtk2GtkObject.html#GtkObject-struct">GtkObject</a>
+            <span class="lineart">╰──</span> <a href="../gtk3/GtkWidget.html#GtkWidget-struct">GtkWidget</a>
+                <span class="lineart">╰──</span> GtkSheetColumn
+</pre>
+</div>
+<div class="refsect1">
+<a name="GtkSheetColumn.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+GtkSheetColumn implements
+ AtkImplementorIface and  <a href="../gtk3/GtkBuildable.html#GtkBuildable-struct">GtkBuildable</a>.</p>
+</div>
+<div class="refsect1">
+<a name="GtkSheetColumn.description"></a><h2>Description</h2>
+<p>The <a class="link" href="GtkSheet.html#GtkSheetColumn"><span class="type">GtkSheetColumn</span></a> provides properties for sheet columns.</p>
+</div>
+<div class="refsect1">
+<a name="GtkSheetColumn.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="GTK-SHEET-COLUMN-CAN-FOCUS:CAPS"></a><h3>GTK_SHEET_COLUMN_CAN_FOCUS()</h3>
+<pre class="programlisting">#define             GTK_SHEET_COLUMN_CAN_FOCUS(colptr)</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GTK-SHEET-COLUMN-SET-CAN-FOCUS:CAPS"></a><h3>GTK_SHEET_COLUMN_SET_CAN_FOCUS()</h3>
+<pre class="programlisting">#define             GTK_SHEET_COLUMN_SET_CAN_FOCUS(colptr, value)</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GTK-SHEET-COLUMN-CAN-GRAB-FOCUS:CAPS"></a><h3>GTK_SHEET_COLUMN_CAN_GRAB_FOCUS()</h3>
+<pre class="programlisting">#define             GTK_SHEET_COLUMN_CAN_GRAB_FOCUS(colptr)</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-get"></a><h3>gtk_sheet_column_get ()</h3>
+<pre class="programlisting"><a class="link" href="GtkSheet.html#GtkSheetColumn"><span class="returnvalue">GtkSheetColumn</span></a> *
+gtk_sheet_column_get (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                      <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>);</pre>
+<p>Get a <a class="link" href="GtkSheet.html#GtkSheetColumn"><span class="type">GtkSheetColumn</span></a></p>
+<div class="refsect3">
+<a name="gtk-sheet-column-get.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>. </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-get.returns"></a><h4>Returns</h4>
+<p>	(transfer none) the requested <a class="link" href="GtkSheet.html#GtkSheetColumn"><span class="type">GtkSheetColumn</span></a> or
+NULL </p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-get-index"></a><h3>gtk_sheet_column_get_index ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+gtk_sheet_column_get_index (<em class="parameter"><code><a class="link" href="GtkSheet.html#GtkSheetColumn"><span class="type">GtkSheetColumn</span></a> *colobj</code></em>);</pre>
+<p>find index of <em class="parameter"><code>colobj</code></em>
+ in GtkSheet</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-index.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>colobj</p></td>
+<td class="parameter_description"><p><a class="link" href="GtkSheet.html#GtkSheetColumn"><span class="type">GtkSheetColumn</span></a> to find</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-index.returns"></a><h4>Returns</h4>
+<p> column index or -1</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-set-column-width"></a><h3>gtk_sheet_set_column_width ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_set_column_width (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> column</code></em>,
+                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> width</code></em>);</pre>
+<p>Set column width.</p>
+<div class="refsect3">
+<a name="gtk-sheet-set-column-width.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>column</p></td>
+<td class="parameter_description"><p>column number.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>the width of the column.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-get-column-width"></a><h3>gtk_sheet_get_column_width ()</h3>
+<pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gint"><span class="returnvalue">gint</span></a>
+gtk_sheet_get_column_width (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> column</code></em>);</pre>
+<p>Get column width.</p>
+<div class="refsect3">
+<a name="gtk-sheet-get-column-width.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>column</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-get-column-width.returns"></a><h4>Returns</h4>
+<p> column width</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-set-justification"></a><h3>gtk_sheet_column_set_justification ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_set_justification (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                    <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                                    <em class="parameter"><code><a href="../gtk3/gtk3-Standard-Enumerations.html#GtkJustification"><span class="type">GtkJustification</span></a> just</code></em>);</pre>
+<p>Set column justification (GTK_JUSTIFY_LEFT, RIGHT, CENTER).
+The default value is GTK_JUSTIFY_LEFT. 
+If autoformat is on, the default justification for numbers is 
+GTK_JUSTIFY_RIGHT.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-set-justification.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>just</p></td>
+<td class="parameter_description"><p>a <a href="../gtk3/gtk3-Standard-Enumerations.html#GtkJustification"><span class="type">GtkJustification</span></a> : GTK_JUSTIFY_LEFT, RIGHT, CENTER</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-get-justification"></a><h3>gtk_sheet_column_get_justification ()</h3>
+<pre class="programlisting"><a href="../gtk3/gtk3-Standard-Enumerations.html#GtkJustification"><span class="returnvalue">GtkJustification</span></a>
+gtk_sheet_column_get_justification (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                    <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>);</pre>
+<p>Get the column justification.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-justification.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-justification.returns"></a><h4>Returns</h4>
+<p> a <a href="../gtk3/gtk3-Standard-Enumerations.html#GtkJustification"><span class="type">GtkJustification</span></a></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-set-vjustification"></a><h3>gtk_sheet_column_set_vjustification ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_set_vjustification (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                     <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                                     <em class="parameter"><code><a class="link" href="GtkSheet.html#GtkSheetVerticalJustification" title="enum GtkSheetVerticalJustification"><span class="type">GtkSheetVerticalJustification</span></a> vjust</code></em>);</pre>
+<p>Set vertical cell text jjustification</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-set-vjustification.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>vjust</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html#GtkSheetVerticalJustification" title="enum GtkSheetVerticalJustification"><span class="type">GtkSheetVerticalJustification</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-get-vjustification"></a><h3>gtk_sheet_column_get_vjustification ()</h3>
+<pre class="programlisting"><a class="link" href="GtkSheet.html#GtkSheetVerticalJustification" title="enum GtkSheetVerticalJustification"><span class="returnvalue">GtkSheetVerticalJustification</span></a>
+gtk_sheet_column_get_vjustification (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                     <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>);</pre>
+<p>Get the vertical cell text justification. This overrides the 
+default vertical cell text justification of the <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-vjustification.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-vjustification.returns"></a><h4>Returns</h4>
+<p> a <a class="link" href="GtkSheet.html#GtkSheetVerticalJustification" title="enum GtkSheetVerticalJustification"><span class="type">GtkSheetVerticalJustification</span></a></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-get-iskey"></a><h3>gtk_sheet_column_get_iskey ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gtk_sheet_column_get_iskey (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                            <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>);</pre>
+<p>Gets the column is_key flag</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-iskey.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>. </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-iskey.returns"></a><h4>Returns</h4>
+<p>	the is_key flag</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-set-iskey"></a><h3>gtk_sheet_column_set_iskey ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_set_iskey (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                            <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                            <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> is_key</code></em>);</pre>
+<p>Sets the column is_key flag. This flag has no effect on 
+calculation or presentation, it is reserved for application 
+usage.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-set-iskey.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>is_key</p></td>
+<td class="parameter_description"><p>the column is_key flag </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-get-readonly"></a><h3>gtk_sheet_column_get_readonly ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gtk_sheet_column_get_readonly (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                               <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>);</pre>
+<p>Gets the column readonly flag</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-readonly.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>. </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-readonly.returns"></a><h4>Returns</h4>
+<p>	the readonly flag</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-set-readonly"></a><h3>gtk_sheet_column_set_readonly ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_set_readonly (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                               <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                               <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> is_readonly</code></em>);</pre>
+<p>Sets the column readonly flag. 
+A cell is editable if the sheet is not locked, the column is 
+not readonly and the cell (-range) was set to editable.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-set-readonly.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>is_readonly</p></td>
+<td class="parameter_description"><p>the column is_readonly flag </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-get-format"></a><h3>gtk_sheet_column_get_format ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gtk_sheet_column_get_format (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                             <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>);</pre>
+<p>Gets the column data formatting pattern</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-format.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>. </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-format.returns"></a><h4>Returns</h4>
+<p>	the formatting pattern or NULL, You should free the
+returned string with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when done.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-set-format"></a><h3>gtk_sheet_column_set_format ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_set_format (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                             <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                             <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *format</code></em>);</pre>
+<p>Sets the column data formatting pattern.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-set-format.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>format</p></td>
+<td class="parameter_description"><p>the data_format pattern or NULL </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-get-datatype"></a><h3>gtk_sheet_column_get_datatype ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gtk_sheet_column_get_datatype (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                               <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>);</pre>
+<p>Gets the column data_type for application use</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-datatype.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>. </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-datatype.returns"></a><h4>Returns</h4>
+<p>	the datatype or NULL</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-set-datatype"></a><h3>gtk_sheet_column_set_datatype ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_set_datatype (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                               <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                               <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *data_type</code></em>);</pre>
+<p>Sets the column data data_type for application use</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-set-datatype.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data_type</p></td>
+<td class="parameter_description"><p>the datatype </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-get-description"></a><h3>gtk_sheet_column_get_description ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gtk_sheet_column_get_description (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                  <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>);</pre>
+<p>Gets the column description</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-description.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>. </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-description.returns"></a><h4>Returns</h4>
+<p>	the description or NULL, You should free the
+returned string with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when done.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-set-description"></a><h3>gtk_sheet_column_set_description ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_set_description (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                  <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                                  <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *description</code></em>);</pre>
+<p>Sets the column description.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-set-description.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>description</p></td>
+<td class="parameter_description"><p>the description or NULL </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-get-entry-type"></a><h3>gtk_sheet_column_get_entry_type ()</h3>
+<pre class="programlisting"><a href="../gobject/gobject-Type-Information.html#GType"><span class="returnvalue">GType</span></a>
+gtk_sheet_column_get_entry_type (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                 <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>);</pre>
+<p>Gets the column entry type if known</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-entry-type.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>. </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-entry-type.returns"></a><h4>Returns</h4>
+<p>	the entry type or GTK_SHEET_ENTRY_TYPE_DEFAULT</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-set-entry-type"></a><h3>gtk_sheet_column_set_entry_type ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_set_entry_type (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                 <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                                 <em class="parameter"><code>const <a href="../gobject/gobject-Type-Information.html#GType"><span class="type">GType</span></a> entry_type</code></em>);</pre>
+<p>Supersedes the sheet entry type for this column. Pass 
+G_TYPE_NONE to reset the column to the sheet entry type.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-set-entry-type.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>entry_type</p></td>
+<td class="parameter_description"><p>the entry type or G_TYPE_NONE </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-get-tooltip-markup"></a><h3>gtk_sheet_column_get_tooltip_markup ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gtk_sheet_column_get_tooltip_markup (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                     <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>);</pre>
+<p>Gets the contents of the tooltip (markup) for the column</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-tooltip-markup.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>. </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-tooltip-markup.returns"></a><h4>Returns</h4>
+<p>	the tooltip text, or NULL. You should free the
+returned string with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when done.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-set-tooltip-markup"></a><h3>gtk_sheet_column_set_tooltip_markup ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_set_tooltip_markup (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                     <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                                     <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *markup</code></em>);</pre>
+<p>Sets markup as the contents of the tooltip, which is marked 
+up with the Pango text markup language.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-set-tooltip-markup.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>markup</p></td>
+<td class="parameter_description"><p>the contents of the tooltip for widget, or NULL. </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-get-tooltip-text"></a><h3>gtk_sheet_column_get_tooltip_text ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gtk_sheet_column_get_tooltip_text (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                   <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>);</pre>
+<p>Gets the contents of the tooltip for the column</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-tooltip-text.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>. </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-get-tooltip-text.returns"></a><h4>Returns</h4>
+<p>	the tooltip text, or NULL. You should free the
+returned string with <a href="../glib/glib-Memory-Allocation.html#g-free"><code class="function">g_free()</code></a> when done.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-set-tooltip-text"></a><h3>gtk_sheet_column_set_tooltip_text ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_set_tooltip_text (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                   <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                                   <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *text</code></em>);</pre>
+<p>Sets text as the contents of the tooltip.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-set-tooltip-text.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column index </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>text</p></td>
+<td class="parameter_description"><p>the contents of the tooltip for widget </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-sensitive"></a><h3>gtk_sheet_column_sensitive ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gtk_sheet_column_sensitive (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> column</code></em>);</pre>
+<p>Get column button sensitivity.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-sensitive.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>column</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-sensitive.returns"></a><h4>Returns</h4>
+<p>TRUE - the column is sensitive, FALSE - insensitive or not
+existant </p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-set-sensitivity"></a><h3>gtk_sheet_column_set_sensitivity ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_set_sensitivity (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                  <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> column</code></em>,
+                                  <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> sensitive</code></em>);</pre>
+<p>Set column button sensitivity. If sensitivity is TRUE it can be toggled, otherwise it acts as a title.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-set-sensitivity.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>column</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>sensitive</p></td>
+<td class="parameter_description"><p>TRUE or FALSE</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-columns-set-sensitivity"></a><h3>gtk_sheet_columns_set_sensitivity ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_columns_set_sensitivity (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                   <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> sensitive</code></em>);</pre>
+<p>Set all columns buttons sensitivity. If sensitivity is TRUE
+button can be toggled, otherwise  act as titles. The sheet itself
+has no such property, it is a convenience function to set the
+property for all existing columns.</p>
+<div class="refsect3">
+<a name="gtk-sheet-columns-set-sensitivity.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>sensitive</p></td>
+<td class="parameter_description"><p>TRUE or FALSE</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-columns-resizable"></a><h3>gtk_sheet_columns_resizable ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gtk_sheet_columns_resizable (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>);</pre>
+<p>Get columns resizable status.</p>
+<div class="refsect3">
+<a name="gtk-sheet-columns-resizable.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-columns-resizable.returns"></a><h4>Returns</h4>
+<p> TRUE or FALSE</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-columns-set-resizable"></a><h3>gtk_sheet_columns_set_resizable ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_columns_set_resizable (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> resizable</code></em>);</pre>
+<p>Set columns resizable status.</p>
+<div class="refsect3">
+<a name="gtk-sheet-columns-set-resizable.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>resizable</p></td>
+<td class="parameter_description"><p>TRUE or FALSE</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-visible"></a><h3>gtk_sheet_column_visible ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gtk_sheet_column_visible (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                          <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> column</code></em>);</pre>
+<p>Get column visible property.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-visible.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>column</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-visible.returns"></a><h4>Returns</h4>
+<p> TRUE - visible, FALSE - hidden or not existant </p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-set-visibility"></a><h3>gtk_sheet_column_set_visibility ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_set_visibility (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> column</code></em>,
+                                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> visible</code></em>);</pre>
+<p>Set column visible property. </p>
+<p>Default value is TRUE. When set to FALSE, the column is 
+hidden.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-set-visibility.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>column</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>visible</p></td>
+<td class="parameter_description"><p>TRUE or FALSE</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-button-justify"></a><h3>gtk_sheet_column_button_justify ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_button_justify (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                 <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                                 <em class="parameter"><code><a href="../gtk3/gtk3-Standard-Enumerations.html#GtkJustification"><span class="type">GtkJustification</span></a> justification</code></em>);</pre>
+<p>Set the justification(alignment) of the column buttons.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-button-justify.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>justification</p></td>
+<td class="parameter_description"><p>a <a href="../gtk3/gtk3-Standard-Enumerations.html#GtkJustification"><span class="type">GtkJustification</span></a> :GTK_JUSTIFY_LEFT, RIGHT,
+CENTER</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-button-get-label"></a><h3>gtk_sheet_column_button_get_label ()</h3>
+<pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gtk_sheet_column_button_get_label (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                   <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>);</pre>
+<p>Get column button label.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-button-get-label.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column number.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-button-get-label.returns"></a><h4>Returns</h4>
+<p> Column button label.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-label-set-visibility"></a><h3>gtk_sheet_column_label_set_visibility ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_label_set_visibility (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                       <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                                       <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> visible</code></em>);</pre>
+<p>Set column label visibility. The default value is TRUE. If FALSE, the column label is hidden.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-label-set-visibility.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column number.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>visible</p></td>
+<td class="parameter_description"><p>TRUE or FALSE</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-columns-labels-set-visibility"></a><h3>gtk_sheet_columns_labels_set_visibility ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_columns_labels_set_visibility
+                               (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> visible</code></em>);</pre>
+<p>Set all columns labels visibility. The default value is TRUE.
+If FALSE, the columns labels are hidden. The sheet itself
+has no such property, it is a convenience function to set the
+property for all existing columns.</p>
+<div class="refsect3">
+<a name="gtk-sheet-columns-labels-set-visibility.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>visible</p></td>
+<td class="parameter_description"><p>TRUE or FALSE</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-button-add-label"></a><h3>gtk_sheet_column_button_add_label ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_column_button_add_label (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                   <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> col</code></em>,
+                                   <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *label</code></em>);</pre>
+<p>Set button label.It is used to set a column title.</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-button-add-label.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>col</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>label</p></td>
+<td class="parameter_description"><p>text label</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-set-column-titles-height"></a><h3>gtk_sheet_set_column_titles_height ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_set_column_titles_height (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                                    <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#guint"><span class="type">guint</span></a> height</code></em>);</pre>
+<p>Resize column titles area .</p>
+<div class="refsect3">
+<a name="gtk-sheet-set-column-titles-height.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>height</p></td>
+<td class="parameter_description"><p>column title height.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-show-column-titles"></a><h3>gtk_sheet_show_column_titles ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_show_column_titles (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>);</pre>
+<p>Show column titles .</p>
+<div class="refsect3">
+<a name="gtk-sheet-show-column-titles.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-hide-column-titles"></a><h3>gtk_sheet_hide_column_titles ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_hide_column_titles (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>);</pre>
+<p>Hide column titles .</p>
+<div class="refsect3">
+<a name="gtk-sheet-hide-column-titles.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-column-titles-visible"></a><h3>gtk_sheet_column_titles_visible ()</h3>
+<pre class="programlisting"><a href="../glib/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>
+gtk_sheet_column_titles_visible (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>);</pre>
+<p>Get the visibility of sheet column titles .</p>
+<div class="refsect3">
+<a name="gtk-sheet-column-titles-visible.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-column-titles-visible.returns"></a><h4>Returns</h4>
+<p> TRUE or FALSE</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-get-column-title"></a><h3>gtk_sheet_get_column_title ()</h3>
+<pre class="programlisting">const <a href="../glib/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *
+gtk_sheet_get_column_title (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> column</code></em>);</pre>
+<p>Get column title.</p>
+<div class="refsect3">
+<a name="gtk-sheet-get-column-title.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>column</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="gtk-sheet-get-column-title.returns"></a><h4>Returns</h4>
+<p> column title, do not modify or free it.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="gtk-sheet-set-column-title"></a><h3>gtk_sheet_set_column_title ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+gtk_sheet_set_column_title (<em class="parameter"><code><a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a> *sheet</code></em>,
+                            <em class="parameter"><code><a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a> column</code></em>,
+                            <em class="parameter"><code>const <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>);</pre>
+<p>Set column title.</p>
+<div class="refsect3">
+<a name="gtk-sheet-set-column-title.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>sheet</p></td>
+<td class="parameter_description"><p>a <a class="link" href="GtkSheet.html" title="GtkSheet"><span class="type">GtkSheet</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>column</p></td>
+<td class="parameter_description"><p>column number</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>title</p></td>
+<td class="parameter_description"><p>column title</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="GtkSheetColumn.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="GtkSheetColumn-struct"></a><h3>GtkSheetColumn</h3>
+<pre class="programlisting">typedef struct _GtkSheetColumn GtkSheetColumn;</pre>
+<p>The GtkSheetColumn struct contains only private data.
+It should only be accessed through the functions described below.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GTK-SHEET-COLUMN-MIN-WIDTH:CAPS"></a><h3>GTK_SHEET_COLUMN_MIN_WIDTH</h3>
+<pre class="programlisting">#define GTK_SHEET_COLUMN_MIN_WIDTH 10
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GTK-SHEET-COLUMN-DEFAULT-WIDTH:CAPS"></a><h3>GTK_SHEET_COLUMN_DEFAULT_WIDTH</h3>
+<pre class="programlisting">#define GTK_SHEET_COLUMN_DEFAULT_WIDTH 80
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GTK-SHEET-COLUMN-DEFAULT-JUSTIFICATION:CAPS"></a><h3>GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION</h3>
+<pre class="programlisting">#define GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION GTK_JUSTIFY_LEFT
+</pre>
+<p>
+</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="GtkSheetColumn.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="GtkSheetColumn--dataformat"></a><h3>The <code class="literal">“dataformat”</code> property</h3>
+<pre class="programlisting">  “dataformat”               <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<p>a formatting string that controls what you see when the
+
+widget doesn't contain input focus</p>
+<p>Flags: Read / Write</p>
+<p>Default value: ""</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--datatype"></a><h3>The <code class="literal">“datatype”</code> property</h3>
+<pre class="programlisting">  “datatype”                 <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<p>no functionality, a datatype hint for the application because
+
+any widget content is text</p>
+<p>Flags: Read / Write</p>
+<p>Default value: ""</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--description"></a><h3>The <code class="literal">“description”</code> property</h3>
+<pre class="programlisting">  “description”              <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<p>Description of column contents</p>
+<p>Flags: Read / Write</p>
+<p>Default value: ""</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--entry-type"></a><h3>The <code class="literal">“entry-type”</code> property</h3>
+<pre class="programlisting">  “entry-type”               <a class="link" href="GtkSheet.html#GtkSheetEntryType" title="enum GtkSheetEntryType"><span class="type">GtkSheetEntryType</span></a></pre>
+<p>Column cell entry widget type</p>
+<p>Flags: Read / Write</p>
+<p>Default value: GTK_SHEET_ENTRY_TYPE_DEFAULT</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--iskey"></a><h3>The <code class="literal">“iskey”</code> property</h3>
+<pre class="programlisting">  “iskey”                    <a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Flag for key columns</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--justification"></a><h3>The <code class="literal">“justification”</code> property</h3>
+<pre class="programlisting">  “justification”            <a href="../gtk3/gtk3-Standard-Enumerations.html#GtkJustification"><span class="type">GtkJustification</span></a></pre>
+<p>Justification of the column</p>
+<p>Flags: Read / Write</p>
+<p>Default value: GTK_JUSTIFY_LEFT</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--label"></a><h3>The <code class="literal">“label”</code> property</h3>
+<pre class="programlisting">  “label”                    <a href="../glib/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *</pre>
+<p>Label of the column button</p>
+<p>Flags: Read / Write</p>
+<p>Default value: ""</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--max-length"></a><h3>The <code class="literal">“max-length”</code> property</h3>
+<pre class="programlisting">  “max-length”               <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
+<p>Maximum number orf characters in this column, Zero if no
+
+ maximum.</p>
+<p> This property is passed to the sheet entry editor. It is
+ supported for  the following editors: <a href="../gtkextra-4/gtkextra-GtkItemEntry.html#GtkItemEntry"><span class="type">GtkItemEntry</span></a>,
+ <a href="../gtk3/GtkEntry.html#GtkEntry-struct"><span class="type">GtkEntry</span></a>, <a class="link" href="GtkDataTextView.html" title="GtkDataTextView"><span class="type">GtkDataTextView</span></a></p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [0,1073741823]</p>
+<p>Default value: 0</p>
+<p class="since">Since: 3.0.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--max-length-bytes"></a><h3>The <code class="literal">“max-length-bytes”</code> property</h3>
+<pre class="programlisting">  “max-length-bytes”         <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
+<p>Set the maximum length in bytes for the GtkDataEntry. For
+
+details see <a class="link" href="GtkDataEntry.html#gtk-data-entry-set-max-length-bytes" title="gtk_data_entry_set_max_length_bytes ()"><span class="type">gtk_data_entry_set_max_length_bytes</span></a>. </p>
+<p> This property is passed to the sheet entry editor. It is
+ supported for  the following editors: <a href="../gtkextra-4/gtkextra-GtkItemEntry.html#GtkItemEntry"><span class="type">GtkItemEntry</span></a>,
+ <a class="link" href="GtkDataTextView.html" title="GtkDataTextView"><span class="type">GtkDataTextView</span></a>.</p>
+<p>Sometimes, systems cannot handle UTF-8 string length
+correctly, to overcome this problem, you can use the maximum
+
+string length in bytes. When setting both limits, max-length
+
+ and max-length-bytes, both must be fulfilled.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [0,1073741823]</p>
+<p>Default value: 0</p>
+<p class="since">Since: 3.0.6</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--position"></a><h3>The <code class="literal">“position”</code> property</h3>
+<pre class="programlisting">  “position”                 <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
+<p>The packing position of the column</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [0,1024]</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--readonly"></a><h3>The <code class="literal">“readonly”</code> property</h3>
+<pre class="programlisting">  “readonly”                 <a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Lock column contents for editing.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--visible"></a><h3>The <code class="literal">“visible”</code> property</h3>
+<pre class="programlisting">  “visible”                  <a href="../glib/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a></pre>
+<p>Visible property for columns</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--vjust"></a><h3>The <code class="literal">“vjust”</code> property</h3>
+<pre class="programlisting">  “vjust”                    <a class="link" href="GtkSheet.html#GtkSheetVerticalJustification" title="enum GtkSheetVerticalJustification"><span class="type">GtkSheetVerticalJustification</span></a></pre>
+<p>Column vertical cell text justification</p>
+<p>Flags: Read / Write</p>
+<p>Default value: GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--width"></a><h3>The <code class="literal">“width”</code> property</h3>
+<pre class="programlisting">  “width”                    <a href="../glib/glib-Basic-Types.html#gint"><span class="type">gint</span></a></pre>
+<p>Width of the column</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [-1,8192]</p>
+<p>Default value: -1</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="GtkSheetColumn--wrap-mode"></a><h3>The <code class="literal">“wrap-mode”</code> property</h3>
+<pre class="programlisting">  “wrap-mode”                <a href="../gtk3/GtkTextView.html#GtkWrapMode"><span class="type">GtkWrapMode</span></a></pre>
+<p>This property is passed to the sheet entry editor. It is
+ supported for  the following editors: <a href="../gtk3/GtkTextView.html#GtkTextView-struct"><span class="type">GtkTextView</span></a>,
+ <a class="link" href="GtkDataTextView.html" title="GtkDataTextView"><span class="type">GtkDataTextView</span></a>.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: GTK_WRAP_NONE</p>
+<p class="since">Since: 3.0.6</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

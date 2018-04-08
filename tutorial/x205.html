@@ -1,23 +1,23 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML
 ><HEAD
 ><TITLE
-> Row/column operations</TITLE
+>Selections</TITLE
 ><META
 NAME="GENERATOR"
 CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
 REL="HOME"
 TITLE="GtkSheet Tutorial"
-HREF="index.html"><LINK
+HREF="book1.html"><LINK
 REL="UP"
 TITLE="GtkSheet"
 HREF="c32.html"><LINK
 REL="PREVIOUS"
-TITLE="Selections"
-HREF="x212.html"><LINK
+TITLE="Modifying sheet state"
+HREF="x191.html"><LINK
 REL="NEXT"
-TITLE="Credits"
-HREF="c236.html"></HEAD
+TITLE=" Row/column operations"
+HREF="x215.html"></HEAD
 ><BODY
 CLASS="SECT1"
 BGCOLOR="#FFFFFF"
@@ -45,23 +45,23 @@ WIDTH="10%"
 ALIGN="left"
 VALIGN="bottom"
 ><A
-HREF="x212.html"
+HREF="x191.html"
 ACCESSKEY="P"
->Prev</A
+>&#60;&#60;&#60; Previous</A
 ></TD
 ><TD
 WIDTH="80%"
 ALIGN="center"
 VALIGN="bottom"
->Chapter 4. GtkSheet</TD
+>GtkSheet</TD
 ><TD
 WIDTH="10%"
 ALIGN="right"
 VALIGN="bottom"
 ><A
-HREF="c236.html"
+HREF="x215.html"
 ACCESSKEY="N"
->Next</A
+>Next &#62;&#62;&#62;</A
 ></TD
 ></TR
 ></TABLE
@@ -73,49 +73,60 @@ CLASS="SECT1"
 ><H1
 CLASS="SECT1"
 ><A
-NAME="SEC-ROWCOLUMNOPERATIONS"
->4.7. Row/column operations</A
+NAME="SEC-SELECTIONS"
+>Selections</A
 ></H1
 ><P
->The most common row/column operations are:</P
-><P
-></P
-><UL
-COMPACT="COMPACT"
-><LI
-><SPAN
-> <TT
-CLASS="LITERAL"
->insertion</TT
-></SPAN
-></LI
-><LI
-><SPAN
-> <TT
-CLASS="LITERAL"
->deletion</TT
-></SPAN
-></LI
-><LI
-><SPAN
-> <TT
-CLASS="LITERAL"
->findind the number of rows/columns</TT
-></SPAN
-></LI
-></UL
+><I
+CLASS="EMPHASIS"
+> Select a row/column: </I
+> </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
 ><PRE
 CLASS="PROGRAMLISTING"
->void gtk_sheet_add_column (GtkSheet *sheet, guint ncols);
-void gtk_sheet_add_row (GtkSheet *sheet, guint nrows);
-void gtk_sheet_insert_rows (GtkSheet *sheet, guint row, guint nrows);
-void gtk_sheet_insert_columns (GtkSheet *sheet, guint col, guint ncols);
-
-void gtk_sheet_delete_rows (GtkSheet *sheet, guint row, guint nrows);
-void gtk_sheet_delete_columns (GtkSheet *sheet, guint col, guint ncols);
-
-guint gtk_sheet_get_columns_count (GtkSheet *sheet);
-guint gtk_sheet_get_rows_count (GtkSheet *sheet);</PRE
+>void gtk_sheet_select_row (GtkSheet * sheet,gint row);
+void gtk_sheet_select_column (GtkSheet * sheet,gint column);</PRE
+></TD
+></TR
+></TABLE
+><P
+><I
+CLASS="EMPHASIS"
+> Unselect a range: </I
+> </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void gtk_sheet_select_range (GtkSheet *sheet, const GtkSheetRange *range); 
+void gtk_sheet_unselect_range	(GtkSheet *sheet);</PRE
+></TD
+></TR
+></TABLE
+><P
+>A row/column selection can  be catched using "select_row" and "select_column" signals: </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void (*select_row) (GtkSheet *sheet, gint row);
+void (*select_column) (GtkSheet *sheet, gint column);</PRE
+></TD
+></TR
+></TABLE
 ></DIV
 ><DIV
 CLASS="NAVFOOTER"
@@ -133,16 +144,16 @@ WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
 ><A
-HREF="x212.html"
+HREF="x191.html"
 ACCESSKEY="P"
->Prev</A
+>&#60;&#60;&#60; Previous</A
 ></TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
 VALIGN="top"
 ><A
-HREF="index.html"
+HREF="book1.html"
 ACCESSKEY="H"
 >Home</A
 ></TD
@@ -151,9 +162,9 @@ WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
 ><A
-HREF="c236.html"
+HREF="x215.html"
 ACCESSKEY="N"
->Next</A
+>Next &#62;&#62;&#62;</A
 ></TD
 ></TR
 ><TR
@@ -161,7 +172,7 @@ ACCESSKEY="N"
 WIDTH="33%"
 ALIGN="left"
 VALIGN="top"
->Selections</TD
+>Modifying sheet state</TD
 ><TD
 WIDTH="34%"
 ALIGN="center"
@@ -175,7 +186,7 @@ ACCESSKEY="U"
 WIDTH="33%"
 ALIGN="right"
 VALIGN="top"
->Credits</TD
+>Row/column operations</TD
 ></TR
 ></TABLE
 ></DIV

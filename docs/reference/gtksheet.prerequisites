@@ -1,0 +1,6 @@
+GtkBuildable GObject
+GtkCellEditable GtkWidget
+GtkScrollable GObject
+GIcon GObject
+GLoadableIcon GIcon GObject
+GtkCellLayout GObject

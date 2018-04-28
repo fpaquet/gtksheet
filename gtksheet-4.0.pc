@@ -7,7 +7,7 @@ gtksheettargetlib=libgtksheet-4.0.la
 Name: GtkExtra
 Description: Extra widget set for for GTK+
 Requires: glib-2.0 gtk+-3.0
-Version: 4.1.1
+Version: 4.1.2
 Libs: -L${libdir} ${gtksheettargetlib}
 Cflags: -I${includedir}/gtksheet-4.0
 

@@ -1,3 +1,9 @@
+2018-04-28 Fredy Paquet <mailbox AT opag.ch>
+* re-enabled propagation of draw event to parent
+  (part of GtkExtra commit e40a935)
+* updated gtksheet-4 version to 4.1.2, Libtool Revision 1.2.0
+* published gtksheet-4 version 4.1.2
+
 2018-04-15 Fredy Paquet <mailbox AT opag.ch>
 * Fixed sheet window scrolling
 * updated gtksheet-4 version to 4.1.1, Libtool Revision 1.1.0

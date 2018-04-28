@@ -8811,6 +8811,7 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
 
     if (!gtk_widget_get_visible(gtk_sheet_get_entry_widget(sheet)))
 	return;
+
     if (sheet->state != GTK_SHEET_NORMAL)
 	return;
 
@@ -10123,10 +10124,10 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
     if (sheet->state != GTK_SHEET_NORMAL && GTK_SHEET_IN_SELECTION(sheet))
 	gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
-    /* do not propagate draw to class parent (recursive drawing)
+    /* propagation re-enabled - 28.04.18/fp #219937
        */
-    //if (GTK_WIDGET_CLASS(sheet_parent_class)->draw)
-    //	(*GTK_WIDGET_CLASS(sheet_parent_class)->draw)(widget, cr);
+    if (GTK_WIDGET_CLASS(sheet_parent_class)->draw)
+    	(*GTK_WIDGET_CLASS(sheet_parent_class)->draw)(widget, cr);
 
     return (GDK_EVENT_PROPAGATE);
 }

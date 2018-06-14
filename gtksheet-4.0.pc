@@ -2,7 +2,7 @@ prefix=/opt/casy/gtk3/.Linux.3.x86_64
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
-gtksheetlinklist=libgtksheet-4.0.la
+gtksheetlinklist=gtksheet-4.0
 
 Name: GtkExtra
 Description: Extra widget set for for GTK+

@@ -349,7 +349,7 @@ gtksheetlinklist=""
 #done
 
 gtksheettargetlib=libgtksheet-4.0.la
-gtksheetlinklist=libgtksheet-4.0
+gtksheetlinklist=gtksheet-4.0
 
 AC_SUBST(gtksheettargetlib)
 AC_SUBST(gtksheetlinklist)

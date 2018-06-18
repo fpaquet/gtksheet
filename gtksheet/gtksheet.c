@@ -91,7 +91,7 @@
 #   define GTK_SHEET_DEBUG_PIXEL_INFO  0
 #   define GTK_SHEET_DEBUG_PROPERTIES  0
 #   define GTK_SHEET_DEBUG_REALIZE  0
-#   define GTK_SHEET_DEBUG_SELECTION  0
+#   define GTK_SHEET_DEBUG_SELECTION  1
 #   define GTK_SHEET_DEBUG_SIGNALS   0
 #   define GTK_SHEET_DEBUG_SIZE  0
 #   define GTK_SHEET_DEBUG_SCROLL  0
@@ -207,40 +207,99 @@ typedef enum _GtkSheetArea
     ON_CELL_AREA
 } GtkSheetArea;
 
-#define GTK_SHEET_FLAGS(sheet)             (GTK_SHEET (sheet)->flags)
-#define GTK_SHEET_SET_FLAGS(sheet,flag)    (GTK_SHEET_FLAGS (sheet) |= (flag))
-#define GTK_SHEET_UNSET_FLAGS(sheet,flag)  (GTK_SHEET_FLAGS (sheet) &= ~(flag))
+#define GTK_SHEET_FLAGS(sheet) \
+    (GTK_SHEET (sheet)->flags)
 
-#define GTK_SHEET_IS_FROZEN(sheet)   (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IS_FROZEN)
-#define GTK_SHEET_IN_XDRAG(sheet)    (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_XDRAG)
-#define GTK_SHEET_IN_YDRAG(sheet)    (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_YDRAG)
-#define GTK_SHEET_IN_DRAG(sheet)     (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_DRAG)
-#define GTK_SHEET_IN_SELECTION(sheet) (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_SELECTION)
-#define GTK_SHEET_IN_RESIZE(sheet) (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_RESIZE)
-#define GTK_SHEET_IN_CLIP(sheet) (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_CLIP)
-#define GTK_SHEET_REDRAW_PENDING(sheet)   (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_REDRAW_PENDING)
+#define GTK_SHEET_SET_FLAGS(sheet,flag) \
+    (GTK_SHEET_FLAGS (sheet) |= (flag))
+
+#define GTK_SHEET_UNSET_FLAGS(sheet,flag) \
+    (GTK_SHEET_FLAGS (sheet) &= ~(flag))
+
+#define GTK_SHEET_IS_FROZEN(sheet) \
+    (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IS_FROZEN)
+
+#define GTK_SHEET_IN_XDRAG(sheet) \
+    (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_XDRAG)
+
+#define GTK_SHEET_IN_YDRAG(sheet) \
+    (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_YDRAG)
+
+#define GTK_SHEET_IN_DRAG(sheet) \
+    (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_DRAG)
+
+#define GTK_SHEET_IN_SELECTION(sheet) \
+    (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_SELECTION)
+
+#define GTK_SHEET_IN_RESIZE(sheet) \
+    (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_RESIZE)
+
+#define GTK_SHEET_IN_CLIP(sheet) \
+    (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_CLIP)
+
+#define GTK_SHEET_REDRAW_PENDING(sheet) \
+    (GTK_SHEET_FLAGS (sheet) & GTK_SHEET_IN_REDRAW_PENDING)
 
 /* data access macros - no frontend update! */
 
 #define COLPTR(sheet, colidx) (sheet->column[colidx])
 #define ROWPTR(sheet, rowidx) (&sheet->row[rowidx])
 
-#define GTK_SHEET_ROW_IS_VISIBLE(rowptr)  ((rowptr)->is_visible)
-#define GTK_SHEET_ROW_SET_VISIBLE(rowptr, value) ((rowptr)->is_visible = (value))
-#define GTK_SHEET_ROW_IS_SENSITIVE(rowptr)  ((rowptr)->is_sensitive)
-#define GTK_SHEET_ROW_SET_SENSITIVE(rowptr, value) ((rowptr)->is_sensitive = (value))
-#define GTK_SHEET_ROW_CAN_FOCUS(rowptr) GTK_SHEET_ROW_IS_SENSITIVE(rowptr)
+#define MIN_VIEW_ROW(sheet) \
+    (sheet->view.row0)
 
+/* beware: MAX_VISIBLE_ROW() can be maxrow+1 */
+#define MAX_VIEW_ROW(sheet) \
+    (sheet->view.rowi)
 
-#define MIN_VIEW_ROW(sheet)  (sheet->view.row0)
-#define MAX_VIEW_ROW(sheet)  (sheet->view.rowi)  /* beware: MAX_VISIBLE_ROW() can be maxrow+1 */
-#define MIN_VIEW_COLUMN(sheet)  (sheet->view.col0)
-#define MAX_VIEW_COLUMN(sheet)  (sheet->view.coli)  /* beware: MAX_VISIBLE_COLUMN() can be maxcol+1 */
+#define MIN_VIEW_COLUMN(sheet) \
+    (sheet->view.col0)
 
-#define COLUMN_UNREALIZED_MAX_WIDTH 512  /* unrealized maximum width */
-#define COLUMN_REMNANT_PIXELS  32   /* maximized: free space left for others */
-#define ROW_UNREALIZED_MAX_HEIGHT 128  /* unrealized maximum height */
-#define ROW_REMNANT_PIXELS  32   /* maximized: free space left for others */
+/* beware: MAX_VISIBLE_COLUMN() can be maxcol+1 */
+#define MAX_VIEW_COLUMN(sheet) \
+    (sheet->view.coli)
+
+/* widget flag tests and settings */
+
+#define GTK_SHEET_ROW_IS_VISIBLE(rowptr) \
+    ((rowptr)->is_visible)
+
+#define GTK_SHEET_ROW_SET_VISIBLE(rowptr, value) \
+    ((rowptr)->is_visible = (value))
+
+#define GTK_SHEET_ROW_IS_SENSITIVE(rowptr) \
+    ((rowptr)->is_sensitive)
+
+#define GTK_SHEET_ROW_SET_SENSITIVE(rowptr, value) \
+    ((rowptr)->is_sensitive = (value))
+
+#define GTK_SHEET_ROW_CAN_FOCUS(rowptr) \
+    GTK_SHEET_ROW_IS_SENSITIVE(rowptr)
+
+/* cell is in range or on range border */
+
+#define CELL_IN_RANGE(row, col, range) \
+    (range.row0 <= row && row <= range.rowi  \
+    && range.col0 <= col && col <= range.coli)
+
+/* cell is on range border */
+#define CELL_ON_RANGE_BORDER(row, col, range) \
+    (row == range.row0 || row == range.rowi \
+    || col == range.col0 || col == range.coli)
+
+/* some constants */
+
+/* unrealized maximum width */
+#define COLUMN_UNREALIZED_MAX_WIDTH 512
+
+/* maximized: free space left for others */
+#define COLUMN_REMNANT_PIXELS  32
+
+/* unrealized maximum height */
+#define ROW_UNREALIZED_MAX_HEIGHT 128
+
+/* maximized: free space left for others */
+#define ROW_REMNANT_PIXELS  32
 
 #define COLUMN_MAX_WIDTH(sheet) \
     (sheet->sheet_window_width < COLUMN_REMNANT_PIXELS ? \
@@ -440,6 +499,18 @@ static GdkRGBA color_white;
 #   define GTK_SHEET_DEBUG_COLOR  "green"
 
 static GdkRGBA debug_color;
+
+#if GTK_SHEET_DEBUG_EXPOSE > 1
+static void _debug_cairo_clip_extent(gchar *where, cairo_t *cr)
+{
+    double x1, y1, x2, y2;
+    cairo_clip_extents (cr, &x1, &y1, &x2, &y2);
+    g_debug(
+        "%s: cairo_clip_extents: x1 %0.1f y1 %0.1f x2 %0.1f y2 %0.1f",
+        where,
+        x1, y1, x2, y2);
+}
+#endif
 
 #   if 0
 #       include <stdarg.h>
@@ -945,6 +1016,25 @@ _gtk_sheet_range_fixup(GtkSheet *sheet, GtkSheetRange *range)
 	range->coli = sheet->maxcol;
 }
 
+/**
+ * Wrapper for gdk_window_invalidate_region
+ * 
+ * @param sheet  the sheet
+ * @param x      x
+ * @param y      y
+ * @param width  width
+ * @param height height
+ */
+static void _gtk_sheet_invalidate_region(
+    GtkSheet *sheet, 
+    gint x, gint y, gint width, gint height)
+{
+    cairo_rectangle_int_t rect = { x, y, width, height };
+    cairo_region_t *crg = cairo_region_create_rectangle(&rect);
+    gdk_window_invalidate_region(sheet->sheet_window, crg, FALSE);
+    cairo_region_destroy(crg);
+}
+
 /*
  * POSSIBLE_XDRAG
  * 
@@ -1228,18 +1318,25 @@ static void _cell_draw_label(GtkSheet *sheet, gint row, gint column,
     cairo_t *swin_cr);
 
 /* highlight the visible part of the selected range */
-static void gtk_sheet_range_draw_selection(GtkSheet *sheet, GtkSheetRange range);
+static void gtk_sheet_range_draw_selection(
+    GtkSheet *sheet, GtkSheetRange range, cairo_t *cr);
 
 /* Selection */
 
-static gint _gtk_sheet_move_query(GtkSheet *sheet, gint row, gint column, gboolean need_focus);
-static void gtk_sheet_real_select_range(GtkSheet *sheet, GtkSheetRange *range);
-static void gtk_sheet_real_unselect_range(GtkSheet *sheet, GtkSheetRange *range);
-static void gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column);
-static void gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range);
-static void gtk_sheet_draw_border(GtkSheet *sheet, GtkSheetRange range);
-static void gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range,
-    cairo_t *swin_cr, cairo_t *xor_cr);
+static gint _gtk_sheet_move_query(
+    GtkSheet *sheet, gint row, gint column, gboolean need_focus);
+static void gtk_sheet_real_select_range(
+    GtkSheet *sheet, GtkSheetRange *range);
+static void gtk_sheet_real_unselect_range(
+    GtkSheet *sheet, GtkSheetRange *range);
+static void gtk_sheet_extend_selection(
+    GtkSheet *sheet, gint row, gint column);
+static void gtk_sheet_new_selection(
+    GtkSheet *sheet, GtkSheetRange *range);
+static void gtk_sheet_draw_border(
+    GtkSheet *sheet, GtkSheetRange range, cairo_t *cr);
+static void gtk_sheet_draw_corners(
+    GtkSheet *sheet, GtkSheetRange range, cairo_t *cr);
 
 /* Active Cell handling */
 
@@ -1252,19 +1349,28 @@ static void gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint column, gboolea
 
 /* Backing Pixmap */
 
-static void gtk_sheet_make_bsurf(GtkSheet *sheet, guint width, guint height);
-static void gtk_sheet_draw_backing_pixmap(GtkSheet *sheet, GtkSheetRange range);
+static void gtk_sheet_make_bsurf(
+    GtkSheet *sheet, guint width, guint height);
+static void gtk_sheet_draw_backing_pixmap(
+    GtkSheet *sheet, GtkSheetRange range, cairo_t *cr);
+
 /* Scrollbars */
 
-static void _vadjustment_changed_handler(GtkAdjustment *adjustment, gpointer data);
-static void _hadjustment_changed_handler(GtkAdjustment *adjustment, gpointer data);
-static void _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data);
-static void _hadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data);
+static void _vadjustment_changed_handler(
+    GtkAdjustment *adjustment, gpointer data);
+static void _hadjustment_changed_handler(
+    GtkAdjustment *adjustment, gpointer data);
+static void _vadjustment_value_changed_handler(
+    GtkAdjustment *adjustment, gpointer data);
+static void _hadjustment_value_changed_handler(
+    GtkAdjustment *adjustment, gpointer data);
 
 static void draw_xor_vline(GtkSheet *sheet, gboolean draw);
 static void draw_xor_hline(GtkSheet *sheet, gboolean draw);
-static void draw_xor_rectangle(GtkSheet *sheet, GtkSheetRange range, gboolean draw);
-static void gtk_sheet_draw_flashing_range(GtkSheet *sheet, GtkSheetRange range,
+static void draw_xor_rectangle(
+    GtkSheet *sheet, GtkSheetRange range, gboolean draw);
+static void gtk_sheet_draw_flashing_range(
+    GtkSheet *sheet, GtkSheetRange range,
     cairo_t *xor_cr);
 static guint new_column_width(GtkSheet *sheet, gint column, gint *x);
 static guint new_row_height(GtkSheet *sheet, gint row, gint *y);
@@ -4838,7 +4944,7 @@ gtk_sheet_row_button_add_label(GtkSheet *sheet, gint row, const gchar *label)
 
     if (!GTK_SHEET_IS_FROZEN(sheet))
     {
-	_gtk_sheet_draw_button(sheet, row, -1);
+	_gtk_sheet_draw_button(sheet, row, -1, NULL);
     }
     g_signal_emit(G_OBJECT(sheet), sheet_signals[CHANGED], 0, row, -1);
 }
@@ -4886,8 +4992,9 @@ gtk_sheet_row_label_set_visibility(GtkSheet *sheet, gint row, gboolean visible)
 
     if (!GTK_SHEET_IS_FROZEN(sheet))
     {
-	_gtk_sheet_draw_button(sheet, row, -1);
-	g_signal_emit(G_OBJECT(sheet), sheet_signals[CHANGED], 0, row, -1);
+	_gtk_sheet_draw_button(sheet, row, -1, NULL);
+	g_signal_emit(
+            G_OBJECT(sheet), sheet_signals[CHANGED], 0, row, -1);
     }
 }
 
@@ -4938,7 +5045,7 @@ gtk_sheet_row_button_justify(GtkSheet *sheet, gint row,
 
     if (!GTK_SHEET_IS_FROZEN(sheet))
     {
-	_gtk_sheet_draw_button(sheet, row, -1);
+	_gtk_sheet_draw_button(sheet, row, -1, NULL);
     }
 }
 
@@ -5120,7 +5227,7 @@ gtk_sheet_row_set_sensitivity(GtkSheet *sheet, gint row,  gboolean sensitive)
 
     if (gtk_widget_get_realized(GTK_WIDGET(sheet)) 
 	&& !GTK_SHEET_IS_FROZEN(sheet)) {
-	_gtk_sheet_draw_button(sheet, row, -1);
+	_gtk_sheet_draw_button(sheet, row, -1, NULL);
     }
 }
 
@@ -5731,37 +5838,60 @@ static void _get_sheet_clip_area(GtkSheet *sheet, GdkRectangle *clip_area)
 }
 
 
-static cairo_t *_create_sheet_win_xor_cr(GtkSheet *sheet)
+/**
+ * saves cairo context and sets xor mode
+ *  
+ * ex GDK_INVERT is emulated by using sel_color.
+ *  
+ * Context must be popped with cairo_restore() after usage.
+ * 
+ * @param sheet  the sheet
+ * @param cr     the cairo context
+ * 
+ * @return 
+ */
+static void _cairo_save_and_set_xor_mode(GtkSheet *sheet, cairo_t *cr)
 {
-    cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window);
+    g_assert(cr);
+    //cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window);
 
-    GtkStyleContext *style_context = gtk_widget_get_style_context(GTK_WIDGET(sheet));
+#if GTK_SHEET_DEBUG_EXPOSE > 1
+    _debug_cairo_clip_extent("_cairo_save_and_set_xor_mode", cr);
+#endif
 
-    GdkRectangle clip_area;
-    _get_sheet_clip_area(sheet, &clip_area);
+    cairo_save(cr);
 
-    gdk_cairo_rectangle(xor_cr, &clip_area);
-    cairo_clip (xor_cr);
+    GtkStyleContext *style_context = gtk_widget_get_style_context(
+        GTK_WIDGET(sheet));
+
+    //GdkRectangle clip_area;
+    //_get_sheet_clip_area(sheet, &clip_area);
+    //gdk_cairo_rectangle(cr, &clip_area);
+    //cairo_clip (cr);
 
     gtk_style_context_save (style_context);
 
-    gtk_style_context_add_class (style_context, GTK_STYLE_CLASS_VIEW);
-    gtk_style_context_add_class (style_context, GTK_STYLE_CLASS_BUTTON);
-    gtk_style_context_add_class (style_context, GTK_STYLE_REGION_COLUMN_HEADER);
+    gtk_style_context_add_class (
+        style_context, GTK_STYLE_CLASS_VIEW);
+    gtk_style_context_add_class (
+        style_context, GTK_STYLE_CLASS_BUTTON);
+    gtk_style_context_add_class (
+        style_context, GTK_STYLE_REGION_COLUMN_HEADER);
 
     GdkRGBA sel_color;
-    gtk_style_context_get_background_color(style_context, 
-	GTK_STATE_FLAG_SELECTED, &sel_color);
+    gtk_style_context_get_background_color(
+        style_context, GTK_STATE_FLAG_SELECTED, &sel_color);
     sel_color.alpha = 0.5;
 
     gtk_style_context_restore (style_context);
 
-    //gdk_cairo_set_source_rgba(xor_cr, &color_white);
-    gdk_cairo_set_source_rgba(xor_cr, &sel_color);
+    //gdk_cairo_set_source_rgba(cr, &color_white);
+    gdk_cairo_set_source_rgba(cr, &sel_color);
 
-    //gdk_cairo_set_source_window(xor_cr, sheet->sheet_window, 0, 0);
-    //cairo_set_operator(xor_cr, CAIRO_OPERATOR_XOR);  /* ex GDK_INVERT */
-    return(xor_cr);
+    //gdk_cairo_set_source_window(cr, sheet->sheet_window, 0, 0);
+    //cairo_set_operator(cr, CAIRO_OPERATOR_XOR);  /* ex GDK_INVERT */
+
+    //return(cr);
 }
 
 static gint
@@ -5770,6 +5900,13 @@ gtk_sheet_flash(gpointer data)
     GtkSheet *sheet;
     gint x, y, width, height;
     GdkRectangle clip_area;
+
+    /* FIXME
+       - flashing doesn't work
+       - invalidate_region is missing 
+       */ 
+    g_debug("gtk_sheet_flash: FIXME");
+    //g_assert(FALSE);
 
     sheet = GTK_SHEET(data);
 
@@ -5840,7 +5977,8 @@ gtk_sheet_flash(gpointer data)
     if (sheet->interval == TIME_INTERVAL)
 	sheet->interval = 0;
 
-    cairo_t *xor_cr = _create_sheet_win_xor_cr(sheet);
+    cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
+    _cairo_save_and_set_xor_mode(sheet, xor_cr);
 
     double dashes[] = { 4.0, 4.0 };
     cairo_set_dash(xor_cr, dashes, 2, (double) sheet->interval);
@@ -5852,8 +5990,9 @@ gtk_sheet_flash(gpointer data)
     GDK_THREADS_LEAVE();
 #endif
 
-    cairo_destroy(xor_cr);
-    cairo_destroy(swin_cr);
+    cairo_restore(xor_cr);
+    cairo_destroy(xor_cr);  /* FIXME, to be removed */
+    cairo_destroy(swin_cr);  /* FIXME */
 
     return (TRUE);
 }
@@ -7678,12 +7817,12 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 	}
     }
 #endif
-    gtk_sheet_draw_backing_pixmap(sheet, drawing_range);
+    gtk_sheet_draw_backing_pixmap(sheet, drawing_range, NULL);
 
     if (sheet->state != GTK_SHEET_NORMAL &&
 	gtk_sheet_range_isvisible(sheet, sheet->range))
     {
-	gtk_sheet_range_draw_selection(sheet, drawing_range);
+	gtk_sheet_range_draw_selection(sheet, drawing_range, NULL);
     }
 
     if (activate_active_cell &&
@@ -7699,12 +7838,32 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
     cairo_destroy(swin_cr);
 }
 
+/**
+ * draw sheet selection including border and corners
+ * 
+ * @param sheet  the sheet
+ * @param range  the selected range
+ * @param cr     cairo drawing context or NULL
+ */
 static void
-gtk_sheet_range_draw_selection(GtkSheet *sheet, GtkSheetRange range)
+gtk_sheet_range_draw_selection(
+    GtkSheet *sheet, 
+    GtkSheetRange range,
+    cairo_t *cr)
 {
     GdkRectangle area;
     gint i, j;
     GtkSheetRange aux;
+
+    if (!cr)
+    {
+        g_debug("gtk_sheet_range_draw_selection: no cr");
+        return;
+    }
+
+#if GTK_SHEET_DEBUG_EXPOSE > 1
+    _debug_cairo_clip_extent("gtk_sheet_range_draw_selection", cr);
+#endif
 
     if (range.col0 > sheet->range.coli || range.coli < sheet->range.col0 ||
 	range.row0 > sheet->range.rowi || range.rowi < sheet->range.row0)
@@ -7742,7 +7901,7 @@ gtk_sheet_range_draw_selection(GtkSheet *sheet, GtkSheetRange range)
 	range.row0, range.rowi, range.col0, range.coli);
 #endif
 
-    cairo_t *xor_cr = _create_sheet_win_xor_cr(sheet);
+    _cairo_save_and_set_xor_mode(sheet, cr);
 
     for (i = range.row0; i <= range.rowi; i++)
     {
@@ -7754,9 +7913,9 @@ gtk_sheet_range_draw_selection(GtkSheet *sheet, GtkSheetRange range)
 	    if (j > sheet->maxcol)
 		break;
 
-	    if (gtk_sheet_cell_get_state(sheet, i, j) == GTK_STATE_SELECTED &&
-		GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j)) &&
-		GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)))
+	    if (gtk_sheet_cell_get_state(sheet, i, j) == GTK_STATE_SELECTED
+                && GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j))
+                && GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)))
 	    {
 		row_button_set(sheet, i);
 		_gtk_sheet_column_button_set(sheet, j);
@@ -7766,6 +7925,7 @@ gtk_sheet_range_draw_selection(GtkSheet *sheet, GtkSheetRange range)
 		area.width = COLPTR(sheet, j)->width;
 		area.height = sheet->row[i].height;
 
+                /* shrink region */
 		if (i == sheet->range.row0)
 		{
 		    area.y = area.y + 2;
@@ -7785,30 +7945,39 @@ gtk_sheet_range_draw_selection(GtkSheet *sheet, GtkSheetRange range)
 		if (i != sheet->active_cell.row || j != sheet->active_cell.col)
 		{
 		    // xor
-		    cairo_rectangle(xor_cr, area.x + 1, area.y + 1, area.width, area.height);
-		    cairo_fill(xor_cr);
+		    cairo_rectangle(cr, area.x + 1, area.y + 1, area.width, area.height);
+		    cairo_fill(cr);
 		}
 	    }
 	}
     }
-    cairo_destroy(xor_cr);
+    cairo_restore(cr);
 
-    gtk_sheet_draw_border(sheet, sheet->range);
+    gtk_sheet_draw_border(sheet, sheet->range, cr);
 }
 
 static void
-gtk_sheet_draw_backing_pixmap(GtkSheet *sheet, GtkSheetRange range)
+gtk_sheet_draw_backing_pixmap(
+    GtkSheet *sheet, 
+    GtkSheetRange range, 
+    cairo_t *cr)
 {
     gint x, y, width, height;
 
-    if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
-	return;
+    if (!cr) return;
+    if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
+
+#if GTK_SHEET_DEBUG_EXPOSE > 1
+    _debug_cairo_clip_extent("gtk_sheet_draw_backing_pixmap", cr);
+#endif
 
     x = _gtk_sheet_column_left_xpixel(sheet, range.col0);
     y = _gtk_sheet_row_top_ypixel(sheet, range.row0);
+
     width = _gtk_sheet_column_left_xpixel(sheet, range.coli) - x;
     if (0 <= range.coli && range.coli <= sheet->maxcol)
 	width += COLPTR(sheet, range.coli)->width;
+
     height = _gtk_sheet_row_top_ypixel(sheet, range.rowi) - y;
     if (0 <= range.rowi && range.rowi <= sheet->maxrow)
 	height += sheet->row[range.rowi].height;
@@ -7850,19 +8019,16 @@ gtk_sheet_draw_backing_pixmap(GtkSheet *sheet, GtkSheetRange range)
 	x, y, width + 1, height + 1);
 #endif
 
-    cairo_t *swin_cr = gdk_cairo_create(sheet->sheet_window);
-
-    cairo_rectangle(swin_cr, 
+    cairo_rectangle(cr, 
 	(double) x, (double) y, (double) (width + 1), (double) (height + 1));
+
 #if GTK_SHEET_DEBUG_EXPOSE > 0
-    gdk_cairo_set_source_rgba(swin_cr, &debug_color);
-    cairo_stroke_preserve(swin_cr);
+    gdk_cairo_set_source_rgba(cr, &debug_color);
+    cairo_stroke_preserve(cr);
 #endif
 
-    cairo_set_source_surface(swin_cr, sheet->bsurf, 0, 0);
-    cairo_fill(swin_cr);
-
-    cairo_destroy(swin_cr);
+    cairo_set_source_surface(cr, sheet->bsurf, 0, 0);
+    cairo_fill(cr);
 }
 
 static inline void
@@ -9343,8 +9509,8 @@ gtk_sheet_draw_active_cell(GtkSheet *sheet)
     row_button_set(sheet, row);
     _gtk_sheet_column_button_set(sheet, col);
 
-    gtk_sheet_draw_backing_pixmap(sheet, sheet->range);
-    gtk_sheet_draw_border(sheet, sheet->range);
+    gtk_sheet_draw_backing_pixmap(sheet, sheet->range, NULL);
+    gtk_sheet_draw_border(sheet, sheet->range, NULL);
 }
 
 
@@ -9393,16 +9559,24 @@ gtk_sheet_make_bsurf(GtkSheet *sheet, guint width, guint height)
     }
 }
 
+/**
+ * compute and draw new selection
+ * 
+ * @param sheet  the sheet
+ * @param range  the new range or NULL 
+ *  
+ * passing NULL reverts to sheet->range 
+ * </0>
+ */
 static void
 gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 {
     gint i, j, mask1, mask2;
-    gint state, selected;
+    gint cell_state;
     gint x, y, width, height;
     GtkSheetRange new_range, aux_range;
 
     g_return_if_fail(sheet != NULL);
-
 
     // use swin_cr to blit sheet->bsurf into sheet_window
     cairo_t *swin_cr = gdk_cairo_create(sheet->sheet_window);
@@ -9414,69 +9588,184 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
     gdk_cairo_rectangle(swin_cr, &clip_area);
     cairo_clip (swin_cr);
 
-
-    cairo_t *xor_cr = _create_sheet_win_xor_cr(sheet);
+    cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
+    _cairo_save_and_set_xor_mode(sheet, xor_cr);
 
     if (range == NULL)
 	range = &sheet->range;
 
-    new_range = *range;
+    new_range = *range;  /* copy new range */
 
+    /* union range and sheet->range - affected envelope */
     range->row0 = MIN(range->row0, sheet->range.row0);
     range->rowi = MAX(range->rowi, sheet->range.rowi);
     range->col0 = MIN(range->col0, sheet->range.col0);
     range->coli = MAX(range->coli, sheet->range.coli);
 
+    /* restrict range to visible area - visible part of envelope */
     range->row0 = MAX(range->row0, MIN_VIEW_ROW(sheet));
     range->rowi = MIN(range->rowi, MAX_VIEW_ROW(sheet));
     range->col0 = MAX(range->col0, MIN_VIEW_COLUMN(sheet));
     range->coli = MIN(range->coli, MAX_VIEW_COLUMN(sheet));
-
+#if 1
+    /* set aux_range to visible part of new_range */
     aux_range.row0 = MAX(new_range.row0, MIN_VIEW_ROW(sheet));
     aux_range.rowi = MIN(new_range.rowi, MAX_VIEW_ROW(sheet));
     aux_range.col0 = MAX(new_range.col0, MIN_VIEW_COLUMN(sheet));
     aux_range.coli = MIN(new_range.coli, MAX_VIEW_COLUMN(sheet));
+#endif
 
+#if 1
+    /* loop over envelope
+       - for visible selected cells not within new_range
+       - clear unselected cells to bsurf 
+
+       - beware: border of new_range will be scrambled
+       */
     for (i = range->row0; i <= range->rowi; i++)
     {
-	if (i > sheet->maxrow)
-	    break;
-
 	for (j = range->col0; j <= range->coli; j++)
 	{
-	    if (j > sheet->maxcol)
-		break;
+	    cell_state = gtk_sheet_cell_get_state(sheet, i, j);
+	    gboolean in_new_range = CELL_IN_RANGE(i, j, new_range);
 
-	    state = gtk_sheet_cell_get_state(sheet, i, j);
-	    selected = (i <= new_range.rowi && i >= new_range.row0 
-			&& j <= new_range.coli && j >= new_range.col0) ? TRUE : FALSE;
+	    if (cell_state == GTK_STATE_SELECTED 
+		&& !in_new_range 
+		&& GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j)) 
+		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)))
+	    {
+		x = _gtk_sheet_column_left_xpixel(sheet, j);
+		y = _gtk_sheet_row_top_ypixel(sheet, i);
+		width = COLPTR(sheet, j)->width;
+		height = ROWPTR(sheet, i)->height;
+#if 1
+                /* grow region */
+		if (i == sheet->range.row0)
+		{
+		    y = y - 3;
+		    height = height + 3;
+		}
+		if (i == sheet->range.rowi)
+		    height = height + 3;
 
-	    if (state == GTK_STATE_SELECTED 
-		&& selected 
+		if (j == sheet->range.col0)
+		{
+		    x = x - 3;
+		    width = width + 3;
+		}
+		if (j == sheet->range.coli)
+		    width = width + 3;
+#endif
+		// blit
+		cairo_rectangle(swin_cr, x, y, width, height);
+                g_debug("cairo_fill: blit enabled (3)");
+		cairo_fill(swin_cr);
+
+                _gtk_sheet_invalidate_region(sheet, x, y, width, height);
+	    }
+	}
+    }
+#endif
+
+#if 1
+    /* loop over envelope
+       - for visible selected cells within new_range (except active cell)
+       - draw selected background
+       */
+    for (i = range->row0; i <= range->rowi; i++)
+    {
+	for (j = range->col0; j <= range->coli; j++)
+	{
+	    cell_state = gtk_sheet_cell_get_state(sheet, i, j);
+	    gboolean in_new_range = CELL_IN_RANGE(i, j, new_range);
+
+	    if (cell_state != GTK_STATE_SELECTED 
+		&& in_new_range 
 		&& GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j)) 
 		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)) 
-		&& (i == sheet->range.row0 || i == sheet->range.rowi 
-		    || j == sheet->range.col0 || j == sheet->range.coli 
-		    || i == new_range.row0 || i == new_range.rowi 
-		    || j == new_range.col0 || j == new_range.coli))
+		&& (i != sheet->active_cell.row || j != sheet->active_cell.col))
 	    {
-		mask1 = i == sheet->range.row0 ? 1 : 0;
-		mask1 = i == sheet->range.rowi ? mask1 + 2 : mask1;
-		mask1 = j == sheet->range.col0 ? mask1 + 4 : mask1;
-		mask1 = j == sheet->range.coli ? mask1 + 8 : mask1;
+		x = _gtk_sheet_column_left_xpixel(sheet, j);
+		y = _gtk_sheet_row_top_ypixel(sheet, i);
+		width = COLPTR(sheet, j)->width;
+		height = ROWPTR(sheet, i)->height;
+#if 0
+                /* shrink region */
+		if (i == new_range.row0)
+		{
+		    y = y + 2;
+		    height = height - 2;
+		}
+		if (i == new_range.rowi)
+		    height = height - 3;
 
-		mask2 = i == new_range.row0 ? 1 : 0;
-		mask2 = i == new_range.rowi ? mask2 + 2 : mask2;
-		mask2 = j == new_range.col0 ? mask2 + 4 : mask2;
-		mask2 = j == new_range.coli ? mask2 + 8 : mask2;
+		if (j == new_range.col0)
+		{
+		    x = x + 2;
+		    width = width - 2;
+		}
+		if (j == new_range.coli)
+		    width = width - 3;
+#endif
+		// xor
+		cairo_rectangle(xor_cr, x, y, width, height);
+                g_debug("cairo_fill: xor enabled (4) %d %d %d %d",
+                    x + 1, y + 1, width, height);
+		cairo_fill(xor_cr);
 
-		if (mask1 != mask2)
+                _gtk_sheet_invalidate_region(sheet, x, y, width, height);
+            }
+        }
+    }
+#endif
+
+#if 0
+    /* loop over envelope
+       - for visible selected BORDER cells within old or new_range
+         - clear background to bsurf 
+         - draw selected background (except for active cell)
+
+       FIXME - flipping state in old range was necessary for XOR mode
+       */ 
+    for (i = range->row0; i <= range->rowi && i <= sheet->maxrow; i++)
+    {
+	for (j = range->col0; j <= range->coli && j <= sheet->maxcol; j++)
+	{
+	    cell_state = gtk_sheet_cell_get_state(sheet, i, j);
+	    gboolean in_new_range = CELL_IN_RANGE(i, j, new_range);
+
+	    if (cell_state == GTK_STATE_SELECTED 
+		&& in_new_range
+		&& GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j)) 
+		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)) 
+		&& (CELL_ON_RANGE_BORDER(i, j, sheet->range)
+                    || CELL_ON_RANGE_BORDER(i, j, new_range))
+                )
+	    {
+                /* mask1 - cell is on old range border
+                   - set bits: 1=left, 2=right, 4=top, 8=bottom
+                   */
+		mask1 = (i == sheet->range.row0) ? 1 : 0;
+		mask1 = (i == sheet->range.rowi) ? mask1 + 2 : mask1;
+		mask1 = (j == sheet->range.col0) ? mask1 + 4 : mask1;
+		mask1 = (j == sheet->range.coli) ? mask1 + 8 : mask1;
+
+                /* mask2 - cell is on new_range border
+                   - set bits: 1=left, 2=right, 4=top, 8=bottom
+                   */
+		mask2 = (i == new_range.row0) ? 1 : 0;
+		mask2 = (i == new_range.rowi) ? mask2 + 2 : mask2;
+		mask2 = (j == new_range.col0) ? mask2 + 4 : mask2;
+		mask2 = (j == new_range.coli) ? mask2 + 8 : mask2;
+
+		if (mask1 != mask2) /* border cell changed selection */
 		{
 		    x = _gtk_sheet_column_left_xpixel(sheet, j);
 		    y = _gtk_sheet_row_top_ypixel(sheet, i);
-		    width = _gtk_sheet_column_left_xpixel(sheet, j) - x + COLPTR(sheet, j)->width;
-		    height = _gtk_sheet_row_top_ypixel(sheet, i) - y + sheet->row[i].height;
+		    width = COLPTR(sheet, j)->width;
+		    height = ROWPTR(sheet, i)->height;
 
+                    /* grow region */
 		    if (i == sheet->range.row0)
 		    {
 			y = y - 3;
@@ -9484,6 +9773,7 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 		    }
 		    if (i == sheet->range.rowi)
 			height = height + 3;
+
 		    if (j == sheet->range.col0)
 		    {
 			x = x - 3;
@@ -9494,15 +9784,18 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 
 		    // blit
 		    cairo_rectangle(swin_cr, x + 1, y + 1, width, height);
-		    cairo_fill(swin_cr);
+                    g_debug("cairo_fill: blit disabled (3)");
+		    //cairo_fill(swin_cr);
 
 		    if (i != sheet->active_cell.row || j != sheet->active_cell.col)
 		    {
 			x = _gtk_sheet_column_left_xpixel(sheet, j);
 			y = _gtk_sheet_row_top_ypixel(sheet, i);
-			width = _gtk_sheet_column_left_xpixel(sheet, j) - x + COLPTR(sheet, j)->width;
-			height = _gtk_sheet_row_top_ypixel(sheet, i) - y + sheet->row[i].height;
+			width = COLPTR(sheet, j)->width;
+			height = ROWPTR(sheet, i)->height;
 
+                        /* shrink region */
+                        /* FIXME - why is 2 and 3 used ? */
 			if (i == new_range.row0)
 			{
 			    y = y + 2;
@@ -9510,6 +9803,7 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 			}
 			if (i == new_range.rowi)
 			    height = height - 3;
+
 			if (j == new_range.col0)
 			{
 			    x = x + 2;
@@ -9520,94 +9814,22 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 
 			// xor
 			cairo_rectangle(xor_cr, x + 1, y + 1, width, height);
-			cairo_fill(xor_cr);
+                        g_debug("cairo_fill: xor disabled (2)");
+			//cairo_fill(xor_cr);
 		    }
 		}
 	    }
 	}
     }
+#endif
 
-    for (i = range->row0; i <= range->rowi; i++)
-    {
-	for (j = range->col0; j <= range->coli; j++)
-	{
-	    state = gtk_sheet_cell_get_state(sheet, i, j);
-	    selected = (i <= new_range.rowi && i >= new_range.row0 
-			&& j <= new_range.coli && j >= new_range.col0) ? TRUE : FALSE;
+#if 0
+    /* loop over visible part of new_range
+       - for visible border cells
+       - draw thick selection border
 
-	    if (state == GTK_STATE_SELECTED 
-		&& !selected 
-		&& GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j)) 
-		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)))
-	    {
-		x = _gtk_sheet_column_left_xpixel(sheet, j);
-		y = _gtk_sheet_row_top_ypixel(sheet, i);
-		width = _gtk_sheet_column_left_xpixel(sheet, j) - x + COLPTR(sheet, j)->width;
-		height = _gtk_sheet_row_top_ypixel(sheet, i) - y + sheet->row[i].height;
-
-		if (i == sheet->range.row0)
-		{
-		    y = y - 3;
-		    height = height + 3;
-		}
-		if (i == sheet->range.rowi)
-		    height = height + 3;
-		if (j == sheet->range.col0)
-		{
-		    x = x - 3;
-		    width = width + 3;
-		}
-		if (j == sheet->range.coli)
-		    width = width + 3;
-
-		// blit
-		cairo_rectangle(swin_cr, x + 1, y + 1, width, height);
-		cairo_fill(swin_cr);
-	    }
-	}
-    }
-
-    for (i = range->row0; i <= range->rowi; i++)
-    {
-	for (j = range->col0; j <= range->coli; j++)
-	{
-	    state = gtk_sheet_cell_get_state(sheet, i, j);
-	    selected = (i <= new_range.rowi && i >= new_range.row0 
-			&& j <= new_range.coli && j >= new_range.col0) ? TRUE : FALSE;
-
-	    if (state != GTK_STATE_SELECTED 
-		&& selected 
-		&& GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j)) 
-		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)) 
-		&& (i != sheet->active_cell.row || j != sheet->active_cell.col))
-	    {
-		x = _gtk_sheet_column_left_xpixel(sheet, j);
-		y = _gtk_sheet_row_top_ypixel(sheet, i);
-		width = _gtk_sheet_column_left_xpixel(sheet, j) - x + COLPTR(sheet, j)->width;
-		height = _gtk_sheet_row_top_ypixel(sheet, i) - y + sheet->row[i].height;
-
-		if (i == new_range.row0)
-		{
-		    y = y + 2;
-		    height = height - 2;
-		}
-		if (i == new_range.rowi)
-		    height = height - 3;
-		if (j == new_range.col0)
-		{
-		    x = x + 2;
-		    width = width - 2;
-		}
-		if (j == new_range.coli)
-		    width = width - 3;
-
-		// xor
-		cairo_rectangle(xor_cr, x + 1, y + 1, width, height);
-		cairo_fill(xor_cr);
-	    }
-	}
-    }
-
+       FIXME - this part was needed to fix XOR drawing
+       */
     for (i = aux_range.row0; i <= aux_range.rowi; i++)
     {
 	for (j = aux_range.col0; j <= aux_range.coli; j++)
@@ -9615,62 +9837,106 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 	    if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j)) 
 		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)))
 	    {
-		state = gtk_sheet_cell_get_state(sheet, i, j);
+		cell_state = gtk_sheet_cell_get_state(sheet, i, j);
 
-		mask1 = i == sheet->range.row0 ? 1 : 0;
-		mask1 = i == sheet->range.rowi ? mask1 + 2 : mask1;
-		mask1 = j == sheet->range.col0 ? mask1 + 4 : mask1;
-		mask1 = j == sheet->range.coli ? mask1 + 8 : mask1;
+                /* mask1 - cell is on old range border
+                   - set bits: 1=left, 2=right, 4=top, 8=bottom
+                   */
+		mask1 = (i == sheet->range.row0) ? 1 : 0;
+		mask1 = (i == sheet->range.rowi) ? mask1 + 2 : mask1;
+		mask1 = (j == sheet->range.col0) ? mask1 + 4 : mask1;
+		mask1 = (j == sheet->range.coli) ? mask1 + 8 : mask1;
 
-		mask2 = i == new_range.row0 ? 1 : 0;
-		mask2 = i == new_range.rowi ? mask2 + 2 : mask2;
-		mask2 = j == new_range.col0 ? mask2 + 4 : mask2;
-		mask2 = j == new_range.coli ? mask2 + 8 : mask2;
+                /* mask2 - cell is on new_range border
+                   - set bits: 1=left, 2=right, 4=top, 8=bottom
+                   */
+		mask2 = (i == new_range.row0) ? 1 : 0;
+		mask2 = (i == new_range.rowi) ? mask2 + 2 : mask2;
+		mask2 = (j == new_range.col0) ? mask2 + 4 : mask2;
+		mask2 = (j == new_range.coli) ? mask2 + 8 : mask2;
 
-		if (mask2 != mask1 
-		    || (mask2 == mask1 && state != GTK_STATE_SELECTED))
+		if (mask2 != mask1 /* border cell didn't change selection */
+		    || (mask2 == mask1 /* border cell changed selection */
+                        && cell_state != GTK_STATE_SELECTED /* and cell_state */
+                        ))
 		{
 		    x = _gtk_sheet_column_left_xpixel(sheet, j);
 		    y = _gtk_sheet_row_top_ypixel(sheet, i);
 		    width = COLPTR(sheet, j)->width;
-		    height = sheet->row[i].height;
+		    height = ROWPTR(sheet, i)->height;
+
 		    if (mask2 & 1) {
 			// xor
 			cairo_rectangle(xor_cr, x + 1, y - 1, width, 3);
+                        g_debug("cairo_fill: xor enabled (5)");
 			cairo_fill(xor_cr);
+
+                        _gtk_sheet_invalidate_region(sheet,
+                            x + 1, y - 1, width, 3);
 		    }
 
 		    if (mask2 & 2) {
 			// xor
 			cairo_rectangle(xor_cr, x + 1, y + height - 1, width, 3);
+                        g_debug("cairo_fill: xor enabled (6)");
 			cairo_fill(xor_cr);
+
+                        _gtk_sheet_invalidate_region(sheet,
+                            x + 1, y + height - 1, width, 3);
 		    }
 
 		    if (mask2 & 4) {
 			// xor
 			cairo_rectangle(xor_cr, x - 1, y + 1, 3, height);
+                        g_debug("cairo_fill: xor enabled (7)");
 			cairo_fill(xor_cr);
+
+                        _gtk_sheet_invalidate_region(sheet,
+                            x - 1, y + 1, 3, height);
 		    }
 
 		    if (mask2 & 8) {
 			// xor
 			cairo_rectangle(xor_cr, x + width, y + 1, 3, height);
-			cairo_fill(xor_cr);
-		    }
+                        g_debug("cairo_fill: xor disabled (8)");
+			//cairo_fill(xor_cr);
+
+                        _gtk_sheet_invalidate_region(sheet,
+                            x + width, y + 1, 3, height);
+                    }
 		}
 	    }
 	}
     }
+#else
+    gtk_sheet_draw_border(sheet, new_range, NULL);
+    /* corners are drawn by _draw_border
+      gtk_sheet_draw_corners(sheet, new_range, swin_cr, xor_cr);
+      */
+#endif
 
-    *range = new_range;
-    gtk_sheet_draw_corners(sheet, new_range, swin_cr, xor_cr);
+    *range = new_range;  /* restore new_range */
 
-    cairo_destroy(xor_cr);
-    cairo_destroy(swin_cr);
+    cairo_restore(xor_cr);
+    cairo_destroy(xor_cr);  /* FIXME, to be removed */
+    cairo_destroy(swin_cr);  /* FIXME */
 }
 
+/**
+ * draw selection border
+ * 
+ * Called without a cairo context, 
+ * _gtk_sheet_invalidate_region() will be called.
+ * 
+ * @param sheet     the sheet
+ * @param new_range selected range
+ * @param cr        cairo context or NULL
+ */
 static void
-gtk_sheet_draw_border(GtkSheet *sheet, GtkSheetRange new_range)
+gtk_sheet_draw_border(
+    GtkSheet *sheet, 
+    GtkSheetRange new_range,
+    cairo_t *cr)
 {
     GdkRectangle clip_area, area;
     gint i;
@@ -9710,26 +9976,59 @@ gtk_sheet_draw_border(GtkSheet *sheet, GtkSheetRange new_range)
 	clip_area.x, clip_area.y, clip_area.width, clip_area.height);
 #endif
 
+#if 0
+    /* old code */
     clip_area.x--;
     clip_area.y--;
     clip_area.width += 3;
     clip_area.height += 3;
 
-    cairo_t *xor_cr = _create_sheet_win_xor_cr(sheet);
+    cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
+    _cairo_save_and_set_xor_mode(sheet, xor_cr);
 
     cairo_save(xor_cr);  // need to clip
 
     gdk_cairo_rectangle(xor_cr, &clip_area);
     cairo_clip (xor_cr);
+#endif
 
-    for (i = -1; i <= 1; ++i)
+    cairo_t *my_cr = cr;
+
+    if (!my_cr)
     {
-	cairo_rectangle(xor_cr, area.x + i, area.y + i, area.width - 2 * i, area.height - 2 * i);
-	cairo_stroke(xor_cr);
+        // not in expose - create my own cr and destroy at end
+        my_cr = gdk_cairo_create(sheet->sheet_window);
     }
 
-    cairo_restore(xor_cr);
+#if 0
+    // setup cr for blit sheet->bsurf into sheet_window
+    cairo_set_source_surface(my_cr, sheet->bsurf, 0, 0);
+#endif
 
+    _cairo_save_and_set_xor_mode(sheet, my_cr);
+    
+    /* FIXME
+       - we should use cairo stroke width here 
+       - but how does it cope with _invalidate_region() ? 
+       */
+    for (i = -1; i <= 1; ++i)
+    {
+	cairo_rectangle(my_cr,
+            area.x + i, area.y + i, area.width - 2 * i, area.height - 2 * i);
+	cairo_stroke(my_cr);
+
+        if (!cr)
+        {
+            _gtk_sheet_invalidate_region(sheet,
+                area.x + i, area.y + i, area.width - 2 * i, area.height - 2 * i);
+        }
+    }
+
+    cairo_restore(my_cr);
+
+#if 0
+    /* old code */
+    cairo_restore(xor_cr);
     cairo_t *swin_cr = gdk_cairo_create(sheet->sheet_window);
 
     gdk_cairo_rectangle(swin_cr, &clip_area);
@@ -9738,33 +10037,71 @@ gtk_sheet_draw_border(GtkSheet *sheet, GtkSheetRange new_range)
     gtk_sheet_draw_corners(sheet, new_range, swin_cr, xor_cr);
     cairo_destroy(swin_cr);
 
-    cairo_destroy(xor_cr);
+    cairo_restore(xor_cr);
+    cairo_destroy(xor_cr);  /* FIXME - to be removed */
+#endif
+
+    if (!cr) cairo_destroy(my_cr);
+
+    gtk_sheet_draw_corners(sheet, new_range, cr);
 }
 
+/**
+ * draw corners of selection border
+ * 
+ * @param sheet   the sheet
+ * @param range   the selection range
+ * @param cr cairo drawing context
+ */
 static void
-gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range,
-    cairo_t *swin_cr, cairo_t *xor_cr)
+gtk_sheet_draw_corners(
+    GtkSheet *sheet, GtkSheetRange range,
+    cairo_t *cr)
 {
     gint x, y;
     guint width = 1;
 
-    // blit
-    cairo_set_source_surface(swin_cr, sheet->bsurf, 0, 0);
+    cairo_t *my_cr = cr;
 
+    if (!my_cr)
+    {
+        // not in expose - create my own cr and destroy at end
+        my_cr = gdk_cairo_create(sheet->sheet_window);
+    }
+
+#if 0
+    // setup cr for blit sheet->bsurf into sheet_window
+    cairo_set_source_surface(my_cr, sheet->bsurf, 0, 0);
+#endif
+
+    _cairo_save_and_set_xor_mode(sheet, my_cr);
+
+    /* top left */
     if (gtk_sheet_cell_isvisible(sheet, range.row0, range.col0))
     {
 	x = _gtk_sheet_column_left_xpixel(sheet, range.col0);
 	y = _gtk_sheet_row_top_ypixel(sheet, range.row0);
 
-	// blit
-	cairo_rectangle(swin_cr, x - 1, y - 1, 3, 3);
-	cairo_fill(swin_cr);
+#if 0
+        // blit
+        cairo_rectangle(my_cr, x - 1, y - 1, 3, 3);
+        cairo_fill(my_cr); 
+#endif
 
 	// xor
-	cairo_rectangle(xor_cr, x - 1, y - 1, 3, 3);
-	cairo_fill(xor_cr);
+	cairo_rectangle(my_cr,
+            x - 1, y - 1, 3, 3);
+        g_debug("cairo_fill: xor enabled (9)");
+	cairo_fill(my_cr);
+
+        if (!cr)
+        {
+            _gtk_sheet_invalidate_region(sheet,
+                x - 1, y - 1, 3, 3);
+        }
     }
 
+    /* top right */
     if (gtk_sheet_cell_isvisible(sheet, range.row0, range.coli) ||
 	sheet->state == GTK_SHEET_COLUMN_SELECTED)
     {
@@ -9772,22 +10109,34 @@ gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range,
 	    COLPTR(sheet, range.coli)->width;
 	y = _gtk_sheet_row_top_ypixel(sheet, range.row0);
 	width = 1;
+
 	if (sheet->state == GTK_SHEET_COLUMN_SELECTED)
 	{
 	    y = _gtk_sheet_row_top_ypixel(sheet, sheet->view.row0) + 3;
 	    width = 3;
 	}
 
+#if 0
 	// blit
-	cairo_rectangle(swin_cr, x - width, y - width, 2 * width + 1, 2 * width + 1);
+	cairo_rectangle(swin_cr,
+            x - width, y - width, 2 * width + 1, 2 * width + 1);
 	cairo_fill(swin_cr);
+#endif
 
 	// xor
-	cairo_rectangle(xor_cr, 
-	    x - width + width / 2, y - width + width / 2, 2 + width, 2 + width);
-	cairo_fill(xor_cr);
+	cairo_rectangle(my_cr, 
+	    x - width + width/2, y - width + width/2, width+2, width+2);
+        g_debug("cairo_fill: xor enabled (10)");
+	cairo_fill(my_cr);
+
+        if (!cr)
+        {
+            _gtk_sheet_invalidate_region(sheet,
+                x - width + width/2, y - width + width/2, width+2, width+2);
+        }
     }
 
+    /* bottom left */
     if (gtk_sheet_cell_isvisible(sheet, range.rowi, range.col0) ||
 	sheet->state == GTK_SHEET_ROW_SELECTED)
     {
@@ -9801,16 +10150,27 @@ gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range,
 	    width = 3;
 	}
 
+#if 0
 	// blit
-	cairo_rectangle(swin_cr, x - width, y - width, 2 * width + 1, 2 * width + 1);
+	cairo_rectangle(swin_cr,
+            x - width, y - width, 2 * width + 1, 2 * width + 1);
 	cairo_fill(swin_cr);
+#endif
 
 	// xor
-	cairo_rectangle(xor_cr, 
-	    x - width + width / 2, y - width + width / 2, 2 + width, 2 + width);
-	cairo_fill(xor_cr);
+	cairo_rectangle(my_cr, 
+	    x - width + width/2, y - width + width/2, width+2, width+2);
+        g_debug("cairo_fill: xor enabled (11)");
+	cairo_fill(my_cr);
+
+        if (!cr)
+        {
+            _gtk_sheet_invalidate_region(sheet,
+                x - width + width/2, y - width + width/2, width+2, width+2);
+        }
     }
 
+    /* bottom right */
     if (gtk_sheet_cell_isvisible(sheet, range.rowi, range.coli))
     {
 	x = _gtk_sheet_column_left_xpixel(sheet, range.coli) +
@@ -9823,15 +10183,26 @@ gtk_sheet_draw_corners(GtkSheet *sheet, GtkSheetRange range,
 	if (sheet->state == GTK_SHEET_NORMAL)
 	    width = 3;
 
+#if 0
 	// blit
 	cairo_rectangle(swin_cr, x - width, y - width, 2 * width + 1, 2 * width + 1);
 	cairo_fill(swin_cr);
+#endif
 
 	// xor
-	cairo_rectangle(xor_cr, 
-	    x - width + width / 2, y - width + width / 2, 2 + width, 2 + width);
-	cairo_fill(xor_cr);
+	cairo_rectangle(my_cr, 
+	    x - width + width/2, y - width + width/2, width+2, width+2);
+        g_debug("cairo_fill: xor enabled (12)");
+	cairo_fill(my_cr);
+
+        if (!cr)
+        {
+            _gtk_sheet_invalidate_region(sheet,
+                x - width + width/2, y - width + width/2, width+2, width+2);
+        }
     }
+    cairo_restore(my_cr);
+    if (!cr) cairo_destroy(my_cr);
 }
 
 
@@ -9846,10 +10217,8 @@ gtk_sheet_real_select_range(GtkSheet *sheet, GtkSheetRange *range)
     if (range == NULL)
 	range = &sheet->range;
 
-    if (range->row0 < 0 || range->rowi < 0)
-	return;
-    if (range->col0 < 0 || range->coli < 0)
-	return;
+    if (range->row0 < 0 || range->rowi < 0) return;
+    if (range->col0 < 0 || range->coli < 0) return;
 
 #if GTK_SHEET_DEBUG_SELECTION > 0
     g_debug("gtk_sheet_real_select_range: {%d, %d, %d, %d}",
@@ -9858,11 +10227,14 @@ gtk_sheet_real_select_range(GtkSheet *sheet, GtkSheetRange *range)
 
     state = sheet->state;
 
-    if (state == GTK_SHEET_COLUMN_SELECTED || state == GTK_SHEET_RANGE_SELECTED)
+    if (state == GTK_SHEET_COLUMN_SELECTED
+        || state == GTK_SHEET_RANGE_SELECTED)
     {
-	for (i = sheet->range.col0; i < range->col0; i++) _gtk_sheet_column_button_release(sheet, i);
+	for (i = sheet->range.col0; i < range->col0; i++)
+            _gtk_sheet_column_button_release(sheet, i);
 
-	for (i = range->coli + 1; i <= sheet->range.coli; i++) _gtk_sheet_column_button_release(sheet, i);
+	for (i = range->coli + 1; i <= sheet->range.coli; i++)
+            _gtk_sheet_column_button_release(sheet, i);
 
 	for (i = range->col0; i <= range->coli; i++)
 	{
@@ -9870,11 +10242,14 @@ gtk_sheet_real_select_range(GtkSheet *sheet, GtkSheetRange *range)
 	}
     }
 
-    if (state == GTK_SHEET_ROW_SELECTED || state == GTK_SHEET_RANGE_SELECTED)
+    if (state == GTK_SHEET_ROW_SELECTED
+        || state == GTK_SHEET_RANGE_SELECTED)
     {
-	for (i = sheet->range.row0; i < range->row0; i++) row_button_release(sheet, i);
+	for (i = sheet->range.row0; i < range->row0; i++)
+            row_button_release(sheet, i);
 
-	for (i = range->rowi + 1; i <= sheet->range.rowi; i++) row_button_release(sheet, i);
+	for (i = range->rowi + 1; i <= sheet->range.rowi; i++)
+            row_button_release(sheet, i);
 
 	for (i = range->row0; i <= range->rowi; i++)
 	{
@@ -9882,8 +10257,10 @@ gtk_sheet_real_select_range(GtkSheet *sheet, GtkSheetRange *range)
 	}
     }
 
-    if (range->coli != sheet->range.coli || range->col0 != sheet->range.col0 ||
-	range->rowi != sheet->range.rowi || range->row0 != sheet->range.row0)
+    if (range->coli != sheet->range.coli
+        || range->col0 != sheet->range.col0
+        || range->rowi != sheet->range.rowi
+        || range->row0 != sheet->range.row0)
     {
 	gtk_sheet_new_selection(sheet, range);
 
@@ -9894,11 +10271,12 @@ gtk_sheet_real_select_range(GtkSheet *sheet, GtkSheetRange *range)
     }
     else
     {
-	gtk_sheet_draw_backing_pixmap(sheet, sheet->range);
-	gtk_sheet_range_draw_selection(sheet, sheet->range);
+	gtk_sheet_draw_backing_pixmap(sheet, sheet->range, NULL);
+	gtk_sheet_range_draw_selection(sheet, sheet->range, NULL);
     }
 
-    g_signal_emit(G_OBJECT(sheet), sheet_signals[SELECT_RANGE], 0, range);
+    g_signal_emit(
+        G_OBJECT(sheet), sheet_signals[SELECT_RANGE], 0, range);
 }
 
 /**
@@ -9920,10 +10298,8 @@ gtk_sheet_select_range(GtkSheet *sheet, const GtkSheetRange *range)
 
     new_range = *range;
 
-    if (new_range.row0 < 0 || new_range.rowi < 0)
-	return;
-    if (new_range.col0 < 0 || new_range.coli < 0)
-	return;
+    if (new_range.row0 < 0 || new_range.rowi < 0) return;
+    if (new_range.col0 < 0 || new_range.coli < 0) return;
 
     if (sheet->state != GTK_SHEET_NORMAL)
     {
@@ -9951,8 +10327,8 @@ gtk_sheet_select_range(GtkSheet *sheet, const GtkSheetRange *range)
 
     sheet->state = GTK_SHEET_RANGE_SELECTED;
     gtk_sheet_real_select_range(sheet, NULL);
-
 }
+
 /**
  * gtk_sheet_unselect_range:
  * @sheet: a #GtkSheet
@@ -9995,7 +10371,7 @@ gtk_sheet_real_unselect_range(GtkSheet *sheet, GtkSheetRange *range)
 #if GTK_SHEET_DEBUG_SELECTION > 0
 	g_debug("gtk_sheet_real_unselect_range: gtk_sheet_draw_backing_pixmap");
 #endif
-	gtk_sheet_draw_backing_pixmap(sheet, *range);
+	gtk_sheet_draw_backing_pixmap(sheet, *range, NULL);
     }
 
     for (i = range->col0; i <= range->coli; i++)
@@ -10031,6 +10407,7 @@ gtk_sheet_real_unselect_range(GtkSheet *sheet, GtkSheetRange *range)
  * 
  * @param widget the #GtkSheet
  * @param event  the GdkEventExpose which triggered this signal
+ * @param cr cairo context or NULL
  * 
  * @return TRUE to stop other handlers from being invoked for the event. FALSE to propagate the event further.
  */
@@ -10043,9 +10420,13 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
     g_return_val_if_fail(widget != NULL, FALSE);
     g_return_val_if_fail(GTK_IS_SHEET(widget), FALSE);
 
+#if GTK_SHEET_DEBUG_EXPOSE > 1
+    _debug_cairo_clip_extent("gtk_sheet_draw", cr);
+#endif
+
     sheet = GTK_SHEET(widget);
 
-#if GTK_SHEET_DEBUG_EXPOSE > 0
+#if GTK_SHEET_DEBUG_EXPOSE > 1
     gdk_cairo_set_source_rgba(cr, &debug_color);
     cairo_rectangle(cr, 100, 200, 1300, 40);
     cairo_fill(cr);
@@ -10065,7 +10446,7 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
 #endif
 	    for (i = MIN_VIEW_ROW(sheet); i <= MAX_VIEW_ROW(sheet) && i <= sheet->maxrow; i++)
 	    {
-		_gtk_sheet_draw_button(sheet, i, -1);
+		_gtk_sheet_draw_button(sheet, i, -1, cr);
 	    }
 	}
 
@@ -10077,7 +10458,7 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
 #endif
 	    for (i = MIN_VIEW_COLUMN(sheet); i <= MAX_VIEW_COLUMN(sheet) && i <= sheet->maxcol; i++)
 	    {
-		_gtk_sheet_draw_button(sheet, -1, i);
+		_gtk_sheet_draw_button(sheet, -1, i, cr);
 	    }
 	}
 
@@ -10092,36 +10473,44 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
 		range.row0, range.col0, range.rowi, range.coli);
 #endif
 
-	    gtk_sheet_draw_backing_pixmap(sheet, range);
+	    gtk_sheet_draw_backing_pixmap(sheet, range, cr);
 
 	    if (sheet->state != GTK_SHEET_NORMAL)
 	    {
 		if (gtk_sheet_range_isvisible(sheet, sheet->range))
-		    gtk_sheet_draw_backing_pixmap(sheet, sheet->range);
+		    gtk_sheet_draw_backing_pixmap(sheet, sheet->range, cr);
+
 		if (GTK_SHEET_IN_RESIZE(sheet) || GTK_SHEET_IN_DRAG(sheet))
-		    gtk_sheet_draw_backing_pixmap(sheet, sheet->drag_range);
+		    gtk_sheet_draw_backing_pixmap(sheet, sheet->drag_range, cr);
 
 		if (gtk_sheet_range_isvisible(sheet, sheet->range))
-		    gtk_sheet_range_draw_selection(sheet, sheet->range);
+		    gtk_sheet_range_draw_selection(sheet, sheet->range, cr);
 
 		if (GTK_SHEET_IN_RESIZE(sheet) || GTK_SHEET_IN_DRAG(sheet))
 		    draw_xor_rectangle(sheet, sheet->drag_range, TRUE);
 	    }
 
-	    if ((!GTK_SHEET_IN_XDRAG(sheet)) && (!GTK_SHEET_IN_YDRAG(sheet)))
+	    if ((!GTK_SHEET_IN_XDRAG(sheet))
+                && (!GTK_SHEET_IN_YDRAG(sheet)))
 	    {
 		if (sheet->state == GTK_SHEET_NORMAL)
 		{
 		    gtk_sheet_draw_active_cell(sheet);
+
+                    /* FIXME
+                       - the next statement causes a draw loop 
+                       - only in CASYMIR, not in testgtksheet!
+                       */
 		    if (!GTK_SHEET_IN_SELECTION(sheet))
-			gtk_widget_queue_draw(sheet->sheet_entry);
+                        gtk_widget_queue_draw(sheet->sheet_entry);
 		}
 	    }
 	}
 
     }
 
-    if (sheet->state != GTK_SHEET_NORMAL && GTK_SHEET_IN_SELECTION(sheet))
+    if (sheet->state != GTK_SHEET_NORMAL
+        && GTK_SHEET_IN_SELECTION(sheet))
 	gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
     /* propagation re-enabled - 28.04.18/fp #219937
@@ -10784,89 +11173,130 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     if (event->window == sheet->column_title_window 
 	&& gtk_sheet_columns_resizable(sheet))
     {
-	gdk_window_get_device_position (main_window, event->device, &x, &y, NULL);
-	if (!GTK_SHEET_IN_SELECTION(sheet) && POSSIBLE_XDRAG(sheet, x, &column))
+	gdk_window_get_device_position(
+            main_window, event->device, &x, &y, NULL);
+
+	if (!GTK_SHEET_IN_SELECTION(sheet)
+            && POSSIBLE_XDRAG(sheet, x, &column))
 	{
 	    new_cursor = GDK_SB_H_DOUBLE_ARROW;
-	    if (new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
+	    if (new_cursor != gdk_cursor_get_cursor_type(
+                sheet->cursor_drag))
 	    {
 		g_object_unref(G_OBJECT(sheet->cursor_drag));
-		sheet->cursor_drag = gdk_cursor_new(GDK_SB_H_DOUBLE_ARROW);
-		gdk_window_set_cursor(sheet->column_title_window, sheet->cursor_drag);
+
+		sheet->cursor_drag = gdk_cursor_new(
+                    GDK_SB_H_DOUBLE_ARROW);
+		gdk_window_set_cursor(
+                    sheet->column_title_window, sheet->cursor_drag);
 	    }
 	}
 	else
 	{
 	    new_cursor = GDK_TOP_LEFT_ARROW;
-	    if (!GTK_SHEET_IN_XDRAG(sheet) && new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
+
+	    if (!GTK_SHEET_IN_XDRAG(sheet)
+                && new_cursor != gdk_cursor_get_cursor_type(
+                    sheet->cursor_drag))
 	    {
 		g_object_unref(G_OBJECT(sheet->cursor_drag));
-		sheet->cursor_drag = gdk_cursor_new(GDK_TOP_LEFT_ARROW);
-		gdk_window_set_cursor(sheet->column_title_window, sheet->cursor_drag);
+
+		sheet->cursor_drag = gdk_cursor_new(
+                    GDK_TOP_LEFT_ARROW);
+		gdk_window_set_cursor(
+                    sheet->column_title_window, sheet->cursor_drag);
 	    }
 	}
     }
 
     if (event->window == sheet->row_title_window 
-	&& gtk_sheet_rows_resizable(sheet))
+        && gtk_sheet_rows_resizable(sheet))
     {
-	gdk_window_get_device_position (main_window, event->device, &x, &y, NULL);
-	if (!GTK_SHEET_IN_SELECTION(sheet) && POSSIBLE_YDRAG(sheet, y, &column))
+	gdk_window_get_device_position (
+            main_window, event->device, &x, &y, NULL);
+
+	if (!GTK_SHEET_IN_SELECTION(sheet)
+            && POSSIBLE_YDRAG(sheet, y, &column))
 	{
 	    new_cursor = GDK_SB_V_DOUBLE_ARROW;
-	    if (new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
+	    if (new_cursor != gdk_cursor_get_cursor_type(
+                sheet->cursor_drag))
 	    {
 		g_object_unref(G_OBJECT(sheet->cursor_drag));
-		sheet->cursor_drag = gdk_cursor_new(GDK_SB_V_DOUBLE_ARROW);
-		gdk_window_set_cursor(sheet->row_title_window, sheet->cursor_drag);
+
+		sheet->cursor_drag = gdk_cursor_new(
+                    GDK_SB_V_DOUBLE_ARROW);
+		gdk_window_set_cursor(
+                    sheet->row_title_window, sheet->cursor_drag);
 	    }
 	}
 	else
 	{
 	    new_cursor = GDK_TOP_LEFT_ARROW;
-	    if (!GTK_SHEET_IN_YDRAG(sheet) && new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
+
+	    if (!GTK_SHEET_IN_YDRAG(sheet)
+                && new_cursor != gdk_cursor_get_cursor_type(
+                    sheet->cursor_drag))
 	    {
 		g_object_unref(G_OBJECT(sheet->cursor_drag));
-		sheet->cursor_drag = gdk_cursor_new(GDK_TOP_LEFT_ARROW);
-		gdk_window_set_cursor(sheet->row_title_window, sheet->cursor_drag);
+
+		sheet->cursor_drag = gdk_cursor_new(
+                    GDK_TOP_LEFT_ARROW);
+		gdk_window_set_cursor(
+                    sheet->row_title_window, sheet->cursor_drag);
 	    }
 	}
     }
 
     new_cursor = GDK_PLUS;
-    if (!POSSIBLE_DRAG(sheet, x, y, &row, &column) && !GTK_SHEET_IN_DRAG(sheet) &&
-	!POSSIBLE_RESIZE(sheet, x, y, &row, &column) && !GTK_SHEET_IN_RESIZE(sheet) &&
-	event->window == sheet->sheet_window &&
-	new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
+    if (!POSSIBLE_DRAG(sheet, x, y, &row, &column)
+        && !GTK_SHEET_IN_DRAG(sheet)
+        && !POSSIBLE_RESIZE(sheet, x, y, &row, &column)
+        && !GTK_SHEET_IN_RESIZE(sheet)
+        && event->window == sheet->sheet_window
+        && new_cursor != gdk_cursor_get_cursor_type(
+            sheet->cursor_drag))
     {
 	g_object_unref(G_OBJECT(sheet->cursor_drag));
+
 	sheet->cursor_drag = gdk_cursor_new(GDK_PLUS);
-	gdk_window_set_cursor(sheet->sheet_window, sheet->cursor_drag);
+	gdk_window_set_cursor(
+            sheet->sheet_window, sheet->cursor_drag);
     }
 
     new_cursor = GDK_TOP_LEFT_ARROW;
-    if (!(POSSIBLE_RESIZE(sheet, x, y, &row, &column) || GTK_SHEET_IN_RESIZE(sheet)) &&
-	(POSSIBLE_DRAG(sheet, x, y, &row, &column) || GTK_SHEET_IN_DRAG(sheet)) &&
-	event->window == sheet->sheet_window &&
-	new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
+    if (!(POSSIBLE_RESIZE(sheet, x, y, &row, &column)
+          || GTK_SHEET_IN_RESIZE(sheet))
+        && (POSSIBLE_DRAG(sheet, x, y, &row, &column)
+            || GTK_SHEET_IN_DRAG(sheet))
+        && event->window == sheet->sheet_window
+        && new_cursor != gdk_cursor_get_cursor_type(
+            sheet->cursor_drag))
     {
 	g_object_unref(G_OBJECT(sheet->cursor_drag));
+
 	sheet->cursor_drag = gdk_cursor_new(GDK_TOP_LEFT_ARROW);
-	gdk_window_set_cursor(sheet->sheet_window, sheet->cursor_drag);
+	gdk_window_set_cursor(
+            sheet->sheet_window, sheet->cursor_drag);
     }
 
     new_cursor = GDK_SIZING;
-    if (!GTK_SHEET_IN_DRAG(sheet) &&
-	(POSSIBLE_RESIZE(sheet, x, y, &row, &column) || GTK_SHEET_IN_RESIZE(sheet)) &&
-	event->window == sheet->sheet_window &&
-	new_cursor != gdk_cursor_get_cursor_type(sheet->cursor_drag))
+    if (!GTK_SHEET_IN_DRAG(sheet)
+        && (POSSIBLE_RESIZE(sheet, x, y, &row, &column)
+            || GTK_SHEET_IN_RESIZE(sheet))
+        && event->window == sheet->sheet_window
+        && new_cursor != gdk_cursor_get_cursor_type(
+            sheet->cursor_drag))
     {
 	g_object_unref(G_OBJECT(sheet->cursor_drag));
+
 	sheet->cursor_drag = gdk_cursor_new(GDK_SIZING);
-	gdk_window_set_cursor(sheet->sheet_window, sheet->cursor_drag);
+	gdk_window_set_cursor(
+            sheet->sheet_window, sheet->cursor_drag);
     }
 
-    gdk_window_get_device_position (main_window, event->device, &x, &y, &mods);
+    gdk_window_get_device_position (
+        main_window, event->device, &x, &y, &mods);
 
     if (!(mods & GDK_BUTTON1_MASK))
 	return (FALSE);
@@ -10875,12 +11305,14 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     {
 	if (event->is_hint || event->window != main_window)
 	{
-	    gdk_window_get_device_position(main_window, event->device, &x, NULL, NULL);
+	    gdk_window_get_device_position(
+                main_window, event->device, &x, NULL, NULL);
 	}
 	else
 	    x = event->x;
 
 	new_column_width(sheet, sheet->drag_cell.col, &x);
+
 	if (x != sheet->x_drag)
 	{
 	    draw_xor_vline(sheet, FALSE);
@@ -10894,12 +11326,14 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     {
 	if (event->is_hint || event->window != main_window)
 	{
-	    gdk_window_get_device_position(main_window, event->device, NULL, &y, NULL);
+	    gdk_window_get_device_position(
+                main_window, event->device, NULL, &y, NULL);
 	}
 	else
 	    y = event->y;
 
 	new_row_height(sheet, sheet->drag_cell.row, &y);
+
 	if (y != sheet->y_drag)
 	{
 	    draw_xor_hline(sheet, FALSE);
@@ -10913,8 +11347,10 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     {
 	GtkSheetRange aux, visr;
 
-	gint current_row = MIN(sheet->maxrow, _gtk_sheet_row_from_ypixel(sheet, y));
-	gint current_col = MIN(sheet->maxcol, _gtk_sheet_column_from_xpixel(sheet, x));
+	gint current_row = MIN(
+            sheet->maxrow, _gtk_sheet_row_from_ypixel(sheet, y));
+	gint current_col = MIN(
+            sheet->maxcol, _gtk_sheet_column_from_xpixel(sheet, x));
 
 	row = current_row - sheet->drag_cell.row;
 	column = current_col - sheet->drag_cell.col;
@@ -10923,6 +11359,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	    column = 0;
 	if (sheet->state == GTK_SHEET_COLUMN_SELECTED)
 	    row = 0;
+
 	sheet->x_drag = x;
 	sheet->y_drag = y;
 	aux = sheet->range;
@@ -10932,7 +11369,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	    return (TRUE);
 
 	if (_RECT_IN_RANGE(aux.row0 + row, aux.rowi + row,
-		aux.col0 + column, aux.coli + column, &visr))
+            aux.col0 + column, aux.coli + column, &visr))
 	{
 	    aux = sheet->drag_range;
 
@@ -10947,8 +11384,11 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	       */
 	    if (row > 0)
 	    {
-		gint nrow0 = _gtk_sheet_first_visible_rowidx(sheet, sheet->range.row0 + row);
-		gint nrowi = _gtk_sheet_first_visible_rowidx(sheet, sheet->range.rowi + row);
+		gint nrow0 = _gtk_sheet_first_visible_rowidx(
+                    sheet, sheet->range.row0 + row);
+		gint nrowi = _gtk_sheet_first_visible_rowidx(
+                    sheet, sheet->range.rowi + row);
+
 		if (nrow0 >= 0 && nrowi >= 0)
 		{
 		    sheet->drag_range.row0 = nrow0;
@@ -10957,18 +11397,25 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	    }
 	    else
 	    {
-		gint nrow0 = _gtk_sheet_last_visible_rowidx(sheet, sheet->range.row0 + row);
-		gint nrowi = _gtk_sheet_last_visible_rowidx(sheet, sheet->range.rowi + row);
+		gint nrow0 = _gtk_sheet_last_visible_rowidx(
+                    sheet, sheet->range.row0 + row);
+		gint nrowi = _gtk_sheet_last_visible_rowidx(
+                    sheet, sheet->range.rowi + row);
+
 		if (nrow0 >= 0 && nrowi >= 0)
 		{
 		    sheet->drag_range.row0 = nrow0;
 		    sheet->drag_range.rowi = nrowi;
 		}
 	    }
+
 	    if (column > 0)
 	    {
-		gint ncol0 = _gtk_sheet_first_visible_colidx(sheet, sheet->range.col0 + column);
-		gint ncoli = _gtk_sheet_first_visible_colidx(sheet, sheet->range.coli + column);
+		gint ncol0 = _gtk_sheet_first_visible_colidx(
+                    sheet, sheet->range.col0 + column);
+		gint ncoli = _gtk_sheet_first_visible_colidx(
+                    sheet, sheet->range.coli + column);
+
 		if (ncol0 >= 0 && ncoli >= 0)
 		{
 		    sheet->drag_range.col0 = ncol0;
@@ -10977,8 +11424,11 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	    }
 	    else
 	    {
-		gint ncol0 = _gtk_sheet_last_visible_colidx(sheet, sheet->range.col0 + column);
-		gint ncoli = _gtk_sheet_last_visible_colidx(sheet, sheet->range.coli + column);
+		gint ncol0 = _gtk_sheet_last_visible_colidx(
+                    sheet, sheet->range.col0 + column);
+		gint ncoli = _gtk_sheet_last_visible_colidx(
+                    sheet, sheet->range.coli + column);
+
 		if (ncol0 >= 0 && ncoli >= 0)
 		{
 		    sheet->drag_range.col0 = ncol0;
@@ -11002,11 +11452,15 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	GtkSheetRange aux, visr;
 	gint current_col, current_row, col_threshold, row_threshold;
 
-	g_assert(0 <= sheet->drag_cell.row && sheet->drag_cell.row <= sheet->maxrow);
-	g_assert(0 <= sheet->drag_cell.col && sheet->drag_cell.col <= sheet->maxcol);
+	g_assert(0 <= sheet->drag_cell.row
+            && sheet->drag_cell.row <= sheet->maxrow);
+	g_assert(0 <= sheet->drag_cell.col
+            && sheet->drag_cell.col <= sheet->maxcol);
 
-	current_row = MIN(sheet->maxrow, _gtk_sheet_row_from_ypixel(sheet, y));
-	current_col = MIN(sheet->maxcol, _gtk_sheet_column_from_xpixel(sheet, x));
+	current_row = MIN(
+            sheet->maxrow, _gtk_sheet_row_from_ypixel(sheet, y));
+	current_col = MIN(
+            sheet->maxcol, _gtk_sheet_column_from_xpixel(sheet, x));
 
 	row    = current_row - sheet->drag_cell.row;
 	column = current_col - sheet->drag_cell.col;
@@ -11022,18 +11476,23 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	    row_threshold += (ROWPTR(sheet, current_row)->height) / 2;
 
 	if (current_row > sheet->drag_range.row0 && y < row_threshold)
-	    current_row = _gtk_sheet_last_visible_rowidx(sheet, current_row - 1);
-	else if (current_row < sheet->drag_range.row0 && y < row_threshold)
-	    current_row = _gtk_sheet_first_visible_rowidx(sheet, current_row + 1);
+	    current_row = _gtk_sheet_last_visible_rowidx(
+                sheet, current_row - 1);
+	else if (current_row < sheet->drag_range.row0
+                 && y < row_threshold)
+	    current_row = _gtk_sheet_first_visible_rowidx(
+                sheet, current_row + 1);
 
 	col_threshold = _gtk_sheet_column_left_xpixel(sheet, current_col);
 	if (current_col >= 0)
 	    col_threshold += (COLPTR(sheet, current_col)->width) / 2;
 
 	if (current_col > sheet->drag_range.col0 && x < col_threshold)
-	    current_col = _gtk_sheet_last_visible_colidx(sheet, current_col - 1);
+	    current_col = _gtk_sheet_last_visible_colidx(
+                sheet, current_col - 1);
 	else if (current_col < sheet->drag_range.col0 && x > col_threshold)
-	    current_col = _gtk_sheet_first_visible_colidx(sheet, current_col + 1);
+	    current_col = _gtk_sheet_first_visible_colidx(
+                sheet, current_col + 1);
 
 	sheet->x_drag = x;
 	sheet->y_drag = y;
@@ -11091,12 +11550,14 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     gtk_sheet_get_pixel_info(sheet, NULL, x, y, &row, &column);
 
     if (sheet->state == GTK_SHEET_NORMAL
-	&& row == sheet->active_cell.row && column == sheet->active_cell.col)
+	&& row == sheet->active_cell.row
+        && column == sheet->active_cell.col)
     {
 	return (TRUE);
     }
 
-    if (GTK_SHEET_IN_SELECTION(sheet) && (mods & GDK_BUTTON1_MASK))
+    if (GTK_SHEET_IN_SELECTION(sheet)
+        && (mods & GDK_BUTTON1_MASK))
     {
 	GtkSheetRange visr;
 
@@ -11364,12 +11825,15 @@ gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column)
 
     if (sheet->selection_mode == GTK_SELECTION_SINGLE)
 	return;
-    if (row == sheet->selection_cell.row && column == sheet->selection_cell.col)
+    if (row == sheet->selection_cell.row
+        && column == sheet->selection_cell.col)
 	return;
 
-    if (sheet->active_cell.row < 0 || sheet->active_cell.row > sheet->maxrow)
+    if (sheet->active_cell.row < 0
+        || sheet->active_cell.row > sheet->maxrow)
 	return;
-    if (sheet->active_cell.col < 0 || sheet->active_cell.col > sheet->maxcol)
+    if (sheet->active_cell.col < 0
+        || sheet->active_cell.col > sheet->maxcol)
 	return;
 
     _gtk_sheet_move_query(sheet, row, column, FALSE);
@@ -11412,7 +11876,7 @@ gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column)
 	    cairo_fill(swin_cr);
 
 	    sheet->state = GTK_SHEET_RANGE_SELECTED;
-	    gtk_sheet_range_draw_selection(sheet, sheet->range);
+	    gtk_sheet_range_draw_selection(sheet, sheet->range, NULL);
 	    /* FALLTHROUGH */
 
 	case GTK_SHEET_RANGE_SELECTED:
@@ -11434,9 +11898,11 @@ gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column)
     range.coli = MIN(range.coli, sheet->maxcol);
     range.rowi = MIN(range.rowi, sheet->maxrow);
 
-    if (range.row0 != sheet->range.row0 || range.rowi != sheet->range.rowi ||
-	range.col0 != sheet->range.col0 || range.coli != sheet->range.coli ||
-	state == GTK_SHEET_NORMAL)
+    if (range.row0 != sheet->range.row0
+        || range.rowi != sheet->range.rowi
+        || range.col0 != sheet->range.col0
+        || range.coli != sheet->range.coli
+        || state == GTK_SHEET_NORMAL)
     {
 	gtk_sheet_real_select_range(sheet, &range);
     }
@@ -12200,7 +12666,8 @@ size_allocate_row_title_buttons(GtkSheet *sheet)
     if (!gtk_widget_is_drawable(GTK_WIDGET(sheet)))
 	return;
 
-    for (i = MIN_VIEW_ROW(sheet); i <= MAX_VIEW_ROW(sheet) && i <= sheet->maxrow; i++) _gtk_sheet_draw_button(sheet, i, -1);
+    for (i = MIN_VIEW_ROW(sheet); i <= MAX_VIEW_ROW(sheet) && i <= sheet->maxrow; i++) 
+        _gtk_sheet_draw_button(sheet, i, -1, NULL);
 }
 
 /**
@@ -12504,7 +12971,8 @@ static void sheet_entry_populate_popup_handler(GtkWidget *widget,
 }
 
 static void
-create_sheet_entry(GtkSheet *sheet, GType new_entry_type)
+create_sheet_entry(
+    GtkSheet *sheet, GType new_entry_type)
 {
     GtkWidget *widget;
     GtkWidget * entry, *new_entry;
@@ -12522,18 +12990,21 @@ create_sheet_entry(GtkSheet *sheet, GType new_entry_type)
 	/* avoids warnings */
 	g_object_ref(sheet->sheet_entry);
 	gtk_widget_unparent(sheet->sheet_entry);
+
 #if GTK_SHEET_DEBUG_ENTRY > 0
-	g_debug("create_sheet_entry: destroying old entry %p", sheet->sheet_entry);
+	g_debug("create_sheet_entry: destroying old entry %p", 
+            sheet->sheet_entry);
 #endif
 	gtk_widget_destroy(sheet->sheet_entry);
 	sheet->sheet_entry = NULL;
     }
 
-    if (new_entry_type == G_TYPE_NONE) new_entry_type = GTK_TYPE_DATA_ENTRY;
+    if (new_entry_type == G_TYPE_NONE) 
+        new_entry_type = GTK_TYPE_DATA_ENTRY;
 
 #if GTK_SHEET_DEBUG_ENTRY > 0
 	g_debug("create_sheet_entry: new_entry type %s", 
-	    g_type_name(new_entry_type));
+            g_type_name(new_entry_type));
 #endif
 
     new_entry = gtk_widget_new(new_entry_type, NULL);
@@ -12572,7 +13043,8 @@ create_sheet_entry(GtkSheet *sheet, GType new_entry_type)
     g_object_ref_sink(sheet->sheet_entry);
 
 #if GTK_SHEET_DEBUG_FINALIZE > 0
-    g_object_weak_ref(G_OBJECT(sheet->sheet_entry), weak_notify, "Sheet-Entry");
+    g_object_weak_ref(
+        G_OBJECT(sheet->sheet_entry), weak_notify, "Sheet-Entry");
 #endif
 
     if (gtk_widget_get_realized(GTK_WIDGET(sheet)))
@@ -12582,7 +13054,9 @@ create_sheet_entry(GtkSheet *sheet, GType new_entry_type)
 #if GTK_SHEET_DEBUG_ENTRY > 0
 	g_debug("create_sheet_entry: sheet was realized");
 #endif
-	gtk_widget_set_parent_window(sheet->sheet_entry, sheet->sheet_window);
+	gtk_widget_set_parent_window(
+            sheet->sheet_entry, sheet->sheet_window);
+
 	gtk_widget_set_parent(sheet->sheet_entry, GTK_WIDGET(sheet));
 	gtk_widget_realize(sheet->sheet_entry);
     }
@@ -12891,7 +13365,8 @@ void gtk_sheet_entry_select_region(GtkSheet *sheet, gint start_pos, gint end_pos
  *  
  * Returns: the handler id 
  */
-gulong gtk_sheet_entry_signal_connect_changed(GtkSheet *sheet, GCallback handler)
+gulong gtk_sheet_entry_signal_connect_changed(
+    GtkSheet *sheet, GCallback handler)
 {
     GtkWidget *entry = NULL;
     gulong handler_id = 0;
@@ -12907,16 +13382,17 @@ gulong gtk_sheet_entry_signal_connect_changed(GtkSheet *sheet, GCallback handler
 
     if (GTK_IS_EDITABLE(entry))
     {
-	handler_id = g_signal_connect(G_OBJECT(entry),
-	    "changed", handler, G_OBJECT(sheet));
+	handler_id = g_signal_connect(
+            G_OBJECT(entry), "changed", handler, G_OBJECT(sheet));
     }
     else if ( GTK_IS_DATA_TEXT_VIEW(entry) 
 	     || GTK_IS_TEXT_VIEW(entry) )
     {
-	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
+	GtkTextBuffer *buffer = gtk_text_view_get_buffer(
+            GTK_TEXT_VIEW(entry));
 
-	handler_id = g_signal_connect(G_OBJECT(buffer),
-	    "changed", handler, G_OBJECT(sheet));
+	handler_id = g_signal_connect(
+            G_OBJECT(buffer), "changed", handler, G_OBJECT(sheet));
     }
     else
     {
@@ -12938,7 +13414,8 @@ gulong gtk_sheet_entry_signal_connect_changed(GtkSheet *sheet, GCallback handler
  * This function is necessary, because not all possible entry 
  * widgets implement the GtkEditable interface yet. 
  */
-void gtk_sheet_entry_signal_disconnect_by_func(GtkSheet *sheet, GCallback handler)
+void gtk_sheet_entry_signal_disconnect_by_func(
+    GtkSheet *sheet, GCallback handler)
 {
     GtkWidget *entry = NULL;
 
@@ -12953,16 +13430,17 @@ void gtk_sheet_entry_signal_disconnect_by_func(GtkSheet *sheet, GCallback handle
 
     if (GTK_IS_EDITABLE(entry))
     {
-	g_signal_handlers_disconnect_by_func(G_OBJECT(entry),
-	    handler, G_OBJECT(sheet));
+	g_signal_handlers_disconnect_by_func(
+            G_OBJECT(entry), handler, G_OBJECT(sheet));
     }
     else if ( GTK_IS_DATA_TEXT_VIEW(entry)
 	     || GTK_IS_TEXT_VIEW(entry) )
     {
-	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
+	GtkTextBuffer *buffer = gtk_text_view_get_buffer(
+            GTK_TEXT_VIEW(entry));
 
-	g_signal_handlers_disconnect_by_func(G_OBJECT(buffer),
-	    handler, G_OBJECT(sheet));
+	g_signal_handlers_disconnect_by_func(
+            G_OBJECT(buffer), handler, G_OBJECT(sheet));
     }
     else
     {
@@ -12987,7 +13465,7 @@ row_button_set(GtkSheet *sheet, gint row)
 #endif
 
     button->state |= GTK_STATE_FLAG_ACTIVE;
-    _gtk_sheet_draw_button(sheet, row, -1);
+    _gtk_sheet_draw_button(sheet, row, -1, NULL);
 }
 
 static void
@@ -13004,7 +13482,7 @@ row_button_release(GtkSheet *sheet, gint row)
 #endif
 
     button->state &= ~GTK_STATE_FLAG_ACTIVE;
-    _gtk_sheet_draw_button(sheet, row, -1);
+    _gtk_sheet_draw_button(sheet, row, -1, NULL);
 }
 
 /**
@@ -13012,13 +13490,14 @@ row_button_release(GtkSheet *sheet, gint row)
  * @sheet:  the #GtkSheet
  * @row:    row index
  * @col:    column index 
+ * @cr:    cairo context or NULL
  *  
  * draw a sheet button
  * if row == -1 draw a column button
  * if col == -1 draw a row button
  */
 void
-_gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
+_gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 {
     GdkWindow *window = NULL;
     guint width = 0, height = 0;
@@ -13034,11 +13513,14 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
     GtkSheetArea area = ON_SHEET_BUTTON_AREA;
     PangoFontDescription *font_desc = NULL;
     PangoRectangle extent;
-    GtkStyleContext *style_context = gtk_widget_get_style_context(GTK_WIDGET(sheet));
+    GtkStyleContext *style_context = gtk_widget_get_style_context(
+        GTK_WIDGET(sheet));
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
 
     if ((row == -1) && (col == -1)) return;
+
+    if (!cr) return;
 
 #if GTK_SHEET_DEBUG_DRAW_BUTTON > 0
     g_debug("_gtk_sheet_draw_button: row %d col %d", row, col);
@@ -13106,7 +13588,8 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
     allocation.width = width;
     allocation.height = height;
 
-    cairo_t *twin_cr = gdk_cairo_create(window);
+    //cairo_t *twin_cr = gdk_cairo_create(window);
+    cairo_t *twin_cr = cr;
 
     //gdk_cairo_rectangle(twin_cr, &allocation);
     //gdk_cairo_set_source_rgba(twin_cr, &debug_color);
@@ -13208,7 +13691,7 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col)
 	cairo_restore(twin_cr);
     }
 
-    cairo_destroy(twin_cr);
+    //cairo_destroy(twin_cr);
     gtk_style_context_restore (style_context);
 
     gtk_sheet_draw_tooltip_marker(sheet, area, row, col);
@@ -13744,14 +14227,16 @@ draw_xor_vline(GtkSheet *sheet, gboolean draw)
 
     if (draw)
     {
-	cairo_t *xor_cr = _create_sheet_win_xor_cr(sheet);
+        cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
+	_cairo_save_and_set_xor_mode(sheet, xor_cr);
 
 	// xor
 	cairo_move_to(xor_cr, sheet->x_drag, sheet->column_title_area.height);
 	cairo_line_to(xor_cr, sheet->x_drag, sheet->sheet_window_height + 1);
 	cairo_stroke(xor_cr);
 
-	cairo_destroy(xor_cr);
+	cairo_restore(xor_cr);
+	cairo_destroy(xor_cr);  /* FIXME - to be removed */
     }
     else  // erase
     {
@@ -13779,14 +14264,16 @@ draw_xor_hline(GtkSheet *sheet, gboolean draw)
 
     if (draw)
     {
-	cairo_t *xor_cr = _create_sheet_win_xor_cr(sheet);
+        cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
+	_cairo_save_and_set_xor_mode(sheet, xor_cr);
 
 	// xor
 	cairo_move_to(xor_cr, sheet->row_title_area.width, sheet->y_drag);
 	cairo_line_to(xor_cr,  sheet->sheet_window_width + 1, sheet->y_drag);
 	cairo_stroke(xor_cr);
 
-	cairo_destroy(xor_cr);
+	cairo_restore(xor_cr);
+	cairo_destroy(xor_cr);   /* FIXME - to be removed */
     }
     else  // erase
     {
@@ -13803,8 +14290,10 @@ draw_xor_hline(GtkSheet *sheet, gboolean draw)
 }
 
 /* SELECTED RANGE */
+
 static void
-draw_xor_rectangle(GtkSheet *sheet, GtkSheetRange range, gboolean draw)
+draw_xor_rectangle(
+    GtkSheet *sheet, GtkSheetRange range, gboolean draw)
 {
     gint i;
     GdkRectangle clip_area, area;
@@ -13836,6 +14325,7 @@ draw_xor_rectangle(GtkSheet *sheet, GtkSheetRange range, gboolean draw)
     }
     if (area.width > clip_area.width)
 	area.width = clip_area.width + 10;
+
     if (area.y < 0)
     {
 	area.height = area.height + area.y;
@@ -13851,29 +14341,27 @@ draw_xor_rectangle(GtkSheet *sheet, GtkSheetRange range, gboolean draw)
 
     if (draw)
     {
-	cairo_t *xor_cr = _create_sheet_win_xor_cr(sheet); 
-
-	//cairo_save(xor_cr);  // need clip
+        cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
+	_cairo_save_and_set_xor_mode(sheet, xor_cr); 
 
 	gdk_cairo_rectangle(xor_cr, &clip_area);
 	cairo_clip (xor_cr);
 
 	for (i = -1; i <= 1; ++i) {
 	    // xor
-	    cairo_rectangle(xor_cr, area.x + i, area.y + i, area.width - 2 * i, area.height - 2 * i);
+	    cairo_rectangle(xor_cr, 
+                area.x + i, area.y + i, area.width - 2 * i, area.height - 2 * i);
 	    cairo_stroke(xor_cr);
 	}
-	//cairo_restore(xor_cr);
 
-	cairo_destroy(xor_cr);
+	cairo_restore(xor_cr);
+	cairo_destroy(xor_cr); /* FIXME - to be removed */
     }
     else  // erase
     {
 	// use swin_cr to blit sheet->bsurf into sheet_window
 	cairo_t *swin_cr = gdk_cairo_create(sheet->sheet_window);
 	cairo_set_source_surface(swin_cr, sheet->bsurf, 0, 0);
-
-	//cairo_save(swin_cr);  // need clip
 
 	gdk_cairo_rectangle(swin_cr, &clip_area);
 	cairo_clip (swin_cr);
@@ -13883,7 +14371,6 @@ draw_xor_rectangle(GtkSheet *sheet, GtkSheetRange range, gboolean draw)
 	    cairo_rectangle(swin_cr, area.x + i, area.y + i, area.width - 2 * i, area.height - 2 * i);
 	    cairo_stroke(swin_cr);
 	}
-	//cairo_restore(swin_cr);
 
 	cairo_destroy(swin_cr);
     }

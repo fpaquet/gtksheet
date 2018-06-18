@@ -1044,7 +1044,7 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
 
     for (i = MIN_VIEW_COLUMN(sheet); i <= MAX_VIEW_COLUMN(sheet); i++)
     {
-        _gtk_sheet_draw_button(sheet, -1, i);
+        _gtk_sheet_draw_button(sheet, -1, i, NULL);
     }
 }
 
@@ -1159,7 +1159,7 @@ gtk_sheet_column_button_add_label(GtkSheet *sheet, gint col, const gchar *label)
 
     if (!gtk_sheet_is_frozen(sheet))
     {
-        _gtk_sheet_draw_button(sheet, -1, col);
+        _gtk_sheet_draw_button(sheet, -1, col, NULL);
     }
     g_signal_emit_by_name(G_OBJECT(sheet), "changed", -1, col);
 }
@@ -1650,7 +1650,7 @@ gtk_sheet_column_set_sensitivity(GtkSheet *sheet, gint col, gboolean sensitive)
     if (gtk_widget_get_realized(GTK_WIDGET(sheet))
         && !gtk_sheet_is_frozen(sheet))
     {
-        _gtk_sheet_draw_button(sheet, -1, col);
+        _gtk_sheet_draw_button(sheet, -1, col, NULL);
     }
 }
 
@@ -1729,7 +1729,7 @@ _gtk_sheet_column_button_set(GtkSheet *sheet, gint col)
 #endif
 
     button->state |= GTK_STATE_FLAG_ACTIVE;
-    _gtk_sheet_draw_button(sheet, -1, col);
+    _gtk_sheet_draw_button(sheet, -1, col, NULL);
 }
 
 /**
@@ -1753,7 +1753,7 @@ _gtk_sheet_column_button_release(GtkSheet *sheet, gint col)
 #endif
 
     button->state &= ~GTK_STATE_FLAG_ACTIVE;
-    _gtk_sheet_draw_button(sheet, -1, col);
+    _gtk_sheet_draw_button(sheet, -1, col, NULL);
 }
 
 /**
@@ -1868,7 +1868,7 @@ gtk_sheet_column_button_justify(GtkSheet *sheet, gint col,
 
     if (!gtk_sheet_is_frozen(sheet))
     {
-        _gtk_sheet_draw_button(sheet, -1, col);
+        _gtk_sheet_draw_button(sheet, -1, col, NULL);
     }
 }
 
@@ -1916,7 +1916,7 @@ gtk_sheet_column_label_set_visibility(GtkSheet *sheet, gint col, gboolean visibl
 
     if (!gtk_sheet_is_frozen(sheet))
     {
-        _gtk_sheet_draw_button(sheet, -1, col);
+        _gtk_sheet_draw_button(sheet, -1, col, NULL);
     }
 }
 

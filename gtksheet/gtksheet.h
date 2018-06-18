@@ -814,7 +814,8 @@ void _gtk_sheet_hide_active_cell(GtkSheet *sheet);
 void _gtk_sheet_redraw_internal(GtkSheet *sheet,
                                 gboolean reset_hadjustment, gboolean reset_vadjustment);
 
-void _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col);
+void _gtk_sheet_draw_button(
+    GtkSheet *sheet, gint row, gint col, cairo_t *cr);
 
 GtkSheetEntryType _gtk_sheet_entry_type_from_gtype(GType entry_type);
 GType _gtk_sheet_entry_type_to_gtype(GtkSheetEntryType ety);

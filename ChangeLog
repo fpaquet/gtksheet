@@ -1,3 +1,6 @@
+2018-06-18 Fredy Paquet <mailbox AT opag.ch>
+* fixed selection drawing and clipping
+
 2018-06-14 Fredy Paquet <mailbox AT opag.ch>
 * fixed link list in gtksheet-4.0.pc
 

@@ -10040,7 +10040,7 @@ gtk_sheet_draw_border(
 
     if (!my_cr)
     {
-        // not in expose - create my own cr and destroy at end
+        // when not in expose - create my own cr and destroy at end
         my_cr = gdk_cairo_create(sheet->sheet_window);
     }
 
@@ -10109,7 +10109,7 @@ gtk_sheet_draw_corners(
 
     if (!my_cr)
     {
-        // not in expose - create my own cr and destroy at end
+        // when not in expose - create my own cr and destroy at end
         my_cr = gdk_cairo_create(sheet->sheet_window);
     }
 
@@ -12586,8 +12586,6 @@ gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
 
     if (gtk_widget_get_realized(widget) && sheet->column_titles_visible)
     {
-        g_debug("xxxx %d", sheet->column_title_area.x);
-
 	gdk_window_move_resize(sheet->column_title_window,
 	    sheet->column_title_area.x,
 	    sheet->column_title_area.y,
@@ -13638,8 +13636,6 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 
     if ((row == -1) && (col == -1)) return;
 
-    if (!cr) return;
-
 #if GTK_SHEET_DEBUG_DRAW_BUTTON > 0
     g_debug("_gtk_sheet_draw_button: row %d col %d", row, col);
 #endif
@@ -13672,29 +13668,25 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 	    return;
     }
 
-    if (row == -1)
+    if (row == -1)  /* draw column button */
     {
 	window = sheet->column_title_window;
 	button = &COLPTR(sheet, col)->button;
 	index = col;
 	x = _gtk_sheet_column_left_xpixel(sheet, col) + CELL_SPACING;
-	if (sheet->row_titles_visible)
-	    x -= sheet->row_title_area.width;
 	y = 0;
 	width = COLPTR(sheet, col)->width;
 	height = sheet->column_title_area.height;
 	sensitive = GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col));
 	area = ON_COLUMN_TITLES_AREA;
     }
-    else if (col == -1)
+    else if (col == -1)  /* draw row button */
     {
 	window = sheet->row_title_window;
 	button = &sheet->row[row].button;
 	index = row;
 	x = 0;
 	y = _gtk_sheet_row_top_ypixel(sheet, row) + CELL_SPACING;
-	if (sheet->column_titles_visible)
-	    y -= sheet->column_title_area.height;
 	width = sheet->row_title_area.width;
 	height = sheet->row[row].height;
 	sensitive = GTK_SHEET_ROW_IS_SENSITIVE(ROWPTR(sheet, row));
@@ -13706,12 +13698,17 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
     allocation.width = width;
     allocation.height = height;
 
-    //cairo_t *twin_cr = gdk_cairo_create(window);
-    cairo_t *twin_cr = cr;
+    cairo_t *my_cr = cr;
 
-    //gdk_cairo_rectangle(twin_cr, &allocation);
-    //gdk_cairo_set_source_rgba(twin_cr, &debug_color);
-    //cairo_fill(twin_cr);
+    if (!my_cr)
+    {
+        // when not in expose - create my own cr and destroy at end
+        my_cr = gdk_cairo_create(window);
+    }
+
+    //gdk_cairo_rectangle(my_cr, &allocation);
+    //gdk_cairo_set_source_rgba(my_cr, &debug_color);
+    //cairo_fill(my_cr);
 
     gtk_style_context_save (style_context);
 
@@ -13733,10 +13730,10 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 	x, y, width, height);
 #endif
 
-    gtk_render_background (style_context, twin_cr,
+    gtk_render_background (style_context, my_cr,
 	(double) x, (double) y, (double) width, (double) height);
 
-    gtk_render_frame(style_context, twin_cr,
+    gtk_render_frame(style_context, my_cr,
 	(double) x, (double) y, (double) width, (double) height);
 
     if (button->label_visible)
@@ -13747,16 +13744,17 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 	text_height =
 	    _gtk_sheet_row_default_height(GTK_WIDGET(sheet)) - 2 * CELLOFFSET;
 
-	cairo_save(twin_cr);
-	cairo_rectangle(twin_cr, 
+	cairo_save(my_cr);
+	cairo_rectangle(my_cr, 
 	    (double) allocation.x,
 	    (double) allocation.y,
 	    (double) allocation.width,
 	    (double) allocation.height);
-	cairo_clip(twin_cr);
+	cairo_clip(my_cr);
 
 	GtkBorder button_border;
-	gtk_style_context_get_border (style_context, button_state, &button_border);
+	gtk_style_context_get_border (
+            style_context, button_state, &button_border);
 	y += button_border.top + button_border.bottom;
 
 	real_y = y;
@@ -13800,16 +13798,21 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 	pango_layout_set_alignment(layout, pango_alignment);
 
 	gtk_render_layout (style_context,
-	    twin_cr,
+	    my_cr,
 	    (gdouble) real_x, 
 	    (gdouble) real_y,
 	    layout);
 	g_object_unref(G_OBJECT(layout));
 
-	cairo_restore(twin_cr);
+	cairo_restore(my_cr);
     }
 
-    //cairo_destroy(twin_cr);
+    if (!cr) 
+    {
+        _gtk_sheet_invalidate_region(sheet, x, y, width, height);
+        cairo_destroy(my_cr);  /* FIXME*/
+    }
+
     gtk_style_context_restore (style_context);
 
     gtk_sheet_draw_tooltip_marker(sheet, area, row, col);

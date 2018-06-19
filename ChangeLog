@@ -1,3 +1,14 @@
+2018-06-19 Fredy Paquet <mailbox AT opag.ch>
+* fixed warning: GtkDataEntry is drawn without a current allocation.
+
+TBD 
+- search "drawn without"
+warning: GtkButton is drawn without a current allocation.
+warning: GtkLabel is drawn without a current allocation.
+** Corner drawing smear
+** Sheet entry selection not visible
+** Column header text placement - wenn RowTitles visible sind
+
 2018-06-18 Fredy Paquet <mailbox AT opag.ch>
 * fixed selection drawing and clipping
 

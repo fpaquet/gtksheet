@@ -77,6 +77,7 @@
 #   define GTK_SHEET_DEBUG_DRAW  0
 #   define GTK_SHEET_DEBUG_DRAW_BACKGROUND  0
 #   define GTK_SHEET_DEBUG_DRAW_BUTTON  0
+#   define GTK_SHEET_DEBUG_DRAW_INVALIDATE  0
 #   define GTK_SHEET_DEBUG_DRAW_LABEL  0
 #   define GTK_SHEET_DEBUG_ENTER_PRESSED   0
 #   define GTK_SHEET_DEBUG_ENTRY   0
@@ -91,13 +92,12 @@
 #   define GTK_SHEET_DEBUG_PIXEL_INFO  0
 #   define GTK_SHEET_DEBUG_PROPERTIES  0
 #   define GTK_SHEET_DEBUG_REALIZE  0
-#   define GTK_SHEET_DEBUG_SELECTION  1
+#   define GTK_SHEET_DEBUG_SELECTION  0
 #   define GTK_SHEET_DEBUG_SIGNALS   0
-#   define GTK_SHEET_DEBUG_SIZE  1
+#   define GTK_SHEET_DEBUG_SIZE  0
 #   define GTK_SHEET_DEBUG_SCROLL  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TEXT  0
-#   define GTK_SHEET_DEBUG_ENTER_LEAVE_NOTIFY  0
 #endif
 
 #define GTK_SHEET_MOD_MASK  GDK_MOD1_MASK  /* main modifier for sheet navigation */
@@ -1030,6 +1030,10 @@ static void _gtk_sheet_invalidate_region(
     GtkSheet *sheet, 
     gint x, gint y, gint width, gint height)
 {
+#if GTK_SHEET_DEBUG_DRAW_INVALIDATE > 0
+    g_debug("_gtk_sheet_invalidate_region %d %d %d %d",
+        x, y, width, height);
+#endif
     cairo_rectangle_int_t rect = { x, y, width, height };
     cairo_region_t *crg = cairo_region_create_rectangle(&rect);
     gdk_window_invalidate_region(sheet->sheet_window, crg, FALSE);
@@ -1289,13 +1293,6 @@ static void gtk_sheet_size_allocate_handler(GtkWidget *widget,
 static gboolean gtk_sheet_focus(GtkWidget *widget,
     GtkDirectionType  direction);
 
-#if GTK_SHEET_DEBUG_ENTER_LEAVE_NOTIFY > 0
-static gboolean gtk_sheet_enter_notify(GtkWidget *widget,
-    GdkEventCrossing *event);
-static gboolean gtk_sheet_leave_notify(GtkWidget *widget,
-    GdkEventCrossing *event);
-#endif
-
 static void _gtk_sheet_move_cursor(GtkSheet *sheet,
     GtkMovementStep step,
     gint count,
@@ -1351,7 +1348,7 @@ static void gtk_sheet_draw_corners(
 static void gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data);
 static gboolean gtk_sheet_deactivate_cell(GtkSheet *sheet);
 static gboolean gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col);
-static void gtk_sheet_draw_active_cell(GtkSheet *sheet);
+static void gtk_sheet_draw_active_cell(GtkSheet *sheet, cairo_t *cr);
 static void gtk_sheet_show_active_cell(GtkSheet *sheet);
 static void gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint column, gboolean *veto);
 
@@ -2598,17 +2595,6 @@ static gboolean gtk_sheet_debug_focus_out_event(GtkSheet *sheet,
 
 #endif
 
-static gboolean gtk_sheet_debug_event(GtkWidget *widget,
-    GdkEvent *event)
-{
-    g_return_val_if_fail(GTK_IS_SHEET(widget), FALSE);
-    GtkSheet *sheet = GTK_SHEET(widget);
-
-#if GTK_SHEET_DEBUG_ENTER_LEAVE_NOTIFY > 0
-    g_debug("gtk_sheet_debug_event: %p type %d", widget, event->type); 
-#endif
-}
-
 static void
 _gtk_sheet_class_init_signals(GObjectClass *gobject_class,
     GtkWidgetClass *widget_class)
@@ -3284,11 +3270,6 @@ gtk_sheet_class_init(GtkSheetClass *klass)
     widget_class->focus_in_event = NULL;
     widget_class->focus_out_event = NULL;
     widget_class->destroy = gtk_sheet_destroy_handler;
-#if GTK_SHEET_DEBUG_ENTER_LEAVE_NOTIFY > 0
-    widget_class->event = gtk_sheet_debug_event;
-    widget_class->enter_notify_event = gtk_sheet_enter_notify;
-    widget_class->leave_notify_event = gtk_sheet_leave_notify;
-#endif
 
     klass->select_row = NULL;
     klass->select_column = NULL;
@@ -5945,13 +5926,6 @@ gtk_sheet_flash(gpointer data)
     gint x, y, width, height;
     GdkRectangle clip_area;
 
-    /* FIXME
-       - flashing doesn't work
-       - invalidate_region is missing 
-       */ 
-    g_debug("gtk_sheet_flash: FIXME");
-    //g_assert(FALSE);
-
     sheet = GTK_SHEET(data);
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
@@ -5964,6 +5938,12 @@ gtk_sheet_flash(gpointer data)
 	return (TRUE);
     if (GTK_SHEET_IN_YDRAG(sheet))
 	return (TRUE);
+
+    /* FIXME
+       - invalidate_region is missing 
+       */ 
+    //g_debug("gtk_sheet_flash: called");
+    //g_assert(FALSE);
 
 #if GTK_CHECK_VERSION(3,6,0) == 0
     GDK_THREADS_ENTER();
@@ -9519,7 +9499,7 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
     _gtk_sheet_entry_size_allocate(sheet);
 
     gtk_widget_map(sheet->sheet_entry);
-    gtk_sheet_draw_active_cell(sheet);
+    gtk_sheet_draw_active_cell(sheet, NULL);
 
     _gtk_sheet_entry_preselect(sheet);
 
@@ -9530,7 +9510,7 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
 }
 
 static void
-gtk_sheet_draw_active_cell(GtkSheet *sheet)
+gtk_sheet_draw_active_cell(GtkSheet *sheet, cairo_t *cr)
 {
     gint row, col;
 
@@ -9553,8 +9533,8 @@ gtk_sheet_draw_active_cell(GtkSheet *sheet)
     row_button_set(sheet, row);
     _gtk_sheet_column_button_set(sheet, col);
 
-    gtk_sheet_draw_backing_pixmap(sheet, sheet->range, NULL);
-    gtk_sheet_draw_border(sheet, sheet->range, NULL);
+    gtk_sheet_draw_backing_pixmap(sheet, sheet->range, cr);
+    gtk_sheet_draw_border(sheet, sheet->range, cr);
 }
 
 
@@ -10543,7 +10523,7 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
 	    {
 		if (sheet->state == GTK_SHEET_NORMAL)
 		{
-		    gtk_sheet_draw_active_cell(sheet);
+		    gtk_sheet_draw_active_cell(sheet, cr);
 
                     /* FIXME
                        - the next statement causes a draw loop 
@@ -10568,7 +10548,6 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
 
     return (GDK_EVENT_PROPAGATE);
 }
-
 
 /*
  * gtk_sheet_button_press_handler:
@@ -11037,7 +11016,7 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	sheet->state = GTK_SHEET_NORMAL;
 
 	GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
-	gtk_sheet_draw_active_cell(sheet);
+	gtk_sheet_draw_active_cell(sheet, NULL);
 	return;
     }
 
@@ -12632,28 +12611,6 @@ gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
     /* set the scrollbars adjustments */
     _gtk_sheet_scrollbar_adjust(sheet);
 }
-
-#if GTK_SHEET_DEBUG_ENTER_LEAVE_NOTIFY > 0
-static gboolean gtk_sheet_enter_notify(GtkWidget *widget,
-    GdkEventCrossing *event)
-{
-    g_return_val_if_fail(GTK_IS_SHEET(widget), FALSE);
-    GtkSheet *sheet = GTK_SHEET(widget);
-
-    g_debug("gtk_sheet_enter_notify: %p ev %d", widget, event->type); 
-}
-
-static gboolean gtk_sheet_leave_notify(GtkWidget *widget,
-    GdkEventCrossing *event)
-{
-    g_return_val_if_fail(GTK_IS_SHEET(widget), FALSE);
-    GtkSheet *sheet = GTK_SHEET(widget);
-
-    g_debug("gtk_sheet_leave_notify: %p ev %d", widget, event->type); 
-
-    //if (sheet->sheet_entry) _gtk_sheet_entry_size_allocate(sheet);
-}
-#endif
 
 static gboolean gtk_sheet_focus(GtkWidget *widget,
     GtkDirectionType  direction)

@@ -1,7 +1,3 @@
-2018-06-19 Fredy Paquet <mailbox AT opag.ch>
-* fixed warning: GtkDataEntry is drawn without a current allocation.
-* fixed row/column title button placement with (in)visible headers
-
 TBD 
 ** search "drawn without"
 warning: GtkButton is drawn without a current allocation.
@@ -11,6 +7,16 @@ warning: GtkLabel is drawn without a current allocation.
 ** tooltip marker clipping
 ** active cell border clipping
 ** repair gtk_sheet_draw_flashing_range clipping
+** sheet entry - disable GtkEntry/GtkDataEntry undershoot for small cells
+** sheet entry - GtkEntry/GtkDataEntry undershoot area smears backgnd
+** rename xor to sel
+
+2018-06-30 Fredy Paquet <mailbox AT opag.ch>
+* fixed recursive drawing - improves resource consumption
+
+2018-06-19 Fredy Paquet <mailbox AT opag.ch>
+* fixed warning: GtkDataEntry is drawn without a current allocation.
+* fixed row/column title button placement with (in)visible headers
 
 2018-06-18 Fredy Paquet <mailbox AT opag.ch>
 * fixed selection drawing and clipping

@@ -81,7 +81,7 @@
 #   define GTK_SHEET_DEBUG_DRAW_LABEL  0
 #   define GTK_SHEET_DEBUG_ENTER_PRESSED   0
 #   define GTK_SHEET_DEBUG_ENTRY   0
-#   define GTK_SHEET_DEBUG_EXPOSE   1
+#   define GTK_SHEET_DEBUG_EXPOSE   0
 #   define GTK_SHEET_DEBUG_FINALIZE  0
 #   define GTK_SHEET_DEBUG_FONT_METRICS  0
 #   define GTK_SHEET_DEBUG_FREEZE   0
@@ -92,7 +92,7 @@
 #   define GTK_SHEET_DEBUG_PIXEL_INFO  0
 #   define GTK_SHEET_DEBUG_PROPERTIES  0
 #   define GTK_SHEET_DEBUG_REALIZE  0
-#   define GTK_SHEET_DEBUG_SELECTION  0
+#   define GTK_SHEET_DEBUG_SELECTION  1
 #   define GTK_SHEET_DEBUG_SIGNALS   0
 #   define GTK_SHEET_DEBUG_SIZE  0
 #   define GTK_SHEET_DEBUG_SCROLL  0
@@ -471,16 +471,6 @@ _gtksheet_signal_emit(GObject *object, guint signal_id, ...)
 
 /* defaults */
 
-#define CELL_SPACING 1
-#define DRAG_WIDTH 6
-#define TIMEOUT_SCROLL 20
-#define TIMEOUT_FLASH 200
-#define TIME_INTERVAL 8
-#define MINROWS 0
-#define MINCOLS 0
-#define MAXLENGTH 30
-#define CELLOFFSET 4
-
 #define GTK_SHEET_ROW_DEFAULT_HEIGHT 24
 
 #define GTK_SHEET_DEFAULT_FONT_ASCENT  12
@@ -492,6 +482,25 @@ _gtksheet_signal_emit(GObject *object, guint signal_id, ...)
 #define GTK_SHEET_DEFAULT_TM_SIZE  4  /* pixels, size of tooltip marker */
 
 #define GTK_SHEET_PAGE_OVERLAP 1  /* rows to stay visible with PageUp/Dn */
+
+#define CELL_SPACING 1
+#define DRAG_WIDTH 6
+#define TIMEOUT_SCROLL 20
+#define TIMEOUT_FLASH 200
+#define TIME_INTERVAL 8
+#define MINROWS 0
+#define MINCOLS 0
+#define MAXLENGTH 30
+
+#define CELLOFFSET 4  /* inner border from grid to text */
+
+#define CELLOFFSET_NF  (CELLOFFSET)    /* no frame, GtkTextView */
+#define CELLOFFSET_WF  (CELLOFFSET-2)  /* w/frame, GtkEntry */
+
+static gdouble selection_border_width = 8;
+static gdouble selection_border_offset = -1;
+static gdouble selection_corner_size = 0;
+static gdouble selection_corner_offset = 0;
 
 static GdkRGBA color_black;
 static GdkRGBA color_white;
@@ -9365,6 +9374,7 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
 	}
 	gtk_data_entry_set_max_length_bytes(data_entry, colptr->max_length_bytes);
 	gtk_entry_set_max_length(entry, colptr->max_length);
+        gtk_entry_set_has_frame(entry, FALSE);
     }
     else if (GTK_IS_DATA_TEXT_VIEW(entry_widget))
     {
@@ -9389,6 +9399,7 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
     {
 	GtkEntry *entry = GTK_ENTRY(entry_widget);
 	gtk_entry_set_max_length(entry, colptr->max_length);
+        gtk_entry_set_has_frame(entry, FALSE);
     }
 
 #if 1
@@ -9595,12 +9606,20 @@ gtk_sheet_make_bsurf(GtkSheet *sheet, guint width, guint height)
 static void
 gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 {
-    gint i, j, mask1, mask2;
+    gint row, col, mask1, mask2;
     gint cell_state;
     gint x, y, width, height;
     GtkSheetRange new_range, aux_range;
 
     g_return_if_fail(sheet != NULL);
+
+    if (range == NULL)
+	range = &sheet->range;
+
+#if GTK_SHEET_DEBUG_SELECTION > 0
+    g_debug("gtk_sheet_new_selection: row %d-%d col %d-%d",
+        range->row0, range->rowi, range->col0, range->coli);
+#endif
 
     // use swin_cr to blit sheet->bsurf into sheet_window
     cairo_t *swin_cr = gdk_cairo_create(sheet->sheet_window);
@@ -9614,9 +9633,6 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 
     cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
     _cairo_save_and_set_xor_mode(sheet, xor_cr);
-
-    if (range == NULL)
-	range = &sheet->range;
 
     new_range = *range;  /* copy new range */
 
@@ -9646,38 +9662,46 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 
        - beware: border of new_range will be scrambled
        */
-    for (i = range->row0; i <= range->rowi; i++)
+    for (row = range->row0; row <= range->rowi; row++)
     {
-	for (j = range->col0; j <= range->coli; j++)
+	for (col = range->col0; col <= range->coli; col++)
 	{
-	    cell_state = gtk_sheet_cell_get_state(sheet, i, j);
-	    gboolean in_new_range = CELL_IN_RANGE(i, j, new_range);
+	    cell_state = gtk_sheet_cell_get_state(sheet, row, col);
+	    gboolean in_new_range = CELL_IN_RANGE(row, col, new_range);
 
 	    if (cell_state == GTK_STATE_SELECTED 
 		&& !in_new_range 
-		&& GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j)) 
-		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)))
+		&& GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) 
+		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)))
 	    {
-		x = _gtk_sheet_column_left_xpixel(sheet, j);
-		y = _gtk_sheet_row_top_ypixel(sheet, i);
-		width = COLPTR(sheet, j)->width;
-		height = ROWPTR(sheet, i)->height;
+		x = _gtk_sheet_column_left_xpixel(sheet, col);
+		y = _gtk_sheet_row_top_ypixel(sheet, row);
+		width = COLPTR(sheet, col)->width;
+		height = ROWPTR(sheet, row)->height;
 #if 1
+                double d;
+                d = selection_border_width - selection_border_offset;
+                x -= d;
+                y -= d;
+                d = MAX(d, selection_corner_size - selection_corner_offset);
+                width += d*2;
+                height += d*2;
+#else
                 /* grow region */
-		if (i == sheet->range.row0)
+		if (row == sheet->range.row0)
 		{
 		    y = y - 3;
 		    height = height + 3;
 		}
-		if (i == sheet->range.rowi)
+		if (row == sheet->range.rowi)
 		    height = height + 3;
 
-		if (j == sheet->range.col0)
+		if (col == sheet->range.col0)
 		{
 		    x = x - 3;
 		    width = width + 3;
 		}
-		if (j == sheet->range.coli)
+		if (col == sheet->range.coli)
 		    width = width + 3;
 #endif
 		// blit
@@ -9685,7 +9709,8 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
                 g_debug("cairo_fill: blit enabled (3)");
 		cairo_fill(swin_cr);
 
-                _gtk_sheet_invalidate_region(sheet, x, y, width, height);
+                _gtk_sheet_invalidate_region(
+                    sheet, x-1, y-1, width+2, height+2);
 	    }
 	}
     }
@@ -9696,45 +9721,45 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
        - for visible selected cells within new_range (except active cell)
        - draw selected background
        */
-    for (i = range->row0; i <= range->rowi; i++)
+    for (row = range->row0; row <= range->rowi; row++)
     {
-	for (j = range->col0; j <= range->coli; j++)
+	for (col = range->col0; col <= range->coli; col++)
 	{
-	    cell_state = gtk_sheet_cell_get_state(sheet, i, j);
-	    gboolean in_new_range = CELL_IN_RANGE(i, j, new_range);
+	    cell_state = gtk_sheet_cell_get_state(sheet, row, col);
+	    gboolean in_new_range = CELL_IN_RANGE(row, col, new_range);
 
 	    if (cell_state != GTK_STATE_SELECTED 
 		&& in_new_range 
-		&& GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j)) 
-		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)) 
-		&& (i != sheet->active_cell.row || j != sheet->active_cell.col))
+		&& GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) 
+		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) 
+		&& (row != sheet->active_cell.row || col != sheet->active_cell.col))
 	    {
-		x = _gtk_sheet_column_left_xpixel(sheet, j);
-		y = _gtk_sheet_row_top_ypixel(sheet, i);
-		width = COLPTR(sheet, j)->width;
-		height = ROWPTR(sheet, i)->height;
-#if 0
+		x = _gtk_sheet_column_left_xpixel(sheet, col);
+		y = _gtk_sheet_row_top_ypixel(sheet, row);
+		width = COLPTR(sheet, col)->width;
+		height = ROWPTR(sheet, row)->height;
+#if 1
                 /* shrink region */
-		if (i == new_range.row0)
+		if (row == new_range.row0)
 		{
 		    y = y + 2;
 		    height = height - 2;
 		}
-		if (i == new_range.rowi)
+		if (row == new_range.rowi)
 		    height = height - 3;
 
-		if (j == new_range.col0)
+		if (col == new_range.col0)
 		{
 		    x = x + 2;
 		    width = width - 2;
 		}
-		if (j == new_range.coli)
+		if (col == new_range.coli)
 		    width = width - 3;
 #endif
 		// xor
 		cairo_rectangle(xor_cr, x, y, width, height);
                 g_debug("cairo_fill: xor enabled (4) %d %d %d %d",
-                    x + 1, y + 1, width, height);
+                    x, y, width, height);
 		cairo_fill(xor_cr);
 
                 _gtk_sheet_invalidate_region(sheet, x, y, width, height);
@@ -9751,59 +9776,59 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 
        FIXME - flipping state in old range was necessary for XOR mode
        */ 
-    for (i = range->row0; i <= range->rowi && i <= sheet->maxrow; i++)
+    for (row = range->row0; row <= range->rowi && row <= sheet->maxrow; row++)
     {
-	for (j = range->col0; j <= range->coli && j <= sheet->maxcol; j++)
+	for (col = range->col0; col <= range->coli && col <= sheet->maxcol; col++)
 	{
-	    cell_state = gtk_sheet_cell_get_state(sheet, i, j);
-	    gboolean in_new_range = CELL_IN_RANGE(i, j, new_range);
+	    cell_state = gtk_sheet_cell_get_state(sheet, row, col);
+	    gboolean in_new_range = CELL_IN_RANGE(row, col, new_range);
 
 	    if (cell_state == GTK_STATE_SELECTED 
 		&& in_new_range
-		&& GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j)) 
-		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)) 
-		&& (CELL_ON_RANGE_BORDER(i, j, sheet->range)
-                    || CELL_ON_RANGE_BORDER(i, j, new_range))
+		&& GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) 
+		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)) 
+		&& (CELL_ON_RANGE_BORDER(row, col, sheet->range)
+                    || CELL_ON_RANGE_BORDER(row, col, new_range))
                 )
 	    {
                 /* mask1 - cell is on old range border
                    - set bits: 1=left, 2=right, 4=top, 8=bottom
                    */
-		mask1 = (i == sheet->range.row0) ? 1 : 0;
-		mask1 = (i == sheet->range.rowi) ? mask1 + 2 : mask1;
-		mask1 = (j == sheet->range.col0) ? mask1 + 4 : mask1;
-		mask1 = (j == sheet->range.coli) ? mask1 + 8 : mask1;
+		mask1 = (row == sheet->range.row0) ? 1 : 0;
+		mask1 = (row == sheet->range.rowi) ? mask1 + 2 : mask1;
+		mask1 = (col == sheet->range.col0) ? mask1 + 4 : mask1;
+		mask1 = (col == sheet->range.coli) ? mask1 + 8 : mask1;
 
                 /* mask2 - cell is on new_range border
                    - set bits: 1=left, 2=right, 4=top, 8=bottom
                    */
-		mask2 = (i == new_range.row0) ? 1 : 0;
-		mask2 = (i == new_range.rowi) ? mask2 + 2 : mask2;
-		mask2 = (j == new_range.col0) ? mask2 + 4 : mask2;
-		mask2 = (j == new_range.coli) ? mask2 + 8 : mask2;
+		mask2 = (row == new_range.row0) ? 1 : 0;
+		mask2 = (row == new_range.rowi) ? mask2 + 2 : mask2;
+		mask2 = (col == new_range.col0) ? mask2 + 4 : mask2;
+		mask2 = (col == new_range.coli) ? mask2 + 8 : mask2;
 
 		if (mask1 != mask2) /* border cell changed selection */
 		{
-		    x = _gtk_sheet_column_left_xpixel(sheet, j);
-		    y = _gtk_sheet_row_top_ypixel(sheet, i);
-		    width = COLPTR(sheet, j)->width;
-		    height = ROWPTR(sheet, i)->height;
+		    x = _gtk_sheet_column_left_xpixel(sheet, col);
+		    y = _gtk_sheet_row_top_ypixel(sheet, row);
+		    width = COLPTR(sheet, col)->width;
+		    height = ROWPTR(sheet, row)->height;
 
                     /* grow region */
-		    if (i == sheet->range.row0)
+		    if (row == sheet->range.row0)
 		    {
 			y = y - 3;
 			height = height + 3;
 		    }
-		    if (i == sheet->range.rowi)
+		    if (row == sheet->range.rowi)
 			height = height + 3;
 
-		    if (j == sheet->range.col0)
+		    if (col == sheet->range.col0)
 		    {
 			x = x - 3;
 			width = width + 3;
 		    }
-		    if (j == sheet->range.coli)
+		    if (col == sheet->range.coli)
 			width = width + 3;
 
 		    // blit
@@ -9811,29 +9836,29 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
                     g_debug("cairo_fill: blit disabled (3)");
 		    //cairo_fill(swin_cr);
 
-		    if (i != sheet->active_cell.row || j != sheet->active_cell.col)
+		    if (row != sheet->active_cell.row || col != sheet->active_cell.col)
 		    {
-			x = _gtk_sheet_column_left_xpixel(sheet, j);
-			y = _gtk_sheet_row_top_ypixel(sheet, i);
-			width = COLPTR(sheet, j)->width;
-			height = ROWPTR(sheet, i)->height;
+			x = _gtk_sheet_column_left_xpixel(sheet, col);
+			y = _gtk_sheet_row_top_ypixel(sheet, row);
+			width = COLPTR(sheet, col)->width;
+			height = ROWPTR(sheet, row)->height;
 
                         /* shrink region */
                         /* FIXME - why is 2 and 3 used ? */
-			if (i == new_range.row0)
+			if (row == new_range.row0)
 			{
 			    y = y + 2;
 			    height = height - 2;
 			}
-			if (i == new_range.rowi)
+			if (row == new_range.rowi)
 			    height = height - 3;
 
-			if (j == new_range.col0)
+			if (col == new_range.col0)
 			{
 			    x = x + 2;
 			    width = width - 2;
 			}
-			if (j == new_range.coli)
+			if (col == new_range.coli)
 			    width = width - 3;
 
 			// xor
@@ -9854,40 +9879,40 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 
        FIXME - this part was needed to fix XOR drawing
        */
-    for (i = aux_range.row0; i <= aux_range.rowi; i++)
+    for (row = aux_range.row0; row <= aux_range.rowi; row++)
     {
-	for (j = aux_range.col0; j <= aux_range.coli; j++)
+	for (col = aux_range.col0; col <= aux_range.coli; col++)
 	{
-	    if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, j)) 
-		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, i)))
+	    if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) 
+		&& GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)))
 	    {
-		cell_state = gtk_sheet_cell_get_state(sheet, i, j);
+		cell_state = gtk_sheet_cell_get_state(sheet, row, col);
 
                 /* mask1 - cell is on old range border
                    - set bits: 1=left, 2=right, 4=top, 8=bottom
                    */
-		mask1 = (i == sheet->range.row0) ? 1 : 0;
-		mask1 = (i == sheet->range.rowi) ? mask1 + 2 : mask1;
-		mask1 = (j == sheet->range.col0) ? mask1 + 4 : mask1;
-		mask1 = (j == sheet->range.coli) ? mask1 + 8 : mask1;
+		mask1 = (row == sheet->range.row0) ? 1 : 0;
+		mask1 = (row == sheet->range.rowi) ? mask1 + 2 : mask1;
+		mask1 = (col == sheet->range.col0) ? mask1 + 4 : mask1;
+		mask1 = (col == sheet->range.coli) ? mask1 + 8 : mask1;
 
                 /* mask2 - cell is on new_range border
                    - set bits: 1=left, 2=right, 4=top, 8=bottom
                    */
-		mask2 = (i == new_range.row0) ? 1 : 0;
-		mask2 = (i == new_range.rowi) ? mask2 + 2 : mask2;
-		mask2 = (j == new_range.col0) ? mask2 + 4 : mask2;
-		mask2 = (j == new_range.coli) ? mask2 + 8 : mask2;
+		mask2 = (row == new_range.row0) ? 1 : 0;
+		mask2 = (row == new_range.rowi) ? mask2 + 2 : mask2;
+		mask2 = (col == new_range.col0) ? mask2 + 4 : mask2;
+		mask2 = (col == new_range.coli) ? mask2 + 8 : mask2;
 
 		if (mask2 != mask1 /* border cell didn't change selection */
 		    || (mask2 == mask1 /* border cell changed selection */
                         && cell_state != GTK_STATE_SELECTED /* and cell_state */
                         ))
 		{
-		    x = _gtk_sheet_column_left_xpixel(sheet, j);
-		    y = _gtk_sheet_row_top_ypixel(sheet, i);
-		    width = COLPTR(sheet, j)->width;
-		    height = ROWPTR(sheet, i)->height;
+		    x = _gtk_sheet_column_left_xpixel(sheet, col);
+		    y = _gtk_sheet_row_top_ypixel(sheet, row);
+		    width = COLPTR(sheet, col)->width;
+		    height = ROWPTR(sheet, row)->height;
 
 		    if (mask2 & 1) {
 			// xor
@@ -9933,10 +9958,7 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 	}
     }
 #else
-    gtk_sheet_draw_border(sheet, new_range, NULL);
-    /* corners are drawn by _draw_border
-      gtk_sheet_draw_corners(sheet, new_range, swin_cr, xor_cr);
-      */
+    //gtk_sheet_draw_border(sheet, new_range, NULL);
 #endif
 
     *range = new_range;  /* restore new_range */
@@ -10031,22 +10053,57 @@ gtk_sheet_draw_border(
 
     _cairo_save_and_set_xor_mode(sheet, my_cr);
     
+
     /* FIXME
        - we should use cairo stroke width here 
        - but how does it cope with _invalidate_region() ? 
        */
+
+    cairo_set_line_cap(my_cr, CAIRO_LINE_CAP_BUTT);
+    cairo_set_line_join(my_cr, CAIRO_LINE_JOIN_MITER);
+    cairo_set_dash(my_cr, NULL, 0, 0.0);
+#if 1
+    cairo_set_line_width(my_cr, selection_border_width);
+
+    gdouble d,x,y,w,h;
+
+    d =  1.0 - selection_border_offset - selection_border_width/2.0;
+    x = area.x + d;
+    y = area.y + d;
+    w = area.width - 1.0 - d * 2.0;
+    h = area.height - d * 2.0;
+
+    cairo_rectangle(my_cr, x, y, w, h);
+    cairo_stroke(my_cr);
+
+    if (!cr)
+    {
+        _gtk_sheet_invalidate_region(sheet, x-1, y-1, w+2, h+2);
+    }
+#else
+    cairo_set_line_width(my_cr, 1.0);
+
     for (i = -1; i <= 1; ++i)
     {
 	cairo_rectangle(my_cr,
-            area.x + i, area.y + i, area.width - 2 * i, area.height - 2 * i);
+            (area.x + i ) + 0.5 - selection_border_offset, 
+            (area.y + i) + 0.5 - selection_border_offset, 
+            (area.width - i*2) + selection_border_offset*2, 
+            (area.height - i*2 + selection_border_offset*2)
+            );
 	cairo_stroke(my_cr);
 
         if (!cr)
         {
             _gtk_sheet_invalidate_region(sheet,
-                area.x + i, area.y + i, area.width - 2 * i, area.height - 2 * i);
+                (area.x + i) - selection_border_offset, 
+                (area.y + i) - selection_border_offset, 
+                (area.width - i*2) + selection_border_offset*2, 
+                (area.height - i*2) + selection_border_offset*2
+                );
         }
     }
+#endif
 
     cairo_restore(my_cr);
 
@@ -10067,7 +10124,7 @@ gtk_sheet_draw_border(
 
     if (!cr) cairo_destroy(my_cr);
 
-    gtk_sheet_draw_corners(sheet, new_range, cr);
+    //gtk_sheet_draw_corners(sheet, new_range, cr);
 }
 
 /**
@@ -10209,7 +10266,8 @@ gtk_sheet_draw_corners(
 
 #if 0
 	// blit
-	cairo_rectangle(swin_cr, x - width, y - width, 2 * width + 1, 2 * width + 1);
+	cairo_rectangle(swin_cr,
+            x - width, y - width, 2 * width + 1, 2 * width + 1);
 	cairo_fill(swin_cr);
 #endif
 
@@ -12916,12 +12974,14 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 	row_height = GTK_SHEET_ROW_DEFAULT_HEIGHT;
 
     size = MIN(text_width, entry_max_size);
-    size = MAX(size, column_width - 2 * CELLOFFSET);
+    size = MAX(size, column_width - CELLOFFSET*2 - 1);
 
     shentry_allocation.x = _gtk_sheet_column_left_xpixel(sheet, col);
     shentry_allocation.y = _gtk_sheet_row_top_ypixel(sheet, row);
     shentry_allocation.width = column_width;
     shentry_allocation.height = row_height;
+
+#define DEBUG_VSHIFT 0  /* vertical entry shift, use 0 or ~10 */
 
     if ( GTK_IS_DATA_TEXT_VIEW(sheet->sheet_entry)
 	     || GTK_IS_TEXT_VIEW(sheet->sheet_entry) )
@@ -12930,21 +12990,25 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 	g_debug("_gtk_sheet_entry_size_allocate: is_text_view");
 #endif
 
-	shentry_allocation.height -= 2 * CELLOFFSET;
-	shentry_allocation.y += CELLOFFSET;
-	shentry_allocation.x += CELLOFFSET;
+	shentry_allocation.x += CELLOFFSET_NF;
+	shentry_allocation.y += CELLOFFSET_NF;
+        shentry_allocation.height -= CELLOFFSET*2 + 1 - DEBUG_VSHIFT;
 
 	if (gtk_sheet_clip_text(sheet))
-	    shentry_allocation.width = column_width - 2 * CELLOFFSET;
+	    shentry_allocation.width = column_width - 1*2;
 	else  /* text extends multiple cells */
 	    shentry_allocation.width = size;
     }
     else
     {
-	shentry_allocation.x += 2;
-	shentry_allocation.y += 2;
-	shentry_allocation.width -= MIN(shentry_allocation.width, 3);
-	shentry_allocation.height -= MIN(shentry_allocation.height, 3);
+	shentry_allocation.x += CELLOFFSET_WF;
+	shentry_allocation.y += CELLOFFSET_WF;
+
+	shentry_allocation.width -= MIN(
+            shentry_allocation.width, CELLOFFSET_WF*2 + 1);
+
+	shentry_allocation.height -= MIN(
+            shentry_allocation.height, CELLOFFSET_WF*2) - DEBUG_VSHIFT;
     }
 
 #if 0

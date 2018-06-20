@@ -10,9 +10,14 @@ warning: GtkLabel is drawn without a current allocation.
 ** sheet entry - disable GtkEntry/GtkDataEntry undershoot for small cells
 ** sheet entry - GtkEntry/GtkDataEntry undershoot area smears backgnd
 ** rename xor to sel
+** missing smilie in testgtksheet example1
 
-2018-06-30 Fredy Paquet <mailbox AT opag.ch>
-* fixed recursive drawing - improves resource consumption
+2018-06-20 Fredy Paquet <mailbox AT opag.ch>
+* fixed recursive drawing error - improves resource consumption
+* fixed sheet entry positioning and size
+* rewritten selection border drawing
+* fixed cell editor positioning
+* testgtksheet: fixed wrong column labels
 
 2018-06-19 Fredy Paquet <mailbox AT opag.ch>
 * fixed warning: GtkDataEntry is drawn without a current allocation.

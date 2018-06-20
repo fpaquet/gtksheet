@@ -472,7 +472,7 @@ gboolean
 
     if (*new_col == 4 && (col != 4 || sheet->state != GTK_STATE_NORMAL))
     {
-	printf("change_entry: GtkItemEntry\n");
+	printf("change_entry: GtkDataEntry\n");
         gtk_sheet_change_entry(sheet, GTK_TYPE_DATA_ENTRY);
         changed = TRUE;
     }
@@ -873,7 +873,7 @@ void
 
     sheet=GTK_SHEET(widget);
 
-    gtk_sheet_show_grid(sheet, FALSE);
+    //gtk_sheet_show_grid(sheet, FALSE);
 
     range.row0=0;
     range.rowi=10;
@@ -920,12 +920,12 @@ void
 
     gtk_sheet_set_autoresize(sheet, TRUE);
 
-    gtk_sheet_column_button_add_label(sheet, 0, "GtkCombo");
+    gtk_sheet_column_button_add_label(sheet, 0, "GtkDataEntry");
     gtk_sheet_column_button_add_label(sheet, 1, "GtkEntry");
     gtk_sheet_column_button_add_label(sheet, 2, "GtkSpinButton");
     gtk_sheet_column_button_add_label(sheet, 3, "GtkTextView");
 
-    gtk_sheet_column_button_add_label(sheet, 4, "GtkItemEntry\nmax 10 chars");
+    gtk_sheet_column_button_add_label(sheet, 4, "GtkDataEntry\nmax 10 chars");
     g_object_set(gtk_sheet_column_get(sheet, 4),"max-length", 10, NULL);
 
     gtk_sheet_column_button_add_label(sheet, 5, "GtkDataTextView\nmax 20 chars");

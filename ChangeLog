@@ -2,7 +2,6 @@ TBD
 ** search "drawn without"
 warning: GtkButton is drawn without a current allocation.
 warning: GtkLabel is drawn without a current allocation.
-** selection corner drawing smears
 ** Sheet entry selection not visible
 ** tooltip marker clipping
 ** repair gtk_sheet_draw_flashing_range clipping
@@ -10,10 +9,12 @@ warning: GtkLabel is drawn without a current allocation.
 ** sheet entry - GtkEntry/GtkDataEntry undershoot area smears backgnd
 ** rename xor to sel
 ** missing smilie in testgtksheet example1
+** sheet entry stays active when making a selection
 
 2018-06-21 Fredy Paquet <mailbox AT opag.ch>
 * fixed active cell border clipping
 * fixed selection border geometry
+* rewritten selection corner geometry
 
 2018-06-20 Fredy Paquet <mailbox AT opag.ch>
 * fixed recursive drawing error - improves resource consumption

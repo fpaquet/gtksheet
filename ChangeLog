@@ -5,12 +5,15 @@ warning: GtkLabel is drawn without a current allocation.
 ** selection corner drawing smears
 ** Sheet entry selection not visible
 ** tooltip marker clipping
-** active cell border clipping
 ** repair gtk_sheet_draw_flashing_range clipping
 ** sheet entry - disable GtkEntry/GtkDataEntry undershoot for small cells
 ** sheet entry - GtkEntry/GtkDataEntry undershoot area smears backgnd
 ** rename xor to sel
 ** missing smilie in testgtksheet example1
+
+2018-06-21 Fredy Paquet <mailbox AT opag.ch>
+* fixed active cell border clipping
+* fixed selection border geometry
 
 2018-06-20 Fredy Paquet <mailbox AT opag.ch>
 * fixed recursive drawing error - improves resource consumption

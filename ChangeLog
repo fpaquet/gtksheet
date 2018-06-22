@@ -2,14 +2,24 @@ TBD
 ** search "drawn without"
 warning: GtkButton is drawn without a current allocation.
 warning: GtkLabel is drawn without a current allocation.
-** Sheet entry selection not visible
+warning: GtkButton is drawn without a current allocation.
+** Sheet entry: text selection is not visible
 ** tooltip marker clipping
 ** repair gtk_sheet_draw_flashing_range clipping
 ** sheet entry - disable GtkEntry/GtkDataEntry undershoot for small cells
 ** sheet entry - GtkEntry/GtkDataEntry undershoot area smears backgnd
 ** rename xor to sel
-** missing smilie in testgtksheet example1
 ** sheet entry stays active when making a selection
+** testgtksheet: sheet entry not visible after startup
+  ** GtkSheet is mapped but visible child GtkDataEntry is not mapped
+** testgtksheet: scrolling scrambles display when row/col titles are visible
+
+2018-06-22 Fredy Paquet <mailbox AT opag.ch>
+* fixed row/column title button widget attachment
+  * fixed attempt to underallocate GtkSheet's child GtkImage Allocation is 0x0, but minimum required size is 16x16.
+  * fixed missing smilie in testgtksheet example1
+  * fixed warning: GtkSheet is mapped but visible child is not mapped
+  * fixed attached widget placement when scrolling
 
 2018-06-21 Fredy Paquet <mailbox AT opag.ch>
 * fixed active cell border clipping

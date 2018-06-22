@@ -693,17 +693,23 @@ void
     calendar=gtk_calendar_new();
     gtk_widget_show(calendar);
 
-    GdkPixbuf *bullet_pixbuf = gdk_pixbuf_new_from_xpm_data((const char **) bullet_xpm);
+    GdkPixbuf *bullet_pixbuf = gdk_pixbuf_new_from_xpm_data(
+        (const char **) bullet_xpm);
 
     for (i=0; i<5; i++)
     {
         bullet[i] = gtk_image_new_from_pixbuf(bullet_pixbuf);
         gtk_widget_show(bullet[i]);
+
         gtk_sheet_get_cell_area(GTK_SHEET(sheets[0]), 4+i, 0, &area);
+
 /*      gtk_sheet_put(GTK_SHEET(sheets[0]), bullet[i], 
                     area.x+area.width/2-8, area.y+area.height/2-8);
 */
-        gtk_sheet_attach(GTK_SHEET(sheets[0]), bullet[i], 4+i, 0, GTK_EXPAND, GTK_EXPAND, 0, 0);
+        gtk_sheet_attach(
+            GTK_SHEET(sheets[0]), bullet[i], 
+            4+i, 0, 
+            GTK_EXPAND, GTK_EXPAND, 0, 0);
     }
 
     bullet[5] = gtk_image_new_from_pixbuf(bullet_pixbuf);
@@ -715,22 +721,33 @@ void
     gtk_sheet_attach(GTK_SHEET(sheets[0]), bullet[5], 10, 0, GTK_EXPAND, GTK_EXPAND, 0, 0);
 
     GdkPixbuf *smile_pixbuf = gdk_pixbuf_new_from_xpm_data((const char **) smile_xpm);
+
     smile = gtk_image_new_from_pixbuf(smile_pixbuf);
     gtk_widget_show(smile);
     gtk_sheet_button_attach(GTK_SHEET(sheets[0]), smile, -1, 5);
 
-    gtk_sheet_column_set_tooltip_markup(GTK_SHEET(sheets[0]), 
-                                        5, "This column has a <b>Smilie</b> in the title button.");
-    gtk_sheet_cell_set_tooltip_text(GTK_SHEET(sheets[0]), 
-                                      1, 5, "This single cell has its own tooltip text");
+#if 0
+    /* enable this for row button attachment debugging */
+    smile = gtk_image_new_from_pixbuf(smile_pixbuf);
+    gtk_widget_show(smile);
+    gtk_sheet_button_attach(GTK_SHEET(sheets[0]), smile, 3, -1);
+#endif
 
-    show_button=gtk_button_new_with_label("Show me a plot");
+    gtk_sheet_column_set_tooltip_markup(
+        GTK_SHEET(sheets[0]), 
+        5, "This column has a <b>Smilie</b> in the title button.");
+    gtk_sheet_cell_set_tooltip_text(
+        GTK_SHEET(sheets[0]), 
+        1, 5, "This single cell has its own tooltip text");
+
+    show_button=gtk_button_new_with_label("Show me a calendar");
     gtk_widget_show(show_button);
     gtk_widget_set_size_request(show_button, 100,60);
     gtk_sheet_get_cell_area(GTK_SHEET(sheets[0]), 12, 2, &area);
 /* gtk_sheet_put(GTK_SHEET(sheets[0]), show_button, area.x, area.y);
 */
-    gtk_sheet_attach(GTK_SHEET(sheets[0]), show_button, 12, 2, GTK_FILL, GTK_FILL, 5, 5);
+    gtk_sheet_attach(
+        GTK_SHEET(sheets[0]), show_button, 12, 2, GTK_FILL, GTK_FILL, 5, 5);
 
     g_signal_connect(G_OBJECT(show_button), "clicked",
                      (void *) show_child, 

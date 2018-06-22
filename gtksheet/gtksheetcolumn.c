@@ -1009,12 +1009,13 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
     /* if neccessary, resize the column title window */
     if (cta->width != width || cta->x != x)
     {
-
         cta->width = width;
         cta->x = x;
-        gdk_window_move_resize(sheet->column_title_window,
-                               cta->x, cta->y,
-                               cta->width, cta->height);
+
+        gdk_window_move_resize(
+            sheet->column_title_window,
+            cta->x, cta->y,
+            cta->width, cta->height);
     }
 
     /* if the right edge of the sheet is visible, clear it */
@@ -1032,12 +1033,12 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
 #   endif
 #endif
 
-	cairo_t *twin_cr = gdk_cairo_create(sheet->column_title_window);
-	cairo_rectangle(twin_cr, 
+        cairo_t *twin_cr = gdk_cairo_create(sheet->column_title_window);
+        cairo_rectangle(twin_cr, 
 	    (double) mx, (double) 0, (double) (cta->width - mx), (double) (cta->height));
-	gdk_cairo_set_source_rgba(twin_cr, &sheet->bg_color);
-	cairo_fill(twin_cr);
-	cairo_destroy(twin_cr);
+        gdk_cairo_set_source_rgba(twin_cr, &sheet->bg_color);
+        cairo_fill(twin_cr);
+        cairo_destroy(twin_cr);
     }
 
     if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return;

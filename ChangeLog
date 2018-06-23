@@ -1,21 +1,23 @@
 TBD 
-** search "drawn without"
-warning: GtkDataEntry is drawn without a current allocation.
+** sheet entry signals not connected after hide/show of sheet
+  ** testgtksheet: input not to be accepted after example tab change
+** testgtksheet: scrolling scrambles display when row/col titles are visible
 ** Sheet entry: text selection is not visible
 ** tooltip marker clipping
 ** repair gtk_sheet_draw_flashing_range clipping
 ** sheet entry - disable GtkEntry/GtkDataEntry undershoot for small cells
 ** sheet entry - GtkEntry/GtkDataEntry undershoot area smears backgnd
 ** rename xor to sel
-** sheet entry stays active when making a selection
-** testgtksheet: sheet entry not visible after startup
-  ** GtkSheet is mapped but visible child GtkDataEntry is not mapped
-** testgtksheet: scrolling scrambles display when row/col titles are visible
+** remove FIXME debug output
 
 2018-06-22 Fredy Paquet <mailbox AT opag.ch>
 * fixed global sheet button visibility
 * fixed warning: GtkButton is drawn without a current allocation.
 * fixed warning: GtkLabel is drawn without a current allocation.
+* fixed sheet entry stays active when making a selection
+* fixed: when active_cell is set, sheet entry not visible after map
+* fixed: GtkSheet is mapped but visible child GtkDataEntry is not mapped
+* fixed: warning: GtkDataEntry is drawn without a current allocation.
 
 2018-06-22 Fredy Paquet <mailbox AT opag.ch>
 * fixed row/column title button widget attachment

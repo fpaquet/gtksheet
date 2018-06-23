@@ -15,6 +15,9 @@ warning: GtkButton is drawn without a current allocation.
 ** testgtksheet: scrolling scrambles display when row/col titles are visible
 
 2018-06-22 Fredy Paquet <mailbox AT opag.ch>
+* fixed global sheet button visibility
+
+2018-06-22 Fredy Paquet <mailbox AT opag.ch>
 * fixed row/column title button widget attachment
   * fixed attempt to underallocate GtkSheet's child GtkImage Allocation is 0x0, but minimum required size is 16x16.
   * fixed missing smilie in testgtksheet example1

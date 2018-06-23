@@ -1968,16 +1968,15 @@ gtk_sheet_set_column_titles_height(GtkSheet *sheet, guint height)
  * gtk_sheet_show_column_titles:
  * @sheet: a #GtkSheet
  *
- * Show column titles .
+ * Show column titles.
  */
 void
 gtk_sheet_show_column_titles(GtkSheet *sheet)
 {
-    gint col;
-
     if (sheet->column_titles_visible) return;
 
-    sheet->column_titles_visible = TRUE;
+    sheet->column_titles_visible = TRUE;  /* must be set first */
+
     _gtk_sheet_recalc_top_ypixels(sheet);
     _gtk_sheet_recalc_left_xpixels(sheet);
 
@@ -1992,14 +1991,19 @@ gtk_sheet_show_column_titles(GtkSheet *sheet)
                            sheet->column_title_area.width,
                            sheet->column_title_area.height);
 
-    for (col = MIN_VIEW_COLUMN(sheet); col <= MAX_VIEW_COLUMN(sheet); col++)
-    {
-        GtkSheetChild *child;
-        if (col < 0 || col > sheet->maxcol) continue;
+    _gtk_sheet_global_sheet_button_show(sheet);
 
-        child = COLPTR(sheet, col)->button.child;
+    gint col;
+    for (col = MIN_VIEW_COLUMN(sheet);
+          col <= MAX_VIEW_COLUMN(sheet) && col <= sheet->maxcol;
+          col++)
+    {
+        if (col < 0) continue;
+
+        GtkSheetChild *child = COLPTR(sheet, col)->button.child;
         if (child) _gtk_sheet_child_show(child);
     }
+
     _gtk_sheet_scrollbar_adjust(sheet);
     _gtk_sheet_redraw_internal(sheet, FALSE, TRUE);
 }
@@ -2008,32 +2012,34 @@ gtk_sheet_show_column_titles(GtkSheet *sheet)
  * gtk_sheet_hide_column_titles:
  * @sheet: a #GtkSheet
  *
- * Hide column titles .
+ * Hide column titles.
  */
 void
 gtk_sheet_hide_column_titles(GtkSheet *sheet)
 {
-    gint col;
-
     if (!sheet->column_titles_visible) return;
 
-    sheet->column_titles_visible = FALSE;
+    sheet->column_titles_visible = FALSE;  /* must be set first */
+
     _gtk_sheet_recalc_top_ypixels(sheet);
     _gtk_sheet_recalc_left_xpixels(sheet);
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
     if (gtk_sheet_is_frozen(sheet)) return;
 
-    if (sheet->column_title_window) gdk_window_hide(sheet->column_title_window);
+    if (sheet->column_title_window)
+        gdk_window_hide(sheet->column_title_window);
 
-    if (gtk_widget_get_visible(sheet->button)) gtk_widget_hide(sheet->button);
+    _gtk_sheet_global_sheet_button_hide(sheet);
 
-    for (col = MIN_VIEW_COLUMN(sheet); col <= MAX_VIEW_COLUMN(sheet); col++)
+    gint col;
+    for (col = MIN_VIEW_COLUMN(sheet);
+          col <= MAX_VIEW_COLUMN(sheet) && col <= sheet->maxcol;
+          col++)
     {
-        GtkSheetChild *child;
-        if (col < 0 || col > sheet->maxcol) continue;
+        if (col < 0) continue;
 
-        child = COLPTR(sheet, col)->button.child;
+        GtkSheetChild *child = COLPTR(sheet, col)->button.child;
         if (child) _gtk_sheet_child_hide(child);
     }
     _gtk_sheet_scrollbar_adjust(sheet);

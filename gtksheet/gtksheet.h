@@ -822,8 +822,12 @@ GType _gtk_sheet_entry_type_to_gtype(GtkSheetEntryType ety);
 
 guint _gtk_sheet_row_default_height(GtkWidget *widget);
 
+/* private */
 void _gtk_sheet_child_hide(GtkSheetChild *child);
 void _gtk_sheet_child_show(GtkSheetChild *child);
+void _gtk_sheet_global_sheet_button_show(GtkSheet *sheet);
+void _gtk_sheet_global_sheet_button_hide(GtkSheet *sheet);
+
 
 G_END_DECLS
 

@@ -1417,10 +1417,6 @@ static void gtk_sheet_draw_flashing_range(
 static guint new_column_width(GtkSheet *sheet, gint column, gint *x);
 static guint new_row_height(GtkSheet *sheet, gint row, gint *y);
 
-/* Sheet Button */
-
-static void create_global_button(GtkSheet *sheet);
-
 /* Sheet Entry */
 
 static void create_sheet_entry(GtkSheet *sheet, GType new_entry_type);
@@ -1432,19 +1428,23 @@ static void _gtk_sheet_row_buttons_size_allocate(GtkSheet *sheet);
 
 static void row_button_set(GtkSheet *sheet, gint row);
 static void row_button_release(GtkSheet *sheet, gint row);
-static void size_allocate_global_button(GtkSheet *sheet);
+
+/* global sheet button */
+static void _global_sheet_button_create(GtkSheet *sheet);
+static void _global_sheet_button_size_allocate(GtkSheet *sheet);
 
 /* Attributes routines */
 
 static void gtk_sheet_set_cell_attributes(GtkSheet *sheet,
     gint row, gint col, GtkSheetCellAttr attributes);
-static void init_attributes(GtkSheet *sheet, gint col, GtkSheetCellAttr *attributes);
+static void init_attributes(GtkSheet *sheet,
+    gint col, GtkSheetCellAttr *attributes);
 
 /* Memory allocation routines */
 static void gtk_sheet_real_range_clear(GtkSheet *sheet,
     const GtkSheetRange *range, gboolean delete);
 static void gtk_sheet_real_cell_clear(GtkSheet *sheet,
-				      gint row, gint column, gboolean delete);
+    gint row, gint column, gboolean delete);
 
 static GtkSheetCell *gtk_sheet_cell_new(void);
 
@@ -3593,7 +3593,7 @@ gtk_sheet_construct(GtkSheet *sheet, guint rows, guint columns, const gchar *tit
     create_sheet_entry(sheet, G_TYPE_NONE);
 
     /* create global selection button */
-    create_global_button(sheet);
+    _global_sheet_button_create(sheet);
 
     if (title)
     {
@@ -4542,6 +4542,7 @@ gtk_sheet_set_title(GtkSheet *sheet, const gchar *title)
 	g_free(sheet->title);
 	sheet->title = NULL;
     }
+
     if (title)
     {
 	sheet->title = g_strdup(title);
@@ -4552,32 +4553,13 @@ gtk_sheet_set_title(GtkSheet *sheet, const gchar *title)
 
     if (gtk_bin_get_child(GTK_BIN(sheet->button)))
 	label = gtk_bin_get_child(GTK_BIN(sheet->button));
-/*
-  gtk_label_set_text(GTK_LABEL(label), title);
-*/
-    size_allocate_global_button(sheet);
 
-    /* remove and destroy the old widget */
-/*
-  old_widget = gtk_bin_get_child(GTK_BIN (sheet->button));
-  if (old_widget)
-    {
-      gtk_container_remove (GTK_CONTAINER (sheet->button), old_widget);
-    }
+#if 0
+    /* disabled since ages */
+    gtk_label_set_text(GTK_LABEL(label), title);
+#endif
 
-  label = gtk_label_new (title);
-  gtk_misc_set_alignment(GTK_MISC(label), 0.5 , 0.5 );
-
-  gtk_container_add (GTK_CONTAINER (sheet->button), label);
-  gtk_widget_show (label);
-
-  size_allocate_global_button(sheet);
-
-  g_signal_emit(G_OBJECT(sheet),sheet_signals[CHANGED], 0, -1, -1);
-
-  if(old_widget)
-      gtk_widget_destroy (old_widget);
-*/
+    _gtk_sheet_global_sheet_button_show(sheet);
 }
 
 /**
@@ -4688,7 +4670,7 @@ void _gtk_sheet_redraw_internal(GtkSheet *sheet,
 
     if (sheet->row_titles_visible || sheet->column_titles_visible)
     {
-	size_allocate_global_button(sheet);
+	_global_sheet_button_size_allocate(sheet);
     }
 
     if (sheet->row_titles_visible)
@@ -4812,29 +4794,24 @@ gtk_sheet_set_row_titles_width(GtkSheet *sheet, guint width)
     _gtk_sheet_redraw_internal(sheet, TRUE, FALSE);
 }
 
-
 /**
  * gtk_sheet_show_row_titles:
  * @sheet: a #GtkSheet
  *
- * Show row titles .
+ * Show row titles.
  */
 void
 gtk_sheet_show_row_titles(GtkSheet *sheet)
 {
-    gint row;
+    if (sheet->row_titles_visible) return;
 
-    if (sheet->row_titles_visible)
-	return;
+    sheet->row_titles_visible = TRUE;  /* must be set first */
 
-    sheet->row_titles_visible = TRUE;
     _gtk_sheet_recalc_top_ypixels(sheet);
     _gtk_sheet_recalc_left_xpixels(sheet);
 
-    if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
-	return;
-    if (GTK_SHEET_IS_FROZEN(sheet))
-	return;
+    if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
+    if (GTK_SHEET_IS_FROZEN(sheet)) return;
 
     gdk_window_show(sheet->row_title_window);
 
@@ -4844,16 +4821,19 @@ gtk_sheet_show_row_titles(GtkSheet *sheet)
 	sheet->row_title_area.width,
 	sheet->row_title_area.height);
 
-    for (row = MIN_VIEW_ROW(sheet); row <= MAX_VIEW_ROW(sheet) && row <= sheet->maxrow; row++)
-    {
-	GtkSheetChild *child;
-	if (row < 0 || row > sheet->maxrow)
-	    continue;
+    _gtk_sheet_global_sheet_button_show(sheet);
 
-	child = sheet->row[row].button.child;
-	if (child)
-	    _gtk_sheet_child_show(child);
+    gint row;
+    for (row = MIN_VIEW_ROW(sheet);
+          row <= MAX_VIEW_ROW(sheet) && row <= sheet->maxrow;
+          row++)
+    {
+	if (row < 0) continue;
+
+	GtkSheetChild *child = sheet->row[row].button.child;
+	if (child) _gtk_sheet_child_show(child);
     }
+
     _gtk_sheet_scrollbar_adjust(sheet);
     _gtk_sheet_redraw_internal(sheet, TRUE, FALSE);
 }
@@ -4863,41 +4843,37 @@ gtk_sheet_show_row_titles(GtkSheet *sheet)
  * gtk_sheet_hide_row_titles:
  * @sheet: a #GtkSheet
  *
- * Hide row titles .
+ * Hide row titles.
  */
 void
 gtk_sheet_hide_row_titles(GtkSheet *sheet)
 {
-    gint row;
+    if (!sheet->row_titles_visible) return;
 
-    if (!sheet->row_titles_visible)
-	return;
+    sheet->row_titles_visible = FALSE;  /* must be set first */
 
-    sheet->row_titles_visible = FALSE;
     _gtk_sheet_recalc_top_ypixels(sheet);
     _gtk_sheet_recalc_left_xpixels(sheet);
 
-    if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
-	return;
-    if (GTK_SHEET_IS_FROZEN(sheet))
-	return;
+    if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
+    if (GTK_SHEET_IS_FROZEN(sheet)) return;
 
     if (sheet->row_title_window)
 	gdk_window_hide(sheet->row_title_window);
 
-    if (gtk_widget_get_visible(sheet->button))
-	gtk_widget_hide(sheet->button);
+    _gtk_sheet_global_sheet_button_hide(sheet);
 
-    for (row = MIN_VIEW_ROW(sheet); row <= MAX_VIEW_ROW(sheet) && row <= sheet->maxrow; row++)
+    gint row;
+    for (row = MIN_VIEW_ROW(sheet);
+          row <= MAX_VIEW_ROW(sheet) && row <= sheet->maxrow;
+          row++)
     {
-	GtkSheetChild *child;
-	if (row < 0 || row > sheet->maxrow)
-	    continue;
+	if (row < 0) continue;
 
-	child = sheet->row[row].button.child;
-	if (child)
-	    _gtk_sheet_child_hide(child);
+        GtkSheetChild *child = sheet->row[row].button.child;
+	if (child) _gtk_sheet_child_hide(child);
     }
+
     _gtk_sheet_scrollbar_adjust(sheet);
     _gtk_sheet_redraw_internal(sheet, TRUE, FALSE);
 }
@@ -4918,7 +4894,6 @@ gtk_sheet_row_titles_visible(GtkSheet *sheet)
 
     return (sheet->row_titles_visible);
 }
-
 
 /**
  * gtk_sheet_set_row_title:
@@ -6413,11 +6388,12 @@ gtk_sheet_destroy_handler(GtkWidget *widget)
 	sheet->sheet_entry = NULL;
     }
 
-    /* destroy the global selection button */
+    /* destroy the global sheet button */
     if (sheet->button && GTK_IS_WIDGET(sheet->button))
     {
 #if GTK_SHEET_DEBUG_REALIZE > 0
-	g_debug("gtk_sheet_destroy: destroying old entry %p", sheet->button);
+	g_debug("gtk_sheet_destroy: destroying old entry %p",
+            sheet->button);
 #endif
 	gtk_widget_destroy(sheet->button);
 	sheet->button = NULL;
@@ -6620,14 +6596,17 @@ gtk_sheet_realize_handler(GtkWidget *widget)
     /* backing surface */
     gtk_sheet_make_bsurf(sheet, 0, 0);  /* use default size */
 
+    /* reparent global sheet entry */
     if (gtk_widget_get_parent(sheet->sheet_entry))
     {
 	g_object_ref(sheet->sheet_entry);
 	gtk_widget_unparent(sheet->sheet_entry);
     }
-    gtk_widget_set_parent_window(sheet->sheet_entry, sheet->sheet_window);
+    gtk_widget_set_parent_window(
+        sheet->sheet_entry, sheet->sheet_window);
     gtk_widget_set_parent(sheet->sheet_entry, GTK_WIDGET(sheet));
 
+    /* reparent global sheet button */
     if (sheet->button && gtk_widget_get_parent(sheet->button))
     {
 	g_object_ref(sheet->button);
@@ -6637,7 +6616,8 @@ gtk_sheet_realize_handler(GtkWidget *widget)
     gtk_widget_set_parent(sheet->button, GTK_WIDGET(sheet));
 
 /*
-  gtk_sheet_activate_cell(sheet, sheet->active_cell.row, sheet->active_cell.col);
+    gtk_sheet_activate_cell(
+      sheet, sheet->active_cell.row, sheet->active_cell.col);
 */
 
     if (!sheet->cursor_drag)
@@ -6713,12 +6693,17 @@ global_button_press_handler(GtkWidget *widget,
     return(retval);
 }
 
+/**
+ * create sheet button
+ * 
+ * @param sheet  the sheet
+ */
 static void
-create_global_button(GtkSheet *sheet)
+_global_sheet_button_create(GtkSheet *sheet)
 {
     sheet->button = gtk_button_new_with_label(" ");
 
-    //g_debug("create_global_button called");
+    //g_debug("_global_sheet_button_create called");
 
     g_signal_connect(G_OBJECT(sheet->button),
 	"button-press-event",
@@ -6726,8 +6711,15 @@ create_global_button(GtkSheet *sheet)
 	(gpointer)sheet);
 }
 
+/**
+ * allocate global sheet button size
+ * 
+ * set to title area size
+ * 
+ * @param sheet  the sheet
+ */
 static void
-size_allocate_global_button(GtkSheet *sheet)
+_global_sheet_button_size_allocate(GtkSheet *sheet)
 {
     GtkAllocation allocation;
 
@@ -6736,7 +6728,7 @@ size_allocate_global_button(GtkSheet *sheet)
     if (!sheet->row_titles_visible)
 	return;
 
-    //g_debug("size_allocate_global_button called");
+    //g_debug("_global_sheet_button_size_allocate called");
 
     gtk_widget_get_preferred_size(sheet->button, NULL, NULL);
 
@@ -6746,9 +6738,51 @@ size_allocate_global_button(GtkSheet *sheet)
     allocation.height = sheet->column_title_area.height;
 
     gtk_widget_size_allocate(sheet->button, &allocation);
-    gtk_widget_show(sheet->button);
 }
 
+/**
+ * show global sheet button
+ * 
+ * - allocate size
+ * - show widget
+ * - map widget
+ * 
+ * @param sheet  the sheet
+ */
+void
+_gtk_sheet_global_sheet_button_show(GtkSheet *sheet)
+{
+    if (!sheet->column_titles_visible || !sheet->row_titles_visible)
+	return;
+
+    //g_debug("_global_sheet_button_show called");
+
+    _global_sheet_button_size_allocate(sheet);
+    
+    gtk_widget_show(sheet->button);
+
+    if (gtk_widget_get_visible(sheet->button)
+        && !gtk_widget_get_mapped(sheet->button))
+    {
+        gtk_widget_map(sheet->button);
+    }
+}
+
+/**
+ * hide global sheet button
+ * 
+ * - if visible, hide widget
+ * 
+ * @param sheet  the sheet
+ */
+void
+_gtk_sheet_global_sheet_button_hide(GtkSheet *sheet)
+{
+    //g_debug("_global_sheet_button_hide called");
+
+    if (gtk_widget_get_visible(sheet->button))
+	gtk_widget_hide(sheet->button);
+}
 
 /*
  * gtk_sheet_unrealize_handler:
@@ -6850,18 +6884,14 @@ gtk_sheet_map_handler(GtkWidget *widget)
 	}
 #endif
 
-	if (gtk_widget_get_visible(sheet->button)
-            && !gtk_widget_get_mapped(sheet->button))
-	{
-	    gtk_widget_show(sheet->button);
-	    gtk_widget_map(sheet->button);
-	}
+        _gtk_sheet_global_sheet_button_show(sheet);
 
 	if ((WdChild = gtk_bin_get_child(GTK_BIN(sheet->button))))
 	{
 	    if (gtk_widget_get_visible(WdChild)
                 && !gtk_widget_get_mapped(WdChild))
 	    {
+                // FIXME - size allocate missing here?
 		gtk_widget_map(WdChild);
 	    }
 	}
@@ -10272,7 +10302,7 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
 
     sheet = GTK_SHEET(widget);
 
-#if GTK_SHEET_DEBUG_EXPOSE > 1 || GTK_SHEET_DEBUG_DRAW_BUTTON > 1
+#if GTK_SHEET_DEBUG_EXPOSE > 1
     gdk_cairo_set_source_rgba(cr, &debug_color);
     cairo_rectangle(cr, 100, 200, 1300, 40);
     cairo_fill(cr);
@@ -10361,7 +10391,6 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
 		}
 	    }
 	}
-
     }
 
     if (sheet->state != GTK_SHEET_NORMAL
@@ -12706,7 +12735,7 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 
     if (gtk_widget_get_realized(sheet->sheet_entry))
     {
-        // what exactly does this and why is it there?
+        /* shut down warnings */
 	gtk_widget_get_preferred_size(sheet->sheet_entry, NULL, NULL);
     }
 
@@ -12811,7 +12840,7 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
             minimum.width, minimum.height);
 #endif
         
-        // check minimum, center and resize
+        /* check minimum, center and resize */
         if (shentry_allocation.width < minimum.width)
         {
             gint diff = minimum.width - shentry_allocation.width;
@@ -13392,15 +13421,15 @@ row_button_release(GtkSheet *sheet, gint row)
 }
 
 /**
- * _gtk_sheet_draw_button: 
- * @sheet:  the #GtkSheet
- * @row:    row index
- * @col:    column index 
- * @cr:    cairo context or NULL
- *  
  * draw a sheet button
  * if row == -1 draw a column button
  * if col == -1 draw a row button
+ * not used for global sheet button
+ * 
+ * @param sheet  the #GtkSheet
+ * @param row    row index
+ * @param col    column index
+ * @param cr     cairo context or NULL
  */
 void
 _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
@@ -14006,7 +14035,7 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
 
     gtk_sheet_position_children(sheet);
 
-    size_allocate_global_button(sheet);
+    _global_sheet_button_size_allocate(sheet);
     _gtk_sheet_row_buttons_size_allocate(sheet);
 
     _gtk_sheet_range_draw(sheet, NULL, TRUE);
@@ -14155,7 +14184,7 @@ _hadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
 
     gtk_sheet_position_children(sheet);
 
-    size_allocate_global_button(sheet);
+    _global_sheet_button_size_allocate(sheet);
     _gtk_sheet_column_buttons_size_allocate(sheet);
 
     _gtk_sheet_range_draw(sheet, NULL, TRUE);
@@ -16104,7 +16133,7 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
     if (sheet->row_titles_visible)            
         xoffset = sheet->row_title_area.width;
 
-    if (child->attached_to_cell)
+    if (child->attached_to_cell)  /* within sheet, not in title areas */
     {
 	gtk_sheet_get_cell_area(sheet, child->row, child->col, &area);
 
@@ -16177,7 +16206,7 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
 	x = child_allocation.x = child->x + xoffset;
 	y = child_allocation.y = child->y + yoffset;
     }
-    else  /* left top sheet button */
+    else  /* global sheet button */
     {
         //g_assert(FALSE); // NOTREACHED?
 
@@ -16305,7 +16334,7 @@ gtk_sheet_position_children(GtkSheet *sheet)
         {
             gtk_sheet_position_child(sheet, child);
         }
-        else if (child->col == -1 && child->row == -1) /* sheet button */
+        else if (child->col == -1 && child->row == -1) /* global sheet button */
         {
             if (sheet->column_titles_visible && sheet->row_titles_visible)
                 _gtk_sheet_child_show(child);

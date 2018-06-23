@@ -1,8 +1,6 @@
 TBD 
 ** search "drawn without"
-warning: GtkButton is drawn without a current allocation.
-warning: GtkLabel is drawn without a current allocation.
-warning: GtkButton is drawn without a current allocation.
+warning: GtkDataEntry is drawn without a current allocation.
 ** Sheet entry: text selection is not visible
 ** tooltip marker clipping
 ** repair gtk_sheet_draw_flashing_range clipping
@@ -16,6 +14,8 @@ warning: GtkButton is drawn without a current allocation.
 
 2018-06-22 Fredy Paquet <mailbox AT opag.ch>
 * fixed global sheet button visibility
+* fixed warning: GtkButton is drawn without a current allocation.
+* fixed warning: GtkLabel is drawn without a current allocation.
 
 2018-06-22 Fredy Paquet <mailbox AT opag.ch>
 * fixed row/column title button widget attachment

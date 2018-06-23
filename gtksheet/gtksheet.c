@@ -4532,7 +4532,6 @@ gtk_sheet_locked(GtkSheet *sheet)
 void
 gtk_sheet_set_title(GtkSheet *sheet, const gchar *title)
 {
-    GtkWidget *label;
 
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
@@ -4551,11 +4550,13 @@ gtk_sheet_set_title(GtkSheet *sheet, const gchar *title)
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet)) || !title)
 	return;
 
+#if 0
+    /* disabled since ages */
+    GtkWidget *label;
+
     if (gtk_bin_get_child(GTK_BIN(sheet->button)))
 	label = gtk_bin_get_child(GTK_BIN(sheet->button));
 
-#if 0
-    /* disabled since ages */
     gtk_label_set_text(GTK_LABEL(label), title);
 #endif
 
@@ -6723,10 +6724,8 @@ _global_sheet_button_size_allocate(GtkSheet *sheet)
 {
     GtkAllocation allocation;
 
-    if (!sheet->column_titles_visible)
-	return;
-    if (!sheet->row_titles_visible)
-	return;
+    if (!sheet->column_titles_visible) return;
+    if (!sheet->row_titles_visible) return;
 
     //g_debug("_global_sheet_button_size_allocate called");
 
@@ -6752,8 +6751,8 @@ _global_sheet_button_size_allocate(GtkSheet *sheet)
 void
 _gtk_sheet_global_sheet_button_show(GtkSheet *sheet)
 {
-    if (!sheet->column_titles_visible || !sheet->row_titles_visible)
-	return;
+    if (!sheet->column_titles_visible) return;
+    if (!sheet->row_titles_visible) return;
 
     //g_debug("_global_sheet_button_show called");
 
@@ -10393,6 +10392,16 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
 	}
     }
 
+    if (sheet->row_titles_visible && sheet->column_titles_visible
+        && gtk_widget_get_visible(sheet->button))
+    {
+        /* fix for
+           **: GtkButton is drawn without a current allocation.
+           **: GtkLabel is drawn without a current allocation.
+           */
+        _global_sheet_button_size_allocate(sheet);
+    }
+
     if (sheet->state != GTK_SHEET_NORMAL
         && GTK_SHEET_IN_SELECTION(sheet))
 	gtk_widget_grab_focus(GTK_WIDGET(sheet));
@@ -13453,7 +13462,8 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
 
-    if ((row == -1) && (col == -1)) return;
+    if ((row == -1) && (col == -1))  /* not for global sheet button*/
+        return;
 
 #if GTK_SHEET_DEBUG_DRAW_BUTTON > 0
     g_debug("_gtk_sheet_draw_button: row %d col %d", row, col);

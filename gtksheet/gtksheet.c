@@ -544,14 +544,16 @@ static void _debug_color_rect(
         "%s: _debug_color_rect: x %0.1f y %0.1f w %0.1f h %0.1f",
         where, x, y, w, h);
 
-    cairo_save(cr);
+    cairo_save(cr);  // debug color
+
     cairo_set_line_width(cr, 1.0);
     cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
     cairo_set_line_join(cr, CAIRO_LINE_JOIN_MITER);
     gdk_cairo_set_source_rgba(cr, &debug_color);
     cairo_rectangle(cr, x, y, w, h);
     cairo_stroke(cr);
-    cairo_restore(cr);
+
+    cairo_restore(cr);  // debug color
 }
 #endif
 
@@ -1062,6 +1064,9 @@ _gtk_sheet_range_fixup(GtkSheet *sheet, GtkSheetRange *range)
 /**
  * Wrapper for gdk_window_invalidate_region
  * 
+ * - invalidates sheet_window
+ * - give coordinates relative to sheet_window
+ * 
  * @param sheet  the sheet
  * @param x      x
  * @param y      y
@@ -1415,8 +1420,7 @@ static void _hadjustment_value_changed_handler(
 static void draw_xor_vline(GtkSheet *sheet, gboolean draw);
 static void draw_xor_hline(GtkSheet *sheet, gboolean draw);
 static void gtk_sheet_draw_flashing_range(
-    GtkSheet *sheet, GtkSheetRange range,
-    cairo_t *xor_cr);
+    GtkSheet *sheet, cairo_t *xor_cr);
 static guint new_column_width(GtkSheet *sheet, gint column, gint *x);
 static guint new_row_height(GtkSheet *sheet, gint row, gint *y);
 
@@ -5381,7 +5385,7 @@ gtk_sheet_row_set_visibility(GtkSheet *sheet, gint row, gboolean visible)
     {
 	_gtk_sheet_hide_active_cell(sheet);
 
-        g_debug("FIXME gtk_sheet_row_set_visibility: active_cell := -1");
+        //g_debug("FIXME gtk_sheet_row_set_visibility: active_cell := -1");
 	sheet->active_cell.row = -1;
 	sheet->active_cell.col = -1;
     }
@@ -5730,7 +5734,7 @@ gtk_sheet_select_row(GtkSheet *sheet, gint row)
     sheet->range.rowi = row;
     sheet->range.coli = sheet->maxcol;
 
-    g_debug("gtk_sheet_select_row %p active_cell := row,0 FIXME", sheet);
+    //g_debug("gtk_sheet_select_row %p active_cell := row,0 FIXME", sheet);
     sheet->active_cell.row = row;
     sheet->active_cell.col = 0;
 
@@ -5773,7 +5777,7 @@ gtk_sheet_select_column(GtkSheet *sheet, gint column)
     sheet->range.rowi = sheet->maxrow;
     sheet->range.coli = column;
 
-    g_debug("gtk_sheet_select_column %p active_cell := 0,column FIXME", sheet);
+    //g_debug("gtk_sheet_select_column %p active_cell := 0,column FIXME", sheet);
     sheet->active_cell.row = 0;
     sheet->active_cell.col = column;
 
@@ -5805,9 +5809,11 @@ gtk_sheet_clip_range(GtkSheet *sheet, const GtkSheetRange *clip_range)
 	sheet->clip_range = *clip_range;
 
     sheet->interval = 0;
-    sheet->clip_timer = g_timeout_add_full(0, TIMEOUT_FLASH, gtk_sheet_flash, sheet, NULL);
+    sheet->clip_timer = g_timeout_add_full(
+        0, TIMEOUT_FLASH, gtk_sheet_flash, sheet, NULL);
 
-    g_signal_emit(G_OBJECT(sheet), sheet_signals[CLIP_RANGE], 0, &sheet->clip_range);
+    g_signal_emit(G_OBJECT(sheet), sheet_signals[CLIP_RANGE],
+        0, &sheet->clip_range);
 }
 
 /**
@@ -5862,25 +5868,50 @@ static cairo_t *_create_main_win_xor_cr(GtkSheet *sheet)
 }
 #endif
 
-static void _get_sheet_clip_area(GtkSheet *sheet, GdkRectangle *clip_area)
+/**
+ * set cairo clipping area to visible part of the sheet.
+ * 
+ * Note that row/column title windows are overlapping sheet_window.
+ * 
+ * Use this to prevent overwriting the title areas.
+ * Always necessary when copying bsurf to window.
+ * 
+ * Note that clipping area needs to be restored properly.
+ * Failure to do so will result in missing objects, like global sheet button.
+ * 
+ * @param sheet  the sheet
+ * @param cr     cairo context
+ */
+static void
+_cairo_clip_sheet_area(GtkSheet *sheet, cairo_t *cr)
 {
-    clip_area->x = _gtk_sheet_column_left_xpixel(sheet, MIN_VIEW_COLUMN(sheet));
-    clip_area->y = _gtk_sheet_row_top_ypixel(sheet, MIN_VIEW_ROW(sheet));
-    clip_area->width = sheet->sheet_window_width;
-    clip_area->height = sheet->sheet_window_height;
+    GdkRectangle clip_area;
 
-    clip_area->x = MAX(clip_area->x, 
+    g_assert(cr);
+
+    clip_area.x = _gtk_sheet_column_left_xpixel(
+        sheet, MIN_VIEW_COLUMN(sheet));
+
+    clip_area.y = _gtk_sheet_row_top_ypixel(
+        sheet, MIN_VIEW_ROW(sheet));
+
+    clip_area.width = sheet->sheet_window_width;
+    clip_area.height = sheet->sheet_window_height;
+
+    clip_area.x = MAX(clip_area.x, 
 	sheet->row_titles_visible ? sheet->row_title_area.width : 0);
-    clip_area->y = MAX(clip_area->y, 
+
+    clip_area.y = MAX(clip_area.y, 
 	sheet->column_titles_visible ? sheet->column_title_area.height : 0);
 
 #if GTK_SHEET_DEBUG_DRAW > 0
-    g_debug("_get_sheet_clip_area %d %d %d %d", 
-	clip_area->x, clip_area->y, clip_area->width, 
-            clip_area->height);
+    g_debug("_cairo_clip_sheet_area %d %d %d %d", 
+	clip_area.x, clip_area.y, clip_area.width, clip_area.height);
 #endif
-}
 
+    gdk_cairo_rectangle(cr, &clip_area);
+    cairo_clip (cr);
+}
 
 /**
  * saves cairo context and sets xor mode
@@ -5903,15 +5934,12 @@ static void _cairo_save_and_set_xor_mode(GtkSheet *sheet, cairo_t *cr)
     _debug_cairo_clip_extent("_cairo_save_and_set_xor_mode", cr);
 #endif
 
-    cairo_save(cr);
+    cairo_save(cr);  // _cairo_save_and_set_xor_mode,  _cairo_clip_sheet_area
 
     GtkStyleContext *style_context = gtk_widget_get_style_context(
         GTK_WIDGET(sheet));
 
-    //GdkRectangle clip_area;
-    //_get_sheet_clip_area(sheet, &clip_area);
-    //gdk_cairo_rectangle(cr, &clip_area);
-    //cairo_clip (cr);
+    _cairo_clip_sheet_area(sheet, cr);
 
     gtk_style_context_save (style_context);
 
@@ -5938,25 +5966,40 @@ static void _cairo_save_and_set_xor_mode(GtkSheet *sheet, cairo_t *cr)
     //return(cr);
 }
 
+static void 
+_get_flash_rectangle(
+    GtkSheet *sheet, gint *x, gint *y, gint *width, gint *height)
+{
+    GtkSheetRange *flash_range = &sheet->clip_range;
+
+    /* get flashing range */
+    *x = _gtk_sheet_column_left_xpixel(sheet, flash_range->col0);
+    *y = _gtk_sheet_row_top_ypixel(sheet, flash_range->row0);
+
+    *width = _gtk_sheet_column_left_xpixel(sheet, flash_range->coli) - *x
+        + COLPTR(sheet, flash_range->coli)->width;
+    *height = _gtk_sheet_row_top_ypixel(sheet, flash_range->rowi) - *y
+        + ROWPTR(sheet, flash_range->rowi)->height;
+
+    /* shrink flashing rect */
+    *x += 0;
+    *y += 0;
+    *width -= 2;
+    *height -= 2;
+}
+
 static gint
 gtk_sheet_flash(gpointer data)
 {
-    GtkSheet *sheet;
-    gint x, y, width, height;
-    GdkRectangle clip_area;
+    GtkSheet *sheet = GTK_SHEET(data);
 
-    sheet = GTK_SHEET(data);
+    g_debug("gtk_sheet_flash: called FIXME");
 
-    if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
-	return (TRUE);
-    if (!gtk_widget_is_drawable(GTK_WIDGET(sheet)))
-	return (TRUE);
-    if (!gtk_sheet_range_isvisible(sheet, sheet->clip_range))
-	return (TRUE);
-    if (GTK_SHEET_IN_XDRAG(sheet))
-	return (TRUE);
-    if (GTK_SHEET_IN_YDRAG(sheet))
-	return (TRUE);
+    if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return (TRUE);
+    if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return (TRUE);
+    if (!gtk_sheet_range_isvisible(sheet, sheet->clip_range)) return (TRUE);
+    if (GTK_SHEET_IN_XDRAG(sheet)) return (TRUE);
+    if (GTK_SHEET_IN_YDRAG(sheet)) return (TRUE);
 
     /* FIXME
        - invalidate_region is missing 
@@ -5968,57 +6011,38 @@ gtk_sheet_flash(gpointer data)
     GDK_THREADS_ENTER();
 #endif
 
-    x = _gtk_sheet_column_left_xpixel(sheet, sheet->clip_range.col0) + 1;
-    y = _gtk_sheet_row_top_ypixel(sheet, sheet->clip_range.row0) + 1;
-    width = _gtk_sheet_column_left_xpixel(sheet, sheet->clip_range.coli) - x +
-	COLPTR(sheet, sheet->clip_range.coli)->width - 1;
-    height = _gtk_sheet_row_top_ypixel(sheet, sheet->clip_range.rowi) - y +
-	sheet->row[sheet->clip_range.rowi].height - 1;
-
-    _get_sheet_clip_area(sheet, &clip_area);
-
-    if (x < 0)
-    {
-	width = width + x + 1;
-	x = -1;
-    }
-    if (width > clip_area.width)
-	width = clip_area.width + 10;
-
-    if (y < 0)
-    {
-	height = height + y + 1;
-	y = -1;
-    }
-    if (height > clip_area.height)
-	height = clip_area.height + 10;
+    /* get flashing range */
+    gint x, y, width, height;
+    _get_flash_rectangle(sheet, &x, &y, &width, &height);
 
     // use swin_cr to blit sheet->bsurf into sheet_window
     cairo_t *swin_cr = gdk_cairo_create(sheet->sheet_window);
     cairo_set_source_surface(swin_cr, sheet->bsurf, 0, 0);
 
-    gdk_cairo_rectangle(swin_cr, &clip_area);
-    cairo_clip (swin_cr);
+    cairo_save(swin_cr);  // _cairo_clip_sheet_area
+    _cairo_clip_sheet_area(sheet, swin_cr);
+
+    /* clear background */
 
     // blit
-    cairo_rectangle(swin_cr, x, y, 1, height);
+    cairo_rectangle(swin_cr, x, y, 1, height);  /* left edge */
     cairo_fill(swin_cr);
 
     // blit
-    cairo_rectangle(swin_cr, x, y, width, 1);
+    cairo_rectangle(swin_cr, x, y, width, 1); /* top edge */
     cairo_fill(swin_cr);
 
     // blit
-    cairo_rectangle(swin_cr, x, y + height, width, 1);
+    cairo_rectangle(swin_cr, x, y + height, width, 1); /* bottom edge */
     cairo_fill(swin_cr);
 
     // blit
-    cairo_rectangle(swin_cr, x + width, y, 1, height);
+    cairo_rectangle(swin_cr, x + width, y, 1, height); /* right edge */
     cairo_fill(swin_cr);
 
+    /* advancing line anchor */
     sheet->interval = sheet->interval + 1;
-    if (sheet->interval == TIME_INTERVAL)
-	sheet->interval = 0;
+    if (sheet->interval >= TIME_INTERVAL) sheet->interval = 0;
 
     cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
     _cairo_save_and_set_xor_mode(sheet, xor_cr);
@@ -6026,75 +6050,52 @@ gtk_sheet_flash(gpointer data)
     double dashes[] = { 4.0, 4.0 };
     cairo_set_dash(xor_cr, dashes, 2, (double) sheet->interval);
 
-    gtk_sheet_draw_flashing_range(sheet, sheet->clip_range, xor_cr);
+    gtk_sheet_draw_flashing_range(sheet, xor_cr);
+
     cairo_set_dash(xor_cr, dashes, 2, (double) 0);
 
 #if GTK_CHECK_VERSION(3,6,0) == 0
     GDK_THREADS_LEAVE();
 #endif
 
-    cairo_restore(xor_cr);
+    cairo_restore(xor_cr);  // _cairo_save_and_set_xor_mode
     cairo_destroy(xor_cr);  /* FIXME, to be removed */
+
+    cairo_restore(swin_cr); // _cairo_clip_sheet_area
     cairo_destroy(swin_cr);  /* FIXME */
 
     return (TRUE);
 }
 
 static void
-gtk_sheet_draw_flashing_range(GtkSheet *sheet, GtkSheetRange range,
-    cairo_t *xor_cr)
+gtk_sheet_draw_flashing_range(
+    GtkSheet *sheet, cairo_t *xor_cr)
 {
     GdkRectangle clip_area;
-    gint x, y, width, height;
 
     if (!gtk_sheet_range_isvisible(sheet, sheet->clip_range))
 	return;
 
-    clip_area.x = _gtk_sheet_column_left_xpixel(sheet, MIN_VIEW_COLUMN(sheet));
-    clip_area.y = _gtk_sheet_row_top_ypixel(sheet, MIN_VIEW_ROW(sheet));
-    clip_area.width = sheet->sheet_window_width;
-    clip_area.height = sheet->sheet_window_height;
+    g_debug("gtk_sheet_draw_flashing_range: called FIXME");
 
-    cairo_save(xor_cr);  // need clip
+    // obsolete, already done in _cairo_save_and_set_xor_mode()
+    //_cairo_clip_sheet_area(sheet, xor_cr);
 
-    gdk_cairo_rectangle(xor_cr, &clip_area);
-    cairo_clip (xor_cr);
-
-    x = _gtk_sheet_column_left_xpixel(sheet, sheet->clip_range.col0) + 1;
-    y = _gtk_sheet_row_top_ypixel(sheet, sheet->clip_range.row0) + 1;
-    width = _gtk_sheet_column_left_xpixel(sheet, sheet->clip_range.coli) - x +
-	COLPTR(sheet, sheet->clip_range.coli)->width - 1;
-    height = _gtk_sheet_row_top_ypixel(sheet, sheet->clip_range.rowi) - y +
-	sheet->row[sheet->clip_range.rowi].height - 1;
-
-    if (x < 0)
-    {
-	width = width + x + 1;
-	x = -1;
-    }
-    if (width > clip_area.width)
-	width = clip_area.width + 10;
-
-    if (y < 0)
-    {
-	height = height + y + 1;
-	y = -1;
-    }
-    if (height > clip_area.height)
-	height = clip_area.height + 10;
+    /* get flashing range */
+    gint x, y, width, height;
+    _get_flash_rectangle(sheet, &x, &y, &width, &height);
 
     cairo_set_line_width(xor_cr, 1.0);
     cairo_set_line_cap(xor_cr, CAIRO_LINE_CAP_BUTT);
     cairo_set_line_join(xor_cr, CAIRO_LINE_JOIN_MITER);
 
-    cairo_rectangle(xor_cr, x, y, width, height);
+    // draw dash line
+    cairo_rectangle(xor_cr, x + 0.5, y + 0.5, width, height);
     cairo_stroke(xor_cr);
 
     cairo_set_line_width(xor_cr, 1.0);
     cairo_set_line_cap(xor_cr, CAIRO_LINE_CAP_BUTT);
     cairo_set_line_join(xor_cr, CAIRO_LINE_JOIN_MITER);
-
-    cairo_restore(xor_cr);
 }
 
 static gint
@@ -6585,7 +6586,6 @@ gtk_sheet_realize_handler(GtkWidget *widget)
     gtk_style_context_set_background(style_context, sheet->row_title_window);
 
     /* sheet-window */
-
     attributes.cursor = gdk_cursor_new(GDK_PLUS);
 
     attributes.x = attributes.y = 0;
@@ -6806,11 +6806,16 @@ gtk_sheet_unrealize_handler(GtkWidget *widget)
     sheet = GTK_SHEET(widget);
 
     g_object_unref(G_OBJECT(sheet->cursor_drag));
+    sheet->cursor_drag = NULL;
 
     gdk_window_destroy(sheet->sheet_window);
+    sheet->sheet_window = NULL;
+
     gdk_window_destroy(sheet->column_title_window);
+    sheet->column_title_window = NULL;
 
     gdk_window_destroy(sheet->row_title_window);
+    sheet->row_title_window = NULL;
 
     if (sheet->bsurf)
     {
@@ -6819,13 +6824,8 @@ gtk_sheet_unrealize_handler(GtkWidget *widget)
 
 	cairo_surface_destroy(sheet->bsurf);
 	sheet->bsurf_width = sheet->bsurf_height = 0;
-
 	sheet->bsurf = NULL;
     }
-
-    sheet->column_title_window = NULL;
-    sheet->sheet_window = NULL;
-    sheet->cursor_drag = NULL;
 
     if (GTK_WIDGET_CLASS(sheet_parent_class)->unrealize)
 	(*GTK_WIDGET_CLASS(sheet_parent_class)->unrealize)(widget);
@@ -6910,7 +6910,7 @@ gtk_sheet_map_handler(GtkWidget *widget)
         /* this will cause selection to be reset
            whenever sheet gets unmapped+mapped or hidden+shown
 	    */
-        g_debug("FIXME - experimental activate cell in map_handler");
+        //g_debug("FIXME - experimental activate cell in map_handler");
 	gtk_sheet_activate_cell(sheet, 
 	    sheet->active_cell.row, 
 	    sheet->active_cell.col);
@@ -7177,7 +7177,8 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col,
 #endif
 
 	/* draw grid rectangle */
-	cairo_save(sheet->bsurf_cr);
+	cairo_save(sheet->bsurf_cr);  // grid rectangle color
+
 	cairo_set_line_width(sheet->bsurf_cr, 1.0);
 	cairo_set_line_cap(sheet->bsurf_cr, CAIRO_LINE_CAP_BUTT);
 	cairo_set_line_join(sheet->bsurf_cr, CAIRO_LINE_JOIN_MITER);
@@ -7187,7 +7188,8 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col,
 	cairo_rectangle(sheet->bsurf_cr, 
 	    area.x - 0.5, area.y - 0.5, area.width + 1.0, area.height + 1.0);
 	cairo_stroke(sheet->bsurf_cr);
-	cairo_restore(sheet->bsurf_cr);
+
+	cairo_restore(sheet->bsurf_cr);  // grid rectangle color
     }
 
     gtk_sheet_draw_tooltip_marker(sheet, ON_CELL_AREA, row, col);
@@ -7225,7 +7227,7 @@ _cell_draw_border(GtkSheet *sheet, gint row, gint col, gint mask)
     area.width = COLPTR(sheet, col)->width;
     area.height = sheet->row[row].height;
 
-    cairo_save(sheet->bsurf_cr);
+    cairo_save(sheet->bsurf_cr);  // cell border attributes
 
     width = attributes.border.width;
     cairo_set_line_width(sheet->bsurf_cr, (double) attributes.border.width);
@@ -7239,8 +7241,9 @@ _cell_draw_border(GtkSheet *sheet, gint row, gint col, gint mask)
     {
 	double w2 = width / 2.0;
 
-	if (attributes.border.mask & GTK_SHEET_LEFT_BORDER & mask) {
-	    cairo_move_to(sheet->bsurf_cr, 
+	if (attributes.border.mask & GTK_SHEET_LEFT_BORDER & mask)
+        {
+            cairo_move_to(sheet->bsurf_cr, 
 		area.x - 1.0 + w2, 
 		area.y - 0.5);
 	    cairo_line_to(sheet->bsurf_cr, 
@@ -7249,7 +7252,8 @@ _cell_draw_border(GtkSheet *sheet, gint row, gint col, gint mask)
 	    cairo_stroke(sheet->bsurf_cr);
 	}
 
-	if (attributes.border.mask & GTK_SHEET_RIGHT_BORDER & mask) {
+	if (attributes.border.mask & GTK_SHEET_RIGHT_BORDER & mask)
+        {
 	    cairo_move_to(sheet->bsurf_cr, 
 		area.x + area.width - w2, 
 		area.y - 0.5 );
@@ -7259,7 +7263,8 @@ _cell_draw_border(GtkSheet *sheet, gint row, gint col, gint mask)
 	    cairo_stroke(sheet->bsurf_cr);
 	}
 
-	if (attributes.border.mask & GTK_SHEET_TOP_BORDER & mask) {
+	if (attributes.border.mask & GTK_SHEET_TOP_BORDER & mask)
+        {
 	    cairo_move_to(sheet->bsurf_cr, 
 		area.x - 0.5, 
 		area.y - 1.0 + w2);
@@ -7269,7 +7274,8 @@ _cell_draw_border(GtkSheet *sheet, gint row, gint col, gint mask)
 	    cairo_stroke(sheet->bsurf_cr);
 	}
 
-	if (attributes.border.mask & GTK_SHEET_BOTTOM_BORDER & mask) {
+	if (attributes.border.mask & GTK_SHEET_BOTTOM_BORDER & mask)
+        {
 	    cairo_move_to(sheet->bsurf_cr, 
 		area.x - 0.5, 
 		area.y + area.height - w2);
@@ -7279,7 +7285,7 @@ _cell_draw_border(GtkSheet *sheet, gint row, gint col, gint mask)
 	    cairo_stroke(sheet->bsurf_cr);
 	}
     }
-    cairo_restore(sheet->bsurf_cr);
+    cairo_restore(sheet->bsurf_cr);  // cell border attributes
 }
 
 static void
@@ -7576,7 +7582,7 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     if (!gtk_sheet_clip_text(sheet))  /* text extends multiple cells */
 	clip_area = area;
 
-    cairo_save(sheet->bsurf_cr);
+    cairo_save(sheet->bsurf_cr);  // label clip
 
 #if GTK_SHEET_DEBUG_DRAW_LABEL>0
 #if 1
@@ -7621,7 +7627,7 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     cairo_move_to (sheet->bsurf_cr, area.x + xoffset + CELLOFFSET, y);
     pango_cairo_show_layout (sheet->bsurf_cr, layout);
 
-    cairo_restore(sheet->bsurf_cr);
+    cairo_restore(sheet->bsurf_cr);  // label clip
 
     g_object_unref(G_OBJECT(layout));    /* dispose pango layout */
 
@@ -7739,7 +7745,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 
 	if (area.width > 0) /* beware, rightmost column might be partially visible */
 	{
-	    cairo_save(sheet->bsurf_cr);
+	    cairo_save(sheet->bsurf_cr);  // bgcolor
 
 	    gdk_cairo_set_source_rgba(sheet->bsurf_cr, &sheet->bg_color);
 	    gdk_cairo_rectangle(sheet->bsurf_cr, &area);
@@ -7750,7 +7756,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 	    //gdk_cairo_rectangle(swin_cr, &area);
 	    //cairo_fill(swin_cr);
 
-	    cairo_restore(sheet->bsurf_cr);
+	    cairo_restore(sheet->bsurf_cr);  // bgcolor
 	}
     }
 
@@ -7783,7 +7789,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 
 	if (area.height > 0) /* beware, last row might be partially visible */
 	{
-	    cairo_save(sheet->bsurf_cr);
+	    cairo_save(sheet->bsurf_cr);  // bgcolor
 
 	    gdk_cairo_set_source_rgba(sheet->bsurf_cr, &sheet->bg_color);
 	    gdk_cairo_rectangle(sheet->bsurf_cr, &area);
@@ -7794,7 +7800,7 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
 	    //gdk_cairo_rectangle(swin_cr, &area);
 	    //cairo_fill(swin_cr);
 
-	    cairo_restore(sheet->bsurf_cr);
+	    cairo_restore(sheet->bsurf_cr);  // bgcolor
 	}
     }
 
@@ -8082,7 +8088,7 @@ gtk_sheet_range_draw_selection(
 	}
     }
 
-    cairo_restore(my_cr);
+    cairo_restore(my_cr);  // _cairo_save_and_set_xor_mode
     if (!cr) cairo_destroy(my_cr);
 
     gtk_sheet_draw_border(sheet, sheet->range, cr);
@@ -8133,9 +8139,14 @@ gtk_sheet_draw_backing_pixmap(
 	x, y, width, height);
 #endif
 
-    cairo_rectangle(my_cr, x, y, width, height);
+    cairo_save(my_cr); // _cairo_clip_sheet_area
+    _cairo_clip_sheet_area(sheet, my_cr);
+
     cairo_set_source_surface(my_cr, sheet->bsurf, 0, 0);
+    cairo_rectangle(my_cr, x, y, width, height);
     cairo_fill(my_cr);
+
+    cairo_restore(my_cr); // _cairo_clip_sheet_area
 
 #if 0
     _debug_color_rect(
@@ -8936,7 +8947,7 @@ gtk_sheet_set_active_cell(GtkSheet *sheet, gint row, gint col)
     if (row > sheet->maxrow || col > sheet->maxcol)
 	return (FALSE);
 
-    g_debug("gtk_sheet_set_active_cell: row %d col %d FIXME", row, col);
+    //g_debug("gtk_sheet_set_active_cell: row %d col %d FIXME", row, col);
 
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
     g_debug("gtk_sheet_set_active_cell: row %d col %d", row, col);
@@ -9004,7 +9015,7 @@ gtk_sheet_set_active_cell(GtkSheet *sheet, gint row, gint col)
 	return (TRUE);
     }
 
-    g_debug("gtk_sheet_set_active_cell %p active_cell := row,column FIXME", sheet);
+    //g_debug("gtk_sheet_set_active_cell %p active_cell := row,column FIXME", sheet);
     sheet->active_cell.row = row;
     sheet->active_cell.col = col;
 
@@ -9094,7 +9105,7 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
     g_return_if_fail(data != NULL);
     g_return_if_fail(GTK_IS_SHEET(data));
 
-    g_debug("gtk_sheet_entry_changed_handler called FIXME");
+    //g_debug("gtk_sheet_entry_changed_handler called FIXME");
 
     sheet = GTK_SHEET(data);
 
@@ -9110,7 +9121,7 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
     if (row < 0 || col < 0)
 	return;
 
-    g_debug("gtk_sheet_entry_changed_handler active_cell := -1 FIXME");
+    //g_debug("gtk_sheet_entry_changed_handler active_cell := -1 FIXME");
     sheet->active_cell.row = -1;
     sheet->active_cell.col = -1;
 
@@ -9123,7 +9134,7 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
     if (sheet->freeze_count == 0)
 	GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IS_FROZEN);
 
-    g_debug("gtk_sheet_entry_changed_handler active_cell := restored FIXME");
+    //g_debug("gtk_sheet_entry_changed_handler active_cell := restored FIXME");
     sheet->active_cell.row = row;
     sheet->active_cell.col = col;
 }
@@ -9154,8 +9165,6 @@ gtk_sheet_deactivate_cell(GtkSheet *sheet)
     row = sheet->active_cell.row;
     col = sheet->active_cell.col;
 
-    g_debug("gtk_sheet_deactivate_cell: called, row %d col %d %p FIXME", row, col, sheet);
-
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
     g_debug("gtk_sheet_deactivate_cell: called, row %d col %d", row, col);
 #endif
@@ -9166,14 +9175,14 @@ gtk_sheet_deactivate_cell(GtkSheet *sheet)
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return (FALSE);
     if (sheet->state != GTK_SHEET_NORMAL) return (FALSE);
 
-    g_debug("FIXME - gtk_sheet_deactivate_cell %p disconnect gtk_sheet_entry_changed_handler", sheet);
+    //g_debug("FIXME - gtk_sheet_deactivate_cell %p disconnect gtk_sheet_entry_changed_handler", sheet);
     gtk_sheet_entry_signal_disconnect_by_func(sheet,
 	G_CALLBACK(gtk_sheet_entry_changed_handler));
 
     _gtk_sheet_hide_active_cell(sheet);
 
     /* reset before signal emission, to prevent recursion */
-    g_debug("FIXME gtk_sheet_deactivate_cell %p active_cell := -1", sheet);
+    //g_debug("FIXME gtk_sheet_deactivate_cell %p active_cell := -1", sheet);
     sheet->active_cell.row = -1;
     sheet->active_cell.col = -1;
 
@@ -9185,9 +9194,9 @@ gtk_sheet_deactivate_cell(GtkSheet *sheet)
 
     if (!veto)
     {
-        g_debug("FIXME - forgot to restore gtk_sheet_entry_changed_handler");
+        //g_debug("FIXME - forgot to restore gtk_sheet_entry_changed_handler");
 
-        g_debug("gtk_sheet_deactivate_cell %p active_cell := restored FIXME", sheet);
+        //g_debug("gtk_sheet_deactivate_cell %p active_cell := restored FIXME", sheet);
 	sheet->active_cell.row = row;
 	sheet->active_cell.col = col;
 
@@ -9235,8 +9244,6 @@ _gtk_sheet_hide_active_cell(GtkSheet *sheet)
 
     row = sheet->active_cell.row;
     col = sheet->active_cell.col;
-
-    g_debug("_gtk_sheet_hide_active_cell: called r %d c %d %p FIXME", row, col, sheet);
 
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
     g_debug("_gtk_sheet_hide_active_cell: called row %d col %d", row, col);
@@ -9292,6 +9299,9 @@ _gtk_sheet_hide_active_cell(GtkSheet *sheet)
     cairo_t *swin_cr = gdk_cairo_create(sheet->sheet_window);
     cairo_set_source_surface(swin_cr, sheet->bsurf, 0, 0);
 
+    cairo_save(swin_cr); // _cairo_clip_sheet_area
+    _cairo_clip_sheet_area(sheet, swin_cr);
+
     // blit
     cairo_rectangle(swin_cr, 
 	_gtk_sheet_column_left_xpixel(sheet, col) - 1, 
@@ -9300,6 +9310,7 @@ _gtk_sheet_hide_active_cell(GtkSheet *sheet)
 	sheet->row[row].height + 4);
     cairo_fill(swin_cr);
 
+    cairo_save(swin_cr); // _cairo_clip_sheet_area
     cairo_destroy(swin_cr);
 
 #if 0
@@ -9379,7 +9390,7 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
     sheet->range.rowi = row;
     sheet->range.coli = col;
 
-    g_debug("gtk_sheet_activate_cell %p active_cell := row,col FIXME", sheet);
+    //g_debug("gtk_sheet_activate_cell %p active_cell := row,col FIXME", sheet);
     sheet->active_cell.row = row;
     sheet->active_cell.col = col;
 
@@ -9398,7 +9409,7 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
 
     gulong handler_id = gtk_sheet_entry_signal_connect_changed(
         sheet, G_CALLBACK(gtk_sheet_entry_changed_handler));
-    g_debug("gtk_sheet_activate_cell %p connect gtk_sheet_entry_changed_handler = %lu FIXME", sheet, handler_id);
+    //g_debug("gtk_sheet_activate_cell %p connect gtk_sheet_entry_changed_handler = %lu FIXME", sheet, handler_id);
 
     _gtksheet_signal_emit(G_OBJECT(sheet), sheet_signals[ACTIVATE], row, col, &veto);
 
@@ -9579,7 +9590,7 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
     row = sheet->active_cell.row;
     col = sheet->active_cell.col;
 
-    g_debug("gtk_sheet_show_active_cell: called r %d c %d %p FIXME", row, col, sheet);
+    //g_debug("gtk_sheet_show_active_cell: called r %d c %d %p FIXME", row, col, sheet);
 
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
     g_debug("gtk_sheet_show_active_cell: called row %d col %d", row, col);
@@ -9594,8 +9605,6 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
     if (!sheet->sheet_entry)  return;  /* PR#102114 */
 
     /* we should send a ENTRY_CHANGE_REQUEST signal here */
-
-    g_debug("gtk_sheet_show_active_cell: FIXME 6");
 
     if ((row <= sheet->maxallocrow) && (col <= sheet->maxalloccol)
 	&& sheet->data[row])
@@ -9647,14 +9656,13 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
     //gtk_sheet_entry_set_max_size(sheet);
     _gtk_sheet_entry_size_allocate(sheet);
 
-    g_debug("FIXME - map in show_active_cell");
+    //g_debug("FIXME - map in show_active_cell");
     gtk_widget_map(sheet->sheet_entry);
     gtk_sheet_draw_active_cell(sheet, NULL);
 
     _gtk_sheet_entry_preselect(sheet);
 
-    g_debug("gtk_sheet_show_active_cell: grab focus FIXME");
-
+    //g_debug("gtk_sheet_show_active_cell: grab focus FIXME");
     gtk_widget_grab_focus(entry_widget);
 
     g_free(text);
@@ -9776,13 +9784,8 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
     cairo_t *swin_cr = gdk_cairo_create(sheet->sheet_window);
     cairo_set_source_surface(swin_cr, sheet->bsurf, 0, 0);
 
-#if 0
-    GdkRectangle clip_area;
-    _get_sheet_clip_area(sheet, &clip_area);
-
-    gdk_cairo_rectangle(swin_cr, &clip_area);
-    cairo_clip (swin_cr);
-#endif
+    cairo_save(swin_cr); // _cairo_clip_sheet_area
+    _cairo_clip_sheet_area(sheet, swin_cr);
 
     cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
     _cairo_save_and_set_xor_mode(sheet, xor_cr);
@@ -9903,8 +9906,10 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 
     *range = new_range;  /* restore new_range */
 
-    cairo_restore(xor_cr);
+    cairo_restore(xor_cr);   // _cairo_save_and_set_xor_mode
     cairo_destroy(xor_cr);  /* FIXME, to be removed */
+
+    cairo_save(swin_cr); // _cairo_clip_sheet_area
     cairo_destroy(swin_cr);  /* FIXME */
 }
 
@@ -10024,7 +10029,7 @@ gtk_sheet_draw_border(
         _gtk_sheet_invalidate_region(sheet, x, y, w, h);
     }
 
-    cairo_restore(my_cr);
+    cairo_restore(my_cr);  // _cairo_save_and_set_xor_mode
     if (!cr) cairo_destroy(my_cr);
 
     gtk_sheet_draw_corners(sheet, new_range, cr);
@@ -10064,7 +10069,10 @@ gtk_sheet_draw_corners(
         x += selection_corner_offset - 2;
         y += 0;
 
+        //_cairo_clip_sheet_area(sheet, swin_cr); // not needed here
+
         cairo_set_source_surface(my_cr, sheet->bsurf, 0, 0);
+
         //gdk_cairo_set_source_rgba(my_cr, &debug_color);
 	cairo_rectangle(my_cr, 
 	    x-1, y-1, selection_corner_size+2, selection_corner_size+2);
@@ -10076,7 +10084,7 @@ gtk_sheet_draw_corners(
 	    x, y, selection_corner_size, selection_corner_size);
 	cairo_fill(my_cr);
 
-        cairo_restore(my_cr);
+        cairo_restore(my_cr);  // _cairo_save_and_set_xor_mode
 
         if (!cr)
         {
@@ -10107,7 +10115,7 @@ gtk_sheet_draw_corners(
 	    x, y, selection_corner_size, selection_corner_size);
 	cairo_fill(my_cr);
 
-        cairo_restore(my_cr);
+        cairo_restore(my_cr);  // _cairo_save_and_set_xor_mode
 
         if (!cr)
         {
@@ -10139,7 +10147,7 @@ gtk_sheet_draw_corners(
 	    x, y, selection_corner_size, selection_corner_size);
 	cairo_fill(my_cr);
 
-        cairo_restore(my_cr);
+        cairo_restore(my_cr);  // _cairo_save_and_set_xor_mode
 
         if (!cr)
         {
@@ -10803,7 +10811,7 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 {
     *veto = TRUE;
 
-    g_debug("gtk_sheet_click_cell: called, r %d c %d %p FIXME", row, col, sheet);
+    //g_debug("gtk_sheet_click_cell: called, r %d c %d %p FIXME", row, col, sheet);
 
 #if GTK_SHEET_DEBUG_CLICK > 0
     g_debug("gtk_sheet_click_cell: called, row %d col %d", row, col);
@@ -10870,7 +10878,6 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	sheet->range.rowi = sheet->maxrow;
 	sheet->range.coli = sheet->maxcol;
 
-        g_debug("FIXME - should call hide_active_cell o.ae.!!!!!!!");
 	sheet->active_cell.row = 0;
 	sheet->active_cell.col = 0;
 
@@ -11961,8 +11968,6 @@ gtk_sheet_entry_key_press_handler(GtkWidget *widget, GdkEventKey *key, gpointer 
     gboolean stop_emission = FALSE;
     GtkSheet *sheet = GTK_SHEET(widget);
 
-    g_debug("gtk_sheet_entry_key_press_handler %p called FIXME", sheet);
-
 #if GTK_SHEET_DEBUG_KEYPRESS > 0
     g_debug("gtk_sheet_entry_key_press_handler: called, key %s",
 	gtk_accelerator_name(key->keyval, key->state));
@@ -12505,29 +12510,35 @@ gtk_sheet_get_preferred_height (GtkWidget *widget,
  * @param allocation the #GtkAllocation
  */
 static void
-gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
+gtk_sheet_size_allocate_handler(
+    GtkWidget *widget, GtkAllocation *allocation)
 {
-    GtkSheet *sheet;
-    GtkAllocation sheet_allocation;
-    gint border_width;
     gboolean modified;
 
     g_return_if_fail(widget != NULL);
     g_return_if_fail(GTK_IS_SHEET(widget));
     g_return_if_fail(allocation != NULL);
 
+    GtkSheet *sheet = GTK_SHEET(widget);
+
 #if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("gtk_sheet_size_allocate_handler: called (%d, %d, %d, %d)",
 	allocation->x, allocation->y, allocation->width, allocation->height);
 #endif
 
-    sheet = GTK_SHEET(widget);
+    /* main window - allocation and size */
 
     gtk_widget_set_allocation(widget, allocation);
-    border_width = gtk_container_get_border_width(GTK_CONTAINER(widget));
+
+    gint border_width = gtk_container_get_border_width(
+        GTK_CONTAINER(widget));
 
     if (gtk_widget_get_realized(widget))
     {
+        g_debug("gtk_sheet_size_allocate_handler: gdk_window_move_resize main window FIXME %p %p", gtk_widget_get_window(widget), sheet->sheet_window);
+
+        /* note: x,y determines position of all contents */
+
 	gdk_window_move_resize(gtk_widget_get_window(widget),
 	    allocation->x + border_width,
 	    allocation->y + border_width,
@@ -12544,12 +12555,15 @@ gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
     sheet->internal_allocation.width = allocation->width - 2 * border_width;
     sheet->internal_allocation.height = allocation->height - 2 * border_width;
 
+    /* sheet_window - allocation and size */
+
+    GtkAllocation sheet_allocation;
     sheet_allocation.x = 0;
     sheet_allocation.y = 0;
     sheet_allocation.width = allocation->width - 2 * border_width;
     sheet_allocation.height = allocation->height - 2 * border_width;
 
-    modified =
+    modified = 
 	(sheet->sheet_window_width != sheet_allocation.width) ||
 	(sheet->sheet_window_height != sheet_allocation.height);
 
@@ -12558,6 +12572,10 @@ gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
 
     if (gtk_widget_get_realized(widget))
     {
+        g_debug("gtk_sheet_size_allocate_handler: gdk_window_move_resize sheet_window FIXME");
+
+        /* FIXME note: x,y determines global sheet button position only */
+
 	gdk_window_move_resize(sheet->sheet_window,
 	    sheet_allocation.x,
 	    sheet_allocation.y,
@@ -12565,13 +12583,13 @@ gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
 	    sheet_allocation.height);
     }
 
-    /* position the window which holds the column title buttons */
+    /* column_title_window - allocation and size */
 
     sheet->column_title_area.x = 0;
     sheet->column_title_area.y = 0;
 
     if (sheet->row_titles_visible)
-	sheet->column_title_area.x = sheet->row_title_area.width + 200;
+	sheet->column_title_area.x = sheet->row_title_area.width;
 
     sheet->column_title_area.width = sheet_allocation.width - sheet->column_title_area.x;
 
@@ -12587,11 +12605,14 @@ gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
     /* column button allocation */
     _gtk_sheet_column_buttons_size_allocate(sheet);
 
-    /* position the window which holds the row title buttons */
+    /* row_title_window - allocation and size */
+
     sheet->row_title_area.x = 0;
     sheet->row_title_area.y = 0;
+
     if (sheet->column_titles_visible)
 	sheet->row_title_area.y = sheet->column_title_area.height;
+
     sheet->row_title_area.height = sheet_allocation.height - sheet->row_title_area.y;
 
     if (gtk_widget_get_realized(widget) && sheet->row_titles_visible)
@@ -12606,8 +12627,9 @@ gtk_sheet_size_allocate_handler(GtkWidget *widget, GtkAllocation *allocation)
     /* row button allocation */
     _gtk_sheet_row_buttons_size_allocate(sheet);
 
-    if (gtk_sheet_autoresize(sheet) &&
-	(modified || (GTK_SHEET_FLAGS(sheet) & GTK_SHEET_IN_AUTORESIZE_PENDING)))
+    if (gtk_sheet_autoresize(sheet)
+        && (modified
+            || (GTK_SHEET_FLAGS(sheet) & GTK_SHEET_IN_AUTORESIZE_PENDING)))
     {
 	/* autoresize here, because window was changed -> max col_width */
 	gtk_sheet_autoresize_all(sheet);
@@ -12630,7 +12652,7 @@ static gboolean gtk_sheet_focus(GtkWidget *widget,
     g_return_val_if_fail(GTK_IS_SHEET(widget), FALSE);
     GtkSheet *sheet = GTK_SHEET(widget);
 
-    g_debug("gtk_sheet_focus: called FIXME");
+    //g_debug("gtk_sheet_focus: called FIXME");
 
     if (!gtk_widget_is_sensitive(GTK_WIDGET(sheet))) {
 	g_debug("gtk_sheet_focus: sheet not sensitive"); 
@@ -13081,30 +13103,6 @@ static void sheet_entry_populate_popup_handler(GtkWidget *widget,
 }
 
 /**
- * make sheet entry visible
- * 
- * - show widget
- * - do not map widget
- * 
- * @param sheet  the sheet
- */
-static void
-_gtk_sheet_entry_show(GtkWidget *sheet_entry)
-{
-    g_debug("_gtk_sheet_entry_show %p", sheet_entry);
-
-    //gtk_widget_show(sheet_entry);
-
-    if (gtk_widget_get_realized(sheet_entry)
-        && gtk_widget_get_visible(sheet_entry)
-        && !gtk_widget_get_mapped(sheet_entry))
-    {
-        g_debug("FIXME - show without map");
-        //gtk_widget_map(sheet_entry);
-    }
-}
-
-/**
  * create or change sheet entry
  * 
  * - destroy existing sheet entry
@@ -13134,7 +13132,6 @@ create_sheet_entry(
 
     widget = GTK_WIDGET(sheet);
 
-    g_debug("FIXME create_sheet_entry: called");
 #if GTK_SHEET_DEBUG_ENTRY > 0
     g_debug("create_sheet_entry: called");
 #endif
@@ -13217,14 +13214,13 @@ create_sheet_entry(
 	gtk_widget_realize(sheet->sheet_entry);
     }
 
-    g_debug("create_sheet_entry connect %p gtk_sheet_entry_key_press_handler FIXME", sheet);
+    //g_debug("create_sheet_entry connect %p gtk_sheet_entry_key_press_handler FIXME", sheet);
     g_signal_connect_swapped(G_OBJECT(entry), "key_press_event",
 	(void *)gtk_sheet_entry_key_press_handler,
 	G_OBJECT(sheet));
 
     // FIXME this will cause entry not realized, but no draw loop
     //gtk_widget_show(sheet->sheet_entry);
-    //_gtk_sheet_entry_show(sheet->sheet_entry);
     // FIXME - experimental gtk_sheet_show_active_cell()
     // FIXME - this will grab focus if active_cell was set! is this allowed?
     gtk_sheet_show_active_cell(sheet);
@@ -13542,7 +13538,7 @@ gulong gtk_sheet_entry_signal_connect_changed(
     entry = gtk_sheet_get_entry(sheet);
     g_return_val_if_fail(entry != NULL, handler_id);
 
-    g_debug("gtk_sheet_entry_signal_connect_changed %p connect handler FIXME", sheet);
+    //g_debug("gtk_sheet_entry_signal_connect_changed %p connect handler FIXME", sheet);
     if (GTK_IS_EDITABLE(entry))
     {
 	handler_id = g_signal_connect(
@@ -13591,7 +13587,7 @@ void gtk_sheet_entry_signal_disconnect_by_func(
     entry = gtk_sheet_get_entry(sheet);
     g_return_if_fail(entry != NULL);
 
-    g_debug("gtk_sheet_entry_signal_disconnect_by_func %p disconnect handler FIXME", sheet);
+    //g_debug("gtk_sheet_entry_signal_disconnect_by_func %p disconnect handler FIXME", sheet);
     if (GTK_IS_EDITABLE(entry))
     {
 	g_signal_handlers_disconnect_by_func(
@@ -13807,7 +13803,7 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 	    _gtk_sheet_row_default_height(
                 GTK_WIDGET(sheet)) - 2 * CELLOFFSET;
 
-	cairo_save(my_cr);
+	cairo_save(my_cr);  // button clip
 
 	cairo_rectangle(my_cr, 
 	    (double) allocation.x,
@@ -13868,7 +13864,7 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 	    layout);
 	g_object_unref(G_OBJECT(layout));
 
-	cairo_restore(my_cr);
+	cairo_restore(my_cr);  // button clip
     }
 
     if (!cr) 
@@ -14441,7 +14437,7 @@ draw_xor_vline(GtkSheet *sheet, gboolean draw)
 	cairo_line_to(xor_cr, sheet->x_drag, sheet->sheet_window_height + 1);
 	cairo_stroke(xor_cr);
 
-	cairo_restore(xor_cr);
+	cairo_restore(xor_cr);  // _cairo_save_and_set_xor_mode
 	cairo_destroy(xor_cr);  /* FIXME - to be removed */
     }
     else  // erase
@@ -14478,7 +14474,7 @@ draw_xor_hline(GtkSheet *sheet, gboolean draw)
 	cairo_line_to(xor_cr,  sheet->sheet_window_width + 1, sheet->y_drag);
 	cairo_stroke(xor_cr);
 
-	cairo_restore(xor_cr);
+	cairo_restore(xor_cr);  // _cairo_save_and_set_xor_mode
 	cairo_destroy(xor_cr);   /* FIXME - to be removed */
     }
     else  // erase

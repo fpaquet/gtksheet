@@ -353,8 +353,8 @@ struct _GtkSheet
 
     GList *children;    /* sheet children */
 
-    /* allocation rectangle after the container_border_width
-       and the width of the shadow border */
+    /* innter allocation rectangle
+       without widget container border_width and shadow border width */
     GdkRectangle internal_allocation;
 
     gchar *title;
@@ -406,8 +406,9 @@ struct _GtkSheet
     /* selected range */
     GtkSheetRange range;
 
-    /*the scrolling window and it's height and width to
-     * make things a little speedier */
+    /* the sheet window the cells, the sheet entry and
+       the global sheet button. It is a sub-window of the sheet
+       widget's main window. */
     GdkWindow *sheet_window;
     guint sheet_window_width;
     guint sheet_window_height;
@@ -430,11 +431,15 @@ struct _GtkSheet
 
     /* Column Titles */
     GdkRectangle column_title_area;
+    /* the column_title_window contains the column titles.
+       It is a sub-window of the sheet widget's main window.  */
     GdkWindow *column_title_window;
     gboolean column_titles_visible;
 
     /* Row Titles */
     GdkRectangle row_title_area;
+    /* the row_title_window contains the row titles.
+       It is a sub-window of the sheet widget's main window.  */
     GdkWindow *row_title_window;
     gboolean row_titles_visible;
 

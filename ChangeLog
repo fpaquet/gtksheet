@@ -1,10 +1,9 @@
 TBD 
-** testgtksheet: scrolling scrambles display when row/col titles are visible
 ** Sheet entry: text selection is not visible
-** tooltip marker clipping
-** repair gtk_sheet_draw_flashing_range clipping
 ** sheet entry - disable GtkEntry/GtkDataEntry undershoot for small cells
 ** sheet entry - GtkEntry/GtkDataEntry undershoot area smears backgnd
+** sheet editor font
+** selection hole: select from bottom right to top left, then extend to bottom right leaves a hole in the selection
 ** rename xor to sel
 ** remove FIXME debug output
 
@@ -13,6 +12,8 @@ TBD
 * fixed sheet entry signals not connected after hide/show of sheet
 * fixed input not to be accepted after tab change in testgtksheet
 * removed unnecessary sheet entry recreation on hide/show
+* fixed flashing range clipping
+* fixed cell area clipping, tooltip marker clipping
 
 2018-06-23 Fredy Paquet <mailbox AT opag.ch>
 * fixed global sheet button visibility

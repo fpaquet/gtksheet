@@ -70,7 +70,7 @@
 #   define GTK_SHEET_DEBUG_ADJUSTMENT  0
 #   define GTK_SHEET_DEBUG_ALLOCATION  0
 #   define GTK_SHEET_DEBUG_BUILDER   0
-#   define GTK_SHEET_DEBUG_CELL_ACTIVATION  1
+#   define GTK_SHEET_DEBUG_CELL_ACTIVATION  0
 #   define GTK_SHEET_DEBUG_CHILDREN  0
 #   define GTK_SHEET_DEBUG_CLICK  0
 #   define GTK_SHEET_DEBUG_COLORS  0
@@ -6712,8 +6712,7 @@ _global_sheet_button_create(GtkSheet *sheet)
 
     //g_debug("_global_sheet_button_create called");
 
-    g_signal_connect(G_OBJECT(sheet->button),
-	"button-press-event",
+    g_signal_connect(G_OBJECT(sheet->button), "button-press-event",
 	G_CALLBACK(global_button_press_handler),
 	(gpointer)sheet);
 }
@@ -9095,6 +9094,8 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
     g_return_if_fail(data != NULL);
     g_return_if_fail(GTK_IS_SHEET(data));
 
+    g_debug("gtk_sheet_entry_changed_handler called FIXME");
+
     sheet = GTK_SHEET(data);
 
     if (!gtk_widget_get_visible(gtk_sheet_get_entry_widget(sheet)))
@@ -9165,7 +9166,7 @@ gtk_sheet_deactivate_cell(GtkSheet *sheet)
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return (FALSE);
     if (sheet->state != GTK_SHEET_NORMAL) return (FALSE);
 
-    g_debug("FIXME - disconnect gtk_sheet_entry_changed_handler");
+    g_debug("FIXME - gtk_sheet_deactivate_cell %p disconnect gtk_sheet_entry_changed_handler", sheet);
     gtk_sheet_entry_signal_disconnect_by_func(sheet,
 	G_CALLBACK(gtk_sheet_entry_changed_handler));
 
@@ -9342,10 +9343,8 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
 
     if (GTK_SHEET_FLAGS(sheet) & GTK_SHEET_IS_DESTROYED) return(FALSE); /* PR#102114 */
 
-    if (row < 0 || col < 0)
-	return (FALSE);
-    if (row > sheet->maxrow || col > sheet->maxcol)
-	return (FALSE);
+    if (row < 0 || col < 0) return (FALSE);
+    if (row > sheet->maxrow || col > sheet->maxcol) return (FALSE);
 
     if (!gtk_widget_get_can_focus(GTK_WIDGET(sheet)))
     {
@@ -9397,8 +9396,9 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
     g_debug("gtk_sheet_activate_cell: signal setup");
 #endif
 
-    gtk_sheet_entry_signal_connect_changed(sheet,
-	G_CALLBACK(gtk_sheet_entry_changed_handler));
+    gulong handler_id = gtk_sheet_entry_signal_connect_changed(
+        sheet, G_CALLBACK(gtk_sheet_entry_changed_handler));
+    g_debug("gtk_sheet_activate_cell %p connect gtk_sheet_entry_changed_handler = %lu FIXME", sheet, handler_id);
 
     _gtksheet_signal_emit(G_OBJECT(sheet), sheet_signals[ACTIVATE], row, col, &veto);
 
@@ -10920,17 +10920,21 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 #if GTK_SHEET_DEBUG_CLICK > 0
 	    g_debug("gtk_sheet_click_cell: row %d col %d calling deactivate", row, col);
 #endif
-	    if (!gtk_sheet_deactivate_cell(sheet))
-	    {
-                g_debug("FIXME gtk_sheet_click_cell 4");
+            /* deactivate only on change */
+            if (row != sheet->active_cell.row && col != sheet->active_cell.col)
+            {
+                if (!gtk_sheet_deactivate_cell(sheet))
+                {
+                    //g_debug("FIXME gtk_sheet_click_cell 4");
 
 #if GTK_SHEET_DEBUG_CLICK > 0
-		g_debug("gtk_sheet_click_cell: row %d col %d VETO: deactivate false", row, col);
+                    g_debug("gtk_sheet_click_cell: row %d col %d VETO: deactivate false", row, col);
 #endif
-		*veto = FALSE;
-                //g_debug("FIXME gtk_sheet_click_cell 4a");
-		return;
-	    }
+                    *veto = FALSE;
+                    //g_debug("FIXME gtk_sheet_click_cell 4a");
+                    return;
+                }
+            }
 #if GTK_SHEET_DEBUG_CLICK > 0
 	    g_debug("gtk_sheet_click_cell: row %d col %d back from deactivate", row, col);
 #endif
@@ -11015,7 +11019,13 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 
         // FIXME next line experimentally replaced by show_active_cell()
 	//gtk_sheet_draw_active_cell(sheet, NULL);
-        gtk_sheet_show_active_cell(sheet);
+
+        // FIXME - gtk_sheet_show_active_cell will not connect 
+        // entry changed handler, replaced by gtk_sheet_activate_cell()
+        //gtk_sheet_show_active_cell(sheet);
+
+        gtk_sheet_activate_cell(
+            sheet, sheet->active_cell.row, sheet->active_cell.col);
         
         //g_debug("FIXME gtk_sheet_click_cell 11");
 	return;
@@ -11951,6 +11961,8 @@ gtk_sheet_entry_key_press_handler(GtkWidget *widget, GdkEventKey *key, gpointer 
     gboolean stop_emission = FALSE;
     GtkSheet *sheet = GTK_SHEET(widget);
 
+    g_debug("gtk_sheet_entry_key_press_handler %p called FIXME", sheet);
+
 #if GTK_SHEET_DEBUG_KEYPRESS > 0
     g_debug("gtk_sheet_entry_key_press_handler: called, key %s",
 	gtk_accelerator_name(key->keyval, key->state));
@@ -12043,7 +12055,8 @@ gtk_sheet_key_press_handler(GtkWidget *widget, GdkEventKey *key)
 	gtk_accelerator_name(key->keyval, key->state));
 #endif
 
-    /* if there is a key_binding, use implementation from _gtk_sheet_move_cursor() */
+    /* if there is a key_binding,
+       use implementation from _gtk_sheet_move_cursor() */
 
     if (_gtk_sheet_binding_filter(sheet, key)
 	&& gtk_bindings_activate_event(G_OBJECT(sheet), key))
@@ -12052,10 +12065,10 @@ gtk_sheet_key_press_handler(GtkWidget *widget, GdkEventKey *key)
 	g_debug("gtk_sheet_key_press_handler: done %s (binding)",
 	    gtk_accelerator_name(key->keyval, key->state));
 #endif
-	return (TRUE);
+	return (TRUE);  /* stop emission */
     }
 
-    return (FALSE);
+    return (FALSE);  /* propagate emission */
 }
 
 
@@ -13091,6 +13104,27 @@ _gtk_sheet_entry_show(GtkWidget *sheet_entry)
     }
 }
 
+/**
+ * create or change sheet entry
+ * 
+ * - destroy existing sheet entry
+ * - create entry widget
+ * - connect "focus-in-event" handler
+ * - connect "focus-out-event" handler
+ * - connect "popuplate-popup" handler
+ * - fall back to default entry type on failure
+ * - set parent and realize entry widget
+ * - connect "key-press-event" handler
+ * 
+ * Does not connect "changed" event handler, 
+ * this will be done in gtk_sheet_activate_cell().
+ * 
+ * Use or G_TYPE_NONE to connect default entry type.
+ * 
+ * @param sheet  the sheet
+ * @param new_entry_type
+ *               the new entry type
+ */
 static void
 create_sheet_entry(
     GtkSheet *sheet, GType new_entry_type)
@@ -13183,6 +13217,7 @@ create_sheet_entry(
 	gtk_widget_realize(sheet->sheet_entry);
     }
 
+    g_debug("create_sheet_entry connect %p gtk_sheet_entry_key_press_handler FIXME", sheet);
     g_signal_connect_swapped(G_OBJECT(entry), "key_press_event",
 	(void *)gtk_sheet_entry_key_press_handler,
 	G_OBJECT(sheet));
@@ -13507,6 +13542,7 @@ gulong gtk_sheet_entry_signal_connect_changed(
     entry = gtk_sheet_get_entry(sheet);
     g_return_val_if_fail(entry != NULL, handler_id);
 
+    g_debug("gtk_sheet_entry_signal_connect_changed %p connect handler FIXME", sheet);
     if (GTK_IS_EDITABLE(entry))
     {
 	handler_id = g_signal_connect(
@@ -13555,6 +13591,7 @@ void gtk_sheet_entry_signal_disconnect_by_func(
     entry = gtk_sheet_get_entry(sheet);
     g_return_if_fail(entry != NULL);
 
+    g_debug("gtk_sheet_entry_signal_disconnect_by_func %p disconnect handler FIXME", sheet);
     if (GTK_IS_EDITABLE(entry))
     {
 	g_signal_handlers_disconnect_by_func(

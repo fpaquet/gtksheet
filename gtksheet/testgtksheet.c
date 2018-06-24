@@ -752,12 +752,13 @@ void
     g_signal_connect(G_OBJECT(show_button), "clicked",
                      (void *) show_child, 
                      NULL);
-/*
- g_signal_connect(G_OBJECT(sheet),
-                    "button_press_event",
+/*  g_signal_connect(G_OBJECT(sheet), "button_press_event",
                     (void *) do_popup, 
                     NULL);
 */
+
+    /* enable next line to preset focus on expose */
+    //gtk_sheet_set_active_cell(sheet, 0, 0);
 }
 
 

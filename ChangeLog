@@ -10,7 +10,10 @@ TBD
 ** rename xor to sel
 ** remove FIXME debug output
 
-2018-06-22 Fredy Paquet <mailbox AT opag.ch>
+2018-06-24 Fredy Paquet <mailbox AT opag.ch>
+* disabled focus hunt on show() via new defaults setting GTK_SHEET_ENABLE_FOCUS_ON_SHOW
+
+2018-06-23 Fredy Paquet <mailbox AT opag.ch>
 * fixed global sheet button visibility
 * fixed warning: GtkButton is drawn without a current allocation.
 * fixed warning: GtkLabel is drawn without a current allocation.

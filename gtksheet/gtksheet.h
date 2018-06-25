@@ -388,8 +388,8 @@ struct _GtkSheet
     GType entry_type;  /* wanted entry type */
     GType installed_entry_type;  /* installed entry type */
 
-    /* expanding selection */
-    GtkSheetCell selection_cell;
+    GtkSheetCell selection_pin;          /* pin for extend_selection */
+    GtkSheetCell selection_cursor;    /* cursor for extend_selection */
 
     /* timer for automatic scroll during selection */
     gint32 timer;
@@ -832,7 +832,7 @@ void _gtk_sheet_child_hide(GtkSheetChild *child);
 void _gtk_sheet_child_show(GtkSheetChild *child);
 void _gtk_sheet_global_sheet_button_show(GtkSheet *sheet);
 void _gtk_sheet_global_sheet_button_hide(GtkSheet *sheet);
-
+gboolean _gtk_sheet_deactivate_cell(GtkSheet *sheet);
 
 G_END_DECLS
 

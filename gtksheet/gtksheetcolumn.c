@@ -69,6 +69,13 @@
 
 #define GTK_DATA_TEXT_VIEW_BUFFER_MAX_SIZE (G_MAXINT / 2)
 
+#define SET_ACTIVE_CELL(r, c) \
+    { \
+        g_debug("%s(%d): SET_ACTIVE_CELL(%d, %d) FIXME", \
+            __FUNCTION__, __LINE__, (r), (c)); \
+        sheet->active_cell.row = (r); \
+        sheet->active_cell.col = (c); \
+    }
 
 static GInitiallyUnowned *sheet_column_parent_class = NULL;
 
@@ -1792,7 +1799,6 @@ void
 gtk_sheet_column_set_visibility(GtkSheet *sheet, gint col, gboolean visible)
 {
     GtkSheetColumn *colobj;
-    gint act_row, act_col;
 
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
@@ -1802,15 +1808,27 @@ gtk_sheet_column_set_visibility(GtkSheet *sheet, gint col, gboolean visible)
     colobj = COLPTR(sheet, col);
     if (GTK_SHEET_COLUMN_IS_VISIBLE(colobj) == visible) return;
 
-    act_row = sheet->active_cell.row;
-    act_col = sheet->active_cell.col;
+    gint act_row = sheet->active_cell.row;
+    gint act_col = sheet->active_cell.col;
 
     if (act_col == col)   /* hide active column -> disable active cell */
     {
-        _gtk_sheet_hide_active_cell(sheet);
+        g_debug("FIXME - should deactivate active cell properly");
+        //_gtk_sheet_hide_active_cell(sheet);
+        //SET_ACTIVE_CELL(-1, -1);
 
-        sheet->active_cell.row = -1;
-        sheet->active_cell.col = -1;
+        gint old_state = sheet->state;
+        g_debug("gtk_sheet_column_set_visibility: called old_state %d FIXME", old_state);
+
+        if (gtk_widget_get_realized(GTK_WIDGET(sheet))
+            && old_state == GTK_SHEET_NORMAL)
+        {
+            // FIXME - experimental 1
+            gboolean veto = _gtk_sheet_deactivate_cell(sheet);
+            // there are 2 possible reasons for veto
+            // no active_cell or DEACTIVATE signal returns veto
+            if (!veto) return;
+        }
     }
 
 #if GTK_SHEET_COL_DEBUG_PROPERTIES > 0

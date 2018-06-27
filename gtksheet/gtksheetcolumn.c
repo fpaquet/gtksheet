@@ -743,12 +743,16 @@ static void
 gtk_sheet_column_class_init(GtkSheetColumnClass *klass)
 {
     GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
+    GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(klass);
 
     sheet_column_parent_class = g_type_class_peek_parent(klass);
 
     gobject_class->finalize = gtk_sheet_column_finalize_handler;
 
     gtk_sheet_column_class_init_properties(gobject_class);
+
+    //FIXME - work in progress
+    //gtk_widget_class_set_css_name (widget_class, "sheet-column");
 }
 
 static void

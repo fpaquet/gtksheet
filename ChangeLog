@@ -1,10 +1,10 @@
 TBD 
-** using gtk_sheet_column_set_visibility() kills screen updates with active sheet entry?
-** Sheet entry: text selection is not visible
-** sheet entry - disable GtkEntry/GtkDataEntry undershoot for small cells
-** sheet entry - GtkEntry/GtkDataEntry undershoot area smears backgnd
-** sheet editor font
+** sheet entry: text selection is not visible (missing CssProvider)
+** sheet entry: disable undershoot for small cells (CSS)
+** sheet entry: undershoot area smears backgnd (CSS)
+** sheet editor font (use GtkStyleContext)
 ** rename xor to sel
+** CASY - using gtk_sheet_column_set_visibility() kills screen updates with active sheet entry?
 ** remove FIXME debug output
 
 2018-06-25 Fredy Paquet <mailbox AT opag.ch>

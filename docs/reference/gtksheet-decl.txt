@@ -491,6 +491,110 @@ extern const guint gtksheet_interface_age;
 <RETURNS>gchar * </RETURNS>
 guint required_major, guint required_minor, guint required_micro
 </FUNCTION>
+<MACRO>
+<NAME>GTK_TYPE_DATA_ENTRY</NAME>
+#define GTK_TYPE_DATA_ENTRY              (gtk_data_entry_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_ENTRY</NAME>
+#define GTK_DATA_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_DATA_ENTRY, GtkDataEntry))
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_ENTRY_CLASS</NAME>
+#define GTK_DATA_ENTRY_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_DATA_ENTRY, GtkDataEntryClass))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_DATA_ENTRY</NAME>
+#define GTK_IS_DATA_ENTRY(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_DATA_ENTRY))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_DATA_ENTRY_CLASS</NAME>
+#define GTK_IS_DATA_ENTRY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_DATA_ENTRY))
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_ENTRY_GET_CLASS</NAME>
+#define GTK_DATA_ENTRY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_DATA_ENTRY, GtkDataEntryClass))
+</MACRO>
+<STRUCT>
+<NAME>GtkDataEntry</NAME>
+struct _GtkDataEntry
+{
+    /*< private >*/
+    GtkEntry entry;
+
+    gchar *data_type;           /* data type for application use */
+    gchar *data_format;        /* cell content formatting template */
+    gchar *description;         /* column description */
+    gint max_length_bytes;   /* maximum length in bytes */
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkDataEntryClass</NAME>
+struct _GtkDataEntryClass
+{
+    GtkEntryClass parent_class;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gtk_data_entry_get_type</NAME>
+<RETURNS>GType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_new</NAME>
+<RETURNS>GtkDataEntry  *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_description</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_description</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, const gchar *description
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_data_type</NAME>
+<RETURNS>const gchar *</RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_data_type</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, const gchar *data_type
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_data_format</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_data_format</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, const gchar *data_format
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_text</NAME>
+<RETURNS>const gchar *</RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_text</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, const gchar *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_max_length_bytes</NAME>
+<RETURNS>gint  </RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_max_length_bytes</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, gint max_length_bytes
+</FUNCTION>
 <ENUM>
 <NAME>GtkSheetAttrType</NAME>
 typedef enum
@@ -749,8 +853,8 @@ struct _GtkSheet
 
     GList *children;    /* sheet children */
 
-    /* allocation rectangle after the container_border_width
-       and the width of the shadow border */
+    /* innter allocation rectangle
+       without widget container border_width and shadow border width */
     GdkRectangle internal_allocation;
 
     gchar *title;
@@ -784,8 +888,8 @@ struct _GtkSheet
     GType entry_type;  /* wanted entry type */
     GType installed_entry_type;  /* installed entry type */
 
-    /* expanding selection */
-    GtkSheetCell selection_cell;
+    GtkSheetCell selection_pin;          /* pin for extend_selection */
+    GtkSheetCell selection_cursor;    /* cursor for extend_selection */
 
     /* timer for automatic scroll during selection */
     gint32 timer;
@@ -802,8 +906,9 @@ struct _GtkSheet
     /* selected range */
     GtkSheetRange range;
 
-    /*the scrolling window and it's height and width to
-     * make things a little speedier */
+    /* the sheet window the cells, the sheet entry and
+       the global sheet button. It is a sub-window of the sheet
+       widget's main window. */
     GdkWindow *sheet_window;
     guint sheet_window_width;
     guint sheet_window_height;
@@ -826,11 +931,15 @@ struct _GtkSheet
 
     /* Column Titles */
     GdkRectangle column_title_area;
+    /* the column_title_window contains the column titles.
+       It is a sub-window of the sheet widget's main window.  */
     GdkWindow *column_title_window;
     gboolean column_titles_visible;
 
     /* Row Titles */
     GdkRectangle row_title_area;
+    /* the row_title_window contains the row titles.
+       It is a sub-window of the sheet widget's main window.  */
     GdkWindow *row_title_window;
     gboolean row_titles_visible;
 
@@ -1563,110 +1672,6 @@ GtkSheet *sheet, GtkWidget *widget, gint row, gint col
 <STRUCT>
 <NAME>GtkSheetColumnClass</NAME>
 </STRUCT>
-<MACRO>
-<NAME>GTK_TYPE_DATA_ENTRY</NAME>
-#define GTK_TYPE_DATA_ENTRY              (gtk_data_entry_get_type ())
-</MACRO>
-<MACRO>
-<NAME>GTK_DATA_ENTRY</NAME>
-#define GTK_DATA_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_DATA_ENTRY, GtkDataEntry))
-</MACRO>
-<MACRO>
-<NAME>GTK_DATA_ENTRY_CLASS</NAME>
-#define GTK_DATA_ENTRY_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_DATA_ENTRY, GtkDataEntryClass))
-</MACRO>
-<MACRO>
-<NAME>GTK_IS_DATA_ENTRY</NAME>
-#define GTK_IS_DATA_ENTRY(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_DATA_ENTRY))
-</MACRO>
-<MACRO>
-<NAME>GTK_IS_DATA_ENTRY_CLASS</NAME>
-#define GTK_IS_DATA_ENTRY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_DATA_ENTRY))
-</MACRO>
-<MACRO>
-<NAME>GTK_DATA_ENTRY_GET_CLASS</NAME>
-#define GTK_DATA_ENTRY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_DATA_ENTRY, GtkDataEntryClass))
-</MACRO>
-<STRUCT>
-<NAME>GtkDataEntry</NAME>
-struct _GtkDataEntry
-{
-    /*< private >*/
-    GtkEntry entry;
-
-    gchar *data_type;           /* data type for application use */
-    gchar *data_format;        /* cell content formatting template */
-    gchar *description;         /* column description */
-    gint max_length_bytes;   /* maximum length in bytes */
-};
-</STRUCT>
-<STRUCT>
-<NAME>GtkDataEntryClass</NAME>
-struct _GtkDataEntryClass
-{
-    GtkEntryClass parent_class;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gtk_data_entry_get_type</NAME>
-<RETURNS>GType  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_new</NAME>
-<RETURNS>GtkDataEntry  *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_get_description</NAME>
-<RETURNS>const gchar  *</RETURNS>
-GtkDataEntry *data_entry
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_set_description</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataEntry *data_entry, const gchar *description
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_get_data_type</NAME>
-<RETURNS>const gchar *</RETURNS>
-GtkDataEntry *data_entry
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_set_data_type</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataEntry *data_entry, const gchar *data_type
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_get_data_format</NAME>
-<RETURNS>const gchar  *</RETURNS>
-GtkDataEntry *data_entry
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_set_data_format</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataEntry *data_entry, const gchar *data_format
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_get_text</NAME>
-<RETURNS>const gchar *</RETURNS>
-GtkDataEntry *data_entry
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_set_text</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataEntry *data_entry, const gchar *text
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_get_max_length_bytes</NAME>
-<RETURNS>gint  </RETURNS>
-GtkDataEntry *data_entry
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_set_max_length_bytes</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataEntry *data_entry, gint max_length_bytes
-</FUNCTION>
 <MACRO>
 <NAME>gtk_widget_get_realized</NAME>
 #  define gtk_widget_get_realized GTK_WIDGET_REALIZED

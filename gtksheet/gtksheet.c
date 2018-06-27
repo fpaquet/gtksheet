@@ -599,7 +599,8 @@ static void g_debug_popup(char *fmt, ...)  /* used to intercept/debug drawing se
 }
 #   endif
 
-static void g_debug_style_context_list_classes(gchar *hint, GtkStyleContext *context)
+static void g_debug_style_context_list_classes(
+    gchar *hint, GtkStyleContext *context)
 {
     GList *l = gtk_style_context_list_classes (context);
     while (l)
@@ -3379,6 +3380,9 @@ gtk_sheet_class_init(GtkSheetClass *klass)
 
     klass->set_scroll_adjustments = gtk_sheet_set_scroll_adjustments;
     klass->move_cursor = _gtk_sheet_move_cursor;
+
+    //FIXME - work in progress
+    //gtk_widget_class_set_css_name (widget_class, "sheet");
 }
 
 static void
@@ -3519,6 +3523,47 @@ gtk_sheet_init(GtkSheet *sheet)
 
     /* make sure the tooltip signal fires even if the sheet itself has no tooltip */
     gtk_widget_set_has_tooltip(GTK_WIDGET(sheet), TRUE);
+
+    //FIXME - work in progress
+#if 0
+    {
+        GError *error = NULL;
+        GdkDisplay *display = gdk_display_get_default ();
+        GdkScreen *screen = gdk_display_get_default_screen (display);
+
+        GtkCssProvider *provider = gtk_css_provider_new();
+
+        gtk_css_provider_load_from_data(provider,
+            //"@import url(\"resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained-dark.css\");"
+            "sheet .column-header {"
+            "  background-color: #cfc;"
+            "}\n"
+            "entry selection {"
+            "  background-color: #ccf;"
+            "}\n"
+            , -1, &error);
+
+        if (error)
+        {
+            g_warning("CSS Error %d: %s", error->code, error->message);
+        }
+        g_assert(!error);
+
+        GtkWidget *parent = gtk_widget_get_parent(sheet);
+        g_debug("FIXME parent %p", parent);
+
+        GtkCssProvider *def_provider = gtk_css_provider_get_default();
+        g_debug("FIXME def_provider %p", def_provider);
+
+        GtkStyleContext *context = gtk_widget_get_style_context(GTK_WIDGET(sheet));
+        g_debug("FIXME context %p", context);
+
+        //gtk_style_context_add_provider(context, provider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+        gtk_style_context_add_provider_for_screen(screen, provider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+        g_object_unref(provider);
+    }
+#endif
 }
 
 
@@ -9519,7 +9564,8 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
 		gtk_entry_set_alignment (entry, 0.5);
 		break;
 	}
-	gtk_data_entry_set_max_length_bytes(data_entry, colptr->max_length_bytes);
+	gtk_data_entry_set_max_length_bytes(
+            data_entry, colptr->max_length_bytes);
 	gtk_entry_set_max_length(entry, colptr->max_length);
         gtk_entry_set_has_frame(entry, FALSE);
     }
@@ -13211,7 +13257,7 @@ create_sheet_entry(
     GtkSheet *sheet, GType new_entry_type)
 {
     GtkWidget *widget;
-    GtkWidget * entry, *new_entry;
+    GtkWidget *entry, *new_entry;
 
     widget = GTK_WIDGET(sheet);
 

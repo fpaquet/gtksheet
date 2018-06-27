@@ -122,6 +122,188 @@ GtkDataTextView *data_text_view, gint max_length_bytes
 <STRUCT>
 <NAME>GtkItemEntryClass</NAME>
 </STRUCT>
+<MACRO>
+<NAME>GTKSHEET_MAJOR_VERSION</NAME>
+#define GTKSHEET_MAJOR_VERSION			(4)
+</MACRO>
+<MACRO>
+<NAME>GTKSHEET_MINOR_VERSION</NAME>
+#define GTKSHEET_MINOR_VERSION			(1)
+</MACRO>
+<MACRO>
+<NAME>GTKSHEET_MICRO_VERSION</NAME>
+#define GTKSHEET_MICRO_VERSION			(3)
+</MACRO>
+<MACRO>
+<NAME>GTKSHEET_CHECK_VERSION</NAME>
+#define GTKSHEET_CHECK_VERSION(major,minor,micro)    \
+   (GTKSHEET_MAJOR_VERSION > (major) || \
+    (GTKSHEET_MAJOR_VERSION == (major) && GTKSHEET_MINOR_VERSION > (minor)) || \
+    (GTKSHEET_MAJOR_VERSION == (major) && GTKSHEET_MINOR_VERSION == (minor) && \
+     GTKSHEET_MICRO_VERSION >= (micro)))
+</MACRO>
+<VARIABLE>
+<NAME>gtksheet_major_version</NAME>
+extern const guint gtksheet_major_version;
+</VARIABLE>
+<VARIABLE>
+<NAME>gtksheet_minor_version</NAME>
+extern const guint gtksheet_minor_version;
+</VARIABLE>
+<VARIABLE>
+<NAME>gtksheet_micro_version</NAME>
+extern const guint gtksheet_micro_version;
+</VARIABLE>
+<VARIABLE>
+<NAME>gtksheet_binary_age</NAME>
+extern const guint gtksheet_binary_age;
+</VARIABLE>
+<VARIABLE>
+<NAME>gtksheet_interface_age</NAME>
+extern const guint gtksheet_interface_age;
+</VARIABLE>
+<FUNCTION>
+<NAME>gtksheet_check_version</NAME>
+<RETURNS>gchar * </RETURNS>
+guint required_major, guint required_minor, guint required_micro
+</FUNCTION>
+<MACRO>
+<NAME>GTK_TYPE_DATA_ENTRY</NAME>
+#define GTK_TYPE_DATA_ENTRY              (gtk_data_entry_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_ENTRY</NAME>
+#define GTK_DATA_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_DATA_ENTRY, GtkDataEntry))
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_ENTRY_CLASS</NAME>
+#define GTK_DATA_ENTRY_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_DATA_ENTRY, GtkDataEntryClass))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_DATA_ENTRY</NAME>
+#define GTK_IS_DATA_ENTRY(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_DATA_ENTRY))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_DATA_ENTRY_CLASS</NAME>
+#define GTK_IS_DATA_ENTRY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_DATA_ENTRY))
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_ENTRY_GET_CLASS</NAME>
+#define GTK_DATA_ENTRY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_DATA_ENTRY, GtkDataEntryClass))
+</MACRO>
+<STRUCT>
+<NAME>GtkDataEntry</NAME>
+struct _GtkDataEntry
+{
+    /*< private >*/
+    GtkEntry entry;
+
+    gchar *data_type;           /* data type for application use */
+    gchar *data_format;        /* cell content formatting template */
+    gchar *description;         /* column description */
+    gint max_length_bytes;   /* maximum length in bytes */
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkDataEntryClass</NAME>
+struct _GtkDataEntryClass
+{
+    GtkEntryClass parent_class;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gtk_data_entry_get_type</NAME>
+<RETURNS>GType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_new</NAME>
+<RETURNS>GtkDataEntry  *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_description</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_description</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, const gchar *description
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_data_type</NAME>
+<RETURNS>const gchar *</RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_data_type</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, const gchar *data_type
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_data_format</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_data_format</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, const gchar *data_format
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_text</NAME>
+<RETURNS>const gchar *</RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_text</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, const gchar *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_get_max_length_bytes</NAME>
+<RETURNS>gint  </RETURNS>
+GtkDataEntry *data_entry
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_entry_set_max_length_bytes</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataEntry *data_entry, gint max_length_bytes
+</FUNCTION>
+<MACRO>
+<NAME>gtk_widget_get_realized</NAME>
+#  define gtk_widget_get_realized GTK_WIDGET_REALIZED
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_get_mapped</NAME>
+#  define gtk_widget_get_mapped GTK_WIDGET_MAPPED
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_get_requisition</NAME>
+#  define gtk_widget_get_requisition(widget, requisitionptr) \
+        *(requisitionptr) = GTK_WIDGET(widget)->requisition
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_set_realized_true</NAME>
+#   define gtk_widget_set_realized_true(widget)  \
+        GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED)
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_set_realized_false</NAME>
+#   define gtk_widget_set_realized_false(widget)  \
+        GTK_WIDGET_UNSET_FLAGS(widget, GTK_REALIZED)
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_set_mapped_true</NAME>
+#   define gtk_widget_set_mapped_true(widget)  \
+        GTK_WIDGET_SET_FLAGS(widget, GTK_MAPPED)
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_set_mapped_false</NAME>
+#   define gtk_widget_set_mapped_false(widget)  \
+        GTK_WIDGET_UNSET_FLAGS(widget, GTK_MAPPED)
+</MACRO>
 <STRUCT>
 <NAME>GtkSheetColumn</NAME>
 struct _GtkSheetColumn
@@ -445,155 +627,6 @@ GtkSheet *sheet, gint column
 <NAME>gtk_sheet_set_column_title</NAME>
 <RETURNS>void  </RETURNS>
 GtkSheet *sheet, gint column, const gchar *title
-</FUNCTION>
-<MACRO>
-<NAME>GTKSHEET_MAJOR_VERSION</NAME>
-#define GTKSHEET_MAJOR_VERSION			(4)
-</MACRO>
-<MACRO>
-<NAME>GTKSHEET_MINOR_VERSION</NAME>
-#define GTKSHEET_MINOR_VERSION			(1)
-</MACRO>
-<MACRO>
-<NAME>GTKSHEET_MICRO_VERSION</NAME>
-#define GTKSHEET_MICRO_VERSION			(2)
-</MACRO>
-<MACRO>
-<NAME>GTKSHEET_CHECK_VERSION</NAME>
-#define GTKSHEET_CHECK_VERSION(major,minor,micro)    \
-   (GTKSHEET_MAJOR_VERSION > (major) || \
-    (GTKSHEET_MAJOR_VERSION == (major) && GTKSHEET_MINOR_VERSION > (minor)) || \
-    (GTKSHEET_MAJOR_VERSION == (major) && GTKSHEET_MINOR_VERSION == (minor) && \
-     GTKSHEET_MICRO_VERSION >= (micro)))
-</MACRO>
-<VARIABLE>
-<NAME>gtksheet_major_version</NAME>
-extern const guint gtksheet_major_version;
-</VARIABLE>
-<VARIABLE>
-<NAME>gtksheet_minor_version</NAME>
-extern const guint gtksheet_minor_version;
-</VARIABLE>
-<VARIABLE>
-<NAME>gtksheet_micro_version</NAME>
-extern const guint gtksheet_micro_version;
-</VARIABLE>
-<VARIABLE>
-<NAME>gtksheet_binary_age</NAME>
-extern const guint gtksheet_binary_age;
-</VARIABLE>
-<VARIABLE>
-<NAME>gtksheet_interface_age</NAME>
-extern const guint gtksheet_interface_age;
-</VARIABLE>
-<FUNCTION>
-<NAME>gtksheet_check_version</NAME>
-<RETURNS>gchar * </RETURNS>
-guint required_major, guint required_minor, guint required_micro
-</FUNCTION>
-<MACRO>
-<NAME>GTK_TYPE_DATA_ENTRY</NAME>
-#define GTK_TYPE_DATA_ENTRY              (gtk_data_entry_get_type ())
-</MACRO>
-<MACRO>
-<NAME>GTK_DATA_ENTRY</NAME>
-#define GTK_DATA_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_DATA_ENTRY, GtkDataEntry))
-</MACRO>
-<MACRO>
-<NAME>GTK_DATA_ENTRY_CLASS</NAME>
-#define GTK_DATA_ENTRY_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_DATA_ENTRY, GtkDataEntryClass))
-</MACRO>
-<MACRO>
-<NAME>GTK_IS_DATA_ENTRY</NAME>
-#define GTK_IS_DATA_ENTRY(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_DATA_ENTRY))
-</MACRO>
-<MACRO>
-<NAME>GTK_IS_DATA_ENTRY_CLASS</NAME>
-#define GTK_IS_DATA_ENTRY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_DATA_ENTRY))
-</MACRO>
-<MACRO>
-<NAME>GTK_DATA_ENTRY_GET_CLASS</NAME>
-#define GTK_DATA_ENTRY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_DATA_ENTRY, GtkDataEntryClass))
-</MACRO>
-<STRUCT>
-<NAME>GtkDataEntry</NAME>
-struct _GtkDataEntry
-{
-    /*< private >*/
-    GtkEntry entry;
-
-    gchar *data_type;           /* data type for application use */
-    gchar *data_format;        /* cell content formatting template */
-    gchar *description;         /* column description */
-    gint max_length_bytes;   /* maximum length in bytes */
-};
-</STRUCT>
-<STRUCT>
-<NAME>GtkDataEntryClass</NAME>
-struct _GtkDataEntryClass
-{
-    GtkEntryClass parent_class;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gtk_data_entry_get_type</NAME>
-<RETURNS>GType  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_new</NAME>
-<RETURNS>GtkDataEntry  *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_get_description</NAME>
-<RETURNS>const gchar  *</RETURNS>
-GtkDataEntry *data_entry
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_set_description</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataEntry *data_entry, const gchar *description
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_get_data_type</NAME>
-<RETURNS>const gchar *</RETURNS>
-GtkDataEntry *data_entry
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_set_data_type</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataEntry *data_entry, const gchar *data_type
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_get_data_format</NAME>
-<RETURNS>const gchar  *</RETURNS>
-GtkDataEntry *data_entry
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_set_data_format</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataEntry *data_entry, const gchar *data_format
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_get_text</NAME>
-<RETURNS>const gchar *</RETURNS>
-GtkDataEntry *data_entry
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_set_text</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataEntry *data_entry, const gchar *text
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_get_max_length_bytes</NAME>
-<RETURNS>gint  </RETURNS>
-GtkDataEntry *data_entry
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_entry_set_max_length_bytes</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataEntry *data_entry, gint max_length_bytes
 </FUNCTION>
 <ENUM>
 <NAME>GtkSheetAttrType</NAME>
@@ -1672,36 +1705,3 @@ GtkSheet *sheet, GtkWidget *widget, gint row, gint col
 <STRUCT>
 <NAME>GtkSheetColumnClass</NAME>
 </STRUCT>
-<MACRO>
-<NAME>gtk_widget_get_realized</NAME>
-#  define gtk_widget_get_realized GTK_WIDGET_REALIZED
-</MACRO>
-<MACRO>
-<NAME>gtk_widget_get_mapped</NAME>
-#  define gtk_widget_get_mapped GTK_WIDGET_MAPPED
-</MACRO>
-<MACRO>
-<NAME>gtk_widget_get_requisition</NAME>
-#  define gtk_widget_get_requisition(widget, requisitionptr) \
-        *(requisitionptr) = GTK_WIDGET(widget)->requisition
-</MACRO>
-<MACRO>
-<NAME>gtk_widget_set_realized_true</NAME>
-#   define gtk_widget_set_realized_true(widget)  \
-        GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED)
-</MACRO>
-<MACRO>
-<NAME>gtk_widget_set_realized_false</NAME>
-#   define gtk_widget_set_realized_false(widget)  \
-        GTK_WIDGET_UNSET_FLAGS(widget, GTK_REALIZED)
-</MACRO>
-<MACRO>
-<NAME>gtk_widget_set_mapped_true</NAME>
-#   define gtk_widget_set_mapped_true(widget)  \
-        GTK_WIDGET_SET_FLAGS(widget, GTK_MAPPED)
-</MACRO>
-<MACRO>
-<NAME>gtk_widget_set_mapped_false</NAME>
-#   define gtk_widget_set_mapped_false(widget)  \
-        GTK_WIDGET_UNSET_FLAGS(widget, GTK_MAPPED)
-</MACRO>

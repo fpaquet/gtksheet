@@ -7,6 +7,11 @@ TBD
 ** CASY - using gtk_sheet_column_set_visibility() kills screen updates with active sheet entry?
 ** remove FIXME debug output
 
+2018-06-26 Fredy Paquet <mailbox AT opag.ch>
+* doc update
+* updated gtksheet-4 version to 4.1.3, Libtool Revision 2.0.1
+* published gtksheet-4 version 4.1.3
+
 2018-06-25 Fredy Paquet <mailbox AT opag.ch>
 * fixed: extend_selection doesn't deactivate cell editor
 * sheed entry is no longer active when sheet holds a selection

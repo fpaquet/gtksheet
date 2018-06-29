@@ -1,0 +1,14 @@
+
+entry selection {
+  background-color: #ccf;
+}
+
+sheet .column-header {
+  border-width: 1px;
+  border-color: #00f;
+  border-style: solid;
+  border-radius: 0px;
+  background-color: #cfc;
+  color: #000;
+}
+

@@ -98,6 +98,9 @@
 #   define GTK_SHEET_DEBUG_SCROLL  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TEXT  0
+
+#   define GTK_SHEET_ENABLE_DEBUG_MACROS
+#   include "gtksheetdebug.h"
 #endif
 
 #define GTK_SHEET_MOD_MASK  GDK_MOD1_MASK  /* main modifier for sheet navigation */
@@ -1423,7 +1426,7 @@ static gboolean gtk_sheet_activate_cell(
     GtkSheet *sheet, gint row, gint col);
 static void gtk_sheet_draw_active_cell(GtkSheet *sheet, cairo_t *cr);
 static void gtk_sheet_show_active_cell(GtkSheet *sheet);
-static void gtk_sheet_click_cell(
+void gtk_sheet_click_cell(
     GtkSheet *sheet, gint row, gint column, gboolean *veto);
 
 /* Backing Pixmap */
@@ -1554,6 +1557,8 @@ gtk_sheet_buildable_add_child_internal(GtkSheet *sheet,
        ? Gtk - gtk_widget_realize: assertion `GTK_WIDGET_ANCHORED (widget) || GTK_IS_INVISIBLE (widget)' failed
        see also the fix in gtk_sheet_column_set_visibility()
        */
+
+    DEBUG_WIDGET_SET_PARENT(child, sheet);
     gtk_widget_set_parent(GTK_WIDGET(child), GTK_WIDGET(sheet));
 
     if (name)
@@ -3381,9 +3386,32 @@ gtk_sheet_class_init(GtkSheetClass *klass)
     klass->set_scroll_adjustments = gtk_sheet_set_scroll_adjustments;
     klass->move_cursor = _gtk_sheet_move_cursor;
 
-    //FIXME - work in progress
-    //gtk_widget_class_set_css_name (widget_class, "sheet");
+    //FIXME - CSS work in progress
+    gtk_widget_class_set_css_name (widget_class, "sheet");
 }
+
+/* 
+https://bugzilla.redhat.com/show_bug.cgi?id=1404656 
+ 
+==23841== Invalid read of size 8
+==23841==    at 0x5B16B17: _gtk_widget_get_toplevel (gtkwidgetprivate.h:381)
+==23841==    by 0x5B16B17: gtk_widget_get_scale_factor (gtkwidget.c:10887)
+==23841==    by 0x5911048: gtk_css_widget_node_get_style_provider (gtkcsswidgetnode.c:246)
+==23841==    by 0x58F653B: gtk_css_node_get_style_provider_or_null (gtkcssnode.c:121)
+==23841==    by 0x58F653B: gtk_css_node_invalidate_style_provider (gtkcssnode.c:1316)
+==23841==    by 0x74B6677: g_closure_invoke (gclosure.c:804)
+==23841==    by 0x74C7FCC: signal_emit_unlocked_R (gsignal.c:3635)
+==23841==    by 0x74CFF30: g_signal_emit_valist (gsignal.c:3391)
+==23841==    by 0x74D0191: g_signal_emit (gsignal.c:3447)
+==23841==    by 0x5A6CDA4: _gtk_style_cascade_add_provider (gtkstylecascade.c:380)
+==23841==    by 0x504DCD8: gtk_sheet_init (gtksheet.c:3567)
+==23841==    by 0x74D720A: g_type_create_instance (gtype.c:1866)
+==23841==    by 0x74BB65C: g_object_new_internal (gobject.c:1783)
+==23841==    by 0x74BD14C: g_object_newv (gobject.c:1930)
+==23841==  Address 0xd1 is not stack'd, malloc'd or (recently) free'd
+*/ 
+
+static gboolean style_provider_was_set = FALSE;
 
 static void
 gtk_sheet_init(GtkSheet *sheet)
@@ -3524,9 +3552,13 @@ gtk_sheet_init(GtkSheet *sheet)
     /* make sure the tooltip signal fires even if the sheet itself has no tooltip */
     gtk_widget_set_has_tooltip(GTK_WIDGET(sheet), TRUE);
 
-    //FIXME - work in progress
-#if 0
+    //FIXME - CSS work in progress
+#if 1
     {
+	gtk_style_context_add_class(
+	    gtk_widget_get_style_context(
+		GTK_WIDGET(sheet)), GTK_STYLE_CLASS_VIEW);
+
         GError *error = NULL;
         GdkDisplay *display = gdk_display_get_default ();
         GdkScreen *screen = gdk_display_get_default_screen (display);
@@ -3549,7 +3581,7 @@ gtk_sheet_init(GtkSheet *sheet)
         }
         g_assert(!error);
 
-        GtkWidget *parent = gtk_widget_get_parent(sheet);
+        GtkWidget *parent = gtk_widget_get_parent(GTK_WIDGET(sheet));
         g_debug("FIXME parent %p", parent);
 
         GtkCssProvider *def_provider = gtk_css_provider_get_default();
@@ -3560,7 +3592,15 @@ gtk_sheet_init(GtkSheet *sheet)
 
         //gtk_style_context_add_provider(context, provider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        gtk_style_context_add_provider_for_screen(screen, provider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+        if (!style_provider_was_set)
+        {
+            gtk_style_context_add_provider_for_screen(
+                GDK_SCREEN(screen), 
+                GTK_STYLE_PROVIDER(provider),
+                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+            style_provider_was_set = TRUE;
+        }
         g_object_unref(provider);
     }
 #endif
@@ -6579,6 +6619,9 @@ gtk_sheet_realize_handler(GtkWidget *widget)
     _gtk_sheet_recalc_top_ypixels(sheet);
     _gtk_sheet_recalc_left_xpixels(sheet);
 
+    g_debug("%s(%d) FIXME called %s %p", 
+	__FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME (sheet), sheet);
+
 #if GTK_SHEET_DEBUG_REALIZE > 0
     g_debug("gtk_sheet_realize_handler: called (%p)", sheet->sheet_entry);
 #endif
@@ -6635,7 +6678,8 @@ gtk_sheet_realize_handler(GtkWidget *widget)
     gdk_window_set_user_data(sheet->column_title_window, sheet);
 
     //GtkStyleContext *style_context = gtk_widget_get_style_context(widget);
-    gtk_style_context_set_background(style_context, sheet->column_title_window);
+    gtk_style_context_set_background(
+	style_context, sheet->column_title_window);
 
     /* row-title window */
     attributes.x = attributes.y = 0;
@@ -6650,7 +6694,8 @@ gtk_sheet_realize_handler(GtkWidget *widget)
     gdk_window_set_user_data(sheet->row_title_window, sheet);
 
     //GtkStyleContext *style_context = gtk_widget_get_style_context(widget);
-    gtk_style_context_set_background(style_context, sheet->row_title_window);
+    gtk_style_context_set_background(
+	style_context, sheet->row_title_window);
 
     /* sheet-window */
     attributes.cursor = gdk_cursor_new(GDK_PLUS);
@@ -6676,8 +6721,12 @@ gtk_sheet_realize_handler(GtkWidget *widget)
 	g_object_ref(sheet->sheet_entry);
 	gtk_widget_unparent(sheet->sheet_entry);
     }
+    DEBUG_WIDGET_SET_PARENT_WIN(
+        sheet->sheet_entry, sheet->sheet_window);
     gtk_widget_set_parent_window(
         sheet->sheet_entry, sheet->sheet_window);
+
+    DEBUG_WIDGET_SET_PARENT(sheet->sheet_entry, sheet);
     gtk_widget_set_parent(sheet->sheet_entry, GTK_WIDGET(sheet));
 
     /* reparent global sheet button */
@@ -6686,7 +6735,11 @@ gtk_sheet_realize_handler(GtkWidget *widget)
 	g_object_ref(sheet->button);
 	gtk_widget_unparent(sheet->button);
     }
+    DEBUG_WIDGET_SET_PARENT_WIN(
+        sheet->button, sheet->sheet_window);
     gtk_widget_set_parent_window(sheet->button, sheet->sheet_window);
+
+    DEBUG_WIDGET_SET_PARENT(sheet->button, sheet);
     gtk_widget_set_parent(sheet->button, GTK_WIDGET(sheet));
 
 /*
@@ -10281,8 +10334,8 @@ gtk_sheet_real_select_range(GtkSheet *sheet, GtkSheetRange *range)
 	gtk_sheet_range_draw_selection(sheet, sheet->range, NULL);
     }
 
-    g_signal_emit(
-        G_OBJECT(sheet), sheet_signals[SELECT_RANGE], 0, range);
+    g_signal_emit(G_OBJECT(sheet), sheet_signals[SELECT_RANGE],
+        0, range);
 }
 
 /**
@@ -10592,6 +10645,8 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
     if(event->type != GDK_BUTTON_PRESS) return(TRUE);
 */
 
+    g_debug("FIXME SEL gtk_sheet_button_press_handler: called");
+
 #if GTK_SHEET_DEBUG_MOUSE > 0
     g_debug("gtk_sheet_button_press_handler: called");
 #endif
@@ -10599,10 +10654,14 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
     sheet = GTK_SHEET(widget);
     GdkWindow *main_window = gtk_widget_get_window(widget);  // for coordinates
 
-    gdk_window_get_device_position(main_window, event->device, NULL, NULL, &mods);
+    gdk_window_get_device_position(
+	main_window, event->device, NULL, NULL, &mods);
 
-    if (!(mods & GDK_BUTTON1_MASK))
+    if (!(mods & GDK_BUTTON1_MASK)) 
+    {
+	g_debug("FIXME SEL - !(mods & GDK_BUTTON1_MASK)");
 	return (TRUE);
+    }
 
     /* press on resize windows */
     if (event->window == sheet->column_title_window 
@@ -10780,7 +10839,8 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 
     if (event->window == sheet->column_title_window)
     {
-	gdk_window_get_device_position(main_window, event->device, &x, &y, NULL);
+	gdk_window_get_device_position(
+	    main_window, event->device, &x, &y, NULL);
 
 	column = _gtk_sheet_column_from_xpixel(sheet, x);
 	if (column < 0 || column > sheet->maxcol)
@@ -10871,7 +10931,7 @@ _gtk_sheet_scroll_to_pointer(gpointer data)
     return (TRUE);
 }
 
-static void
+void
 gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 {
     *veto = TRUE;
@@ -13336,10 +13396,14 @@ create_sheet_entry(
 #if GTK_SHEET_DEBUG_ENTRY > 0
 	g_debug("create_sheet_entry: sheet was realized");
 #endif
+        DEBUG_WIDGET_SET_PARENT_WIN(
+            sheet->sheet_entry, sheet->sheet_window);
 	gtk_widget_set_parent_window(
             sheet->sheet_entry, sheet->sheet_window);
 
+        DEBUG_WIDGET_SET_PARENT(sheet->sheet_entry, sheet);
 	gtk_widget_set_parent(sheet->sheet_entry, GTK_WIDGET(sheet));
+
 	gtk_widget_realize(sheet->sheet_entry);
     }
 
@@ -13844,6 +13908,28 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 
     if (row == -1)  /* column title button */
     {
+#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
+	if (!cr) return;
+	
+	g_assert(0 <= col && col <= sheet->maxcol);
+	GtkSheetColumn *colobj = COLPTR(sheet, col);
+
+	if (colobj->col_button)
+	{
+	    GtkWidget *parent = gtk_widget_get_parent(colobj->col_button);
+
+	    g_debug(
+		"%s(%d) FIXME - gtk_container_propagate_draw %s%p parent %p",
+		__FUNCTION__, __LINE__, 
+		G_OBJECT_TYPE_NAME (colobj->col_button), colobj->col_button,
+		parent);
+
+	    gtk_container_propagate_draw(
+		GTK_CONTAINER(sheet), colobj->col_button, cr);
+	}
+
+	return;
+#else
 	window = sheet->column_title_window;
 	button = &COLPTR(sheet, col)->button;
 	index = col;
@@ -13858,6 +13944,7 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 	height = sheet->column_title_area.height;
 	sensitive = GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col));
 	area = ON_COLUMN_TITLES_AREA;
+#endif
     }
     else if (col == -1)  /* row title button */
     {
@@ -13904,11 +13991,9 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
         GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
     gtk_style_context_add_class (
-        style_context, GTK_STYLE_CLASS_VIEW);
-    gtk_style_context_add_class (
         style_context, GTK_STYLE_CLASS_BUTTON);
     gtk_style_context_add_class (
-        style_context, GTK_STYLE_REGION_COLUMN_HEADER);
+        style_context, GTK_STYLE_CLASS_TOP);
 
     //g_debug_style_context_list_classes("_gtk_sheet_draw_button", style_context);
 
@@ -15555,7 +15640,9 @@ AddColumns(GtkSheet *sheet, gint position, gint ncols)
 	    newobj->sheet = sheet;
 	    sheet->column[newidx] = newobj;
 
-	    gtk_widget_set_parent(GTK_WIDGET(newobj), GTK_WIDGET(sheet));
+            DEBUG_WIDGET_SET_PARENT(newobj, sheet);
+            gtk_widget_set_parent(
+                GTK_WIDGET(newobj), GTK_WIDGET(sheet));
 
 #if 0
 	    g_debug("Setting Column %p Parent to GtkSheet %p - got %p",
@@ -15995,6 +16082,8 @@ gtk_sheet_put(GtkSheet *sheet, GtkWidget *child, gint x, gint y)
 
     sheet->children = g_list_append(sheet->children, child_info);
     g_object_ref(child);
+
+    DEBUG_WIDGET_SET_PARENT(child, sheet);
     gtk_widget_set_parent(child, GTK_WIDGET(sheet));
 
     gtk_widget_get_preferred_size(child, NULL, NULL);
@@ -16211,6 +16300,7 @@ gtk_sheet_button_attach(GtkSheet *sheet,
     g_debug("gtk_sheet_button_attach: called");
 #endif
 
+#if GTK_SHEET_COLUMN_BUTTON_OBJECTS==0
     child = g_new(GtkSheetChild, 1);
     child->widget = widget;
     child->x = 0;
@@ -16222,14 +16312,54 @@ gtk_sheet_button_attach(GtkSheet *sheet,
     child->xpadding = child->ypadding = 0;
     child->xshrink = child->yshrink = FALSE;
     child->xfill = child->yfill = FALSE;
+#endif
 
     if (row == -1)  /* attach to column title button */
     {
+#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
+	g_assert(0 <= col && col <= sheet->maxcol);
+	GtkSheetColumn *colobj = COLPTR(sheet, col);
+
+	if (!colobj->col_button)
+	{
+	    gtk_sheet_column_button_add_label(sheet, col, "");
+	}
+
+	GtkWidget *child = gtk_bin_get_child(colobj->col_button);
+
+        if (child)
+	{
+	    DEBUG_WIDGET_CONTAINER_REMOVE(
+		colobj->col_button, child);
+	    gtk_container_remove(
+		GTK_CONTAINER(colobj->col_button), child);
+	    gtk_widget_destroy(child);
+	}
+
+	if (widget) {
+	    DEBUG_WIDGET_CONTAINER_ADD(colobj->col_button, widget);
+            gtk_container_add(GTK_CONTAINER(colobj->col_button), widget);
+	}
+
+	g_debug(
+	    "%s(%d) FIXME - gtk_widget_queue_resize %s %p",
+	    __FUNCTION__, __LINE__, 
+	    G_OBJECT_TYPE_NAME (widget), widget);
+
+	// is this needed?
+	//if (gtk_widget_get_realized (GTK_WIDGET(sheet)))
+	//  gtk_widget_queue_resize (GTK_WIDGET(sheet));
+
+        return;    
+#else
 	button = &COLPTR(sheet, col)->button;
 	button->child = child;
+#endif
     }
     else  /* attach to row title button */
     {
+#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
+#endif
 	button = &sheet->row[row].button;
 	button->child = child;
     }
@@ -16763,8 +16893,11 @@ gtk_sheet_remove_handler(GtkContainer *container, GtkWidget *widget)
 	if (child->row == -1)
 	    sheet->row[child->col].button.child = NULL;
 
+#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
+#else
 	if (child->col == -1)
 	    COLPTR(sheet, child->row)->button.child = NULL;
+#endif
 
 #if GTK_SHEET_DEBUG_CHILDREN > 0
 	g_debug("gtk_sheet_remove_handler: %p %s widget %p", 
@@ -16793,16 +16926,29 @@ gtk_sheet_realize_child(GtkSheet *sheet, GtkSheetChild *child)
     if (gtk_widget_get_realized(widget))
     {
 	if (child->row == -1)
-	    gtk_widget_set_parent_window(
+        {
+            DEBUG_WIDGET_SET_PARENT_WIN(
                 child->widget, sheet->column_title_window);
+            gtk_widget_set_parent_window(
+                child->widget, sheet->column_title_window);
+        }
 	else if (child->col == -1)
-	    gtk_widget_set_parent_window(
+        {
+            DEBUG_WIDGET_SET_PARENT_WIN(
                 child->widget, sheet->row_title_window);
+            gtk_widget_set_parent_window(
+                child->widget, sheet->row_title_window);
+        }
 	else
-	    gtk_widget_set_parent_window(
+        {
+            DEBUG_WIDGET_SET_PARENT_WIN(
                 child->widget, sheet->sheet_window);
+            gtk_widget_set_parent_window(
+                child->widget, sheet->sheet_window);
+        }
     }
 
+    DEBUG_WIDGET_SET_PARENT(child->widget, widget);
     gtk_widget_set_parent(child->widget, widget);
 }
 

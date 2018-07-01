@@ -130,7 +130,11 @@ _column_button_press_handler(
         {
             g_debug("FIXME SEL found col %d", col);
 
-            /* ugly - patch window */
+            /* ugly - patch window in event and propagate to sheet
+               this dirty trick works because gtk_sheet_button_press_handler()
+               uses gdk_window_get_device_position() to process event
+               coordinates.
+               */
             
             ((GdkEventButton *) event)->window = sheet->column_title_window;
 
@@ -169,6 +173,10 @@ _gtk_sheet_column_button_add_label_internal(
         /* add GtkToggleButton */
         colobj->col_button = gtk_toggle_button_new_with_label (label);
         g_object_ref_sink(colobj->col_button);
+
+        GtkStyleContext *context = gtk_widget_get_style_context(
+            GTK_WIDGET(colobj->col_button));
+        gtk_style_context_add_class (context, GTK_STYLE_CLASS_TOP);
 
         gtk_widget_show(colobj->col_button);
 #if 0
@@ -804,6 +812,12 @@ gtk_sheet_column_init(GtkSheetColumn *column)
     GTK_SHEET_COLUMN_SET_SENSITIVE(column, TRUE);
     gtk_widget_set_can_focus(GTK_WIDGET(column), TRUE);
     gtk_widget_set_has_window(GTK_WIDGET(column), FALSE);
+
+#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
+    /* not yet attached - column index does not exist
+       so we create an empty column title button */
+    _gtk_sheet_column_button_add_label_internal(NULL, column, NULL);
+#endif
 }
 
 /*
@@ -1212,12 +1226,19 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
 
         if (colobj->col_button)
         {
-#define COL_BUTTON_GAP 5
+            /* pixel gap between column buttons */
+#define COL_BUTTON_GAP 0
+
+            /* it looks as if the sheet grid is misaligned
+               1 pixel too far on the left side,
+               except for the right side of the last column
+               */
+#define COL_BUTTON_GRID_SHIFT -1
 
             GdkRectangle allocation;
-            allocation.x =  _gtk_sheet_column_left_xpixel(sheet, col) + COL_BUTTON_GAP;
+            allocation.x =  _gtk_sheet_column_left_xpixel(sheet, col) + COL_BUTTON_GRID_SHIFT + COL_BUTTON_GAP;
             allocation.y = 0;
-            allocation.width = colobj->width - COL_BUTTON_GAP*2;
+            allocation.width = colobj->width + 1 - COL_BUTTON_GAP*2;
             allocation.height = sheet->column_title_area.height;
 
             if (sheet->row_titles_visible)

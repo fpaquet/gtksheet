@@ -9,6 +9,7 @@ TBD
 
 2018-06-29 Fredy Paquet <mailbox AT opag.ch>
 * experimental - introduced column buttons of type GtkToggleButton
+* create title button objects on column creation, add default titles
 
 2018-06-26 Fredy Paquet <mailbox AT opag.ch>
 * doc update

@@ -1,3 +1,4 @@
+/* examples for testing */
 
 entry selection {
   background-color: #ccf;
@@ -6,6 +7,33 @@ entry selection {
 sheet .column-header {
   border-width: 1px;
   border-color: #00f;
+  border-style: solid;
+  border-radius: 0px;
+  background-color: #cfc;
+  color: #000;
+}
+
+sheet button {
+  border-width: 1px;
+  /*border-color: #00f;*/
+  border-style: solid;
+  border-radius: 0px;
+  background-color: #cfc;
+  color: #000;
+}
+
+sheet button.top {
+  border-width: 1px;
+  /*border-color: #00f;*/
+  border-style: solid;
+  border-radius: 0px;
+  background-color: #cfc;
+  color: #000;
+}
+
+sheet entry {
+  border-width: 1px;
+  /*border-color: #00f;*/
   border-style: solid;
   border-radius: 0px;
   background-color: #cfc;

@@ -3567,7 +3567,10 @@ gtk_sheet_init(GtkSheet *sheet)
 
         gtk_css_provider_load_from_data(provider,
             //"@import url(\"resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained-dark.css\");"
-            "sheet .column-header {"
+            "sheet button {"
+            "  border-width: 1px;"
+            "  border-style: solid;"
+            "  border-radius: 0px;"
             "  background-color: #cfc;"
             "}\n"
             "entry selection {"
@@ -15650,9 +15653,33 @@ AddColumns(GtkSheet *sheet, gint position, gint ncols)
 #endif
 
 	    g_object_ref_sink(newobj);
-	}
+
+        }
+
+#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
+        gint old_maxcol = sheet->maxcol;
+#endif
 
 	sheet->maxcol += ncols;
+
+#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
+        /* add default titles
+           this only works for an empty sheet, otherwise we would
+           have to renumber default titles when inserting further
+           columns
+           */
+        if (old_maxcol < 0)
+        {
+            for (c = 0; c <= sheet->maxcol; c++)
+            {
+                gint newidx = position + c;
+
+                gchar title[24];
+                g_sprintf(title, "%d", newidx);
+                gtk_sheet_column_button_add_label(sheet, newidx, title);
+            }
+        }
+#endif
 
 	_gtk_sheet_reset_text_column(sheet, sheet->maxcol - ncols);
 	_gtk_sheet_recalc_left_xpixels(sheet);

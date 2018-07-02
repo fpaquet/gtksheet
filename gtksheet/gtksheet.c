@@ -13927,8 +13927,12 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 		G_OBJECT_TYPE_NAME (colobj->col_button), colobj->col_button,
 		parent);
 
-	    gtk_container_propagate_draw(
-		GTK_CONTAINER(sheet), colobj->col_button, cr);
+            if (gtk_widget_get_realized(sheet)
+                 && gtk_widget_get_realized(colobj->col_button))
+            {
+                gtk_container_propagate_draw(
+                    GTK_CONTAINER(sheet), colobj->col_button, cr);
+            }
 	}
 
 	return;

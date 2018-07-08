@@ -16390,6 +16390,17 @@ gtk_sheet_button_attach(GtkSheet *sheet,
     else  /* attach to row title button */
     {
 #if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
+        child = g_new(GtkSheetChild, 1);
+        child->widget = widget;
+        child->x = 0;
+        child->y = 0;
+        child->attached_to_cell = TRUE;
+        child->floating = FALSE;
+        child->row = row;
+        child->col = col;
+        child->xpadding = child->ypadding = 0;
+        child->xshrink = child->yshrink = FALSE;
+        child->xfill = child->yfill = FALSE;
 #endif
 	button = &sheet->row[row].button;
 	button->child = child;
@@ -16838,6 +16849,39 @@ gtk_sheet_forall_handler(GtkContainer *container,
 	g_object_ref(sheet->sheet_entry);
 	(*callback)(sheet->sheet_entry, callback_data);
 	g_object_unref(sheet->sheet_entry);
+    }
+
+    if (include_internals)
+    {
+#if GTK_SHEET_DEBUG_CHILDREN > 1
+        g_debug("gtk_sheet_forall_handler: C3 %p internals");
+#endif
+        gint col;
+        for (col=0; col<=sheet->maxcol; col++)
+        {
+            GtkSheetColumn *colobj = sheet->column[col];
+#if GTK_SHEET_DEBUG_CHILDREN > 1
+            g_debug("gtk_sheet_forall_handler: C3 %p IsObject %d IsWidget %d", 
+                    colobj,
+                    G_IS_OBJECT(colobj),
+                    GTK_IS_WIDGET(colobj));
+#endif
+            if (G_IS_OBJECT(colobj) && GTK_IS_WIDGET(colobj))
+            {
+                g_object_ref(colobj);
+                (*callback)(colobj, callback_data);
+                g_object_unref(colobj);
+            }
+
+            GtkWidget *col_button = colobj->col_button;
+
+            if (G_IS_OBJECT(col_button) && GTK_IS_WIDGET(col_button))
+            {
+                g_object_ref(col_button);
+                (*callback)(col_button, callback_data);
+                g_object_unref(col_button);
+            }
+        }
     }
 }
 

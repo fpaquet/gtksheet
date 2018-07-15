@@ -13246,6 +13246,12 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
     }
 #endif
 
+    g_debug("%s(%d) FIXME %s %p alloc x %d y %d w %d h %d", 
+            __FUNCTION__, __LINE__, 
+            G_OBJECT_TYPE_NAME (sheet->sheet_entry), sheet->sheet_entry,
+            shentry_allocation.x, shentry_allocation.y, 
+            shentry_allocation.width, shentry_allocation.height);
+
     gtk_widget_size_allocate(sheet->sheet_entry, &shentry_allocation);
 
 #if GTK_SHEET_DEBUG_SIZE > 0
@@ -13253,6 +13259,28 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 	shentry_allocation.x, shentry_allocation.y, 
         shentry_allocation.width, shentry_allocation.height);
 #endif
+
+    if (gtk_widget_get_mapped(sheet->sheet_entry))
+    {
+        GdkRectangle *rta = &sheet->row_title_area;
+
+        /* clip on row_title_area */
+        if (sheet->row_titles_visible
+            && shentry_allocation.x < rta->width)
+        {
+            shentry_allocation.x = rta->width;
+        }
+        gtk_widget_set_clip(sheet->sheet_entry, &shentry_allocation);
+
+#if 1
+        g_debug("%s(%d) FIXME %s %p clip x %d y %d w %d h %d", 
+                __FUNCTION__, __LINE__, 
+                G_OBJECT_TYPE_NAME (sheet->sheet_entry),
+                sheet->sheet_entry,
+                shentry_allocation.x, shentry_allocation.y, 
+                shentry_allocation.width, shentry_allocation.height);
+#endif
+    }
 }
 
 #if GTK_SHEET_DEBUG_FINALIZE > 0
@@ -13920,12 +13948,6 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 	if (colobj->col_button)
 	{
 	    GtkWidget *parent = gtk_widget_get_parent(colobj->col_button);
-
-	    g_debug(
-		"%s(%d) FIXME - gtk_container_propagate_draw %s%p parent %p",
-		__FUNCTION__, __LINE__, 
-		G_OBJECT_TYPE_NAME (colobj->col_button), colobj->col_button,
-		parent);
 
             if (gtk_widget_get_realized(sheet)
                  && gtk_widget_get_realized(colobj->col_button))
@@ -16755,7 +16777,35 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
 	child_allocation.height = child_min_size.height;
     }
 
+    g_debug("%s(%d) FIXME 3 %s %p alloc x %d y %d w %d h %d", 
+            __FUNCTION__, __LINE__, 
+            G_OBJECT_TYPE_NAME (child->widget), child->widget,
+            child_allocation.x, child_allocation.y, 
+            child_allocation.width, child_allocation.height);
+
     gtk_widget_size_allocate(child->widget, &child_allocation);
+
+    if (gtk_widget_get_mapped(child->widget))
+    {
+        GdkRectangle *rta = &sheet->row_title_area;
+
+        /* clip on row_title_area */
+        if (sheet->row_titles_visible
+            && child_allocation.x < rta->width)
+        {
+            child_allocation.x = rta->width;
+        }
+        gtk_widget_set_clip(child->widget, &child_allocation);
+
+#if 1
+        g_debug("%s(%d) FIXME 4 %s %p clip x %d y %d w %d h %d", 
+                __FUNCTION__, __LINE__, 
+                G_OBJECT_TYPE_NAME (child->widget), child->widget,
+                child_allocation.x, child_allocation.y, 
+                child_allocation.width, child_allocation.height);
+#endif
+    }
+
     gtk_widget_queue_draw(child->widget);
 }
 
@@ -16929,6 +16979,35 @@ gtk_sheet_position_children(GtkSheet *sheet)
 	}
         children = children->next;
     }
+
+#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
+    {
+	gint col;
+	gint minviewcol = MIN_VIEW_COLUMN(sheet);
+	gint maxviewcol = MAX_VIEW_COLUMN(sheet);
+
+	for (col = 0; col <= sheet->maxcol; col++)
+	{
+	    g_assert(0 <= col && col <= sheet->maxcol);
+	    GtkSheetColumn *colobj = COLPTR(sheet, col);
+
+	    if (colobj->col_button)
+	    {
+		/* FIXME column visible? */
+                if (sheet->column_titles_visible
+		    && gtk_widget_get_visible(colobj)
+		    && minviewcol <= col && col <= maxviewcol)
+		{
+		    gtk_widget_show(colobj->col_button);
+                }
+		else
+		{
+		    gtk_widget_hide(colobj->col_button);
+		}
+	    }
+	}
+    }
+#endif
 }
 
 /*

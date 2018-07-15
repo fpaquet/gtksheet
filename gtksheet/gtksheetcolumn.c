@@ -1185,29 +1185,6 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
             cta->width, cta->height);
     }
 
-    /* if the right edge of the sheet is visible, clear it */
-    if (MAX_VIEW_COLUMN(sheet) >= sheet->maxcol)
-    {
-        gint mc = gtk_sheet_column_rightmost_visible(sheet);
-        gint mx = _gtk_sheet_column_right_xpixel(sheet, mc);
-
-        if (sheet->row_titles_visible) mx -= sheet->row_title_area.width;
-
-#if GTK_SHEET_COL_DEBUG_SIZE > 0
-#   if 0
-        g_debug("_gtk_sheet_column_buttons_size_allocate: mc %d mx %d w %d",
-                mc, mx, cta->width-mx);
-#   endif
-#endif
-
-        cairo_t *twin_cr = gdk_cairo_create(sheet->column_title_window);
-        cairo_rectangle(twin_cr, 
-	    (double) mx, (double) 0, (double) (cta->width - mx), (double) (cta->height));
-        gdk_cairo_set_source_rgba(twin_cr, &sheet->bg_color);
-        cairo_fill(twin_cr);
-        cairo_destroy(twin_cr);
-    }
-
     if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return;
 
     g_debug("%s(%d) FIXME 2 %s %p cta x %d y %d w %d h %d", 
@@ -1364,6 +1341,8 @@ gtk_sheet_set_column_width(GtkSheet *sheet, gint col, guint width)
         _gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
     g_signal_emit_by_name(G_OBJECT(sheet), "new-column-width", col, width);
+
+    gtk_widget_queue_draw(sheet);
 }
 
 

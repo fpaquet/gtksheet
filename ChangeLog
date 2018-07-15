@@ -4,11 +4,9 @@ TBD
 ** sheet entry: undershoot area smears backgnd (CSS)
 ** sheet editor font (use GtkStyleContext)
 ** reposition childs after column header resize via double click
-** invalidate sheet area after column header resize via double click
-   only appears when sheet is not read-only (see ArtBAGKBear)
+   see also GTK_SHEET_IN_REDRAW_PENDING (IHS ArtNr 44161)
 ** column button height should resize column_title_area (enable BAB Titles)
    see _gtk_sheet_column_buttons_size_allocate(1254) 
-** column title background drawing flashes (rightmost column)
 ** make row title button a child of GtkSheetColumn ?
 ** rename xor to sel
 ** CASY - using gtk_sheet_column_set_visibility() kills screen updates with active sheet entry?
@@ -18,6 +16,8 @@ TBD
 * clipping of column title buttons, when scrolling over row title area
 * clipping of sheet childs, when scrolling over row title area
 * fixed column button widget visibility
+* column title background drawing flicker (beyond rightmost column)
+* redraw sheet area after column header resize via double click
 
 2018-07-08 Fredy Paquet <mailbox AT opag.ch>
 * fixed container forall handler, columns now visible in inspector

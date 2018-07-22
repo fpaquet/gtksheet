@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 struct _GtkSheetColumn
 {
     /*< private >*/
-    GtkWidget parent;
+    GtkBin parent;
 
     GtkSheet *sheet;  /* the sheet this column belongs to */
 
@@ -80,7 +80,7 @@ struct _GtkSheetColumn
 
 struct _GtkSheetColumnClass
 {
-    GtkWidgetClass parent_class;
+    GtkBinClass parent_class;
 
     /*< private >*/
 };

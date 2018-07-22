@@ -8924,6 +8924,10 @@ gtk_sheet_get_pixel_info(GtkSheet *sheet,
     g_return_val_if_fail(sheet != NULL, 0);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), 0);
 
+#if GTK_SHEET_DEBUG_PIXEL_INFO > 0
+    g_debug("gtk_sheet_get_pixel_info: window %p", window);
+#endif
+
     /* there is a coordinate shift to be considered when
        clicking into a title area because: 
        - the sheet window covers the whole sheet 
@@ -8986,7 +8990,8 @@ gtk_sheet_get_pixel_info(GtkSheet *sheet,
     }
 
 #if GTK_SHEET_DEBUG_PIXEL_INFO > 0
-    g_debug("gtk_sheet_get_pixel_info: x %d y %d row %d col %d", x, y, trow, tcol);
+    g_debug("gtk_sheet_get_pixel_info: x %d y %d row %d col %d",
+            x, y, trow, tcol);
 #endif
 
     *row = trow;
@@ -10522,6 +10527,7 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
 		_gtk_sheet_draw_button(sheet, row, -1, cr);
 	    }
 	}
+
 
 	if (gtk_cairo_should_draw_window(cr, sheet->column_title_window)
             && sheet->column_titles_visible)
@@ -13953,7 +13959,7 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
                  && gtk_widget_get_realized(colobj->col_button))
             {
                 gtk_container_propagate_draw(
-                    GTK_CONTAINER(sheet), colobj->col_button, cr);
+                    GTK_CONTAINER(colobj), colobj->col_button, cr);
             }
 	}
 
@@ -16911,25 +16917,40 @@ gtk_sheet_forall_handler(GtkContainer *container,
         {
             GtkSheetColumn *colobj = sheet->column[col];
 #if GTK_SHEET_DEBUG_CHILDREN > 1
-            g_debug("gtk_sheet_forall_handler: C3 %p IsObject %d IsWidget %d", 
-                    colobj,
+            g_debug("%s(%d): C3 %s %p (%s) IsObject %d IsWidget %d Realized %d Visible %d Mapped %d Window %p Parent %p ParentWin %p", 
+                    __FUNCTION__, __LINE__,
+                    G_OBJECT_TYPE_NAME (colobj), colobj,
+                    gtk_widget_get_name(colobj),
                     G_IS_OBJECT(colobj),
-                    GTK_IS_WIDGET(colobj));
+                    GTK_IS_WIDGET(colobj),
+                    gtk_widget_get_realized(colobj),
+                    gtk_widget_get_visible(colobj),
+                    gtk_widget_get_mapped(colobj),
+                    gtk_widget_get_window(colobj),
+                    gtk_widget_get_parent(colobj),
+                    gtk_widget_get_parent_window(colobj));
 #endif
+            if (!gtk_widget_get_window(colobj)
+                && gtk_widget_get_parent_window(colobj))
+            {
+                /* FIXME - widget window is missing here
+                   causes Gdk Warning in gtk_cairo_should_draw_window
+                   and later SEGV in draw
+                   - when column is made visible
+                   - or when column is made invisible
+                     causing rightmost visible column getting mapped
+                   thus we reset the window
+                */
+                gtk_widget_set_window(
+                    colobj,
+                    gtk_widget_get_parent_window(colobj));
+            }
+
             if (G_IS_OBJECT(colobj) && GTK_IS_WIDGET(colobj))
             {
                 g_object_ref(colobj);
                 (*callback)(colobj, callback_data);
                 g_object_unref(colobj);
-            }
-
-            GtkWidget *col_button = colobj->col_button;
-
-            if (G_IS_OBJECT(col_button) && GTK_IS_WIDGET(col_button))
-            {
-                g_object_ref(col_button);
-                (*callback)(col_button, callback_data);
-                g_object_unref(col_button);
             }
         }
     }
@@ -16998,11 +17019,13 @@ gtk_sheet_position_children(GtkSheet *sheet)
 		    && gtk_widget_get_visible(colobj)
 		    && minviewcol <= col && col <= maxviewcol)
 		{
-		    gtk_widget_show(colobj->col_button);
+                    gtk_widget_map(GTK_WIDGET(colobj));
+                    gtk_widget_show(GTK_WIDGET(colobj->col_button));
                 }
 		else
 		{
-		    gtk_widget_hide(colobj->col_button);
+                    gtk_widget_hide(GTK_WIDGET(colobj->col_button));
+                    gtk_widget_unmap(GTK_WIDGET(colobj));
 		}
 	    }
 	}

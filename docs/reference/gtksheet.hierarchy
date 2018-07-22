@@ -6,10 +6,11 @@ GObject
       GtkContainer
         GtkTextView
           GtkDataTextView
+        GtkBin
+          GtkSheetColumn
         GtkSheet
         GtkMenuShell
           GtkMenu
-      GtkSheetColumn
     GtkAdjustment
   AtkObject
     GtkAccessible

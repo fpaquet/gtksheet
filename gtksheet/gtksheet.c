@@ -8226,6 +8226,19 @@ gtk_sheet_draw_backing_pixmap(
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
 
+    range.row0 = MAX(range.row0, 0);
+    range.col0 = MAX(range.col0, 0);
+    range.rowi = MIN(range.rowi, sheet->maxrow);
+    range.coli = MIN(range.coli, sheet->maxcol);
+
+    g_assert(range.row0 >= 0);
+    g_assert(range.rowi <= sheet->maxrow);
+    g_assert(range.col0 >= 0);
+    g_assert(range.coli <= sheet->maxcol);
+
+    if (range.rowi < range.row0) return;
+    if (range.coli < range.col0) return;
+
     cairo_t *my_cr = cr;
 
     if (!my_cr)

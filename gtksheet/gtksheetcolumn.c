@@ -899,6 +899,43 @@ _gtk_sheet_column_realize(GtkSheetColumn *colobj, GtkSheet *sheet)
     }
 }
 
+/**
+ * _gtk_sheet_column_unrealize:
+ * 
+ * unrealize sheet column
+ * 
+ * @param widget the #GtkSheetColumn
+ */
+static void
+_gtk_sheet_column_unrealize(GtkWidget *widget)
+{
+    g_return_if_fail(widget != NULL);
+    g_return_if_fail(GTK_IS_SHEET_COLUMN(widget));
+
+    GtkSheetColumn *colobj = GTK_SHEET_COLUMN(widget);
+
+    g_debug(
+        "%s(%d) FIXME called %s %p", 
+        __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME(colobj), colobj);
+
+    if (!gtk_widget_get_realized(colobj)) return;
+
+    /* this function fixes a crash in Gtk 3.22.16
+       which shows up in gdb with G_SLICE=always-malloc.
+       Even if we set gtk_widget_set_has_window(colobj, FALSE)
+       Gtk tries to destroy the non existing colobj window:
+     
+       #0 in g_type_check_instance_is_fundamentally_a
+       #1 in g_object_unref (_object=0x1a5e120) at gobject.c:3082
+       #2 in gtk_widget_real_unrealize (widget=0x1a8efc0) at gtkwidget.c:12409
+       #6 in gtk_widget_unrealize (widget=0x1a8efc0) at gtkwidget.c:5520
+       #9 in gtk_sheet_unrealize_handler (widget=0x1a62940) at gtksheet.c:6954
+
+       */
+
+    gtk_widget_set_realized(GTK_WIDGET(colobj), FALSE);
+}
+
 static void
 gtk_sheet_column_class_init(GtkSheetColumnClass *klass)
 {
@@ -908,6 +945,7 @@ gtk_sheet_column_class_init(GtkSheetColumnClass *klass)
     sheet_column_parent_class = g_type_class_peek_parent(klass);
 
     gobject_class->finalize = gtk_sheet_column_finalize_handler;
+    widget_class->unrealize = _gtk_sheet_column_unrealize;
 
     gtk_sheet_column_class_init_properties(gobject_class);
 

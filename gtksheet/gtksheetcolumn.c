@@ -177,23 +177,39 @@ _gtk_sheet_column_button_add_label_internal(
         gtk_style_context_add_class (context, GTK_STYLE_CLASS_TOP);
 
         gtk_widget_show(colobj->col_button);
-
+#if 0
         g_debug(
             "%s(%d) FIXME - added GtkToggleButton with label <%s> %p",
             __FUNCTION__, __LINE__, label, colobj->col_button);
-
+#endif
         /* hack to disable left mouse button */
-#if 1
         g_signal_connect(
             G_OBJECT(colobj->col_button), 
             "button-press-event", 
             _column_button_press_handler, NULL);
-#endif
     }
 
     g_assert(GTK_IS_TOGGLE_BUTTON(colobj->col_button));
 
     gtk_button_set_label(GTK_BUTTON(colobj->col_button), label);
+
+    if (sheet)
+    {
+        gint minimum_height, natural_height;
+
+        gtk_widget_get_preferred_height(
+            GTK_WIDGET(colobj->col_button),
+            &minimum_height, &natural_height);
+#if 0
+        g_debug(
+            "%s(%d) FIXME min.h %d nat.h %d cta.h %d",
+            __FUNCTION__, __LINE__, 
+            minimum_height, natural_height,
+            sheet->column_title_area.height);
+#endif
+        if (minimum_height > sheet->column_title_area.height)
+            gtk_sheet_set_column_titles_height(sheet, minimum_height);
+    }
 }
 #endif
 

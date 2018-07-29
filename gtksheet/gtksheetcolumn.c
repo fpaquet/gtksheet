@@ -1400,7 +1400,8 @@ gtk_sheet_set_column_width(GtkSheet *sheet, gint col, guint width)
     if (col < 0 || col > sheet->maxcol) return;
 
 #if GTK_SHEET_COL_DEBUG_SIZE > 0
-    g_debug("gtk_sheet_set_column_width[%d]: width %d", col, width);
+    g_debug("%s(%d): FIXME col %d width %d", 
+            __FUNCTION__, __LINE__, col, width);
 #endif
 
     _gtk_sheet_column_size_request(sheet, col, &min_width);
@@ -1420,8 +1421,6 @@ gtk_sheet_set_column_width(GtkSheet *sheet, gint col, guint width)
         _gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
     g_signal_emit_by_name(G_OBJECT(sheet), "new-column-width", col, width);
-
-    gtk_widget_queue_draw(sheet);
 }
 
 

@@ -4357,15 +4357,15 @@ _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
     new_width = COLUMN_EXTENT_TO_WIDTH(colptr->max_extent_width);
 
 #if GTK_SHEET_DEBUG_SIZE > 0
-    g_debug("_gtk_sheet_autoresize_column_internal[%d]: called col w %d new w %d",
-	col, colptr->width, new_width);
+    g_debug("%s(%d): called col %d w %d new w %d",
+        __FUNCTION__, __LINE__, col, colptr->width, new_width);
 #endif
 
     if (new_width != colptr->width)
     {
 #if GTK_SHEET_DEBUG_SIZE > 0
-	g_debug("_gtk_sheet_autoresize_column_internal[%d]: set width %d",
-	    col, new_width);
+	g_debug("%s(%d): col %d set width %d",
+            __FUNCTION__, __LINE__, col, new_width);
 #endif
 	gtk_sheet_set_column_width(sheet, col, new_width);
 	GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
@@ -7793,15 +7793,16 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
     g_return_if_fail(GTK_SHEET(sheet));
 
 #if GTK_SHEET_DEBUG_DRAW > 0
-    g_debug("_gtk_sheet_range_draw: called");
+    g_debug("%s(%d): called drawable %d realized %d mapped %d",
+        __FUNCTION__, __LINE__,
+        gtk_widget_is_drawable(GTK_WIDGET(sheet)),
+        gtk_widget_get_realized(GTK_WIDGET(sheet)),
+        gtk_widget_get_mapped(GTK_WIDGET(sheet)) );
 #endif
 
-    if (!gtk_widget_is_drawable(GTK_WIDGET(sheet)))
-	return;
-    if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
-	return;
-    if (!gtk_widget_get_mapped(GTK_WIDGET(sheet)))
-	return;
+    if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return;
+    if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
+    if (!gtk_widget_get_mapped(GTK_WIDGET(sheet))) return;
 
     if (range)
     {
@@ -7819,8 +7820,10 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
     }
 
 #if GTK_SHEET_DEBUG_DRAW > 0
-    g_debug("_gtk_sheet_range_draw: row %d - %d col %d - %d",
-	drawing_range.row0, drawing_range.rowi, drawing_range.col0, drawing_range.coli);
+    g_debug("%s(%d): row %d - %d col %d - %d",
+        __FUNCTION__, __LINE__,
+        drawing_range.row0, drawing_range.rowi, 
+        drawing_range.col0, drawing_range.coli);
 #endif
 
     if (drawing_range.row0 > drawing_range.rowi)
@@ -8490,7 +8493,8 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
 		    if (new_width != colptr->width)
 		    {
 #if GTK_SHEET_DEBUG_SIZE > 0
-			g_debug("gtk_sheet_set_cell[%d]: set col width %d", col, new_width);
+			g_debug("%s(%d): set col %d width %d",
+                            __FUNCTION__, __LINE__, col, new_width);
 #endif
 			gtk_sheet_set_column_width(sheet, col, new_width);
 			GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
@@ -9270,6 +9274,30 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
     SET_ACTIVE_CELL(old_row, old_col);
 }
 
+/**
+ * _gtk_sheet_redraw_pending:
+ * 
+ * process a pending redraw when sheet flag GTK_SHEET_IN_REDRAW_PENDING is set.
+ * 
+ * @param sheet  the #GtkSheet
+ */
+void
+_gtk_sheet_redraw_pending(GtkSheet *sheet)
+{
+    g_debug("%s(%d) FIXME pending %d", 
+        __FUNCTION__, __LINE__, 
+        GTK_SHEET_REDRAW_PENDING(sheet));
+
+    if (GTK_SHEET_REDRAW_PENDING(sheet))
+    {
+        g_debug("%s(%d) FIXME pending _gtk_sheet_range_draw()", 
+            __FUNCTION__, __LINE__);
+
+	GTK_SHEET_UNSET_FLAGS(
+            sheet, GTK_SHEET_IN_REDRAW_PENDING);
+	_gtk_sheet_range_draw(sheet, NULL, TRUE);
+    }
+}
 
 /**
  * deactivate active cell
@@ -9294,9 +9322,11 @@ _gtk_sheet_deactivate_cell(GtkSheet *sheet)
     gint old_col = sheet->active_cell.col;
 
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-    g_debug("gtk_sheet_deactivate_cell: called, row %d col %d",
-        old_row, old_col);
+    g_debug("%s(%d): called, row %d col %d",
+        __FUNCTION__, __LINE__, old_row, old_col);
 #endif
+
+    _gtk_sheet_redraw_pending(sheet);
 
     if (old_row < 0 || old_row > sheet->maxrow) return (TRUE);
     if (old_col < 0 || old_col > sheet->maxcol) return (TRUE);
@@ -9304,7 +9334,8 @@ _gtk_sheet_deactivate_cell(GtkSheet *sheet)
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return (FALSE);
     if (sheet->state != GTK_SHEET_NORMAL) return (FALSE);
 
-    g_debug("FIXME - gtk_sheet_deactivate_cell %p disconnect gtk_sheet_entry_changed_handler", sheet);
+    g_debug("%s(%d): FIXME %p disconnect gtk_sheet_entry_changed_handler", 
+            __FUNCTION__, __LINE__, sheet);
 
     gtk_sheet_entry_signal_disconnect_by_func(sheet,
 	G_CALLBACK(gtk_sheet_entry_changed_handler));
@@ -9332,13 +9363,6 @@ _gtk_sheet_deactivate_cell(GtkSheet *sheet)
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
     g_debug("gtk_sheet_deactivate_cell: running");
 #endif
-
-    if (GTK_SHEET_REDRAW_PENDING(sheet))
-    {
-	GTK_SHEET_UNSET_FLAGS(
-            sheet, GTK_SHEET_IN_REDRAW_PENDING);
-	_gtk_sheet_range_draw(sheet, NULL, TRUE);
-    }
 
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
     g_debug("gtk_sheet_deactivate_cell: done row %d col %d",
@@ -10958,10 +10982,9 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 {
     *veto = TRUE;
 
-    g_debug("gtk_sheet_click_cell: called, r %d c %d %p FIXME", row, col, sheet);
-
 #if GTK_SHEET_DEBUG_CLICK > 0
-    g_debug("gtk_sheet_click_cell: called, row %d col %d", row, col);
+    g_debug("%s(%d): called, r %d c %d %p",
+        __FUNCTION__, __LINE__, row, col, sheet);
 #endif
 
     /* allow row,col < 0 here, see below */
@@ -11064,25 +11087,31 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	if (sheet->state != GTK_SHEET_NORMAL)
 	{
             //g_debug("FIXME gtk_sheet_click_cell 3");
-            g_debug("gtk_sheet_click_cell: set state NORMAL FIXME");
+            //g_debug("gtk_sheet_click_cell: set state NORMAL FIXME");
 	    sheet->state = GTK_SHEET_NORMAL;
 	    gtk_sheet_real_unselect_range(sheet, NULL);
 	}
 	else
 	{
-            //g_debug("FIXME gtk_sheet_click_cell 3");
 #if GTK_SHEET_DEBUG_CLICK > 0
-	    g_debug("gtk_sheet_click_cell: row %d col %d calling deactivate", row, col);
+	    g_debug("%s(%d): row %d col %d ar %d ac %d", 
+                __FUNCTION__, __LINE__, 
+                row, col, sheet->active_cell.row, sheet->active_cell.col);
 #endif
             /* deactivate only on change */
-            if (row != sheet->active_cell.row && col != sheet->active_cell.col)
+            if (row != sheet->active_cell.row || col != sheet->active_cell.col)
             {
+#if GTK_SHEET_DEBUG_CLICK > 0
+                g_debug("%s(%d): row %d col %d calling deactivate", 
+                    __FUNCTION__, __LINE__, row, col);
+#endif
                 if (!_gtk_sheet_deactivate_cell(sheet))
                 {
                     //g_debug("FIXME gtk_sheet_click_cell 4");
 
 #if GTK_SHEET_DEBUG_CLICK > 0
-                    g_debug("gtk_sheet_click_cell: row %d col %d VETO: deactivate false", row, col);
+                    g_debug("%s(%d): row %d col %d VETO: deactivate false",
+                        __FUNCTION__, __LINE__, row, col);
 #endif
                     *veto = FALSE;
                     //g_debug("FIXME gtk_sheet_click_cell 4a");

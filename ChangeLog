@@ -10,10 +10,13 @@ TBD
 ** row selection drawing over right sheet border
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
-** missing a redraw in autoresize columns, see example3 col GtkTextView
 ** rename xor to sel
 ** CASY - using gtk_sheet_column_set_visibility() kills screen updates with active sheet entry?
 ** remove FIXME debug output
+
+2018-07-29 Fredy Paquet <mailbox AT opag.ch>
+* fixed missing redraw in autoresize columns, see example3 col GtkTextView
+* fixed missing redraw when moving cursor horizontally/vertically
 
 2018-07-28 Fredy Paquet <mailbox AT opag.ch>
 * fixed SEGV in gtk_sheet_draw_backing_pixmap() (b _pixman_log_error)

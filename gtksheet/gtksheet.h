@@ -818,6 +818,7 @@ void _gtk_sheet_range_draw(GtkSheet *sheet,
 void _gtk_sheet_hide_active_cell(GtkSheet *sheet);
 void _gtk_sheet_redraw_internal(GtkSheet *sheet,
                                 gboolean reset_hadjustment, gboolean reset_vadjustment);
+void _gtk_sheet_position_children(GtkSheet *sheet);
 
 void _gtk_sheet_draw_button(
     GtkSheet *sheet, gint row, gint col, cairo_t *cr);

@@ -3,8 +3,6 @@ TBD
 ** sheet entry: reduce undershoot size for small cells (CSS)
 ** sheet entry: undershoot area smears backgnd (CSS)
 ** sheet editor font (use GtkStyleContext)
-** reposition childs after column header resize via double click
-   see also GTK_SHEET_IN_REDRAW_PENDING (IHS ArtNr 44161)
 ** column button height should resize column_title_area (enable BAB Titles)
    see _gtk_sheet_column_buttons_size_allocate(1254) 
 ** row selection drawing over right sheet border
@@ -17,6 +15,8 @@ TBD
 2018-07-29 Fredy Paquet <mailbox AT opag.ch>
 * fixed missing redraw in autoresize columns, see example3 col GtkTextView
 * fixed missing redraw when moving cursor horizontally/vertically
+** reposition childs after column header resize via double click
+   see also GTK_SHEET_IN_REDRAW_PENDING (IHS ArtNr 44161)
 
 2018-07-28 Fredy Paquet <mailbox AT opag.ch>
 * fixed SEGV in gtk_sheet_draw_backing_pixmap() (b _pixman_log_error)

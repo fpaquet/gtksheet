@@ -1499,7 +1499,6 @@ static void CheckCellData(GtkSheet *sheet, const gint row, const gint col);
 static void gtk_sheet_remove_handler(GtkContainer *container, GtkWidget *widget);
 static void gtk_sheet_realize_child(GtkSheet *sheet, GtkSheetChild *child);
 static void gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child);
-static void gtk_sheet_position_children(GtkSheet *sheet);
 static void gtk_sheet_row_size_request(GtkSheet *sheet, gint row, guint *requisition);
 
 /* GtkBuildableIface */
@@ -4364,7 +4363,7 @@ _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
     if (new_width != colptr->width)
     {
 #if GTK_SHEET_DEBUG_SIZE > 0
-	g_debug("%s(%d): col %d set width %d",
+	g_debug("%s(%d): FIXME col %d set width %d",
             __FUNCTION__, __LINE__, col, new_width);
 #endif
 	gtk_sheet_set_column_width(sheet, col, new_width);
@@ -10499,7 +10498,7 @@ gtk_sheet_real_unselect_range(GtkSheet *sheet, GtkSheetRange *range)
 #if GTK_SHEET_DEBUG_SELECTION > 0
     g_debug("gtk_sheet_real_unselect_range: gtk_sheet_position_children()");
 #endif
-    gtk_sheet_position_children(sheet);
+    _gtk_sheet_position_children(sheet);
 
     /* reset range */
     range->row0 = range->rowi = range->col0 = range->coli = -1;
@@ -12883,7 +12882,7 @@ gtk_sheet_size_allocate_handler(
 
     /* re-scale backing bsurf */
     gtk_sheet_make_bsurf(sheet, 0, 0);  /* use default size */
-    gtk_sheet_position_children(sheet);
+    _gtk_sheet_position_children(sheet);
 
     /* set the scrollbars adjustments */
     _gtk_sheet_scrollbar_adjust(sheet);
@@ -14550,8 +14549,7 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
 	gtk_widget_unmap(sheet->sheet_entry);
     }
 
-
-    gtk_sheet_position_children(sheet);
+    _gtk_sheet_position_children(sheet);
 
     _global_sheet_button_size_allocate(sheet);
     _gtk_sheet_row_buttons_size_allocate(sheet);
@@ -14701,7 +14699,7 @@ _hadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
 	gtk_widget_unmap(sheet->sheet_entry);
     }
 
-    gtk_sheet_position_children(sheet);
+    _gtk_sheet_position_children(sheet);
 
     _global_sheet_button_size_allocate(sheet);
     _gtk_sheet_column_buttons_size_allocate(sheet);
@@ -16998,14 +16996,20 @@ gtk_sheet_forall_handler(GtkContainer *container,
     }
 }
 
-
-static void
-gtk_sheet_position_children(GtkSheet *sheet)
+/**
+ * gtk_sheet_position_children:
+ * 
+ * reposition all sheet children
+ * 
+ * @param sheet  the #GtkSheet
+ */
+void
+_gtk_sheet_position_children(GtkSheet *sheet)
 {
     GList *children = sheet->children;
     GtkSheetChild *child;
 
-    //g_warning("gtk_sheet_position_children");
+    //g_debug("%s(%d): FIXME called %p", __FUNCTION__, __LINE__, sheet);
 
     while (children)
     {

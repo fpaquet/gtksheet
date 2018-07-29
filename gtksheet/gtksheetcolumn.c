@@ -1418,9 +1418,12 @@ gtk_sheet_set_column_width(GtkSheet *sheet, gint col, guint width)
         _gtk_sheet_column_buttons_size_allocate(sheet);
         _gtk_sheet_scrollbar_adjust(sheet);
         _gtk_sheet_entry_size_allocate(sheet);
+        _gtk_sheet_position_children(sheet);
         _gtk_sheet_range_draw(sheet, NULL, TRUE);
     }
-    g_signal_emit_by_name(G_OBJECT(sheet), "new-column-width", col, width);
+
+    g_signal_emit_by_name(
+        G_OBJECT(sheet), "new-column-width", col, width);
 }
 
 

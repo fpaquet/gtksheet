@@ -136,6 +136,7 @@ gtk_sheet_is_frozen
 gtk_sheet_freeze
 gtk_sheet_thaw
 gtk_sheet_set_background
+gtk_sheet_set_css_class
 gtk_sheet_set_grid
 gtk_sheet_show_grid
 gtk_sheet_grid_visible
@@ -204,6 +205,7 @@ gtk_sheet_delete_rows
 gtk_sheet_delete_columns
 gtk_sheet_range_set_background
 gtk_sheet_range_set_foreground
+gtk_sheet_range_set_css_class
 gtk_sheet_range_set_justification
 gtk_sheet_range_set_editable
 gtk_sheet_range_set_visible

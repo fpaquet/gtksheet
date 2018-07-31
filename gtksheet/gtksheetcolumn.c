@@ -1246,10 +1246,9 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
     if (!sheet->column_titles_visible) return;
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
 
+#if GTK_SHEET_COL_DEBUG_SIZE > 0
     g_debug("%s(%d) FIXME called %s %p", 
         __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME (sheet), sheet);
-#if GTK_SHEET_COL_DEBUG_SIZE > 0
-    g_debug("_gtk_sheet_column_buttons_size_allocate: called");
 #endif
 
     width = sheet->sheet_window_width;
@@ -1275,9 +1274,11 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
 
     if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return;
 
+#if 0
     g_debug("%s(%d) FIXME 2 %s %p cta x %d y %d w %d h %d", 
         __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME (sheet), sheet,
             cta->x, cta->y, cta->width, cta->height);
+#endif
 
     for (col = MIN_VIEW_COLUMN(sheet);
           col <= MAX_VIEW_COLUMN(sheet) && col <= sheet->maxcol;
@@ -1379,7 +1380,7 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
 
                 gtk_widget_set_clip(colobj->col_button, &allocation);
 
-#if 1
+#if 0
                 g_debug("%s(%d) FIXME %s %p clip col %d x %d y %d w %d h %d", 
                         __FUNCTION__, __LINE__, 
                         G_OBJECT_TYPE_NAME (colobj->col_button),

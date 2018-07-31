@@ -58,7 +58,7 @@ GtkWidget *smile;
 GtkWidget *calendar;
 GtkWidget *popup;
 
-#define GTKEXTRA_DEPRECATED 0
+#define USE_DEPRECATED_COLORS 0
 
 void
     quit ()
@@ -562,7 +562,6 @@ void show_child(GtkWidget *widget, gpointer data)
 void
     build_example1(GtkWidget *widget)
 {
-    GtkSheet *sheet;
     GtkWidget *show_button;
     GtkSheetRange range;
     GdkRectangle area;
@@ -573,10 +572,24 @@ void
     gchar name[10];
     gint i;
 
-    sheet=GTK_SHEET(widget);
+    gtk_widget_set_name(widget, "example1");
 
+    GtkSheet *sheet=GTK_SHEET(widget);
+
+#if USE_DEPRECATED_COLORS>0
     gdk_rgba_parse(&color, "light yellow");
     gtk_sheet_set_background(sheet, &color);
+#else
+    /* selector in CSS:
+     
+       sheet .example1class {
+         background-color: lightyellow;
+         color: black;
+       }
+     */
+    gtk_sheet_set_css_class(sheet, "example1class");
+#endif
+
     gdk_rgba_parse(&color, "light blue");
     gtk_sheet_set_grid(sheet, &color);
 
@@ -589,12 +602,17 @@ void
         gtk_sheet_set_column_title(sheet, i, name);
     }
 
-    gtk_sheet_row_button_add_label(sheet, 0, "This is\na multiline\nlabel");
-    gtk_sheet_row_button_add_label(sheet, 1, "This is long label");
-    gtk_sheet_row_set_tooltip_markup(sheet, 1, "This row has a <b>long label</b>.");
+    gtk_sheet_row_button_add_label(sheet, 0,
+        "This is\na multiline\nlabel");
+    gtk_sheet_row_button_add_label(sheet, 1,
+        "This is long label");
+    gtk_sheet_row_set_tooltip_markup(sheet, 1,
+        "This row has a <b>long label</b>.");
 /*
-    gtk_sheet_column_button_add_label(sheet, 7, "This is\na multiline\nlabel");
-    gtk_sheet_column_button_add_label(sheet, 8, "This is long label");
+    gtk_sheet_column_button_add_label(sheet, 7,
+        "This is\na multiline\nlabel");
+    gtk_sheet_column_button_add_label(sheet, 8,
+        "This is long label");
 */ 
     gtk_sheet_row_button_justify(sheet, 0, GTK_JUSTIFY_RIGHT);
 
@@ -607,15 +625,24 @@ void
 
     PangoFontDescription *font_desc;
 
-    font_desc = pango_font_description_from_string (font_name2);
+    font_desc = pango_font_description_from_string(font_name2);
     gtk_sheet_range_set_font(sheet, &range, font_desc);
     pango_font_description_free(font_desc);
 
+#if USE_DEPRECATED_COLORS>0
     gdk_rgba_parse(&color, "red");
     gtk_sheet_range_set_foreground(sheet, &range, &color);
+#else
+    /* selector in CSS:
+     
+       sheet .example1red {
+         color: red;
+       }
+     */
+    gtk_sheet_range_set_css_class(sheet, &range, "example1red");
+#endif
 
-    gtk_sheet_set_cell(sheet, 1,2, GTK_JUSTIFY_CENTER,
-                       "Welcome to");
+    gtk_sheet_set_cell(sheet, 1,2, GTK_JUSTIFY_CENTER, "Welcome to");
 
     range.row0=2;
 
@@ -623,8 +650,18 @@ void
     gtk_sheet_range_set_font(sheet, &range, font_desc);
     pango_font_description_free(font_desc);
 
+#if USE_DEPRECATED_COLORS>0
     gdk_rgba_parse(&color, "blue");
     gtk_sheet_range_set_foreground(sheet, &range, &color);
+#else
+    /* selector in CSS:
+     
+       sheet .example1blue {
+         color: blue;
+       }
+     */
+    gtk_sheet_range_set_css_class(sheet, &range, "example1blue");
+#endif
 
     gtk_sheet_set_cell(sheet, 2,2, GTK_JUSTIFY_CENTER, "GtkSheet");
 
@@ -632,10 +669,22 @@ void
     range.rowi=3;
     range.col0=0;
     range.coli=4;
+
+#if USE_DEPRECATED_COLORS>0
     gdk_rgba_parse(&color, "dark gray");
     gtk_sheet_range_set_background(sheet, &range, &color);
     gdk_rgba_parse(&color, "green");
     gtk_sheet_range_set_foreground(sheet, &range, &color);
+#else
+    /* selector in CSS:
+     
+       sheet .example1grey {
+         background-color: darkgrey;
+         color: green;
+       }
+     */
+    gtk_sheet_range_set_css_class(sheet, &range, "example1grey");
+#endif
 
     gtk_sheet_set_cell(sheet,3,2,GTK_JUSTIFY_CENTER,
                        "a Matrix widget for Gtk+");
@@ -765,12 +814,14 @@ void
 void
     build_example2(GtkWidget *widget)
 {
-    GtkSheet *sheet;
     GtkSheetRange range;
     GdkRGBA color;
     GtkWidget *b;
 
-    sheet=GTK_SHEET(widget);
+    gtk_widget_set_name(widget, "example2");
+
+    GtkSheet *sheet=GTK_SHEET(widget);
+
     gtk_sheet_set_autoscroll(sheet, TRUE);
 /*
  gtk_sheet_set_justify_entry(sheet, TRUE);
@@ -781,23 +832,60 @@ void
     range.rowi=2;
     range.col0=0;
     range.coli=sheet->maxcol;
+
     gtk_sheet_range_set_editable(sheet, &range, FALSE);
+
+#if USE_DEPRECATED_COLORS>0
     gdk_rgba_parse(&color, "light gray");
     gtk_sheet_range_set_background(sheet, &range, &color);
+
     gdk_rgba_parse(&color, "blue");
     gtk_sheet_range_set_foreground(sheet, &range, &color);
+
     range.row0=1;
     gdk_rgba_parse(&color, "red");
     gtk_sheet_range_set_foreground(sheet, &range, &color);
+
     range.row0=2;
     gdk_rgba_parse(&color, "black");
     gtk_sheet_range_set_foreground(sheet, &range, &color);
+#else
+    /* selector in CSS:
+     
+       sheet#example2 .blue {
+         background-color: lightgray;
+         color: blue;
+       }
+     */
+    gtk_sheet_range_set_css_class(sheet, &range, "blue");
 
-/*
- gtk_sheet_row_set_sensitivity(sheet, 0, FALSE);
- gtk_sheet_row_set_sensitivity(sheet, 1, FALSE);
- gtk_sheet_row_set_sensitivity(sheet, 2, FALSE);
-*/
+    /* selector in CSS:
+
+       sheet#example2 .red {
+         background-color: lightgray;
+         color: red;
+       }
+     */
+    range.row0=1;
+    gtk_sheet_range_set_css_class(sheet, &range, "red");
+
+    /* selector in CSS:
+
+       sheet#example2 .black {
+         background-color: lightgray;
+         color: black;
+       }
+     */
+    range.row0=2;
+    gtk_sheet_range_set_css_class(sheet, &range, "black");
+#endif
+
+    /*
+    gtk_sheet_row_set_sensitivity(sheet, 0, FALSE);
+    gtk_sheet_row_set_sensitivity(sheet, 1, FALSE);
+    gtk_sheet_row_set_sensitivity(sheet, 2, FALSE); 
+    */
+
     gtk_sheet_set_cell(sheet, 0,2, GTK_JUSTIFY_CENTER,
                        "Click the right mouse button to display a popup");
     gtk_sheet_set_cell(sheet, 1,2, GTK_JUSTIFY_CENTER,
@@ -885,11 +973,12 @@ void
 void
     build_example3(GtkWidget *widget)
 {
-    GtkSheet *sheet;
     GtkSheetRange range;
     GdkRGBA color;
 
-    sheet=GTK_SHEET(widget);
+    gtk_widget_set_name(widget, "example3");
+
+    GtkSheet *sheet=GTK_SHEET(widget);
 
     //gtk_sheet_show_grid(sheet, FALSE);
 
@@ -898,9 +987,10 @@ void
     range.col0=0;
     range.coli=6;
 
+#if USE_DEPRECATED_COLORS>0
     gdk_rgba_parse(&color, "orange");
     gtk_sheet_range_set_background(sheet, &range, &color);
-    gdk_rgba_parse(&color, "violet");
+    gdk_rgba_parse(&color, "brown");
     gtk_sheet_range_set_foreground(sheet, &range, &color);
 
     range.row0=1;
@@ -910,22 +1000,64 @@ void
     range.coli=0;
     gdk_rgba_parse(&color, "light green");
     gtk_sheet_range_set_background(sheet, &range, &color);
+#else
+    /* selector in CSS:
+     
+       sheet#example3 .orange {
+         background-color: orange;
+         color: brown;
+       }
+     */
+    gtk_sheet_range_set_css_class(sheet, &range, "orange");
+
+    /* selector in CSS:
+     
+       sheet#example3 .lblue {
+         background-color: lightblue;
+         color: brown;
+       }
+     */
+    range.row0=1;
+    gtk_sheet_range_set_css_class(sheet, &range, "lblue");
+
+    /* selector in CSS:
+     
+       sheet#example3 .lgreen {
+         background-color: lightgreen;
+         color: brown;
+       }
+     */
+    range.coli=0;
+    gtk_sheet_range_set_css_class(sheet, &range, "lgreen");
+#endif
 
     range.row0=0; 
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
     gtk_sheet_range_set_border(sheet, &range, 
-	GTK_SHEET_RIGHT_BORDER, 
-	4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+        GTK_SHEET_RIGHT_BORDER, 
+        4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     range.coli=0;
     range.col0=0;
     range.rowi=0;
+
+#if USE_DEPRECATED_COLORS>0
     gdk_rgba_parse(&color, "red");
     gtk_sheet_range_set_background(sheet, &range, &color);
+#else
+    /* selector in CSS:
+     
+       sheet#example3 .red {
+         background-color: red;
+         color: white;
+       }
+     */
+    gtk_sheet_range_set_css_class(sheet, &range, "red");
+#endif
     gtk_sheet_range_set_border(sheet, &range, 
-	GTK_SHEET_RIGHT_BORDER|GTK_SHEET_BOTTOM_BORDER, 
-	4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+        GTK_SHEET_RIGHT_BORDER|GTK_SHEET_BOTTOM_BORDER, 
+        4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     range.rowi=0;
     range.col0=1;
@@ -933,8 +1065,8 @@ void
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
     gtk_sheet_range_set_border(sheet, &range, 
-	GTK_SHEET_BOTTOM_BORDER, 
-	4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+        GTK_SHEET_BOTTOM_BORDER, 
+        4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     gtk_sheet_set_autoresize(sheet, TRUE);
 
@@ -943,21 +1075,24 @@ void
     gtk_sheet_column_button_add_label(sheet, 2, "GtkSpinButton");
     gtk_sheet_column_button_add_label(sheet, 3, "GtkTextView");
 
-    gtk_sheet_column_button_add_label(sheet, 4, "GtkDataEntry\nmax 10 chars");
-    g_object_set(gtk_sheet_column_get(sheet, 4),"max-length", 10, NULL);
+    gtk_sheet_column_button_add_label(sheet, 4,
+        "GtkDataEntry\nmax 10 chars");
+    g_object_set(gtk_sheet_column_get(sheet, 4),
+        "max-length", 10, NULL);
 
-    gtk_sheet_column_button_add_label(sheet, 5, "GtkDataTextView\nmax 20 chars");
-    g_object_set(gtk_sheet_column_get(sheet, 5),"max-length", 20, NULL);
+    gtk_sheet_column_button_add_label(sheet, 5,
+        "GtkDataTextView\nmax 20 chars");
+    g_object_set(gtk_sheet_column_get(sheet, 5),
+        "max-length", 20, NULL);
 
-    gtk_sheet_column_button_add_label(sheet, 6, "GtkDataTextView\nno limit");
+    gtk_sheet_column_button_add_label(sheet, 6,
+        "GtkDataTextView\nno limit");
 
     gtk_sheet_entry_signal_connect_changed(sheet,
-                                           G_CALLBACK(sheet_entry_changed_handler));
+        G_CALLBACK(sheet_entry_changed_handler));
 
     g_signal_connect(G_OBJECT(sheet),
-                     "traverse",
-                     (void *) change_entry, 
-                     NULL);
+        "traverse", (void *) change_entry, NULL);
 }
 
 /*

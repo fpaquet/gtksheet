@@ -631,8 +631,11 @@ _gtk_sheet_row_default_height(GtkWidget *widget)
     PangoFontDescription *font_desc = NULL;
     GtkStyleContext *style_context = gtk_widget_get_style_context(widget);
 
-    gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL,
-                       GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
+    GtkStateFlags flags = gtk_widget_get_state_flags(widget);
+
+    gtk_style_context_get(style_context, 
+        flags,
+        GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
     if (!font_desc)
 	return (GTK_SHEET_ROW_DEFAULT_HEIGHT);
@@ -3441,6 +3444,7 @@ gtk_sheet_init(GtkSheet *sheet)
     sheet->show_grid = TRUE;
 
     gdk_rgba_parse(&sheet->tm_color, GTK_SHEET_DEFAULT_TM_COLOR);
+    sheet->deprecated_bg_color_used = FALSE;
 
     sheet->children = NULL;
 
@@ -3554,9 +3558,9 @@ gtk_sheet_init(GtkSheet *sheet)
     //FIXME - CSS work in progress
 #if 1
     {
-	gtk_style_context_add_class(
-	    gtk_widget_get_style_context(
-		GTK_WIDGET(sheet)), GTK_STYLE_CLASS_VIEW);
+        gtk_style_context_add_class(
+            gtk_widget_get_style_context(GTK_WIDGET(sheet)),
+            GTK_STYLE_CLASS_VIEW);
 
         GError *error = NULL;
         GdkDisplay *display = gdk_display_get_default ();
@@ -3564,17 +3568,32 @@ gtk_sheet_init(GtkSheet *sheet)
 
         GtkCssProvider *provider = gtk_css_provider_new();
 
+        /* see gtk-contained.css section "GTK NAMED COLORS" near eof */
+
         gtk_css_provider_load_from_data(provider,
             //"@import url(\"resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained-dark.css\");"
-            "sheet button {"
+            "sheet button.top {"
             "  border-width: 1px;"
             "  border-style: solid;"
             "  border-radius: 0px;"
-            "  background-color: #cfc;"
             "}\n"
-            "entry selection {"
-            "  background-color: #ccf;"
+#if 0
+            "sheet entry {"
+            "  color: #f00;"
+            "  background-color: #0f0;"
+            "  border-width: 1px;"
             "}\n"
+            "sheet textview text {"
+            "  color: #f00;"
+            "  background-color: #0f0;"
+            "  border-width: 1px;"
+            "}\n"
+            "sheet entry selection {"
+            "  color: @theme_selected_fg_color;"
+            "  background-color: @theme_selected_bg_color;"
+            "}\n"
+#endif
+            "@import \"gtksheet-style.css\";"
             , -1, &error);
 
         if (error)
@@ -3907,11 +3926,54 @@ gtk_sheet_set_background(GtkSheet *sheet, GdkRGBA *color)
     if (!color)
     {
 	gdk_rgba_parse(&sheet->bg_color, GTK_SHEET_DEFAULT_BG_COLOR);
+        sheet->deprecated_bg_color_used = FALSE;
     }
     else
     {
+        g_warning("%s(%d): FIXME deprecated_bg_color_used %s %s",
+            __FUNCTION__, __LINE__,
+            G_OBJECT_TYPE_NAME(sheet),
+            gtk_widget_get_name(GTK_WIDGET(sheet)));
+
 	sheet->bg_color = *color;
+        sheet->deprecated_bg_color_used = TRUE;
     }
+
+    if (!GTK_SHEET_IS_FROZEN(sheet))
+	_gtk_sheet_range_draw(sheet, NULL, TRUE);
+}
+
+/**
+ * gtk_sheet_set_css_class:
+ * @sheet: a #GtkSheet
+ * @css_class: (nullable) a CSS class name
+ *
+ * Sets the background color of the #GtkSheet.
+ * If pass NULL, the sheet will be reset to the default color.
+ */
+void
+gtk_sheet_set_css_class(GtkSheet *sheet, gchar *css_class)
+{
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    GtkStyleContext *sheet_context = gtk_widget_get_style_context(
+        GTK_WIDGET(sheet));
+
+    if (sheet->css_class)
+    {
+        gtk_style_context_remove_class(sheet_context,
+            sheet->css_class);
+
+        g_free(sheet->css_class);
+        sheet->css_class = NULL;
+    }
+
+    sheet->css_class = g_strdup(css_class);
+
+    if (sheet->css_class)
+        gtk_style_context_add_class(sheet_context,
+            sheet->css_class);
 
     if (!GTK_SHEET_IS_FROZEN(sheet))
 	_gtk_sheet_range_draw(sheet, NULL, TRUE);
@@ -6448,6 +6510,12 @@ gtk_sheet_finalize_handler(GObject *object)
 
     sheet = GTK_SHEET(object);
 
+    if (sheet->css_class)
+    {
+        g_free(sheet->css_class);
+        sheet->css_class = NULL;
+    }
+
     /* get rid of all the cells */
     gtk_sheet_range_clear(sheet, NULL);
     gtk_sheet_range_delete(sheet, NULL);
@@ -7265,19 +7333,49 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col,
     area.height = ROWPTR(sheet, row)->height;
 
 #if GTK_SHEET_DEBUG_DRAW_BACKGROUND>0
-#if 1
     g_debug("_cell_draw_background(%d,%d): cellbg x %d y %d w %d h %d %s",
 	row, col,
 	area.x, area.y, area.width, area.height,
 	gdk_rgba_to_string(&attributes.background));
 #endif
-#endif
 
-    /* fill cell background */
+    if (sheet->deprecated_bg_color_used
+        || attributes.deprecated_bg_color_used)
+    {
+        g_warning("%s(%d): FIXME deprecated_bg_color_used %s %s row %d col %d",
+            __FUNCTION__, __LINE__,
+            G_OBJECT_TYPE_NAME(sheet),
+            gtk_widget_get_name(GTK_WIDGET(sheet)),
+            row, col);
 
-    gdk_cairo_set_source_rgba(sheet->bsurf_cr, &attributes.background);
-    gdk_cairo_rectangle(sheet->bsurf_cr, &area);
-    cairo_fill(sheet->bsurf_cr);
+        /* fill cell background */
+
+        gdk_cairo_set_source_rgba(
+            sheet->bsurf_cr, &attributes.background);
+        gdk_cairo_rectangle(sheet->bsurf_cr, &area);
+        cairo_fill(sheet->bsurf_cr);
+    }
+    else
+    {
+        GtkStyleContext *sheet_context = gtk_widget_get_style_context(
+            GTK_WIDGET(sheet));
+
+        gtk_style_context_save(sheet_context);
+
+        gtk_style_context_add_class(sheet_context,
+            GTK_STYLE_CLASS_CELL);
+
+        if (attributes.css_class)
+        {
+            gtk_style_context_add_class(sheet_context,
+                attributes.css_class);
+        }
+
+        gtk_render_background(sheet_context, sheet->bsurf_cr,
+            area.x, area.y, area.width, area.height);
+
+        gtk_style_context_restore(sheet_context);
+    }
 
 #if 0
     /* debug */
@@ -7490,17 +7588,20 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 		break;
 
 	    case GTK_WRAP_CHAR:
-		pango_layout_set_width(layout, colptr->width * PANGO_SCALE);
+		pango_layout_set_width(
+                    layout, colptr->width * PANGO_SCALE);
 		pango_layout_set_wrap(layout, PANGO_WRAP_CHAR);
 		break;
 
 	    case GTK_WRAP_WORD:
-		pango_layout_set_width(layout, colptr->width * PANGO_SCALE);
+		pango_layout_set_width(
+                    layout, colptr->width * PANGO_SCALE);
 		pango_layout_set_wrap(layout, PANGO_WRAP_WORD);
 		break;
 
 	    case GTK_WRAP_WORD_CHAR:
-		pango_layout_set_width(layout, colptr->width * PANGO_SCALE);
+		pango_layout_set_width(
+                    layout, colptr->width * PANGO_SCALE);
 		pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
 		break;
 	}
@@ -7566,7 +7667,6 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 
     text_width = rect.width;
     text_height = rect.height;
-
 
     switch(attributes.justification)
     {
@@ -7706,11 +7806,9 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     cairo_save(sheet->bsurf_cr);  // label clip
 
 #if GTK_SHEET_DEBUG_DRAW_LABEL>0
-#if 1
     g_debug("_cell_draw_label(%d,%d): clip (%d, %d, %d, %d)",
 	    row, col,
 	    clip_area.x, clip_area.y, clip_area.width, clip_area.height);
-#endif
 #endif
 
     gdk_cairo_rectangle(sheet->bsurf_cr, &clip_area);
@@ -7723,30 +7821,62 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 #endif
     cairo_clip(sheet->bsurf_cr);
 
-    gdk_cairo_set_source_rgba (sheet->bsurf_cr, &attributes.foreground);
+    if (attributes.deprecated_fg_color_used)
+    {
+        g_warning("%s(%d): FIXME deprecated_fg_color_used %s %s row %d col %d",
+            __FUNCTION__, __LINE__,
+            G_OBJECT_TYPE_NAME(sheet),
+            gtk_widget_get_name(GTK_WIDGET(sheet)),
+            row, col);
+
+        gdk_cairo_set_source_rgba(sheet->bsurf_cr, &attributes.foreground);
 
 #if GTK_SHEET_DEBUG_DRAW_LABEL>0
-#if 0
-	// debug code
-	gdk_cairo_rectangle(sheet->bsurf_cr, &area);
-	cairo_move_to(sheet->bsurf_cr, area.x, area.y);
-	cairo_line_to(sheet->bsurf_cr, area.x + area.width, area.y + area.height);
-	cairo_stroke(sheet->bsurf_cr);
-#endif
+        // debug code
+        gdk_cairo_rectangle(sheet->bsurf_cr, &area);
+        cairo_move_to(sheet->bsurf_cr, area.x, area.y);
+        cairo_line_to(sheet->bsurf_cr,
+            area.x + area.width, area.y + area.height);
+        cairo_stroke(sheet->bsurf_cr);
 #endif
 
 #if GTK_SHEET_DEBUG_DRAW_LABEL>0
-#if 1
-    g_debug("_cell_draw_label(%d,%d): x %d y %d rgba %s",
-	row, col,
-	area.x + xoffset + CELLOFFSET, y,
-	gdk_rgba_to_string (&attributes.foreground)
-	);
-#endif
+        g_debug("_cell_draw_label(%d,%d): x %d y %d rgba %s",
+            row, col,
+            area.x + xoffset + CELLOFFSET, y,
+            gdk_rgba_to_string (&attributes.foreground));
 #endif
 
-    cairo_move_to (sheet->bsurf_cr, area.x + xoffset + CELLOFFSET, y);
-    pango_cairo_show_layout (sheet->bsurf_cr, layout);
+        cairo_move_to(sheet->bsurf_cr,
+            area.x + xoffset + CELLOFFSET, y);
+        pango_cairo_show_layout(sheet->bsurf_cr, layout);
+    }
+    else
+    {
+        GtkStyleContext *sheet_context = gtk_widget_get_style_context(
+            GTK_WIDGET(sheet));
+
+        gtk_style_context_save(sheet_context);
+
+        gtk_style_context_add_class(
+            sheet_context, GTK_STYLE_CLASS_CELL);
+
+        // FIXME take font from CSS
+        //gtk_style_context_get(sheet_context, GTK_STATE_FLAG_NORMAL,
+          //  GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
+
+        if (attributes.css_class)
+        {
+            gtk_style_context_add_class(sheet_context,
+                attributes.css_class);
+        }
+
+        gtk_render_layout(sheet_context,
+            sheet->bsurf_cr,
+	    area.x + xoffset + CELLOFFSET, y, layout);
+
+        gtk_style_context_restore(sheet_context);
+    }
 
     cairo_restore(sheet->bsurf_cr);  // label clip
 
@@ -8352,8 +8482,14 @@ gtk_sheet_cell_finalize(GtkSheet *sheet, GtkSheetCell *cell)
 	    pango_font_description_free(attributes->font_desc);  /* free */
 	    attributes->font_desc = NULL;
 	}
-	g_free(attributes);
 
+        if (attributes->css_class)
+        {
+            g_free(attributes->css_class);
+            cell->attributes->css_class = NULL;
+        }
+
+	g_free(attributes);
 	cell->attributes = NULL;
     }
 }
@@ -9692,14 +9828,16 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
         gtk_entry_set_has_frame(entry, FALSE);
     }
 
-#if 1
+#if 0
     if (gtk_widget_get_realized(entry_widget))
     {
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-        g_debug("_gtk_sheet_entry_setup: style fg color %s",
-                gdk_rgba_to_string(&attributes.foreground));
-        g_debug("_gtk_sheet_entry_setup: style bg color %s",
-                gdk_rgba_to_string(&attributes.background));
+        g_debug("%s(%d): FIXME style fg color %s",
+            __FUNCTION__, __LINE__,
+            gdk_rgba_to_string(&attributes.foreground));
+        g_debug("%s(%d): FIXME style bg color %s",
+            __FUNCTION__, __LINE__,
+            gdk_rgba_to_string(&attributes.background));
 #endif
 
 	gtk_widget_override_color (entry_widget, 
@@ -9711,6 +9849,58 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
 	    GTK_STATE_FLAG_ACTIVE, &attributes.foreground);
 	gtk_widget_override_background_color (entry_widget, 
 	    GTK_STATE_FLAG_ACTIVE, &attributes.background);
+    }
+#else
+    // FIXME - CSS experimental
+    if (gtk_widget_get_realized(entry_widget))
+    {
+        GtkStyleContext *entry_context = gtk_widget_get_style_context(
+            GTK_WIDGET(sheet->sheet_entry));
+        g_debug("FIXME context %p %s %p", 
+            entry_context,
+            G_OBJECT_TYPE_NAME(sheet->sheet_entry), sheet->sheet_entry);
+
+        //gtk_style_context_restore(context);
+
+        GList *class_list = gtk_style_context_list_classes(
+            entry_context);
+
+        GList *p;
+        for (p=class_list; p; p=p->next)
+        {
+            g_debug("FIXME class %s", (char *) p->data);
+
+            if (strcmp(p->data, "flat") != 0)
+            {
+                gtk_style_context_remove_class(entry_context, p->data);
+            }
+        }
+
+        g_list_free(class_list);
+
+        if (attributes.css_class)
+        {
+            gtk_style_context_add_class(entry_context,
+                attributes.css_class);
+        }
+        else if (sheet->css_class)
+        {
+            gtk_style_context_add_class(entry_context,
+                sheet->css_class);
+        }
+
+        gchar class_name[24];
+
+        g_sprintf(class_name, "row-%d", row);
+        gtk_style_context_add_class(entry_context, class_name);
+
+        g_sprintf(class_name, "col-%d", col);
+        gtk_style_context_add_class(entry_context, class_name);
+
+        g_sprintf(class_name, "cell-%d-%d", row, col);
+        gtk_style_context_add_class(entry_context, class_name);
+
+        //gtk_style_context_save(context);
     }
 #endif
 }
@@ -13293,11 +13483,13 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
     }
 #endif
 
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("%s(%d) FIXME %s %p alloc x %d y %d w %d h %d", 
-            __FUNCTION__, __LINE__, 
-            G_OBJECT_TYPE_NAME (sheet->sheet_entry), sheet->sheet_entry,
-            shentry_allocation.x, shentry_allocation.y, 
-            shentry_allocation.width, shentry_allocation.height);
+        __FUNCTION__, __LINE__, 
+        G_OBJECT_TYPE_NAME (sheet->sheet_entry), sheet->sheet_entry,
+        shentry_allocation.x, shentry_allocation.y, 
+        shentry_allocation.width, shentry_allocation.height);
+#endif
 
     gtk_widget_size_allocate(sheet->sheet_entry, &shentry_allocation);
 
@@ -13319,7 +13511,7 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
         }
         gtk_widget_set_clip(sheet->sheet_entry, &shentry_allocation);
 
-#if 1
+#if 0
         g_debug("%s(%d) FIXME %s %p clip x %d y %d w %d h %d", 
                 __FUNCTION__, __LINE__, 
                 G_OBJECT_TYPE_NAME (sheet->sheet_entry),
@@ -13944,7 +14136,7 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
     GtkSheetArea area = ON_SHEET_BUTTON_AREA;
     PangoFontDescription *font_desc = NULL;
     PangoRectangle extent;
-    GtkStyleContext *style_context = gtk_widget_get_style_context(
+    GtkStyleContext *sheet_context = gtk_widget_get_style_context(
         GTK_WIDGET(sheet));
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
@@ -14057,33 +14249,37 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
     //gdk_cairo_set_source_rgba(my_cr, &debug_color);
     //cairo_fill(my_cr);
 
-    gtk_style_context_save (style_context);
+    gtk_style_context_save(sheet_context);
 
-    GtkStateFlags button_state = button->state;
+    GtkStateFlags button_state = (button->state
+                                  |GTK_STATE_FLAG_DIR_LTR);
 
-    gtk_style_context_set_state(style_context, button_state);
+    gtk_style_context_set_state(sheet_context, button_state);
 
-    gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL,
+    gtk_style_context_get(sheet_context, GTK_STATE_FLAG_NORMAL,
         GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
-    gtk_style_context_add_class (
-        style_context, GTK_STYLE_CLASS_BUTTON);
-    gtk_style_context_add_class (
-        style_context, GTK_STYLE_CLASS_TOP);
+    gtk_style_context_add_class(
+        sheet_context, GTK_STYLE_CLASS_BUTTON);
+    gtk_style_context_add_class(
+        sheet_context, GTK_STYLE_CLASS_LEFT);
 
-    //g_debug_style_context_list_classes("_gtk_sheet_draw_button", style_context);
+    //g_debug_style_context_list_classes("_gtk_sheet_draw_button", sheet_context);
 
 #if GTK_SHEET_DEBUG_DRAW_BUTTON > 0
-    g_debug("_gtk_sheet_draw_button: gtk_render_background: %d %d %d %d", 
-	x, y, width, height);
+    g_debug(
+        "%s(%d): gtk_render_background: FIXME x %d y %d w %d h %d st %d", 
+        __FUNCTION__, __LINE__, 
+	x, y, width, height,
+        button_state);
 #endif
 
-    gtk_render_background (style_context, my_cr,
+    gtk_render_background (sheet_context, my_cr,
 	(double) x, (double) y, (double) width, (double) height);
 
-    gtk_render_frame(style_context, my_cr,
+    gtk_render_frame(sheet_context, my_cr,
 	(double) x, (double) y, (double) width, (double) height);
-
+ 
     if (button->label_visible)
     {
 	PangoLayout *layout = NULL;
@@ -14104,7 +14300,7 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 
 	GtkBorder button_border;
 	gtk_style_context_get_border (
-            style_context, button_state, &button_border);
+            sheet_context, button_state, &button_border);
 	y += button_border.top + button_border.bottom;
 
 	real_y = y;
@@ -14147,7 +14343,7 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
 	}
 	pango_layout_set_alignment(layout, pango_alignment);
 
-	gtk_render_layout (style_context,
+	gtk_render_layout(sheet_context,
 	    my_cr,
 	    (gdouble) real_x, 
 	    (gdouble) real_y,
@@ -14163,7 +14359,7 @@ _gtk_sheet_draw_button(GtkSheet *sheet, gint row, gint col, cairo_t *cr)
         cairo_destroy(my_cr);  /* FIXME*/
     }
 
-    gtk_style_context_restore (style_context);
+    gtk_style_context_restore(sheet_context);
 
     gtk_sheet_draw_tooltip_marker(sheet, area, row, col);
 
@@ -15210,7 +15406,10 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
  * @urange: a #GtkSheetRange.
  * @color: a #GdkRGBA.
  *
- * Set background color of the given range.
+ * Set background color of the given range. 
+ * 
+ * Deprecated:4.1.3: Use #gtk_sheet_range_set_css_class()
+ * instead
  */
 void
 gtk_sheet_range_set_background(GtkSheet *sheet,
@@ -15229,7 +15428,8 @@ gtk_sheet_range_set_background(GtkSheet *sheet,
 	range = *urange;
 
 #if GTK_SHEET_DEBUG_COLORS > 0
-    g_debug("gtk_sheet_range_set_background: %s row %d-%d col %d-%d)",
+    g_debug("%s(%d): %s row %d-%d col %d-%d)",
+        __FUNCTION__, __LINE__,
 	gdk_rgba_to_string(color), range.row0, range.rowi, range.col0, range.coli);
 #endif
 
@@ -15241,9 +15441,20 @@ gtk_sheet_range_set_background(GtkSheet *sheet,
             gtk_sheet_get_attributes(sheet, row, col, &attributes);
         
             if (color != NULL)
+            {
+                g_warning("%s(%d): FIXME deprecated_color_used %s %s",
+                    __FUNCTION__, __LINE__,
+                    G_OBJECT_TYPE_NAME(sheet),
+                    gtk_widget_get_name(GTK_WIDGET(sheet)));
+
                 attributes.background = *color;
+                attributes.deprecated_bg_color_used = TRUE;
+            }
             else
+            {
                 attributes.background = sheet->bg_color;
+                attributes.deprecated_bg_color_used = FALSE;
+            }
         
             gtk_sheet_set_cell_attributes(sheet, row, col, attributes);
         }
@@ -15260,6 +15471,9 @@ gtk_sheet_range_set_background(GtkSheet *sheet,
  * @color: a #GdkRGBA.
  *
  * Set foreground color of the given range.
+ * 
+ * Deprecated:4.1.3: Use #gtk_sheet_range_set_css_class()
+ * instead
  */
 void
 gtk_sheet_range_set_foreground(GtkSheet *sheet,
@@ -15289,11 +15503,76 @@ gtk_sheet_range_set_foreground(GtkSheet *sheet,
 	gtk_sheet_get_attributes(sheet, row, col, &attributes);
 
 	if (color != NULL)
-	    attributes.foreground = *color;
+        {
+            g_warning("%s(%d): FIXME deprecated_fg_color_used %s %s",
+                __FUNCTION__, __LINE__,
+                G_OBJECT_TYPE_NAME(sheet),
+                gtk_widget_get_name(GTK_WIDGET(sheet)));
+
+            attributes.foreground = *color;
+            attributes.deprecated_fg_color_used = TRUE;
+        }
 	else
-	    attributes.foreground = color_black;
+        {
+            attributes.foreground = color_black;
+            attributes.deprecated_fg_color_used = FALSE;
+        }
 
 	gtk_sheet_set_cell_attributes(sheet, row, col, attributes);
+    }
+
+    if (!GTK_SHEET_IS_FROZEN(sheet))
+	_gtk_sheet_range_draw(sheet, &range, TRUE);
+}
+
+/**
+ * gtk_sheet_range_set_css_class:
+ * @sheet: a #GtkSheet.
+ * @urange: a #GtkSheetRange.
+ * @css_class: (nullable) a CSS class name.
+ *
+ * Set CSS class of the given range.
+ */
+void
+gtk_sheet_range_set_css_class(GtkSheet *sheet,
+    const GtkSheetRange *urange,
+    gchar *css_class)
+{
+    gint row, col;
+    GtkSheetRange range;
+
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (!urange)
+	range = sheet->range;
+    else
+	range = *urange;
+
+#if GTK_SHEET_DEBUG_COLORS > 0
+    g_debug("%s(%d): %s row %d-%d col %d-%d)",
+        __FUNCTION__, __LINE__,
+	css_class, 
+        range.row0, range.rowi, range.col0, range.coli);
+#endif
+
+    for (row = range.row0; row <= range.rowi; row++) 
+    {
+        for (col = range.col0; col <= range.coli; col++)
+        {
+            GtkSheetCellAttr attributes;
+            gtk_sheet_get_attributes(sheet, row, col, &attributes);
+        
+            if (attributes.css_class)
+            {
+                g_free(attributes.css_class);
+                attributes.css_class = NULL;
+            }
+            
+            attributes.css_class = g_strdup(css_class);
+            
+            gtk_sheet_set_cell_attributes(sheet, row, col, attributes);
+        }
     }
 
     if (!GTK_SHEET_IS_FROZEN(sheet))
@@ -15647,14 +15926,17 @@ init_attributes(GtkSheet *sheet, gint col, GtkSheetCellAttr *attributes)
 {
     /* DEFAULT VALUES */
     attributes->foreground = color_black;
+    attributes->deprecated_fg_color_used = FALSE;
     attributes->background = sheet->bg_color;
+    attributes->deprecated_bg_color_used = FALSE;
 
-    GtkStyleContext *style_context = gtk_widget_get_style_context(GTK_WIDGET(sheet));
+    GtkStyleContext *style_context = gtk_widget_get_style_context(
+        GTK_WIDGET(sheet));
 
     if (col < 0 || col > sheet->maxcol)
 	attributes->justification = GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION;
     else
-	attributes->justification = COLPTR(sheet, col)->justification;
+        attributes->justification = COLPTR(sheet, col)->justification;
 
     attributes->border.width = 0;
     attributes->border.cap_style = CAIRO_LINE_CAP_BUTT;
@@ -15664,9 +15946,15 @@ init_attributes(GtkSheet *sheet, gint col, GtkSheetCellAttr *attributes)
     attributes->is_editable = TRUE;
     attributes->is_visible = TRUE;
 
-    gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL,
-                       GTK_STYLE_PROPERTY_FONT, &attributes->font_desc, NULL);
+    GtkStateFlags flags = gtk_widget_get_state_flags(
+        GTK_WIDGET(sheet));
+
+    gtk_style_context_get(style_context, 
+        flags,
+        GTK_STYLE_PROPERTY_FONT, &attributes->font_desc, NULL);
+
     attributes->do_font_desc_free = FALSE;
+    attributes->css_class = NULL;
 }
 
 /**********************************************************************
@@ -16530,8 +16818,12 @@ label_size_request(GtkSheet *sheet, gchar *label, GtkRequisition *req)
     GtkStyleContext *style_context = gtk_widget_get_style_context(GTK_WIDGET(sheet));
     PangoFontDescription *font_desc = NULL;
 
-    gtk_style_context_get (style_context, GTK_STATE_FLAG_NORMAL,
-                       GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
+    GtkStateFlags flags = gtk_widget_get_state_flags(
+        GTK_WIDGET(sheet));
+
+    gtk_style_context_get(style_context, 
+        flags,
+        GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
     req->height = 0;
     req->width = 0;
@@ -16822,13 +17114,13 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
 	child_allocation.width = child_min_size.width;
 	child_allocation.height = child_min_size.height;
     }
-
+#if 0
     g_debug("%s(%d) FIXME 3 %s %p alloc x %d y %d w %d h %d", 
             __FUNCTION__, __LINE__, 
             G_OBJECT_TYPE_NAME (child->widget), child->widget,
             child_allocation.x, child_allocation.y, 
             child_allocation.width, child_allocation.height);
-
+#endif
     gtk_widget_size_allocate(child->widget, &child_allocation);
 
     if (gtk_widget_get_mapped(child->widget))
@@ -16843,7 +17135,7 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
         }
         gtk_widget_set_clip(child->widget, &child_allocation);
 
-#if 1
+#if 0
         g_debug("%s(%d) FIXME 4 %s %p clip x %d y %d w %d h %d", 
                 __FUNCTION__, __LINE__, 
                 G_OBJECT_TYPE_NAME (child->widget), child->widget,

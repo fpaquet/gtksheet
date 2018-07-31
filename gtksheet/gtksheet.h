@@ -248,12 +248,17 @@ struct _GtkSheetCellAttr
     /*< private >*/
     GtkJustification justification;
     PangoFontDescription *font_desc;
-    GdkRGBA foreground;
-    GdkRGBA background;
+
+    GdkRGBA foreground;  /* deprecated */
+    gboolean deprecated_fg_color_used;  /* flag for detection */
+    GdkRGBA background;  /* deprecated */
+    gboolean deprecated_bg_color_used;  /* flag for detection */
+
     GtkSheetCellBorder border;
     gboolean is_editable;
     gboolean is_visible;
     gboolean do_font_desc_free;   /* TRUE if font_desc needs free */
+    gchar *css_class;
 };
 
 
@@ -347,8 +352,11 @@ struct _GtkSheet
     guint freeze_count;
 
     GdkRGBA bg_color;    /* cell background color */
+    gboolean deprecated_bg_color_used;  /* flag for detection */
     GdkRGBA grid_color;  /* grid color */
     GdkRGBA tm_color;    /* tooltip marker color */
+    gchar *css_class;
+
     gboolean show_grid;
 
     GList *children;    /* sheet children */
@@ -589,10 +597,10 @@ void gtk_sheet_thaw(GtkSheet *sheet);
 
 /* Background colors */
 void gtk_sheet_set_background(GtkSheet *sheet, GdkRGBA *color);
+void gtk_sheet_set_css_class(GtkSheet *sheet, gchar *css_class);
 void gtk_sheet_set_grid(GtkSheet *sheet, GdkRGBA *color);
 void gtk_sheet_show_grid(GtkSheet *sheet, gboolean show);
 gboolean gtk_sheet_grid_visible(GtkSheet *sheet);
-
 
 /* set/get row title */
 void gtk_sheet_set_row_title(GtkSheet *sheet, gint row, const gchar *title);
@@ -741,13 +749,17 @@ void gtk_sheet_delete_rows(GtkSheet *sheet, guint row, guint nrows);
 /* delete ncols columns starting in col */
 void gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols);
 
-/* set abckground color of the given range */
+/* set background color of the given range */
 void gtk_sheet_range_set_background(GtkSheet *sheet,
-                                    const GtkSheetRange *urange, const GdkRGBA *color);
+    const GtkSheetRange *urange, const GdkRGBA *color);
 
 /* set foreground color (text color) of the given range */
-void gtk_sheet_range_set_foreground(GtkSheet *sheet,
-                                    const GtkSheetRange *urange, const GdkRGBA *color);
+void gtk_sheet_range_set_foreground(
+    GtkSheet *sheet, const GtkSheetRange *urange, const GdkRGBA *color);
+
+/* set css class of the given range */
+void gtk_sheet_range_set_css_class(
+    GtkSheet *sheet, const GtkSheetRange *urange, gchar *css_class);
 
 /* set text justification (GTK_JUSTIFY_LEFT, RIGHT, CENTER) of the given range.
  * The default value is GTK_JUSTIFY_LEFT. If autoformat is on, the

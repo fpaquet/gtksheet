@@ -1,12 +1,19 @@
 TBD 
+** CSS: create embedded resource for default gtksheet.css
+** CSS: grid
+** CSS: borders
+** CSS: row title button margin
+** remove #define GTK_SHEET_COLUMN_BUTTON_OBJECTS
 ** sheet entry: reduce undershoot size for small cells (CSS)
 ** sheet entry: undershoot area smears backgnd (CSS)
-** sheet editor font (use GtkStyleContext)
 ** row selection drawing over right sheet border
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
 ** rename xor to sel
 ** remove FIXME debug output
+
+2018-08-01 Fredy Paquet <mailbox AT opag.ch>
+* sheet editor font (use CSS style)
 
 2018-07-31 Fredy Paquet <mailbox AT opag.ch>
 * fixed warnings like

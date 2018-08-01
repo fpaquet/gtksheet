@@ -2502,16 +2502,18 @@ gtk_sheet_hide_column_titles(GtkSheet *sheet)
  */
 void
 gtk_sheet_set_column_title(GtkSheet *sheet,
-                           gint col,
-                           const gchar *title)
+    gint col,
+    const gchar *title)
 {
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
-    g_debug("FIXME use col_button");
+    if (col < 0 || col > sheet->maxcol) return;
 
-    if (COLPTR(sheet, col)->title) g_free(COLPTR(sheet, col)->title);
-    COLPTR(sheet, col)->title = g_strdup(title);
+    GtkSheetColumn *colobj = COLPTR(sheet, col);
+
+    _gtk_sheet_column_button_add_label_internal(
+        sheet, colobj, title);
 }
 
 /**
@@ -2525,14 +2527,19 @@ gtk_sheet_set_column_title(GtkSheet *sheet,
  */
 const gchar *
 gtk_sheet_get_column_title(GtkSheet *sheet,
-                           gint col)
+    gint col)
 {
     g_return_val_if_fail(sheet != NULL, NULL);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), NULL);
 
-    g_debug("FIXME use col_button");
+    if (col < 0 || col > sheet->maxcol) return(NULL);
 
-    return (COLPTR(sheet, col)->title);
+    GtkSheetColumn *colobj = COLPTR(sheet, col);
+
+    if (!colobj->col_button) return(NULL);
+    if (!GTK_IS_BUTTON(colobj->col_button)) return(NULL);
+
+    return gtk_button_get_label(GTK_BUTTON(colobj->col_button));
 }
 
 /**

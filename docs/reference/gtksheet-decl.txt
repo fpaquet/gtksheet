@@ -331,6 +331,8 @@ struct _GtkSheetCellAttr
     /*< private >*/
     GtkJustification justification;
     PangoFontDescription *font_desc;
+    gboolean deprecated_font_desc_used;  /* flag for detection */
+    gboolean do_font_desc_free;   /* TRUE if font_desc needs free */
 
     GdkRGBA foreground;  /* deprecated */
     gboolean deprecated_fg_color_used;  /* flag for detection */
@@ -340,7 +342,6 @@ struct _GtkSheetCellAttr
     GtkSheetCellBorder border;
     gboolean is_editable;
     gboolean is_visible;
-    gboolean do_font_desc_free;   /* TRUE if font_desc needs free */
     gchar *css_class;
 };
 </STRUCT>
@@ -1165,12 +1166,12 @@ GtkSheet *sheet, const GtkSheetRange *urange, const GdkRGBA *color
 <FUNCTION>
 <NAME>gtk_sheet_range_set_foreground</NAME>
 <RETURNS>void  </RETURNS>
- GtkSheet *sheet, const GtkSheetRange *urange, const GdkRGBA *color
+GtkSheet *sheet, const GtkSheetRange *urange, const GdkRGBA *color
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_range_set_css_class</NAME>
 <RETURNS>void  </RETURNS>
- GtkSheet *sheet, const GtkSheetRange *urange, gchar *css_class
+GtkSheet *sheet, const GtkSheetRange *urange, gchar *css_class
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_range_set_justification</NAME>

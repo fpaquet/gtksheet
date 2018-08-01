@@ -1,4 +1,4 @@
-/* these are just examples for testing */
+/* stylesheet for testgtksheet application */
 
 @define-color sheet_default_bg_color lightgray;
 @define-color sheet_default_fg_color black;
@@ -15,11 +15,18 @@ sheet entry selection {
     color: @theme_selected_fg_color;
 }
 
+/* Note: "entry" selector is needed for entry types:
+   GtkEntry, GtkDataEntry, GtkSpinButton
+   */
+
 sheet entry {
     background-color: @sheet_default_bg_color;
 }
 
-/* "text" is needed for entry types GtkTextView, GtkDataTextView */ 
+/* Note: "text" selector is needed for entry types:
+   GtkTextView, GtkDataTextView
+   */ 
+
 sheet.view text {
     background-color: @sheet_default_bg_color;
 }
@@ -28,62 +35,26 @@ sheet.view text:backdrop {
     background-color: @sheet_default_bg_color;
 }
 
-/* sheet button applies to all button widgets (childs) */
-
-sheet button {
-    border-width: 1px;
-    border-style: solid;
-    /*border-color: #00f;*/
-    /*background-color: #cfc;   */
-    /*color: #000;              */
-}
-
-/* sheet button.top applies to column button widgets */
-
-sheet button.top {
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 0px;
-    /*border-color: #00f;*/
-    /*background-color: #cfc;   */
-    /*color: #000;              */
-}
-
-/* sheet.button.left applies to row buttons */
-
-sheet.button.left {
-    background-color: lightgray;
-    color: black;
-    border-width: 2px;
-    border-color: darkgrey;
-    border-style: outset;
-}
-
-sheet.button.left:active {
-    background-color: darkgrey;
-    color: black;
-    border-width: 1px;
-    border-color: darkgrey;
-    border-style: inset;
-}
-
 /* testgtksheet example1 - access via class */
 
 @define-color testgtksheet_example1_default_bg lightyellow;
 
-sheet .example1class {
+/* Note: :not(.left) excludes row title area */
+sheet .example1class:not(.left) {
     background-color: @testgtksheet_example1_default_bg;
     color: black;
 }
-sheet .example1red {
+sheet .example1red:not(.left) {
     background-color: @testgtksheet_example1_default_bg;
     color: red;
+    font: 28 Arial;
 }
-sheet .example1blue {
+sheet .example1blue:not(.left) {
     background-color: @testgtksheet_example1_default_bg;
     color: blue;
+    font: 36 Arial;
 }
-sheet .example1grey {
+sheet .example1grey:not(.left) {
     background-color: darkgrey;
     color: green;
 }
@@ -124,11 +95,19 @@ sheet#example3 .orange text {
     background-color: @testgtksheet_example3_orange_bg;
     color: @testgtksheet_example3_orange_fg;
 }
+sheet#example3 .orange entry {
+    background-color: @testgtksheet_example3_orange_bg;
+    color: @testgtksheet_example3_orange_fg;
+}
 sheet#example3 .lblue {
     background-color: @testgtksheet_example3_lblue_bg;
     color: @testgtksheet_example3_default_fg;
 }
 sheet#example3 .lblue text {
+    background-color: @testgtksheet_example3_lblue_bg;
+    color: @testgtksheet_example3_default_fg;
+}
+sheet#example3 .lblue entry {
     background-color: @testgtksheet_example3_lblue_bg;
     color: @testgtksheet_example3_default_fg;
 }
@@ -140,34 +119,4 @@ sheet#example3 .red {
     background-color: @testgtksheet_example3_red_bg;
     color: @testgtksheet_example3_red_fg;
 }
-
-
-/*
-sheet entry {
-    background-color: magenta;
-}
-
-sheet spinbutton.red entry {
-    background-color: red;
-}
-
-sheet .col-4 {
-    background-color: coral;
-}
-sheet .col-5 {
-    background-color: coral;
-}
-sheet .col-5 text {
-    background-color: coral;
-}
-sheet .row-2 {
-    background-color: cyan;
-}
-sheet .row-2 text {
-    background-color: cyan;
-}
-sheet .cell-2-4 {
-    background-color: magenta;
-}
-*/
 

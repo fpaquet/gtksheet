@@ -1,0 +1,78 @@
+/* these are just examples for testing */
+
+@define-color sheet_default_bg_color @theme_base_color;
+@define-color sheet_default_fg_color @theme_text_color;
+@define-color sheet_rowtitle_bg_color @theme_bg_color;
+@define-color sheet_rowtitle_active_bg_color @theme_bg_color;
+
+sheet {
+    background-color: @sheet_default_bg_color;
+    color: @sheet_default_fg_color;
+}
+
+/* sheet entry selection style */
+
+sheet entry selection {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+/* Note: "entry" selector is needed for entry types:
+   GtkEntry, GtkDataEntry, GtkSpinButton
+   */
+
+sheet entry {
+    background-color: @sheet_default_bg_color;
+}
+
+/* Note: "text" selector is needed for entry types:
+   GtkTextView, GtkDataTextView
+   */ 
+
+sheet.view text {
+    background-color: @sheet_default_bg_color;
+}
+
+sheet.view text:backdrop {
+    background-color: @sheet_default_bg_color;
+}
+
+/* sheet button applies to all button widgets (childs) */
+
+sheet button {
+    border-width: 1px;
+    border-style: solid;
+    /*border-color: #00f;*/
+    /*background-color: #cfc;   */
+    /*color: #000;              */
+}
+
+/* sheet button.top applies to column button widgets */
+
+sheet button.top {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 0px;
+    /*border-color: #00f;*/
+    /*background-color: #cfc;   */
+    /*color: #000;              */
+}
+
+/* sheet.button.left applies to row buttons */
+
+sheet.button.left {
+    background-color: @sheet_rowtitle_bg_color;
+    color: black;
+    border-width: 2px;
+    border-color: darkgrey;
+    border-style: outset;
+}
+
+sheet.button.left:active {
+    background-color: @sheet_rowtitle_active_bg_color;
+    color: black;
+    border-width: 1px;
+    border-color: darkgrey;
+    border-style: inset;
+}
+

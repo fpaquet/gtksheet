@@ -248,6 +248,8 @@ struct _GtkSheetCellAttr
     /*< private >*/
     GtkJustification justification;
     PangoFontDescription *font_desc;
+    gboolean deprecated_font_desc_used;  /* flag for detection */
+    gboolean do_font_desc_free;   /* TRUE if font_desc needs free */
 
     GdkRGBA foreground;  /* deprecated */
     gboolean deprecated_fg_color_used;  /* flag for detection */
@@ -257,7 +259,6 @@ struct _GtkSheetCellAttr
     GtkSheetCellBorder border;
     gboolean is_editable;
     gboolean is_visible;
-    gboolean do_font_desc_free;   /* TRUE if font_desc needs free */
     gchar *css_class;
 };
 
@@ -754,28 +755,28 @@ void gtk_sheet_range_set_background(GtkSheet *sheet,
     const GtkSheetRange *urange, const GdkRGBA *color);
 
 /* set foreground color (text color) of the given range */
-void gtk_sheet_range_set_foreground(
-    GtkSheet *sheet, const GtkSheetRange *urange, const GdkRGBA *color);
+void gtk_sheet_range_set_foreground(GtkSheet *sheet,
+    const GtkSheetRange *urange, const GdkRGBA *color);
 
 /* set css class of the given range */
-void gtk_sheet_range_set_css_class(
-    GtkSheet *sheet, const GtkSheetRange *urange, gchar *css_class);
+void gtk_sheet_range_set_css_class(GtkSheet *sheet,
+    const GtkSheetRange *urange, gchar *css_class);
 
 /* set text justification (GTK_JUSTIFY_LEFT, RIGHT, CENTER) of the given range.
  * The default value is GTK_JUSTIFY_LEFT. If autoformat is on, the
  * default justification for numbers is GTK_JUSTIFY_RIGHT */
 void gtk_sheet_range_set_justification(GtkSheet *sheet,
-                                       const GtkSheetRange *urange, GtkJustification just);
+    const GtkSheetRange *urange, GtkJustification just);
 
 /* set if cell contents can be edited or not in the given range:
  * accepted values are TRUE or FALSE. */
 void gtk_sheet_range_set_editable(GtkSheet *sheet,
-                                  const GtkSheetRange *urange, gint editable);
+    const GtkSheetRange *urange, gint editable);
 
 /* set if cell contents are visible or not in the given range:
  * accepted values are TRUE or FALSE.*/
 void gtk_sheet_range_set_visible(GtkSheet *sheet,
-                                 const GtkSheetRange *urange, gboolean visible);
+    const GtkSheetRange *urange, gboolean visible);
 
 /* set cell border style in the given range.
  * mask values are CELL_LEFT_BORDER, CELL_RIGHT_BORDER, CELL_TOP_BORDER,
@@ -790,15 +791,16 @@ void gtk_sheet_range_set_border(GtkSheet *sheet,
 
 /* set border color for the given range */
 void gtk_sheet_range_set_border_color(GtkSheet *sheet,
-                                      const GtkSheetRange *urange, const GdkRGBA *color);
+    const GtkSheetRange *urange, const GdkRGBA *color);
 
 /* set font for the given range */
 void gtk_sheet_range_set_font(GtkSheet *sheet,
-                              const GtkSheetRange *urange, PangoFontDescription *font_desc);
+    const GtkSheetRange *urange, PangoFontDescription *font_desc);
 
 /* get cell attributes of the given cell */
 /* TRUE means that the cell is currently allocated */
-gboolean gtk_sheet_get_attributes(GtkSheet *sheet, gint row, gint col, GtkSheetCellAttr *attributes);
+gboolean gtk_sheet_get_attributes(GtkSheet *sheet,
+    gint row, gint col, GtkSheetCellAttr *attributes);
 
 
 GtkSheetChild *gtk_sheet_put(GtkSheet *sheet, GtkWidget *child, gint x, gint y);

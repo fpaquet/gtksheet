@@ -9,11 +9,13 @@ TBD
 ** row selection drawing over right sheet border
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
+** Glade: rework column label handling
 ** rename xor to sel
 ** remove FIXME debug output
 
 2018-08-01 Fredy Paquet <mailbox AT opag.ch>
 * sheet editor font (use CSS style)
+* fixed gtk_sheet_set_column_title, gtk_sheet_get_column_title
 
 2018-07-31 Fredy Paquet <mailbox AT opag.ch>
 * fixed warnings like

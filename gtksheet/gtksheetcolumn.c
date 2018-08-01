@@ -2532,14 +2532,7 @@ gtk_sheet_get_column_title(GtkSheet *sheet,
     g_return_val_if_fail(sheet != NULL, NULL);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), NULL);
 
-    if (col < 0 || col > sheet->maxcol) return(NULL);
-
-    GtkSheetColumn *colobj = COLPTR(sheet, col);
-
-    if (!colobj->col_button) return(NULL);
-    if (!GTK_IS_BUTTON(colobj->col_button)) return(NULL);
-
-    return gtk_button_get_label(GTK_BUTTON(colobj->col_button));
+    return (gtk_sheet_column_button_get_label(sheet, col));
 }
 
 /**

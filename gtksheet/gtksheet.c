@@ -3392,6 +3392,33 @@ gtk_sheet_class_init(GtkSheetClass *klass)
     gtk_widget_class_set_css_name (widget_class, "sheet");
 }
 
+static gboolean has_css_parsing_errors = FALSE;
+
+static void
+_gtk_sheet_css_parsing_error(
+    GtkCssProvider *provider,
+    GtkCssSection *section,
+    GError *error,
+    gpointer user_data)
+{
+    if (!error) return;
+
+    gchar *file_name = (gchar *) user_data;
+    guint line = gtk_css_section_get_start_line(section) + 1;
+    guint pos = gtk_css_section_get_start_position(section) + 1;
+
+    if (error->code != G_FILE_ERROR_ACCES)
+    {
+        g_warning("CSS Error %d: %s:%d:%d:%s",
+            error->code, 
+            file_name ? file_name : "",
+            line, 
+            pos,
+            error->message);
+    }
+    has_css_parsing_errors = TRUE;
+}
+
 /* 
 https://bugzilla.redhat.com/show_bug.cgi?id=1404656 
  
@@ -3413,7 +3440,7 @@ https://bugzilla.redhat.com/show_bug.cgi?id=1404656
 ==23841==  Address 0xd1 is not stack'd, malloc'd or (recently) free'd
 */ 
 
-static gboolean style_provider_was_set = FALSE;
+static gboolean style_provider_was_set = FALSE; /* Bug id 1404656 */
 
 static void
 gtk_sheet_init(GtkSheet *sheet)
@@ -3570,20 +3597,34 @@ gtk_sheet_init(GtkSheet *sheet)
 	    /* for predefined colors,
 	       see gtk-contained.css section "GTK NAMED COLORS" near eof */
 
-	    gtk_css_provider_load_from_data(provider,
-		"sheet button.top {"
-		"  border-width: 1px;"
-		"  border-style: solid;"
-		"  border-radius: 0px;"
-		"}\n"
-		"@import \"gtksheet.css\";"
-		, -1, &error);
+	    g_signal_connect(provider, "parsing-error", 
+		_gtk_sheet_css_parsing_error,
+                GTK_SHEET_CSS_FILE_NAME);
 
-	    if (error)
+            gtk_css_provider_load_from_path(provider,
+		GTK_SHEET_CSS_FILE_NAME, &error);
+
+	    if (error || has_css_parsing_errors)
 	    {
-		g_warning("CSS Error %d: %s", error->code, error->message);
+                g_debug("%s(%d): fallback to CSS resource://"
+                    GTK_SHEET_CSS_RESOURCE_NAME,
+                    __FUNCTION__, __LINE__);
+
+                g_object_unref(provider);
+                provider = gtk_css_provider_new();
+
+                g_signal_connect(provider, "parsing-error", 
+                    _gtk_sheet_css_parsing_error,
+                    "resource://" GTK_SHEET_CSS_RESOURCE_NAME);
+
+		has_css_parsing_errors = FALSE;
+
+		gtk_css_provider_load_from_resource (
+		    provider, GTK_SHEET_CSS_RESOURCE_NAME);
+
+		if (has_css_parsing_errors) 
+                    g_assert(FALSE);
 	    }
-	    //g_assert(!error);
 
 	    GdkDisplay *display = gdk_display_get_default ();
 	    GdkScreen *screen = gdk_display_get_default_screen (display);

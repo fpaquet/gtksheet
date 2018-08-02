@@ -47,12 +47,12 @@ sheet .example1class:not(.left) {
 sheet .example1red:not(.left) {
     background-color: @testgtksheet_example1_default_bg;
     color: red;
-    font: 28 Arial;
+    font: 28px Arial;
 }
 sheet .example1blue:not(.left) {
     background-color: @testgtksheet_example1_default_bg;
     color: blue;
-    font: 36 Arial;
+    font: 36px Arial;
 }
 sheet .example1grey:not(.left) {
     background-color: darkgrey;

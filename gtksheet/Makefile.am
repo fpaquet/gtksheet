@@ -9,7 +9,7 @@ no_undefined = -no-undefined
 endif
 
 if OS_WIN32
-gtksheet_def = gtksheet.def 
+gtksheet_def = gtksheet.def
 gtksheet_win32_symbols = -export-symbols $(gtksheet_def)
 
 #Not yet supported
@@ -45,7 +45,7 @@ AM_LDFLAGS = \
 	-export-dynamic                                         \
 	-rpath $(libdir)                                        \
 	$(no_undefined)                                         \
-	$(GTK_LIBS)                                             
+	$(GTK_LIBS)
 
 #
 # setup source file variables
@@ -68,22 +68,24 @@ gtksheet_c_sources = 	\
 gtksheet_private_h_sources = \
 	gtksheet-compat.h \
 	icons.h \
-	pixmaps.h 
+	pixmaps.h
 
 gtksheet_built_public_sources =	\
 	gtksheet-marshal.h	\
-	gtksheettypebuiltins.h
+	gtksheettypebuiltins.h\
+	gtksheet-resources.h 
 
 gtksheet_built_sources = \
 	gtksheet-marshal.c	\
 	gtksheettypebuiltins.c	\
-	${gtksheet_built_public_sources}            
+	${gtksheet_built_public_sources} \
+	gtksheet-resources.c
 
 gtksheet_sheet_sources = \
 	gtksheetfeatures.h.in	\
-	gtksheet-marshal.list 	
+	gtksheet-marshal.list
 
-AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) $(GTK_CFLAGS) 
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir) $(GTK_CFLAGS)
 
 # target platform:
 lib_LTLIBRARIES = $(gtksheettargetlib)
@@ -103,13 +105,14 @@ libgtksheet_target_ldflags = $(gtksheet_win32_symbols) -lwsock32
 endif
 EXTRA_LTLIBRARIES = libgtksheet-4.0.la
 
-MAINTAINERCLEANFILES = $(gtksheet_built_sources) 
-CLEANFILES = $(gtksheet_built_sources) 
+MAINTAINERCLEANFILES = $(gtksheet_built_sources)
+CLEANFILES = $(gtksheet_built_sources)
 
 EXTRA_DIST = $(gtksheet_private_h_sources) $(gtksheet_sheet_sources)
 #EXTRA_DIST += $(gtksheet_built_sources)
 EXTRA_DIST += gtksheet.def sat.xpm sg_small.xpm cloud.xpm suncloud.xpm testgtkplotdt.in
 
+# built sources
 
 $(libgtksheet_4_0_la_OBJECTS): ${gtksheet_built_public_sources} ${gtksheet_built_private_headers}
 
@@ -142,6 +145,25 @@ gtksheettypebuiltins.c: $(gtksheet_public_h_sources)
 		--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
 		$(gtksheet_public_h_sources) ) > $(builddir)/gtksheettypebuiltins.c
 
+gtksheet-resources.c: \
+		gtksheet-resources.xml \
+		gtksheet.css
+	glib-compile-resources \
+		--sourcedir=$(srcdir) \
+                --target=$@ \
+                --generate-source \
+                --c-name gtksheet \
+		gtksheet-resources.xml
+
+gtksheet-resources.h: \
+		gtksheet-resources.xml \
+		gtksheet.css
+	glib-compile-resources \
+		--sourcedir=$(srcdir) \
+                --target=$@ \
+                --generate-header \
+                --c-name gtksheet \
+		gtksheet-resources.xml
 
 # test programs, not to be installed
 

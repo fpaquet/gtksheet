@@ -42,9 +42,7 @@ sheet.view text:backdrop {
 sheet button {
     border-width: 1px;
     border-style: solid;
-    /*border-color: #00f;*/
-    /*background-color: #cfc;   */
-    /*color: #000;              */
+    border-radius: 0px;
 }
 
 /* sheet button.top applies to column button widgets */
@@ -53,9 +51,6 @@ sheet button.top {
     border-width: 1px;
     border-style: solid;
     border-radius: 0px;
-    /*border-color: #00f;*/
-    /*background-color: #cfc;   */
-    /*color: #000;              */
 }
 
 /* sheet.button.left applies to row buttons */

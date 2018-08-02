@@ -1,5 +1,4 @@
 TBD 
-** CSS: create embedded resource for default gtksheet.css
 ** CSS: grid
 ** CSS: borders
 ** CSS: row title button margin
@@ -12,6 +11,9 @@ TBD
 ** Glade: rework column label handling
 ** rename xor to sel
 ** remove FIXME debug output
+
+2018-08-01 Fredy Paquet <mailbox AT opag.ch>
+* CSS: create embedded resource for default "gtksheet.css"
 
 2018-08-01 Fredy Paquet <mailbox AT opag.ch>
 * sheet editor font (use CSS style)

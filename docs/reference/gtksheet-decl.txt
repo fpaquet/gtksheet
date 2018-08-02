@@ -276,6 +276,14 @@ typedef enum
 <NAME>GTK_SHEET_COLUMN_BUTTON_OBJECTS</NAME>
 #define GTK_SHEET_COLUMN_BUTTON_OBJECTS  1  /* 0=off, 1=on */
 </MACRO>
+<MACRO>
+<NAME>GTK_SHEET_CSS_FILE_NAME</NAME>
+#define GTK_SHEET_CSS_FILE_NAME "gtksheet.css"
+</MACRO>
+<MACRO>
+<NAME>GTK_SHEET_CSS_RESOURCE_NAME</NAME>
+#define GTK_SHEET_CSS_RESOURCE_NAME "/org/gtk/GtkSheet/gtksheet.css"
+</MACRO>
 <STRUCT>
 <NAME>GtkSheetChild</NAME>
 struct _GtkSheetChild
@@ -1258,6 +1266,11 @@ const gchar *str, const gchar *dataformat
 <NAME>gtk_data_format_remove</NAME>
 <RETURNS>gchar  *</RETURNS>
 const gchar *str, const gchar *dataformat
+</FUNCTION>
+<FUNCTION>
+<NAME>gtksheet_get_resource</NAME>
+<RETURNS>GResource  *</RETURNS>
+void
 </FUNCTION>
 <MACRO>
 <NAME>GTK_TYPE_DATA_TEXT_VIEW</NAME>

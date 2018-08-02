@@ -9,13 +9,13 @@ TBD
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
 ** Glade: rework column label handling
-** rename xor to sel
 ** remove FIXME debug output
 
 2018-08-01 Fredy Paquet <mailbox AT opag.ch>
 * CSS: create embedded resource for default "gtksheet.css"
 * CSS: fixed :selected background color
 * doc fixes
+* rename _cairo_save_and_set_xor_mode to _cairo_save_and_set_sel_color
 
 2018-08-01 Fredy Paquet <mailbox AT opag.ch>
 * sheet editor font (use CSS style)

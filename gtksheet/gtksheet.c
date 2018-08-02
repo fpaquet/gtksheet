@@ -6113,7 +6113,7 @@ _cairo_clip_sheet_area(GtkSheet *sheet, cairo_t *cr)
 }
 
 /** 
- * _cairo_save_and_set_xor_mode: 
+ * _cairo_save_and_set_sel_color: 
  * saves cairo context and set up cairo context for selection 
  * drawing 
  *  
@@ -6126,16 +6126,16 @@ _cairo_clip_sheet_area(GtkSheet *sheet, cairo_t *cr)
  * 
  * @return 
  */
-static void _cairo_save_and_set_xor_mode(GtkSheet *sheet, cairo_t *cr)
+static void _cairo_save_and_set_sel_color(GtkSheet *sheet, cairo_t *cr)
 {
     g_assert(cr);
     //cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window);
 
 #if GTK_SHEET_DEBUG_EXPOSE > 1
-    _debug_cairo_clip_extent("_cairo_save_and_set_xor_mode", cr);
+    _debug_cairo_clip_extent(__FUNCTION__, cr);
 #endif
 
-    cairo_save(cr);  // _cairo_save_and_set_xor_mode,  _cairo_clip_sheet_area
+    cairo_save(cr);  // _cairo_save_and_set_sel_color,  _cairo_clip_sheet_area
 
     GtkStyleContext *sheet_context = gtk_widget_get_style_context(
         GTK_WIDGET(sheet));
@@ -6248,7 +6248,7 @@ gtk_sheet_flash(gpointer data)
     if (sheet->interval >= TIME_INTERVAL) sheet->interval = 0;
 
     cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
-    _cairo_save_and_set_xor_mode(sheet, xor_cr);
+    _cairo_save_and_set_sel_color(sheet, xor_cr);
 
     double dashes[] = { 4.0, 4.0 };
     cairo_set_dash(xor_cr, dashes, 2, (double) sheet->interval);
@@ -6261,7 +6261,7 @@ gtk_sheet_flash(gpointer data)
     GDK_THREADS_LEAVE();
 #endif
 
-    cairo_restore(xor_cr);  // _cairo_save_and_set_xor_mode
+    cairo_restore(xor_cr);  // _cairo_save_and_set_sel_color
     cairo_destroy(xor_cr);  /* FIXME, to be removed */
 
     cairo_restore(swin_cr); // _cairo_clip_sheet_area
@@ -6281,7 +6281,7 @@ gtk_sheet_draw_flashing_range(
 
     //g_debug("gtk_sheet_draw_flashing_range: called FIXME");
 
-    // obsolete, already done in _cairo_save_and_set_xor_mode()
+    // obsolete, already done in _cairo_save_and_set_sel_color()
     //_cairo_clip_sheet_area(sheet, xor_cr);
 
     /* get flashing range */
@@ -8340,7 +8340,7 @@ gtk_sheet_range_draw_selection(
 	range.row0, range.rowi, range.col0, range.coli);
 #endif
 
-    _cairo_save_and_set_xor_mode(sheet, my_cr);
+    _cairo_save_and_set_sel_color(sheet, my_cr);
 
     for (row = range.row0; row <= range.rowi; row++)
     {
@@ -8377,7 +8377,7 @@ gtk_sheet_range_draw_selection(
 	}
     }
 
-    cairo_restore(my_cr);  // _cairo_save_and_set_xor_mode
+    cairo_restore(my_cr);  // _cairo_save_and_set_sel_color
     if (!cr) cairo_destroy(my_cr);
 
     gtk_sheet_draw_border(sheet, sheet->range, cr);
@@ -10149,7 +10149,7 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
     _cairo_clip_sheet_area(sheet, swin_cr);
 
     cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
-    _cairo_save_and_set_xor_mode(sheet, xor_cr);
+    _cairo_save_and_set_sel_color(sheet, xor_cr);
 
     new_range = *range;  /* copy new range */
 
@@ -10267,7 +10267,7 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 
     *range = new_range;  /* restore new_range */
 
-    cairo_restore(xor_cr);   // _cairo_save_and_set_xor_mode
+    cairo_restore(xor_cr);   // _cairo_save_and_set_sel_color
     cairo_destroy(xor_cr);  /* FIXME, to be removed */
 
     cairo_save(swin_cr); // _cairo_clip_sheet_area
@@ -10336,7 +10336,7 @@ gtk_sheet_draw_border(
     clip_area.height += 3;
 
     cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
-    _cairo_save_and_set_xor_mode(sheet, xor_cr);
+    _cairo_save_and_set_sel_color(sheet, xor_cr);
 
     cairo_save(xor_cr);  // need to clip
 
@@ -10357,7 +10357,7 @@ gtk_sheet_draw_border(
     cairo_set_source_surface(my_cr, sheet->bsurf, 0, 0);
 #endif
 
-    _cairo_save_and_set_xor_mode(sheet, my_cr);
+    _cairo_save_and_set_sel_color(sheet, my_cr);
     
     cairo_set_line_cap(my_cr, CAIRO_LINE_CAP_BUTT);
     cairo_set_line_join(my_cr, CAIRO_LINE_JOIN_MITER);
@@ -10391,7 +10391,7 @@ gtk_sheet_draw_border(
         _gtk_sheet_invalidate_region(sheet, x, y, w, h);
     }
 
-    cairo_restore(my_cr);  // _cairo_save_and_set_xor_mode
+    cairo_restore(my_cr);  // _cairo_save_and_set_sel_color
     if (!cr) cairo_destroy(my_cr);
 
     gtk_sheet_draw_corners(sheet, new_range, cr);
@@ -10441,13 +10441,13 @@ gtk_sheet_draw_corners(
 	    x-1, y-1, selection_corner_size+2, selection_corner_size+2);
 	cairo_fill(my_cr);
 
-        _cairo_save_and_set_xor_mode(sheet, my_cr);
+        _cairo_save_and_set_sel_color(sheet, my_cr);
 
 	cairo_rectangle(my_cr, 
 	    x, y, selection_corner_size, selection_corner_size);
 	cairo_fill(my_cr);
 
-        cairo_restore(my_cr);  // _cairo_save_and_set_xor_mode
+        cairo_restore(my_cr);  // _cairo_save_and_set_sel_color
 
         if (!cr)
         {
@@ -10472,13 +10472,13 @@ gtk_sheet_draw_corners(
 	    x-1, y-1, selection_corner_size+2, selection_corner_size+2);
 	cairo_fill(my_cr);
 
-        _cairo_save_and_set_xor_mode(sheet, my_cr);
+        _cairo_save_and_set_sel_color(sheet, my_cr);
 
 	cairo_rectangle(my_cr, 
 	    x, y, selection_corner_size, selection_corner_size);
 	cairo_fill(my_cr);
 
-        cairo_restore(my_cr);  // _cairo_save_and_set_xor_mode
+        cairo_restore(my_cr);  // _cairo_save_and_set_sel_color
 
         if (!cr)
         {
@@ -10504,13 +10504,13 @@ gtk_sheet_draw_corners(
 	    x-1, y-1, selection_corner_size+2, selection_corner_size+2);
 	cairo_fill(my_cr);
 
-        _cairo_save_and_set_xor_mode(sheet, my_cr);
+        _cairo_save_and_set_sel_color(sheet, my_cr);
 
 	cairo_rectangle(my_cr, 
 	    x, y, selection_corner_size, selection_corner_size);
 	cairo_fill(my_cr);
 
-        cairo_restore(my_cr);  // _cairo_save_and_set_xor_mode
+        cairo_restore(my_cr);  // _cairo_save_and_set_sel_color
 
         if (!cr)
         {
@@ -14967,14 +14967,14 @@ draw_xor_vline(GtkSheet *sheet, gboolean draw)
     if (draw)
     {
         cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
-	_cairo_save_and_set_xor_mode(sheet, xor_cr);
+	_cairo_save_and_set_sel_color(sheet, xor_cr);
 
 	// xor
 	cairo_move_to(xor_cr, sheet->x_drag, sheet->column_title_area.height);
 	cairo_line_to(xor_cr, sheet->x_drag, sheet->sheet_window_height + 1);
 	cairo_stroke(xor_cr);
 
-	cairo_restore(xor_cr);  // _cairo_save_and_set_xor_mode
+	cairo_restore(xor_cr);  // _cairo_save_and_set_sel_color
 	cairo_destroy(xor_cr);  /* FIXME - to be removed */
     }
     else  // erase
@@ -15004,14 +15004,14 @@ draw_xor_hline(GtkSheet *sheet, gboolean draw)
     if (draw)
     {
         cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
-	_cairo_save_and_set_xor_mode(sheet, xor_cr);
+	_cairo_save_and_set_sel_color(sheet, xor_cr);
 
 	// xor
 	cairo_move_to(xor_cr, sheet->row_title_area.width, sheet->y_drag);
 	cairo_line_to(xor_cr,  sheet->sheet_window_width + 1, sheet->y_drag);
 	cairo_stroke(xor_cr);
 
-	cairo_restore(xor_cr);  // _cairo_save_and_set_xor_mode
+	cairo_restore(xor_cr);  // _cairo_save_and_set_sel_color
 	cairo_destroy(xor_cr);   /* FIXME - to be removed */
     }
     else  // erase

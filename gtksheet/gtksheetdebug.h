@@ -21,7 +21,7 @@
 #else
 # define DEBUG_WIDGET_SET_PARENT(widget, parent) \
     g_debug( \
-        "%s(%d) FIXME gtk_widget_set_parent of %s %p to %s %p",  \
+        "%s(%d) gtk_widget_set_parent of %s %p to %s %p",  \
         __FUNCTION__, __LINE__,  \
         G_OBJECT_TYPE_NAME(widget), widget, \
         G_OBJECT_TYPE_NAME (parent), parent)
@@ -32,7 +32,7 @@
 #else
 # define DEBUG_WIDGET_SET_PARENT_WIN(widget, parent) \
     g_debug( \
-        "%s(%d) FIXME gtk_widget_set_parent_window of %s %p to %s %p",  \
+        "%s(%d) gtk_widget_set_parent_window of %s %p to %s %p",  \
         __FUNCTION__, __LINE__,  \
         G_OBJECT_TYPE_NAME(widget), widget, \
         G_OBJECT_TYPE_NAME(parent), parent)
@@ -43,7 +43,7 @@
 #else
 # define DEBUG_WIDGET_CONTAINER_ADD(parent, widget) \
     g_debug( \
-        "%s(%d) FIXME gtk_container_add of %s %p to %s %p",  \
+        "%s(%d) gtk_container_add of %s %p to %s %p",  \
         __FUNCTION__, __LINE__,  \
         G_OBJECT_TYPE_NAME(widget), widget, \
         G_OBJECT_TYPE_NAME (parent), parent)
@@ -54,7 +54,7 @@
 #else
 # define DEBUG_WIDGET_CONTAINER_REMOVE(parent, widget) \
     g_debug( \
-        "%s(%d) FIXME gtk_container_remove of %s %p from %s %p",  \
+        "%s(%d) gtk_container_remove of %s %p from %s %p",  \
         __FUNCTION__, __LINE__,  \
         G_OBJECT_TYPE_NAME(widget), widget, \
         G_OBJECT_TYPE_NAME (parent), parent)

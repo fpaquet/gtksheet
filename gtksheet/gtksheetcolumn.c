@@ -74,8 +74,8 @@
 
 #define SET_ACTIVE_CELL(r, c) \
     { \
-        g_debug("%s(%d): SET_ACTIVE_CELL(%d, %d) FIXME", \
-            __FUNCTION__, __LINE__, (r), (c)); \
+        /*g_debug("%s(%d): SET_ACTIVE_CELL(%d, %d)", \
+            __FUNCTION__, __LINE__, (r), (c));*/ \
         sheet->active_cell.row = (r); \
         sheet->active_cell.col = (c); \
     }
@@ -109,8 +109,11 @@ _column_button_press_handler(
     GdkEvent  *event,
     gpointer   user_data)
 {
-    g_debug("FIXME IN_SEL _column_button_press_handler %s %p", 
+#if 0
+    g_debug("%s(%d): %s %p", 
+        __FUNCTION__, __LINE__,
         G_OBJECT_TYPE_NAME(widget), widget);
+#endif
 
     GtkSheetColumn *colobj = GTK_SHEET_COLUMN(
         gtk_widget_get_parent(GTK_WIDGET(widget)));
@@ -118,14 +121,8 @@ _column_button_press_handler(
     GtkSheet *sheet = GTK_SHEET(
         gtk_widget_get_parent(GTK_WIDGET(colobj)));
 
-    g_debug("FIXME IN_SEL _column_button_press_handler %s %p", 
-        G_OBJECT_TYPE_NAME(sheet), sheet);
-
     if (colobj->col_button == widget)
     {
-        g_debug("FIXME SEL found col %d", 
-                gtk_sheet_column_get_index(colobj));
-
         /* patch window in event and propagate to sheet
            - this trick works in gtk_sheet_button_press_handler()
            which uses gdk_window_get_device_position() to process event
@@ -175,11 +172,7 @@ _gtk_sheet_column_button_add_label_internal(
         gtk_style_context_add_class (context, GTK_STYLE_CLASS_TOP);
 
         gtk_widget_show(colobj->col_button);
-#if 0
-        g_debug(
-            "%s(%d) FIXME - added GtkToggleButton with label <%s> %p",
-            __FUNCTION__, __LINE__, label, colobj->col_button);
-#endif
+
         /* hack to disable left mouse button */
         g_signal_connect(
             G_OBJECT(colobj->col_button), 
@@ -198,13 +191,7 @@ _gtk_sheet_column_button_add_label_internal(
         gtk_widget_get_preferred_height(
             GTK_WIDGET(colobj->col_button),
             &minimum_height, &natural_height);
-#if 0
-        g_debug(
-            "%s(%d) FIXME min.h %d nat.h %d cta.h %d",
-            __FUNCTION__, __LINE__, 
-            minimum_height, natural_height,
-            sheet->column_title_area.height);
-#endif
+
         if (minimum_height > sheet->column_title_area.height)
             gtk_sheet_set_column_titles_height(sheet, minimum_height);
     }
@@ -854,17 +841,15 @@ _gtk_sheet_column_realize(GtkSheetColumn *colobj, GtkSheet *sheet)
     g_return_if_fail(GTK_IS_SHEET_COLUMN(colobj));
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
-    g_debug("%s(%d) FIXME called %s %p", 
-            __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME (colobj), colobj);
+#if 0
+    g_debug("%s(%d) called %s %p", 
+        __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME(colobj), colobj);
+#endif
 
     if (gtk_widget_get_realized(colobj)) return;
 
     if (sheet->column_titles_visible)
     {
-        g_debug("%s(%d) FIXME realizing %s %p sheet %p", 
-                __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME (colobj), colobj,
-                sheet);
-
         if (!gtk_widget_get_parent(colobj))
             gtk_widget_set_parent(GTK_WIDGET(colobj), sheet);
 
@@ -892,9 +877,11 @@ _gtk_sheet_column_unrealize(GtkWidget *widget)
 
     GtkSheetColumn *colobj = GTK_SHEET_COLUMN(widget);
 
+#if 0
     g_debug(
-        "%s(%d) FIXME called %s %p", 
+        "%s(%d) called %s %p", 
         __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME(colobj), colobj);
+#endif
 
     if (!gtk_widget_get_realized(colobj)) return;
 
@@ -927,7 +914,6 @@ gtk_sheet_column_class_init(GtkSheetColumnClass *klass)
 
     gtk_sheet_column_class_init_properties(gobject_class);
 
-    //FIXME - CSS work in progress
     gtk_widget_class_set_css_name (widget_class, "button");
 }
 
@@ -1146,10 +1132,6 @@ _gtk_sheet_column_size_request(GtkSheet *sheet,
 
     if (colobj->col_button)
     {
-        g_debug(
-            "%s(%d) FIXME - gtk_widget_get_preferred_size %p",
-            __FUNCTION__, __LINE__, colobj->col_button);
-
         gtk_widget_get_preferred_size(
             colobj->col_button, &button_requisition, NULL);
 
@@ -1202,8 +1184,8 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
 
 #if GTK_SHEET_COL_DEBUG_SIZE > 0
-    g_debug("%s(%d) FIXME called %s %p", 
-        __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME (sheet), sheet);
+    g_debug("%s(%d) called %s %p", 
+        __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME(sheet), sheet);
 #endif
 
     width = sheet->sheet_window_width;
@@ -1228,12 +1210,6 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
     }
 
     if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return;
-
-#if 0
-    g_debug("%s(%d) FIXME 2 %s %p cta x %d y %d w %d h %d", 
-        __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME (sheet), sheet,
-            cta->x, cta->y, cta->width, cta->height);
-#endif
 
     for (col = MIN_VIEW_COLUMN(sheet);
           col <= MAX_VIEW_COLUMN(sheet) && col <= sheet->maxcol;
@@ -1282,31 +1258,12 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
             gtk_widget_get_preferred_size(colobj->col_button, NULL, NULL);
 #endif
 
-#if 0
-            g_debug("%s(%d) FIXME %s %p alloc col %d x %d y %d w %d h %d", 
-                    __FUNCTION__, __LINE__, 
-                    G_OBJECT_TYPE_NAME (colobj->col_button), colobj->col_button,
-                    col, 
-                    allocation.x, allocation.y, 
-                    allocation.width, allocation.height);
-#endif
-
             gtk_widget_size_allocate(colobj->col_button, &allocation);
+
             DEBUG_WIDGET_SET_PARENT_WIN(
                 colobj->col_button, sheet->column_title_window);
             gtk_widget_set_parent_window(
                 colobj->col_button, sheet->column_title_window);
-
-#if 0
-            g_debug("FIXME SEL set event mask");
-            gint mask = gtk_widget_get_events(colobj->col_button);
-            g_debug("FIXME SEL pre %x", mask);
-            mask &= ~(GDK_BUTTON_PRESS_MASK
-                      | GDK_BUTTON_RELEASE_MASK
-                      | GDK_TOUCH_MASK);
-            gtk_widget_set_events(colobj->col_button, mask);
-            g_debug("FIXME SEL gtk_widget_set_events %x", mask);
-#endif
 
             GtkWidget *parent = gtk_widget_get_parent(colobj->col_button);
             if (parent != colobj)
@@ -1333,16 +1290,6 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
                     allocation.width = cta->width - allocation.x;
 
                 gtk_widget_set_clip(colobj->col_button, &allocation);
-
-#if 0
-                g_debug("%s(%d) FIXME %s %p clip col %d x %d y %d w %d h %d", 
-                        __FUNCTION__, __LINE__, 
-                        G_OBJECT_TYPE_NAME (colobj->col_button),
-                        colobj->col_button,
-                        col,
-                        allocation.x, allocation.y, 
-                        allocation.width, allocation.height);
-#endif
             }
         }
         _gtk_sheet_draw_button(sheet, -1, col, NULL);
@@ -1370,8 +1317,8 @@ gtk_sheet_set_column_width(GtkSheet *sheet, gint col, guint width)
     if (col < 0 || col > sheet->maxcol) return;
 
 #if GTK_SHEET_COL_DEBUG_SIZE > 0
-    g_debug("%s(%d): FIXME col %d width %d", 
-            __FUNCTION__, __LINE__, col, width);
+    g_debug("%s(%d): col %d width %d", 
+        __FUNCTION__, __LINE__, col, width);
 #endif
 
     _gtk_sheet_column_size_request(sheet, col, &min_width);
@@ -2019,11 +1966,6 @@ _gtk_sheet_column_button_release(GtkSheet *sheet, gint col)
     if (colobj->col_button
         && GTK_IS_TOGGLE_BUTTON(colobj->col_button))
     {
-        g_debug("%s(%d) FIXME set FALSE on %s %p", 
-            __FUNCTION__, __LINE__, 
-            G_OBJECT_TYPE_NAME (colobj->col_button),
-            colobj->col_button);
-
         gtk_toggle_button_set_active(
             GTK_TOGGLE_BUTTON(colobj->col_button), FALSE);
     }
@@ -2076,19 +2018,17 @@ gtk_sheet_column_set_visibility(GtkSheet *sheet, gint col, gboolean visible)
     //gint act_row = sheet->active_cell.row;
     gint act_col = sheet->active_cell.col;
 
-    if (act_col == col)   /* hide active column -> disable active cell */
+    if (act_col == col) /* hide active column -> disable active cell */
     {
-        g_debug("FIXME - should deactivate active cell properly");
+        // FIXME - should deactivate active cell properly
         //_gtk_sheet_hide_active_cell(sheet);
         //SET_ACTIVE_CELL(-1, -1);
 
         gint old_state = sheet->state;
-        g_debug("gtk_sheet_column_set_visibility: called old_state %d FIXME", old_state);
 
         if (gtk_widget_get_realized(GTK_WIDGET(sheet))
             && old_state == GTK_SHEET_NORMAL)
         {
-            // FIXME - experimental 1
             gboolean veto = _gtk_sheet_deactivate_cell(sheet);
             // there are 2 possible reasons for veto
             // no active_cell or DEACTIVATE signal returns veto
@@ -2133,7 +2073,7 @@ void
 gtk_sheet_column_button_justify(GtkSheet *sheet, gint col,
                                 GtkJustification justification)
 {
-    g_debug("%s(%d): FIXME deprecated by col_button",
+    g_debug("%s(%d): function deprecated by col_button",
         __FUNCTION__, __LINE__);
 }
 

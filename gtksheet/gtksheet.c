@@ -365,7 +365,7 @@ typedef enum _GtkSheetArea
 
 #define SET_ACTIVE_CELL(r, c) \
     { \
-	/*g_debug("%s(%d): SET_ACTIVE_CELL(%d, %d) FIXME", \
+	/*g_debug("%s(%d): SET_ACTIVE_CELL(%d, %d)", \
             __FUNCTION__, __LINE__, (r), (c));*/ \
 	sheet->active_cell.row = (r); \
         sheet->active_cell.col = (c); \
@@ -373,7 +373,7 @@ typedef enum _GtkSheetArea
 
 #define SET_SELECTION_PIN(r, c) \
     { \
-        /*g_debug("%s(%d): SET_SELECTION_PIN(%d, %d) FIXME", \
+        /*g_debug("%s(%d): SET_SELECTION_PIN(%d, %d)", \
             __FUNCTION__, __LINE__, (r), (c));*/ \
         sheet->selection_pin.row = (r); \
         sheet->selection_pin.col = (c); \
@@ -381,7 +381,7 @@ typedef enum _GtkSheetArea
 
 #define SET_SELECTION_CURSOR(r, c) \
     { \
-        /*g_debug("%s(%d): SET_SELECTION_CURSOR(%d, %d) FIXME", \
+        /*g_debug("%s(%d): SET_SELECTION_CURSOR(%d, %d)", \
             __FUNCTION__, __LINE__, (r), (c));*/ \
         sheet->selection_cursor.row = (r); \
         sheet->selection_cursor.col = (c); \
@@ -3389,7 +3389,6 @@ gtk_sheet_class_init(GtkSheetClass *klass)
     klass->set_scroll_adjustments = gtk_sheet_set_scroll_adjustments;
     klass->move_cursor = _gtk_sheet_move_cursor;
 
-    //FIXME - CSS work in progress
     gtk_widget_class_set_css_name (widget_class, "sheet");
 }
 
@@ -3516,7 +3515,6 @@ gtk_sheet_init(GtkSheet *sheet)
     sheet->interval = 0;
 
     sheet->button = NULL;
-    g_debug("gtk_sheet_init: set state NORMAL FIXME");
     sheet->state = GTK_SHEET_NORMAL;
 
     sheet->range.row0 = -1;
@@ -3583,8 +3581,6 @@ gtk_sheet_init(GtkSheet *sheet)
     /* make sure the tooltip signal fires even if the sheet itself has no tooltip */
     gtk_widget_set_has_tooltip(GTK_WIDGET(sheet), TRUE);
 
-    //FIXME - CSS work in progress
-#if 1
     {
         gtk_style_context_add_class(
             gtk_widget_get_style_context(GTK_WIDGET(sheet)),
@@ -3640,7 +3636,6 @@ gtk_sheet_init(GtkSheet *sheet)
 	    g_object_unref(provider);
         }
     }
-#endif
 }
 
 
@@ -3948,7 +3943,7 @@ gtk_sheet_set_background(GtkSheet *sheet, GdkRGBA *color)
     }
     else
     {
-        g_warning("%s(%d): FIXME deprecated_bg_color_used %s %s",
+        g_warning("%s(%d): deprecated_bg_color_used %s %s",
             __FUNCTION__, __LINE__,
             G_OBJECT_TYPE_NAME(sheet),
             gtk_widget_get_name(GTK_WIDGET(sheet)));
@@ -4371,7 +4366,7 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
 
     if (attributes.deprecated_font_desc_used)
     {
-        g_warning("%s(%d): FIXME deprecated_font_desc_used %s %s row %d col %d",
+        g_warning("%s(%d): deprecated_font_desc_used %s %s row %d col %d",
             __FUNCTION__, __LINE__,
             G_OBJECT_TYPE_NAME(sheet),
             gtk_widget_get_name(GTK_WIDGET(sheet)),
@@ -4452,7 +4447,7 @@ _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
     if (new_width != colptr->width)
     {
 #if GTK_SHEET_DEBUG_SIZE > 0
-	g_debug("%s(%d): FIXME col %d set width %d",
+	g_debug("%s(%d): col %d set width %d",
             __FUNCTION__, __LINE__, col, new_width);
 #endif
 	gtk_sheet_set_column_width(sheet, col, new_width);
@@ -5579,19 +5574,13 @@ gtk_sheet_row_set_visibility(GtkSheet *sheet, gint row, gboolean visible)
     if (GTK_SHEET_ROW_IS_VISIBLE(rowobj) == visible) return;
 
     gint act_row = sheet->active_cell.row;
-    // FIXME - obsolete code below, to be removed
-    //gint act_col = sheet->active_cell.col;
 
-    if (act_row == row)   /* hide active column -> disable active cell */
+    if (act_row == row) /* hide active column -> disable active cell */
     {
 	_gtk_sheet_hide_active_cell(sheet);
 
         SET_ACTIVE_CELL(-1, -1);
     }
-
-    // FIXME - obsolete code below, to be removed
-    //act_row = sheet->active_cell.row;
-    //act_col = sheet->active_cell.col;
 
     GTK_SHEET_ROW_SET_VISIBLE(rowobj, visible);
 
@@ -5925,7 +5914,6 @@ gtk_sheet_select_row(GtkSheet *sheet, gint row)
 	if (!veto) return;
     }
 
-    g_debug("gtk_sheet_select_row: set state SELECTED after deactivate FIXME");
     sheet->state = GTK_SHEET_ROW_SELECTED;
 
     sheet->range.row0 = row;
@@ -5933,8 +5921,6 @@ gtk_sheet_select_row(GtkSheet *sheet, gint row)
     sheet->range.rowi = row;
     sheet->range.coli = sheet->maxcol;
 
-    // FIXME - obsoleted by selection pin
-    //SET_ACTIVE_CELL(row, 0);
     SET_SELECTION_PIN(row, 0);
 
     g_signal_emit(G_OBJECT(sheet), sheet_signals[SELECT_ROW], 0, row);
@@ -5967,7 +5953,6 @@ gtk_sheet_select_column(GtkSheet *sheet, gint column)
 	if (!veto) return;
     }
 
-    g_debug("gtk_sheet_select_column: set state COL after deactivate FIXME");
     sheet->state = GTK_SHEET_COLUMN_SELECTED;
 
     sheet->range.row0 = 0;
@@ -5975,8 +5960,6 @@ gtk_sheet_select_column(GtkSheet *sheet, gint column)
     sheet->range.rowi = sheet->maxrow;
     sheet->range.coli = column;
 
-    // FIXME - obsoleted by selection pin
-    //SET_ACTIVE_CELL(0, column);
     SET_SELECTION_PIN(0, column);
 
     g_signal_emit(G_OBJECT(sheet), sheet_signals[SELECT_COLUMN], 0, column);
@@ -6155,9 +6138,8 @@ static void _cairo_save_and_set_sel_color(GtkSheet *sheet, cairo_t *cr)
     sel_color.alpha = 0.5;
 
 #if GTK_SHEET_DEBUG_EXPOSE > 1
-    g_debug("%s(%d): FIXME sel_color %s",
-        __FUNCTION__, __LINE__,
-        gdk_rgba_to_string(&sel_color));
+    g_debug("%s(%d): sel_color %s",
+        __FUNCTION__, __LINE__, gdk_rgba_to_string(&sel_color));
 #endif
 
     gtk_style_context_restore(sheet_context);
@@ -6191,8 +6173,10 @@ static gint
 gtk_sheet_flash(gpointer data)
 {
     GtkSheet *sheet = GTK_SHEET(data);
-
-    //g_debug("gtk_sheet_flash: called FIXME");
+#if 0
+    g_debug("%s(%d) called %s %p", 
+        __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME(sheet), sheet);
+#endif
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return (TRUE);
     if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return (TRUE);
@@ -6200,11 +6184,7 @@ gtk_sheet_flash(gpointer data)
     if (GTK_SHEET_IN_XDRAG(sheet)) return (TRUE);
     if (GTK_SHEET_IN_YDRAG(sheet)) return (TRUE);
 
-    /* FIXME
-       - invalidate_region is missing 
-       */ 
-    //g_debug("gtk_sheet_flash: called");
-    //g_assert(FALSE);
+    // FIXME - invalidate_region is missing here?
 
 #if GTK_CHECK_VERSION(3,6,0) == 0
     GDK_THREADS_ENTER();
@@ -6275,7 +6255,9 @@ gtk_sheet_draw_flashing_range(
     if (!gtk_sheet_range_isvisible(sheet, sheet->clip_range))
 	return;
 
-    //g_debug("gtk_sheet_draw_flashing_range: called FIXME");
+#if 0
+    g_debug("%s(%d): called", __FUNCTION__, __LINE__);
+#endif
 
     // obsolete, already done in _cairo_save_and_set_sel_color()
     //_cairo_clip_sheet_area(sheet, xor_cr);
@@ -6717,11 +6699,11 @@ gtk_sheet_realize_handler(GtkWidget *widget)
     _gtk_sheet_recalc_top_ypixels(sheet);
     _gtk_sheet_recalc_left_xpixels(sheet);
 
-    g_debug("%s(%d) FIXME called %s %p", 
-	__FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME (sheet), sheet);
-
 #if GTK_SHEET_DEBUG_REALIZE > 0
-    g_debug("gtk_sheet_realize_handler: called (%p)", sheet->sheet_entry);
+    g_debug("%s(%d) called %s %p entry %s %p", 
+        __FUNCTION__, __LINE__, 
+        G_OBJECT_TYPE_NAME(sheet), sheet,
+        G_OBJECT_TYPE_NAME(sheet->sheet_entry), sheet->sheet_entry);
 #endif
 
     gtk_widget_set_realized_true(GTK_WIDGET(widget));
@@ -7132,7 +7114,6 @@ gtk_sheet_map_handler(GtkWidget *widget)
         /* this will cause selection to be reset
            whenever sheet gets unmapped+mapped or hidden+shown
 	    */
-        //g_debug("FIXME - experimental activate cell in map_handler");
 	gtk_sheet_activate_cell(
             sheet,  sheet->active_cell.row,  sheet->active_cell.col);
 
@@ -7374,7 +7355,7 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col,
     if (sheet->deprecated_bg_color_used
         || attributes.deprecated_bg_color_used)
     {
-        g_warning("%s(%d): FIXME deprecated_bg_color_used %s %s row %d col %d",
+        g_warning("%s(%d): deprecated_bg_color_used %s %s row %d col %d",
             __FUNCTION__, __LINE__,
             G_OBJECT_TYPE_NAME(sheet),
             gtk_widget_get_name(GTK_WIDGET(sheet)),
@@ -7612,7 +7593,7 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     PangoFontDescription *font_desc = NULL;
     if (attributes.deprecated_font_desc_used)
     {
-        g_warning("%s(%d): FIXME deprecated_font_desc_used %s %s row %d col %d",
+        g_warning("%s(%d): deprecated_font_desc_used %s %s row %d col %d",
             __FUNCTION__, __LINE__,
             G_OBJECT_TYPE_NAME(sheet),
             gtk_widget_get_name(GTK_WIDGET(sheet)),
@@ -7884,7 +7865,7 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 
     if (attributes.deprecated_fg_color_used)
     {
-        g_warning("%s(%d): FIXME deprecated_fg_color_used %s %s row %d col %d",
+        g_warning("%s(%d): deprecated_fg_color_used %s %s row %d col %d",
             __FUNCTION__, __LINE__,
             G_OBJECT_TYPE_NAME(sheet),
             gtk_widget_get_name(GTK_WIDGET(sheet)),
@@ -8330,8 +8311,8 @@ gtk_sheet_range_draw_selection(
     range.row0 = MAX(range.row0, MIN_VIEW_ROW(sheet));
     range.rowi = MIN(range.rowi, MAX_VIEW_ROW(sheet));
 
-#if GTK_SHEET_DEBUG_SELECTION > -1
-    g_debug("%s(%d): FIXME range r %d-%d c %d-%d",
+#if GTK_SHEET_DEBUG_SELECTION > 0
+    g_debug("%s(%d): range r %d-%d c %d-%d",
         __FUNCTION__, __LINE__,
 	range.row0, range.rowi, range.col0, range.coli);
 #endif
@@ -9258,24 +9239,26 @@ gtk_sheet_set_active_cell(GtkSheet *sheet, gint row, gint col)
     if (row > sheet->maxrow || col > sheet->maxcol)
 	return (FALSE);
 
-    //g_debug("gtk_sheet_set_active_cell: row %d col %d FIXME", row, col);
-
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-    g_debug("gtk_sheet_set_active_cell: row %d col %d", row, col);
+    g_debug("%s(%d): row %d col %d",
+        __FUNCTION__, __LINE__, row, col);
 #endif
 
     if (!gtk_widget_get_can_focus(GTK_WIDGET(sheet)))
     {
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-	g_debug("gtk_sheet_set_active_cell: row %d col %d abort: sheet, can-focus false", row, col);
+	g_debug("%s(%d): row %d col %d abort: sheet, can-focus false",
+            __FUNCTION__, __LINE__, row, col);
 #endif
 	return (FALSE);
     }
 
-    if (col >= 0 && !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))))
+    if (col >= 0 && !gtk_widget_get_can_focus(
+        GTK_WIDGET(COLPTR(sheet, col))))
     {
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-	g_debug("gtk_sheet_set_active_cell: row %d col %d abort: sheet column, can-focus false", row, col);
+	g_debug("%s(%d): row %d col %d abort: sheet column, can-focus false",
+            __FUNCTION__, __LINE__, row, col);
 #endif
 	return (FALSE);
     }
@@ -9283,7 +9266,8 @@ gtk_sheet_set_active_cell(GtkSheet *sheet, gint row, gint col)
     if (col >= 0 && !GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)))
     {
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-	g_debug("gtk_sheet_set_active_cell: row %d col %d abort: sheet column, visible false", row, col);
+	g_debug("%s(%d): row %d col %d abort: sheet column, visible false",
+            __FUNCTION__, __LINE__, row, col);
 #endif
 	return (FALSE);
     }
@@ -9298,7 +9282,8 @@ gtk_sheet_set_active_cell(GtkSheet *sheet, gint row, gint col)
 	if (!_gtk_sheet_deactivate_cell(sheet))
 	{
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-	    g_debug("gtk_sheet_set_active_cell: abort: deactivation false");
+	    g_debug("%s(%d): abort: deactivation false",
+                __FUNCTION__, __LINE__, );
 #endif
 	    return (FALSE);
 	}
@@ -9410,7 +9395,9 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
     g_return_if_fail(data != NULL);
     g_return_if_fail(GTK_IS_SHEET(data));
 
-    //g_debug("gtk_sheet_entry_changed_handler called FIXME");
+#if 0
+    g_debug("%s(%d): called", __FUNCTION__, __LINE__);
+#endif
 
     GtkSheet *sheet = GTK_SHEET(data);
 
@@ -9451,7 +9438,7 @@ void
 _gtk_sheet_redraw_pending(GtkSheet *sheet)
 {
 #if 0
-    g_debug("%s(%d) FIXME pending %d", 
+    g_debug("%s(%d) pending %d", 
         __FUNCTION__, __LINE__, 
         GTK_SHEET_REDRAW_PENDING(sheet));
 #endif
@@ -9517,8 +9504,7 @@ _gtk_sheet_deactivate_cell(GtkSheet *sheet)
 
     if (!veto)
     {
-        //g_debug("FIXME - forgot to restore gtk_sheet_entry_changed_handler");
-
+        //FIXME - forgot to restore gtk_sheet_entry_changed_handler?
         SET_ACTIVE_CELL(old_row, old_col);
 	return (FALSE);
     }
@@ -9673,8 +9659,6 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
     if (row < 0 || col < 0) return (FALSE);
     if (row > sheet->maxrow || col > sheet->maxcol) return (FALSE);
 
-    g_debug("gtk_sheet_activate_cell: called FIXME");
-
     if (!gtk_widget_get_can_focus(GTK_WIDGET(sheet)))
     {
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
@@ -9699,7 +9683,6 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
 
     if (sheet->state != GTK_SHEET_NORMAL)
     {
-        g_debug("gtk_sheet_activate_cell: set state NORMAL FIXME");
 	sheet->state = GTK_SHEET_NORMAL;
 	gtk_sheet_real_unselect_range(sheet, NULL);
     }
@@ -9726,9 +9709,9 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
 
     gulong handler_id = gtk_sheet_entry_signal_connect_changed(
         sheet, G_CALLBACK(gtk_sheet_entry_changed_handler));
-    //g_debug("gtk_sheet_activate_cell %p connect gtk_sheet_entry_changed_handler = %lu FIXME", sheet, handler_id);
 
-    _gtksheet_signal_emit(G_OBJECT(sheet), sheet_signals[ACTIVATE], row, col, &veto);
+    _gtksheet_signal_emit(
+        G_OBJECT(sheet), sheet_signals[ACTIVATE], row, col, &veto);
 
     return (TRUE);
 }
@@ -9858,39 +9841,10 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
         gtk_entry_set_has_frame(entry, FALSE);
     }
 
-#if 0
-    if (gtk_widget_get_realized(entry_widget))
-    {
-#if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-        g_debug("%s(%d): FIXME style fg color %s",
-            __FUNCTION__, __LINE__,
-            gdk_rgba_to_string(&attributes.foreground));
-        g_debug("%s(%d): FIXME style bg color %s",
-            __FUNCTION__, __LINE__,
-            gdk_rgba_to_string(&attributes.background));
-#endif
-
-	gtk_widget_override_color (entry_widget, 
-	    GTK_STATE_FLAG_NORMAL, &attributes.foreground);
-	gtk_widget_override_background_color (entry_widget, 
-	    GTK_STATE_FLAG_NORMAL, &attributes.background);
-
-	gtk_widget_override_color (entry_widget, 
-	    GTK_STATE_FLAG_ACTIVE, &attributes.foreground);
-	gtk_widget_override_background_color (entry_widget, 
-	    GTK_STATE_FLAG_ACTIVE, &attributes.background);
-    }
-#else
-    // FIXME - CSS experimental
     if (gtk_widget_get_realized(entry_widget))
     {
         GtkStyleContext *entry_context = gtk_widget_get_style_context(
             GTK_WIDGET(sheet->sheet_entry));
-        g_debug("FIXME context %p %s %p", 
-            entry_context,
-            G_OBJECT_TYPE_NAME(sheet->sheet_entry), sheet->sheet_entry);
-
-        //gtk_style_context_restore(context);
 
         GList *class_list = gtk_style_context_list_classes(
             entry_context);
@@ -9917,7 +9871,6 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
                 sheet->css_class);
         }
     }
-#endif
 }
 
 /** 
@@ -9945,11 +9898,10 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
     gint act_row = sheet->active_cell.row;
     gint act_col = sheet->active_cell.col;
 
-    g_debug("gtk_sheet_show_active_cell: called r %d c %d %p FIXME",
-        act_row, act_col, sheet);
-
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-    g_debug("gtk_sheet_show_active_cell: called row %d col %d",
+    g_debug("%s(%d): %s %p called row %d col %d",
+        __FUNCTION__, __LINE__,
+        G_OBJECT_TYPE_NAME(sheet), sheet),
         act_row, act_col);
 #endif
 
@@ -10013,13 +9965,11 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
     //gtk_sheet_entry_set_max_size(sheet);
     _gtk_sheet_entry_size_allocate(sheet);
 
-    //g_debug("FIXME - map in show_active_cell");
     gtk_widget_map(sheet->sheet_entry);
     gtk_sheet_draw_active_cell(sheet, NULL);
 
     _gtk_sheet_entry_preselect(sheet);
 
-    //g_debug("gtk_sheet_show_active_cell: grab focus FIXME");
     gtk_widget_grab_focus(entry_widget);
 
     g_free(text);
@@ -10320,22 +10270,6 @@ gtk_sheet_draw_border(
 	clip_area.x, clip_area.y, clip_area.width, clip_area.height);
 #endif
 
-#if 0
-    /* old code */
-    clip_area.x--;
-    clip_area.y--;
-    clip_area.width += 3;
-    clip_area.height += 3;
-
-    cairo_t *xor_cr = gdk_cairo_create(sheet->sheet_window); /* FIXME, to be removed */
-    _cairo_save_and_set_sel_color(sheet, xor_cr);
-
-    cairo_save(xor_cr);  // need to clip
-
-    gdk_cairo_rectangle(xor_cr, &clip_area);
-    cairo_clip (xor_cr);
-#endif
-
     cairo_t *my_cr = cr;
 
     if (!my_cr)
@@ -10343,11 +10277,6 @@ gtk_sheet_draw_border(
         // when not in expose - create my own cr and destroy at end
         my_cr = gdk_cairo_create(sheet->sheet_window);
     }
-
-#if 0
-    // setup cr for blit sheet->bsurf into sheet_window
-    cairo_set_source_surface(my_cr, sheet->bsurf, 0, 0);
-#endif
 
     _cairo_save_and_set_sel_color(sheet, my_cr);
     
@@ -10630,13 +10559,9 @@ gtk_sheet_select_range(GtkSheet *sheet, const GtkSheetRange *range)
     sheet->range.col0 = new_range.col0;
     sheet->range.coli = new_range.coli;
 
-    // FIXME - obsoleted by selection_pin
-    //SET_ACTIVE_CELL(new_range.row0, new_range.col0);
-
     SET_SELECTION_PIN(new_range.row0, new_range.col0);
     SET_SELECTION_CURSOR(new_range.rowi, new_range.coli);
 
-    g_debug("gtk_sheet_select_range: set state RANGE after deactivate FIXME");
     sheet->state = GTK_SHEET_RANGE_SELECTED;
     gtk_sheet_real_select_range(sheet, NULL);
 }
@@ -10651,8 +10576,9 @@ void
 gtk_sheet_unselect_range(GtkSheet *sheet)
 {
     gtk_sheet_real_unselect_range(sheet, NULL);
-    g_debug("gtk_sheet_unselect_range: set state NORMAL FIXME");
+
     sheet->state = GTK_SHEET_NORMAL;
+
     gtk_sheet_activate_cell(
         sheet, sheet->active_cell.row, sheet->active_cell.col);
 }
@@ -10734,7 +10660,6 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
     g_return_val_if_fail(GTK_IS_SHEET(widget), FALSE);
 
     static gint cnt = 0;
-    //g_debug("gtk_sheet_draw: called FIXME %d", cnt++);
 
 #if GTK_SHEET_DEBUG_EXPOSE > 1
     _debug_cairo_clip_extent("gtk_sheet_draw", cr);
@@ -10823,12 +10748,6 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
 		if (sheet->state == GTK_SHEET_NORMAL)
 		{
 		    gtk_sheet_draw_active_cell(sheet, cr);
-
-                    /* FIXME
-                       - the next statement causes a draw loop 
-		    if (!GTK_SHEET_IN_SELECTION(sheet))
-                        gtk_widget_queue_draw(sheet->sheet_entry);
-                       */
 		}
 	    }
 	}
@@ -10862,7 +10781,6 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
     if (sheet->state != GTK_SHEET_NORMAL
         && GTK_SHEET_IN_SELECTION(sheet))
     {
-        g_debug("gtk_sheet_draw: calling gtk_widget_grab_focus FIXME");
         gtk_widget_grab_focus(GTK_WIDGET(sheet));
     }
 
@@ -10899,8 +10817,6 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
     if(event->type != GDK_BUTTON_PRESS) return(TRUE);
 */
 
-    g_debug("FIXME SEL gtk_sheet_button_press_handler: called");
-
 #if GTK_SHEET_DEBUG_MOUSE > 0
     g_debug("gtk_sheet_button_press_handler: called");
 #endif
@@ -10913,7 +10829,6 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 
     if (!(mods & GDK_BUTTON1_MASK)) 
     {
-	g_debug("FIXME SEL - !(mods & GDK_BUTTON1_MASK)");
 	return (TRUE);
     }
 
@@ -11017,13 +10932,11 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 
 		if (!_gtk_sheet_deactivate_cell(sheet)) return (FALSE);
 
-                // FIXME - obsoleted by selection pin
-                //SET_ACTIVE_CELL(old_row, old_col);
                 SET_SELECTION_PIN(old_row, old_col);
 
 		sheet->drag_range = sheet->range;
-                g_debug("gtk_sheet_button_press_handler: set state RANGE after deactivate FIXME");
-		sheet->state = GTK_SHEET_RANGE_SELECTED;
+
+                sheet->state = GTK_SHEET_RANGE_SELECTED;
 		gtk_sheet_select_range(sheet, &sheet->drag_range);
 	    }
 
@@ -11051,13 +10964,11 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 
 		if (!_gtk_sheet_deactivate_cell(sheet)) return (FALSE);
 
-                // FIXME - obsoleted by selection pin
-                //SET_ACTIVE_CELL(old_row, old_col);
                 SET_SELECTION_PIN(old_row, old_col);
 
 		sheet->drag_range = sheet->range;
-                g_debug("gtk_sheet_button_press_handler: set state RANGE after deactivate 2 FIXME");
-		sheet->state = GTK_SHEET_RANGE_SELECTED;
+
+                sheet->state = GTK_SHEET_RANGE_SELECTED;
 		gtk_sheet_select_range(sheet, &sheet->drag_range);
 	    }
 	    sheet->x_drag = x;
@@ -11084,7 +10995,6 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    gtk_sheet_click_cell(sheet, row, column, &veto);
 	    if (veto)
             {
-                g_debug("gtk_sheet_button_press_handler: set IN_SEL (VETO) FIXME");
                 GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
             }
 	}
@@ -11107,8 +11017,8 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    sheet->timer = g_timeout_add_full(0, TIMEOUT_SCROLL,
                 _gtk_sheet_scroll_to_pointer, sheet, NULL);
 	    gtk_widget_grab_focus(GTK_WIDGET(sheet));
-            g_debug("gtk_sheet_button_press_handler: set IN_SEL (COL) FIXME");
-	    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
+
+            GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 	}
     }
 
@@ -11126,8 +11036,8 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    gtk_grab_add(GTK_WIDGET(sheet));
 	    sheet->timer = g_timeout_add_full(0, TIMEOUT_SCROLL, _gtk_sheet_scroll_to_pointer, sheet, NULL);
 	    gtk_widget_grab_focus(GTK_WIDGET(sheet));
-            g_debug("gtk_sheet_button_press_handler: set IN_SEL (ROW) FIXME");
-	    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
+
+            GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 	}
     }
 
@@ -11254,10 +11164,9 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	sheet->range.rowi = sheet->maxrow;
 	sheet->range.coli = sheet->maxcol;
 
-        // FIXME - why this ??? -- obsolete code
-        //SET_ACTIVE_CELL(0, 0);
+        /* if any range is selected, clear it */
 
-	if (sheet->state != GTK_SHEET_NORMAL)   /* if any range is selected, clear it */
+	if (sheet->state != GTK_SHEET_NORMAL)
 	    gtk_sheet_unselect_range(sheet);
 	else
 	    gtk_sheet_select_range(sheet, NULL);
@@ -11267,8 +11176,6 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 
     if (row != -1 && col != -1)  /* sheet cell clicked */
     {
-        g_debug("FIXME gtk_sheet_click_cell 0");
-
 	GtkSheetColumn *colp = COLPTR(sheet, col);
 
 	if (!gtk_widget_get_can_focus(GTK_WIDGET(sheet)))
@@ -11279,23 +11186,18 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	    *veto = FALSE;
 	    return;
 	}
-        //g_debug("FIXME gtk_sheet_click_cell 1");
-	if (!gtk_widget_get_can_focus(GTK_WIDGET(colp)))
+
+        if (!gtk_widget_get_can_focus(GTK_WIDGET(colp)))
 	{
-            //g_debug("FIXME gtk_sheet_click_cell 1f");
 #if GTK_SHEET_DEBUG_CLICK > 0
 	    g_debug("gtk_sheet_click_cell: row %d col %d VETO: sheet column, can-focus false", row, col);
 #endif
 	    *veto = FALSE;
-            //g_debug("FIXME gtk_sheet_click_cell 1ff");
 	    return;
 	}
-        //g_debug("FIXME gtk_sheet_click_cell 2");
 
 	if (sheet->state != GTK_SHEET_NORMAL)
 	{
-            //g_debug("FIXME gtk_sheet_click_cell 3");
-            //g_debug("gtk_sheet_click_cell: set state NORMAL FIXME");
 	    sheet->state = GTK_SHEET_NORMAL;
 	    gtk_sheet_real_unselect_range(sheet, NULL);
 	}
@@ -11315,23 +11217,18 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 #endif
                 if (!_gtk_sheet_deactivate_cell(sheet))
                 {
-                    //g_debug("FIXME gtk_sheet_click_cell 4");
-
 #if GTK_SHEET_DEBUG_CLICK > 0
                     g_debug("%s(%d): row %d col %d VETO: deactivate false",
                         __FUNCTION__, __LINE__, row, col);
 #endif
                     *veto = FALSE;
-                    //g_debug("FIXME gtk_sheet_click_cell 4a");
                     return;
                 }
             }
 #if GTK_SHEET_DEBUG_CLICK > 0
 	    g_debug("gtk_sheet_click_cell: row %d col %d back from deactivate", row, col);
 #endif
-            //g_debug("FIXME gtk_sheet_click_cell 3x");
 	}
-        //g_debug("FIXME gtk_sheet_click_cell 5");
 
 	/* auto switch column entry_type */
 	/* not sure wether to move this code to gtk_sheet_show_active_cell() */
@@ -11342,20 +11239,16 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 
 	    if (installed_entry_type != wanted_type)
 	    {
-                //g_debug("FIXME gtk_sheet_click_cell 6");
-
 		if (sheet->state == GTK_SHEET_NORMAL)
                 {
-                    // FIXME note: this will set active_cell to -1
                     _gtk_sheet_hide_active_cell(sheet);
                 }
 
-                //g_debug("FIXME gtk_sheet_click_cell 6a");
-
-                // FIXME create_sheet_entry() will not activate sheet entry
+                // create_sheet_entry() will not activate sheet entry
                 // because active_cell is -1
-                // experimental: set it before call to create_sheet_entry()
-                // will only work partially, if entry_type != wanted_type
+                // experimentally setting it before call 
+                // to create_sheet_entry() will only work partially,
+                // if entry_type != wanted_type
                 //sheet->active_cell.row = row;
                 //sheet->active_cell.col = col;
 
@@ -11363,7 +11256,6 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
                     sheet, wanted_type ? wanted_type : G_TYPE_NONE);
 	    }
 	}
-        //g_debug("FIXME gtk_sheet_click_cell 7");
 
 	/* DEACTIVATE handler might have called gtk_sheet_set_active_cell(),
 	   so wie leave it, if it was changed
@@ -11382,13 +11274,9 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	    }
 	}
 #endif
-        //g_debug("FIXME gtk_sheet_click_cell 8");
 
 	if (gtk_sheet_autoscroll(sheet))
 	    _gtk_sheet_move_query(sheet, row, col, TRUE);
-        //g_debug("FIXME gtk_sheet_click_cell 9");
-
-        g_debug("gtk_sheet_click_cell: %p active_cell := row,col FIXME", sheet);
 
         SET_ACTIVE_CELL(row, col);
 
@@ -11400,26 +11288,13 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	sheet->range.rowi = row;
 	sheet->range.coli = col;
 
-        g_debug("gtk_sheet_click_cell: set state NORMAL 2 FIXME");
 	sheet->state = GTK_SHEET_NORMAL;
-        //g_debug("FIXME gtk_sheet_click_cell 10");
 
-        // FIXME the following wrong statement caused sheet editor not
-        // to be activated
-	//GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
         GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
-
-        // FIXME next line experimentally replaced by show_active_cell()
-	//gtk_sheet_draw_active_cell(sheet, NULL);
-
-        // FIXME - gtk_sheet_show_active_cell will not connect 
-        // entry changed handler, replaced by gtk_sheet_activate_cell()
-        //gtk_sheet_show_active_cell(sheet);
 
         gtk_sheet_activate_cell(
             sheet, sheet->active_cell.row, sheet->active_cell.col);
         
-        //g_debug("FIXME gtk_sheet_click_cell 11");
 	return;
     }
 
@@ -11504,13 +11379,6 @@ gtk_sheet_button_release_handler(
 	gtk_sheet_real_unselect_range(sheet, NULL);
 
         /* move active cell - with drag area */
-        /* FIXME - obsolete code, to be removed
-        SET_ACTIVE_CELL(
-            sheet->active_cell.row +
-	    (sheet->drag_range.row0 - sheet->range.row0),
-             sheet->active_cell.col +
-            (sheet->drag_range.col0 - sheet->range.col0));
-        */
 
         /* move selection pin - with drag area */
         SET_SELECTION_PIN(
@@ -11543,30 +11411,10 @@ gtk_sheet_button_release_handler(
 	gtk_sheet_real_unselect_range(sheet, NULL);
 
         /* set active_cell - to drag end point  */
-        /* FIXME - obsolete code, to be removed
-        SET_ACTIVE_CELL(
-            sheet->active_cell.row +
-            (sheet->drag_range.row0 - sheet->range.row0),
-            sheet->active_cell.col +
-            (sheet->drag_range.col0 - sheet->range.col0));
-        */
 
-#if 1
         /* set selection cursor - to drag end point  */
         SET_SELECTION_CURSOR(
             sheet->drag_cell.row, sheet->drag_cell.col);
-#else
-        /* FIXME - obsolete code, to be removed
-           move selection cursor - to drag end point  */
-        if (sheet->drag_range.row0 < sheet->range.row0)
-	    sheet->selection_cursor.row = sheet->drag_range.row0;
-	if (sheet->drag_range.rowi >= sheet->range.rowi)
-	    sheet->selection_cursor.row = sheet->drag_range.rowi;
-	if (sheet->drag_range.col0 < sheet->range.col0)
-	    sheet->selection_cursor.col = sheet->drag_range.col0;
-	if (sheet->drag_range.coli >= sheet->range.coli)
-	    sheet->selection_cursor.col = sheet->drag_range.coli;
-#endif
 
 	old_range = sheet->range;
 	sheet->range = sheet->drag_range;
@@ -11574,7 +11422,6 @@ gtk_sheet_button_release_handler(
 
 	if (sheet->state == GTK_SHEET_NORMAL)
         {
-            g_debug("gtk_sheet_button_release_handler: set state RANGE FIXME");
             sheet->state = GTK_SHEET_RANGE_SELECTED;
         }
 	g_signal_emit(G_OBJECT(sheet), sheet_signals[RESIZE_RANGE], 0,
@@ -11585,7 +11432,6 @@ gtk_sheet_button_release_handler(
     if (sheet->state == GTK_SHEET_NORMAL
         && GTK_SHEET_IN_SELECTION(sheet))
     {
-        g_debug("gtk_sheet_button_release_handler: unset IN_SEL FIXME");
 	GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 	gdk_device_ungrab (event->device, event->time);
 
@@ -11593,14 +11439,12 @@ gtk_sheet_button_release_handler(
             sheet, sheet->active_cell.row, sheet->active_cell.col);
     }
 
-    // FIXME - the following if-condition is bogus
-    //if (GTK_SHEET_IN_SELECTION)
-	gdk_device_ungrab (event->device, event->time);
+    gdk_device_ungrab(event->device, event->time);
+
     if (sheet->timer)
 	g_source_remove(sheet->timer);
     gtk_grab_remove(GTK_WIDGET(sheet));
 
-    g_debug("gtk_sheet_button_release_handler: unset IN_SEL 2 FIXME");
     GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 
     return (TRUE);
@@ -12293,36 +12137,20 @@ gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column)
         && column == sheet->selection_cursor.col)
 	return;
 
-#if 0
-    /* return if there is no active cell */
-    /* FIXME obsoleted by selection_pin */
-    if (sheet->active_cell.row < 0
-        || sheet->active_cell.row > sheet->maxrow)
-	return;
-    if (sheet->active_cell.col < 0
-        || sheet->active_cell.col > sheet->maxcol)
-	return;
-    /* here we have a valid active_cell */
-#endif
-
     gint old_state = sheet->state;
-    g_debug("gtk_sheet_extend_selection: called old_state %d FIXME", old_state);
 
     _gtk_sheet_move_query(sheet, row, column, FALSE);
     gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
-#if 1
     if (gtk_widget_get_realized(GTK_WIDGET(sheet))
         && old_state == GTK_SHEET_NORMAL)
     {
-        // FIXME - experimental 1
         gboolean veto = _gtk_sheet_deactivate_cell(sheet);
         // there are 2 possible reasons for veto
         // no active_cell or DEACTIVATE signal returns veto
         if (!veto) return;
         // deactivate will set active_cell := -1
     }
-#endif
 
     if (GTK_SHEET_IN_DRAG(sheet)) return;
 
@@ -12341,35 +12169,11 @@ gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column)
 	    break;
 
         case GTK_SHEET_NORMAL:
-#if 0
-            /* FIXME obsoleted by selection_pin */
-            if (sheet->active_cell.row != -1 || sheet->active_cell.col != -1)
-            {
-                gint r = sheet->active_cell.row;
-                gint c = sheet->active_cell.col;
-
-                sheet->range.col0 = c;
-                sheet->range.row0 = r;
-                sheet->range.coli = c;
-                sheet->range.rowi = r;
-
-                // blit
-                cairo_rectangle(swin_cr, 
-                    _gtk_sheet_column_left_xpixel(sheet, c) - 1, 
-                    _gtk_sheet_row_top_ypixel(sheet, r) - 1, 
-                    COLPTR(sheet, c)->width + 4, 
-                    ROWPTR(sheet, r)->height + 4);
-                cairo_fill(swin_cr);
-            }
-#endif
-            g_debug("gtk_sheet_extend_selection: set state RANGE FIXME");
             sheet->state = GTK_SHEET_RANGE_SELECTED;
-
 	    gtk_sheet_range_draw_selection(sheet, sheet->range, NULL);
 	    /* FALLTHROUGH */
 
 	case GTK_SHEET_RANGE_SELECTED:
-            g_debug("gtk_sheet_extend_selection: set state RANGE FT FIXME");
 	    sheet->state = GTK_SHEET_RANGE_SELECTED;
 	    /* FALLTHROUGH */
     }
@@ -12394,7 +12198,6 @@ gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column)
         || range.rowi != sheet->range.rowi
         || range.col0 != sheet->range.col0
         || range.coli != sheet->range.coli
-        //|| old_state == GTK_SHEET_NORMAL  // FIXME obsoleted by selection_pin
         )
     {
 	gtk_sheet_real_select_range(sheet, &range);
@@ -12503,7 +12306,7 @@ gtk_sheet_key_press_handler(GtkWidget *widget, GdkEventKey *key)
 
     state = sheet->state;
     in_selection = GTK_SHEET_IN_SELECTION(sheet);
-    g_debug("gtk_sheet_key_press_handler: unset IN_SEL FIXME");
+
     GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 
 #if GTK_SHEET_DEBUG_KEYPRESS > 0
@@ -13108,8 +12911,6 @@ gtk_sheet_focus(GtkWidget *widget, GtkDirectionType  direction)
 	return(FALSE);
     }
 
-    g_debug("gtk_sheet_focus: called FIXME");
-
 #if GTK_SHEET_DEBUG_KEYPRESS > 0
     g_debug("gtk_sheet_focus: %p %d", widget, direction); 
 #endif
@@ -13395,7 +13196,7 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 	{
 	    if (attributes.deprecated_font_desc_used)
 	    {
-		g_warning("%s(%d): FIXME deprecated_font_desc_used %s %s row %d col %d",
+		g_warning("%s(%d): deprecated_font_desc_used %s %s row %d col %d",
 		    __FUNCTION__, __LINE__,
 		    G_OBJECT_TYPE_NAME(sheet),
 		    gtk_widget_get_name(GTK_WIDGET(sheet)),
@@ -13513,7 +13314,7 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 #endif
 
 #if GTK_SHEET_DEBUG_SIZE > 0
-    g_debug("%s(%d) FIXME %s %p alloc x %d y %d w %d h %d", 
+    g_debug("%s(%d) %s %p alloc x %d y %d w %d h %d", 
         __FUNCTION__, __LINE__, 
         G_OBJECT_TYPE_NAME (sheet->sheet_entry), sheet->sheet_entry,
         shentry_allocation.x, shentry_allocation.y, 
@@ -13539,15 +13340,6 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
             shentry_allocation.x = rta->width;
         }
         gtk_widget_set_clip(sheet->sheet_entry, &shentry_allocation);
-
-#if 0
-        g_debug("%s(%d) FIXME %s %p clip x %d y %d w %d h %d", 
-                __FUNCTION__, __LINE__, 
-                G_OBJECT_TYPE_NAME (sheet->sheet_entry),
-                sheet->sheet_entry,
-                shentry_allocation.x, shentry_allocation.y, 
-                shentry_allocation.width, shentry_allocation.height);
-#endif
     }
 }
 
@@ -13707,15 +13499,10 @@ create_sheet_entry(
 	gtk_widget_realize(sheet->sheet_entry);
     }
 
-    //g_debug("create_sheet_entry connect %p gtk_sheet_entry_key_press_handler FIXME", sheet);
     g_signal_connect_swapped(G_OBJECT(entry), "key_press_event",
 	(void *)gtk_sheet_entry_key_press_handler,
 	G_OBJECT(sheet));
 
-    // FIXME this will cause entry not realized, but no draw loop
-    //gtk_widget_show(sheet->sheet_entry);
-    // FIXME - experimental gtk_sheet_show_active_cell()
-    // FIXME - this will grab focus if active_cell was set! is this allowed?
     gtk_sheet_show_active_cell(sheet);
 }
 
@@ -14031,7 +13818,6 @@ gulong gtk_sheet_entry_signal_connect_changed(
     entry = gtk_sheet_get_entry(sheet);
     g_return_val_if_fail(entry != NULL, handler_id);
 
-    //g_debug("gtk_sheet_entry_signal_connect_changed %p connect handler FIXME", sheet);
     if (GTK_IS_EDITABLE(entry))
     {
 	handler_id = g_signal_connect(
@@ -14080,7 +13866,6 @@ void gtk_sheet_entry_signal_disconnect_by_func(
     entry = gtk_sheet_get_entry(sheet);
     g_return_if_fail(entry != NULL);
 
-    //g_debug("gtk_sheet_entry_signal_disconnect_by_func %p disconnect handler FIXME", sheet);
     if (GTK_IS_EDITABLE(entry))
     {
 	g_signal_handlers_disconnect_by_func(
@@ -14267,8 +14052,6 @@ _gtk_sheet_draw_button(
 
     gtk_style_context_save(sheet_context);
 
-    // FIXME - where to obtain text direction?
-
     GtkTextDirection sheet_dir = gtk_widget_get_direction(
 	GTK_WIDGET(sheet));
 
@@ -14293,7 +14076,7 @@ _gtk_sheet_draw_button(
 
 #if GTK_SHEET_DEBUG_DRAW_BUTTON > 0
     g_debug(
-        "%s(%d): gtk_render_background: FIXME x %d y %d w %d h %d st %d", 
+        "%s(%d): gtk_render_background: x %d y %d w %d h %d st %d", 
         __FUNCTION__, __LINE__, 
 	x, y, width, height,
         button_state);
@@ -15327,7 +15110,6 @@ gtk_sheet_delete_rows(GtkSheet *sheet, guint row, guint nrows)
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
 
-    g_debug("FIXME - should deactivate active cell properly");
     /* deactivate active cell properly - added  25.06.18/fp */
     _gtk_sheet_hide_active_cell(sheet);
 
@@ -15404,7 +15186,6 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
     act_row = sheet->active_cell.row;
     act_col = sheet->active_cell.col;
 
-    g_debug("FIXME - should deactivate active cell properly");
     /* deactivate active cell properly - added  25.06.18/fp */
     _gtk_sheet_hide_active_cell(sheet);
 
@@ -15467,7 +15248,7 @@ gtk_sheet_range_set_background(GtkSheet *sheet,
         
             if (color != NULL)
             {
-                g_warning("%s(%d): FIXME deprecated_color_used %s %s",
+                g_warning("%s(%d): deprecated_color_used %s %s",
                     __FUNCTION__, __LINE__,
                     G_OBJECT_TYPE_NAME(sheet),
                     gtk_widget_get_name(GTK_WIDGET(sheet)));
@@ -15529,7 +15310,7 @@ gtk_sheet_range_set_foreground(GtkSheet *sheet,
 
 	if (color != NULL)
         {
-            g_warning("%s(%d): FIXME deprecated_fg_color_used %s %s",
+            g_warning("%s(%d): deprecated_fg_color_used %s %s",
                 __FUNCTION__, __LINE__,
                 G_OBJECT_TYPE_NAME(sheet),
                 gtk_widget_get_name(GTK_WIDGET(sheet)));
@@ -16778,11 +16559,6 @@ gtk_sheet_button_attach(GtkSheet *sheet,
             gtk_container_add(GTK_CONTAINER(colobj->col_button), widget);
 	}
 
-	g_debug(
-	    "%s(%d) FIXME - gtk_widget_queue_resize %s %p",
-	    __FUNCTION__, __LINE__, 
-	    G_OBJECT_TYPE_NAME (widget), widget);
-
 	// is this needed?
 	//if (gtk_widget_get_realized (GTK_WIDGET(sheet)))
 	//  gtk_widget_queue_resize (GTK_WIDGET(sheet));
@@ -17158,13 +16934,7 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
 	child_allocation.width = child_min_size.width;
 	child_allocation.height = child_min_size.height;
     }
-#if 0
-    g_debug("%s(%d) FIXME 3 %s %p alloc x %d y %d w %d h %d", 
-            __FUNCTION__, __LINE__, 
-            G_OBJECT_TYPE_NAME (child->widget), child->widget,
-            child_allocation.x, child_allocation.y, 
-            child_allocation.width, child_allocation.height);
-#endif
+
     gtk_widget_size_allocate(child->widget, &child_allocation);
 
     if (gtk_widget_get_mapped(child->widget))
@@ -17178,14 +16948,6 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
             child_allocation.x = rta->width;
         }
         gtk_widget_set_clip(child->widget, &child_allocation);
-
-#if 0
-        g_debug("%s(%d) FIXME 4 %s %p clip x %d y %d w %d h %d", 
-                __FUNCTION__, __LINE__, 
-                G_OBJECT_TYPE_NAME (child->widget), child->widget,
-                child_allocation.x, child_allocation.y, 
-                child_allocation.width, child_allocation.height);
-#endif
     }
 
     gtk_widget_queue_draw(child->widget);
@@ -17345,7 +17107,9 @@ _gtk_sheet_position_children(GtkSheet *sheet)
     GList *children = sheet->children;
     GtkSheetChild *child;
 
-    //g_debug("%s(%d): FIXME called %p", __FUNCTION__, __LINE__, sheet);
+#if 0
+    g_debug("%s(%d): called %p", __FUNCTION__, __LINE__, sheet);
+#endif
 
     while (children)
     {
@@ -17395,7 +17159,6 @@ _gtk_sheet_position_children(GtkSheet *sheet)
 
 	    if (colobj->col_button)
 	    {
-		/* FIXME column visible? */
                 if (sheet->column_titles_visible
 		    && gtk_widget_get_visible(colobj)
 		    && minviewcol <= col && col <= maxviewcol)

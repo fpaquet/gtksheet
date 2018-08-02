@@ -6154,19 +6154,15 @@ static void _cairo_save_and_set_sel_color(GtkSheet *sheet, cairo_t *cr)
         sheet_context, GTK_STATE_FLAG_SELECTED, &sel_color);
     sel_color.alpha = 0.5;
 
+#if GTK_SHEET_DEBUG_EXPOSE > 1
     g_debug("%s(%d): FIXME sel_color %s",
         __FUNCTION__, __LINE__,
         gdk_rgba_to_string(&sel_color));
+#endif
 
     gtk_style_context_restore(sheet_context);
 
-    //gdk_cairo_set_source_rgba(cr, &color_white);
     gdk_cairo_set_source_rgba(cr, &sel_color);
-
-    //gdk_cairo_set_source_window(cr, sheet->sheet_window, 0, 0);
-    //cairo_set_operator(cr, CAIRO_OPERATOR_XOR);  /* ex GDK_INVERT */
-
-    //return(cr);
 }
 
 static void 
@@ -9454,15 +9450,14 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
 void
 _gtk_sheet_redraw_pending(GtkSheet *sheet)
 {
+#if 0
     g_debug("%s(%d) FIXME pending %d", 
         __FUNCTION__, __LINE__, 
         GTK_SHEET_REDRAW_PENDING(sheet));
+#endif
 
     if (GTK_SHEET_REDRAW_PENDING(sheet))
     {
-        g_debug("%s(%d) FIXME pending _gtk_sheet_range_draw()", 
-            __FUNCTION__, __LINE__);
-
 	GTK_SHEET_UNSET_FLAGS(
             sheet, GTK_SHEET_IN_REDRAW_PENDING);
 	_gtk_sheet_range_draw(sheet, NULL, TRUE);
@@ -9504,9 +9499,6 @@ _gtk_sheet_deactivate_cell(GtkSheet *sheet)
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return (FALSE);
     if (sheet->state != GTK_SHEET_NORMAL) return (FALSE);
-
-    g_debug("%s(%d): FIXME %p disconnect gtk_sheet_entry_changed_handler", 
-            __FUNCTION__, __LINE__, sheet);
 
     gtk_sheet_entry_signal_disconnect_by_func(sheet,
 	G_CALLBACK(gtk_sheet_entry_changed_handler));
@@ -14219,7 +14211,6 @@ _gtk_sheet_draw_button(
 
     if (row == -1)  /* column title button */
     {
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
 	if (!cr) return;
 	
 	g_assert(0 <= col && col <= sheet->maxcol);
@@ -14238,22 +14229,6 @@ _gtk_sheet_draw_button(
 	}
 
 	return;
-#else
-	window = sheet->column_title_window;
-	button = &COLPTR(sheet, col)->button;
-	index = col;
-	x = _gtk_sheet_column_left_xpixel(sheet, col) + CELL_SPACING;
-
-        /* move button labels and attached widgets, see below */
-        if (!cr && sheet->row_titles_visible)
-            x -= sheet->row_title_area.width;
-
-        y = 0;
-	width = COLPTR(sheet, col)->width;
-	height = sheet->column_title_area.height;
-	sensitive = GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, col));
-	area = ON_COLUMN_TITLES_AREA;
-#endif
     }
     else if (col == -1)  /* row title button */
     {
@@ -16110,13 +16085,10 @@ AddColumns(GtkSheet *sheet, gint position, gint ncols)
 
         }
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
         gint old_maxcol = sheet->maxcol;
-#endif
 
 	sheet->maxcol += ncols;
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
         /* add default titles
            this only works for an empty sheet, otherwise we would
            have to renumber default titles when inserting further
@@ -16133,7 +16105,6 @@ AddColumns(GtkSheet *sheet, gint position, gint ncols)
                 gtk_sheet_column_button_add_label(sheet, newidx, title);
             }
         }
-#endif
 
 	_gtk_sheet_reset_text_column(sheet, sheet->maxcol - ncols);
 	_gtk_sheet_recalc_left_xpixels(sheet);
@@ -16781,23 +16752,8 @@ gtk_sheet_button_attach(GtkSheet *sheet,
     g_debug("gtk_sheet_button_attach: called");
 #endif
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS==0
-    child = g_new(GtkSheetChild, 1);
-    child->widget = widget;
-    child->x = 0;
-    child->y = 0;
-    child->attached_to_cell = TRUE;
-    child->floating = FALSE;
-    child->row = row;
-    child->col = col;
-    child->xpadding = child->ypadding = 0;
-    child->xshrink = child->yshrink = FALSE;
-    child->xfill = child->yfill = FALSE;
-#endif
-
     if (row == -1)  /* attach to column title button */
     {
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
 	g_assert(0 <= col && col <= sheet->maxcol);
 	GtkSheetColumn *colobj = COLPTR(sheet, col);
 
@@ -16832,14 +16788,9 @@ gtk_sheet_button_attach(GtkSheet *sheet,
 	//  gtk_widget_queue_resize (GTK_WIDGET(sheet));
 
         return;    
-#else
-	button = &COLPTR(sheet, col)->button;
-	button->child = child;
-#endif
     }
     else  /* attach to row title button */
     {
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
         child = g_new(GtkSheetChild, 1);
         child->widget = widget;
         child->x = 0;
@@ -16851,8 +16802,8 @@ gtk_sheet_button_attach(GtkSheet *sheet,
         child->xpadding = child->ypadding = 0;
         child->xshrink = child->yshrink = FALSE;
         child->xfill = child->yfill = FALSE;
-#endif
-	button = &sheet->row[row].button;
+
+        button = &sheet->row[row].button;
 	button->child = child;
     }
 
@@ -17432,7 +17383,6 @@ _gtk_sheet_position_children(GtkSheet *sheet)
         children = children->next;
     }
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
     {
 	gint col;
 	gint minviewcol = MIN_VIEW_COLUMN(sheet);
@@ -17461,7 +17411,6 @@ _gtk_sheet_position_children(GtkSheet *sheet)
 	    }
 	}
     }
-#endif
 }
 
 /*
@@ -17500,12 +17449,6 @@ gtk_sheet_remove_handler(GtkContainer *container, GtkWidget *widget)
     {
 	if (child->row == -1)
 	    sheet->row[child->col].button.child = NULL;
-
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
-#else
-	if (child->col == -1)
-	    COLPTR(sheet, child->row)->button.child = NULL;
-#endif
 
 #if GTK_SHEET_DEBUG_CHILDREN > 0
 	g_debug("gtk_sheet_remove_handler: %p %s widget %p", 

@@ -2,7 +2,6 @@ TBD
 ** CSS: grid
 ** CSS: borders
 ** CSS: row title button margin
-** remove #define GTK_SHEET_COLUMN_BUTTON_OBJECTS
 ** sheet entry: reduce undershoot size for small cells (CSS)
 ** sheet entry: undershoot area smears backgnd (CSS)
 ** row selection drawing over right sheet border
@@ -16,6 +15,7 @@ TBD
 * CSS: fixed :selected background color
 * doc fixes
 * rename _cairo_save_and_set_xor_mode to _cairo_save_and_set_sel_color
+* remove #define GTK_SHEET_COLUMN_BUTTON_OBJECTS
 
 2018-08-01 Fredy Paquet <mailbox AT opag.ch>
 * sheet editor font (use CSS style)

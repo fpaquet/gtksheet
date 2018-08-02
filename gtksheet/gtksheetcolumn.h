@@ -51,11 +51,7 @@ struct _GtkSheetColumn
     gint left_xpixel;   /* left edge of the column*/
     gint max_extent_width;  /* := max(Cell.extent.width) */
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
     GtkWidget *col_button;  /* child widget or GtkToggleButton */
-#else
-    GtkSheetButton button;
-#endif
 
 #if GTK_SHEET_OPTIMIZE_COLUMN_DRAW>0
     gint left_text_column;      /* min left column displaying text on this column */

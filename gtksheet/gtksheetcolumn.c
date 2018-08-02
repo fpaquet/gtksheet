@@ -103,8 +103,6 @@ enum _GtkSheetColumnProperties
     PROP_SHEET_COLUMN_WRAP_MODE,  /* wrap_mode */
 };
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
-
 static gboolean
 _column_button_press_handler(
     GtkWidget *widget,
@@ -211,7 +209,6 @@ _gtk_sheet_column_button_add_label_internal(
             gtk_sheet_set_column_titles_height(sheet, minimum_height);
     }
 }
-#endif
 
 static void
 gtk_sheet_column_set_property(GObject *object,
@@ -265,21 +262,8 @@ gtk_sheet_column_set_property(GObject *object,
             {
                 const gchar *label = g_value_get_string(value);
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
                 _gtk_sheet_column_button_add_label_internal(
                     sheet, colobj, label);
-#else
-                if ((col < 0) 
-                    || !G_IS_OBJECT(sheet) 
-                    || !gtk_widget_get_realized(GTK_WIDGET(sheet)))
-                {
-                    GtkSheetButton *button = &colobj->button;
-                    if (button->label) g_free(button->label);
-                    button->label = g_strdup(label);
-                }
-                else
-                    gtk_sheet_column_button_add_label(sheet, col, label);
-#endif
             }
             break;
 
@@ -494,12 +478,8 @@ gtk_sheet_column_get_property(GObject *object,
             break;
 
         case PROP_SHEET_COLUMN_LABEL:
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
             g_value_set_string(value,
                 gtk_sheet_column_button_get_label(sheet, col));
-#else
-            g_value_set_string(value, colobj->button.label);
-#endif
             break;
 
         case PROP_SHEET_COLUMN_WIDTH:
@@ -792,15 +772,7 @@ gtk_sheet_column_init(GtkSheetColumn *column)
     column->left_xpixel = 0;
     column->max_extent_width = 0;
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
     column->col_button = NULL;
-#else
-    column->button.state = GTK_STATE_NORMAL;
-    column->button.label = NULL;
-    column->button.label_visible = TRUE;
-    column->button.child = NULL;
-    column->button.justification = GTK_JUSTIFY_CENTER;
-#endif
 
 #if GTK_SHEET_OPTIMIZE_COLUMN_DRAW>0
     column->left_text_column = column->right_text_column = 0;
@@ -824,11 +796,9 @@ gtk_sheet_column_init(GtkSheetColumn *column)
     gtk_widget_set_can_focus(GTK_WIDGET(column), TRUE);
     gtk_widget_set_has_window(GTK_WIDGET(column), FALSE);
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
     /* not yet attached - column index does not exist
        so we create an empty column title button */
     _gtk_sheet_column_button_add_label_internal(NULL, column, NULL);
-#endif
 }
 
 /*
@@ -849,19 +819,11 @@ gtk_sheet_column_finalize_handler(GObject *gobject)
         column->title = NULL;
     }
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
     if (column->col_button)
     {
         gtk_widget_destroy(column->col_button);
         column->col_button = NULL;
     }
-#else
-    if (column->button.label)
-    {
-        g_free(column->button.label);
-        column->button.label = NULL;
-    }
-#endif
 
     if (column->data_format)
     {
@@ -1177,7 +1139,6 @@ _gtk_sheet_column_size_request(GtkSheet *sheet,
 {
     GtkRequisition button_requisition;
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
     *requisition = 0;
 
     g_assert(0 <= col && col <= sheet->maxcol);
@@ -1194,12 +1155,6 @@ _gtk_sheet_column_size_request(GtkSheet *sheet,
 
         *requisition = button_requisition.width;
     }
-#else
-    _gtk_sheet_button_size_request(
-        sheet, &COLPTR(sheet, col)->button, &button_requisition);
-
-    *requisition = button_requisition.width;
-#endif
 
     GList *children = sheet->children;
     while (children)
@@ -1284,7 +1239,6 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
           col <= MAX_VIEW_COLUMN(sheet) && col <= sheet->maxcol;
           col++)
     {
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
         g_assert(0 <= col && col <= sheet->maxcol);
         GtkSheetColumn *colobj = COLPTR(sheet, col);
 
@@ -1391,7 +1345,6 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
 #endif
             }
         }
-#endif
         _gtk_sheet_draw_button(sheet, -1, col, NULL);
     }
 }
@@ -1479,42 +1432,9 @@ gtk_sheet_column_button_add_label(
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
     if (col < 0 || col > sheet->maxcol) return;
-
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
     GtkSheetColumn *colobj = COLPTR(sheet, col);
+
     _gtk_sheet_column_button_add_label_internal(sheet, colobj, label);
-#else
-    GtkSheetButton *button;
-    GtkRequisition req;
-    gboolean aux_c, aux_r;
-
-#if GTK_SHEET_COL_DEBUG_SIZE > 0
-    g_debug("gtk_sheet_column_button_add_label: col %d", col);
-#endif
-
-    button = &COLPTR(sheet, col)->button;
-    if (button->label) g_free(button->label);
-    button->label = g_strdup(label);
-
-    aux_c = gtk_sheet_autoresize_columns(sheet);
-    aux_r = gtk_sheet_autoresize_rows(sheet);
-    gtk_sheet_set_autoresize(sheet, FALSE);
-    gtk_sheet_set_autoresize_columns(sheet, TRUE);
-    _gtk_sheet_button_size_request(sheet, button, &req);
-    gtk_sheet_set_autoresize_columns(sheet, aux_c);
-    gtk_sheet_set_autoresize_rows(sheet, aux_r);
-
-    if (req.width > COLPTR(sheet, col)->width)
-    {
-#if GTK_SHEET_COL_DEBUG_SIZE > 0
-        g_debug("gtk_sheet_column_button_add_label[%d]: set width %d", col, req.width);
-#endif
-        gtk_sheet_set_column_width(sheet, col, req.width);
-    }
-
-    if (req.height > sheet->column_title_area.height)
-        gtk_sheet_set_column_titles_height(sheet, req.height);
-#endif
 
     if (!gtk_sheet_is_frozen(sheet))
     {
@@ -2002,19 +1922,6 @@ gtk_sheet_column_set_sensitivity(
 #endif
 
     GTK_SHEET_COLUMN_SET_SENSITIVE(COLPTR(sheet, col), sensitive);
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
-    // FIXME inherited by col_button
-#else
-    if (!sensitive) COLPTR(sheet, col)->button.state = GTK_STATE_INSENSITIVE;
-    else
-        COLPTR(sheet, col)->button.state = GTK_STATE_NORMAL;
-
-    if (gtk_widget_get_realized(GTK_WIDGET(sheet))
-        && !gtk_sheet_is_frozen(sheet))
-    {
-        _gtk_sheet_draw_button(sheet, -1, col, NULL);
-    }
-#endif
 }
 
 /**
@@ -2083,7 +1990,6 @@ _gtk_sheet_column_button_set(GtkSheet *sheet, gint col)
 {
     if (col < 0 || col > sheet->maxcol) return;
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
     g_assert(0 <= col && col <= sheet->maxcol);
     GtkSheetColumn *colobj = COLPTR(sheet, col);
 
@@ -2093,19 +1999,6 @@ _gtk_sheet_column_button_set(GtkSheet *sheet, gint col)
         gtk_toggle_button_set_active(
             GTK_TOGGLE_BUTTON(colobj->col_button), TRUE);
     }
-#else
-    GtkSheetButton *button = &COLPTR(sheet, col)->button;
-
-    if (button->state & GTK_STATE_FLAG_ACTIVE) return;
-
-
-#if GTK_SHEET_COL_DEBUG_DRAW > 0
-    g_debug("_gtk_sheet_column_button_set: col %d", col);
-#endif
-
-    button->state |= GTK_STATE_FLAG_ACTIVE;
-    _gtk_sheet_draw_button(sheet, -1, col, NULL);
-#endif
 }
 
 /**
@@ -2120,7 +2013,6 @@ _gtk_sheet_column_button_release(GtkSheet *sheet, gint col)
 {
     if (col < 0 || col > sheet->maxcol) return;
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
     g_assert(0 <= col && col <= sheet->maxcol);
     GtkSheetColumn *colobj = COLPTR(sheet, col);
 
@@ -2129,23 +2021,12 @@ _gtk_sheet_column_button_release(GtkSheet *sheet, gint col)
     {
         g_debug("%s(%d) FIXME set FALSE on %s %p", 
             __FUNCTION__, __LINE__, 
-            G_OBJECT_TYPE_NAME (colobj->col_button), colobj->col_button);
+            G_OBJECT_TYPE_NAME (colobj->col_button),
+            colobj->col_button);
 
         gtk_toggle_button_set_active(
             GTK_TOGGLE_BUTTON(colobj->col_button), FALSE);
     }
-#else
-    GtkSheetButton *button = &COLPTR(sheet, col)->button;
-
-    if (!(button->state & GTK_STATE_FLAG_ACTIVE)) return;
-
-#if GTK_SHEET_COL_DEBUG_DRAW > 0
-    g_debug("_gtk_sheet_column_button_release: col %d", col);
-#endif
-
-    button->state &= ~GTK_STATE_FLAG_ACTIVE;
-    _gtk_sheet_draw_button(sheet, -1, col, NULL);
-#endif
 }
 
 /**
@@ -2242,33 +2123,18 @@ gtk_sheet_column_set_visibility(GtkSheet *sheet, gint col, gboolean visible)
  *  			 CENTER
  *
  * Set the justification(alignment) of the column buttons.
- */
+ * 
+ * This function does nothing, it is kept for
+ * backward-compatibility.
+ *  
+ * Deprecated:4.1.3: Use widget properties instead
+ */ 
 void
 gtk_sheet_column_button_justify(GtkSheet *sheet, gint col,
                                 GtkJustification justification)
 {
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
-    g_debug("FIXME deprecated by col_button");
-#else
-    GtkSheetButton *button;
-
-    g_return_if_fail(sheet != NULL);
-    g_return_if_fail(GTK_IS_SHEET(sheet));
-
-    if (col < 0 || col > sheet->maxcol) return;
-
-#if GTK_SHEET_COL_DEBUG_PROPERTIES > 0
-    g_debug("gtk_sheet_column_button_justify: col %d", col);
-#endif
-
-    button = &COLPTR(sheet, col)->button;
-    button->justification = justification;
-
-    if (!gtk_sheet_is_frozen(sheet))
-    {
-        _gtk_sheet_draw_button(sheet, -1, col, NULL);
-    }
-#endif
+    g_debug("%s(%d): FIXME deprecated by col_button",
+        __FUNCTION__, __LINE__);
 }
 
 /**
@@ -2290,7 +2156,6 @@ gtk_sheet_column_button_get_label(GtkSheet *sheet, gint col)
 
     if (col < 0 || col > sheet->maxcol) return (NULL);
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
     gchar const *label = NULL;
 
     g_assert(0 <= col && col <= sheet->maxcol);
@@ -2301,9 +2166,6 @@ gtk_sheet_column_button_get_label(GtkSheet *sheet, gint col)
         label = gtk_button_get_label(GTK_BUTTON(colobj->col_button));
     }
     return(label);
-#else
-    return (COLPTR(sheet, col)->button.label);
-#endif
 }
 
 /**
@@ -2327,7 +2189,6 @@ gtk_sheet_column_label_set_visibility(
     g_debug("gtk_sheet_column_label_set_visibility: col %d", col);
 #endif
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
     g_assert(0 <= col && col <= sheet->maxcol);
     GtkSheetColumn *colobj = COLPTR(sheet, col);
 
@@ -2335,14 +2196,6 @@ gtk_sheet_column_label_set_visibility(
     {
         gtk_widget_set_visible(colobj->col_button, visible);
     }
-#else
-    COLPTR(sheet, col)->button.label_visible = visible;
-
-    if (!gtk_sheet_is_frozen(sheet))
-    {
-        _gtk_sheet_draw_button(sheet, -1, col, NULL);
-    }
-#endif
 }
 
 /**
@@ -2425,7 +2278,6 @@ gtk_sheet_show_column_titles(GtkSheet *sheet)
     {
         if (col < 0) continue;
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
         g_assert(0 <= col && col <= sheet->maxcol);
         GtkSheetColumn *colobj = COLPTR(sheet, col);
 
@@ -2434,10 +2286,6 @@ gtk_sheet_show_column_titles(GtkSheet *sheet)
         {
             gtk_widget_show(colobj->col_button);
         }
-#else
-        GtkSheetChild *child = COLPTR(sheet, col)->button.child;
-        if (child) _gtk_sheet_child_show(child);
-#endif
     }
 
     _gtk_sheet_scrollbar_adjust(sheet);
@@ -2468,7 +2316,6 @@ gtk_sheet_hide_column_titles(GtkSheet *sheet)
 
     _gtk_sheet_global_sheet_button_hide(sheet);
 
-#if GTK_SHEET_COLUMN_BUTTON_OBJECTS>0
     gint col;
     for (col = 0; col <= sheet->maxcol; col++)
     {
@@ -2477,17 +2324,7 @@ gtk_sheet_hide_column_titles(GtkSheet *sheet)
 
         if (colobj->col_button) gtk_widget_hide(colobj->col_button);
     }
-#else
-    gint col;
-    for (col = MIN_VIEW_COLUMN(sheet);
-          col <= MAX_VIEW_COLUMN(sheet) && col <= sheet->maxcol;
-          col++)
-    {
-        if (col < 0) continue;
-        GtkSheetChild *child = COLPTR(sheet, col)->button.child;
-        if (child) _gtk_sheet_child_hide(child);
-    }
-#endif
+
     _gtk_sheet_scrollbar_adjust(sheet);
     _gtk_sheet_redraw_internal(sheet, FALSE, TRUE);
 }

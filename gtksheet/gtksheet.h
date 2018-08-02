@@ -173,7 +173,6 @@ typedef struct _GtkSheetCellAttr     GtkSheetCellAttr;
 typedef struct _GtkSheetCellBorder     GtkSheetCellBorder;
 
 #define GTK_SHEET_OPTIMIZE_COLUMN_DRAW  0  /* 0=off, 1=on */
-#define GTK_SHEET_COLUMN_BUTTON_OBJECTS  1  /* 0=off, 1=on */
 
 #define GTK_SHEET_CSS_FILE_NAME "gtksheet.css"
 #define GTK_SHEET_CSS_RESOURCE_NAME "/org/gtk/GtkSheet/gtksheet.css"

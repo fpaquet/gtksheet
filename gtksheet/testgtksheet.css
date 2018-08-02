@@ -3,9 +3,14 @@
 @define-color sheet_default_bg_color lightgray;
 @define-color sheet_default_fg_color black;
 
-sheet {
+sheet { 
     background-color: @sheet_default_bg_color;
     color: @sheet_default_fg_color;
+}
+
+sheet .cell:selected {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
 }
 
 /* sheet entry selection style */
@@ -43,6 +48,10 @@ sheet.view text:backdrop {
 sheet .example1class:not(.left) {
     background-color: @testgtksheet_example1_default_bg;
     color: black;
+}
+sheet .example1class:not(.left):selected {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
 }
 sheet .example1red:not(.left) {
     background-color: @testgtksheet_example1_default_bg;

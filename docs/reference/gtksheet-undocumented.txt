@@ -1,7 +1,7 @@
 90% symbol docs coverage.
-336 symbols documented.
+356 symbols documented.
 2 symbols incomplete.
-36 not documented.
+38 not documented.
 
 
 GTKSHEET_CHECK_VERSION
@@ -16,15 +16,17 @@ GTK_SHEET_COLUMN_DEFAULT_WIDTH
 GTK_SHEET_COLUMN_FROZEN
 GTK_SHEET_COLUMN_MIN_WIDTH
 GTK_SHEET_COL_TITLES_VISIBLE
+GTK_SHEET_CSS_FILE_NAME
+GTK_SHEET_CSS_RESOURCE_NAME
 GTK_SHEET_JUSTIFY_ENTRY
 GTK_SHEET_OPTIMIZE_COLUMN_DRAW
 GTK_SHEET_ROW_FROZEN
 GTK_SHEET_ROW_TITLES_VISIBLE
 GtkSheetAttrType (<items>)
-GtkSheetColumnClass
 GtkSheetEntryType (GTK_SHEET_ENTRY_TYPE_GTK_DATA_ENTRY)
 _gtk_sheet_move_cursor
 _gtk_sheet_row_default_height
+gtk_sheet_get_resource
 gtk_widget_get_mapped
 gtk_widget_get_realized
 gtk_widget_get_requisition

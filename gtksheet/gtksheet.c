@@ -1093,6 +1093,7 @@ _gtk_sheet_range_fixup(GtkSheet *sheet, GtkSheetRange *range)
 }
 
 /**
+ * _gtk_sheet_invalidate_region: 
  * Wrapper for gdk_window_invalidate_region
  * 
  * - invalidates sheet_window
@@ -3931,6 +3932,8 @@ gtk_sheet_grid_visible(GtkSheet *sheet)
  *
  * Sets the background color of the #GtkSheet.
  * If pass NULL, the sheet will be reset to the default color.
+ * 
+ * Deprecated:4.1.3: Use #gtk_sheet_set_css_class() instead
  */
 void
 gtk_sheet_set_background(GtkSheet *sheet, GdkRGBA *color)
@@ -3961,7 +3964,7 @@ gtk_sheet_set_background(GtkSheet *sheet, GdkRGBA *color)
 /**
  * gtk_sheet_set_css_class:
  * @sheet: a #GtkSheet
- * @css_class: (nullable) a CSS class name
+ * @css_class: (nullable): a CSS class name
  *
  * Sets the background color of the #GtkSheet.
  * If pass NULL, the sheet will be reset to the default color.
@@ -6063,7 +6066,8 @@ static cairo_t *_create_main_win_xor_cr(GtkSheet *sheet)
 }
 #endif
 
-/**
+/** 
+ * _cairo_clip_sheet_area: 
  * set cairo clipping area to visible part of the sheet.
  * 
  * Note that row/column title windows are overlapping sheet_window.
@@ -6108,8 +6112,10 @@ _cairo_clip_sheet_area(GtkSheet *sheet, cairo_t *cr)
     cairo_clip (cr);
 }
 
-/**
- * saves cairo context and sets xor mode
+/** 
+ * _cairo_save_and_set_xor_mode: 
+ * saves cairo context and set up cairo context for selection 
+ * drawing 
  *  
  * ex GDK_INVERT is emulated by using sel_color.
  *  
@@ -6131,26 +6137,28 @@ static void _cairo_save_and_set_xor_mode(GtkSheet *sheet, cairo_t *cr)
 
     cairo_save(cr);  // _cairo_save_and_set_xor_mode,  _cairo_clip_sheet_area
 
-    GtkStyleContext *style_context = gtk_widget_get_style_context(
+    GtkStyleContext *sheet_context = gtk_widget_get_style_context(
         GTK_WIDGET(sheet));
 
     _cairo_clip_sheet_area(sheet, cr);
 
-    gtk_style_context_save (style_context);
+    gtk_style_context_save(sheet_context);
 
     gtk_style_context_add_class (
-        style_context, GTK_STYLE_CLASS_VIEW);
+        sheet_context, GTK_STYLE_CLASS_VIEW);
     gtk_style_context_add_class (
-        style_context, GTK_STYLE_CLASS_BUTTON);
-    gtk_style_context_add_class (
-        style_context, GTK_STYLE_REGION_COLUMN_HEADER);
+        sheet_context, GTK_STYLE_CLASS_CELL);
 
     GdkRGBA sel_color;
     gtk_style_context_get_background_color(
-        style_context, GTK_STATE_FLAG_SELECTED, &sel_color);
+        sheet_context, GTK_STATE_FLAG_SELECTED, &sel_color);
     sel_color.alpha = 0.5;
 
-    gtk_style_context_restore (style_context);
+    g_debug("%s(%d): FIXME sel_color %s",
+        __FUNCTION__, __LINE__,
+        gdk_rgba_to_string(&sel_color));
+
+    gtk_style_context_restore(sheet_context);
 
     //gdk_cairo_set_source_rgba(cr, &color_white);
     gdk_cairo_set_source_rgba(cr, &sel_color);
@@ -6353,7 +6361,7 @@ gtk_sheet_get_visible_range(GtkSheet *sheet, GtkSheetRange *range)
  *
  * Get vertical scroll adjustments.
  *
- * Returns: (transfer none) a #GtkAdjustment
+ * Returns: (transfer none): a #GtkAdjustment
  */
 GtkAdjustment *
 gtk_sheet_get_vadjustment(GtkSheet *sheet)
@@ -6370,7 +6378,7 @@ gtk_sheet_get_vadjustment(GtkSheet *sheet)
  *
  * Get horizontal scroll adjustments.
  *
- * Returns: (transfer none) a #GtkAdjustment
+ * Returns: (transfer none): a #GtkAdjustment
  */
 GtkAdjustment *
 gtk_sheet_get_hadjustment(GtkSheet *sheet)
@@ -6914,8 +6922,9 @@ global_button_press_handler(GtkWidget *widget,
     return(retval);
 }
 
-/**
- * create sheet button
+/** 
+ * _global_sheet_button_create: 
+ * create global sheet button 
  * 
  * @param sheet  the sheet
  */
@@ -6931,7 +6940,8 @@ _global_sheet_button_create(GtkSheet *sheet)
 	(gpointer)sheet);
 }
 
-/**
+/** 
+ * _global_sheet_button_size_allocate: 
  * allocate global sheet button size
  * 
  * set to title area size
@@ -6958,7 +6968,8 @@ _global_sheet_button_size_allocate(GtkSheet *sheet)
     gtk_widget_size_allocate(sheet->button, &allocation);
 }
 
-/**
+/** 
+ * _gtk_sheet_global_sheet_button_show: 
  * show global sheet button
  * 
  * - allocate size
@@ -6986,7 +6997,8 @@ _gtk_sheet_global_sheet_button_show(GtkSheet *sheet)
     }
 }
 
-/**
+/** 
+ * _gtk_sheet_global_sheet_button_hide: 
  * hide global sheet button
  * 
  * - if visible, hide widget
@@ -8219,7 +8231,8 @@ _gtk_sheet_range_draw(GtkSheet *sheet,
     cairo_destroy(swin_cr);
 }
 
-/**
+/** 
+ * _selection_border_add_gap_for_bg: 
  * add a gap between selection border and background.
  * 
  * @param row    row
@@ -8260,7 +8273,8 @@ static void _selection_border_add_gap_for_bg(
     }
 }
 
-/**
+/** 
+ * gtk_sheet_range_draw_selection: 
  * draw sheet selection including border and corners
  * 
  * @param sheet  the sheet
@@ -8320,8 +8334,9 @@ gtk_sheet_range_draw_selection(
     range.row0 = MAX(range.row0, MIN_VIEW_ROW(sheet));
     range.rowi = MIN(range.rowi, MAX_VIEW_ROW(sheet));
 
-#if GTK_SHEET_DEBUG_SELECTION > 0
-    g_debug("gtk_sheet_range_draw_selection: range r %d-%d c %d-%d",
+#if GTK_SHEET_DEBUG_SELECTION > -1
+    g_debug("%s(%d): FIXME range r %d-%d c %d-%d",
+        __FUNCTION__, __LINE__,
 	range.row0, range.rowi, range.col0, range.coli);
 #endif
 
@@ -8962,7 +8977,7 @@ gtk_sheet_link_cell(GtkSheet *sheet, gint row, gint col, gpointer link)
  *
  * Get link pointer from a cell.
  *
- * Returns: (transfer none) pointer linked to the cell
+ * Returns: (transfer none): pointer linked to the cell
  */
 gpointer
 gtk_sheet_get_link(GtkSheet *sheet, gint row, gint col)
@@ -9454,8 +9469,9 @@ _gtk_sheet_redraw_pending(GtkSheet *sheet)
     }
 }
 
-/**
- * deactivate active cell
+/** 
+ * _gtk_sheet_deactivate_cell: 
+ * deactivate active cell 
  * 
  * if there is an active cell:
  * - disconnect gtk_sheet_entry_changed_handler
@@ -9527,8 +9543,9 @@ _gtk_sheet_deactivate_cell(GtkSheet *sheet)
     return (TRUE);
 }
 
-/**
- * hide active cell:
+/** 
+ * _gtk_sheet_hide_active_cell: 
+ * hide active cell: 
  * 
  * if there is an active cell
  * - redraw cell
@@ -9635,8 +9652,9 @@ _gtk_sheet_hide_active_cell(GtkSheet *sheet)
 #endif
 }
 
-/**
- * activate cell if possible
+/** 
+ * gtk_sheet_activate_cell: 
+ * activate cell if possible 
  * 
  * - set sheet range to active cell
  * - set row/column button state
@@ -9910,8 +9928,9 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
 #endif
 }
 
-/**
- * show active cell
+/** 
+ * gtk_sheet_show_active_cell: 
+ * show active cell 
  * 
  * - transfer cell visibility to sheet entry
  * - setup sheet entry
@@ -9919,7 +9938,6 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
  * - allocate size of sheet entry
  * - draw active cell
  * - preselect sheet entry contents
- * -
  * 
  * @param sheet  the sheet
  */
@@ -10016,7 +10034,8 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
     g_free(old_text);
 }
 
-/**
+/** 
+ * gtk_sheet_draw_active_cell: 
  * draw active cell, but do not activate sheet entry
  * 
  * - set row/column buttons
@@ -10093,8 +10112,9 @@ gtk_sheet_make_bsurf(GtkSheet *sheet, guint width, guint height)
     }
 }
 
-/**
- * compute and draw new selection
+/** 
+ * gtk_sheet_new_selection: 
+ * compute and draw new selection 
  * 
  * @param sheet  the sheet
  * @param range  the new range or NULL 
@@ -10254,8 +10274,9 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
     cairo_destroy(swin_cr);  /* FIXME */
 }
 
-/**
- * draw selection border
+/** 
+ * gtk_sheet_draw_border: 
+ * draw selection border 
  * 
  * Called without a cairo context, 
  * _gtk_sheet_invalidate_region() will be called.
@@ -10376,8 +10397,9 @@ gtk_sheet_draw_border(
     gtk_sheet_draw_corners(sheet, new_range, cr);
 }
 
-/**
- * draw corners of selection border
+/** 
+ * gtk_sheet_draw_corners: 
+ * draw corners of selection border 
  * 
  * @param sheet   the sheet
  * @param range   the selection range
@@ -13576,8 +13598,9 @@ static void sheet_entry_populate_popup_handler(GtkWidget *widget,
 	sheet_signals[ENTRY_POPULATE_POPUP], 0, menu);
 }
 
-/**
- * create or change sheet entry
+/** 
+ * create_sheet_entry: 
+ * create or change sheet entry 
  * 
  * - destroy existing sheet entry
  * - create entry widget
@@ -13733,7 +13756,7 @@ gtk_sheet_get_entry_type(GtkSheet *sheet)
  * the container itself to be returned, you should use 
  * #gtk_sheet_get_entry_widget() instead. 
  *
- * Returns: (transfer none) a #GtkWidget or NULL
+ * Returns: (transfer none): a #GtkWidget or NULL
  */
 GtkWidget *
 gtk_sheet_get_entry(GtkSheet *sheet)
@@ -13789,7 +13812,7 @@ gtk_sheet_get_entry(GtkSheet *sheet)
  * returned. In order to get the entry in the container child, 
  * you might want to use #gtk_sheet_get_entry() instead. 
  *
- * Returns: (transfer none) a #GtkWidget or NULL
+ * Returns: (transfer none): a #GtkWidget or NULL
  */
 GtkWidget *
 gtk_sheet_get_entry_widget(GtkSheet *sheet)
@@ -13987,7 +14010,7 @@ void gtk_sheet_entry_select_region(GtkSheet *sheet, gint start_pos, gint end_pos
 /**
  * gtk_sheet_entry_signal_connect_changed:
  * @sheet: a #GtkSheet 
- * @handler: (scope notified) the signal handler
+ * @handler: (scope notified): the signal handler
  *
  * Connect a handler to the sheet_entry "changed" signal. The 
  * user_data argument of the handler will be filled with the 
@@ -14041,7 +14064,7 @@ gulong gtk_sheet_entry_signal_connect_changed(
 /**
  * gtk_sheet_entry_signal_disconnect_by_func:
  * @sheet: a #GtkSheet 
- * @handler: (scope call) the signal handler
+ * @handler: (scope call): the signal handler
  *
  * Disconnect a handler from the sheet_entry "changed" signal
  *  
@@ -14123,11 +14146,13 @@ row_button_release(GtkSheet *sheet, gint row)
     _gtk_sheet_draw_button(sheet, row, -1, NULL);
 }
 
-/**
- * draw a sheet button
- * if row == -1 draw a column button
- * if col == -1 draw a row button
- * not used for global sheet button
+/** 
+ * _gtk_sheet_draw_button: 
+ * draw a sheet button 
+ *  
+ * * if row == -1 draw a column button 
+ * * if col == -1 draw a row button 
+ * * not used for global sheet button 
  * 
  * @param sheet  the #GtkSheet
  * @param row    row index
@@ -14242,7 +14267,7 @@ _gtk_sheet_draw_button(
         if (!cr && sheet->column_titles_visible)
             y -= sheet->column_title_area.height;
 
-	width = sheet->row_title_area.width;
+	width = sheet->row_title_area.width-1;
 	height = sheet->row[row].height;
 	sensitive = GTK_SHEET_ROW_IS_SENSITIVE(ROWPTR(sheet, row));
 	area = ON_ROW_TITLES_AREA;
@@ -15554,7 +15579,7 @@ gtk_sheet_range_set_foreground(GtkSheet *sheet,
  * gtk_sheet_range_set_css_class:
  * @sheet: a #GtkSheet.
  * @urange: a #GtkSheetRange.
- * @css_class: (nullable) a CSS class name.
+ * @css_class: (nullable): a CSS class name.
  *
  * Set CSS class of the given range.
  */
@@ -15853,7 +15878,7 @@ gtk_sheet_range_set_border_color(GtkSheet *sheet,
  * gtk_sheet_range_set_font:
  * @sheet: a #GtkSheet.
  * @urange: a #GtkSheetRange where we set font_desc.
- * @font_desc: (transfer none) a #PangoFontDescription.
+ * @font_desc: (transfer none): a #PangoFontDescription.
  *
  * Set font_desc for the given range. 
  * 
@@ -16508,7 +16533,7 @@ CheckCellData(GtkSheet *sheet, const gint row, const gint col)
  * You can resize it yourself or use gtk_sheet_attach_*()
  * You may remove it with gtk_container_remove(GTK_CONTAINER(sheet), GtkWidget *child);
  *
- * Returns:  (transfer none) TRUE means that the cell is currently allocated.
+ * Returns:  (transfer none): TRUE means that the cell is currently allocated.
  */
 GtkSheetChild *
 gtk_sheet_put(GtkSheet *sheet, GtkWidget *child, gint x, gint y)

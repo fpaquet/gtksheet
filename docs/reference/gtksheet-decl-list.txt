@@ -251,7 +251,7 @@ gtk_widget_set_mapped_false
 
 <SECTION>
 <FILE>gtksheet-resources</FILE>
-gtksheet_get_resource
+gtk_sheet_get_resource
 </SECTION>
 
 <SECTION>

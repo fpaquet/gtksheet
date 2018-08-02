@@ -152,7 +152,7 @@ gtksheet-resources.c: \
 		--sourcedir=$(srcdir) \
                 --target=$@ \
                 --generate-source \
-                --c-name gtksheet \
+                --c-name gtk_sheet \
 		gtksheet-resources.xml
 
 gtksheet-resources.h: \
@@ -162,7 +162,7 @@ gtksheet-resources.h: \
 		--sourcedir=$(srcdir) \
                 --target=$@ \
                 --generate-header \
-                --c-name gtksheet \
+                --c-name gtk_sheet \
 		gtksheet-resources.xml
 
 # test programs, not to be installed

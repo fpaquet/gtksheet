@@ -10,6 +10,11 @@ sheet {
     color: @sheet_default_fg_color;
 }
 
+sheet .cell:selected {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
 /* sheet entry selection style */
 
 sheet entry selection {

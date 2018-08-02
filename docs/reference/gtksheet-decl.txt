@@ -1268,7 +1268,7 @@ const gchar *str, const gchar *dataformat
 const gchar *str, const gchar *dataformat
 </FUNCTION>
 <FUNCTION>
-<NAME>gtksheet_get_resource</NAME>
+<NAME>gtk_sheet_get_resource</NAME>
 <RETURNS>GResource  *</RETURNS>
 void
 </FUNCTION>

@@ -14,6 +14,8 @@ TBD
 
 2018-08-01 Fredy Paquet <mailbox AT opag.ch>
 * CSS: create embedded resource for default "gtksheet.css"
+* CSS: fixed :selected background color
+* doc fixes
 
 2018-08-01 Fredy Paquet <mailbox AT opag.ch>
 * sheet editor font (use CSS style)

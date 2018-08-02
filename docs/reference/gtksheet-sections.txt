@@ -80,6 +80,8 @@ GTK_SHEET_COL_TITLES_VISIBLE
 GTK_SHEET_AUTO_SCROLL
 GTK_SHEET_JUSTIFY_ENTRY
 GTK_SHEET_OPTIMIZE_COLUMN_DRAW
+GTK_SHEET_CSS_FILE_NAME
+GTK_SHEET_CSS_RESOURCE_NAME
 GtkSheetChild
 GtkSheetButton
 GtkSheetCellBorder
@@ -136,6 +138,7 @@ gtk_sheet_freeze
 gtk_sheet_thaw
 gtk_sheet_set_background
 gtk_sheet_set_grid
+gtk_sheet_set_css_class
 gtk_sheet_show_grid
 gtk_sheet_grid_visible
 gtk_sheet_set_row_title
@@ -209,6 +212,7 @@ gtk_sheet_range_set_visible
 gtk_sheet_range_set_border
 gtk_sheet_range_set_border_color
 gtk_sheet_range_set_font
+gtk_sheet_range_set_css_class
 gtk_sheet_get_attributes
 gtk_sheet_put
 gtk_sheet_attach_floating
@@ -217,8 +221,7 @@ gtk_sheet_attach
 gtk_sheet_move_child
 gtk_sheet_get_child_at
 gtk_sheet_button_attach
-GtkSheetColumn
-GtkSheetColumnClass
+gtk_sheet_get_resource
 <SUBSECTION Standard>
 GTK_IS_SHEET
 GTK_IS_SHEET_CLASS

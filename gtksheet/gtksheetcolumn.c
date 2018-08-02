@@ -1064,7 +1064,7 @@ gtk_sheet_column_get_type(void)
  *  
  * Get a #GtkSheetColumn
  *  
- * Returns:	(transfer none) the requested #GtkSheetColumn or 
+ * Returns:	(transfer none): the requested #GtkSheetColumn or 
  * NULL 
  */
 GtkSheetColumn *gtk_sheet_column_get(GtkSheet *sheet, gint col)

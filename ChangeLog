@@ -2,12 +2,13 @@ TBD
 ** CSS: grid
 ** CSS: borders
 ** CSS: row title button margin
-** sheet entry: reduce undershoot size for small cells (CSS)
-** sheet entry: undershoot area smears backgnd (CSS)
 ** row selection drawing over right sheet border
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
-** Glade: rework column label handling
+
+2018-08-03 Fredy Paquet <mailbox AT opag.ch>
+* Glade: fixed column label handling
+* cleanup compiler warnings
 
 2018-08-01 Fredy Paquet <mailbox AT opag.ch>
 * CSS: create embedded resource for default "gtksheet.css"

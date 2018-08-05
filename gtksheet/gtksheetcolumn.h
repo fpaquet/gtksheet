@@ -182,16 +182,20 @@ gboolean gtk_sheet_column_titles_visible(GtkSheet *sheet);
 const gchar *gtk_sheet_get_column_title(GtkSheet *sheet, gint column);
 void gtk_sheet_set_column_title(GtkSheet *sheet, gint column, const gchar *title);
 
-
 /*< private >*/
+
+void _gtk_sheet_column_realize(GtkSheetColumn *colobj, GtkSheet *sheet);
 
 gint _gtk_sheet_column_left_xpixel(GtkSheet *sheet, gint col);
 gint _gtk_sheet_column_right_xpixel(GtkSheet *sheet, gint col);
 
-void _gtk_sheet_column_size_request(GtkSheet *sheet, gint col, guint *requisition);
+void _gtk_sheet_column_size_request(
+    GtkSheet *sheet, gint col, guint *requisition);
 void _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet);
 void _gtk_sheet_column_button_set(GtkSheet *sheet, gint col);
 void _gtk_sheet_column_button_release(GtkSheet *sheet, gint col);
+void _gtk_sheet_column_check_windows(
+    GtkSheetColumn *colobj, GtkSheet *sheet);
 
 G_END_DECLS
 

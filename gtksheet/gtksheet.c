@@ -68,6 +68,8 @@
 #endif
 
 #ifdef GTK_SHEET_DEBUG
+#   define GTK_SHEET_DEBUG_ENABLE_DEPRECATION_WARNINGS  1
+
 #   define GTK_SHEET_DEBUG_ADJUSTMENT  0
 #   define GTK_SHEET_DEBUG_ALLOCATION  0
 #   define GTK_SHEET_DEBUG_BUILDER   0
@@ -854,7 +856,9 @@ _gtk_sheet_column_from_xpixel(GtkSheet *sheet, gint x)
 	if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, i)))
 	{
 	    if (cx <= x  && x < (cx + COLPTR(sheet, i)->width))
-		return (i);
+            {
+                return (i);
+            }
 	    cx += COLPTR(sheet, i)->width;
 	}
     }
@@ -1501,10 +1505,14 @@ static void CheckBounds(GtkSheet *sheet, gint row, gint col);
 static void CheckCellData(GtkSheet *sheet, const gint row, const gint col);
 
 /* Container Functions */
-static void gtk_sheet_remove_handler(GtkContainer *container, GtkWidget *widget);
-static void gtk_sheet_realize_child(GtkSheet *sheet, GtkSheetChild *child);
-static void gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child);
-static void gtk_sheet_row_size_request(GtkSheet *sheet, gint row, guint *requisition);
+static void gtk_sheet_remove_handler(
+    GtkContainer *container, GtkWidget *widget);
+static void gtk_sheet_realize_child(
+    GtkSheet *sheet, GtkSheetChild *child);
+static void gtk_sheet_position_child(
+    GtkSheet *sheet, GtkSheetChild *child);
+static void gtk_sheet_row_size_request(
+    GtkSheet *sheet, gint row, guint *requisition);
 
 /* GtkBuildableIface */
 
@@ -1525,13 +1533,12 @@ gtk_sheet_buildable_add_child_internal(GtkSheet *sheet,
     GtkSheetColumn *child,
     const char *name)
 {
-    int col;
 
     g_return_if_fail(GTK_IS_SHEET(sheet));
     g_return_if_fail(GTK_IS_SHEET_COLUMN(child));
 
     gtk_sheet_add_column(sheet, 1);
-    col = gtk_sheet_get_columns_count(sheet) - 1;
+    int col = gtk_sheet_get_columns_count(sheet) - 1;
 
     if (sheet->column[col])
     {
@@ -1547,9 +1554,12 @@ gtk_sheet_buildable_add_child_internal(GtkSheet *sheet,
     g_object_ref_sink(G_OBJECT(child));
 
 #if GTK_SHEET_DEBUG_BUILDER > 0
-    g_debug("gtk_sheet_buildable_add_child_internal: %s, m %d r %d v %d",
-	name ? name : "NULL",
-	gtk_widget_get_mapped(GTK_WIDGET(child)),
+    g_debug("%s(%d): %p %s child %s %p name %s m %d r %d v %d",
+        __FUNCTION__, __LINE__,
+        sheet, gtk_widget_get_name(GTK_WIDGET(sheet)),
+        G_OBJECT_TYPE_NAME(child), child, 
+        name ? name : "NULL",
+        gtk_widget_get_mapped(GTK_WIDGET(child)),
 	gtk_widget_get_realized(GTK_WIDGET(child)),
 	gtk_widget_get_visible(GTK_WIDGET(child))
 	);
@@ -1565,6 +1575,14 @@ gtk_sheet_buildable_add_child_internal(GtkSheet *sheet,
     DEBUG_WIDGET_SET_PARENT(child, sheet);
     gtk_widget_set_parent(GTK_WIDGET(child), GTK_WIDGET(sheet));
 
+    if (gtk_widget_get_realized(GTK_WIDGET(sheet))
+        && GTK_IS_SHEET_COLUMN(child))
+    {
+        _gtk_sheet_column_realize(child, sheet);
+
+        _gtk_sheet_column_check_windows(child, sheet);
+    }
+
     if (name)
 	gtk_widget_set_name(GTK_WIDGET(child), name);
 
@@ -1579,8 +1597,6 @@ gtk_sheet_buildable_add_child(
     GObject       *child,
     const gchar   *type)
 {
-    GtkSheet *sheet;
-    GtkSheetColumn *newcol;
     const gchar *name = gtk_widget_get_name(GTK_WIDGET(child));
 
 #if GTK_SHEET_DEBUG_BUILDER > 0
@@ -1589,15 +1605,16 @@ gtk_sheet_buildable_add_child(
 	type ? type : "NULL");
 #endif
 
-    sheet = GTK_SHEET(buildable);
-    newcol = GTK_SHEET_COLUMN(child);
+    GtkSheet *sheet = GTK_SHEET(buildable);
+    GtkSheetColumn *newcol = GTK_SHEET_COLUMN(child);
 
 #if GTK_SHEET_DEBUG_BUILDER > 0
     {
 	gchar *strval;
 
 	g_object_get(G_OBJECT(newcol), "label", &strval, NULL);
-	g_debug("gtk_sheet_buildable_add_child: label=%s", strval ? strval : "NULL");
+        g_debug("gtk_sheet_buildable_add_child: label=%s",
+            strval ? strval : "NULL");
 
 	g_free(strval);
     }
@@ -3944,11 +3961,12 @@ gtk_sheet_set_background(GtkSheet *sheet, GdkRGBA *color)
     }
     else
     {
+#if GTK_SHEET_DEBUG_ENABLE_DEPRECATION_WARNINGS>0
         g_warning("%s(%d): deprecated_bg_color_used %s %s",
             __FUNCTION__, __LINE__,
             G_OBJECT_TYPE_NAME(sheet),
             gtk_widget_get_name(GTK_WIDGET(sheet)));
-
+#endif
 	sheet->bg_color = *color;
         sheet->deprecated_bg_color_used = TRUE;
     }
@@ -4367,11 +4385,14 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
 
     if (attributes.deprecated_font_desc_used)
     {
-        g_warning("%s(%d): deprecated_font_desc_used %s %s row %d col %d",
+#if GTK_SHEET_DEBUG_ENABLE_DEPRECATION_WARNINGS>0
+        g_warning(
+            "%s(%d): deprecated_font_desc_used %s %s row %d col %d",
             __FUNCTION__, __LINE__,
             G_OBJECT_TYPE_NAME(sheet),
             gtk_widget_get_name(GTK_WIDGET(sheet)),
             row, col);
+#endif
     }
 
     _get_string_extent(sheet, colptr,
@@ -4989,8 +5010,7 @@ gtk_sheet_thaw(GtkSheet *sheet)
 void
 gtk_sheet_set_row_titles_width(GtkSheet *sheet, guint width)
 {
-    if (width < GTK_SHEET_COLUMN_MIN_WIDTH)
-	return;
+    if (width < GTK_SHEET_COLUMN_MIN_WIDTH) return;
 
     sheet->row_title_area.width = width;
 
@@ -5154,7 +5174,8 @@ gtk_sheet_get_row_title(GtkSheet *sheet,
  * Set button label.It is used to set a row title.
  */
 void
-gtk_sheet_row_button_add_label(GtkSheet *sheet, gint row, const gchar *label)
+gtk_sheet_row_button_add_label(
+    GtkSheet *sheet, gint row, const gchar *label)
 {
     GtkSheetButton *button;
     GtkRequisition req;
@@ -5163,8 +5184,7 @@ gtk_sheet_row_button_add_label(GtkSheet *sheet, gint row, const gchar *label)
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
-    if (row < 0 || row > sheet->maxrow)
-	return;
+    if (row < 0 || row > sheet->maxrow) return;
 
     button = &sheet->row[row].button;
     if (button->label)
@@ -6630,7 +6650,8 @@ gtk_sheet_destroy_handler(GtkWidget *widget)
     {
 	GtkSheetChild *child = (GtkSheetChild *)children->data;
 	if (child && child->widget)
-	    gtk_sheet_remove_handler(GTK_CONTAINER(sheet), child->widget);
+	    gtk_sheet_remove_handler(
+                GTK_CONTAINER(sheet), child->widget);
 	children = sheet->children;
     }
     sheet->children = NULL;
@@ -6695,15 +6716,18 @@ gtk_sheet_realize_handler(GtkWidget *widget)
     _gtk_sheet_recalc_left_xpixels(sheet);
 
 #if GTK_SHEET_DEBUG_REALIZE > 0
-    g_debug("%s(%d) called %s %p entry %s %p", 
+    g_debug("%s(%d) called %s %p %s visible %d entry %s %p", 
         __FUNCTION__, __LINE__, 
         G_OBJECT_TYPE_NAME(sheet), sheet,
+        gtk_widget_get_name(GTK_WIDGET(sheet)), 
+        gtk_widget_get_visible(GTK_WIDGET(sheet)),
         G_OBJECT_TYPE_NAME(sheet->sheet_entry), sheet->sheet_entry);
 #endif
 
-    gtk_widget_set_realized_true(GTK_WIDGET(widget));
+    gtk_widget_set_realized_true(GTK_WIDGET(sheet));
 
     gtk_widget_get_allocation(widget, &allocation);
+
     attributes.window_type = GDK_WINDOW_CHILD;
     attributes.x = allocation.x;
     attributes.y = allocation.y;
@@ -6847,6 +6871,15 @@ gtk_sheet_realize_handler(GtkWidget *widget)
 	children = children->next;
 
 	gtk_sheet_realize_child(sheet, child);
+    }
+
+    gint col;
+    for (col=0; col<sheet->maxcol; col++)
+    {
+        g_assert(0 <= col && col <= sheet->maxcol);
+        GtkSheetColumn *colobj = COLPTR(sheet, col);
+
+        _gtk_sheet_column_realize(colobj, sheet);
     }
 }
 
@@ -7051,12 +7084,16 @@ gtk_sheet_map_handler(GtkWidget *widget)
     sheet = GTK_SHEET(widget);
 
 #if GTK_SHEET_DEBUG_EXPOSE > 0
-    g_debug("gtk_sheet_map_handler: called");
+    g_debug("%s(%d): called %s %p %s visible %d",
+        __FUNCTION__, __LINE__,
+        G_OBJECT_TYPE_NAME(sheet), sheet,
+        gtk_widget_get_name(GTK_WIDGET(sheet)), 
+        gtk_widget_get_visible(GTK_WIDGET(sheet)));
 #endif
 
     if (!gtk_widget_get_mapped(widget))
     {
-	gtk_widget_set_mapped_true(GTK_WIDGET(widget));
+	gtk_widget_set_mapped_true(GTK_WIDGET(sheet));
 
 	if (!sheet->cursor_drag)
 	    sheet->cursor_drag = gdk_cursor_new(GDK_PLUS);
@@ -7100,7 +7137,8 @@ gtk_sheet_map_handler(GtkWidget *widget)
 	}
 
 #if GTK_SHEET_DEBUG_EXPOSE > 0
-	g_debug("gtk_sheet_map_handler: calling _gtk_sheet_range_draw");
+	g_debug("%s(%d): calling _gtk_sheet_recalc_view_range",
+            __FUNCTION__, __LINE__);
 #endif
 
 	_gtk_sheet_recalc_view_range(sheet);
@@ -7112,6 +7150,9 @@ gtk_sheet_map_handler(GtkWidget *widget)
 	gtk_sheet_activate_cell(
             sheet,  sheet->active_cell.row,  sheet->active_cell.col);
 
+#if 1
+        _gtk_sheet_position_children(sheet);
+#else
 	children = sheet->children;
 	while (children)
 	{
@@ -7125,6 +7166,7 @@ gtk_sheet_map_handler(GtkWidget *widget)
 		gtk_sheet_position_child(sheet, child);
 	    }
 	}
+#endif
     }
 }
 
@@ -7148,12 +7190,12 @@ gtk_sheet_unmap_handler(GtkWidget *widget)
     sheet = GTK_SHEET(widget);
 
 #if GTK_SHEET_DEBUG_DRAW > 0
-    g_debug("gtk_sheet_unmap: called");
+    g_debug("%s(%d): called", __FUNCTION__, __LINE__);
 #endif
 
     if (gtk_widget_get_mapped(widget))
     {
-	gtk_widget_set_mapped_false(GTK_WIDGET(widget));
+	gtk_widget_set_mapped_false(GTK_WIDGET(sheet));
 
 	gdk_window_hide(sheet->sheet_window);
 
@@ -7347,11 +7389,13 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col,
     if (sheet->deprecated_bg_color_used
         || attributes.deprecated_bg_color_used)
     {
+#if GTK_SHEET_DEBUG_ENABLE_DEPRECATION_WARNINGS>0
         g_warning("%s(%d): deprecated_bg_color_used %s %s row %d col %d",
             __FUNCTION__, __LINE__,
             G_OBJECT_TYPE_NAME(sheet),
             gtk_widget_get_name(GTK_WIDGET(sheet)),
             row, col);
+#endif
 
         /* fill cell background */
 
@@ -7582,11 +7626,13 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     PangoFontDescription *font_desc = NULL;
     if (attributes.deprecated_font_desc_used)
     {
+#if GTK_SHEET_DEBUG_ENABLE_DEPRECATION_WARNINGS>0
         g_warning("%s(%d): deprecated_font_desc_used %s %s row %d col %d",
             __FUNCTION__, __LINE__,
             G_OBJECT_TYPE_NAME(sheet),
             gtk_widget_get_name(GTK_WIDGET(sheet)),
             row, col);
+#endif
 
 	font_desc = attributes.font_desc;
     }
@@ -7853,13 +7899,16 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 
     if (attributes.deprecated_fg_color_used)
     {
+#if GTK_SHEET_DEBUG_ENABLE_DEPRECATION_WARNINGS>0
         g_warning("%s(%d): deprecated_fg_color_used %s %s row %d col %d",
             __FUNCTION__, __LINE__,
             G_OBJECT_TYPE_NAME(sheet),
             gtk_widget_get_name(GTK_WIDGET(sheet)),
             row, col);
+#endif
 
-        gdk_cairo_set_source_rgba(sheet->bsurf_cr, &attributes.foreground);
+        gdk_cairo_set_source_rgba(
+            sheet->bsurf_cr, &attributes.foreground);
 
 #if GTK_SHEET_DEBUG_DRAW_LABEL>0
         // debug code
@@ -10679,7 +10728,8 @@ gtk_sheet_draw(GtkWidget *widget, cairo_t *cr)
             && sheet->column_titles_visible)
 	{
 #if GTK_SHEET_DEBUG_EXPOSE > 0
-	    g_debug("gtk_sheet_draw: column buttons");
+            g_debug("%s(%d): column buttons", 
+                __FUNCTION__, __LINE__);
 #endif
             gint col;
 	    for (col = MIN_VIEW_COLUMN(sheet);
@@ -12744,8 +12794,12 @@ gtk_sheet_size_allocate_handler(
     GtkSheet *sheet = GTK_SHEET(widget);
 
 #if GTK_SHEET_DEBUG_SIZE > 0
-    g_debug("gtk_sheet_size_allocate_handler: called (%d, %d, %d, %d)",
-	allocation->x, allocation->y, allocation->width, allocation->height);
+    g_debug("%s(%d): called %s %p %s (%d, %d, %d, %d)",
+        __FUNCTION__, __LINE__,
+        G_OBJECT_TYPE_NAME(sheet), sheet,
+        gtk_widget_get_name(GTK_WIDGET(sheet)), 
+	allocation->x, allocation->y,
+        allocation->width, allocation->height);
 #endif
 
     /* main window - allocation and size */
@@ -12809,9 +12863,11 @@ gtk_sheet_size_allocate_handler(
     if (sheet->row_titles_visible)
 	sheet->column_title_area.x = sheet->row_title_area.width;
 
-    sheet->column_title_area.width = sheet_allocation.width - sheet->column_title_area.x;
+    sheet->column_title_area.width = sheet_allocation.width
+        - sheet->column_title_area.x;
 
-    if (gtk_widget_get_realized(widget) && sheet->column_titles_visible)
+    if (gtk_widget_get_realized(widget)
+        && sheet->column_titles_visible)
     {
 	gdk_window_move_resize(sheet->column_title_window,
 	    sheet->column_title_area.x,
@@ -12819,9 +12875,6 @@ gtk_sheet_size_allocate_handler(
 	    sheet->column_title_area.width,
 	    sheet->column_title_area.height);
     }
-
-    /* column button allocation */
-    _gtk_sheet_column_buttons_size_allocate(sheet);
 
     /* row_title_window - allocation and size */
 
@@ -12842,6 +12895,11 @@ gtk_sheet_size_allocate_handler(
 	    sheet->row_title_area.height);
     }
 
+    _gtk_sheet_recalc_view_range(sheet);
+
+    /* column button allocation */
+    _gtk_sheet_column_buttons_size_allocate(sheet);
+
     /* row button allocation */
     _gtk_sheet_row_buttons_size_allocate(sheet);
 
@@ -12853,8 +12911,6 @@ gtk_sheet_size_allocate_handler(
 	gtk_sheet_autoresize_all(sheet);
 	GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_AUTORESIZE_PENDING);
     }
-
-    _gtk_sheet_recalc_view_range(sheet);
 
     /* re-scale backing bsurf */
     gtk_sheet_make_bsurf(sheet, 0, 0);  /* use default size */
@@ -13016,6 +13072,7 @@ _gtk_sheet_recalc_left_xpixels(GtkSheet *sheet)
     for (col = 0; col <= sheet->maxcol; col++)
     {
 	COLPTR(sheet, col)->left_xpixel = cx;
+
 	if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)))
 	    cx += COLPTR(sheet, col)->width;
     }
@@ -13160,11 +13217,13 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 	{
 	    if (attributes.deprecated_font_desc_used)
 	    {
+#if GTK_SHEET_DEBUG_ENABLE_DEPRECATION_WARNINGS>0
 		g_warning("%s(%d): deprecated_font_desc_used %s %s row %d col %d",
 		    __FUNCTION__, __LINE__,
 		    G_OBJECT_TYPE_NAME(sheet),
 		    gtk_widget_get_name(GTK_WIDGET(sheet)),
 		    act_row, act_col);
+#endif
 	    }
 
 	    _get_string_extent(sheet, 
@@ -13923,7 +13982,8 @@ _gtk_sheet_draw_button(
         return;
 
 #if GTK_SHEET_DEBUG_DRAW_BUTTON > 0
-    g_debug("_gtk_sheet_draw_button: row %d col %d", row, col);
+    g_debug("%s(%d): row %d col %d", 
+        __FUNCTION__, __LINE__, row, col);
 #endif
 
     if (row >= 0)
@@ -14770,6 +14830,7 @@ new_column_width(GtkSheet *sheet, gint col, gint *x)
 	width = requisition.width;
 
     COLPTR(sheet, col)->width = width;
+
     _gtk_sheet_recalc_left_xpixels(sheet);
     _gtk_sheet_recalc_view_range(sheet);
 
@@ -15190,11 +15251,12 @@ gtk_sheet_range_set_background(GtkSheet *sheet,
         
             if (color != NULL)
             {
-                g_warning("%s(%d): deprecated_color_used %s %s",
+#if GTK_SHEET_DEBUG_ENABLE_DEPRECATION_WARNINGS>0
+                g_warning("%s(%d): deprecated_bg_color_used %s %s",
                     __FUNCTION__, __LINE__,
                     G_OBJECT_TYPE_NAME(sheet),
                     gtk_widget_get_name(GTK_WIDGET(sheet)));
-
+#endif
                 attributes.background = *color;
                 attributes.deprecated_bg_color_used = TRUE;
             }
@@ -15252,11 +15314,12 @@ gtk_sheet_range_set_foreground(GtkSheet *sheet,
 
 	if (color != NULL)
         {
+#if GTK_SHEET_DEBUG_ENABLE_DEPRECATION_WARNINGS>0
             g_warning("%s(%d): deprecated_fg_color_used %s %s",
                 __FUNCTION__, __LINE__,
                 G_OBJECT_TYPE_NAME(sheet),
                 gtk_widget_get_name(GTK_WIDGET(sheet)));
-
+#endif
             attributes.foreground = *color;
             attributes.deprecated_fg_color_used = TRUE;
         }
@@ -15795,17 +15858,19 @@ AddColumns(GtkSheet *sheet, gint position, gint ncols)
 	    newobj->sheet = sheet;
 	    sheet->column[newidx] = newobj;
 
+            if (gtk_widget_get_realized(GTK_WIDGET(sheet)))
+            {
+                _gtk_sheet_column_realize(newobj, sheet);
+
+                gtk_widget_set_window(
+                    GTK_WIDGET(newobj), sheet->column_title_window);
+            }
+
             DEBUG_WIDGET_SET_PARENT(newobj, sheet);
             gtk_widget_set_parent(
                 GTK_WIDGET(newobj), GTK_WIDGET(sheet));
 
-#if 0
-	    g_debug("Setting Column %p Parent to GtkSheet %p - got %p",
-		    newobj, sheet, gtk_widget_get_parent(GTK_WIDGET(newobj)));
-#endif
-
-	    g_object_ref_sink(newobj);
-
+            g_object_ref_sink(newobj);
         }
 
         gint old_maxcol = sheet->maxcol;
@@ -16499,7 +16564,8 @@ gtk_sheet_button_attach(GtkSheet *sheet,
 
 	if (widget) {
 	    DEBUG_WIDGET_CONTAINER_ADD(colobj->col_button, widget);
-            gtk_container_add(GTK_CONTAINER(colobj->col_button), widget);
+            gtk_container_add(
+                GTK_CONTAINER(colobj->col_button), widget);
 	}
 
 	// is this needed?
@@ -17101,7 +17167,8 @@ _gtk_sheet_position_children(GtkSheet *sheet)
 	    {
                 if (sheet->column_titles_visible
 		    && gtk_widget_get_visible(GTK_WIDGET(colobj))
-		    && minviewcol <= col && col <= maxviewcol)
+		    && minviewcol <= col && col <= maxviewcol
+                    && gtk_widget_get_mapped(GTK_WIDGET(sheet)))
 		{
                     gtk_widget_map(GTK_WIDGET(colobj));
                     gtk_widget_show(GTK_WIDGET(colobj->col_button));
@@ -17125,26 +17192,22 @@ _gtk_sheet_position_children(GtkSheet *sheet)
  * @param widget    the #GtkWidget to be removed
  */
 static void
-gtk_sheet_remove_handler(GtkContainer *container, GtkWidget *widget)
+gtk_sheet_remove_handler(
+    GtkContainer *container, GtkWidget *widget)
 {
-    GtkSheet *sheet;
-    GList *children;
-    GtkSheetChild *child = NULL;
-
     g_return_if_fail(container != NULL);
     g_return_if_fail(GTK_IS_SHEET(container));
 
-    sheet = GTK_SHEET(container);
+    GtkSheet *sheet = GTK_SHEET(container);
 
-    children = sheet->children;
+    GList *children = sheet->children;
+
+    GtkSheetChild *child = NULL;
 
     while (children)
     {
 	child = (GtkSheetChild *)children->data;
-
-	if (child->widget == widget)
-	    break;
-
+	if (child->widget == widget) break;
 	children = children->next;
     }
 
@@ -17154,8 +17217,10 @@ gtk_sheet_remove_handler(GtkContainer *container, GtkWidget *widget)
 	    sheet->row[child->col].button.child = NULL;
 
 #if GTK_SHEET_DEBUG_CHILDREN > 0
-	g_debug("gtk_sheet_remove_handler: %p %s widget %p", 
-	    sheet, gtk_widget_get_name(sheet), widget);
+	g_debug("%s(%d): %p %s widget %s %p", 
+            __FUNCTION__, __LINE__, 
+	    sheet, gtk_widget_get_name(sheet), 
+            G_OBJECT_TYPE_NAME(widget), widget);
 #endif
 
 	gtk_widget_unparent(widget);

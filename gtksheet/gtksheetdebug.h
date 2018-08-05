@@ -27,7 +27,7 @@
         G_OBJECT_TYPE_NAME (parent), parent)
 #endif
 
-#if 1 || +defined(GTK_SHEET_ENABLE_DEBUG_MACROS)
+#if 1 || !defined(GTK_SHEET_ENABLE_DEBUG_MACROS)
 # define DEBUG_WIDGET_SET_PARENT_WIN(widget, parent)
 #else
 # define DEBUG_WIDGET_SET_PARENT_WIN(widget, parent) \

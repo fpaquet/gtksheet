@@ -162,9 +162,10 @@ _gtk_sheet_column_button_add_label_internal(
     g_assert(GTK_IS_SHEET_COLUMN(colobj));
 
 #if 0
-    g_debug("%s(%d): called %s %p col_button %s %p label %s", 
+    g_debug("%s(%d): called %s %p colobj %p col_button %s %p label %s", 
         __FUNCTION__, __LINE__, 
         sheet ? G_OBJECT_TYPE_NAME(sheet) : "(null)", sheet,
+        colobj,
         colobj->col_button ? G_OBJECT_TYPE_NAME(colobj->col_button) : "(null)",
         colobj->col_button,
         label);
@@ -180,7 +181,7 @@ _gtk_sheet_column_button_add_label_internal(
             GTK_WIDGET(colobj->col_button));
         gtk_style_context_add_class (context, GTK_STYLE_CLASS_TOP);
 
-        gtk_widget_show(colobj->col_button);
+        gtk_container_add(GTK_CONTAINER(colobj), colobj->col_button);
 
         /* hack to disable left mouse button */
         g_signal_connect(
@@ -192,18 +193,6 @@ _gtk_sheet_column_button_add_label_internal(
     g_assert(GTK_IS_TOGGLE_BUTTON(colobj->col_button));
 
     gtk_button_set_label(GTK_BUTTON(colobj->col_button), label);
-
-    if (sheet)
-    {
-        gint minimum_height, natural_height;
-
-        gtk_widget_get_preferred_height(
-            GTK_WIDGET(colobj->col_button),
-            &minimum_height, &natural_height);
-
-        if (minimum_height > sheet->column_title_area.height)
-            gtk_sheet_set_column_titles_height(sheet, minimum_height);
-    }
 }
 
 /**
@@ -861,13 +850,78 @@ gtk_sheet_column_finalize_handler(GObject *gobject)
 }
 
 /**
+ * _gtk_sheet_column_check_windows:
+ * 
+ * The sheet column and all widgets below must use column_title_window.
+ * 
+ * This is mandatory, because coordinates calculated in 
+ * _gtk_sheet_column_buttons_size_allocate are relative to the 
+ * column_title_window.
+ * 
+ * To test this, 
+ * - Drag a notebook tab containing a #GtkSheet from one notebook into another notebook
+ * - Add columns in Glade
+ * - Cut/Paste a #GtkSheet in Glade into another toplevel window
+ * 
+ * @param colobj the #GtkSheetColumn
+ * @param sheet  the #GtkSheet
+ */
+void
+_gtk_sheet_column_check_windows(
+    GtkSheetColumn *colobj, GtkSheet *sheet)
+{
+    g_return_if_fail(colobj != NULL);
+    g_return_if_fail(GTK_IS_SHEET_COLUMN(colobj));
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (!GTK_IS_SHEET_COLUMN(colobj)) return;
+    if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
+    if (!gtk_widget_get_realized(GTK_WIDGET(colobj))) return;
+
+    if (gtk_widget_get_window(GTK_WIDGET(colobj))
+        != sheet->column_title_window)
+    {
+        gtk_widget_set_window(
+            GTK_WIDGET(colobj), sheet->column_title_window);
+    }
+
+    if (colobj->col_button)
+    {
+        if (gtk_widget_get_window(colobj->col_button)
+            != sheet->column_title_window)
+        {
+            gtk_widget_set_window(
+                GTK_WIDGET(colobj->col_button),
+                sheet->column_title_window);
+
+            /* is there a child attached ?
+
+               */
+            GtkWidget *child = gtk_bin_get_child(
+                GTK_BIN(colobj->col_button));
+
+            if (child && GTK_IS_WIDGET(child))
+            {
+                if (gtk_widget_get_window(child)
+                    != sheet->column_title_window)
+                {
+                    gtk_widget_set_window(
+                        GTK_WIDGET(child),
+                        sheet->column_title_window);
+                }
+            }
+        }
+    }
+}
+
+/**
  * _gtk_sheet_column_realize:
  * 
  * realize sheet column
  * 
  * @param widget the #GtkSheetColumn
  */
-static void
+void
 _gtk_sheet_column_realize(GtkSheetColumn *colobj, GtkSheet *sheet)
 {
     g_return_if_fail(colobj != NULL);
@@ -884,8 +938,11 @@ _gtk_sheet_column_realize(GtkSheetColumn *colobj, GtkSheet *sheet)
     if (sheet->column_titles_visible)
     {
         if (!gtk_widget_get_parent(GTK_WIDGET(colobj)))
+        {
+            DEBUG_WIDGET_SET_PARENT(colobj, sheet);
             gtk_widget_set_parent(
                 GTK_WIDGET(colobj), GTK_WIDGET(sheet));
+        }
 
         DEBUG_WIDGET_SET_PARENT_WIN(
             colobj, sheet->column_title_window);
@@ -893,6 +950,16 @@ _gtk_sheet_column_realize(GtkSheetColumn *colobj, GtkSheet *sheet)
             GTK_WIDGET(colobj), sheet->column_title_window);
         
         gtk_widget_set_realized(GTK_WIDGET(colobj), TRUE);
+
+        if (colobj->col_button)
+        {
+            DEBUG_WIDGET_SET_PARENT_WIN(
+                colobj->col_button, sheet->column_title_window);
+            gtk_widget_set_parent_window(
+                colobj->col_button, sheet->column_title_window);
+
+            gtk_widget_realize(colobj->col_button);
+        }
     }
 }
 
@@ -1218,7 +1285,7 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
 
 #if GTK_SHEET_COL_DEBUG_SIZE > 0
-    g_debug("%s(%d) called %s %p", 
+    g_debug("%s(%d): called %s %p", 
         __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME(sheet), sheet);
 #endif
 
@@ -1243,7 +1310,11 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
             cta->width, cta->height);
     }
 
-    if (!gtk_widget_is_drawable(GTK_WIDGET(sheet))) return;
+    if (!gtk_widget_is_visible(GTK_WIDGET(sheet))) return;
+
+    _gtk_sheet_recalc_top_ypixels(sheet);
+    _gtk_sheet_recalc_left_xpixels(sheet);
+    _gtk_sheet_recalc_view_range(sheet);
 
     for (col = MIN_VIEW_COLUMN(sheet);
           col <= MAX_VIEW_COLUMN(sheet) && col <= sheet->maxcol;
@@ -1272,33 +1343,50 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
             if (!gtk_widget_get_realized(GTK_WIDGET(colobj)))
                 _gtk_sheet_column_realize(colobj, sheet);
 
-            gtk_widget_size_allocate(GTK_WIDGET(colobj), &allocation);
+            gtk_widget_set_visible(colobj->col_button, TRUE);
 
-            if (sheet->row_titles_visible)
-                allocation.x -= sheet->row_title_area.width;
-
-#if 0
+#if 1
+            gtk_widget_get_preferred_size(
+                colobj->col_button, NULL, NULL);
+#else
             {
+                /* this will result in buttons larger than columns */
                 GtkRequisition button_requisition;
 
                 gtk_widget_get_preferred_size(
                     colobj->col_button, &button_requisition, NULL);
                 
-                /* this will result in buttons larger than columns */
                 //allocation.width = MAX(allocation.width, button_requisition.width);
                 //allocation.height = MAX(allocation.height, button_requisition.height);
             }
-#else
-            gtk_widget_get_preferred_size(
-                colobj->col_button, NULL, NULL);
 #endif
+
+            /* because _gtk_sheet_recalc_left_xpixels
+               adds row_title_area.width to cx,
+               we need to subtract it here again
+            */ 
+            if (sheet->row_titles_visible)
+                allocation.x -= sheet->row_title_area.width;
 
             gtk_widget_size_allocate(colobj->col_button, &allocation);
 
-            DEBUG_WIDGET_SET_PARENT_WIN(
-                colobj->col_button, sheet->column_title_window);
-            gtk_widget_set_parent_window(
-                colobj->col_button, sheet->column_title_window);
+            if (sheet)
+            {
+                gint minimum_height, natural_height;
+
+                gtk_widget_get_preferred_height(
+                    GTK_WIDGET(colobj->col_button),
+                    &minimum_height, &natural_height);
+
+                if (minimum_height > sheet->column_title_area.height)
+                    gtk_sheet_set_column_titles_height(sheet, minimum_height);
+            }
+
+            gtk_widget_get_preferred_size(
+                GTK_WIDGET(colobj), NULL, NULL);
+            gtk_widget_size_allocate(GTK_WIDGET(colobj), &allocation);
+
+            _gtk_sheet_column_check_windows(colobj, sheet);
 
             GtkWidget *parent = gtk_widget_get_parent(
                 colobj->col_button);
@@ -1314,7 +1402,7 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
 #endif
                 GtkWidget *child = gtk_bin_get_child(GTK_BIN(colobj));
 
-                if (child)
+                if (child) // remove Glade placeholder
                 {
                     gtk_widget_destroy(child);
                 }
@@ -1330,18 +1418,16 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
             if (gtk_widget_get_mapped(colobj->col_button))
             {
                 if (allocation.x < 0) allocation.x = 0;
-
+                
                 if (allocation.x + allocation.width > cta->width)
                     allocation.width = cta->width - allocation.x;
-
+                
                 gtk_widget_set_clip(colobj->col_button, &allocation);
             }
         }
         _gtk_sheet_draw_button(sheet, -1, col, NULL);
     }
 }
-
-
 
 /**
  * gtk_sheet_set_column_width:

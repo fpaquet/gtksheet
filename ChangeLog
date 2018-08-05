@@ -1,10 +1,15 @@
 TBD 
-** CSS: grid
-** CSS: borders
-** CSS: row title button margin
+** CSS: handle grid
+** CSS: handle borders
+** CSS: handle row title button margin
 ** row selection drawing over right sheet border
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
+
+2018-08-05 Fredy Paquet <mailbox AT opag.ch>
+* fixed add column after sheet realisation (BAB Browser, Glade)
+* fixed column windows after sheet reparent (GtkNotebook)
+* fixed column windows after cut/paste (Glade)
 
 2018-08-03 Fredy Paquet <mailbox AT opag.ch>
 * Glade: fixed column label handling

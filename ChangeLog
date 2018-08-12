@@ -6,6 +6,9 @@ TBD
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
 
+2018-08-12 Fredy Paquet <mailbox AT opag.ch>
+* fixed compilation without DEBUG option
+
 2018-08-05 Fredy Paquet <mailbox AT opag.ch>
 * fixed add column after sheet realisation (BAB Browser, Glade)
 * fixed column windows after sheet reparent (GtkNotebook)

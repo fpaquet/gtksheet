@@ -103,8 +103,9 @@
 #   define GTK_SHEET_DEBUG_SET_CELL_TEXT  0
 
 #   define GTK_SHEET_ENABLE_DEBUG_MACROS
-#   include "gtksheetdebug.h"
 #endif
+
+#include "gtksheetdebug.h"
 
 #define GTK_SHEET_MOD_MASK  GDK_MOD1_MASK  /* main modifier for sheet navigation */
 

@@ -7,6 +7,9 @@ TBD
 ** CASY - using gtk_sheet_column_set_visibility() kills screen updates with active sheet entry?
 ** remove FIXME debug output
 
+2018-08-25 Fredy Paquet <mailbox AT opag.ch>
+* removed generated files from git
+
 2018-06-26 Fredy Paquet <mailbox AT opag.ch>
 * doc update
 * updated gtksheet-4 version to 4.1.3, Libtool Revision 2.0.1

@@ -6,6 +6,9 @@ TBD
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
 
+2018-08-25 Fredy Paquet <mailbox AT opag.ch>
+* removed generated files from Git
+
 2018-08-12 Fredy Paquet <mailbox AT opag.ch>
 * fixed compilation without DEBUG option
 

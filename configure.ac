@@ -1,7 +1,7 @@
 # Process this file with GNU autoconf to produce a configure script.
 #
 
-AC_INIT([GtkSheet], [4.1.3])
+AC_INIT([GtkSheet], [4.2.0])
 
 AC_LANG([C])
 AC_CONFIG_MACRO_DIR([m4])
@@ -16,8 +16,8 @@ AC_DIVERT_PUSH(NOTICE)dnl
 # https://github.com/fpaquet/gtksheet/wiki/GtkSheet-Version-Numbering
 
 GTK_SHEET_MAJOR_VERSION=4
-GTK_SHEET_MINOR_VERSION=1
-GTK_SHEET_MICRO_VERSION=3
+GTK_SHEET_MINOR_VERSION=2
+GTK_SHEET_MICRO_VERSION=0
 
 GTK_SHEET_INTERFACE_AGE=0
 GTK_SHEET_BINARY_AGE=0
@@ -36,9 +36,9 @@ AC_SUBST(GTK_SHEET_VERSION_SHORT)
 
 # libtool versioning
 
-LT_CURRENT=2
+LT_CURRENT=3
 LT_REVISION=0
-LT_AGE=1
+LT_AGE=2
 
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)

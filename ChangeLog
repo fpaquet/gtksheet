@@ -6,6 +6,11 @@ TBD
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
 
+2018-10-06 Fredy Paquet <mailbox AT opag.ch>
+* merged branch col_buttons into gtk3
+* updated gtksheet-4 version to 4.2.0, Libtool Revision 3.0.2
+* published gtksheet-4 version 4.2.0
+
 2018-08-25 Fredy Paquet <mailbox AT opag.ch>
 * removed generated files from Git
 

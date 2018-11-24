@@ -7424,6 +7424,9 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col,
         gtk_render_background(sheet_context, sheet->bsurf_cr,
             area.x, area.y, area.width, area.height);
 
+        gtk_render_frame(sheet_context, sheet->bsurf_cr,
+            area.x, area.y, area.width, area.height);
+
         gtk_style_context_restore(sheet_context);
     }
 

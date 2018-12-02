@@ -3326,6 +3326,19 @@ static gboolean _gtk_sheet_binding_filter(GtkSheet *sheet,
 }
 
 /*
+ * gtk_sheet_style_updated - style update handler
+ *
+ * @param widget
+ */
+static void gtk_sheet_style_updated(GtkWidget *widget)
+{
+    //g_debug("gtk_sheet_style_updated");
+
+    _gtk_sheet_range_draw(GTK_SHEET(widget), NULL, TRUE);
+    GTK_WIDGET_CLASS (sheet_parent_class)->style_updated(widget);
+}
+
+/*
  * gtk_sheet_class_init - GtkSheet class initialisation
  *
  * @param klass
@@ -3368,6 +3381,7 @@ gtk_sheet_class_init(GtkSheetClass *klass)
     widget_class->focus_in_event = NULL;
     widget_class->focus_out_event = NULL;
     widget_class->destroy = gtk_sheet_destroy_handler;
+    widget_class->style_updated = gtk_sheet_style_updated;
 
     klass->select_row = NULL;
     klass->select_column = NULL;
@@ -7419,6 +7433,28 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col,
         {
             gtk_style_context_add_class(sheet_context,
                 attributes.css_class);
+        }
+
+        if (col % 2)
+        {
+            gtk_style_context_add_class(sheet_context,
+                "position_col_odd");
+        }
+        else
+        {
+            gtk_style_context_add_class(sheet_context,
+                "position_col_even");
+        }
+
+        if (row % 2)
+        {
+            gtk_style_context_add_class(sheet_context,
+                "position_row_odd");
+        }
+        else
+        {
+            gtk_style_context_add_class(sheet_context,
+                "position_row_even");
         }
 
         gtk_render_background(sheet_context, sheet->bsurf_cr,

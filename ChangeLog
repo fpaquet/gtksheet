@@ -6,6 +6,12 @@ TBD
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
 
+2018-12-02 Fredy Paquet <mailbox AT opag.ch>
+* added experimental style_update handler, calling _gtk_sheet_range_draw()
+* added experimental CSS cell subclasses: 
+  .position_col_even .position_col_odd
+  .position_row_even .position_row_odd
+
 2018-11-24 Fredy Paquet <mailbox AT opag.ch>
 * added support for CSS frame properties on sheet cells
 

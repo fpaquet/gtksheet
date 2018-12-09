@@ -102,22 +102,99 @@ GtkDataEntry *data_entry
 <RETURNS>void  </RETURNS>
 GtkDataEntry *data_entry, gint max_length_bytes
 </FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_format</NAME>
+<RETURNS>gchar  *</RETURNS>
+const gchar *str, const gchar *dataformat
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_format_remove</NAME>
+<RETURNS>gchar  *</RETURNS>
+const gchar *str, const gchar *dataformat
+</FUNCTION>
 <MACRO>
-<NAME>DEBUG_WIDGET_SET_PARENT</NAME>
-# define DEBUG_WIDGET_SET_PARENT(widget, parent)
+<NAME>GTK_TYPE_DATA_TEXT_VIEW</NAME>
+#define GTK_TYPE_DATA_TEXT_VIEW              (gtk_data_text_view_get_type ())
 </MACRO>
 <MACRO>
-<NAME>DEBUG_WIDGET_SET_PARENT_WIN</NAME>
-# define DEBUG_WIDGET_SET_PARENT_WIN(widget, parent)
+<NAME>GTK_DATA_TEXT_VIEW</NAME>
+#define GTK_DATA_TEXT_VIEW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_DATA_TEXT_VIEW, GtkDataTextView))
 </MACRO>
 <MACRO>
-<NAME>DEBUG_WIDGET_CONTAINER_ADD</NAME>
-# define DEBUG_WIDGET_CONTAINER_ADD(parent, widget)
+<NAME>GTK_DATA_TEXT_VIEW_CLASS</NAME>
+#define GTK_DATA_TEXT_VIEW_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_DATA_TEXT_VIEW, GtkDataTextViewClass))
 </MACRO>
 <MACRO>
-<NAME>DEBUG_WIDGET_CONTAINER_REMOVE</NAME>
-# define DEBUG_WIDGET_CONTAINER_REMOVE(parent, widget)
+<NAME>GTK_IS_DATA_TEXT_VIEW</NAME>
+#define GTK_IS_DATA_TEXT_VIEW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_DATA_TEXT_VIEW))
 </MACRO>
+<MACRO>
+<NAME>GTK_IS_DATA_TEXT_VIEW_CLASS</NAME>
+#define GTK_IS_DATA_TEXT_VIEW_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_DATA_TEXT_VIEW))
+</MACRO>
+<MACRO>
+<NAME>GTK_DATA_TEXT_VIEW_GET_CLASS</NAME>
+#define GTK_DATA_TEXT_VIEW_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_DATA_TEXT_VIEW, GtkDataTextViewClass))
+</MACRO>
+<STRUCT>
+<NAME>GtkDataTextView</NAME>
+struct _GtkDataTextView
+{
+    /*< private >*/
+    GtkTextView textview;
+
+    gchar *description;         /* column description */
+    gint max_length;   /* maximum length in characters */
+    gint max_length_bytes;   /* maximum length in bytes */
+};
+</STRUCT>
+<STRUCT>
+<NAME>GtkDataTextViewClass</NAME>
+struct _GtkDataTextViewClass
+{
+    GtkTextViewClass parent_class;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gtk_data_text_view_get_type</NAME>
+<RETURNS>GType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_new</NAME>
+<RETURNS>GtkDataTextView  *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_get_description</NAME>
+<RETURNS>const gchar  *</RETURNS>
+GtkDataTextView *data_text_view
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_set_description</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataTextView *data_text_view, const gchar *description
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_get_max_length</NAME>
+<RETURNS>gint  </RETURNS>
+GtkDataTextView *data_text_view
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_set_max_length</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataTextView *data_text_view, gint max_length
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_get_max_length_bytes</NAME>
+<RETURNS>gint  </RETURNS>
+GtkDataTextView *data_text_view
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_data_text_view_set_max_length_bytes</NAME>
+<RETURNS>void  </RETURNS>
+GtkDataTextView *data_text_view, gint max_length_bytes
+</FUNCTION>
 <MACRO>
 <NAME>G_TYPE_ITEM_ENTRY</NAME>
 #define G_TYPE_ITEM_ENTRY \
@@ -149,6 +226,44 @@ GtkDataEntry *data_entry, gint max_length_bytes
 <STRUCT>
 <NAME>GtkItemEntryClass</NAME>
 </STRUCT>
+<MACRO>
+<NAME>gtk_widget_get_realized</NAME>
+#  define gtk_widget_get_realized GTK_WIDGET_REALIZED
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_get_mapped</NAME>
+#  define gtk_widget_get_mapped GTK_WIDGET_MAPPED
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_get_requisition</NAME>
+#  define gtk_widget_get_requisition(widget, requisitionptr) \
+        *(requisitionptr) = GTK_WIDGET(widget)->requisition
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_set_realized_true</NAME>
+#   define gtk_widget_set_realized_true(widget)  \
+        GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED)
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_set_realized_false</NAME>
+#   define gtk_widget_set_realized_false(widget)  \
+        GTK_WIDGET_UNSET_FLAGS(widget, GTK_REALIZED)
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_set_mapped_true</NAME>
+#   define gtk_widget_set_mapped_true(widget)  \
+        GTK_WIDGET_SET_FLAGS(widget, GTK_MAPPED)
+</MACRO>
+<MACRO>
+<NAME>gtk_widget_set_mapped_false</NAME>
+#   define gtk_widget_set_mapped_false(widget)  \
+        GTK_WIDGET_UNSET_FLAGS(widget, GTK_MAPPED)
+</MACRO>
+<FUNCTION>
+<NAME>gtk_sheet_get_resource</NAME>
+<RETURNS>GResource  *</RETURNS>
+void
+</FUNCTION>
 <ENUM>
 <NAME>GtkSheetAttrType</NAME>
 typedef enum
@@ -1253,104 +1368,6 @@ GtkSheet *sheet, GtkWidget *widget, gint row, gint col
 <STRUCT>
 <NAME>GtkSheetColumnClass</NAME>
 </STRUCT>
-<FUNCTION>
-<NAME>gtk_data_format</NAME>
-<RETURNS>gchar  *</RETURNS>
-const gchar *str, const gchar *dataformat
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_format_remove</NAME>
-<RETURNS>gchar  *</RETURNS>
-const gchar *str, const gchar *dataformat
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_sheet_get_resource</NAME>
-<RETURNS>GResource  *</RETURNS>
-void
-</FUNCTION>
-<MACRO>
-<NAME>GTK_TYPE_DATA_TEXT_VIEW</NAME>
-#define GTK_TYPE_DATA_TEXT_VIEW              (gtk_data_text_view_get_type ())
-</MACRO>
-<MACRO>
-<NAME>GTK_DATA_TEXT_VIEW</NAME>
-#define GTK_DATA_TEXT_VIEW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_DATA_TEXT_VIEW, GtkDataTextView))
-</MACRO>
-<MACRO>
-<NAME>GTK_DATA_TEXT_VIEW_CLASS</NAME>
-#define GTK_DATA_TEXT_VIEW_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_DATA_TEXT_VIEW, GtkDataTextViewClass))
-</MACRO>
-<MACRO>
-<NAME>GTK_IS_DATA_TEXT_VIEW</NAME>
-#define GTK_IS_DATA_TEXT_VIEW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_DATA_TEXT_VIEW))
-</MACRO>
-<MACRO>
-<NAME>GTK_IS_DATA_TEXT_VIEW_CLASS</NAME>
-#define GTK_IS_DATA_TEXT_VIEW_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_DATA_TEXT_VIEW))
-</MACRO>
-<MACRO>
-<NAME>GTK_DATA_TEXT_VIEW_GET_CLASS</NAME>
-#define GTK_DATA_TEXT_VIEW_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_DATA_TEXT_VIEW, GtkDataTextViewClass))
-</MACRO>
-<STRUCT>
-<NAME>GtkDataTextView</NAME>
-struct _GtkDataTextView
-{
-    /*< private >*/
-    GtkTextView textview;
-
-    gchar *description;         /* column description */
-    gint max_length;   /* maximum length in characters */
-    gint max_length_bytes;   /* maximum length in bytes */
-};
-</STRUCT>
-<STRUCT>
-<NAME>GtkDataTextViewClass</NAME>
-struct _GtkDataTextViewClass
-{
-    GtkTextViewClass parent_class;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gtk_data_text_view_get_type</NAME>
-<RETURNS>GType  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_text_view_new</NAME>
-<RETURNS>GtkDataTextView  *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_text_view_get_description</NAME>
-<RETURNS>const gchar  *</RETURNS>
-GtkDataTextView *data_text_view
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_text_view_set_description</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataTextView *data_text_view, const gchar *description
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_text_view_get_max_length</NAME>
-<RETURNS>gint  </RETURNS>
-GtkDataTextView *data_text_view
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_text_view_set_max_length</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataTextView *data_text_view, gint max_length
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_text_view_get_max_length_bytes</NAME>
-<RETURNS>gint  </RETURNS>
-GtkDataTextView *data_text_view
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_data_text_view_set_max_length_bytes</NAME>
-<RETURNS>void  </RETURNS>
-GtkDataTextView *data_text_view, gint max_length_bytes
-</FUNCTION>
 <STRUCT>
 <NAME>GtkSheetColumn</NAME>
 struct _GtkSheetColumn
@@ -1676,6 +1693,22 @@ GtkSheet *sheet, gint column
 GtkSheet *sheet, gint column, const gchar *title
 </FUNCTION>
 <MACRO>
+<NAME>DEBUG_WIDGET_SET_PARENT</NAME>
+# define DEBUG_WIDGET_SET_PARENT(widget, parent)
+</MACRO>
+<MACRO>
+<NAME>DEBUG_WIDGET_SET_PARENT_WIN</NAME>
+# define DEBUG_WIDGET_SET_PARENT_WIN(widget, parent)
+</MACRO>
+<MACRO>
+<NAME>DEBUG_WIDGET_CONTAINER_ADD</NAME>
+# define DEBUG_WIDGET_CONTAINER_ADD(parent, widget)
+</MACRO>
+<MACRO>
+<NAME>DEBUG_WIDGET_CONTAINER_REMOVE</NAME>
+# define DEBUG_WIDGET_CONTAINER_REMOVE(parent, widget)
+</MACRO>
+<MACRO>
 <NAME>GTKSHEET_MAJOR_VERSION</NAME>
 #define GTKSHEET_MAJOR_VERSION			(4)
 </MACRO>
@@ -1720,36 +1753,3 @@ extern const guint gtksheet_interface_age;
 <RETURNS>gchar * </RETURNS>
 guint required_major, guint required_minor, guint required_micro
 </FUNCTION>
-<MACRO>
-<NAME>gtk_widget_get_realized</NAME>
-#  define gtk_widget_get_realized GTK_WIDGET_REALIZED
-</MACRO>
-<MACRO>
-<NAME>gtk_widget_get_mapped</NAME>
-#  define gtk_widget_get_mapped GTK_WIDGET_MAPPED
-</MACRO>
-<MACRO>
-<NAME>gtk_widget_get_requisition</NAME>
-#  define gtk_widget_get_requisition(widget, requisitionptr) \
-        *(requisitionptr) = GTK_WIDGET(widget)->requisition
-</MACRO>
-<MACRO>
-<NAME>gtk_widget_set_realized_true</NAME>
-#   define gtk_widget_set_realized_true(widget)  \
-        GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED)
-</MACRO>
-<MACRO>
-<NAME>gtk_widget_set_realized_false</NAME>
-#   define gtk_widget_set_realized_false(widget)  \
-        GTK_WIDGET_UNSET_FLAGS(widget, GTK_REALIZED)
-</MACRO>
-<MACRO>
-<NAME>gtk_widget_set_mapped_true</NAME>
-#   define gtk_widget_set_mapped_true(widget)  \
-        GTK_WIDGET_SET_FLAGS(widget, GTK_MAPPED)
-</MACRO>
-<MACRO>
-<NAME>gtk_widget_set_mapped_false</NAME>
-#   define gtk_widget_set_mapped_false(widget)  \
-        GTK_WIDGET_UNSET_FLAGS(widget, GTK_MAPPED)
-</MACRO>

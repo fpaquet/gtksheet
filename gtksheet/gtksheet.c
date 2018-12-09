@@ -6085,6 +6085,160 @@ static cairo_t *_create_main_win_xor_cr(GtkSheet *sheet)
 }
 #endif
 
+static void _dumb_calc_visibility(
+    GtkSheet *sheet,
+    gint act_row, gint act_col, 
+    gint *vis_row, gint *min_vis_row, gint *max_vis_row,
+    gint *vis_col, gint *min_vis_col, gint *max_vis_col)
+{
+    *vis_row = *min_vis_row = *max_vis_row = -1;
+    *vis_col = *min_vis_col = *max_vis_col = -1;
+
+    /* dumb approach
+       should use cache for row/col visibility index
+       dumb approach will resulte in O(n2)
+       */ 
+
+    g_debug("_dumb_calc_visibility: r/c %d/%d", act_row, act_col);
+
+    if (act_row < 0 || act_col < 0) return;
+    if (act_row > sheet->maxrow || act_col > sheet->maxcol) return;
+
+    gint idx;
+
+    for (idx=0; idx<=sheet->maxrow; idx++)
+    {
+        if (GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, idx)))
+        {
+            (*max_vis_row)++;
+            if (*min_vis_row < 0) *min_vis_row = *max_vis_row;
+            if (idx == act_row) *vis_row = *max_vis_row;
+        }
+    }
+
+    for (idx=0; idx<=sheet->maxcol; idx++)
+    {
+        if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, idx)))
+        {
+            (*max_vis_col)++;
+            if (*min_vis_col < 0) *min_vis_col = *max_vis_col;
+            if (idx == act_col) *vis_col = *max_vis_col;
+        }
+    }
+    g_debug("_dumb_calc_visibility: row v/min/max %d/%d/%d col v/min/max %d/%d/%d", 
+        *vis_row, *min_vis_row, *max_vis_row,
+        *vis_col, *min_vis_col, *max_vis_col);
+}
+
+#define GTK_SHEET_CSS_POSITION_PREFIX "position_"
+/**
+ * _cell_style_context_add_position_subclass:
+ * add CSS position subclasses to context.
+ * 
+ * @param sheet   the sheet
+ * @param context style context of the cell
+ * @param row     active row or -1
+ * @param col     active col or -1
+ */
+static void _cell_style_context_add_position_subclass(
+    GtkSheet *sheet,
+    GtkStyleContext *context,
+    gint row, gint col)
+{
+    /* remove all known position sub-classes */
+    GList *class_list = gtk_style_context_list_classes(context);
+    GList *p;
+
+    for (p=class_list; p; p=p->next)
+    {
+        if (strncmp(p->data, 
+            GTK_SHEET_CSS_POSITION_PREFIX, 
+            strlen(GTK_SHEET_CSS_POSITION_PREFIX)) == 0)
+        {
+            gtk_style_context_remove_class(context, p->data);
+        }
+    }
+
+    g_list_free(class_list);
+
+    gint vis_row, min_vis_row, max_vis_row;
+    gint vis_col, min_vis_col, max_vis_col;
+
+    /* TBD - take care of visibility */
+
+    _dumb_calc_visibility(sheet, 
+        row, col, 
+        &vis_row, &min_vis_row, &max_vis_row,
+        &vis_col, &min_vis_col, &max_vis_col);
+
+    if ((vis_row < 0) || (vis_col < 0)) {
+        g_warning("no vis_row/vis_col");
+        return;
+    }
+
+    /* add column sub-classes */
+
+    if (sheet->active_cell.col >= 0
+        && col == sheet->active_cell.col)
+    {
+        gtk_style_context_add_class(context,
+            GTK_SHEET_CSS_POSITION_PREFIX "col_active");
+    }
+
+    if (vis_col>=0 && (vis_col == min_vis_col))
+    {
+        gtk_style_context_add_class(context,
+            GTK_SHEET_CSS_POSITION_PREFIX "col_first");
+    }
+    if (vis_col>=0 && (vis_col == max_vis_col))
+    {
+        gtk_style_context_add_class(context,
+            GTK_SHEET_CSS_POSITION_PREFIX "col_last");
+    }
+
+    if (vis_col % 2)
+    {
+        gtk_style_context_add_class(context,
+            GTK_SHEET_CSS_POSITION_PREFIX "col_odd");
+    }
+    else
+    {
+        gtk_style_context_add_class(context,
+            GTK_SHEET_CSS_POSITION_PREFIX "col_even");
+    }
+
+    /* add row sub-classes */
+
+    if (sheet->active_cell.row >= 0
+        && row == sheet->active_cell.row)
+    {
+        gtk_style_context_add_class(context,
+            GTK_SHEET_CSS_POSITION_PREFIX "row_active");
+    }
+
+    if (vis_row>=0 && (vis_row == min_vis_row))
+    {
+        gtk_style_context_add_class(context,
+            GTK_SHEET_CSS_POSITION_PREFIX "row_first");
+    }
+    if (vis_row>=0 && (vis_row == max_vis_row))
+    {
+        gtk_style_context_add_class(context,
+            GTK_SHEET_CSS_POSITION_PREFIX "row_last");
+    }
+
+    if (vis_row % 2)
+    {
+        gtk_style_context_add_class(context,
+            GTK_SHEET_CSS_POSITION_PREFIX "row_odd");
+    }
+    else
+    {
+        gtk_style_context_add_class(context,
+            GTK_SHEET_CSS_POSITION_PREFIX "row_even");
+    }
+}
+
 /** 
  * _cairo_clip_sheet_area: 
  * set cairo clipping area to visible part of the sheet.
@@ -7435,27 +7589,8 @@ _cell_draw_background(GtkSheet *sheet, gint row, gint col,
                 attributes.css_class);
         }
 
-        if (col % 2)
-        {
-            gtk_style_context_add_class(sheet_context,
-                "position_col_odd");
-        }
-        else
-        {
-            gtk_style_context_add_class(sheet_context,
-                "position_col_even");
-        }
-
-        if (row % 2)
-        {
-            gtk_style_context_add_class(sheet_context,
-                "position_row_odd");
-        }
-        else
-        {
-            gtk_style_context_add_class(sheet_context,
-                "position_row_even");
-        }
+        _cell_style_context_add_position_subclass(sheet, 
+            sheet_context, row, col);
 
         gtk_render_background(sheet_context, sheet->bsurf_cr,
             area.x, area.y, area.width, area.height);
@@ -7649,6 +7784,9 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 	gtk_style_context_add_class(sheet_context,
 	    attributes.css_class);
     }
+
+    _cell_style_context_add_position_subclass(sheet, 
+        sheet_context, row, col);
 
     PangoContext *pango_context = gtk_widget_get_pango_context(
 	GTK_WIDGET(sheet));
@@ -9944,6 +10082,9 @@ static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
             gtk_style_context_add_class(entry_context,
                 sheet->css_class);
         }
+
+        _cell_style_context_add_position_subclass(sheet, 
+            entry_context, row, col);
     }
 }
 

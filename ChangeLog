@@ -1,3 +1,6 @@
+2018-12-10 Fredy Paquet <mailbox AT opag.ch>
+* fixed build gtkdoc: gtkdoc-mktmpl: command not found
+
 2018-04-05 Fredy Paquet <mailbox AT opag.ch>
 * renamed GtkExtra to GtkSheet
 * removed Plot widgets and related stuff

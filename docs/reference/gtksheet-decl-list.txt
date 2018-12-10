@@ -18,7 +18,6 @@ GTK_DATA_ENTRY
 GTK_DATA_ENTRY_CLASS
 GTK_DATA_ENTRY_GET_CLASS
 GTK_IS_DATA_ENTRY
-GTK_IS_DATA_ENTRY_CLASS
 GTK_TYPE_DATA_ENTRY
 GtkDataEntryClass
 gtk_data_entry_get_type
@@ -46,7 +45,6 @@ GTK_DATA_TEXT_VIEW
 GTK_DATA_TEXT_VIEW_CLASS
 GTK_DATA_TEXT_VIEW_GET_CLASS
 GTK_IS_DATA_TEXT_VIEW
-GTK_IS_DATA_TEXT_VIEW_CLASS
 GTK_TYPE_DATA_TEXT_VIEW
 GtkDataTextViewClass
 gtk_data_text_view_get_type
@@ -56,7 +54,6 @@ gtk_data_text_view_get_type
 <FILE>gtkitementry</FILE>
 <SUBSECTION Standard>
 GTK_IS_ITEM_ENTRY
-GTK_IS_ITEM_ENTRY_CLASS
 GTK_ITEM_ENTRY
 GTK_ITEM_ENTRY_CLASS
 G_TYPE_ITEM_ENTRY
@@ -236,7 +233,6 @@ GtkSheetColumn
 GtkSheetColumnClass
 <SUBSECTION Standard>
 GTK_IS_SHEET
-GTK_IS_SHEET_CLASS
 GTK_SHEET
 GTK_SHEET_CLASS
 GTK_SHEET_GET_CLASS
@@ -331,7 +327,6 @@ gtk_sheet_get_column_title
 gtk_sheet_set_column_title
 <SUBSECTION Standard>
 GTK_IS_SHEET_COLUMN
-GTK_IS_SHEET_COLUMN_CLASS
 GTK_SHEET_COLUMN
 GTK_SHEET_COLUMN_CLASS
 GTK_SHEET_COLUMN_GET_CLASS
@@ -358,5 +353,10 @@ gtksheet_micro_version
 gtksheet_binary_age
 gtksheet_interface_age
 gtksheet_check_version
+</SECTION>
+
+<SECTION>
+<FILE>gtksheeticons</FILE>
+
 </SECTION>
 

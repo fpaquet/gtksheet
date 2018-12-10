@@ -1,27 +1,27 @@
-90% symbol docs coverage.
+0% symbol docs coverage.
 357 symbols documented.
-2 symbols incomplete.
-38 not documented.
+17 symbols incomplete.
+39 not documented.
 
 
-GTKSHEET_CHECK_VERSION
+GTKSHEET_CHECK_VERSION (<parameters>)
 GTKSHEET_MAJOR_VERSION
 GTKSHEET_MICRO_VERSION
 GTKSHEET_MINOR_VERSION
-GTK_SHEET_AUTORESIZE
-GTK_SHEET_AUTO_SCROLL
-GTK_SHEET_CLIP_TEXT
+GTK_SHEET_AUTORESIZE (<parameters>)
+GTK_SHEET_AUTO_SCROLL (<parameters>)
+GTK_SHEET_CLIP_TEXT (<parameters>)
 GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION
 GTK_SHEET_COLUMN_DEFAULT_WIDTH
-GTK_SHEET_COLUMN_FROZEN
+GTK_SHEET_COLUMN_FROZEN (<parameters>)
 GTK_SHEET_COLUMN_MIN_WIDTH
-GTK_SHEET_COL_TITLES_VISIBLE
+GTK_SHEET_COL_TITLES_VISIBLE (<parameters>)
 GTK_SHEET_CSS_FILE_NAME
 GTK_SHEET_CSS_RESOURCE_NAME
-GTK_SHEET_JUSTIFY_ENTRY
+GTK_SHEET_JUSTIFY_ENTRY (<parameters>)
 GTK_SHEET_OPTIMIZE_COLUMN_DRAW
-GTK_SHEET_ROW_FROZEN
-GTK_SHEET_ROW_TITLES_VISIBLE
+GTK_SHEET_ROW_FROZEN (<parameters>)
+GTK_SHEET_ROW_TITLES_VISIBLE (<parameters>)
 GtkSheetAttrType (<items>)
 GtkSheetEntryType (GTK_SHEET_ENTRY_TYPE_GTK_DATA_ENTRY)
 _gtk_sheet_move_cursor
@@ -29,13 +29,13 @@ _gtk_sheet_row_default_height
 gtk_sheet_get_resource
 gtk_widget_get_mapped
 gtk_widget_get_realized
-gtk_widget_get_requisition
-gtk_widget_set_mapped_false
-gtk_widget_set_mapped_true
-gtk_widget_set_realized_false
-gtk_widget_set_realized_true
+gtk_widget_get_requisition (<parameters>)
+gtk_widget_set_mapped_false (<parameters>)
+gtk_widget_set_mapped_true (<parameters>)
+gtk_widget_set_realized_false (<parameters>)
+gtk_widget_set_realized_true (<parameters>)
 gtksheet_binary_age
-gtksheet_check_version
+gtksheet_check_version (<parameters>)
 gtksheet_interface_age
 gtksheet_major_version
 gtksheet_micro_version
@@ -43,4 +43,5 @@ gtksheet_minor_version
 
 gtksheet-compat:Long_Description
 gtksheet-compat:Short_Description
+gtksheetfeatures:Long_Description
 gtksheetfeatures:Short_Description

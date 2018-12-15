@@ -49,6 +49,7 @@ struct _GtkSheetColumn
     gint width;
     guint16 requisition;
     gint left_xpixel;   /* left edge of the column*/
+    gint vis_col_index; /* visible column index or -1 */
     gint max_extent_width;  /* := max(Cell.extent.width) */
 
     GtkWidget *col_button;  /* child widget or GtkToggleButton */

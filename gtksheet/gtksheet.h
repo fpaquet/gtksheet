@@ -318,6 +318,7 @@ struct _GtkSheetRow
     gint height;
     guint16 requisition;
     gint top_ypixel;
+    gint vis_row_index; /* visible row index or -1 */
     gint max_extent_height;  /* := max(Cell.extent.height) */
 
     GtkSheetButton button;
@@ -380,6 +381,12 @@ struct _GtkSheet
     /* max number of diplayed cells */
     gint maxrow;
     gint maxcol;
+
+    /* visible indexes for CSS */
+    gint min_vis_col_index; /* leftmost visible column index (0,-1) */
+    gint max_vis_col_index; /* rightmost visible column index */
+    gint min_vis_row_index; /* topmost visible row index (0,-1) */
+    gint max_vis_row_index; /* bottommost visible column index */
 
     /* Displayed range */
 

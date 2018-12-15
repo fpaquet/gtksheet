@@ -3524,6 +3524,11 @@ gtk_sheet_init(GtkSheet *sheet)
     sheet->maxrow = -1;
     sheet->maxcol = -1;
 
+    sheet->min_vis_col_index = -1;
+    sheet->max_vis_col_index = -1;
+    sheet->min_vis_row_index = -1;
+    sheet->max_vis_row_index = -1;
+
     sheet->view.row0 = -1;
     sheet->view.col0 = -1;
     sheet->view.rowi = -1;
@@ -6085,7 +6090,7 @@ static cairo_t *_create_main_win_xor_cr(GtkSheet *sheet)
 }
 #endif
 
-static void _dumb_calc_visibility(
+static void _get_visible_index(
     GtkSheet *sheet,
     gint act_row, gint act_col, 
     gint *vis_row, gint *min_vis_row, gint *max_vis_row,
@@ -6094,40 +6099,26 @@ static void _dumb_calc_visibility(
     *vis_row = *min_vis_row = *max_vis_row = -1;
     *vis_col = *min_vis_col = *max_vis_col = -1;
 
-    /* dumb approach
-       should use cache for row/col visibility index
-       dumb approach will resulte in O(n2)
-       */ 
-
-    g_debug("_dumb_calc_visibility: r/c %d/%d", act_row, act_col);
+#if 0
+    g_debug("_get_visible_index: r/c %d/%d", act_row, act_col);
+#endif
 
     if (act_row < 0 || act_col < 0) return;
     if (act_row > sheet->maxrow || act_col > sheet->maxcol) return;
 
-    gint idx;
+    *vis_row = ROWPTR(sheet, act_row)->vis_row_index;
+    *min_vis_row = sheet->min_vis_row_index;
+    *max_vis_row = sheet->max_vis_row_index;
 
-    for (idx=0; idx<=sheet->maxrow; idx++)
-    {
-        if (GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, idx)))
-        {
-            (*max_vis_row)++;
-            if (*min_vis_row < 0) *min_vis_row = *max_vis_row;
-            if (idx == act_row) *vis_row = *max_vis_row;
-        }
-    }
+    *vis_col = COLPTR(sheet, act_col)->vis_col_index;
+    *min_vis_col = sheet->min_vis_col_index;
+    *max_vis_col = sheet->max_vis_col_index;
 
-    for (idx=0; idx<=sheet->maxcol; idx++)
-    {
-        if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, idx)))
-        {
-            (*max_vis_col)++;
-            if (*min_vis_col < 0) *min_vis_col = *max_vis_col;
-            if (idx == act_col) *vis_col = *max_vis_col;
-        }
-    }
-    g_debug("_dumb_calc_visibility: row v/min/max %d/%d/%d col v/min/max %d/%d/%d", 
+#if 0
+    g_debug("_get_visible_index: row v/min/max %d/%d/%d col v/min/max %d/%d/%d", 
         *vis_row, *min_vis_row, *max_vis_row,
         *vis_col, *min_vis_col, *max_vis_col);
+#endif
 }
 
 #define GTK_SHEET_CSS_POSITION_PREFIX "position_"
@@ -6166,7 +6157,7 @@ static void _cell_style_context_add_position_subclass(
 
     /* TBD - take care of visibility */
 
-    _dumb_calc_visibility(sheet, 
+    _get_visible_index(sheet, 
         row, col, 
         &vis_row, &min_vis_row, &max_vis_row,
         &vis_col, &min_vis_col, &max_vis_col);
@@ -13214,14 +13205,18 @@ _gtk_sheet_row_buttons_size_allocate(GtkSheet *sheet)
 
 /**
  * gtk_sheet_recalc_top_ypixels:
- * @sheet:  the #GtkSheet 
- *  
- * recalculate topmost pixel of all rows
+ * 
+ * for all rows: recalculate top_ypixel position, vis_row_index 
+ * and sheet->min_vis_row_index, sheet->max_vis_row_index 
+ * 
+ * @param sheet  the #GtkSheet
  */
 void
 _gtk_sheet_recalc_top_ypixels(GtkSheet *sheet)
 {
     gint row, cy;
+    gint min_vis_row = -1;
+    gint max_vis_row = -1;
 
     if (sheet->column_titles_visible)
 	cy = sheet->column_title_area.height;
@@ -13230,22 +13225,42 @@ _gtk_sheet_recalc_top_ypixels(GtkSheet *sheet)
 
     for (row = 0; row <= sheet->maxrow; row++)
     {
-	sheet->row[row].top_ypixel = cy;
-	if (GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row)))
-	    cy += sheet->row[row].height;
+	GtkSheetRow *rowptr = ROWPTR(sheet, row);
+
+	rowptr->top_ypixel = cy;
+
+	if (GTK_SHEET_ROW_IS_VISIBLE(rowptr))
+        {
+            cy += rowptr->height;
+
+            ++max_vis_row;
+            if (min_vis_row < 0) min_vis_row = max_vis_row;
+            rowptr->vis_row_index = max_vis_row;
+        }
+        else
+        {
+            rowptr->vis_row_index = -1;
+        }
     }
+    sheet->min_vis_row_index = min_vis_row;
+    sheet->max_vis_row_index = max_vis_row;
 }
 
 /**
  * _gtk_sheet_recalc_left_xpixels:
- * @sheet:  the #GtkSheet 
+ * 
+ * for all columns: 
+ * recalculate left_xpixel position, vis_col_index 
+ * and sheet->min_vis_col_index, sheet->max_vis_col_index
  *  
- * recalculate left pixel index of all columns
+ * @param sheet  the #GtkSheet
  */
 void
 _gtk_sheet_recalc_left_xpixels(GtkSheet *sheet)
 {
     gint col, cx;
+    gint min_vis_col = -1;
+    gint max_vis_col = -1;
 
     if (sheet->row_titles_visible)
 	cx = sheet->row_title_area.width;
@@ -13254,11 +13269,25 @@ _gtk_sheet_recalc_left_xpixels(GtkSheet *sheet)
 
     for (col = 0; col <= sheet->maxcol; col++)
     {
-	COLPTR(sheet, col)->left_xpixel = cx;
+        GtkSheetColumn *colobj = COLPTR(sheet, col);
 
-	if (GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)))
-	    cx += COLPTR(sheet, col)->width;
+	colobj->left_xpixel = cx;
+
+	if (GTK_SHEET_COLUMN_IS_VISIBLE(colobj))
+        {
+            cx += colobj->width;
+
+            ++max_vis_col;
+            if (min_vis_col < 0) min_vis_col = max_vis_col;
+            colobj->vis_col_index = max_vis_col;
+        }
+        else
+        {
+            colobj->vis_col_index = -1;
+        }
     }
+    sheet->min_vis_col_index = min_vis_col;
+    sheet->max_vis_col_index = max_vis_col;
 }
 
 /**

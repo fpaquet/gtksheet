@@ -5,11 +5,11 @@ TBD
 ** row selection drawing over right sheet border
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
-** CSS: optimize row/col visibility calculation, remove _dumb_calc_visibility()
 
 2018-12-15 Fredy Paquet <mailbox AT opag.ch>
 * fixed flicker outside cell area when last row/col is hidden
 * fixed underallocation warning for invisible columns
+* CSS: optimized row/col visibility calculation
 
 2018-12-10 Fredy Paquet <mailbox AT opag.ch>
 * fixed gtkdoc: gtkdoc-mktmpl: command not found

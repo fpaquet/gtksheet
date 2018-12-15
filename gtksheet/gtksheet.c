@@ -8611,11 +8611,13 @@ gtk_sheet_draw_backing_pixmap(
     y = _gtk_sheet_row_top_ypixel(sheet, range.row0);
 
     width = _gtk_sheet_column_left_xpixel(sheet, range.coli) - x;
-    if (0 <= range.coli && range.coli <= sheet->maxcol)
+    if (0 <= range.coli && range.coli <= sheet->maxcol
+        && GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, range.coli)))
 	width += COLPTR(sheet, range.coli)->width;
 
     height = _gtk_sheet_row_top_ypixel(sheet, range.rowi) - y;
-    if (0 <= range.rowi && range.rowi <= sheet->maxrow)
+    if (0 <= range.rowi && range.rowi <= sheet->maxrow
+        && GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, range.rowi)))
 	height += sheet->row[range.rowi].height;
 
     double d;  /* consider borders and decorations */

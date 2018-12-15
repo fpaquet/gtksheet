@@ -1324,6 +1324,11 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
         g_assert(0 <= col && col <= sheet->maxcol);
         GtkSheetColumn *colobj = COLPTR(sheet, col);
 
+        if (!GTK_SHEET_COLUMN_IS_VISIBLE(colobj))
+        {
+            continue;
+        }
+
         if (colobj->col_button)
         {
             /* pixel gap between column buttons */
@@ -1385,7 +1390,8 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
 
             gtk_widget_get_preferred_size(
                 GTK_WIDGET(colobj), NULL, NULL);
-            gtk_widget_size_allocate(GTK_WIDGET(colobj), &allocation);
+            gtk_widget_size_allocate(
+                GTK_WIDGET(colobj), &allocation);
 
             _gtk_sheet_column_check_windows(colobj, sheet);
 

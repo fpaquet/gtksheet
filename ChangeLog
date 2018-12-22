@@ -1,3 +1,6 @@
+2018-12-22 Fredy Paquet <mailbox AT opag.ch>
+* fixed paths in SlickEdit project file
+
 2018-12-10 Fredy Paquet <mailbox AT opag.ch>
 * fixed build gtkdoc: gtkdoc-mktmpl: command not found
 

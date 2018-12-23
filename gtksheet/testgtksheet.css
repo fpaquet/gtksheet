@@ -46,6 +46,12 @@ sheet.view text:backdrop {
 
 /* Note: :not(.left) excludes row title area */
 sheet .example1class:not(.left) {
+    /* light gridlines */
+    border-color: black;
+    border-width: 0.05px;
+    border-image: none;
+    border-style: solid;
+
     background-color: @testgtksheet_example1_default_bg;
     color: black;
 }
@@ -72,6 +78,13 @@ sheet .example1grey:not(.left) {
 
 @define-color testgtksheet_example2_bgcolor lightgray;
 
+sheet#example2:not(.left) {
+    /* heavier gridlines */
+    border-color: black;
+    border-width: 0.2px;
+    border-image: none;
+    border-style: solid;
+}
 sheet#example2 .blue {
     background-color: @testgtksheet_example2_bgcolor;
     color: blue;

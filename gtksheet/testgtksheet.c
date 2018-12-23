@@ -352,9 +352,9 @@ void
 
     format_text(sheet, text, &justification, label);
 
-    gtk_sheet_set_cell(sheet, sheet->active_cell.row,
-                       sheet->active_cell.col,
-                       justification, label); 
+    gtk_sheet_set_cell(sheet, 
+        sheet->active_cell.row, sheet->active_cell.col,
+        justification, label); 
 
     g_free(text);
 }
@@ -644,7 +644,8 @@ void
     gtk_sheet_range_set_css_class(sheet, &range, "example1red");
 #endif
 
-    gtk_sheet_set_cell(sheet, 1,2, GTK_JUSTIFY_CENTER, "Welcome to");
+    gtk_sheet_set_cell(sheet,
+        1,2, GTK_JUSTIFY_CENTER, "Welcome to");
 
     range.row0=2;
 
@@ -665,7 +666,8 @@ void
     gtk_sheet_range_set_css_class(sheet, &range, "example1blue");
 #endif
 
-    gtk_sheet_set_cell(sheet, 2,2, GTK_JUSTIFY_CENTER, "GtkSheet");
+    gtk_sheet_set_cell(sheet,
+        2,2, GTK_JUSTIFY_CENTER, "GtkSheet");
 
     range.row0=3;
     range.rowi=3;
@@ -688,23 +690,30 @@ void
     gtk_sheet_range_set_css_class(sheet, &range, "example1grey");
 #endif
 
-    gtk_sheet_set_cell(sheet,3,2,GTK_JUSTIFY_CENTER,
-                       "a Matrix widget for Gtk+");
+    gtk_sheet_set_cell(sheet,
+        3,2,GTK_JUSTIFY_CENTER, "a Matrix widget for Gtk+");
 
-    gtk_sheet_set_cell(sheet,4,1,GTK_JUSTIFY_LEFT,
-                       "GtkSheet is a matrix where you can allocate cells of text.");
-    gtk_sheet_set_cell(sheet,5,1,GTK_JUSTIFY_LEFT,
-                       "Cell contents can be edited interactively with an specially designed entry");
-    gtk_sheet_set_cell(sheet,6,1,GTK_JUSTIFY_LEFT,
-                       "You can change colors, borders, and many other attributes");
-    gtk_sheet_set_cell(sheet, 7,1, GTK_JUSTIFY_LEFT,
-                       "Drag & drop or resize the selection clicking the corner or border");
-    gtk_sheet_set_cell(sheet, 8, 1, GTK_JUSTIFY_LEFT,
-                       "Store the selection on the clipboard pressing Ctrl-C");
-    gtk_sheet_set_cell(sheet, 9, 1, GTK_JUSTIFY_LEFT,
-                       "(The selection handler has not been implemented yet)");
-    gtk_sheet_set_cell(sheet, 10, 1, GTK_JUSTIFY_LEFT,
-                       "You can add buttons, charts, pixmaps, and other widgets");
+    gtk_sheet_set_cell(sheet,
+        4,1,GTK_JUSTIFY_LEFT,
+        "GtkSheet is a matrix where you can allocate cells of text.");
+    gtk_sheet_set_cell(sheet,
+        5,1,GTK_JUSTIFY_LEFT,
+        "Cell contents can be edited interactively with an specially designed entry");
+    gtk_sheet_set_cell(sheet,
+        6,1,GTK_JUSTIFY_LEFT,
+        "You can change colors, borders, and many other attributes");
+    gtk_sheet_set_cell(sheet,
+        7,1, GTK_JUSTIFY_LEFT,
+        "Drag & drop or resize the selection clicking the corner or border");
+    gtk_sheet_set_cell(sheet,
+        8, 1, GTK_JUSTIFY_LEFT,
+        "Store the selection on the clipboard pressing Ctrl-C");
+    gtk_sheet_set_cell(sheet,
+        9, 1, GTK_JUSTIFY_LEFT,
+        "(The selection handler has not been implemented yet)");
+    gtk_sheet_set_cell(sheet,
+        10, 1, GTK_JUSTIFY_LEFT,
+        "You can add buttons, charts, pixmaps, and other widgets");
 
     g_signal_connect(G_OBJECT(sheet),
                      "key_press_event",
@@ -888,12 +897,16 @@ void
     gtk_sheet_row_set_sensitivity(sheet, 2, FALSE); 
     */
 
-    gtk_sheet_set_cell(sheet, 0,2, GTK_JUSTIFY_CENTER,
-                       "Click the right mouse button to display a popup");
-    gtk_sheet_set_cell(sheet, 1,2, GTK_JUSTIFY_CENTER,
-                       "You can connect a parser to the 'set cell' signal");
-    gtk_sheet_set_cell(sheet, 2,2, GTK_JUSTIFY_CENTER,
-                       "(Try typing numbers)");
+    gtk_sheet_set_cell(sheet,
+        0,2, GTK_JUSTIFY_CENTER,
+        "Click the right mouse button to display a popup");
+    gtk_sheet_set_cell(sheet,
+        1,2, GTK_JUSTIFY_CENTER,
+        "You can connect a parser to the 'set cell' signal");
+    gtk_sheet_set_cell(sheet,
+        2,2, GTK_JUSTIFY_CENTER,
+        "(Try typing numbers)");
+
     gtk_sheet_set_active_cell(sheet, 3, 0);
 
 /*
@@ -1152,7 +1165,8 @@ void
     sheet=GTK_SHEET(sheets[cur_page]);
     row=sheet->active_cell.row; col=sheet->active_cell.col;
 
-    gtk_sheet_set_cell_text(sheet, row, col, gtk_sheet_get_entry_text(sheet));
+    gtk_sheet_set_cell_text(
+        sheet, row, col, gtk_sheet_get_entry_text(sheet));
 }
 
 void 

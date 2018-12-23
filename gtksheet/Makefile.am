@@ -171,7 +171,7 @@ if ENABLE_TESTS
 noinst_PROGRAMS = testgtksheet
 endif
 
-DEPS = $(gtksheettargetlib)
+DEPS = $(gtksheettargetlib) testgtksheet.css
 LDADDS = $(gtksheettargetlib) $(GTK_LIBS)
 
 testgtksheet_DEPENDENCIES = $(DEPS)

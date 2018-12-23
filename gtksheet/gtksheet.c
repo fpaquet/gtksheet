@@ -677,52 +677,71 @@ _default_font_ascent(GtkWidget *widget)
     return (PANGO_PIXELS(val));
 }
 
-static void _get_string_extent(GtkSheet *sheet, GtkSheetColumn *colptr,
-    PangoFontDescription *font_desc, const gchar *text,
+static void _get_string_extent(
+    GtkSheet *sheet, GtkSheetColumn *colptr,
+    PangoFontDescription *font_desc, 
+    const gchar *text, gboolean is_markup,
     guint *width, guint *height)
 {
     PangoRectangle extent;
     PangoLayout *layout;
 
-    layout = gtk_widget_create_pango_layout(GTK_WIDGET(sheet), text);
+    layout = gtk_widget_create_pango_layout(
+        GTK_WIDGET(sheet), NULL);
+
+    if (is_markup)
+        pango_layout_set_markup(layout, text, -1);
+    else
+        pango_layout_set_text(layout, text, -1);
+
     pango_layout_set_font_description(layout, font_desc);
 
     if (colptr && !gtk_sheet_autoresize_columns(sheet))
     {
-	switch(colptr->wrap_mode)
-	{
-	    case GTK_WRAP_NONE: 
-		break;
+        switch(colptr->wrap_mode)
+        {
+            case GTK_WRAP_NONE: 
+                break;
 
-	    case GTK_WRAP_CHAR:
-		pango_layout_set_width(layout, colptr->width * PANGO_SCALE);
-		pango_layout_set_wrap(layout, PANGO_WRAP_CHAR);
+            case GTK_WRAP_CHAR:
+		pango_layout_set_width(
+                    layout, colptr->width * PANGO_SCALE);
+		pango_layout_set_wrap(
+                    layout, PANGO_WRAP_CHAR);
 		break;
 
 	    case GTK_WRAP_WORD:
-		pango_layout_set_width(layout, colptr->width * PANGO_SCALE);
-		pango_layout_set_wrap(layout, PANGO_WRAP_WORD);
+		pango_layout_set_width(
+                    layout, colptr->width * PANGO_SCALE);
+		pango_layout_set_wrap(
+                    layout, PANGO_WRAP_WORD);
 		break;
 
 	    case GTK_WRAP_WORD_CHAR:
-		pango_layout_set_width(layout, colptr->width * PANGO_SCALE);
-		pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
+		pango_layout_set_width(
+                    layout, colptr->width * PANGO_SCALE);
+		pango_layout_set_wrap(
+                    layout, PANGO_WRAP_WORD_CHAR);
 		break;
 	}
     }
-
 
     pango_layout_get_pixel_extents(layout, NULL, &extent);
 
 #if GTK_SHEET_DEBUG_FONT_METRICS > 0
     {
-	PangoContext *context = gtk_widget_get_pango_context(GTK_WIDGET(sheet));
+	PangoContext *context = gtk_widget_get_pango_context(
+            GTK_WIDGET(sheet));
 	PangoFontMetrics *metrics = pango_context_get_metrics(
-	    context, font_desc, pango_context_get_language(context));
+	    context, font_desc, 
+            pango_context_get_language(context));
 
-	gint ascent = pango_font_metrics_get_ascent(metrics) / PANGO_SCALE;
-	gint descent = pango_font_metrics_get_descent(metrics) / PANGO_SCALE;
-	gint spacing = pango_layout_get_spacing(layout) / PANGO_SCALE;
+	gint ascent = 
+            pango_font_metrics_get_ascent(metrics) / PANGO_SCALE;
+	gint descent =
+            pango_font_metrics_get_descent(metrics) / PANGO_SCALE;
+	gint spacing = 
+            pango_layout_get_spacing(layout) / PANGO_SCALE;
 
 	pango_font_metrics_unref(metrics);
 
@@ -3339,6 +3358,24 @@ static void gtk_sheet_style_updated(GtkWidget *widget)
 }
 
 /*
+ * gtk_sheet_screen_changed - style update handler
+ * 
+ * this signal is used by inspector to force immediate 
+ * screen updates.
+ *  
+ * @param widget
+ * @param previous_screen
+ */
+static void gtk_sheet_screen_changed(GtkWidget *widget,
+    GdkScreen *previous_screen)
+{
+    //g_debug("gtk_sheet_style_updated");
+
+    _gtk_sheet_range_draw(GTK_SHEET(widget), NULL, TRUE);
+    GTK_WIDGET_CLASS (sheet_parent_class)->style_updated(widget);
+}
+
+/*
  * gtk_sheet_class_init - GtkSheet class initialisation
  *
  * @param klass
@@ -3382,6 +3419,7 @@ gtk_sheet_class_init(GtkSheetClass *klass)
     widget_class->focus_out_event = NULL;
     widget_class->destroy = gtk_sheet_destroy_handler;
     widget_class->style_updated = gtk_sheet_style_updated;
+    widget_class->screen_changed = gtk_sheet_screen_changed;
 
     klass->select_row = NULL;
     klass->select_column = NULL;
@@ -3501,7 +3539,7 @@ gtk_sheet_init(GtkSheet *sheet)
     gdk_rgba_parse(&sheet->bg_color, GTK_SHEET_DEFAULT_BG_COLOR);
 
     gdk_rgba_parse(&sheet->grid_color, GTK_SHEET_DEFAULT_GRID_COLOR);
-    sheet->show_grid = TRUE;
+    sheet->show_grid = FALSE;
 
     gdk_rgba_parse(&sheet->tm_color, GTK_SHEET_DEFAULT_TM_COLOR);
     sheet->deprecated_bg_color_used = FALSE;
@@ -3925,7 +3963,9 @@ gtk_sheet_change_entry(GtkSheet *sheet, const GType entry_type)
  * @sheet: a #GtkSheet
  * @show: TRUE(grid visible) or FALSE(grid invisible)
  *
- * Sets the visibility of grid in #GtkSheet.
+ * Sets the visibility of grid in #GtkSheet. 
+ * 
+ * Deprecated:4.2.0: Use CSS instead
  */
 void
 gtk_sheet_show_grid(GtkSheet *sheet, gboolean show)
@@ -3947,7 +3987,9 @@ gtk_sheet_show_grid(GtkSheet *sheet, gboolean show)
  *
  * Gets the visibility of grid in #GtkSheet.
  *
- * Returns: TRUE(grid visible) or FALSE(grid invisible)
+ * Returns: TRUE(grid visible) or FALSE(grid invisible) 
+ *  
+ * Deprecated:4.2.0: Use CSS instead
  */
 gboolean
 gtk_sheet_grid_visible(GtkSheet *sheet)
@@ -4037,7 +4079,9 @@ gtk_sheet_set_css_class(GtkSheet *sheet, gchar *css_class)
  * @color: a #GdkRGBA structure
  *
  * Set the grid color.
- * If pass NULL, the grid will be reset to the default color.
+ * If pass NULL, the grid will be reset to the default color. 
+ *  
+ * Deprecated:4.2.0: Use CSS instead
  */
 void
 gtk_sheet_set_grid(GtkSheet *sheet, GdkRGBA *color)
@@ -4296,7 +4340,9 @@ static void _gtk_sheet_recalc_extent_width(GtkSheet *sheet, gint col)
 	    if (cell && cell->text && cell->text[0])
 	    {
 		GtkSheetCellAttr attributes;
-		gtk_sheet_get_attributes(sheet, row, col, &attributes);
+
+		gtk_sheet_get_attributes(sheet,
+                    row, col, &attributes);
 
 		if (attributes.is_visible)
 		{
@@ -4341,7 +4387,9 @@ static void _gtk_sheet_recalc_extent_height(GtkSheet *sheet, gint row)
 	    if (cell && cell->text && cell->text[0])
 	    {
 		GtkSheetCellAttr attributes;
-		gtk_sheet_get_attributes(sheet, row, col, &attributes);
+
+		gtk_sheet_get_attributes(sheet,
+                    row, col, &attributes);
 
 		if (attributes.is_visible)
 		{
@@ -4416,7 +4464,9 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
     }
 
     _get_string_extent(sheet, colptr,
-	attributes.font_desc, cell->text, &text_width, &text_height);
+	attributes.font_desc, 
+        cell->text, cell->is_markup,
+        &text_width, &text_height);
 
     /* add borders */
     new_extent_width = CELL_EXTENT_WIDTH(text_width, attributes.border.width);
@@ -7790,7 +7840,12 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     clip_area = area;
 
     PangoLayout *layout = gtk_widget_create_pango_layout(
-	GTK_WIDGET(sheet), label);
+	GTK_WIDGET(sheet), NULL);
+
+    if (sheet->data[row][col]->is_markup)
+        pango_layout_set_markup(layout, label, -1);
+    else
+        pango_layout_set_text(layout, label, -1);
 
     PangoFontDescription *font_desc = NULL;
     if (attributes.deprecated_font_desc_used)
@@ -7878,26 +7933,36 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 		break;
 
 	    case GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE:
-		{
+                {
 		    /* the following works only
-		       if the whole text is set with same metrics */
-		    register gint line_height = ascent + descent + spacing;
-		    register gint area_lines = area.height / line_height;
-		    register gint text_lines = rect.height / line_height;
+                       if the whole text is set with same metrics
+                       */
+		    register gint line_height =
+                        ascent + descent + spacing;
+		    register gint area_lines =
+                        area.height / line_height;
+		    register gint text_lines =
+                        rect.height / line_height;
 
-		    y_pos = CELLOFFSET - ((text_lines - area_lines) / 2) * line_height;
+		    y_pos = CELLOFFSET
+                        - ((text_lines - area_lines) / 2) * line_height;
 		}
 		break;
 
 	    case GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM:
 		{
 		    /* the following works only
-		       if the whole text is set with same metrics */
-		    register gint line_height = ascent + descent + spacing;
-		    register gint area_lines = area.height / line_height;
-		    register gint area_height_quant = area_lines * line_height;
+                       if the whole text is set with same metrics
+                       */
+		    register gint line_height =
+                        ascent + descent + spacing;
+		    register gint area_lines =
+                        area.height / line_height;
+		    register gint area_height_quant =
+                        area_lines * line_height;
 
-		    y_pos = CELLOFFSET + area_height_quant - rect.height;
+		    y_pos = CELLOFFSET
+                        + area_height_quant - rect.height;
 		}
 		break;
 	}
@@ -8720,45 +8785,97 @@ gtk_sheet_cell_new(void)
 }
 
 /**
- * gtk_sheet_set_cell_text:
- * @sheet: a #GtkSheet.
- * @row: row_number
- * @col: column number
- * @text: cell text
+ * _gtk_sheet_set_entry_text_internal:
+ * @sheet: a #GtkSheet 
+ * @text: the text to be set or NULL 
+ * @is_markup: pass TRUE when text contains pango markup
  *
- * Set cell contents and allocate memory if needed. No 
- * justifcation is made. attributes and links remain unchanged.
+ * Set the text in the sheet_entry (and active cell).
+ *  
+ * This function is mainly used to synchronize the text of a 
+ * second entry with the sheet_entry. 
+ *  
+ * This function is necessary, because not all possible entry 
+ * widgets implement the GtkEditable interface. 
+ * 
+ * Beware that you must have a sheet entry capable of handling
+ * pango markup, when using markup.
  */
-void
-gtk_sheet_set_cell_text(GtkSheet *sheet, gint row, gint col, const gchar *text)
+static void _gtk_sheet_set_entry_text_internal(
+    GtkSheet *sheet, const gchar *text, gboolean is_markup)
 {
+    GtkWidget *entry = NULL;
+
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
-    if (col > sheet->maxcol || row > sheet->maxrow)
-	return;
-    if (col < 0 || row < 0)
+    if (!sheet->sheet_entry)   /* PR#102114 */
 	return;
 
-    GtkSheetCellAttr attributes;
-    gtk_sheet_get_attributes(sheet, row, col, &attributes);
-    gtk_sheet_set_cell(sheet, row, col, attributes.justification, text);
+    entry = gtk_sheet_get_entry(sheet);
+    g_return_if_fail(entry != NULL);
+
+    if (GTK_IS_EDITABLE(entry))
+    {
+	gint position = 0;
+	gtk_editable_delete_text(GTK_EDITABLE(entry), 0, -1);
+	gtk_editable_insert_text(GTK_EDITABLE(entry),
+            text, -1, &position);
+    }
+    else if (GTK_IS_DATA_TEXT_VIEW(entry) 
+             || GTK_IS_TEXT_VIEW(entry) )
+    {
+	GtkTextBuffer *buffer = gtk_text_view_get_buffer(
+            GTK_TEXT_VIEW(entry));
+
+        if (is_markup)
+        {
+            GtkTextIter start_iter, end_iter;
+
+            gtk_text_buffer_get_bounds(buffer,
+                &start_iter, &end_iter);
+
+            gtk_text_buffer_delete(buffer,
+                &start_iter, &end_iter);
+
+            gtk_text_buffer_insert_markup(buffer,
+                &start_iter, text, -1);
+        }
+        else
+        {
+            gtk_text_buffer_set_text(buffer, text, -1);
+        }
+
+        gtk_text_buffer_set_modified (buffer, FALSE);
+
+	GtkTextIter iter;
+	gtk_text_buffer_get_start_iter(buffer, &iter);
+	gtk_text_buffer_place_cursor(buffer, &iter);
+    }
+    else
+    {
+	g_warning("%s(%d): no GTK_EDITABLE, don't know how to set the text.",
+            __FUNCTION__, __LINE__);
+    }
 }
 
 /**
- * gtk_sheet_set_cell:
+ * _gtk_sheet_set_cell_internal:
  * @sheet: a #GtkSheet.
  * @row: row_number
  * @col: column number
  * @justification: a #GtkJustification :GTK_JUSTIFY_LEFT, RIGHT, CENTER
- * @text: cell text
+ * @text: cell text 
+ * @is_markup: pass TRUE when text contains pango markup
  *
  * Set cell contents and allocate memory if needed.
  */
-void
-gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
+static void
+_gtk_sheet_set_cell_internal(GtkSheet *sheet,
+    gint row, gint col,
     GtkJustification justification,
-    const gchar *text)
+    const gchar *text,
+    const gboolean is_markup)
 {
     GtkSheetCell *cell;
 
@@ -8800,12 +8917,15 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
 	    text = gtk_data_format_remove(text, dataformat);
 
 #if GTK_SHEET_DEBUG_SET_CELL_TEXT > 0
-	g_debug("gtk_sheet_set_cell[%p]: r %d c %d ar %d ac %d <%s>", 
+    	g_debug("%s(%d): %p r %d c %d ar %d ac %d <%s> markup %d", 
+            __FUNCTION__, __LINE__,
 	    sheet, row, col, 
-            sheet->active_cell.row, sheet->active_cell.col, text);
+            sheet->active_cell.row, sheet->active_cell.col, 
+            text, is_markup);
 #endif
 
-	cell->text = g_strdup(text); 
+	cell->text = g_strdup(text);
+        cell->is_markup = is_markup;
     }
 
 #if 0 && GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
@@ -8822,15 +8942,19 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
     {
 	gboolean need_draw = TRUE;
 
-	/* PR#104553 - if sheet entry editor is active on the cell being modified,
-	   we need to update it's contents
+        /* PR#104553
+           if sheet entry editor is active on the cell
+           being modified, we need to update it's contents
 	   */
 	if (row == sheet->active_cell.row && col == sheet->active_cell.col)
 	{
 #if GTK_SHEET_DEBUG_SET_CELL_TEXT > 0
-	    g_debug("gtk_sheet_set_cell[%p]: update sheet entry");
+	    g_debug(
+                "%s(%d): %p: update sheet entry",
+                __FUNCTION__, __LINE__, sheet);
 #endif
-	    gtk_sheet_set_entry_text(sheet, text);  /* PR#104553 */
+            _gtk_sheet_set_entry_text_internal(sheet,
+                text, is_markup);
 	}
 
 	if (gtk_sheet_autoresize(sheet))  /* handle immediate resize */
@@ -8840,16 +8964,23 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
 		if (gtk_sheet_autoresize_columns(sheet))
 		{
 		    GtkSheetColumn *colptr = COLPTR(sheet, col);
-		    gint new_width = COLUMN_EXTENT_TO_WIDTH(colptr->max_extent_width);
+
+		    gint new_width = COLUMN_EXTENT_TO_WIDTH(
+                        colptr->max_extent_width);
 
 		    if (new_width != colptr->width)
 		    {
 #if GTK_SHEET_DEBUG_SIZE > 0
 			g_debug("%s(%d): set col %d width %d",
-                            __FUNCTION__, __LINE__, col, new_width);
+                            __FUNCTION__, __LINE__, 
+                            col, new_width);
 #endif
-			gtk_sheet_set_column_width(sheet, col, new_width);
-			GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
+			gtk_sheet_set_column_width(sheet,
+                            col, new_width);
+
+			GTK_SHEET_SET_FLAGS(sheet,
+                            GTK_SHEET_IN_REDRAW_PENDING);
+
 			need_draw = FALSE;
 		    }
 		}
@@ -8857,15 +8988,22 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
 		if (gtk_sheet_autoresize_rows(sheet))
 		{
 		    GtkSheetRow *rowptr = ROWPTR(sheet, row);
-		    gint new_height = ROW_EXTENT_TO_HEIGHT(rowptr->max_extent_height);
+		    gint new_height = ROW_EXTENT_TO_HEIGHT(
+                        rowptr->max_extent_height);
 
 		    if (new_height != rowptr->height)
 		    {
 #if GTK_SHEET_DEBUG_SIZE > 0
-			g_debug("gtk_sheet_set_cell[%d]: set row height %d", row, new_height);
+			g_debug("%s(%d) set row %d height %d", 
+                            __FUNCTION__, __LINE__,
+                            row, new_height);
 #endif
-			gtk_sheet_set_row_height(sheet, row, new_height);
-			GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
+			gtk_sheet_set_row_height(sheet,
+                            row, new_height);
+
+			GTK_SHEET_SET_FLAGS(sheet,
+                            GTK_SHEET_IN_REDRAW_PENDING);
+
 			need_draw = FALSE;
 		    }
 		}
@@ -8895,6 +9033,93 @@ gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
     g_debug("st9: %0.6f", g_timer_elapsed(tm, NULL));
     g_timer_destroy(tm);
 #endif
+}
+
+/**
+ * gtk_sheet_set_cell_text:
+ * @sheet: a #GtkSheet.
+ * @row: row_number
+ * @col: column number
+ * @text: cell text
+ *
+ * Set cell contents and allocate memory if needed. No 
+ * justifcation is made. attributes and links remain unchanged.
+ */
+void
+gtk_sheet_set_cell_text(
+    GtkSheet *sheet, gint row, gint col, const gchar *text)
+{
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (col > sheet->maxcol || row > sheet->maxrow)
+	return;
+    if (col < 0 || row < 0)
+	return;
+
+    GtkSheetCellAttr attributes;
+    gtk_sheet_get_attributes(sheet, row, col, &attributes);
+
+    _gtk_sheet_set_cell_internal(
+        sheet, row, col, attributes.justification, text, FALSE);
+}
+
+/**
+ * gtk_sheet_set_cell_markup:
+ * @sheet: a #GtkSheet.
+ * @row: row_number
+ * @col: column number
+ * @markup: text with pango markup
+ *  
+ * Beware that when using markup, you need to set 
+ * #GtkDataTextView, #GtkTextView or another widget supporting 
+ * pango markup as sheet entry editor. 
+ *  
+ * Using markup will only work with readonly cells. Reading back
+ * modified text out of #GtkDataTextView and #GtkTextView 
+ * widgets will not return any pango markup in the returned 
+ * text.  
+ *  
+ * Set cell contents and allocate memory if needed. No 
+ * justifcation is made. attributes and links remain unchanged.
+ */
+void
+gtk_sheet_set_cell_markup(
+    GtkSheet *sheet, gint row, gint col, const gchar *markup)
+{
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    if (col > sheet->maxcol || row > sheet->maxrow)
+	return;
+    if (col < 0 || row < 0)
+	return;
+
+    GtkSheetCellAttr attributes;
+    gtk_sheet_get_attributes(sheet, row, col, &attributes);
+
+    _gtk_sheet_set_cell_internal(
+        sheet, row, col, attributes.justification, markup, TRUE);
+}
+
+/**
+ * gtk_sheet_set_cell:
+ * @sheet: a #GtkSheet.
+ * @row: row_number
+ * @col: column number
+ * @justification: a #GtkJustification :GTK_JUSTIFY_LEFT, RIGHT, CENTER
+ * @text: cell text
+ *
+ * Set cell contents and allocate memory if needed.
+ */
+void
+gtk_sheet_set_cell(GtkSheet *sheet,
+    gint row, gint col,
+    GtkJustification justification,
+    const gchar *text)
+{
+    _gtk_sheet_set_cell_internal(
+        sheet, row, col, justification, text, FALSE);
 }
 
 /**
@@ -8988,7 +9213,8 @@ gtk_sheet_real_cell_clear(GtkSheet *sheet,
 	cell->text = NULL;
 
 	if (G_IS_OBJECT(sheet) && G_OBJECT(sheet)->ref_count > 0)
-	    g_signal_emit(G_OBJECT(sheet), sheet_signals[CLEAR_CELL], 0, row, column);
+	    g_signal_emit(G_OBJECT(sheet),
+                sheet_signals[CLEAR_CELL], 0, row, column);
     }
 
     if (cell->link)
@@ -9013,7 +9239,8 @@ gtk_sheet_real_cell_clear(GtkSheet *sheet,
 	gtk_sheet_cell_finalize(sheet, cell);
 
 #if GTK_SHEET_DEBUG_ALLOCATION > 0
-	g_debug("gtk_sheet_real_cell_clear: freeing %d %d", row, column); 
+	g_debug("gtk_sheet_real_cell_clear: freeing %d %d",
+            row, column); 
 #endif
 
 	g_free(cell);
@@ -9101,29 +9328,55 @@ gtk_sheet_real_range_clear(GtkSheet *sheet, const GtkSheetRange *range,
  * Do not modify or free it.
  */
 gchar *
-gtk_sheet_cell_get_text (GtkSheet *sheet, gint row, gint col)
+gtk_sheet_cell_get_text(GtkSheet *sheet, gint row, gint col)
 {
     g_return_val_if_fail(sheet != NULL, NULL);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), NULL);
 
-    if (col > sheet->maxcol || row > sheet->maxrow)
-	return (NULL);
-    if (col < 0 || row < 0)
-	return (NULL);
+    if (col > sheet->maxcol || row > sheet->maxrow) return (NULL);
+    if (col < 0 || row < 0) return (NULL);
 
     if (row > sheet->maxallocrow || col > sheet->maxalloccol)
 	return (NULL);
 
-    if (!sheet->data[row])
-	return (NULL);
-    if (!sheet->data[row][col])
-	return (NULL);
-    if (!sheet->data[row][col]->text)
-	return (NULL);
-    if (!sheet->data[row][col]->text[0])
-	return (NULL);
+    if (!sheet->data[row]) return (NULL);
+    if (!sheet->data[row][col]) return (NULL);
+    if (!sheet->data[row][col]->text) return (NULL);
+    if (!sheet->data[row][col]->text[0]) return (NULL);
 
     return (sheet->data[row][col]->text);
+}
+
+/**
+ * gtk_sheet_cell_is_markup:
+ * @sheet: a #GtkSheet
+ * @row: row number
+ * @col: column number
+ *
+ * Get cell markup flag, set when using
+ * #gtk_sheet_set_cell_markup.
+ *
+ * Returns: a pointer to the cell text, or NULL. 
+ * Do not modify or free it.
+ */
+gboolean
+gtk_sheet_cell_is_markup(GtkSheet *sheet, gint row, gint col)
+{
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
+
+    if (col > sheet->maxcol || row > sheet->maxrow) return (FALSE);
+    if (col < 0 || row < 0) return (FALSE);
+
+    if (row > sheet->maxallocrow || col > sheet->maxalloccol)
+	return (FALSE);
+
+    if (!sheet->data[row]) return (FALSE);
+    if (!sheet->data[row][col]) return (FALSE);
+    if (!sheet->data[row][col]->text) return (FALSE);
+    if (!sheet->data[row][col]->text[0]) return (FALSE);
+
+    return (sheet->data[row][col]->is_markup);
 }
 
 /**
@@ -9488,7 +9741,7 @@ gtk_sheet_set_active_cell(GtkSheet *sheet, gint row, gint col)
 	{
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
 	    g_debug("%s(%d): abort: deactivation false",
-                __FUNCTION__, __LINE__, );
+                __FUNCTION__, __LINE__);
 #endif
 	    return (FALSE);
 	}
@@ -9579,7 +9832,143 @@ gtk_sheet_set_tab_direction(GtkSheet *sheet, GtkDirectionType dir)
     _gtk_sheet_class_init_tab_bindings(klass, dir);
 }
 
+static void _debug_show_tag(GtkTextTag *tag, gpointer data)
+{
+    gboolean val;
+    const gchar *name;
+    gdouble factor, points;
 
+    g_object_get(tag, "name", &name, NULL);
+    g_debug("%s(%d): tag name %s", __FUNCTION__, __LINE__, name);
+
+    g_object_get(tag, "style-set", &val, NULL);
+    if(val)
+    {
+        PangoStyle style;
+        g_object_get(tag, "style", &style, NULL);
+
+        switch(style)
+        {
+            case PANGO_STYLE_NORMAL:
+                g_debug("%s(%d): tag style %s", __FUNCTION__, __LINE__, "PANGO_STYLE_NORMAL");
+                break;
+
+            case PANGO_STYLE_OBLIQUE:
+                g_debug("%s(%d): tag style %s", __FUNCTION__, __LINE__, "PANGO_STYLE_OBLIQUE");
+                break;
+
+            case PANGO_STYLE_ITALIC:
+                g_debug("%s(%d): tag style %s", __FUNCTION__, __LINE__, "PANGO_STYLE_ITALIC");
+                break;
+        }
+    }
+
+    g_object_get(tag, "size-set", &val, NULL);
+    if(val)
+    {
+        g_object_get(tag, "size-points", &points, NULL);
+        g_debug("%s(%d): tag size-points %g", __FUNCTION__, __LINE__, points);
+    }
+}
+
+static void _debug_show_buffer(GtkTextBuffer *buffer)
+{
+    gint n_formats;
+    GdkAtom *a = gtk_text_buffer_get_serialize_formats(buffer, &n_formats);
+
+    g_debug("%s(%d): n_formats %d", __FUNCTION__, __LINE__, n_formats);
+
+    gint i;
+    for (i=0;i<n_formats;i++)
+    {
+        g_debug("%s(%d): atom %s", __FUNCTION__, __LINE__, gdk_atom_name(a[i]));
+    }
+
+    GtkTextIter start, end;
+    gsize length;
+
+    gtk_text_buffer_get_bounds(buffer, &start, &end);
+
+    GtkTextTagTable *tag_table = gtk_text_buffer_get_tag_table(
+        buffer);
+
+    gtk_text_tag_table_foreach(tag_table, _debug_show_tag, NULL);
+}
+
+/**
+ * gtk_sheet_get_entry_text:
+ * @sheet: a #GtkSheet
+ * @is_markup: set to TRUE if text has pango markup
+ * @is_modified: set to TRUE if text buffer was modified
+ *
+ * Get the text out of the sheet_entry. 
+ *  
+ * This function is mainly used to synchronize the text of a 
+ * second entry with the sheet_entry.
+ *  
+ * This function is necessary, because not all possible entry 
+ * widgets implement the GtkEditable interface yet. 
+ *
+ * Returns: a copy of the sheet_entry text or NULL. This 
+ * function returns an allocated string, so g_free() it after 
+ * usage!
+ * 
+ * is_modified is only evaluated for entry widgets that support
+ * a GtkTextBuffer. it returns TRUE for all other entry widgets. 
+ * 
+ * is_markup is an attempt to determine whether markup was set.
+ * It is not really useable because GtkTextView doesn't fully
+ * support returning pango markup at time of implementation.
+ */
+static gchar *_gtk_sheet_get_entry_text_internal(
+    GtkSheet *sheet,
+    gboolean *is_markup,
+    gboolean *is_modified)
+{
+    gchar *text = NULL;
+    GtkWidget *entry = NULL;
+
+    g_return_val_if_fail(sheet != NULL, NULL);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), NULL);
+
+    if (!sheet->sheet_entry)   /* PR#102114 */
+	return(NULL);
+
+    entry = gtk_sheet_get_entry(sheet);
+    g_return_val_if_fail(entry != NULL, NULL);
+
+    if (GTK_IS_EDITABLE(entry))
+    {
+	text = gtk_editable_get_chars(GTK_EDITABLE(entry), 0, -1);
+        *is_markup = FALSE;
+        *is_modified = TRUE;
+    }
+    else if (GTK_IS_DATA_TEXT_VIEW(entry)
+             || GTK_IS_TEXT_VIEW(entry) )
+    {
+	GtkTextIter start, end;
+	GtkTextBuffer *buffer = gtk_text_view_get_buffer(
+            GTK_TEXT_VIEW(entry));
+
+	gtk_text_buffer_get_bounds(buffer, &start, &end);
+
+	text = gtk_text_buffer_get_text(buffer, &start, &end, TRUE);
+
+        GtkTextTagTable *tag_table = gtk_text_buffer_get_tag_table(
+            buffer);
+
+        //_debug_show_buffer(buffer);
+
+        *is_markup = (tag_table != NULL);
+        *is_modified = gtk_text_buffer_get_modified(buffer);
+    }
+    else
+    {
+	g_warning("%s(%d): no GTK_EDITABLE, don't know how to get the text.",
+            __FUNCTION__, __LINE__);
+    }
+    return (text);
+}
 
 /*
  * gtk_sheet_entry_changed_handler:
@@ -9622,8 +10011,34 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
 
     GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IS_FROZEN);
 
-    char *text = gtk_sheet_get_entry_text(sheet);
-    gtk_sheet_set_cell_text(sheet, old_row, old_col, text);
+    gboolean is_markup, is_modified;
+    gchar *text = _gtk_sheet_get_entry_text_internal(sheet,
+        &is_markup, &is_modified);
+
+    GtkSheetCellAttr attributes;
+    gtk_sheet_get_attributes(sheet, old_row, old_col, &attributes);
+
+    GtkSheetColumn *colptr = COLPTR(sheet, old_col);
+
+    gboolean editable = !(gtk_sheet_locked(sheet)
+	|| !attributes.is_editable
+	|| colptr->is_readonly);
+
+#if GTK_SHEET_DEBUG_ENTRY>0
+    g_debug(
+        "%s(%d): r/c %d/%d markup %d modified %d editable %d <%s> ", 
+        __FUNCTION__, __LINE__, old_row, old_col,
+        is_markup, is_modified, editable,
+        text);
+#endif
+
+    if (editable && is_modified)
+    {
+        _gtk_sheet_set_cell_internal(
+            sheet, old_row, old_col,
+            attributes.justification, text, is_markup);
+    }
+
     g_free(text);
 
     if (sheet->freeze_count == 0)
@@ -9700,7 +10115,8 @@ _gtk_sheet_deactivate_cell(GtkSheet *sheet)
     /* reset before signal emission, to prevent recursion */
     SET_ACTIVE_CELL(-1, -1);
 
-    /* beware: DEACTIVATE handler may call gtk_sheet_set_active_cell()
+    /* beware: DEACTIVATE handler may call
+       gtk_sheet_set_active_cell()
        */
 
     gboolean veto = TRUE;
@@ -9715,12 +10131,8 @@ _gtk_sheet_deactivate_cell(GtkSheet *sheet)
     }
 
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-    g_debug("gtk_sheet_deactivate_cell: running");
-#endif
-
-#if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-    g_debug("gtk_sheet_deactivate_cell: done row %d col %d",
-        old_row, old_col);
+    g_debug("%s(%d): done row %d col %d",
+        __FUNCTION__, __LINE__, old_row, old_col);
 #endif
 
     return (TRUE);
@@ -10109,7 +10521,7 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
     g_debug("%s(%d): %s %p called row %d col %d",
         __FUNCTION__, __LINE__,
-        G_OBJECT_TYPE_NAME(sheet), sheet),
+        G_OBJECT_TYPE_NAME(sheet), sheet,
         act_row, act_col);
 #endif
 
@@ -10123,7 +10535,8 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
 
     /* we should send a ENTRY_CHANGE_REQUEST signal here */
 
-    if ((act_row <= sheet->maxallocrow) && (act_col <= sheet->maxalloccol)
+    if ((act_row <= sheet->maxallocrow)
+        && (act_col <= sheet->maxalloccol)
 	&& sheet->data[act_row])
     {
 	GtkSheetCell *cell = sheet->data[act_row][act_col];
@@ -10140,11 +10553,13 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
 
     /* update visibility */
 
-    gtk_widget_set_visible(GTK_WIDGET(sheet->sheet_entry), is_visible);
+    gtk_widget_set_visible(
+        GTK_WIDGET(sheet->sheet_entry), is_visible);
 
     if (GTK_IS_ENTRY(entry_widget))
     {
-	gtk_entry_set_visibility(GTK_ENTRY(entry_widget), is_visible);
+	gtk_entry_set_visibility(
+            GTK_ENTRY(entry_widget), is_visible);
     }
 
     /* update text  */
@@ -10152,7 +10567,9 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
     if (!text)
 	text = g_strdup("");
 
-    gchar *old_text = gtk_sheet_get_entry_text(sheet);
+    gboolean is_markup, is_modified;
+    gchar *old_text = _gtk_sheet_get_entry_text_internal(sheet,
+        &is_markup, &is_modified);
 
     /* the entry setup must be done before the text assigment,
        otherwise max_length may cause text assignment to fail
@@ -10160,12 +10577,15 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
     _gtk_sheet_entry_setup(sheet, act_row, act_col, entry_widget);
 
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
-    g_debug("gtk_sheet_show_active_cell: old_text <%s> text <%s>", old_text, text);
+    g_debug("%s(%d): old_text <%s> text <%s>",
+        __FUNCTION__, __LINE__, old_text, text);
 #endif
 
-    if (!old_text || (old_text[0] != text[0]) || strcmp(old_text, text) != 0)
+    if (!old_text
+        || (old_text[0] != text[0])
+        || strcmp(old_text, text) != 0)
     {
-	gtk_sheet_set_entry_text(sheet, text);
+        _gtk_sheet_set_entry_text_internal(sheet, text, is_markup);
     }
 
     /* we should send an ENTRY_CONFIGURATION signal here */
@@ -10466,7 +10886,7 @@ gtk_sheet_draw_border(
     if (area.height > clip_area.height)
 	area.height = clip_area.height + 10;
 
-#if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
+#if GTK_SHEET_DEBUG_CELL_ACTIVATION > 1
     g_debug("gtk_sheet_draw_border: clip_area (%d, %d, %d, %d)",
 	clip_area.x, clip_area.y, clip_area.width, clip_area.height);
 #endif
@@ -12416,7 +12836,8 @@ gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column)
  * @return TRUE to stop other handlers from being invoked for the event. FALSE to propagate the event further.
  */
 static gboolean
-gtk_sheet_entry_key_press_handler(GtkWidget *widget, GdkEventKey *key, gpointer user_data)
+gtk_sheet_entry_key_press_handler(
+    GtkWidget *widget, GdkEventKey *key, gpointer user_data)
 {
     gboolean stop_emission = FALSE;
     GtkSheet *sheet = GTK_SHEET(widget);
@@ -12441,7 +12862,8 @@ gtk_sheet_entry_key_press_handler(GtkWidget *widget, GdkEventKey *key, gpointer 
        - if unwanted: execute appropriate application handler 
        - use a new signal for this ? 
        */
-    if ((key->keyval == GDK_KEY_Return) || (key->keyval == GDK_KEY_KP_Enter))
+    if ((key->keyval == GDK_KEY_Return)
+        || (key->keyval == GDK_KEY_KP_Enter))
     {
 #if GTK_SHEET_DEBUG_ENTER_PRESSED > 0
 	g_debug("gtk_sheet_entry_key_press_handler: enter-pressed: invoke");
@@ -12450,8 +12872,10 @@ gtk_sheet_entry_key_press_handler(GtkWidget *widget, GdkEventKey *key, gpointer 
 	    sheet_signals[ENTER_PRESSED],
 	    key,
 	    &stop_emission);
+
 #if GTK_SHEET_DEBUG_ENTER_PRESSED > 0
-	g_debug("gtk_sheet_entry_key_press_handler: enter-pressed: returns %d", stop_emission);
+	g_debug("gtk_sheet_entry_key_press_handler: enter-pressed: returns %d",
+            stop_emission);
 #endif
     }
 #endif
@@ -12473,8 +12897,10 @@ gtk_sheet_entry_key_press_handler(GtkWidget *widget, GdkEventKey *key, gpointer 
     }
 
 #if GTK_SHEET_DEBUG_KEYPRESS > 0
-    g_debug("gtk_sheet_entry_key_press_handler: done, key %s stop %d",
-	gtk_accelerator_name(key->keyval, key->state), stop_emission);
+    g_debug(
+        "gtk_sheet_entry_key_press_handler: done, key %s stop %d",
+	gtk_accelerator_name(key->keyval, key->state),
+        stop_emission);
 #endif
 
     return (stop_emission);
@@ -13423,7 +13849,10 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
     guint text_height = 0;
 
     {
-	gchar *text = gtk_sheet_get_entry_text(sheet);
+        gboolean is_markup, is_modified;
+
+        gchar *text = _gtk_sheet_get_entry_text_internal(
+            sheet, &is_markup, &is_modified);
 
 	if (text && text[0])
 	{
@@ -13441,7 +13870,9 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 	    _get_string_extent(sheet, 
 		(0 <= act_col && act_col <= sheet->maxcol)
 		? COLPTR(sheet, act_col) : NULL,
-		attributes.font_desc, text, &text_width, &text_height);
+		attributes.font_desc, 
+                text, is_markup,
+                &text_width, &text_height);
 	}
 
 	g_free(text);
@@ -13853,35 +14284,12 @@ gtk_sheet_get_entry_widget(GtkSheet *sheet)
  */
 gchar *gtk_sheet_get_entry_text(GtkSheet *sheet)
 {
-    gchar *text = NULL;
-    GtkWidget *entry = NULL;
+    gboolean is_markup, is_modified;
 
-    g_return_val_if_fail(sheet != NULL, NULL);
-    g_return_val_if_fail(GTK_IS_SHEET(sheet), NULL);
+    gchar *text = _gtk_sheet_get_entry_text_internal(
+        sheet, &is_markup, &is_modified);
 
-    if (!sheet->sheet_entry)   /* PR#102114 */
-	return(NULL);
-
-    entry = gtk_sheet_get_entry(sheet);
-    g_return_val_if_fail(entry != NULL, NULL);
-
-    if (GTK_IS_EDITABLE(entry))
-    {
-	text = gtk_editable_get_chars(GTK_EDITABLE(entry), 0, -1);
-    }
-    else if ( GTK_IS_DATA_TEXT_VIEW(entry) 
-	     || GTK_IS_TEXT_VIEW(entry) )
-    {
-	GtkTextIter start, end;
-	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
-	gtk_text_buffer_get_bounds(buffer, &start, &end);
-	text = gtk_text_buffer_get_text(buffer, &start, &end, TRUE);
-    }
-    else
-    {
-	g_warning("gtk_sheet_get_entry_text: no GTK_EDITABLE, don't know how to get the text.");
-    }
-    return (text);
+    return(text);
 }
 
 /**
@@ -13895,42 +14303,11 @@ gchar *gtk_sheet_get_entry_text(GtkSheet *sheet)
  * second entry with the sheet_entry.
  *  
  * This function is necessary, because not all possible entry 
- * widgets implement the GtkEditable interface yet. 
+ * widgets implement the GtkEditable interface. 
  */
 void gtk_sheet_set_entry_text(GtkSheet *sheet, const gchar *text)
 {
-    GtkWidget *entry = NULL;
-
-    g_return_if_fail(sheet != NULL);
-    g_return_if_fail(GTK_IS_SHEET(sheet));
-
-    if (!sheet->sheet_entry)   /* PR#102114 */
-	return;
-
-    entry = gtk_sheet_get_entry(sheet);
-    g_return_if_fail(entry != NULL);
-
-    if (GTK_IS_EDITABLE(entry))
-    {
-	gint position = 0;
-	gtk_editable_delete_text(GTK_EDITABLE(entry), 0, -1);
-	gtk_editable_insert_text(GTK_EDITABLE(entry), text, -1, &position);
-    }
-    else if ( GTK_IS_DATA_TEXT_VIEW(entry) 
-	     || GTK_IS_TEXT_VIEW(entry) )
-    {
-	GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(entry));
-	GtkTextIter iter;
-
-	gtk_text_buffer_set_text(buffer, text, -1);
-
-	gtk_text_buffer_get_start_iter(buffer, &iter);
-	gtk_text_buffer_place_cursor(buffer, &iter);
-    }
-    else
-    {
-	g_warning("gtk_sheet_set_entry_text: no GTK_EDITABLE, don't know how to set the text.");
-    }
+    _gtk_sheet_set_entry_text_internal(sheet, text, FALSE);
 }
 
 /**
@@ -16880,7 +17257,11 @@ label_size_request(GtkSheet *sheet, gchar *label, GtkRequisition *req)
 
 	    word[n] = '\0';
 
-	    _get_string_extent(sheet, NULL, font_desc, word, &text_width, &text_height);
+	    _get_string_extent(sheet, NULL, 
+                font_desc, 
+                word, FALSE,
+                &text_width, &text_height);
+
 	    req->width = MAX(req->width, text_width);
 	    n = 0;
 	}

@@ -186,7 +186,9 @@ gtk_sheet_get_active_cell
 gtk_sheet_set_tab_direction
 gtk_sheet_set_cell
 gtk_sheet_set_cell_text
+gtk_sheet_set_cell_markup
 gtk_sheet_cell_get_text
+gtk_sheet_cell_is_markup
 gtk_sheet_cell_clear
 gtk_sheet_cell_delete
 gtk_sheet_range_clear

@@ -1,10 +1,16 @@
 TBD 
-** CSS: handle grid
 ** CSS: handle borders
 ** CSS: handle row title button margin
 ** row selection drawing over right sheet border
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
+
+2018-12-22 Fredy Paquet <mailbox AT opag.ch>
+* grid default is now OFF
+* deprecated grid functions, use CSS to define grid rendering
+* CSS: added processing of screen-changed signal
+* added support for markup in cells: gtk_sheet_set_cell_markup()
+* entry changed handler: prevent write back text to readonly cells
 
 2018-12-15 Fredy Paquet <mailbox AT opag.ch>
 * fixed flicker outside cell area when last row/col is hidden

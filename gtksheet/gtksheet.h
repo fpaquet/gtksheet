@@ -282,6 +282,7 @@ struct _GtkSheetCell
     GtkSheetCellAttr *attributes;
 
     gchar *text;
+    gboolean is_markup;  /* text contains pango markup */
     gpointer link;
 
     gchar *tooltip_markup; /* tooltip, which is marked up with the Pango text markup language */
@@ -703,12 +704,22 @@ void gtk_sheet_get_active_cell(GtkSheet *sheet, gint *row, gint *column);
 void gtk_sheet_set_tab_direction(GtkSheet *sheet, GtkDirectionType dir);
 
 /* set cell contents and allocate memory if needed */
-void gtk_sheet_set_cell(GtkSheet *sheet, gint row, gint col,
-                        GtkJustification justification, const gchar *text);
-void gtk_sheet_set_cell_text(GtkSheet *sheet, gint row, gint col, const gchar *text);
+void gtk_sheet_set_cell(
+    GtkSheet *sheet, gint row, gint col, 
+    GtkJustification justification, const gchar *text);
+
+void gtk_sheet_set_cell_text(
+    GtkSheet *sheet, gint row, gint col, const gchar *text);
+
+void gtk_sheet_set_cell_markup(
+    GtkSheet *sheet, gint row, gint col, const gchar *markup);
 
 /* get cell contents */
-gchar *gtk_sheet_cell_get_text(GtkSheet *sheet, gint row, gint col);
+gchar *gtk_sheet_cell_get_text(
+    GtkSheet *sheet, gint row, gint col);
+
+gboolean gtk_sheet_cell_is_markup(
+    GtkSheet *sheet, gint row, gint col);
 
 /* clear cell contents */
 void gtk_sheet_cell_clear(GtkSheet *sheet, gint row, gint column);

@@ -336,3 +336,8 @@ gtksheet_interface_age
 gtksheet_check_version
 </SECTION>
 
+<SECTION>
+<FILE>serialize-pango-markup</FILE>
+
+</SECTION>
+

@@ -56,6 +56,7 @@
 #include "gtkdataentry.h"
 #include "gtkdatatextview.h"
 #include "gtksheet.h"
+#include "serialize-pango-markup.h"
 #include "gtkdataformat.h"
 #include "gtksheet-marshal.h"
 #include "gtksheettypebuiltins.h"
@@ -9832,67 +9833,17 @@ gtk_sheet_set_tab_direction(GtkSheet *sheet, GtkDirectionType dir)
     _gtk_sheet_class_init_tab_bindings(klass, dir);
 }
 
-static void _debug_show_tag(GtkTextTag *tag, gpointer data)
+static void _debug_show_pango_markup(GtkTextBuffer *buffer)
 {
-    gboolean val;
-    const gchar *name;
-    gdouble factor, points;
-
-    g_object_get(tag, "name", &name, NULL);
-    g_debug("%s(%d): tag name %s", __FUNCTION__, __LINE__, name);
-
-    g_object_get(tag, "style-set", &val, NULL);
-    if(val)
-    {
-        PangoStyle style;
-        g_object_get(tag, "style", &style, NULL);
-
-        switch(style)
-        {
-            case PANGO_STYLE_NORMAL:
-                g_debug("%s(%d): tag style %s", __FUNCTION__, __LINE__, "PANGO_STYLE_NORMAL");
-                break;
-
-            case PANGO_STYLE_OBLIQUE:
-                g_debug("%s(%d): tag style %s", __FUNCTION__, __LINE__, "PANGO_STYLE_OBLIQUE");
-                break;
-
-            case PANGO_STYLE_ITALIC:
-                g_debug("%s(%d): tag style %s", __FUNCTION__, __LINE__, "PANGO_STYLE_ITALIC");
-                break;
-        }
-    }
-
-    g_object_get(tag, "size-set", &val, NULL);
-    if(val)
-    {
-        g_object_get(tag, "size-points", &points, NULL);
-        g_debug("%s(%d): tag size-points %g", __FUNCTION__, __LINE__, points);
-    }
-}
-
-static void _debug_show_buffer(GtkTextBuffer *buffer)
-{
-    gint n_formats;
-    GdkAtom *a = gtk_text_buffer_get_serialize_formats(buffer, &n_formats);
-
-    g_debug("%s(%d): n_formats %d", __FUNCTION__, __LINE__, n_formats);
-
-    gint i;
-    for (i=0;i<n_formats;i++)
-    {
-        g_debug("%s(%d): atom %s", __FUNCTION__, __LINE__, gdk_atom_name(a[i]));
-    }
-
     GtkTextIter start, end;
-    gsize length;
-
     gtk_text_buffer_get_bounds(buffer, &start, &end);
 
-    GtkTextTagTable *tag_table = gtk_text_buffer_get_tag_table(
-        buffer);
-
-    gtk_text_tag_table_foreach(tag_table, _debug_show_tag, NULL);
+    gsize length;
+    g_debug("%s(%d): serialized <<<\n%s\n>>>",
+        __FUNCTION__, __LINE__, 
+        serialize_pango_markup(
+            buffer, buffer, &start, &end, &length)
+        );
 }
 
 /**
@@ -9957,7 +9908,7 @@ static gchar *_gtk_sheet_get_entry_text_internal(
         GtkTextTagTable *tag_table = gtk_text_buffer_get_tag_table(
             buffer);
 
-        //_debug_show_buffer(buffer);
+        _debug_show_pango_markup(buffer);
 
         *is_markup = (tag_table != NULL);
         *is_modified = gtk_text_buffer_get_modified(buffer);

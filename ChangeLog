@@ -5,6 +5,9 @@ TBD
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
 
+2018-12-24 Fredy Paquet <mailbox AT opag.ch>
+* added pango markup serializer for GtkTextBuffer, not in use yet
+
 2018-12-22 Fredy Paquet <mailbox AT opag.ch>
 * grid default is now OFF
 * deprecated grid functions, use CSS to define grid rendering

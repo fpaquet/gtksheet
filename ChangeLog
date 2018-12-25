@@ -7,6 +7,7 @@ TBD
 
 2018-12-24 Fredy Paquet <mailbox AT opag.ch>
 * added pango markup serializer for GtkTextBuffer, not in use yet
+* pango markup in cells: editable mode implemented
 
 2018-12-22 Fredy Paquet <mailbox AT opag.ch>
 * grid default is now OFF

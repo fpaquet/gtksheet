@@ -54,7 +54,7 @@ AM_LDFLAGS = \
 gtksheet_public_h_sources = \
 	gtkdataentry.h \
 	gtkdataformat.h	\
-	serialize-pango-markup.h \
+	pango-markup.h \
 	gtkdatatextview.h \
 	gtksheet.h \
 	gtksheetcolumn.h
@@ -62,7 +62,7 @@ gtksheet_public_h_sources = \
 gtksheet_c_sources = \
 	gtkdataentry.c \
 	gtkdataformat.c	\
-	serialize-pango-markup.c \
+	pango-markup.c \
 	gtkdatatextview.c \
         gtksheet.c \
 	gtksheetcolumn.c

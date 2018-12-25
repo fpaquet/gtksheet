@@ -40,6 +40,19 @@ extern "C"
 
 G_BEGIN_DECLS
 
+/**
+ * GtkSheetAttrType:
+ * @GTK_SHEET_FOREGROUND: foreground color
+ * @GTK_SHEET_BACKGROUND: background color
+ * @GTK_SHEET_FONT: default font
+ * @GTK_SHEET_JUSTIFICATION: default justification
+ * @GTK_SHEET_BORDER: border width
+ * @GTK_SHEET_BORDER_COLOR: border color
+ * @GTK_SHEET_IS_EDITABLE: editable flag
+ * @GTK_SHEET_IS_VISIBLE: visible flag
+ *
+ * Attributes of the #GtkSheet
+ **/
 typedef enum
 {
     GTK_SHEET_FOREGROUND,
@@ -81,9 +94,9 @@ enum
 /**
  * GtkSheetEntryType:
  * @GTK_SHEET_ENTRY_TYPE_DEFAULT: default, applicat. controlled
- * @GTK_SHEET_ENTRY_TYPE_GTK_ITEM_ENTRY: GtkItemEntry
  * @GTK_SHEET_ENTRY_TYPE_GTK_ENTRY: GtkEntry
  * @GTK_SHEET_ENTRY_TYPE_GTK_TEXT_VIEW: GtkTextView
+ * @GTK_SHEET_ENTRY_TYPE_GTK_DATA_ENTRY: GtkDataEntry
  * @GTK_SHEET_ENTRY_TYPE_GTK_DATA_TEXT_VIEW: GtkDataTextView
  * @GTK_SHEET_ENTRY_TYPE_GTK_SPIN_BUTTON: GtkSpinButton
  * @GTK_SHEET_ENTRY_TYPE_GTK_COMBO_BOX: GtkComboBox
@@ -606,12 +619,15 @@ gboolean gtk_sheet_is_frozen(GtkSheet *sheet);
 void gtk_sheet_freeze(GtkSheet *sheet);
 void gtk_sheet_thaw(GtkSheet *sheet);
 
+#ifndef GTK_DISABLE_DEPRECATED
 /* Background colors */
 void gtk_sheet_set_background(GtkSheet *sheet, GdkRGBA *color);
-void gtk_sheet_set_css_class(GtkSheet *sheet, gchar *css_class);
 void gtk_sheet_set_grid(GtkSheet *sheet, GdkRGBA *color);
 void gtk_sheet_show_grid(GtkSheet *sheet, gboolean show);
 gboolean gtk_sheet_grid_visible(GtkSheet *sheet);
+#endif
+
+void gtk_sheet_set_css_class(GtkSheet *sheet, gchar *css_class);
 
 /* set/get row title */
 void gtk_sheet_set_row_title(GtkSheet *sheet, gint row, const gchar *title);
@@ -770,6 +786,7 @@ void gtk_sheet_delete_rows(GtkSheet *sheet, guint row, guint nrows);
 /* delete ncols columns starting in col */
 void gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols);
 
+#ifndef GTK_DISABLE_DEPRECATED
 /* set background color of the given range */
 void gtk_sheet_range_set_background(GtkSheet *sheet,
     const GtkSheetRange *urange, const GdkRGBA *color);
@@ -777,6 +794,7 @@ void gtk_sheet_range_set_background(GtkSheet *sheet,
 /* set foreground color (text color) of the given range */
 void gtk_sheet_range_set_foreground(GtkSheet *sheet,
     const GtkSheetRange *urange, const GdkRGBA *color);
+#endif
 
 /* set css class of the given range */
 void gtk_sheet_range_set_css_class(GtkSheet *sheet,
@@ -813,9 +831,11 @@ void gtk_sheet_range_set_border(GtkSheet *sheet,
 void gtk_sheet_range_set_border_color(GtkSheet *sheet,
     const GtkSheetRange *urange, const GdkRGBA *color);
 
+#ifndef GTK_DISABLE_DEPRECATED
 /* set font for the given range */
 void gtk_sheet_range_set_font(GtkSheet *sheet,
     const GtkSheetRange *urange, PangoFontDescription *font_desc);
+#endif
 
 /* get cell attributes of the given cell */
 /* TRUE means that the cell is currently allocated */

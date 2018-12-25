@@ -25,11 +25,12 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-G_GNUC_INTERNAL guint8 *serialize_pango_markup(
+guint8 *serialize_pango_markup(
     GtkTextBuffer *register_buffer,
     GtkTextBuffer *content_buffer,
     const GtkTextIter *start,
     const GtkTextIter *end,
-    gsize *length);
+    gsize *length,
+    gpointer user_data);
 
 #endif /* __SERIALIZE_PANGO_MARKUP_H__ */

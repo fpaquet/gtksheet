@@ -947,28 +947,32 @@ GtkSheet *sheet
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_set_background</NAME>
+<DEPRECATED/>
 <RETURNS>void  </RETURNS>
 GtkSheet *sheet, GdkRGBA *color
 </FUNCTION>
 <FUNCTION>
-<NAME>gtk_sheet_set_css_class</NAME>
-<RETURNS>void  </RETURNS>
-GtkSheet *sheet, gchar *css_class
-</FUNCTION>
-<FUNCTION>
 <NAME>gtk_sheet_set_grid</NAME>
+<DEPRECATED/>
 <RETURNS>void  </RETURNS>
 GtkSheet *sheet, GdkRGBA *color
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_show_grid</NAME>
+<DEPRECATED/>
 <RETURNS>void  </RETURNS>
 GtkSheet *sheet, gboolean show
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_grid_visible</NAME>
+<DEPRECATED/>
 <RETURNS>gboolean  </RETURNS>
 GtkSheet *sheet
+</FUNCTION>
+<FUNCTION>
+<NAME>gtk_sheet_set_css_class</NAME>
+<RETURNS>void  </RETURNS>
+GtkSheet *sheet, gchar *css_class
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_set_row_title</NAME>
@@ -1297,11 +1301,13 @@ GtkSheet *sheet, guint col, guint ncols
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_range_set_background</NAME>
+<DEPRECATED/>
 <RETURNS>void  </RETURNS>
 GtkSheet *sheet, const GtkSheetRange *urange, const GdkRGBA *color
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_range_set_foreground</NAME>
+<DEPRECATED/>
 <RETURNS>void  </RETURNS>
 GtkSheet *sheet, const GtkSheetRange *urange, const GdkRGBA *color
 </FUNCTION>
@@ -1337,6 +1343,7 @@ GtkSheet *sheet, const GtkSheetRange *urange, const GdkRGBA *color
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_range_set_font</NAME>
+<DEPRECATED/>
 <RETURNS>void  </RETURNS>
 GtkSheet *sheet, const GtkSheetRange *urange, PangoFontDescription *font_desc
 </FUNCTION>
@@ -1658,6 +1665,7 @@ GtkSheet *sheet, gint column, gboolean visible
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_column_button_justify</NAME>
+<DEPRECATED/>
 <RETURNS>void  </RETURNS>
 GtkSheet *sheet, gint col, GtkJustification justification
 </FUNCTION>
@@ -1771,4 +1779,9 @@ extern const guint gtksheet_interface_age;
 <NAME>gtksheet_check_version</NAME>
 <RETURNS>gchar * </RETURNS>
 guint required_major, guint required_minor, guint required_micro
+</FUNCTION>
+<FUNCTION>
+<NAME>serialize_pango_markup</NAME>
+<RETURNS>guint8  *</RETURNS>
+GtkTextBuffer *register_buffer, GtkTextBuffer *content_buffer, const GtkTextIter *start, const GtkTextIter *end, gsize *length, gpointer user_data
 </FUNCTION>

@@ -247,6 +247,10 @@ gtk_widget_set_realized_true
 gtk_widget_set_realized_false
 gtk_widget_set_mapped_true
 gtk_widget_set_mapped_false
+DEBUG_WIDGET_CONTAINER_ADD
+DEBUG_WIDGET_CONTAINER_REMOVE
+DEBUG_WIDGET_SET_PARENT
+DEBUG_WIDGET_SET_PARENT_WIN
 </SECTION>
 
 <SECTION>
@@ -325,5 +329,10 @@ gtksheet_micro_version
 gtksheet_binary_age
 gtksheet_interface_age
 gtksheet_check_version
+</SECTION>
+
+<SECTION>
+<FILE>pango-markup</FILE>
+serialize_pango_markup
 </SECTION>
 

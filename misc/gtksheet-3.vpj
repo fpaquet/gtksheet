@@ -1,308 +1,309 @@
 <!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
 <Project
-    Version="10.0"
-    VendorName="SlickEdit"
-    WorkingDir="../gtkextra"
-    VCSProject="Git:">
-    <Config
-        Name="Debug"
-        Type="gnuc"
-        DebugCallbackName="gdb"
-        Version="1"
-        OutputFile="%rw/.libs/testgtksheet"
-        CompilerConfigName="Latest Version"
-        Defines="">
-        <Menu>
-            <Target
-                Name="Compile"
-                MenuCaption="&amp;Compile"
-                Dialog="_gnuc_options_form Compile"
-                CaptureOutputWith="ProcessBuffer"
-                Deletable="0"
-                OutputExts="*.o"
-                SaveOption="SaveCurrent"
-                RunFromDir="%rw">
-                <Exec CmdLine='gcc -c %xup %defd -g -fPIC -o "%bd%n%oe" %i %f'/>
-            </Target>
-            <Target
-                Name="Link"
-                MenuCaption="&amp;Link"
-                ShowOnMenu="Never"
-                Dialog="_gnuc_options_form Link"
-                CaptureOutputWith="ProcessBuffer"
-                Deletable="0"
-                SaveOption="SaveCurrent"
-                RunFromDir="%rw">
-                <Exec CmdLine='gcc %xup -g -o "%o" %objs'/>
-            </Target>
-            <Target
-                Name="Build"
-                MenuCaption="&amp;Build"
-                CaptureOutputWith="ProcessBuffer"
-                Deletable="0"
-                SaveOption="SaveWorkspaceFiles"
-                RunFromDir="%rw">
-                <Exec CmdLine="make"/>
-            </Target>
-            <Target
-                Name="Rebuild"
-                MenuCaption="&amp;Rebuild"
-                CaptureOutputWith="ProcessBuffer"
-                Deletable="0"
-                SaveOption="SaveWorkspaceFiles"
-                RunFromDir="%rw">
-                <Exec CmdLine=""/>
-            </Target>
-            <Target
-                Name="Debug"
-                MenuCaption="&amp;Debug"
-                Dialog="_gnuc_options_form Run/Debug"
-                CaptureOutputWith="ProcessBuffer"
-                Deletable="0"
-                SaveOption="SaveNone"
-                RunFromDir="%rw">
-                <Exec
-                    CmdLine='vsdebugio -prog "%o" %~other'
-                    OtherOptions="--display :0.2 --gdk-debug nograbs"/>
-            </Target>
-            <Target
-                Name="Execute"
-                MenuCaption="E&amp;xecute"
-                Dialog="_gnuc_options_form Run/Debug"
-                BuildFirst="1"
-                CaptureOutputWith="ProcessBuffer"
-                Deletable="0"
-                SaveOption="SaveWorkspaceFiles"
-                RunFromDir="%rw">
-                <Exec
-                    CmdLine='"%o" %~other'
-                    OtherOptions="--display :0.2 --gdk-debug nograbs"/>
-            </Target>
-            <Target
-                Name="dash"
-                MenuCaption="-"
-                Deletable="0">
-                <Exec/>
-            </Target>
-            <Target
-                Name="GNU C Options"
-                MenuCaption="GNU C &amp;Options..."
-                ShowOnMenu="HideIfNoCmdLine"
-                Deletable="0"
-                SaveOption="SaveNone">
-                <Exec
-                    CmdLine="gnucoptions"
-                    Type="Slick-C"/>
-            </Target>
-        </Menu>
-        <Includes></Includes>
-        <Libs PreObjects="0"/>
-    </Config>
-    <Config
-        Name="Release"
-        Type="gnuc"
-        DebugCallbackName="gdb"
-        Version="1"
-        OutputFile="%rw/.libs/testgtksheet"
-        CompilerConfigName="Latest Version"
-        Defines="">
-        <Menu>
-            <Target
-                Name="Compile"
-                MenuCaption="&amp;Compile"
-                Dialog="_gnuc_options_form Compile"
-                CaptureOutputWith="ProcessBuffer"
-                Deletable="0"
-                OutputExts="*.o"
-                SaveOption="SaveCurrent"
-                RunFromDir="%rw">
-                <Exec CmdLine='gcc -c %xup %defd -fPIC -o "%bd%n%oe" %i %f'/>
-            </Target>
-            <Target
-                Name="Link"
-                MenuCaption="&amp;Link"
-                ShowOnMenu="Never"
-                Dialog="_gnuc_options_form Link"
-                CaptureOutputWith="ProcessBuffer"
-                Deletable="0"
-                SaveOption="SaveCurrent"
-                RunFromDir="%rw">
-                <Exec CmdLine='gcc %xup -o "%o" %objs'/>
-            </Target>
-            <Target
-                Name="Build"
-                MenuCaption="&amp;Build"
-                CaptureOutputWith="ProcessBuffer"
-                Deletable="0"
-                SaveOption="SaveWorkspaceFiles"
-                RunFromDir="%rw">
-                <Exec CmdLine="make"/>
-            </Target>
-            <Target
-                Name="Rebuild"
-                MenuCaption="&amp;Rebuild"
-                CaptureOutputWith="ProcessBuffer"
-                Deletable="0"
-                SaveOption="SaveWorkspaceFiles"
-                RunFromDir="%rw">
-                <Exec CmdLine=""/>
-            </Target>
-            <Target
-                Name="Debug"
-                MenuCaption="&amp;Debug"
-                Dialog="_gnuc_options_form Run/Debug"
-                CaptureOutputWith="ProcessBuffer"
-                Deletable="0"
-                SaveOption="SaveNone"
-                RunFromDir="%rw">
-                <Exec
-                    CmdLine='vsdebugio -prog "%o" %~other'
-                    OtherOptions="--display :0.2 --gdk-debug nograbs"/>
-            </Target>
-            <Target
-                Name="Execute"
-                MenuCaption="E&amp;xecute"
-                Dialog="_gnuc_options_form Run/Debug"
-                BuildFirst="1"
-                CaptureOutputWith="ProcessBuffer"
-                Deletable="0"
-                SaveOption="SaveWorkspaceFiles"
-                RunFromDir="%rw">
-                <Exec
-                    CmdLine='"%o" %~other'
-                    OtherOptions="--display :0.2 --gdk-debug nograbs"/>
-            </Target>
-            <Target
-                Name="dash"
-                MenuCaption="-"
-                Deletable="0">
-                <Exec/>
-            </Target>
-            <Target
-                Name="GNU C Options"
-                MenuCaption="GNU C &amp;Options..."
-                ShowOnMenu="HideIfNoCmdLine"
-                Deletable="0"
-                SaveOption="SaveNone">
-                <Exec
-                    CmdLine="gnucoptions"
-                    Type="Slick-C"/>
-            </Target>
-        </Menu>
-        <Includes></Includes>
-        <Libs PreObjects="0"/>
-    </Config>
-    <Files>
-        <Folder
-            Name="Source Files"
-            Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.c++;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl;*.d"
-            GUID="{BFB5FAD5-96D2-4413-A4FE-7B5A87D1FBE2}">
-            <Folder
-                Name="Glade"
-                Filters=""
-                GUID="{7C4AB80D-F661-4CAB-84BD-E3D4FE02E9EC}">
-                <F
-                    N="../glade/Makefile.am"
-                    Type="Makefile"/>
-                <F N="../glade/glade-gtksheet-editor.c"/>
-                <F N="../glade/glade-gtksheet-editor.h"/>
-            </Folder>
-            <Folder
-                Name="Test"
-                Filters=""
-                GUID="{2B69518C-DF15-47D7-BD3D-15ECF2723AE8}">
-                <F N="../gtksheet/testgtksheet.c"/>
-            </Folder>
-            <Folder
-                Name="Common"
-                Filters=""
-                GUID="{5B1F5586-D8FB-4394-B94D-5EDA5650CA4A}">
-                <F N="../config.h"/>
-                <F N="../gtksheet-4.0.pc.in"/>
-                <F N="../gtksheet-4.0.spec.in"/>
-                <F N="../gtksheet/gtksheet-compat.h"/>
-                <F N="../gtksheet/gtksheet-marshal.c"/>
-                <F N="../gtksheet/gtksheet-marshal.h"/>
-                <F N="../gtksheet/gtksheet.def"/>
-                <F N="../gtksheet/gtksheetfeatures.h.in"/>
-                <F N="../gtksheet/gtksheettypebuiltins.c"/>
-                <F N="../gtksheet/gtksheettypebuiltins.h"/>
-                <F N="../gtksheet/icons.h"/>
-                <F N="../gtksheet/pixmaps.h"/>
-                <F N="../gtksheet/sat.xpm"/>
-                <F N="../gtksheet/sg_small.xpm"/>
-                <F N="../gtksheet/suncloud.xpm"/>
-            </Folder>
-            <Folder
-                Name="Sheet"
-                Filters=""
-                GUID="{14345B16-EA45-4251-98EA-E023AB851225}">
-                <F N="../gtksheet/gtkdataentry.c"/>
-                <F N="../gtksheet/gtkdataentry.h"/>
-                <F N="../gtksheet/gtkdataformat.c"/>
-                <F N="../gtksheet/gtkdataformat.h"/>
-                <F N="../gtksheet/gtkdatatextview.c"/>
-                <F N="../gtksheet/gtkdatatextview.h"/>
-                <F N="../gtksheet/gtkitementry.c"/>
-                <F N="../gtksheet/gtkitementry.h"/>
-                <F N="../gtksheet/gtksheet.c"/>
-                <F N="../gtksheet/gtksheet.h"/>
-                <F N="../gtksheet/gtksheetcolumn.c"/>
-                <F N="../gtksheet/gtksheetcolumn.h"/>
-                <F
-                    N="../gtksheet/Makefile.am"
-                    Type="Makefile"/>
-            </Folder>
-        </Folder>
-        <Folder
-            Name="Resource Files"
-            Filters="*.ico;*.cur;*.dlg"
-            GUID="{E4BA2DE6-AEC9-4A83-A5D7-768CC20B101B}">
-            <F N="../gtksheet/GtkSheet-4.0.gir"/>
-            <F N="../gtksheet/GtkSheet-4.0.typelib"/>
-        </Folder>
-        <Folder
-            Name="Other Files"
-            Filters=""
-            GUID="{B7295174-C33A-4520-B708-D753B3BF9B73}">
-            <F N="../AUTHORS"/>
-            <F N="../ChangeLog"/>
-            <F N="../config.h.in"/>
-            <F N="../config.log"/>
-            <F N="../configure"/>
-            <F N="../configure.ac"/>
-            <F N="../COPYING"/>
-            <F N="../glib-2.0.m4"/>
-            <F N="../gtk-2.0.m4"/>
-            <F N="../gtk-doc.make"/>
-            <F N="../gtk.m4"/>
-            <F N="../gtksheet-4.0.spec"/>
-            <F N="../INSTALL"/>
-            <F
-                N="../Makefile"
-                Type="Makefile"/>
-            <F
-                N="../Makefile.am"
-                Type="Makefile"/>
-            <F
-                N="../Makefile.in"
-                Type="Makefile"/>
-            <F N="../NEWS"/>
-            <F N="../README"/>
-            <F N="../TODO"/>
-        </Folder>
-        <Folder
-            Name="Documentation"
-            Filters=""
-            GUID="{D6BBE3C4-BBA8-4A12-A662-12A3FE2D8AA9}">
-            <F N="../docs/reference/gtksheet-overrides.txt"/>
-            <F N="../docs/reference/gtksheet-sections.txt"/>
-            <F N="../docs/reference/gtksheet-undeclared.txt"/>
-            <F N="../docs/reference/gtksheet-undocumented.txt"/>
-            <F N="../docs/reference/gtksheet-unused.txt"/>
-            <F
-                N="../docs/reference/Makefile.am"
-                Type="Makefile"/>
-        </Folder>
-    </Files>
+	Version="10.0"
+	VendorName="SlickEdit"
+	WorkingDir="../gtkextra"
+	VCSProject="Git:">
+	<Config
+		Name="Debug"
+		Type="gnuc"
+		DebugCallbackName="gdb"
+		Version="1"
+		OutputFile="%rw/.libs/testgtksheet"
+		CompilerConfigName="Latest Version"
+		Defines="">
+		<Menu>
+			<Target
+				Name="Compile"
+				MenuCaption="&amp;Compile"
+				Dialog="_gnuc_options_form Compile"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				OutputExts="*.o"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec CmdLine='gcc -c %xup %defd -g -fPIC -o "%bd%n%oe" %i %f'/>
+			</Target>
+			<Target
+				Name="Link"
+				MenuCaption="&amp;Link"
+				ShowOnMenu="Never"
+				Dialog="_gnuc_options_form Link"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec CmdLine='gcc %xup -g -o "%o" %objs'/>
+			</Target>
+			<Target
+				Name="Build"
+				MenuCaption="&amp;Build"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine="make"/>
+			</Target>
+			<Target
+				Name="Rebuild"
+				MenuCaption="&amp;Rebuild"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine=""/>
+			</Target>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				Dialog="_gnuc_options_form Run/Debug"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec
+					CmdLine='vsdebugio -prog "%o" %~other'
+					OtherOptions="--display :0.2 --gdk-debug nograbs"/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="E&amp;xecute"
+				Dialog="_gnuc_options_form Run/Debug"
+				BuildFirst="1"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec
+					CmdLine='"%o" %~other'
+					OtherOptions="--display :0.2 --gdk-debug nograbs"/>
+			</Target>
+			<Target
+				Name="dash"
+				MenuCaption="-"
+				Deletable="0">
+				<Exec/>
+			</Target>
+			<Target
+				Name="GNU C Options"
+				MenuCaption="GNU C &amp;Options..."
+				ShowOnMenu="HideIfNoCmdLine"
+				Deletable="0"
+				SaveOption="SaveNone">
+				<Exec
+					CmdLine="gnucoptions"
+					Type="Slick-C"/>
+			</Target>
+		</Menu>
+		<Includes></Includes>
+		<Libs PreObjects="0"/>
+	</Config>
+	<Config
+		Name="Release"
+		Type="gnuc"
+		DebugCallbackName="gdb"
+		Version="1"
+		OutputFile="%rw/.libs/testgtksheet"
+		CompilerConfigName="Latest Version"
+		Defines="">
+		<Menu>
+			<Target
+				Name="Compile"
+				MenuCaption="&amp;Compile"
+				Dialog="_gnuc_options_form Compile"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				OutputExts="*.o"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec CmdLine='gcc -c %xup %defd -fPIC -o "%bd%n%oe" %i %f'/>
+			</Target>
+			<Target
+				Name="Link"
+				MenuCaption="&amp;Link"
+				ShowOnMenu="Never"
+				Dialog="_gnuc_options_form Link"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec CmdLine='gcc %xup -o "%o" %objs'/>
+			</Target>
+			<Target
+				Name="Build"
+				MenuCaption="&amp;Build"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine="make"/>
+			</Target>
+			<Target
+				Name="Rebuild"
+				MenuCaption="&amp;Rebuild"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine=""/>
+			</Target>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				Dialog="_gnuc_options_form Run/Debug"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec
+					CmdLine='vsdebugio -prog "%o" %~other'
+					OtherOptions="--display :0.2 --gdk-debug nograbs"/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="E&amp;xecute"
+				Dialog="_gnuc_options_form Run/Debug"
+				BuildFirst="1"
+				CaptureOutputWith="ProcessBuffer"
+				Deletable="0"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec
+					CmdLine='"%o" %~other'
+					OtherOptions="--display :0.2 --gdk-debug nograbs"/>
+			</Target>
+			<Target
+				Name="dash"
+				MenuCaption="-"
+				Deletable="0">
+				<Exec/>
+			</Target>
+			<Target
+				Name="GNU C Options"
+				MenuCaption="GNU C &amp;Options..."
+				ShowOnMenu="HideIfNoCmdLine"
+				Deletable="0"
+				SaveOption="SaveNone">
+				<Exec
+					CmdLine="gnucoptions"
+					Type="Slick-C"/>
+			</Target>
+		</Menu>
+		<Includes></Includes>
+		<Libs PreObjects="0"/>
+	</Config>
+	<Files>
+		<Folder
+			Name="Source Files"
+			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.c++;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl;*.d"
+			GUID="{BFB5FAD5-96D2-4413-A4FE-7B5A87D1FBE2}">
+			<Folder
+				Name="Glade"
+				Filters=""
+				GUID="{7C4AB80D-F661-4CAB-84BD-E3D4FE02E9EC}">
+				<F
+					N="../glade/Makefile.am"
+					Type="Makefile"/>
+				<F N="../glade/glade-gtksheet-editor.c"/>
+				<F N="../glade/glade-gtksheet-editor.h"/>
+			</Folder>
+			<Folder
+				Name="Test"
+				Filters=""
+				GUID="{2B69518C-DF15-47D7-BD3D-15ECF2723AE8}">
+				<F N="../gtksheet/testgtksheet.c"/>
+			</Folder>
+			<Folder
+				Name="Common"
+				Filters=""
+				GUID="{5B1F5586-D8FB-4394-B94D-5EDA5650CA4A}">
+				<F N="../config.h"/>
+				<F N="../gtksheet-4.0.pc.in"/>
+				<F N="../gtksheet-4.0.spec.in"/>
+				<F N="../gtksheet/gtksheet-compat.h"/>
+				<F N="../gtksheet/gtksheet-marshal.c"/>
+				<F N="../gtksheet/gtksheet-marshal.h"/>
+				<F N="../gtksheet/gtksheet.def"/>
+				<F N="../gtksheet/gtksheetfeatures.h.in"/>
+				<F N="../gtksheet/gtksheettypebuiltins.c"/>
+				<F N="../gtksheet/gtksheettypebuiltins.h"/>
+				<F N="../gtksheet/icons.h"/>
+				<F N="../gtksheet/pixmaps.h"/>
+				<F N="../gtksheet/sat.xpm"/>
+				<F N="../gtksheet/sg_small.xpm"/>
+				<F N="../gtksheet/suncloud.xpm"/>
+			</Folder>
+			<Folder
+				Name="Sheet"
+				Filters=""
+				GUID="{14345B16-EA45-4251-98EA-E023AB851225}">
+				<F N="../gtksheet/gtkdataentry.c"/>
+				<F N="../gtksheet/gtkdataentry.h"/>
+				<F N="../gtksheet/gtkdataformat.c"/>
+				<F N="../gtksheet/gtkdataformat.h"/>
+				<F N="../gtksheet/gtkdatatextview.c"/>
+				<F N="../gtksheet/gtkdatatextview.h"/>
+				<F N="../gtksheet/gtkitementry.c"/>
+				<F N="../gtksheet/gtkitementry.h"/>
+				<F N="../gtksheet/gtksheet.c"/>
+				<F N="../gtksheet/gtksheet.h"/>
+				<F N="../gtksheet/gtksheetcolumn.c"/>
+				<F N="../gtksheet/gtksheetcolumn.h"/>
+				<F
+					N="../gtksheet/Makefile.am"
+					Type="Makefile"/>
+			</Folder>
+		</Folder>
+		<Folder
+			Name="Resource Files"
+			Filters="*.ico;*.cur;*.dlg"
+			GUID="{E4BA2DE6-AEC9-4A83-A5D7-768CC20B101B}">
+			<F N="../gtksheet/GtkSheet-4.0.gir"/>
+			<F N="../gtksheet/GtkSheet-4.0.typelib"/>
+		</Folder>
+		<Folder
+			Name="Other Files"
+			Filters=""
+			GUID="{B7295174-C33A-4520-B708-D753B3BF9B73}">
+			<F N="../AUTHORS"/>
+			<F N="../ChangeLog"/>
+			<F N="../config.h.in"/>
+			<F N="../config.log"/>
+			<F N="../configure"/>
+			<F N="../configure.ac"/>
+			<F N="../COPYING"/>
+			<F N="../glib-2.0.m4"/>
+			<F N="../gtk-2.0.m4"/>
+			<F N="../gtk-doc.make"/>
+			<F N="../gtk.m4"/>
+			<F N="../gtksheet-4.0.spec"/>
+			<F N="../INSTALL"/>
+			<F
+				N="../Makefile"
+				Type="Makefile"/>
+			<F
+				N="../Makefile.am"
+				Type="Makefile"/>
+			<F
+				N="../Makefile.in"
+				Type="Makefile"/>
+			<F N="../NEWS"/>
+			<F N="../README"/>
+			<F N="../TODO"/>
+		</Folder>
+		<Folder
+			Name="Documentation"
+			Filters=""
+			GUID="{D6BBE3C4-BBA8-4A12-A662-12A3FE2D8AA9}">
+			<F N="../docs/reference/gtksheet-docs.sgml"/>
+			<F N="../docs/reference/gtksheet-overrides.txt"/>
+			<F N="../docs/reference/gtksheet-sections.txt"/>
+			<F N="../docs/reference/gtksheet-undeclared.txt"/>
+			<F N="../docs/reference/gtksheet-undocumented.txt"/>
+			<F N="../docs/reference/gtksheet-unused.txt"/>
+			<F
+				N="../docs/reference/Makefile.am"
+				Type="Makefile"/>
+		</Folder>
+	</Files>
 </Project>

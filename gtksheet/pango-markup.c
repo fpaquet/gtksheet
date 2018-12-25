@@ -19,17 +19,21 @@
  * Based on Osxcart rtf-serialize.c from P. F. Chimento, 2009
  */
 
+/**
+ * SECTION: pango-markup
+ * @short_description: Pango markup serializer for
+ *                   #GtkTextBuffer
+ *  
+ * This module provides a serializer for #GtkTextBuffer to 
+ * generate pango markup language.
+ */
+
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
 #include <glib.h>
 #include <config.h>
 #include <gtk/gtk.h>
-
-/* FIXME: these definitions conflate points and pixels */
-#define PIXELS_TO_TWIPS(pixels) (pixels * 20)
-#define PANGO_TO_HALF_POINTS(pango) (2 * pango / PANGO_SCALE)
-#define PANGO_TO_TWIPS(pango) (20 * pango / PANGO_SCALE)
 
 typedef struct {
     GtkTextBuffer *textbuffer;
@@ -510,19 +514,40 @@ write_rtf(WriterContext *ctx)
 
 /* This function is called by gtk_text_buffer_serialize(). */
 
+/**
+ * serialize_pango_markup: 
+ * @register_buffer: (nullable): the #GtkTextBuffer for which 
+ *                  the format is registered
+ * @content_buffer: the #GtkTextBuffer to serialize
+ * @start: start of block of text to serialize
+ * @end: end of block of test to serialize
+ * @length: Return location for the length of the serialized
+ *         data
+ * @user_data: user data that was specified when registering 
+ *            the format
+ * 
+ * This function serializes the portion of text between @start
+ * and @end in pango markup format. 
+ *  
+ * It can be registered as #GtkTextBuffer serializer. 
+ * 
+ * Returns: (nullable): a newly-allocated array of guint8 which 
+ * contains the serialized data, or NULL if an error occurred. 
+ */
 guint8 *
 serialize_pango_markup(
     GtkTextBuffer *register_buffer,
     GtkTextBuffer *content_buffer,
     const GtkTextIter *start,
     const GtkTextIter *end,
-    gsize *length)
+    gsize *length,
+    gpointer user_data)
 {
     WriterContext *ctx = writer_context_new();
     
     analyze_buffer(ctx, content_buffer, start, end);
 
-	gchar *contents = write_rtf(ctx);
+    gchar *contents = write_rtf(ctx);
     *length = strlen(contents);
 
 	writer_context_free(ctx);

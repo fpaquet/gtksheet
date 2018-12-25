@@ -56,7 +56,7 @@
 #include "gtkdataentry.h"
 #include "gtkdatatextview.h"
 #include "gtksheet.h"
-#include "serialize-pango-markup.h"
+#include "pango-markup.h"
 #include "gtkdataformat.h"
 #include "gtksheet-marshal.h"
 #include "gtksheettypebuiltins.h"
@@ -6548,7 +6548,7 @@ gtk_sheet_cell_isvisible(GtkSheet *sheet,
  * struct _GtkSheetRange { gint row0,col0; //  upper-left cell
  * 			  gint rowi,coli;  // lower-right cell  };
  *
- * Get sheet's ranges in a #GkSheetRange structure.
+ * Get sheet's ranges in a #GtkSheetRange structure.
  */
 void
 gtk_sheet_get_visible_range(GtkSheet *sheet, GtkSheetRange *range)
@@ -8845,6 +8845,15 @@ static void _gtk_sheet_set_entry_text_internal(
         else
         {
             gtk_text_buffer_set_text(buffer, text, -1);
+
+            /* FIXME - testing of growing tag table
+            GtkTextIter start_iter, end_iter;
+
+            gtk_text_buffer_get_bounds(buffer,
+                &start_iter, &end_iter);
+            gtk_text_buffer_remove_all_tags(buffer,
+                &start_iter, &end_iter);
+            */
         }
 
         gtk_text_buffer_set_modified (buffer, FALSE);
@@ -9833,6 +9842,8 @@ gtk_sheet_set_tab_direction(GtkSheet *sheet, GtkDirectionType dir)
     _gtk_sheet_class_init_tab_bindings(klass, dir);
 }
 
+#ifdef GTK_SHEET_DEBUG
+
 static void _debug_show_pango_markup(GtkTextBuffer *buffer)
 {
     GtkTextIter start, end;
@@ -9842,13 +9853,22 @@ static void _debug_show_pango_markup(GtkTextBuffer *buffer)
     g_debug("%s(%d): serialized <<<\n%s\n>>>",
         __FUNCTION__, __LINE__, 
         serialize_pango_markup(
-            buffer, buffer, &start, &end, &length)
+            buffer, buffer, &start, &end, &length, NULL)
         );
 }
 
+void _debug_show_tag(GtkTextTag *tag, gpointer data)
+{
+    g_debug("Tag %p", tag);
+}
+
+#endif
+
 /**
- * gtk_sheet_get_entry_text:
+ * _gtk_sheet_get_entry_text_internal:
  * @sheet: a #GtkSheet
+ * @row: sheet row where entry is attached
+ * @col: sheet column where entry is attached
  * @is_markup: set to TRUE if text has pango markup
  * @is_modified: set to TRUE if text buffer was modified
  *
@@ -9873,6 +9893,7 @@ static void _debug_show_pango_markup(GtkTextBuffer *buffer)
  */
 static gchar *_gtk_sheet_get_entry_text_internal(
     GtkSheet *sheet,
+    gint row, gint col,
     gboolean *is_markup,
     gboolean *is_modified)
 {
@@ -9897,20 +9918,42 @@ static gchar *_gtk_sheet_get_entry_text_internal(
     else if (GTK_IS_DATA_TEXT_VIEW(entry)
              || GTK_IS_TEXT_VIEW(entry) )
     {
-	GtkTextIter start, end;
 	GtkTextBuffer *buffer = gtk_text_view_get_buffer(
             GTK_TEXT_VIEW(entry));
 
-	gtk_text_buffer_get_bounds(buffer, &start, &end);
+        gboolean cell_is_markup = gtk_sheet_cell_is_markup(
+            sheet, row, col);
 
-	text = gtk_text_buffer_get_text(buffer, &start, &end, TRUE);
+	GtkTextIter start, end;
+        gtk_text_buffer_get_bounds(buffer, &start, &end);
 
+        if (cell_is_markup)
+        {
+#ifdef GTK_SHEET_DEBUG
+            _debug_show_pango_markup(buffer);
+#endif
+            gsize length;
+            text = serialize_pango_markup(
+                buffer, buffer, &start, &end, &length, NULL);
+        }
+        else
+        {
+            text = gtk_text_buffer_get_text(
+                buffer, &start, &end, TRUE);
+        }
+
+#ifdef GTK_SHEET_DEBUG
         GtkTextTagTable *tag_table = gtk_text_buffer_get_tag_table(
             buffer);
 
-        _debug_show_pango_markup(buffer);
+        g_debug("tag_table %d %d cell_is_markup %d", 
+            (tag_table != NULL),
+            gtk_text_tag_table_get_size(tag_table),
+            cell_is_markup);
 
-        *is_markup = (tag_table != NULL);
+        gtk_text_tag_table_foreach (tag_table, _debug_show_tag , NULL);
+#endif
+        *is_markup = cell_is_markup;
         *is_modified = gtk_text_buffer_get_modified(buffer);
     }
     else
@@ -9964,6 +10007,7 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
 
     gboolean is_markup, is_modified;
     gchar *text = _gtk_sheet_get_entry_text_internal(sheet,
+        old_row, old_col,
         &is_markup, &is_modified);
 
     GtkSheetCellAttr attributes;
@@ -10520,6 +10564,7 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
 
     gboolean is_markup, is_modified;
     gchar *old_text = _gtk_sheet_get_entry_text_internal(sheet,
+        act_row, act_col,
         &is_markup, &is_modified);
 
     /* the entry setup must be done before the text assigment,
@@ -13803,7 +13848,7 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
         gboolean is_markup, is_modified;
 
         gchar *text = _gtk_sheet_get_entry_text_internal(
-            sheet, &is_markup, &is_modified);
+            sheet, act_row, act_col, &is_markup, &is_modified);
 
 	if (text && text[0])
 	{
@@ -14238,7 +14283,8 @@ gchar *gtk_sheet_get_entry_text(GtkSheet *sheet)
     gboolean is_markup, is_modified;
 
     gchar *text = _gtk_sheet_get_entry_text_internal(
-        sheet, &is_markup, &is_modified);
+        sheet, sheet->active_cell.row, sheet->active_cell.col,
+        &is_markup, &is_modified);
 
     return(text);
 }

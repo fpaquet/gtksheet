@@ -134,10 +134,10 @@ gtk_sheet_is_frozen
 gtk_sheet_freeze
 gtk_sheet_thaw
 gtk_sheet_set_background
-gtk_sheet_set_css_class
 gtk_sheet_set_grid
 gtk_sheet_show_grid
 gtk_sheet_grid_visible
+gtk_sheet_set_css_class
 gtk_sheet_set_row_title
 gtk_sheet_get_row_title
 gtk_sheet_row_button_add_label
@@ -337,7 +337,7 @@ gtksheet_check_version
 </SECTION>
 
 <SECTION>
-<FILE>serialize-pango-markup</FILE>
-
+<FILE>pango-markup</FILE>
+serialize_pango_markup
 </SECTION>
 

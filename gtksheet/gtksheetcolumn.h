@@ -168,7 +168,10 @@ void gtk_sheet_columns_set_resizable(GtkSheet *sheet, gboolean resizable);
 gboolean gtk_sheet_column_visible(GtkSheet *sheet, gint column);
 void gtk_sheet_column_set_visibility(GtkSheet *sheet, gint column, gboolean visible);
 
+#ifndef GTK_DISABLE_DEPRECATED
 void gtk_sheet_column_button_justify(GtkSheet *sheet, gint col, GtkJustification justification);
+#endif
+
 const gchar *gtk_sheet_column_button_get_label(GtkSheet *sheet, gint col);
 void gtk_sheet_column_label_set_visibility(GtkSheet *sheet, gint col, gboolean visible);
 void gtk_sheet_columns_labels_set_visibility(GtkSheet *sheet, gboolean visible);

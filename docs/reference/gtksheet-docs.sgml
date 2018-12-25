@@ -69,9 +69,9 @@ It only displays the text and has no borders.
       <xi:include href="xml/gtkdataentry.xml"/>
       <xi:include href="xml/gtkdatatextview.xml"/>
       <xi:include href="xml/gtkitementry.xml"/>
+      <xi:include href="xml/pango-markup.xml"/>
       <xi:include href="xml/gtksheet-compat.xml"/>
       <xi:include href="xml/gtksheetfeatures.xml"/>
-
     </chapter>
   </part>
   <chapter id="object-tree">

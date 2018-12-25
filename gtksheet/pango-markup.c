@@ -94,15 +94,15 @@ static void
 convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
 {
     GString *code = g_string_new("");
-	
+    
     //const gchar *name;
     //g_object_get(tag, "name", &name, NULL);
 
     gboolean val;
 
-	g_object_get(tag, "background-set", &val, NULL);
-	if(val)
-	{
+    g_object_get(tag, "background-set", &val, NULL);
+    if(val)
+    {
         GdkRGBA *color_rgba;
         g_object_get(tag, "background-rgba", &color_rgba, NULL);
 
@@ -110,8 +110,8 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
 
         g_string_append_printf(code, " bgcolor=\"%s\"", cs);
         g_free(cs);
-	}
-	
+    }
+    
     g_object_get(tag, "fallback-set", &val, NULL);
     if(val)
     {
@@ -122,42 +122,43 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
             g_string_append(code, " fallback=\"false\"");
     }
     
-	g_object_get(tag, "family-set", &val, NULL);
+    g_object_get(tag, "family-set", &val, NULL);
     if(val)
-	{
-	    const gchar *family;
-	    g_object_get(tag, "family", &family, NULL);
+    {
+        const gchar *family;
+        g_object_get(tag, "family", &family, NULL);
         g_string_append_printf(code, " font_family=\"%s\"", family);
     }
-	
+    
     g_object_get(tag, "font-features-set", &val, NULL);
     if(val)
     {
         const gchar *font_features;
         g_object_get(tag, "font-features", &font_features, NULL);
-        g_string_append_printf(code, " font_features=\"%s\"", font_features);
+        g_string_append_printf(
+            code, " font_features=\"%s\"", font_features);
     }
 
-	g_object_get(tag, "foreground-set", &val, NULL);
-	if(val)
-	{
+    g_object_get(tag, "foreground-set", &val, NULL);
+    if(val)
+    {
         GdkRGBA *color_rgba;
         g_object_get(tag, "foreground-rgba", &color_rgba, NULL);
 
-	    gchar *cs = get_color_from_rgba_color(color_rgba);
+        gchar *cs = get_color_from_rgba_color(color_rgba);
 
-	    g_string_append_printf(code, " fgcolor=\"%s\"", cs);
+        g_string_append_printf(code, " fgcolor=\"%s\"", cs);
         g_free(cs);
-	}
-	
-	g_object_get(tag, "language-set", &val, NULL);
-	if(val)
-	{
-		gchar *isocode;
-		g_object_get(tag, "language", &isocode, NULL);
-		g_string_append_printf(code, " lang=\"%s\"", isocode);
-	}
-	
+    }
+    
+    g_object_get(tag, "language-set", &val, NULL);
+    if(val)
+    {
+        gchar *isocode;
+        g_object_get(tag, "language", &isocode, NULL);
+        g_string_append_printf(code, " lang=\"%s\"", isocode);
+    }
+    
     g_object_get(tag, "letter-spacing-set", &val, NULL);
     if(val)
     {
@@ -214,31 +215,40 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
         switch(stretch)
         {
             case PANGO_STRETCH_ULTRA_CONDENSED:
-                g_string_append(code, " font_stretch=\"ultracondensed\"");
+                g_string_append(
+                    code, " font_stretch=\"ultracondensed\"");
                 break;
             case PANGO_STRETCH_EXTRA_CONDENSED:
-                g_string_append(code, " font_stretch=\"extracondensed\"");
+                g_string_append(
+                    code, " font_stretch=\"extracondensed\"");
                 break;
             case PANGO_STRETCH_CONDENSED:
-                g_string_append(code, " font_stretch=\"condensed\"");
+                g_string_append(
+                    code, " font_stretch=\"condensed\"");
                 break;
             case PANGO_STRETCH_SEMI_CONDENSED:
-                g_string_append(code, " font_stretch=\"semicondensed\"");
+                g_string_append(
+                    code, " font_stretch=\"semicondensed\"");
                 break;
             case PANGO_STRETCH_NORMAL:
-                g_string_append(code, " font_stretch=\"normal\"");
+                g_string_append(
+                    code, " font_stretch=\"normal\"");
                 break;
             case PANGO_STRETCH_SEMI_EXPANDED:
-                g_string_append(code, " font_stretch=\"semiexpanded\"");
+                g_string_append(
+                    code, " font_stretch=\"semiexpanded\"");
                 break;
             case PANGO_STRETCH_EXPANDED:
-                g_string_append(code, " font_stretch=\"expanded\"");
+                g_string_append(
+                    code, " font_stretch=\"expanded\"");
                 break;
             case PANGO_STRETCH_EXTRA_EXPANDED:
-                g_string_append(code, " font_stretch=\"extraexpanded\"");
+                g_string_append(
+                    code, " font_stretch=\"extraexpanded\"");
                 break;
             case PANGO_STRETCH_ULTRA_EXPANDED:
-                g_string_append(code, " font_stretch=\"ultraexpanded\"");
+                g_string_append(
+                    code, " font_stretch=\"ultraexpanded\"");
                 break;
         }
     }
@@ -259,9 +269,9 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
         GdkRGBA *color_rgba;
         g_object_get(tag, "strikethrough-rgba", &color_rgba, NULL);
 
-	    gchar *cs = get_color_from_rgba_color(color_rgba);
+        gchar *cs = get_color_from_rgba_color(color_rgba);
 
-	    g_string_append_printf(
+        g_string_append_printf(
             code, " strikethrough_color=\"%s\"", cs);
         g_free(cs);
     }
@@ -324,9 +334,9 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
         GdkRGBA *color_rgba;
         g_object_get(tag, "underline-rgba", &color_rgba, NULL);
 
-	    gchar *cs = get_color_from_rgba_color(color_rgba);
+        gchar *cs = get_color_from_rgba_color(color_rgba);
 
-	    g_string_append_printf(
+        g_string_append_printf(
             code, " underline_color=\"%s\"", cs);
         g_free(cs);
     }
@@ -344,7 +354,8 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
                 break;
 
             case PANGO_VARIANT_SMALL_CAPS:
-                g_string_append(code, " font_variant=\"smallcaps\"");
+                g_string_append(
+                    code, " font_variant=\"smallcaps\"");
                 break;
         }
     }
@@ -360,22 +371,28 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
             case PANGO_WEIGHT_THIN:
                 break;
             case PANGO_WEIGHT_ULTRALIGHT:
-                g_string_append(code, " font_weight=\"ultralight\"");
+                g_string_append(
+                    code, " font_weight=\"ultralight\"");
                 break;
             case PANGO_WEIGHT_LIGHT:
-                g_string_append(code, " font_weight=\"light\"");
+                g_string_append(
+                    code, " font_weight=\"light\"");
                 break;
             case PANGO_WEIGHT_NORMAL:
-                g_string_append(code, " font_weight=\"normal\"");
+                g_string_append(
+                    code, " font_weight=\"normal\"");
                 break;
             case PANGO_WEIGHT_BOLD:
-                g_string_append(code, " font_weight=\"bold\"");
+                g_string_append(
+                    code, " font_weight=\"bold\"");
                 break;
             case PANGO_WEIGHT_ULTRABOLD:
-                g_string_append(code, " font_weight=\"ultrabold\"");
+                g_string_append(
+                    code, " font_weight=\"ultrabold\"");
                 break;
             case PANGO_WEIGHT_HEAVY:
-                g_string_append(code, " font_weight=\"heavy\"");
+                g_string_append(
+                    code, " font_weight=\"heavy\"");
                 break;
 
             case PANGO_WEIGHT_SEMILIGHT:
@@ -384,7 +401,8 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
             case PANGO_WEIGHT_SEMIBOLD:
             case PANGO_WEIGHT_ULTRAHEAVY:
             default:
-                g_string_append_printf(code, " font_weight=\"%d\"", weight);
+                g_string_append_printf(
+                    code, " font_weight=\"%d\"", weight);
                 break;
         }
     }
@@ -550,7 +568,7 @@ serialize_pango_markup(
     gchar *contents = write_rtf(ctx);
     *length = strlen(contents);
 
-	writer_context_free(ctx);
+    writer_context_free(ctx);
 
-	return ((guint8 *)contents);
+    return ((guint8 *)contents);
 }

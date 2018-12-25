@@ -102,6 +102,7 @@
 #   define GTK_SHEET_DEBUG_SCROLL  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TEXT  0
+#   define GTK_SHEET_DEBUG_MARKUP  1
 
 #   define GTK_SHEET_ENABLE_DEBUG_MACROS
 #endif
@@ -8785,6 +8786,77 @@ gtk_sheet_cell_new(void)
     return (cell);
 }
 
+#if GTK_SHEET_DEBUG_MARKUP>0
+void _debug_show_tag(GtkTextTag *tag, gpointer data)
+{
+    g_debug("Tag %p", tag);
+
+    gboolean val;
+    g_object_get(tag, "background-full-height-set", &val, NULL);
+    if (val) g_debug("background-full-height-set");
+    g_object_get(tag, "background-set", &val, NULL);
+    if (val) g_debug("background-set");
+    g_object_get(tag, "editable-set", &val, NULL);
+    if (val) g_debug("editable-set");
+    g_object_get(tag, "fallback-set", &val, NULL);
+    if (val) g_debug("fallback-set");
+    g_object_get(tag, "family-set", &val, NULL);
+    if (val) g_debug("family-set");
+    g_object_get(tag, "font-features-set", &val, NULL);
+    if (val) g_debug("font-features-set");
+    g_object_get(tag, "foreground-set", &val, NULL);
+    if (val) g_debug("foreground-set");
+    g_object_get(tag, "indent-set", &val, NULL);
+    if (val) g_debug("indent-set");
+    g_object_get(tag, "invisible-set", &val, NULL);
+    if (val) g_debug("invisible-set");
+    g_object_get(tag, "justification-set", &val, NULL);
+    if (val) g_debug("justification-set");
+    g_object_get(tag, "language-set", &val, NULL);
+    if (val) g_debug("language-set");
+    g_object_get(tag, "left-margin-set", &val, NULL);
+    if (val) g_debug("left-margin-set");
+    g_object_get(tag, "letter-spacing-set", &val, NULL);
+    if (val) g_debug("letter-spacing-set");
+    g_object_get(tag, "paragraph-background-set", &val, NULL);
+    if (val) g_debug("paragraph-background-set");
+    g_object_get(tag, "pixels-above-lines-set", &val, NULL);
+    if (val) g_debug("pixels-above-lines-set");
+    g_object_get(tag, "pixels-below-lines-set", &val, NULL);
+    if (val) g_debug("pixels-below-lines-set");
+    g_object_get(tag, "pixels-inside-wrap-set", &val, NULL);
+    if (val) g_debug("pixels-inside-wrap-set");
+    g_object_get(tag, "right-margin-set", &val, NULL);
+    if (val) g_debug("right-margin-set");
+    g_object_get(tag, "rise-set", &val, NULL);
+    if (val) g_debug("rise-set");
+    g_object_get(tag, "scale-set", &val, NULL);
+    if (val) g_debug("scale-set");
+    g_object_get(tag, "size-set", &val, NULL);
+    if (val) g_debug("size-set");
+    g_object_get(tag, "stretch-set", &val, NULL);
+    if (val) g_debug("stretch-set");
+    g_object_get(tag, "strikethrough-rgba-set", &val, NULL);
+    if (val) g_debug("strikethrough-rgba-set");
+    g_object_get(tag, "strikethrough-set", &val, NULL);
+    if (val) g_debug("strikethrough-set");
+    g_object_get(tag, "style-set", &val, NULL);
+    if (val) g_debug("style-set");
+    g_object_get(tag, "tabs-set", &val, NULL);
+    if (val) g_debug("tabs-set");
+    g_object_get(tag, "underline-rgba-set", &val, NULL);
+    if (val) g_debug("underline-rgba-set");
+    g_object_get(tag, "underline-set", &val, NULL);
+    if (val) g_debug("underline-set");
+    g_object_get(tag, "variant-set", &val, NULL);
+    if (val) g_debug("variant-set");
+    g_object_get(tag, "weight-set", &val, NULL);
+    if (val) g_debug("weight-set");
+    g_object_get(tag, "wrap-mode-set", &val, NULL);
+    if (val) g_debug("wrap-mode-set");
+}
+#endif
+
 /**
  * _gtk_sheet_set_entry_text_internal:
  * @sheet: a #GtkSheet 
@@ -8836,6 +8908,24 @@ static void _gtk_sheet_set_entry_text_internal(
             gtk_text_buffer_get_bounds(buffer,
                 &start_iter, &end_iter);
 
+#if GTK_SHEET_DEBUG_MARKUP>0
+            g_debug("clearing tags");
+            gtk_text_buffer_remove_all_tags(buffer,
+                &start_iter, &end_iter);
+
+            GtkTextTagTable *tag_table
+                = gtk_text_buffer_get_tag_table(buffer);
+
+            g_debug(
+                "tag_table after clear %d %d cell_is_markup %d", 
+                (tag_table != NULL),
+                gtk_text_tag_table_get_size(tag_table),
+                is_markup);
+
+            gtk_text_tag_table_foreach (
+                tag_table, _debug_show_tag , NULL);
+#endif
+
             gtk_text_buffer_delete(buffer,
                 &start_iter, &end_iter);
 
@@ -8848,6 +8938,8 @@ static void _gtk_sheet_set_entry_text_internal(
 
             /* FIXME - testing of growing tag table
             GtkTextIter start_iter, end_iter;
+
+            g_debug("clearing tags");
 
             gtk_text_buffer_get_bounds(buffer,
                 &start_iter, &end_iter);
@@ -9842,28 +9934,6 @@ gtk_sheet_set_tab_direction(GtkSheet *sheet, GtkDirectionType dir)
     _gtk_sheet_class_init_tab_bindings(klass, dir);
 }
 
-#ifdef GTK_SHEET_DEBUG
-
-static void _debug_show_pango_markup(GtkTextBuffer *buffer)
-{
-    GtkTextIter start, end;
-    gtk_text_buffer_get_bounds(buffer, &start, &end);
-
-    gsize length;
-    g_debug("%s(%d): serialized <<<\n%s\n>>>",
-        __FUNCTION__, __LINE__, 
-        serialize_pango_markup(
-            buffer, buffer, &start, &end, &length, NULL)
-        );
-}
-
-void _debug_show_tag(GtkTextTag *tag, gpointer data)
-{
-    g_debug("Tag %p", tag);
-}
-
-#endif
-
 /**
  * _gtk_sheet_get_entry_text_internal:
  * @sheet: a #GtkSheet
@@ -9929,10 +9999,14 @@ static gchar *_gtk_sheet_get_entry_text_internal(
 
         if (cell_is_markup)
         {
-#ifdef GTK_SHEET_DEBUG
-            _debug_show_pango_markup(buffer);
-#endif
             gsize length;
+#if GTK_SHEET_DEBUG_MARKUP>1
+            g_debug("%s(%d): serialized <<<\n%s\n>>>",
+                __FUNCTION__, __LINE__, 
+                serialize_pango_markup(
+                    buffer, buffer, &start, &end, &length, NULL)
+                );
+#endif
             text = serialize_pango_markup(
                 buffer, buffer, &start, &end, &length, NULL);
         }
@@ -9942,7 +10016,7 @@ static gchar *_gtk_sheet_get_entry_text_internal(
                 buffer, &start, &end, TRUE);
         }
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG_MARKUP>0
         GtkTextTagTable *tag_table = gtk_text_buffer_get_tag_table(
             buffer);
 

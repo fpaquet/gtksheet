@@ -252,6 +252,8 @@
 				<F
 					N="../gtksheet/Makefile.am"
 					Type="Makefile"/>
+				<F N="../gtksheet/pango-markup.c"/>
+				<F N="../gtksheet/pango-markup.h"/>
 			</Folder>
 		</Folder>
 		<Folder

@@ -17,6 +17,7 @@
  * Boston, MA 02111-1307, USA.
  * 
  * Based on Osxcart rtf-serialize.c from P. F. Chimento, 2009
+ * https://github.com/ptomato/osxcart
  */
 
 /**
@@ -43,7 +44,7 @@ typedef struct {
 } WriterContext;
 
 /* Initialize the writer context */
-static WriterContext *writer_context_new(void)
+static WriterContext *_writer_context_new(void)
 {
     WriterContext *ctx = g_slice_new0(WriterContext);
 
@@ -55,14 +56,24 @@ static WriterContext *writer_context_new(void)
 }
 
 /* Free the writer context */
-static void writer_context_free(WriterContext *ctx)
+static void _writer_context_free(WriterContext *ctx)
 {
     g_hash_table_unref(ctx->tag_codes);
     g_slice_free(WriterContext, ctx);
 }
 
+/*
+ * _pango_color_from_rgba:
+ * 
+ * Generate 4-element pango color string from rgba.
+ * When alpha is 1.0 generate 3-element color string.
+ * 
+ * @param color  #GdkRGBA color
+ * 
+ * @return pango color string
+ */
 static gchar *
-get_color_from_rgba_color(GdkRGBA *color)
+_pango_color_from_rgba(GdkRGBA *color)
 {
     gchar *colorcode;
 
@@ -87,11 +98,17 @@ get_color_from_rgba_color(GdkRGBA *color)
     return colorcode;
 }
 
-/* Generate pango markup for tag
-   add it to the context's hashtable of tags */
-
+/*
+ * _convert_tag_to_code:
+ * 
+ * Generate pango markup for tag.
+ * Aadd it to the context's hashtable of tags.
+ * 
+ * @param tag
+ * @param ctx
+ */
 static void 
-convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
+_convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
 {
     GString *code = g_string_new("");
     
@@ -106,7 +123,7 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
         GdkRGBA *color_rgba;
         g_object_get(tag, "background-rgba", &color_rgba, NULL);
 
-        gchar *cs = get_color_from_rgba_color(color_rgba);
+        gchar *cs = _pango_color_from_rgba(color_rgba);
 
         g_string_append_printf(code, " bgcolor=\"%s\"", cs);
         g_free(cs);
@@ -145,7 +162,7 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
         GdkRGBA *color_rgba;
         g_object_get(tag, "foreground-rgba", &color_rgba, NULL);
 
-        gchar *cs = get_color_from_rgba_color(color_rgba);
+        gchar *cs = _pango_color_from_rgba(color_rgba);
 
         g_string_append_printf(code, " fgcolor=\"%s\"", cs);
         g_free(cs);
@@ -269,7 +286,7 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
         GdkRGBA *color_rgba;
         g_object_get(tag, "strikethrough-rgba", &color_rgba, NULL);
 
-        gchar *cs = get_color_from_rgba_color(color_rgba);
+        gchar *cs = _pango_color_from_rgba(color_rgba);
 
         g_string_append_printf(
             code, " strikethrough_color=\"%s\"", cs);
@@ -334,7 +351,7 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
         GdkRGBA *color_rgba;
         g_object_get(tag, "underline-rgba", &color_rgba, NULL);
 
-        gchar *cs = get_color_from_rgba_color(color_rgba);
+        gchar *cs = _pango_color_from_rgba(color_rgba);
 
         g_string_append_printf(
             code, " underline_color=\"%s\"", cs);
@@ -411,12 +428,20 @@ convert_tag_to_code(GtkTextTag *tag, WriterContext *ctx)
         ctx->tag_codes, tag, g_string_free(code, FALSE));
 }
 
-/* This function is run before processing the actual contents
-   of the buffer. It generates pango markup for all of the tags
-   in the buffer's tag table, and tells the context which
-   portion of the text buffer to serialize. */
-
-static void analyze_buffer(
+/*
+ * _analyze_buffer:
+ * 
+ * This function is run before processing the actual contents
+ * of the buffer. It generates pango markup for all of the tags
+ * in the buffer's tag table, and tells the context which
+ * portion of the text buffer to serialize.
+ * 
+ * @param ctx
+ * @param textbuffer
+ * @param start
+ * @param end
+ */
+static void _analyze_buffer(
     WriterContext *ctx, 
     GtkTextBuffer *textbuffer, 
     const GtkTextIter *start, 
@@ -426,17 +451,25 @@ static void analyze_buffer(
         textbuffer); 
 
     gtk_text_tag_table_foreach(
-        tagtable, (GtkTextTagTableForeach)convert_tag_to_code, ctx);
+        tagtable, (GtkTextTagTableForeach)_convert_tag_to_code, ctx);
 
     ctx->textbuffer = textbuffer;
     ctx->start = start;
     ctx->end = end;
 }
 
-/* Analyze a segment of text in which there are no tag flips,
-   but possibly embedded pictures */
-
-static void write_rtf_text(
+/*
+ * _write_plain_text:
+ * 
+ * Analyze a segment of text in which there are no tag flips.
+ * 
+ * Ignore embedded pictures.
+ * 
+ * @param ctx
+ * @param start
+ * @param end
+ */
+static void _write_plain_text(
     WriterContext *ctx, 
     const GtkTextIter *start, 
     const GtkTextIter *end)
@@ -448,9 +481,18 @@ static void write_rtf_text(
     g_free(text);
 }
 
-/* write taglist, handle convenience tags */
-
-static void write_taglist(
+/*
+ * _write_taglist:
+ * 
+ * Generating convenience tags would give you shorter output when. 
+ * Because tags often consist of multiple attributes, we simply
+ * generate <span>'s.
+ * 
+ * @param ctx
+ * @param taglist
+ * @param start
+ */
+static void _write_taglist(
     WriterContext *ctx, GSList *taglist, gboolean start)
 {
     if(!taglist) return;
@@ -477,8 +519,15 @@ static void write_taglist(
     g_string_append(ctx->output, ">");
 }
 
-static void
-write_rtf_paragraphs(WriterContext *ctx)
+/*
+ * _generate_pango_markup:
+ * 
+ * generate text and pango markup into ctx->output
+ * 
+ * @param ctx
+ */
+static gchar *
+_generate_pango_markup(WriterContext *ctx)
 {
     GtkTextIter start = *(ctx->start), end;
 
@@ -494,43 +543,30 @@ write_rtf_paragraphs(WriterContext *ctx)
 
         if(tagstartlist)
         {
-            write_taglist(ctx, tagstartlist, TRUE);
+            _write_taglist(ctx, tagstartlist, TRUE);
             g_slist_free(tagstartlist);
         }
         
         /* Output the actual contents of this section */
-        write_rtf_text(ctx, &start, &end);
+        _write_plain_text(ctx, &start, &end);
 
         GSList *tagendlist = gtk_text_iter_get_toggled_tags(
             &end, FALSE);
 
         if(tagendlist)
         {
-            write_taglist(ctx, tagendlist, FALSE);
+            _write_taglist(ctx, tagendlist, FALSE);
             g_slist_free(tagendlist);
         }
 
         start = end;
     }
+
+    gchar *contents = g_string_free(ctx->output, FALSE);
+    ctx->output = NULL;
+
+    return(contents);
 }
-
-/* Write the RTF header and assorted front matter */
-static gchar *
-write_rtf(WriterContext *ctx)
-{
-#if 0
-    /* Preliminary formatting */
-    g_string_append_printf(
-        ctx->output, "<LANG>%s</LANG>\n", 
-        pango_language_to_string(pango_language_get_default()));
-#endif
-    /* Document body */
-    write_rtf_paragraphs(ctx);
-
-    return g_string_free(ctx->output, FALSE);
-}
-
-/* This function is called by gtk_text_buffer_serialize(). */
 
 /**
  * serialize_pango_markup: 
@@ -547,10 +583,12 @@ write_rtf(WriterContext *ctx)
  * This function serializes the portion of text between @start
  * and @end in pango markup format. 
  *  
- * It can be registered as #GtkTextBuffer serializer. 
+ * It can be registered as #GtkTextBuffer serializer using 
+ * gtk_text_buffer_register_serialize_format(). 
  * 
- * Returns: (nullable): a newly-allocated array of guint8 which 
- * contains the serialized data, or NULL if an error occurred. 
+ * Returns: (nullable): (transfer full): a newly-allocated array
+ * of guint8 which contains the serialized data, or NULL if an 
+ * error occurred. Free it after use.
  */
 guint8 *
 serialize_pango_markup(
@@ -561,14 +599,14 @@ serialize_pango_markup(
     gsize *length,
     gpointer user_data)
 {
-    WriterContext *ctx = writer_context_new();
+    WriterContext *ctx = _writer_context_new();
     
-    analyze_buffer(ctx, content_buffer, start, end);
+    _analyze_buffer(ctx, content_buffer, start, end);
 
-    gchar *contents = write_rtf(ctx);
+    gchar *contents = _generate_pango_markup(ctx);
+    _writer_context_free(ctx);
+
     *length = strlen(contents);
-
-    writer_context_free(ctx);
 
     return ((guint8 *)contents);
 }

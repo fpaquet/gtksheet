@@ -17,6 +17,7 @@
  * Boston, MA 02111-1307, USA.
  * 
  * Based on Osxcart rtf-serialize.c from P. F. Chimento, 2009
+ * https://github.com/ptomato/osxcart
  */
 
 #ifndef __SERIALIZE_PANGO_MARKUP_H__

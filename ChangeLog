@@ -6,6 +6,11 @@ TBD
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
 ** TextBuffer tag list is growing
 
+2018-12-26 Fredy Paquet <mailbox AT opag.ch>
+* code cleanup in pango-markup serializer
+* fixed growing tag list with pango markup in cell editor
+* fixed gtk_sheet_cell_is_markup(), empty cell must keep markup flag
+
 2018-12-24 Fredy Paquet <mailbox AT opag.ch>
 * added pango markup serializer for GtkTextBuffer, not in use yet
 * pango markup in cells: editable mode implemented

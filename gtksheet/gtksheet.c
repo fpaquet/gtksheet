@@ -102,7 +102,7 @@
 #   define GTK_SHEET_DEBUG_SCROLL  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TEXT  0
-#   define GTK_SHEET_DEBUG_MARKUP  1
+#   define GTK_SHEET_DEBUG_MARKUP  0
 
 #   define GTK_SHEET_ENABLE_DEBUG_MACROS
 #endif
@@ -8786,8 +8786,8 @@ gtk_sheet_cell_new(void)
     return (cell);
 }
 
-#if GTK_SHEET_DEBUG_MARKUP>0
-void _debug_show_tag(GtkTextTag *tag, gpointer data)
+#if GTK_SHEET_DEBUG_MARKUP>1
+static void _debug_show_tag(GtkTextTag *tag, gpointer data)
 {
     g_debug("Tag %p", tag);
 
@@ -8857,6 +8857,42 @@ void _debug_show_tag(GtkTextTag *tag, gpointer data)
 }
 #endif
 
+void _collect_tags(GtkTextTag *tag, gpointer data)
+{
+    GSList **l = data;
+    *l = g_slist_append (*l, tag);
+}
+
+void _tag_table_remove(gpointer data, gpointer user_data)
+{
+    GtkTextTag *tag = data;
+    GtkTextTagTable *tag_table = user_data;
+    gtk_text_tag_table_remove(tag_table, tag);
+}
+
+/*
+ * _gtk_text_buffer_clear_tag_table:
+ * 
+ * remove all tags from text buffer tag table.
+ * 
+ * @param buffer the #GtkTextBuffer
+ */
+static void _gtk_text_buffer_clear_tag_table(GtkTextBuffer *buffer)
+{
+    //g_debug("%s(%d)", __FUNCTION__, __LINE__);
+
+    GtkTextTagTable *tag_table
+        = gtk_text_buffer_get_tag_table(buffer);
+
+    GSList *tmp_list = NULL;
+
+    gtk_text_tag_table_foreach(
+        tag_table, _collect_tags, &tmp_list);
+
+    g_slist_foreach(tmp_list, _tag_table_remove, tag_table);
+    g_slist_free(tmp_list);
+}
+
 /**
  * _gtk_sheet_set_entry_text_internal:
  * @sheet: a #GtkSheet 
@@ -8905,26 +8941,29 @@ static void _gtk_sheet_set_entry_text_internal(
         {
             GtkTextIter start_iter, end_iter;
 
-            gtk_text_buffer_get_bounds(buffer,
-                &start_iter, &end_iter);
+            _gtk_text_buffer_clear_tag_table(buffer);
 
-#if GTK_SHEET_DEBUG_MARKUP>0
-            g_debug("clearing tags");
-            gtk_text_buffer_remove_all_tags(buffer,
-                &start_iter, &end_iter);
-
+#if GTK_SHEET_DEBUG_MARKUP>1
             GtkTextTagTable *tag_table
                 = gtk_text_buffer_get_tag_table(buffer);
 
+            gtk_text_buffer_get_bounds(buffer,
+                &start_iter, &end_iter);
+
             g_debug(
-                "tag_table after clear %d %d cell_is_markup %d", 
+                "%s(%d): tag_table after clear %d %d cell_is_markup %d next tag %d", 
+                __FUNCTION__, __LINE__, 
                 (tag_table != NULL),
                 gtk_text_tag_table_get_size(tag_table),
-                is_markup);
+                is_markup,
+                gtk_text_iter_forward_to_tag_toggle(
+                    &start_iter, NULL));
 
             gtk_text_tag_table_foreach (
                 tag_table, _debug_show_tag , NULL);
 #endif
+            gtk_text_buffer_get_bounds(buffer,
+                &start_iter, &end_iter);
 
             gtk_text_buffer_delete(buffer,
                 &start_iter, &end_iter);
@@ -9027,8 +9066,9 @@ _gtk_sheet_set_cell_internal(GtkSheet *sheet,
 #endif
 
 	cell->text = g_strdup(text);
-        cell->is_markup = is_markup;
     }
+
+    cell->is_markup = is_markup;
 
 #if 0 && GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
     g_debug("st2: %0.6f", g_timer_elapsed(tm, NULL));
@@ -9456,10 +9496,10 @@ gtk_sheet_cell_get_text(GtkSheet *sheet, gint row, gint col)
  * @col: column number
  *
  * Get cell markup flag, set when using
- * #gtk_sheet_set_cell_markup.
- *
- * Returns: a pointer to the cell text, or NULL. 
- * Do not modify or free it.
+ * #gtk_sheet_set_cell_markup. 
+ * 
+ * Cells which are not initialized with any content,
+ * have markup flag FALSE.
  */
 gboolean
 gtk_sheet_cell_is_markup(GtkSheet *sheet, gint row, gint col)
@@ -9469,14 +9509,10 @@ gtk_sheet_cell_is_markup(GtkSheet *sheet, gint row, gint col)
 
     if (col > sheet->maxcol || row > sheet->maxrow) return (FALSE);
     if (col < 0 || row < 0) return (FALSE);
-
     if (row > sheet->maxallocrow || col > sheet->maxalloccol)
 	return (FALSE);
-
     if (!sheet->data[row]) return (FALSE);
     if (!sheet->data[row][col]) return (FALSE);
-    if (!sheet->data[row][col]->text) return (FALSE);
-    if (!sheet->data[row][col]->text[0]) return (FALSE);
 
     return (sheet->data[row][col]->is_markup);
 }
@@ -10000,23 +10036,26 @@ static gchar *_gtk_sheet_get_entry_text_internal(
         if (cell_is_markup)
         {
             gsize length;
-#if GTK_SHEET_DEBUG_MARKUP>1
-            g_debug("%s(%d): serialized <<<\n%s\n>>>",
-                __FUNCTION__, __LINE__, 
-                serialize_pango_markup(
-                    buffer, buffer, &start, &end, &length, NULL)
-                );
-#endif
             text = serialize_pango_markup(
                 buffer, buffer, &start, &end, &length, NULL);
+
+#if GTK_SHEET_DEBUG_MARKUP>0
+            g_debug("%s(%d): serialized, markup r/c %d/%d |%s|",
+                __FUNCTION__, __LINE__, row, col, text);
+#endif
         }
         else
         {
             text = gtk_text_buffer_get_text(
                 buffer, &start, &end, TRUE);
-        }
 
 #if GTK_SHEET_DEBUG_MARKUP>0
+            g_debug("%s(%d): text, no markup r/c %d/%d |%s|",
+                __FUNCTION__, __LINE__, row, col, text);
+#endif
+        }
+
+#if GTK_SHEET_DEBUG_MARKUP>1
         GtkTextTagTable *tag_table = gtk_text_buffer_get_tag_table(
             buffer);
 
@@ -10025,8 +10064,10 @@ static gchar *_gtk_sheet_get_entry_text_internal(
             gtk_text_tag_table_get_size(tag_table),
             cell_is_markup);
 
-        gtk_text_tag_table_foreach (tag_table, _debug_show_tag , NULL);
+        gtk_text_tag_table_foreach(
+            tag_table, _debug_show_tag , NULL);
 #endif
+
         *is_markup = cell_is_markup;
         *is_modified = gtk_text_buffer_get_modified(buffer);
     }
@@ -10101,7 +10142,10 @@ gtk_sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
         text);
 #endif
 
-    if (editable && is_modified)
+    // Beware: Ctrl-X (cut) doesn't set the text buffer 
+    // if (editable && is_modified)
+
+    if (editable)
     {
         _gtk_sheet_set_cell_internal(
             sheet, old_row, old_col,
@@ -10440,7 +10484,8 @@ static void _gtk_sheet_entry_preselect(GtkSheet *sheet)
  *  
  * this function must not dependant on any text contents.
  */
-static void _gtk_sheet_entry_setup(GtkSheet *sheet, gint row, gint col,
+static void _gtk_sheet_entry_setup(
+    GtkSheet *sheet, gint row, gint col,
     GtkWidget *entry_widget)
 {
     GtkJustification justification = GTK_JUSTIFY_LEFT;

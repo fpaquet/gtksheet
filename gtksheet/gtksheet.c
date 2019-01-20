@@ -17833,6 +17833,12 @@ _gtk_sheet_position_children(GtkSheet *sheet)
 	if (child->col != -1 && child->row != -1)
         {
             gtk_sheet_position_child(sheet, child);
+
+	    if (gtk_widget_get_visible(child->widget)
+                && !gtk_widget_get_mapped(child->widget))
+            {
+                gtk_widget_map(child->widget);
+            }
         }
         else if (child->col == -1 && child->row == -1) /* global sheet button */
         {

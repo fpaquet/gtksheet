@@ -35,19 +35,52 @@ dep_gobject = dependency('gobject-2.0', version : '>= 2.52.3')
 deps = [dep_gtk, dep_glib, dep_gobject]
 
 if get_option('enable-glade')
-  dep_glade = dependency('gladeui-2.0', version : '>= 3.10')
-  deps += dep_glade
+    dep_glade = dependency('gladeui-2.0', version : '>= 3.10')
+    i18n = import('i18n')
+
+    add_project_arguments(
+      '-DGETTEXT_PACKAGE="GtkSheet"', language: 'c')
+
+    deps += dep_glade
 endif
 
 if get_option('enable-introspection')
-  dep_gobjintro = dependency('gobject-introspection-1.0',
-                        version : '>= 1.46')
-  deps += dep_gobjintro
+    dep_gobjintro = dependency(
+        'gobject-introspection-1.0', version : '>= 1.46')
+    deps += dep_gobjintro
 endif
 
+gnome = import('gnome')
+
+if get_option('enable-gtk-doc')
+    gtkdoc = find_program('gtkdoc-scan', required: false)
+
+    if gtkdoc.found()
+        gtkdoc_result = run_command(gtkdoc, ['--version'])
+        gtkdoc_ver = gtkdoc_result.stdout().strip()
+        if gtkdoc_ver == ''
+            gtkdoc_ver = gtkdoc_result.stderr().strip()
+            endif
+        if gtkdoc_ver.version_compare('<1.26')
+            error('gtk-doc test requires gtkdoc >= 1.26.')
+        endif
+    else
+        error('gtkdoc not found.')
+    endif
+endif
 
 if get_option('buildtype').startswith('debug')
     add_project_arguments('-DDEBUG', language : ['c'])
 endif
 
 subdir('gtksheet')
+
+if get_option('enable-glade')
+    subdir('glade')
+    #subdir('po')
+endif
+
+if get_option('enable-gtk-doc')
+    subdir('docs/reference')
+    subdir('docs/tutorial')
+endif

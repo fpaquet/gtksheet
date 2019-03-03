@@ -36,3 +36,5 @@ gtksheet-*.spec
 glade/gtksheet-catalog.xml
 
 configure
+_build
+.build

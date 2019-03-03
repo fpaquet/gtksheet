@@ -1,5 +1,8 @@
-<!doctype book PUBLIC "-//OASIS//DTD DocBook V4.2//EN" [
-
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+[
+  <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
 ]>
 <book id="index">
 
@@ -78,7 +81,6 @@ GtkSheet uses GNU autoconf for configuration. Once untar'd, type
 <chapter id="ch-GtkSheet">
 <title>GtkSheet</title>
 
-<!-- ----------------------------------------------------------------- -->
 <sect1 id="sec-Introduction">
 <title>Introduction</title>
 
@@ -90,7 +92,7 @@ GtkSheet is a spreadsheet  widget for Gtk (an Excel-like table)
 A GtkSheetEntry widget( a cell in fact) is a GtkEntry subclass with the following  differences :
   - It doesn't draw the border.   
   - It is dinamically resized as the text is typed.
-  - It allows right/left/center text justification (gtk_entry_size_allocate & entry_adjust_scroll)
+  - It allows right/left/center text justification (gtk_entry_size_allocate &amp; entry_adjust_scroll)
 </para>
 
 <para>
@@ -103,7 +105,6 @@ depends on  the available memory of your system.
 
 </sect1>
 
-<!-- ----------------------------------------------------------------- -->
 <sect1 id="sec-CreatingaSheet">
 <title>Creating a Sheet</title>
 
@@ -155,7 +156,7 @@ GtkSheet screenshot:
 <para>
 <inlinemediaobject>
 <imageobject>
-<imagedata fileref="images/gtksheet_new_sheet.jpg" format="jpg">
+<imagedata fileref="images/gtksheet_new_sheet.jpg" format="jpg"/>
 </imageobject>
 </inlinemediaobject>
 </para>
@@ -163,7 +164,6 @@ GtkSheet screenshot:
 
 </sect1>
 
-<!-- ----------------------------------------------------------------- -->
 <sect1 id="sec-SheetSignals">
 <title>Sheet Signals</title>
 
@@ -172,7 +172,7 @@ The interaction between user and sheet is done(as in all Gtk programs) through s
 In GtkSheet the next signals are implemented :
 </para>
 
-<itemizedlist spacing=Compact>
+<itemizedlist spacing="Compact">
 <listitem><simpara> <literal>SELECT_ROW</literal></simpara></listitem>
 <listitem><simpara> <literal>SELECT_COLUMN</literal></simpara></listitem>
 <listitem><simpara> <literal>SELECT_RANGE</literal></simpara></listitem>
@@ -291,7 +291,6 @@ GtkSheet Reference Manual or the GtkSheet source code.
 
 </sect1>
 
-<!-- ----------------------------------------------------------------- -->
 <sect1 id="sec-ModifyingCellContents">
 <title>Modifying cell contents</title>
 
@@ -300,7 +299,6 @@ As previously stated , a cell may contain text, picture or other widgets.
 GtkSheet functions can be categorized after the number of modified cells:
 </para>
 
-<!-- ----------------------------------------------------------------- -->
 <sect2 id="sec-FunctionsThatModifyACell">
 <title>Functions that modify a cell</title>
 
@@ -337,7 +335,7 @@ gchar *  gtk_sheet_cell_get_text (GtkSheet *sheet, gint row, gint col);
 <para>
 <inlinemediaobject>
 <imageobject>
-<imagedata fileref="images/gtksheet_cell_text.jpg" format="jpg">
+<imagedata fileref="images/gtksheet_cell_text.jpg" format="jpg"/>
 </imageobject>
 </inlinemediaobject>
 </para>
@@ -371,7 +369,7 @@ gtk_widget_show_all (window);
 <para>
 <inlinemediaobject>
 <imageobject>
-<imagedata fileref="images/gtksheet_pack_xpm.jpg" format="jpg">
+<imagedata fileref="images/gtksheet_pack_xpm.jpg" format="jpg"/>
 </imageobject>
 </inlinemediaobject>
 </para>
@@ -394,7 +392,7 @@ gtk_sheet_attach_default (GTK_SHEET(sheet), current_combo, row, col,0,0);
 <para>
 <inlinemediaobject>
 <imageobject>
-<imagedata fileref="images/gtksheet_pack_combo.jpg" format="jpg">
+<imagedata fileref="images/gtksheet_pack_combo.jpg" format="jpg"/>
 </imageobject>
 </inlinemediaobject>
 </para>
@@ -425,7 +423,6 @@ void gtk_sheet_remove_link(GtkSheet *sheet, gint row, gint col);
 
 </sect2>
 
-<!-- ----------------------------------------------------------------- -->
 <sect2 id="sec-FunctionsThatModifyARange">
 <title>Functions that modify a range of cells</title>
 
@@ -470,14 +467,13 @@ void  gtk_sheet_range_clear (sheet, &amp;range);
 <para>
 <inlinemediaobject>
 <imageobject>
-<imagedata fileref="images/gtksheet_range_bg.jpg" format="jpg">
+<imagedata fileref="images/gtksheet_range_bg.jpg" format="jpg"/>
 </imageobject>
 </inlinemediaobject>
 </para>
 
 </sect2>
 
-<!-- ----------------------------------------------------------------- -->
 <sect2 id="sec-FunctionsThatModifyAllCells">
 <title>Functions that modify all cells from sheet</title>
 
@@ -494,7 +490,6 @@ void  gtk_sheet_set_background (GtkSheet *sheet,GdkColor *bg_color);
 
 </sect2>
 
-<!-- ----------------------------------------------------------------- -->
 <sect2 id="sec-FunctionsThatSetRowColumns">
 <title>Functions that set row/column titles , sheet title , etc </title>
 
@@ -531,7 +526,6 @@ void gtk_sheet_set_column_titles_height(GtkSheet *sheet, guint height);
 
 </sect1>
 
-<!-- ----------------------------------------------------------------- -->
 <sect1 id="sec-ModifyingSheetState">
 <title>Modifying sheet state</title>
 
@@ -584,7 +578,6 @@ GTK_SHEET_COL_TITLES_VISIBLE(sheet)
 
 </sect1>
 
-<!-- ----------------------------------------------------------------- -->
 <sect1 id="sec-Selections">
 <title>Selections</title>
 
@@ -608,12 +601,11 @@ void (*select_column) (GtkSheet *sheet, gint column);
 
 </sect1>
 
-<!-- ----------------------------------------------------------------- -->
 <sect1 id="sec-RowColumnOperations">
 <title> Row/column operations</title>
 
 <para>The most common row/column operations are:</para>
-<itemizedlist spacing=Compact>
+<itemizedlist spacing="Compact">
 <listitem><simpara> <literal>insertion</literal></simpara></listitem>
 <listitem><simpara> <literal>deletion</literal></simpara></listitem>
 <listitem><simpara> <literal>findind the number of rows/columns</literal></simpara></listitem>

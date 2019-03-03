@@ -1,5 +1,9 @@
 # GtkSheet Meson options
 
+option('enable-tests', 
+       type : 'boolean', value : true, 
+       description : 'enable build of tests')
+
 option('enable-glade', 
        type : 'boolean', value : true, 
        description : 'enable Glade-integration')
@@ -7,4 +11,8 @@ option('enable-glade',
 option('enable-introspection', 
        type : 'boolean', value : true, 
        description : 'enable GObject-Introspection')
+
+option('enable-gtk-doc', 
+       type : 'boolean', value : true, 
+       description : 'enable gtkdoc')
 

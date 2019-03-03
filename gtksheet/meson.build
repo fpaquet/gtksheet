@@ -1,6 +1,4 @@
 
-gnome = import('gnome')
-
 public_h_sources = [
     'gtkdataentry.h',
 	'gtkdataformat.h', 
@@ -87,11 +85,17 @@ if get_option('enable-introspection')
         install : true)
 endif
 
-testgtksheet_c_sources = 'testgtksheet.c'
 
-testgtksheet = executable(
-  'testgtksheet', testgtksheet_c_sources,
-  include_directories : include_directories('..'),
-  dependencies : deps,
-  link_with : libgtksheet)
-test('testgtksheet', testgtksheet)
+if get_option('enable-tests')
+    testgtksheet_c_sources = 'testgtksheet.c'
+
+    testgtksheet = executable(
+        'testgtksheet', testgtksheet_c_sources,
+        include_directories : include_directories('..'),
+        dependencies : deps,
+        link_with : libgtksheet)
+
+    test('testgtksheet', testgtksheet,
+         workdir : meson.current_source_dir())
+endif
+

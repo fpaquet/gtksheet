@@ -62,10 +62,8 @@ marshallers = gnome.genmarshal(
     valist_marshallers: true,
     )
 
-deps = [gtkdep, gladedep]
-
 libgtksheet = shared_library(
-    'libgtksheet', 
+    'gtksheet', 
     c_sources, resources, marshallers, enums, 
     soversion : lt_current,
     version : lt_so_version,
@@ -77,24 +75,23 @@ libgtksheet = shared_library(
 install_headers(
     public_h_sources, subdir : 'gtksheet-4.0/gtksheet')
 
-gnome.generate_gir(
-    libgtksheet,
-    sources : c_sources + public_h_sources,
-    nsversion : GTK_SHEET_VERSION,
-    namespace : 'GtkSheet',
-    symbol_prefix : 'gtk',
-    identifier_prefix : 'Gtk',
-    includes : ['GLib-2.0', 'GObject-2.0', 'Gtk-3.0'],
-    install : true
-)
+if get_option('enable-introspection')
+    gnome.generate_gir(
+        libgtksheet,
+        sources : c_sources + public_h_sources,
+        nsversion : GTK_SHEET_VERSION,
+        namespace : 'GtkSheet',
+        symbol_prefix : 'gtk',
+        identifier_prefix : 'Gtk',
+        includes : ['GLib-2.0', 'GObject-2.0', 'Gtk-3.0'],
+        install : true)
+endif
 
 testgtksheet_c_sources = 'testgtksheet.c'
-
-gtkdep = dependency('gobject-2.0', version : '>= 2.0')
 
 testgtksheet = executable(
   'testgtksheet', testgtksheet_c_sources,
   include_directories : include_directories('..'),
   dependencies : deps,
   link_with : libgtksheet)
-# test('as-self-test', selftest)
+test('testgtksheet', testgtksheet)

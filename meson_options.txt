@@ -1,3 +1,10 @@
 # GtkSheet Meson options
 
-option('enable-glade', type : 'boolean', value : true, description : 'enable Glade integration')
+option('enable-glade', 
+       type : 'boolean', value : true, 
+       description : 'enable Glade-integration')
+
+option('enable-introspection', 
+       type : 'boolean', value : true, 
+       description : 'enable GObject-Introspection')
+

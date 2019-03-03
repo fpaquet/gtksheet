@@ -17826,6 +17826,9 @@ _gtk_sheet_position_children(GtkSheet *sheet)
     g_debug("%s(%d): called %p", __FUNCTION__, __LINE__, sheet);
 #endif
 
+    if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
+	return;
+
     while (children)
     {
 	child = (GtkSheetChild *)children->data;
@@ -17837,6 +17840,12 @@ _gtk_sheet_position_children(GtkSheet *sheet)
 	    if (gtk_widget_get_visible(child->widget)
                 && !gtk_widget_get_mapped(child->widget))
             {
+                if (!gtk_widget_get_realized(child->widget)
+                    || gtk_widget_get_has_window(child->widget))
+                {
+                    gtk_sheet_realize_child(sheet, child);
+                }
+
                 gtk_widget_map(child->widget);
             }
         }

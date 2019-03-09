@@ -4,13 +4,15 @@ TBD
 ** row selection drawing over right sheet border
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
-** TextBuffer tag list is growing
 
 2019-03-09 Fredy Paquet <mailbox AT opag.ch>
 * merged branch gtk3_fixes into gtk3
 * updated gtksheet-4 version to 4.3.0, Libtool Revision 4.0.3
 * published gtksheet-4 version 4.3.0
 * re-added configure script
+* fixed lot's of warnings
+  GtkSheet is mapped but visible child GtkSheetColumn is not mapped.
+  ... is drawn without a current allocation. This should not happen.
 
 2019-03-03 Fredy Paquet <mailbox AT opag.ch>
 * fixed ABORT in testgtksheet: aftereffect of fix 2019-01-20

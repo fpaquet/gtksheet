@@ -50,6 +50,7 @@ struct _GtkSheetColumn
     guint16 requisition;
     gint left_xpixel;   /* left edge of the column*/
     gint vis_col_index; /* visible column index or -1 */
+    gboolean is_visible;
     gint max_extent_width;  /* := max(Cell.extent.width) */
 
     GtkWidget *col_button;  /* child widget or GtkToggleButton */
@@ -106,9 +107,10 @@ struct _GtkSheetColumnClass
 #define GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION GTK_JUSTIFY_LEFT
 
 #define GTK_SHEET_COLUMN_IS_VISIBLE(colptr)  \
-        (gtk_widget_get_visible(GTK_WIDGET(colptr)))
+        (colptr->is_visible)
 
 #define GTK_SHEET_COLUMN_SET_VISIBLE(colptr, value) \
+        colptr->is_visible = value; \
         (gtk_widget_set_visible(GTK_WIDGET(colptr), value))
 
 #define GTK_SHEET_COLUMN_IS_SENSITIVE(colptr) \

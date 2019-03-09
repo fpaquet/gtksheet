@@ -787,6 +787,7 @@ gtk_sheet_column_init(GtkSheetColumn *column)
 #if GTK_SHEET_OPTIMIZE_COLUMN_DRAW>0
     column->left_text_column = column->right_text_column = 0;
 #endif
+    column->is_visible = TRUE;
     column->vis_col_index = -1;
 
     column->justification = GTK_SHEET_COLUMN_DEFAULT_JUSTIFICATION;
@@ -2186,6 +2187,11 @@ gtk_sheet_column_set_visibility(GtkSheet *sheet, gint col, gboolean visible)
 #endif
 
     GTK_SHEET_COLUMN_SET_VISIBLE(colobj, visible);
+
+    if (!visible && gtk_widget_get_mapped(colobj))
+    {
+        gtk_widget_unmap(colobj);
+    }
 
     _gtk_sheet_range_fixup(sheet, &sheet->range);
     _gtk_sheet_recalc_left_xpixels(sheet);

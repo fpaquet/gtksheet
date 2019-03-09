@@ -1887,8 +1887,8 @@ gtk_sheet_get_type(void)
 		(gpointer) NULL
 	    };
 
-	    g_type_add_interface_static(sheet_type, GTK_TYPE_SCROLLABLE,
-		&scrollable_info);
+        g_type_add_interface_static(
+            sheet_type, GTK_TYPE_SCROLLABLE, &scrollable_info);
     }
     return (sheet_type);
 }
@@ -17923,17 +17923,25 @@ _gtk_sheet_position_children(GtkSheet *sheet)
 	    if (colobj->col_button)
 	    {
                 if (sheet->column_titles_visible
-		    && gtk_widget_get_visible(GTK_WIDGET(colobj))
+                    && colobj->is_visible
+		    //&& !gtk_widget_get_visible(GTK_WIDGET(colobj))
 		    && minviewcol <= col && col <= maxviewcol
                     && gtk_widget_get_mapped(GTK_WIDGET(sheet)))
 		{
-                    gtk_widget_map(GTK_WIDGET(colobj));
+                    //gtk_widget_map(GTK_WIDGET(colobj));
                     gtk_widget_show(GTK_WIDGET(colobj->col_button));
+                    gtk_widget_show(GTK_WIDGET(colobj));
                 }
 		else
 		{
                     gtk_widget_hide(GTK_WIDGET(colobj->col_button));
-                    gtk_widget_unmap(GTK_WIDGET(colobj));
+                    gtk_widget_hide(GTK_WIDGET(colobj));
+
+                    if (gtk_widget_get_mapped(colobj))
+                    {
+                        gtk_widget_unmap(colobj);
+                        //gtk_widget_unmap(GTK_WIDGET(colobj));
+                    }
 		}
 	    }
 	}

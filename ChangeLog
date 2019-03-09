@@ -6,6 +6,11 @@ TBD
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
 ** TextBuffer tag list is growing
 
+2019-03-09 Fredy Paquet <mailbox AT opag.ch>
+* merged branch gtk3_fixes into gtk3
+* updated gtksheet-4 version to 4.3.0, Libtool Revision 4.0.3
+* published gtksheet-4 version 4.3.0
+
 2019-03-03 Fredy Paquet <mailbox AT opag.ch>
 * fixed ABORT in testgtksheet: aftereffect of fix 2019-01-20
   gtk_widget_real_map: assertion failed: (_gtk_widget_get_realized (widget))

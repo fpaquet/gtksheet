@@ -24,17 +24,50 @@
  * SECTION: gtksheet
  * @short_description: A spreadsheet widget for Gtk+
  *
- * #GtkSheet is a matrix widget for GTK+. It consists of an scrollable grid of
- * cells where you can put text or other #GtkWidget's in. Cells
- * are organized in rows (#GtkSheetRow) and columns 
- * (#GtkSheetColumn). Cell contents can be edited interactively 
- * through a specially designed entry (#GtkItemEntry). A 
- * #GtkSheet is also a container subclass, allowing you to 
- * display buttons, curves, pixmaps and any other widget in it. 
- * You can also set many attributes as: border, foreground and 
- * background color, text justification, and more. The 
- * testgtksheet program shows how easy is to create a 
- * spreadsheet-like GUI using this widget set. 
+ * #GtkSheet is a matrix widget for GTK+. It consists of a
+ * scrollable grid of cells where you can put text or other
+ * #GtkWidget's in. Cells are organized in rows (#GtkSheetRow) 
+ * and columns (#GtkSheetColumn). Cell contents can be edited 
+ * interactively through a configurable item entry
+ * (#GtkDataEntry, #GtkEntry, #GtkDataTextView, #GtkTextView,
+ * #GtkItemEntry). A #GtkSheet is also a container subclass,
+ * allowing you to display buttons, curves, pixmaps and any
+ * other widget in it. You can also set many attributes as:
+ * border, text justification, and more. The testgtksheet
+ * program shows how easy is to create a spreadsheet-like GUI
+ * using this widget set.
+ * 
+ * # CSS nodes
+ *
+ * |[<!-- language="plain" --> 
+ * sheet[.view][.cell[:selected]]
+ * ├── <entry>
+ * │    ╰── selection
+ * ╰── <button>[.top][.left]
+ * ]|
+ *
+ * GtkSheet has a main CSS node with name "sheet". It has
+ * subnodes for the sheet item entry named "entry" and row/cell
+ * headings named "button". The GtkSheet generally has
+ * the CSS class ".view" attached. The inner cell area has class
+ * ".cell" attached. Sheet cells can have optional ":selected"
+ * state.
+ * 
+ * #GtkSheetColumn titles are Gtk widgets, typically containing
+ * a #GtkToggleButton with all it's decendants. Column titles
+ * can be styled via "sheet button.top" selector.
+ * 
+ * Row title buttons are just frames, being styled via "sheet
+ * .button.left" selector, optionally having ":active" state
+ * when selected.
+ * 
+ * See embedded "gtksheet.css" or "testgtksheet.css" for CSS
+ * styling examples. The #GtkSheet will load it's embedded
+ * "gtksheet.css" with application priority upon initialization.
+ * The testgtksheet application will try to load the file
+ * "testgtksheet.css" upon startup, which must be available in
+ * the current directory.
+ *
  */
 
 

@@ -1,9 +1,9 @@
 <!ENTITY package "gtksheet">
 <!ENTITY package_bugreport "">
 <!ENTITY package_name "GtkSheet">
-<!ENTITY package_string "GtkSheet 4.2.0">
+<!ENTITY package_string "GtkSheet 4.3.0">
 <!ENTITY package_tarname "gtksheet">
 <!ENTITY package_url "">
-<!ENTITY package_version "4.2.0">
+<!ENTITY package_version "4.3.0">
 <!ENTITY package_api_version "@PACKAGE_API_VERSION@">
 

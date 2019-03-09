@@ -1,7 +1,7 @@
 
 %define name  gtksheet4
 %define major 4
-%define minor 2
+%define minor 3
 %define micro 0
 %define ver   %major.%minor.%micro
 %define rel      1

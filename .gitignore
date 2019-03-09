@@ -10,7 +10,7 @@ config.h
 config.h.in
 config.log
 config.status
-configure
+
 libtool
 build
 aclocal.m4

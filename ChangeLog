@@ -10,6 +10,7 @@ TBD
 * merged branch gtk3_fixes into gtk3
 * updated gtksheet-4 version to 4.3.0, Libtool Revision 4.0.3
 * published gtksheet-4 version 4.3.0
+* re-added configure script
 
 2019-03-03 Fredy Paquet <mailbox AT opag.ch>
 * fixed ABORT in testgtksheet: aftereffect of fix 2019-01-20

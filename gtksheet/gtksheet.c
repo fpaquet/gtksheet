@@ -138,6 +138,7 @@
 #   define GTK_SHEET_DEBUG_MARKUP  0
 
 #   define GTK_SHEET_ENABLE_DEBUG_MACROS
+#   undef GTK_SHEET_ENABLE_DEBUG_MACROS
 #endif
 
 #include "gtksheetdebug.h"
@@ -17395,7 +17396,7 @@ gtk_sheet_button_attach(GtkSheet *sheet,
 		colobj->col_button, child);
 	    gtk_container_remove(
 		GTK_CONTAINER(colobj->col_button), child);
-	    gtk_widget_destroy(child);
+	    //gtk_widget_destroy(child);
 	}
 
 	if (widget) {

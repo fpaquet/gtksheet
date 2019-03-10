@@ -7,6 +7,8 @@ TBD
 
 2019-03-10 Fredy Paquet <mailbox AT opag.ch>
 * new GtkSheetColumn property "is_secret" for password columns
+* fixed warning
+  gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
 
 2019-03-09 Fredy Paquet <mailbox AT opag.ch>
 * merged branch gtk3_fixes into gtk3

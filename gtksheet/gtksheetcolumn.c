@@ -58,6 +58,7 @@
 #   define GTK_SHEET_COL_DEBUG_SIZE  0
 
 #   define GTK_SHEET_ENABLE_DEBUG_MACROS
+#   undef GTK_SHEET_ENABLE_DEBUG_MACROS
 #endif
 
 #include "gtksheetdebug.h"

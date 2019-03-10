@@ -967,7 +967,7 @@ void
     gtk_widget_show(b);
     b = gtk_button_new_with_label("GTK_EXPAND");
     gtk_sheet_attach(GTK_SHEET(sheets[1]), b, 12, 3, GTK_EXPAND, GTK_EXPAND, 5, 5); gtk_widget_show(b);
-    b = gtk_button_new_with_label("GTK_SHRINK");
+    b = gtk_button_new_with_label("Shrink");
     gtk_sheet_attach(GTK_SHEET(sheets[1]), b, 12, 4, GTK_SHRINK, GTK_SHRINK, 5, 5); gtk_widget_show(b);
 
     range.row0 = range.col0 = range.rowi = range.coli = 4;

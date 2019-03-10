@@ -6226,7 +6226,13 @@ gtk_sheet_unclip_range(GtkSheet *sheet)
 	return;
 
     GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_CLIP);
-    g_source_remove(sheet->clip_timer);
+
+    if (sheet->clip_timer)
+    {
+        g_source_remove(sheet->clip_timer);
+        sheet->clip_timer = 0;
+    }
+
     _gtk_sheet_range_draw(sheet, &sheet->clip_range, TRUE);
 
     if (gtk_sheet_range_isvisible(sheet, sheet->range))
@@ -11883,7 +11889,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    gtk_grab_add(GTK_WIDGET(sheet));
 	    sheet->timer = g_timeout_add_full(0, TIMEOUT_SCROLL,
                 _gtk_sheet_scroll_to_pointer, sheet, NULL);
-	    gtk_widget_grab_focus(GTK_WIDGET(sheet));
+            gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
             GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 	}
@@ -11902,7 +11908,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    gtk_sheet_click_cell(sheet, row, -1, &veto);
 	    gtk_grab_add(GTK_WIDGET(sheet));
 	    sheet->timer = g_timeout_add_full(0, TIMEOUT_SCROLL, _gtk_sheet_scroll_to_pointer, sheet, NULL);
-	    gtk_widget_grab_focus(GTK_WIDGET(sheet));
+            gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
             GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 	}
@@ -12309,7 +12315,10 @@ gtk_sheet_button_release_handler(
     gdk_device_ungrab(event->device, event->time);
 
     if (sheet->timer)
-	g_source_remove(sheet->timer);
+    {
+        g_source_remove(sheet->timer);
+        sheet->timer = 0;
+    }
     gtk_grab_remove(GTK_WIDGET(sheet));
 
     GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);

@@ -7,8 +7,10 @@ TBD
 
 2019-03-10 Fredy Paquet <mailbox AT opag.ch>
 * new GtkSheetColumn property "is_secret" for password columns
-* fixed warning
+* fixed critical warning
   gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+* fixed critical warning
+  Source ID 205 was not found when attempting to remove it
 
 2019-03-09 Fredy Paquet <mailbox AT opag.ch>
 * merged branch gtk3_fixes into gtk3

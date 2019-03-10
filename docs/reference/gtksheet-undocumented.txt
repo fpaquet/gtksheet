@@ -1,5 +1,5 @@
 0% symbol docs coverage.
-366 symbols documented.
+368 symbols documented.
 19 symbols incomplete.
 42 not documented.
 

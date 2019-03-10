@@ -119,6 +119,16 @@
 </ARG>
 
 <ARG>
+<NAME>GtkSheetColumn::is-secret</NAME>
+<TYPE>gboolean</TYPE>
+<RANGE></RANGE>
+<FLAGS>rw</FLAGS>
+<NICK>Column contains secret data</NICK>
+<BLURB>TRUE displays the invisible char instead of the actual text (password mode).</BLURB>
+<DEFAULT>FALSE</DEFAULT>
+</ARG>
+
+<ARG>
 <NAME>GtkSheetColumn::iskey</NAME>
 <TYPE>gboolean</TYPE>
 <RANGE></RANGE>

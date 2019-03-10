@@ -427,60 +427,83 @@ void
 }
 
 gboolean
-    change_entry(GtkWidget *widget, 
-                 gint row, gint col, gint *new_row, gint *new_col,
-                 gpointer data)
+change_entry(GtkWidget *widget, 
+    gint old_row, gint old_col, gint *new_row, gint *new_col,
+    gpointer data)
 {
     gboolean changed = FALSE;
     GtkSheet *sheet = GTK_SHEET(widget);
 
-    printf("change_entry: %d %d -> %d %d\n", row, col, *new_row, *new_col);
+    printf("change_entry: %d %d -> %d %d\n",
+        old_row, old_col, *new_row, *new_col);
 
-    if (*new_col == 1 && (col != 1 || sheet->state != GTK_STATE_NORMAL))
+    if (*new_col == 1 
+        && (old_col != 1 || sheet->state != GTK_STATE_NORMAL))
     {
-	printf("change_entry: GtkEntry\n");
+        printf("change_entry: GtkEntry\n");
         gtk_sheet_change_entry(sheet, gtk_entry_get_type());
         changed = TRUE;
     }
 
-    if (*new_col == 2 && (col != 2 || sheet->state != GTK_STATE_NORMAL))
+    if (*new_col == 2 
+        && (old_col != 2 || sheet->state != GTK_STATE_NORMAL))
     {
         GtkSpinButton *spin_button;
         GtkAdjustment *adjustment;
         gdouble value = 0.0;
         gchar *text;
 
-	printf("change_entry: GtkSpinButton\n");
+        printf("change_entry: GtkSpinButton\n");
         gtk_sheet_change_entry(sheet, gtk_spin_button_get_type ());
         changed = TRUE;
 
         text = gtk_sheet_cell_get_text(sheet, *new_row, *new_col);
         if (text) value = atof(text);
 
-        adjustment = (GtkAdjustment *) gtk_adjustment_new(value, 0.0, 100.0, 1.0, 10.0, 0.0);
+        adjustment = (GtkAdjustment *) gtk_adjustment_new(
+            value, 0.0, 100.0, 1.0, 10.0, 0.0);
 
         spin_button = (GtkSpinButton *) gtk_sheet_get_entry(sheet);
         gtk_spin_button_configure(spin_button, adjustment, 0.0, 3);
     }
 
-    if (*new_col == 3 && (col != 3 || sheet->state != GTK_STATE_NORMAL))
+    if (*new_col == 3
+        && (old_col != 3 || sheet->state != GTK_STATE_NORMAL))
     {
-	printf("change_entry: GtkTextView\n");
+        printf("change_entry: GtkTextView\n");
         gtk_sheet_change_entry(sheet, GTK_TYPE_TEXT_VIEW);
         changed = TRUE;
     }
 
-    if (*new_col == 4 && (col != 4 || sheet->state != GTK_STATE_NORMAL))
+    if (*new_col == 4
+        && (old_col != 4 || sheet->state != GTK_STATE_NORMAL))
     {
-	printf("change_entry: GtkDataEntry\n");
+        printf("change_entry: GtkDataEntry\n");
         gtk_sheet_change_entry(sheet, GTK_TYPE_DATA_ENTRY);
         changed = TRUE;
     }
 
-    if (*new_col >= 5 && (col < 5 || sheet->state != GTK_STATE_NORMAL))
+    if (*new_col == 5
+        && (old_col != 5 || sheet->state != GTK_STATE_NORMAL))
     {
-	printf("change_entry: GtkDataTextView\n");
+        printf("change_entry: GtkDataTextView\n");
         gtk_sheet_change_entry(sheet, gtk_data_text_view_get_type());
+        changed = TRUE;
+    }
+
+    if (*new_col == 6
+        && (old_col != 6 || sheet->state != GTK_STATE_NORMAL))
+    {
+        printf("change_entry: GtkDataTextView\n");
+        gtk_sheet_change_entry(sheet, gtk_data_text_view_get_type());
+        changed = TRUE;
+    }
+
+    if (*new_col >= 7
+        && (old_col < 7 || sheet->state != GTK_STATE_NORMAL))
+    {
+        printf("change_entry: GtkDataEntry\n");
+        gtk_sheet_change_entry(sheet, gtk_data_entry_get_type());
         changed = TRUE;
     }
 
@@ -489,8 +512,8 @@ gboolean
         /* Beware: you need to reconnect the "changed" signal
            after every call to gtk_sheet_change_entry()! */
 
-        gtk_sheet_entry_signal_connect_changed(sheet, 
-	    G_CALLBACK(sheet_entry_changed_handler));
+        gtk_sheet_entry_signal_connect_changed(
+            sheet, G_CALLBACK(sheet_entry_changed_handler));
     }
 
     return (TRUE);
@@ -1086,22 +1109,43 @@ void
     gtk_sheet_set_autoresize(sheet, TRUE);
 
     gtk_sheet_column_button_add_label(sheet, 0, "GtkDataEntry");
+    g_object_set(gtk_sheet_column_get(sheet, 0),
+        "width", 100, NULL);
     gtk_sheet_column_button_add_label(sheet, 1, "GtkEntry");
+    g_object_set(gtk_sheet_column_get(sheet, 1),
+        "width", 80, NULL);
     gtk_sheet_column_button_add_label(sheet, 2, "GtkSpinButton");
+    g_object_set(gtk_sheet_column_get(sheet, 2),
+        "width", 110, NULL);
     gtk_sheet_column_button_add_label(sheet, 3, "GtkTextView");
+    g_object_set(gtk_sheet_column_get(sheet, 3),
+        "width", 90, NULL);
 
     gtk_sheet_column_button_add_label(sheet, 4,
         "GtkDataEntry\nmax 10 chars");
     g_object_set(gtk_sheet_column_get(sheet, 4),
         "max-length", 10, NULL);
+    g_object_set(gtk_sheet_column_get(sheet, 4),
+        "width", 110, NULL);
 
     gtk_sheet_column_button_add_label(sheet, 5,
         "GtkDataTextView\nmax 20 chars");
     g_object_set(gtk_sheet_column_get(sheet, 5),
         "max-length", 20, NULL);
+    g_object_set(gtk_sheet_column_get(sheet, 5),
+        "width", 120, NULL);
 
     gtk_sheet_column_button_add_label(sheet, 6,
         "GtkDataTextView\nno limit");
+    g_object_set(gtk_sheet_column_get(sheet, 6),
+        "width", 120, NULL);
+
+    gtk_sheet_column_button_add_label(sheet, 7,
+        "Password");
+    g_object_set(gtk_sheet_column_get(sheet, 7),
+        "width", 80, NULL);
+    g_object_set(gtk_sheet_column_get(sheet, 7),
+        "is_secret", TRUE, NULL);
 
     gtk_sheet_entry_signal_connect_changed(sheet,
         G_CALLBACK(sheet_entry_changed_handler));

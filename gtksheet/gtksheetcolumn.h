@@ -50,29 +50,30 @@ struct _GtkSheetColumn
     guint16 requisition;
     gint left_xpixel;   /* left edge of the column*/
     gint vis_col_index; /* visible column index or -1 */
-    gboolean is_visible;
+    gboolean is_visible;  /* visible property */
     gint max_extent_width;  /* := max(Cell.extent.width) */
 
     GtkWidget *col_button;  /* child widget or GtkToggleButton */
 
 #if GTK_SHEET_OPTIMIZE_COLUMN_DRAW>0
-    gint left_text_column;      /* min left column displaying text on this column */
-    gint right_text_column;    /* max right column displaying text on this column */
+    gint left_text_column;  /* min left column displaying text on this column */
+    gint right_text_column;  /* max right column displaying text on this column */
 #endif
 
-    GtkJustification justification;    /* horizontal text justification */
-    GtkSheetVerticalJustification vjust;   /* vertical text justification */
+    GtkJustification justification;  /* horizontal text justification */
+    GtkSheetVerticalJustification vjust;  /* vertical text justification */
 
-    gboolean is_key;             /* marker for key columns */
-    gboolean is_readonly;    /* flag to supersede cell.attributes.is_editable */
-    gchar *data_type;           /* data type for application use */
-    gchar *data_format;        /* cell content formatting template */
-    gchar *description;         /* column description and further information about the column */
+    gboolean is_key;  /* marker for key columns */
+    gboolean is_readonly;  /* flag to supersede cell.attributes.is_editable */
+    gchar *data_type;  /* data type for application use */
+    gchar *data_format;  /* cell content formatting template */
+    gchar *description;  /* column description and further information about the column */
+    gboolean is_secret;  /* item entry visibility property */
 
-    GType entry_type;     /* Column entry_type or G_TYPE_NONE */
+    GType entry_type;  /* Column entry_type or G_TYPE_NONE */
 
-    gint max_length;   /* maximum character length */
-    gint max_length_bytes;   /* maximum byte length */
+    gint max_length;  /* maximum character length */
+    gint max_length_bytes;  /* maximum byte length */
     GtkWrapMode wrap_mode;  /* wrap-mode */
 };
 

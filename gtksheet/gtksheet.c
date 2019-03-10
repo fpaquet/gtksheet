@@ -712,6 +712,82 @@ _default_font_ascent(GtkWidget *widget)
     return (PANGO_PIXELS(val));
 }
 
+/* _find_invisible_char:
+   derived from gtkentry.c - find_invisible_char() */
+
+static gunichar
+_find_invisible_char (GtkWidget *widget)
+{
+  gunichar invisible_chars [] = {
+    0,
+    0x25cf, /* BLACK CIRCLE */
+    0x2022, /* BULLET */
+    0x2731, /* HEAVY ASTERISK */
+    0x273a  /* SIXTEEN POINTED ASTERISK */
+  };
+
+  gtk_widget_style_get(widget,
+      "invisible-char", &invisible_chars[0],
+      NULL);
+
+  PangoLayout *layout = gtk_widget_create_pango_layout(
+      widget, NULL);
+
+  PangoAttrList *attr_list = pango_attr_list_new();
+  pango_attr_list_insert(
+      attr_list, pango_attr_fallback_new (FALSE));
+
+  pango_layout_set_attributes (layout, attr_list);
+  pango_attr_list_unref (attr_list);
+
+  gint i;
+  for (i = (invisible_chars[0] != 0 ? 0 : 1);
+        i < G_N_ELEMENTS (invisible_chars); i++)
+  {
+      gchar text[7] = { 0, };
+
+      gint len = g_unichar_to_utf8(invisible_chars[i], text);
+      pango_layout_set_text(layout, text, len);
+
+      gint count = pango_layout_get_unknown_glyphs_count(layout);
+
+      if (count == 0)
+      {
+          g_object_unref(layout);
+          return invisible_chars[i];
+      }
+  }
+
+  g_object_unref(layout);
+
+  return '*';
+}
+
+static gchar *_make_secret_text(GtkSheet *sheet, const gchar *text)
+{
+    gunichar invisible_char = _find_invisible_char(
+        GTK_WIDGET(sheet));
+    gchar char_str[7];
+    gint char_len = g_unichar_to_utf8(invisible_char, char_str);
+
+    guint length = g_utf8_strlen(text, -1);
+    GString *str = g_string_sized_new(length * 2);
+
+    /*
+     * Add hidden characters for each character in the text
+     * buffer. If there is a password hint, then keep that
+     * character visible.
+     */
+
+    gint i;
+    for (i = 0; i < length; ++i)
+    {
+        g_string_append_len(str, char_str, char_len);
+    }
+
+    return g_string_free(str, FALSE);
+}
+
 static void _get_string_extent(
     GtkSheet *sheet, GtkSheetColumn *colptr,
     PangoFontDescription *font_desc, 
@@ -723,6 +799,11 @@ static void _get_string_extent(
 
     layout = gtk_widget_create_pango_layout(
         GTK_WIDGET(sheet), NULL);
+
+    if (colptr && colptr->is_secret) 
+    {
+        text = _make_secret_text(sheet, text);
+    }
 
     if (is_markup)
         pango_layout_set_markup(layout, text, -1);
@@ -789,6 +870,11 @@ static void _get_string_extent(
 #endif
 
     g_object_unref(G_OBJECT(layout));
+
+    if (colptr && colptr->is_secret)
+    {
+        g_free((gchar *) text);
+    }
 
     if (width)
 	*width = extent.width;
@@ -7804,6 +7890,7 @@ _cell_draw_border(GtkSheet *sheet, gint row, gint col, gint mask)
     cairo_restore(sheet->bsurf_cr);  // cell border attributes
 }
 
+
 static void
 _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 {
@@ -7814,7 +7901,6 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     gint size, sizel, sizer;
     PangoRectangle rect;
     gint ascent, descent, spacing, y_pos;
-    gchar *label, *dataformat;
 
     g_return_if_fail(sheet != NULL);
 
@@ -7838,8 +7924,8 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     if (!GTK_SHEET_COLUMN_IS_VISIBLE(colptr)) return;
     if (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) return;
 
-    label = sheet->data[row][col]->text;
-    dataformat = gtk_sheet_column_get_format(sheet, col);
+    gchar *label = sheet->data[row][col]->text;
+    gchar *dataformat = gtk_sheet_column_get_format(sheet, col);
 
     if (dataformat)
 	label = gtk_data_format(label, dataformat);
@@ -7876,6 +7962,11 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 
     PangoLayout *layout = gtk_widget_create_pango_layout(
 	GTK_WIDGET(sheet), NULL);
+
+    if (colptr->is_secret) 
+    {
+        label = _make_secret_text(sheet, label);
+    }
 
     if (sheet->data[row][col]->is_markup)
         pango_layout_set_markup(layout, label, -1);
@@ -8209,6 +8300,11 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     cairo_restore(sheet->bsurf_cr);  // label clip
 
     g_object_unref(G_OBJECT(layout));    /* dispose pango layout */
+
+    if (colptr->is_secret)
+    {
+        g_free(label);
+    }
 
     gtk_style_context_restore(sheet_context);
 }
@@ -10578,6 +10674,7 @@ static void _gtk_sheet_entry_setup(
             data_entry, colptr->max_length_bytes);
 	gtk_entry_set_max_length(entry, colptr->max_length);
         gtk_entry_set_has_frame(entry, FALSE);
+	gtk_entry_set_visibility(entry, !colptr->is_secret);
     }
     else if (GTK_IS_DATA_TEXT_VIEW(entry_widget))
     {
@@ -10603,6 +10700,7 @@ static void _gtk_sheet_entry_setup(
 	GtkEntry *entry = GTK_ENTRY(entry_widget);
 	gtk_entry_set_max_length(entry, colptr->max_length);
         gtk_entry_set_has_frame(entry, FALSE);
+	gtk_entry_set_visibility(entry, !colptr->is_secret);
     }
 
     if (gtk_widget_get_realized(entry_widget))

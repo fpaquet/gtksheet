@@ -102,6 +102,7 @@ enum _GtkSheetColumnProperties
     PROP_SHEET_COLUMN_MAX_LENGTH,  /* max char length */
     PROP_SHEET_COLUMN_MAX_LENGTH_BYTES,  /* max byte length  */
     PROP_SHEET_COLUMN_WRAP_MODE,  /* wrap_mode */
+    PROP_SHEET_COLUMN_IS_SECRET,  /* item entry visibility */
 };
 
 static gboolean
@@ -443,15 +444,19 @@ gtk_sheet_column_set_property(GObject *object,
             break;
 
         case PROP_SHEET_COLUMN_MAX_LENGTH:
-	    colobj->max_length = g_value_get_int(value);
+            colobj->max_length = g_value_get_int(value);
             break;
 
         case PROP_SHEET_COLUMN_MAX_LENGTH_BYTES:
-	    colobj->max_length = g_value_get_int(value);
+            colobj->max_length = g_value_get_int(value);
             break;
 
         case PROP_SHEET_COLUMN_WRAP_MODE:
-	    colobj->wrap_mode = g_value_get_enum(value);
+            colobj->wrap_mode = g_value_get_enum(value);
+            break;
+
+        case PROP_SHEET_COLUMN_IS_SECRET:
+            colobj->is_secret = g_value_get_boolean(value);
             break;
 
         default:
@@ -539,13 +544,17 @@ gtk_sheet_column_get_property(GObject *object,
             g_value_set_int(value, colobj->max_length);
             break;
 
-	case PROP_SHEET_COLUMN_MAX_LENGTH_BYTES:
-	    g_value_set_int(value, colobj->max_length_bytes);
-	    break;
+        case PROP_SHEET_COLUMN_MAX_LENGTH_BYTES:
+            g_value_set_int(value, colobj->max_length_bytes);
+            break;
 
-	case PROP_SHEET_COLUMN_WRAP_MODE:
-	    g_value_set_enum(value, colobj->wrap_mode);
-	    break;
+        case PROP_SHEET_COLUMN_WRAP_MODE:
+            g_value_set_enum(value, colobj->wrap_mode);
+            break;
+
+        case PROP_SHEET_COLUMN_IS_SECRET:
+            g_value_set_boolean(value, colobj->is_secret);
+            break;
 
         default:
             /* We don't have any other property... */
@@ -750,8 +759,8 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
                              "The maximum number of bytes for this entry. Zero if no maximum",
                              0, GTK_DATA_TEXT_VIEW_BUFFER_MAX_SIZE, 0,
                              G_PARAM_READWRITE);
-    g_object_class_install_property(gobject_class,
-                                    PROP_SHEET_COLUMN_MAX_LENGTH_BYTES, pspec);
+    g_object_class_install_property(
+        gobject_class, PROP_SHEET_COLUMN_MAX_LENGTH_BYTES, pspec);
 
     /**
      * GtkSheetColumn:wrap-mode:
@@ -762,13 +771,35 @@ static void gtk_sheet_column_class_init_properties(GObjectClass *gobject_class)
      *
      * Since: 3.0.6 
      */
-    pspec = g_param_spec_enum("wrap-mode", "Wrap-mode",
-                              "Whether to wrap lines never, at word boundaries, or at character boundaries",
-                              GTK_TYPE_WRAP_MODE,
-                              GTK_WRAP_NONE,
-                              G_PARAM_READWRITE);
-    g_object_class_install_property(gobject_class,
-                                    PROP_SHEET_COLUMN_WRAP_MODE, pspec);
+    pspec = g_param_spec_enum(
+        "wrap-mode", 
+        "Wrap-mode",
+        "Whether to wrap lines never, at word boundaries, or at character boundaries",
+        GTK_TYPE_WRAP_MODE,
+        GTK_WRAP_NONE,
+        G_PARAM_READWRITE);
+
+    g_object_class_install_property(
+        gobject_class, PROP_SHEET_COLUMN_WRAP_MODE, pspec);
+
+    /**
+     * GtkSheetColumn:is_secret:
+     *
+     *  This property is passed to the sheet entry editor. It is
+     *  supported for  the following editors: #GtkDataEntry,
+     *  #GtkEntry.
+     *  
+     * Since: 4.3.1
+     */
+    pspec = g_param_spec_boolean(
+        "is_secret", 
+        "Column contains secret data",
+        "TRUE displays the invisible char instead of the actual text (password mode).",
+        FALSE,
+        G_PARAM_READWRITE);
+
+    g_object_class_install_property(
+        gobject_class, PROP_SHEET_COLUMN_IS_SECRET, pspec);
 
 }
 
@@ -798,6 +829,8 @@ gtk_sheet_column_init(GtkSheetColumn *column)
     column->data_format = NULL;
     column->data_type = NULL;
     column->description = NULL;
+    column->is_secret = FALSE;  /* item entry visibility */
+
     column->entry_type = G_TYPE_NONE;
     column->max_length = 0;
     column->max_length_bytes = 0;

@@ -5,6 +5,9 @@ TBD
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
 
+2019-03-10 Fredy Paquet <mailbox AT opag.ch>
+* new GtkSheetColumn property "is_secret" for password columns
+
 2019-03-09 Fredy Paquet <mailbox AT opag.ch>
 * merged branch gtk3_fixes into gtk3
 * updated gtksheet-4 version to 4.3.0, Libtool Revision 4.0.3

@@ -7453,8 +7453,10 @@ gtk_sheet_map_handler(GtkWidget *widget)
 
 #if 0
 	/* this will be done by gtk_sheet_activate_cell() below,
-	   it causes trouble when there is no active cell in the sheet,
-	   because sheet_entry will start to process events */
+           it causes trouble when there is no active cell
+           in the sheet, because sheet_entry will start to
+           process events */
+
 	if (!gtk_widget_get_mapped (sheet->sheet_entry))
 	{
 	    gtk_widget_show (sheet->sheet_entry);
@@ -7488,23 +7490,10 @@ gtk_sheet_map_handler(GtkWidget *widget)
 	gtk_sheet_activate_cell(
             sheet,  sheet->active_cell.row,  sheet->active_cell.col);
 
-#if 1
-        _gtk_sheet_position_children(sheet);
-#else
-	children = sheet->children;
-	while (children)
-	{
-	    child = children->data;
-	    children = children->next;
+        /* map sheet columns is handled by
+           _gtk_sheet_position_children() */
 
-	    if (gtk_widget_get_visible(child->widget)
-                && !gtk_widget_get_mapped(child->widget))
-	    {
-		gtk_widget_map(child->widget);
-		gtk_sheet_position_child(sheet, child);
-	    }
-	}
-#endif
+        _gtk_sheet_position_children(sheet);
     }
 }
 
@@ -7518,14 +7507,10 @@ gtk_sheet_map_handler(GtkWidget *widget)
 static void
 gtk_sheet_unmap_handler(GtkWidget *widget)
 {
-    GtkSheet *sheet;
-    GtkSheetChild *child;
-    GList *children;
-
     g_return_if_fail(widget != NULL);
     g_return_if_fail(GTK_IS_SHEET(widget));
 
-    sheet = GTK_SHEET(widget);
+    GtkSheet *sheet = GTK_SHEET(widget);
 
 #if GTK_SHEET_DEBUG_DRAW > 0
     g_debug("%s(%d): called", __FUNCTION__, __LINE__);
@@ -7551,19 +7536,32 @@ gtk_sheet_unmap_handler(GtkWidget *widget)
 	if (gtk_widget_get_mapped(sheet->button))
 	    gtk_widget_unmap(sheet->button);
 
-	children = sheet->children;
+        /* unmap sheet columns */
+        gint col;
+        for (col=0; col<=sheet->maxcol; col++)
+        {
+            GtkSheetColumn *colobj = COLPTR(sheet, col);
+            GtkWidget *colwidget = GTK_WIDGET(colobj);
+
+	    if (gtk_widget_get_visible(colwidget)
+                && gtk_widget_get_mapped(colwidget))
+	    {
+		gtk_widget_unmap(colwidget);
+	    }
+        }
+
+        GList *children = sheet->children;
 	while (children)
 	{
-	    child = children->data;
+            GtkSheetChild *child = children->data;
 	    children = children->next;
 
-	    if (gtk_widget_get_visible(child->widget) &&
-		gtk_widget_get_mapped(child->widget))
+	    if (gtk_widget_get_visible(child->widget)
+                && gtk_widget_get_mapped(child->widget))
 	    {
 		gtk_widget_unmap(child->widget);
 	    }
 	}
-
     }
 }
 
@@ -13647,13 +13645,16 @@ gtk_sheet_size_allocate_handler(
     g_return_if_fail(GTK_IS_SHEET(widget));
     g_return_if_fail(allocation != NULL);
 
+    if (!gtk_widget_get_mapped(widget)) return;
+
     GtkSheet *sheet = GTK_SHEET(widget);
 
 #if GTK_SHEET_DEBUG_SIZE > 0
-    g_debug("%s(%d): called %s %p %s (%d, %d, %d, %d)",
+    g_debug("%s(%d): called %s %p %s mapped %d (%d, %d, %d, %d)",
         __FUNCTION__, __LINE__,
         G_OBJECT_TYPE_NAME(sheet), sheet,
         gtk_widget_get_name(GTK_WIDGET(sheet)), 
+        gtk_widget_get_mapped(GTK_WIDGET(sheet)), 
 	allocation->x, allocation->y,
         allocation->width, allocation->height);
 #endif
@@ -18039,6 +18040,11 @@ _gtk_sheet_position_children(GtkSheet *sheet)
                     //gtk_widget_map(GTK_WIDGET(colobj));
                     gtk_widget_show(GTK_WIDGET(colobj->col_button));
                     gtk_widget_show(GTK_WIDGET(colobj));
+
+                    if (!gtk_widget_get_mapped(colobj))
+                    {
+                        gtk_widget_map(GTK_WIDGET(colobj));
+                    }
                 }
 		else
 		{
@@ -18047,8 +18053,7 @@ _gtk_sheet_position_children(GtkSheet *sheet)
 
                     if (gtk_widget_get_mapped(colobj))
                     {
-                        gtk_widget_unmap(colobj);
-                        //gtk_widget_unmap(GTK_WIDGET(colobj));
+                        gtk_widget_unmap(GTK_WIDGET(colobj));
                     }
 		}
 	    }

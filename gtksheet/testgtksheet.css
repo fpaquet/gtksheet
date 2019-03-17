@@ -26,6 +26,8 @@ sheet entry selection {
 
 sheet entry {
     background-color: @sheet_default_bg_color;
+  min-height: 0px;
+  padding: 0px;
 }
 
 /* Note: "text" selector is needed for entry types:
@@ -38,6 +40,21 @@ sheet.view text {
 
 sheet.view text:backdrop {
     background-color: @sheet_default_bg_color;
+}
+
+/* eliminate column togglebutton warning */
+sheet button.top {
+  padding: 0px;
+}
+
+/* eliminate sheet entry spinbutton warning */
+sheet spinbutton {
+  padding: 0px;
+  margin: 0px;
+}
+
+sheet spinbutton entry {
+  min-height: 0px;
 }
 
 /* testgtksheet example1 - access via class */

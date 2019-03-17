@@ -138,6 +138,7 @@
 #   define GTK_SHEET_DEBUG_MARKUP  0
 
 #   define GTK_SHEET_ENABLE_DEBUG_MACROS
+#   undef GTK_SHEET_ENABLE_DEBUG_MACROS
 #endif
 
 #include "gtksheetdebug.h"
@@ -712,6 +713,82 @@ _default_font_ascent(GtkWidget *widget)
     return (PANGO_PIXELS(val));
 }
 
+/* _find_invisible_char:
+   derived from gtkentry.c - find_invisible_char() */
+
+static gunichar
+_find_invisible_char (GtkWidget *widget)
+{
+  gunichar invisible_chars [] = {
+    0,
+    0x25cf, /* BLACK CIRCLE */
+    0x2022, /* BULLET */
+    0x2731, /* HEAVY ASTERISK */
+    0x273a  /* SIXTEEN POINTED ASTERISK */
+  };
+
+  gtk_widget_style_get(widget,
+      "invisible-char", &invisible_chars[0],
+      NULL);
+
+  PangoLayout *layout = gtk_widget_create_pango_layout(
+      widget, NULL);
+
+  PangoAttrList *attr_list = pango_attr_list_new();
+  pango_attr_list_insert(
+      attr_list, pango_attr_fallback_new (FALSE));
+
+  pango_layout_set_attributes (layout, attr_list);
+  pango_attr_list_unref (attr_list);
+
+  gint i;
+  for (i = (invisible_chars[0] != 0 ? 0 : 1);
+        i < G_N_ELEMENTS (invisible_chars); i++)
+  {
+      gchar text[7] = { 0, };
+
+      gint len = g_unichar_to_utf8(invisible_chars[i], text);
+      pango_layout_set_text(layout, text, len);
+
+      gint count = pango_layout_get_unknown_glyphs_count(layout);
+
+      if (count == 0)
+      {
+          g_object_unref(layout);
+          return invisible_chars[i];
+      }
+  }
+
+  g_object_unref(layout);
+
+  return '*';
+}
+
+static gchar *_make_secret_text(GtkSheet *sheet, const gchar *text)
+{
+    gunichar invisible_char = _find_invisible_char(
+        GTK_WIDGET(sheet));
+    gchar char_str[7];
+    gint char_len = g_unichar_to_utf8(invisible_char, char_str);
+
+    guint length = g_utf8_strlen(text, -1);
+    GString *str = g_string_sized_new(length * 2);
+
+    /*
+     * Add hidden characters for each character in the text
+     * buffer. If there is a password hint, then keep that
+     * character visible.
+     */
+
+    gint i;
+    for (i = 0; i < length; ++i)
+    {
+        g_string_append_len(str, char_str, char_len);
+    }
+
+    return g_string_free(str, FALSE);
+}
+
 static void _get_string_extent(
     GtkSheet *sheet, GtkSheetColumn *colptr,
     PangoFontDescription *font_desc, 
@@ -723,6 +800,11 @@ static void _get_string_extent(
 
     layout = gtk_widget_create_pango_layout(
         GTK_WIDGET(sheet), NULL);
+
+    if (colptr && colptr->is_secret) 
+    {
+        text = _make_secret_text(sheet, text);
+    }
 
     if (is_markup)
         pango_layout_set_markup(layout, text, -1);
@@ -789,6 +871,11 @@ static void _get_string_extent(
 #endif
 
     g_object_unref(G_OBJECT(layout));
+
+    if (colptr && colptr->is_secret)
+    {
+        g_free((gchar *) text);
+    }
 
     if (width)
 	*width = extent.width;
@@ -1887,8 +1974,8 @@ gtk_sheet_get_type(void)
 		(gpointer) NULL
 	    };
 
-	    g_type_add_interface_static(sheet_type, GTK_TYPE_SCROLLABLE,
-		&scrollable_info);
+        g_type_add_interface_static(
+            sheet_type, GTK_TYPE_SCROLLABLE, &scrollable_info);
     }
     return (sheet_type);
 }
@@ -6139,7 +6226,13 @@ gtk_sheet_unclip_range(GtkSheet *sheet)
 	return;
 
     GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_CLIP);
-    g_source_remove(sheet->clip_timer);
+
+    if (sheet->clip_timer)
+    {
+        g_source_remove(sheet->clip_timer);
+        sheet->clip_timer = 0;
+    }
+
     _gtk_sheet_range_draw(sheet, &sheet->clip_range, TRUE);
 
     if (gtk_sheet_range_isvisible(sheet, sheet->range))
@@ -7360,8 +7453,10 @@ gtk_sheet_map_handler(GtkWidget *widget)
 
 #if 0
 	/* this will be done by gtk_sheet_activate_cell() below,
-	   it causes trouble when there is no active cell in the sheet,
-	   because sheet_entry will start to process events */
+           it causes trouble when there is no active cell
+           in the sheet, because sheet_entry will start to
+           process events */
+
 	if (!gtk_widget_get_mapped (sheet->sheet_entry))
 	{
 	    gtk_widget_show (sheet->sheet_entry);
@@ -7395,23 +7490,10 @@ gtk_sheet_map_handler(GtkWidget *widget)
 	gtk_sheet_activate_cell(
             sheet,  sheet->active_cell.row,  sheet->active_cell.col);
 
-#if 1
-        _gtk_sheet_position_children(sheet);
-#else
-	children = sheet->children;
-	while (children)
-	{
-	    child = children->data;
-	    children = children->next;
+        /* map sheet columns is handled by
+           _gtk_sheet_position_children() */
 
-	    if (gtk_widget_get_visible(child->widget)
-                && !gtk_widget_get_mapped(child->widget))
-	    {
-		gtk_widget_map(child->widget);
-		gtk_sheet_position_child(sheet, child);
-	    }
-	}
-#endif
+        _gtk_sheet_position_children(sheet);
     }
 }
 
@@ -7425,14 +7507,10 @@ gtk_sheet_map_handler(GtkWidget *widget)
 static void
 gtk_sheet_unmap_handler(GtkWidget *widget)
 {
-    GtkSheet *sheet;
-    GtkSheetChild *child;
-    GList *children;
-
     g_return_if_fail(widget != NULL);
     g_return_if_fail(GTK_IS_SHEET(widget));
 
-    sheet = GTK_SHEET(widget);
+    GtkSheet *sheet = GTK_SHEET(widget);
 
 #if GTK_SHEET_DEBUG_DRAW > 0
     g_debug("%s(%d): called", __FUNCTION__, __LINE__);
@@ -7458,19 +7536,32 @@ gtk_sheet_unmap_handler(GtkWidget *widget)
 	if (gtk_widget_get_mapped(sheet->button))
 	    gtk_widget_unmap(sheet->button);
 
-	children = sheet->children;
+        /* unmap sheet columns */
+        gint col;
+        for (col=0; col<=sheet->maxcol; col++)
+        {
+            GtkSheetColumn *colobj = COLPTR(sheet, col);
+            GtkWidget *colwidget = GTK_WIDGET(colobj);
+
+	    if (gtk_widget_get_visible(colwidget)
+                && gtk_widget_get_mapped(colwidget))
+	    {
+		gtk_widget_unmap(colwidget);
+	    }
+        }
+
+        GList *children = sheet->children;
 	while (children)
 	{
-	    child = children->data;
+            GtkSheetChild *child = children->data;
 	    children = children->next;
 
-	    if (gtk_widget_get_visible(child->widget) &&
-		gtk_widget_get_mapped(child->widget))
+	    if (gtk_widget_get_visible(child->widget)
+                && gtk_widget_get_mapped(child->widget))
 	    {
 		gtk_widget_unmap(child->widget);
 	    }
 	}
-
     }
 }
 
@@ -7804,6 +7895,7 @@ _cell_draw_border(GtkSheet *sheet, gint row, gint col, gint mask)
     cairo_restore(sheet->bsurf_cr);  // cell border attributes
 }
 
+
 static void
 _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 {
@@ -7814,7 +7906,6 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     gint size, sizel, sizer;
     PangoRectangle rect;
     gint ascent, descent, spacing, y_pos;
-    gchar *label, *dataformat;
 
     g_return_if_fail(sheet != NULL);
 
@@ -7838,8 +7929,8 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     if (!GTK_SHEET_COLUMN_IS_VISIBLE(colptr)) return;
     if (!GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, row))) return;
 
-    label = sheet->data[row][col]->text;
-    dataformat = gtk_sheet_column_get_format(sheet, col);
+    gchar *label = sheet->data[row][col]->text;
+    gchar *dataformat = gtk_sheet_column_get_format(sheet, col);
 
     if (dataformat)
 	label = gtk_data_format(label, dataformat);
@@ -7876,6 +7967,11 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 
     PangoLayout *layout = gtk_widget_create_pango_layout(
 	GTK_WIDGET(sheet), NULL);
+
+    if (colptr->is_secret) 
+    {
+        label = _make_secret_text(sheet, label);
+    }
 
     if (sheet->data[row][col]->is_markup)
         pango_layout_set_markup(layout, label, -1);
@@ -8209,6 +8305,11 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     cairo_restore(sheet->bsurf_cr);  // label clip
 
     g_object_unref(G_OBJECT(layout));    /* dispose pango layout */
+
+    if (colptr->is_secret)
+    {
+        g_free(label);
+    }
 
     gtk_style_context_restore(sheet_context);
 }
@@ -10578,6 +10679,9 @@ static void _gtk_sheet_entry_setup(
             data_entry, colptr->max_length_bytes);
 	gtk_entry_set_max_length(entry, colptr->max_length);
         gtk_entry_set_has_frame(entry, FALSE);
+	gtk_entry_set_visibility(entry, !colptr->is_secret);
+
+        gtk_entry_set_width_chars(entry, 0);
     }
     else if (GTK_IS_DATA_TEXT_VIEW(entry_widget))
     {
@@ -10603,6 +10707,15 @@ static void _gtk_sheet_entry_setup(
 	GtkEntry *entry = GTK_ENTRY(entry_widget);
 	gtk_entry_set_max_length(entry, colptr->max_length);
         gtk_entry_set_has_frame(entry, FALSE);
+	gtk_entry_set_visibility(entry, !colptr->is_secret);
+
+        gtk_entry_set_width_chars(entry, 0);
+    }
+    else if (GTK_IS_SPIN_BUTTON(entry_widget))
+    {
+	GtkEntry *entry = GTK_ENTRY(entry_widget);
+
+        gtk_entry_set_width_chars(entry, 0);
     }
 
     if (gtk_widget_get_realized(entry_widget))
@@ -11784,7 +11897,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    gtk_grab_add(GTK_WIDGET(sheet));
 	    sheet->timer = g_timeout_add_full(0, TIMEOUT_SCROLL,
                 _gtk_sheet_scroll_to_pointer, sheet, NULL);
-	    gtk_widget_grab_focus(GTK_WIDGET(sheet));
+            gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
             GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 	}
@@ -11803,7 +11916,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    gtk_sheet_click_cell(sheet, row, -1, &veto);
 	    gtk_grab_add(GTK_WIDGET(sheet));
 	    sheet->timer = g_timeout_add_full(0, TIMEOUT_SCROLL, _gtk_sheet_scroll_to_pointer, sheet, NULL);
-	    gtk_widget_grab_focus(GTK_WIDGET(sheet));
+            gtk_widget_grab_focus(GTK_WIDGET(sheet));
 
             GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 	}
@@ -12210,7 +12323,10 @@ gtk_sheet_button_release_handler(
     gdk_device_ungrab(event->device, event->time);
 
     if (sheet->timer)
-	g_source_remove(sheet->timer);
+    {
+        g_source_remove(sheet->timer);
+        sheet->timer = 0;
+    }
     gtk_grab_remove(GTK_WIDGET(sheet));
 
     GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
@@ -13539,13 +13655,16 @@ gtk_sheet_size_allocate_handler(
     g_return_if_fail(GTK_IS_SHEET(widget));
     g_return_if_fail(allocation != NULL);
 
+    if (!gtk_widget_get_mapped(widget)) return;
+
     GtkSheet *sheet = GTK_SHEET(widget);
 
 #if GTK_SHEET_DEBUG_SIZE > 0
-    g_debug("%s(%d): called %s %p %s (%d, %d, %d, %d)",
+    g_debug("%s(%d): called %s %p %s mapped %d (%d, %d, %d, %d)",
         __FUNCTION__, __LINE__,
         G_OBJECT_TYPE_NAME(sheet), sheet,
         gtk_widget_get_name(GTK_WIDGET(sheet)), 
+        gtk_widget_get_mapped(GTK_WIDGET(sheet)), 
 	allocation->x, allocation->y,
         allocation->width, allocation->height);
 #endif
@@ -17297,7 +17416,7 @@ gtk_sheet_button_attach(GtkSheet *sheet,
 		colobj->col_button, child);
 	    gtk_container_remove(
 		GTK_CONTAINER(colobj->col_button), child);
-	    gtk_widget_destroy(child);
+	    //gtk_widget_destroy(child);
 	}
 
 	if (widget) {
@@ -17923,17 +18042,29 @@ _gtk_sheet_position_children(GtkSheet *sheet)
 	    if (colobj->col_button)
 	    {
                 if (sheet->column_titles_visible
-		    && gtk_widget_get_visible(GTK_WIDGET(colobj))
+                    && colobj->is_visible
+		    //&& !gtk_widget_get_visible(GTK_WIDGET(colobj))
 		    && minviewcol <= col && col <= maxviewcol
                     && gtk_widget_get_mapped(GTK_WIDGET(sheet)))
 		{
-                    gtk_widget_map(GTK_WIDGET(colobj));
+                    //gtk_widget_map(GTK_WIDGET(colobj));
                     gtk_widget_show(GTK_WIDGET(colobj->col_button));
+                    gtk_widget_show(GTK_WIDGET(colobj));
+
+                    if (!gtk_widget_get_mapped(colobj))
+                    {
+                        gtk_widget_map(GTK_WIDGET(colobj));
+                    }
                 }
 		else
 		{
                     gtk_widget_hide(GTK_WIDGET(colobj->col_button));
-                    gtk_widget_unmap(GTK_WIDGET(colobj));
+                    gtk_widget_hide(GTK_WIDGET(colobj));
+
+                    if (gtk_widget_get_mapped(colobj))
+                    {
+                        gtk_widget_unmap(GTK_WIDGET(colobj));
+                    }
 		}
 	    }
 	}

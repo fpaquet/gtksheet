@@ -371,7 +371,7 @@ gint
 		|| key->keyval == GDK_KEY_Control_R)
     {
         if ((key->keyval=='c' || key->keyval == 'C') 
-			&& sheet->state != GTK_STATE_NORMAL)
+			&& sheet->state != GTK_SHEET_NORMAL)
         {
             if (gtk_sheet_in_clip(sheet)) gtk_sheet_unclip_range(sheet);
             gtk_sheet_clip_range(sheet, &sheet->range);
@@ -427,60 +427,83 @@ void
 }
 
 gboolean
-    change_entry(GtkWidget *widget, 
-                 gint row, gint col, gint *new_row, gint *new_col,
-                 gpointer data)
+change_entry(GtkWidget *widget, 
+    gint old_row, gint old_col, gint *new_row, gint *new_col,
+    gpointer data)
 {
     gboolean changed = FALSE;
     GtkSheet *sheet = GTK_SHEET(widget);
 
-    printf("change_entry: %d %d -> %d %d\n", row, col, *new_row, *new_col);
+    printf("change_entry: %d %d -> %d %d\n",
+        old_row, old_col, *new_row, *new_col);
 
-    if (*new_col == 1 && (col != 1 || sheet->state != GTK_STATE_NORMAL))
+    if (*new_col == 1 
+        && (old_col != 1 || sheet->state != GTK_SHEET_NORMAL))
     {
-	printf("change_entry: GtkEntry\n");
+        printf("change_entry: GtkEntry\n");
         gtk_sheet_change_entry(sheet, gtk_entry_get_type());
         changed = TRUE;
     }
 
-    if (*new_col == 2 && (col != 2 || sheet->state != GTK_STATE_NORMAL))
+    if (*new_col == 2 
+        && (old_col != 2 || sheet->state != GTK_SHEET_NORMAL))
     {
         GtkSpinButton *spin_button;
         GtkAdjustment *adjustment;
         gdouble value = 0.0;
         gchar *text;
 
-	printf("change_entry: GtkSpinButton\n");
+        printf("change_entry: GtkSpinButton\n");
         gtk_sheet_change_entry(sheet, gtk_spin_button_get_type ());
         changed = TRUE;
 
         text = gtk_sheet_cell_get_text(sheet, *new_row, *new_col);
         if (text) value = atof(text);
 
-        adjustment = (GtkAdjustment *) gtk_adjustment_new(value, 0.0, 100.0, 1.0, 10.0, 0.0);
+        adjustment = (GtkAdjustment *) gtk_adjustment_new(
+            value, 0.0, 100.0, 1.0, 10.0, 0.0);
 
         spin_button = (GtkSpinButton *) gtk_sheet_get_entry(sheet);
         gtk_spin_button_configure(spin_button, adjustment, 0.0, 3);
     }
 
-    if (*new_col == 3 && (col != 3 || sheet->state != GTK_STATE_NORMAL))
+    if (*new_col == 3
+        && (old_col != 3 || sheet->state != GTK_SHEET_NORMAL))
     {
-	printf("change_entry: GtkTextView\n");
+        printf("change_entry: GtkTextView\n");
         gtk_sheet_change_entry(sheet, GTK_TYPE_TEXT_VIEW);
         changed = TRUE;
     }
 
-    if (*new_col == 4 && (col != 4 || sheet->state != GTK_STATE_NORMAL))
+    if (*new_col == 4
+        && (old_col != 4 || sheet->state != GTK_SHEET_NORMAL))
     {
-	printf("change_entry: GtkDataEntry\n");
+        printf("change_entry: GtkDataEntry\n");
         gtk_sheet_change_entry(sheet, GTK_TYPE_DATA_ENTRY);
         changed = TRUE;
     }
 
-    if (*new_col >= 5 && (col < 5 || sheet->state != GTK_STATE_NORMAL))
+    if (*new_col == 5
+        && (old_col != 5 || sheet->state != GTK_SHEET_NORMAL))
     {
-	printf("change_entry: GtkDataTextView\n");
+        printf("change_entry: GtkDataTextView\n");
         gtk_sheet_change_entry(sheet, gtk_data_text_view_get_type());
+        changed = TRUE;
+    }
+
+    if (*new_col == 6
+        && (old_col != 6 || sheet->state != GTK_SHEET_NORMAL))
+    {
+        printf("change_entry: GtkDataTextView\n");
+        gtk_sheet_change_entry(sheet, gtk_data_text_view_get_type());
+        changed = TRUE;
+    }
+
+    if (*new_col >= 7
+        && (old_col < 7 || sheet->state != GTK_SHEET_NORMAL))
+    {
+        printf("change_entry: GtkDataEntry\n");
+        gtk_sheet_change_entry(sheet, gtk_data_entry_get_type());
         changed = TRUE;
     }
 
@@ -489,8 +512,8 @@ gboolean
         /* Beware: you need to reconnect the "changed" signal
            after every call to gtk_sheet_change_entry()! */
 
-        gtk_sheet_entry_signal_connect_changed(sheet, 
-	    G_CALLBACK(sheet_entry_changed_handler));
+        gtk_sheet_entry_signal_connect_changed(
+            sheet, G_CALLBACK(sheet_entry_changed_handler));
     }
 
     return (TRUE);
@@ -571,12 +594,11 @@ void
     gchar font_name2[]="Arial 28";
 #endif
 
-    gchar name[10];
     gint i;
 
     gtk_widget_set_name(widget, "example1");
 
-    GtkSheet *sheet=GTK_SHEET(widget);
+    GtkSheet *sheet = GTK_SHEET(widget);
 
 #if USE_DEPRECATED_ATTRIBUTES>0
     gdk_rgba_parse(&color, "light yellow");
@@ -595,13 +617,22 @@ void
     gdk_rgba_parse(&color, "light blue");
     gtk_sheet_set_grid(sheet, &color);
 
-    for (i=0; i<=sheet->maxcol; i++)
+    /* set column titles and names */
+    for (i=0; i<gtk_sheet_get_columns_count(sheet); i++)
     {
-        name[0]='A'+i;
-        name[1]='\0';
+        gchar title[32];
+        gchar name[32];
 
-        gtk_sheet_column_button_add_label(sheet, i, name);
-        gtk_sheet_set_column_title(sheet, i, name);
+        sprintf(title, "%c", 'A'+i);
+
+        gtk_sheet_column_button_add_label(sheet, i, title);
+        gtk_sheet_set_column_title(sheet, i, title);
+
+        sprintf(name, "%s_col_%s", 
+            gtk_widget_get_name(GTK_WIDGET(sheet)), title);
+
+        GtkSheetColumn *colptr = gtk_sheet_column_get(sheet, i);
+        gtk_widget_set_name(GTK_WIDGET(colptr), name);
     }
 
     gtk_sheet_row_button_add_label(sheet, 0,
@@ -756,12 +787,19 @@ void
     GdkPixbuf *bullet_pixbuf = gdk_pixbuf_new_from_xpm_data(
         (const char **) bullet_xpm);
 
+    gchar bullet_name[10];
+
     for (i=0; i<5; i++)
     {
         bullet[i] = gtk_image_new_from_pixbuf(bullet_pixbuf);
         gtk_widget_show(bullet[i]);
 
-        gtk_sheet_get_cell_area(GTK_SHEET(sheets[0]), 4+i, 0, &area);
+        sprintf(bullet_name, "bullet%d", i);
+        gtk_widget_set_name(bullet[i], bullet_name);
+        gtk_widget_set_tooltip_text(bullet[i], bullet_name);
+
+        gtk_sheet_get_cell_area(
+            GTK_SHEET(sheets[0]), 4+i, 0, &area);
 
 /*      gtk_sheet_put(GTK_SHEET(sheets[0]), bullet[i], 
                     area.x+area.width/2-8, area.y+area.height/2-8);
@@ -774,22 +812,32 @@ void
 
     bullet[5] = gtk_image_new_from_pixbuf(bullet_pixbuf);
     gtk_widget_show(bullet[5]);
+
+    sprintf(bullet_name, "bullet%d", 5);
+    gtk_widget_set_name(bullet[5], bullet_name);
+    gtk_widget_set_tooltip_text(bullet[5], bullet_name);
+
     gtk_sheet_get_cell_area(GTK_SHEET(sheets[0]), 10, 0, &area);
 /* gtk_sheet_put(GTK_SHEET(sheets[0]), bullet[i], 
                area.x+area.width/2-8, area.y+area.height/2-8);
 */
-    gtk_sheet_attach(GTK_SHEET(sheets[0]), bullet[5], 10, 0, GTK_EXPAND, GTK_EXPAND, 0, 0);
+    gtk_sheet_attach(
+        GTK_SHEET(sheets[0]), bullet[5], 
+        10, 0, 
+        GTK_EXPAND, GTK_EXPAND, 0, 0);
 
     GdkPixbuf *smile_pixbuf = gdk_pixbuf_new_from_xpm_data((const char **) smile_xpm);
 
     smile = gtk_image_new_from_pixbuf(smile_pixbuf);
     gtk_widget_show(smile);
+    gtk_widget_set_name(smile, "smile");
     gtk_sheet_button_attach(GTK_SHEET(sheets[0]), smile, -1, 5);
 
 #if 0
     /* enable this for row button attachment debugging */
     smile = gtk_image_new_from_pixbuf(smile_pixbuf);
     gtk_widget_show(smile);
+    gtk_widget_set_name(smile, "smile2");
     gtk_sheet_button_attach(GTK_SHEET(sheets[0]), smile, 3, -1);
 #endif
 
@@ -802,12 +850,17 @@ void
 
     show_button=gtk_button_new_with_label("Show me a calendar");
     gtk_widget_show(show_button);
+    gtk_widget_set_name(show_button, "calendar_button");
     gtk_widget_set_size_request(show_button, 100,60);
+
     gtk_sheet_get_cell_area(GTK_SHEET(sheets[0]), 12, 2, &area);
+
 /* gtk_sheet_put(GTK_SHEET(sheets[0]), show_button, area.x, area.y);
 */
     gtk_sheet_attach(
-        GTK_SHEET(sheets[0]), show_button, 12, 2, GTK_FILL, GTK_FILL, 5, 5);
+        GTK_SHEET(sheets[0]), show_button,
+        12, 2, 
+        GTK_FILL, GTK_FILL, 5, 5);
 
     g_signal_connect(G_OBJECT(show_button), "clicked",
                      (void *) show_child, 
@@ -831,7 +884,20 @@ void
 
     gtk_widget_set_name(widget, "example2");
 
-    GtkSheet *sheet=GTK_SHEET(widget);
+    GtkSheet *sheet = GTK_SHEET(widget);
+
+    /* set column titles and names */
+    gint i;
+    for (i=0; i<gtk_sheet_get_columns_count(sheet); i++)
+    {
+        gchar name[32];
+
+        sprintf(name, "%s_col_%d",
+            gtk_widget_get_name(GTK_WIDGET(sheet)), i);
+
+        GtkSheetColumn *colptr = gtk_sheet_column_get(sheet, i);
+        gtk_widget_set_name(GTK_WIDGET(colptr), name);
+    }
 
     gtk_sheet_set_autoscroll(sheet, TRUE);
 /*
@@ -839,10 +905,10 @@ void
 */
     gtk_sheet_set_selection_mode(sheet, GTK_SELECTION_SINGLE);
 
-    range.row0=0;
-    range.rowi=2;
-    range.col0=0;
-    range.coli=sheet->maxcol;
+    range.row0 = 0;
+    range.rowi = 2;
+    range.col0 = 0;
+    range.coli = gtk_sheet_get_columns_count(sheet)-1;
 
     gtk_sheet_range_set_editable(sheet, &range, FALSE);
 
@@ -939,50 +1005,76 @@ void
                      NULL);
 
     gtk_sheet_set_row_height(GTK_SHEET(sheets[1]), 12, 60);
+
     b = gtk_button_new_with_label("GTK_FILL");
-    gtk_sheet_attach(GTK_SHEET(sheets[1]), b, 12, 2, GTK_FILL, GTK_FILL, 5, 5);
+    gtk_sheet_attach(
+        GTK_SHEET(sheets[1]), b, 
+        12, 2, 
+        GTK_FILL, GTK_FILL, 5, 5);
     gtk_widget_show(b);
+    gtk_widget_set_name(b, "fill_button");
+
     b = gtk_button_new_with_label("GTK_EXPAND");
-    gtk_sheet_attach(GTK_SHEET(sheets[1]), b, 12, 3, GTK_EXPAND, GTK_EXPAND, 5, 5); gtk_widget_show(b);
-    b = gtk_button_new_with_label("GTK_SHRINK");
-    gtk_sheet_attach(GTK_SHEET(sheets[1]), b, 12, 4, GTK_SHRINK, GTK_SHRINK, 5, 5); gtk_widget_show(b);
+    gtk_sheet_attach(
+        GTK_SHEET(sheets[1]), b, 
+        12, 3, 
+        GTK_EXPAND, GTK_EXPAND, 5, 5);
+    gtk_widget_show(b);
+    gtk_widget_set_name(b, "expand_button");
+
+    b = gtk_button_new_with_label("Shrink");
+    gtk_sheet_attach(
+        GTK_SHEET(sheets[1]), b, 
+        12, 4, 
+        GTK_SHRINK, GTK_SHRINK, 5, 5);
+    gtk_widget_show(b);
+    gtk_widget_set_name(b, "shrink_button");
 
     range.row0 = range.col0 = range.rowi = range.coli = 4;
+
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
-    gtk_sheet_range_set_border(sheet, &range, 
-	GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
-	1, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+    gtk_sheet_range_set_border(
+        sheet, &range, 
+        GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER
+        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+        1, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     range.row0 = range.col0 = range.rowi = range.coli = 5;
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
-    gtk_sheet_range_set_border(sheet, &range, 
-	GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
-	2, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+    gtk_sheet_range_set_border(
+        sheet, &range, 
+        GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER
+        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+        2, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     range.row0 = range.col0 = range.rowi = range.coli = 6;
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
-    gtk_sheet_range_set_border(sheet, &range, 
-	GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
-	3, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+    gtk_sheet_range_set_border(
+        sheet, &range, 
+        GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER
+        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+        3, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     range.row0 = range.col0 = range.rowi = range.coli = 7;
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
-    gtk_sheet_range_set_border(sheet, &range, 
-	GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
-	4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
+    gtk_sheet_range_set_border(
+        sheet, &range, 
+        GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER
+        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+        4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     range.row0 = range.col0 = range.rowi = range.coli = 8;
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
-    gtk_sheet_range_set_border(sheet, &range, 
-	GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
-	5, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
-
-
+    gtk_sheet_range_set_border(
+        sheet, &range, 
+        GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER
+        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+        5, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 }
 
 void
@@ -994,6 +1086,19 @@ void
     gtk_widget_set_name(widget, "example3");
 
     GtkSheet *sheet=GTK_SHEET(widget);
+
+    /* set column titles and names */
+    gint i;
+    for (i=0; i<gtk_sheet_get_columns_count(sheet); i++)
+    {
+        gchar name[32];
+
+        sprintf(name, "%s_col_%d",
+            gtk_widget_get_name(GTK_WIDGET(sheet)), i);
+
+        GtkSheetColumn *colptr = gtk_sheet_column_get(sheet, i);
+        gtk_widget_set_name(GTK_WIDGET(colptr), name);
+    }
 
     //gtk_sheet_show_grid(sheet, FALSE);
 
@@ -1086,22 +1191,43 @@ void
     gtk_sheet_set_autoresize(sheet, TRUE);
 
     gtk_sheet_column_button_add_label(sheet, 0, "GtkDataEntry");
+    g_object_set(gtk_sheet_column_get(sheet, 0),
+        "width", 100, NULL);
     gtk_sheet_column_button_add_label(sheet, 1, "GtkEntry");
+    g_object_set(gtk_sheet_column_get(sheet, 1),
+        "width", 80, NULL);
     gtk_sheet_column_button_add_label(sheet, 2, "GtkSpinButton");
+    g_object_set(gtk_sheet_column_get(sheet, 2),
+        "width", 150, NULL);
     gtk_sheet_column_button_add_label(sheet, 3, "GtkTextView");
+    g_object_set(gtk_sheet_column_get(sheet, 3),
+        "width", 90, NULL);
 
     gtk_sheet_column_button_add_label(sheet, 4,
         "GtkDataEntry\nmax 10 chars");
     g_object_set(gtk_sheet_column_get(sheet, 4),
         "max-length", 10, NULL);
+    g_object_set(gtk_sheet_column_get(sheet, 4),
+        "width", 110, NULL);
 
     gtk_sheet_column_button_add_label(sheet, 5,
         "GtkDataTextView\nmax 20 chars");
     g_object_set(gtk_sheet_column_get(sheet, 5),
         "max-length", 20, NULL);
+    g_object_set(gtk_sheet_column_get(sheet, 5),
+        "width", 120, NULL);
 
     gtk_sheet_column_button_add_label(sheet, 6,
         "GtkDataTextView\nno limit");
+    g_object_set(gtk_sheet_column_get(sheet, 6),
+        "width", 120, NULL);
+
+    gtk_sheet_column_button_add_label(sheet, 7,
+        "Password");
+    g_object_set(gtk_sheet_column_get(sheet, 7),
+        "width", 80, NULL);
+    g_object_set(gtk_sheet_column_get(sheet, 7),
+        "is_secret", TRUE, NULL);
 
     gtk_sheet_entry_signal_connect_changed(sheet,
         G_CALLBACK(sheet_entry_changed_handler));
@@ -1522,8 +1648,11 @@ void
     cur_page=gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
     current=GTK_SHEET(sheets[cur_page]);
 
-    gchar *font_name = gtk_font_button_get_font_name(font_button);
-    PangoFontDescription *font_desc = pango_font_description_from_string(font_name);
+    const gchar *font_name
+        = gtk_font_button_get_font_name(font_button);
+
+    PangoFontDescription *font_desc
+        = pango_font_description_from_string(font_name);
 
     gtk_sheet_range_set_font(
         current, &current->range, font_desc);
@@ -1538,9 +1667,7 @@ int main(int argc, char *argv[])
     GtkWidget *show_row_titles; 
     GtkWidget *show_column_titles;
     GtkWidget *font_button;
-    GtkWidget *toggle_combo;
     gint i;
-
 
     char *title[]= {"Example 1",
         "Example 2", 
@@ -1685,24 +1812,29 @@ int main(int argc, char *argv[])
 
     status_box=gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);
     gtk_container_set_border_width(GTK_CONTAINER(status_box),0);
-    gtk_box_pack_start(GTK_BOX(main_vbox), status_box, FALSE, TRUE, 0);
+    gtk_box_pack_start(
+        GTK_BOX(main_vbox), status_box, FALSE, TRUE, 0);
     gtk_widget_show(status_box);
 
     location=gtk_label_new(""); 
-    gtk_widget_get_preferred_size (GTK_WIDGET(location), 
-	&minimum_size, &natural_size);
+    gtk_widget_get_preferred_size (
+        GTK_WIDGET(location), &minimum_size, &natural_size);
 
     gtk_widget_set_size_request(location, 160, natural_size.height);
-    gtk_box_pack_start(GTK_BOX(status_box), location, FALSE, TRUE, 0);
+    gtk_box_pack_start(
+        GTK_BOX(status_box), location, FALSE, TRUE, 0);
     gtk_widget_show(location);
 
     entry=gtk_entry_new(); 
-    gtk_box_pack_start(GTK_BOX(status_box), entry, TRUE, TRUE, 0); 
+    gtk_box_pack_start(
+        GTK_BOX(status_box), entry, TRUE, TRUE, 0); 
     gtk_widget_show(entry);
 
     notebook=gtk_notebook_new();
-    gtk_notebook_set_tab_pos(GTK_NOTEBOOK(notebook), GTK_POS_BOTTOM);
-    gtk_box_pack_start(GTK_BOX(main_vbox), notebook, TRUE, TRUE, 0);
+    gtk_notebook_set_tab_pos(
+        GTK_NOTEBOOK(notebook), GTK_POS_BOTTOM);
+    gtk_box_pack_start(
+        GTK_BOX(main_vbox), notebook, TRUE, TRUE, 0);
     gtk_widget_show(notebook);
 
     for (i=0; i<NUM_SHEETS; i++)
@@ -1710,7 +1842,7 @@ int main(int argc, char *argv[])
         sheets=(GtkWidget **) realloc(sheets,
             (i+1)*sizeof(GtkWidget *));
 
-        sheets[i]=gtk_sheet_new(1000,26,title[i]);
+        sheets[i]=gtk_sheet_new(1000, 26, title[i]);
 
         scrolled_windows=(GtkWidget **) realloc(scrolled_windows,
             (i+1)*sizeof(GtkWidget *));
@@ -1751,30 +1883,33 @@ int main(int argc, char *argv[])
     tpixmap = gtk_image_new_from_pixbuf(lj_pixbuf);
     gtk_container_add(GTK_CONTAINER(left_button), tpixmap);
     gtk_widget_show(tpixmap);
+    gtk_widget_set_name(tpixmap, "left_just");
 
     GdkPixbuf *cj_pixbuf = gdk_pixbuf_new_from_xpm_data(
         (const char **) center_just);
     tpixmap = gtk_image_new_from_pixbuf(cj_pixbuf);
     gtk_container_add(GTK_CONTAINER(center_button), tpixmap);
     gtk_widget_show(tpixmap);
+    gtk_widget_set_name(tpixmap, "center_just");
 
     GdkPixbuf *rj_pixbuf = gdk_pixbuf_new_from_xpm_data(
         (const char **) right_just);
     tpixmap = gtk_image_new_from_pixbuf(rj_pixbuf);
     gtk_container_add(GTK_CONTAINER(right_button), tpixmap);
     gtk_widget_show(tpixmap);
+    gtk_widget_set_name(tpixmap, "right_just");
 
     GdkPixbuf *paint_pixbuf = gdk_pixbuf_new_from_xpm_data(
         (const char **) paint);
     bg_pixmap = gtk_image_new_from_pixbuf(paint_pixbuf);
-
     gtk_widget_show(bg_pixmap);
+    gtk_widget_set_name(bg_pixmap, "bg_pixmap");
 
     GdkPixbuf *font_pixbuf = gdk_pixbuf_new_from_xpm_data(
         (const char **) font);
     fg_pixmap = gtk_image_new_from_pixbuf(font_pixbuf);
-
     gtk_widget_show(fg_pixmap);
+    gtk_widget_set_name(fg_pixmap, "fg_pixmap");
 
     gtk_widget_show(window);
     gtk_main();

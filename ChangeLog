@@ -1,15 +1,36 @@
-TBD 
+TBD - known bugs
 ** CSS: handle borders
 ** CSS: handle row title button margin
 ** row selection drawing over right sheet border
    steps to reproduce: (BAB Browser)
    - disable 0er, set Umlagen to "KPKT Stufe 1", click on row title
-** TextBuffer tag list is growing
+** map/unmap warnings
+(opg:19745): Gtk-WARNING **: GtkSheet 0x2816110 (line) is mapped but visible child GtkDataEntry 0x214c560 (GtkDataEntry) is not mapped
+** (testgtksheet:19815): Gtk-CRITICAL **: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkSpinButton
+
+2019-03-17 Fredy Paquet <mailbox AT opag.ch>
+* map/unmap warnings fixed:
+  (testgtksheet:836): Gtk-WARNING **: GtkImage is mapped but visible=1 child_visible=1 parent GtkSheet mapped=0
+  (testgtksheet:2017): Gtk-WARNING **: GtkSheetColumn is mapped but visible=1 child_visible=1 parent GtkSheet mapped=0
+  (testgtksheet:11602): Gtk-WARNING **: GtkSheet is mapped but visible child GtkSheetColumn is not mapped
+* testgtksheet - added child and column widget names
+* diverse sheet entry underallocation warnings fixed
+
+2019-03-10 Fredy Paquet <mailbox AT opag.ch>
+* new GtkSheetColumn property "is_secret" for password columns
+* fixed critical warning
+  gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+* fixed critical warning
+  Source ID 205 was not found when attempting to remove it
 
 2019-03-09 Fredy Paquet <mailbox AT opag.ch>
 * merged branch gtk3_fixes into gtk3
 * updated gtksheet-4 version to 4.3.0, Libtool Revision 4.0.3
 * published gtksheet-4 version 4.3.0
+* re-added configure script
+* fixed lot's of warnings
+  GtkSheet is mapped but visible child GtkSheetColumn is not mapped.
+  ... is drawn without a current allocation. This should not happen.
 
 2019-03-03 Fredy Paquet <mailbox AT opag.ch>
 * fixed ABORT in testgtksheet: aftereffect of fix 2019-01-20

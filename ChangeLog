@@ -14,6 +14,7 @@ TBD - known bugs
   (testgtksheet:2017): Gtk-WARNING **: GtkSheetColumn is mapped but visible=1 child_visible=1 parent GtkSheet mapped=0
   (testgtksheet:11602): Gtk-WARNING **: GtkSheet is mapped but visible child GtkSheetColumn is not mapped
 * testgtksheet - added child and column widget names
+* diverse sheet entry underallocation warnings fixed
 
 2019-03-10 Fredy Paquet <mailbox AT opag.ch>
 * new GtkSheetColumn property "is_secret" for password columns

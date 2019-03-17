@@ -10680,6 +10680,8 @@ static void _gtk_sheet_entry_setup(
 	gtk_entry_set_max_length(entry, colptr->max_length);
         gtk_entry_set_has_frame(entry, FALSE);
 	gtk_entry_set_visibility(entry, !colptr->is_secret);
+
+        gtk_entry_set_width_chars(entry, 0);
     }
     else if (GTK_IS_DATA_TEXT_VIEW(entry_widget))
     {
@@ -10706,6 +10708,14 @@ static void _gtk_sheet_entry_setup(
 	gtk_entry_set_max_length(entry, colptr->max_length);
         gtk_entry_set_has_frame(entry, FALSE);
 	gtk_entry_set_visibility(entry, !colptr->is_secret);
+
+        gtk_entry_set_width_chars(entry, 0);
+    }
+    else if (GTK_IS_SPIN_BUTTON(entry_widget))
+    {
+	GtkEntry *entry = GTK_ENTRY(entry_widget);
+
+        gtk_entry_set_width_chars(entry, 0);
     }
 
     if (gtk_widget_get_realized(entry_widget))

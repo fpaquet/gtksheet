@@ -61,7 +61,7 @@ marshallers = gnome.genmarshal(
     )
 
 libgtksheet = shared_library(
-    'gtksheet', 
+    'gtksheet-' + GTK_SHEET_VERSION_BASE, 
     c_sources, resources, marshallers, enums, 
     soversion : lt_current,
     version : lt_so_version,

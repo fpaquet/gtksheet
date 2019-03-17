@@ -1,7 +1,7 @@
 # GtkSheet versioning: before making releases, be sure to read
 # https://github.com/fpaquet/gtksheet/wiki/GtkSheet-Version-Numbering
 
-project('GtkSheet', 'c', version : '4.2.0')
+project('GtkSheet', 'c', version : '4.3.0')
 
 as_version = meson.project_version()
 ver_arr = as_version.split('.')
@@ -12,14 +12,13 @@ GTK_SHEET_MAJOR_VERSION = ver_arr[0]
 GTK_SHEET_MINOR_VERSION = ver_arr[1]
 GTK_SHEET_MICRO_VERSION = ver_arr[2]
 
-GTK_SHEET_INTERFACE_AGE = 0
-GTK_SHEET_BINARY_AGE = 0
+GTK_SHEET_VERSION_BASE = '.'.join([ver_arr[0], '0'])
 
 # libtool versioning
 
-lt_current = '3'
+lt_current = '1'
 lt_revision = '0'
-lt_age = '2'
+lt_age = '3'
 lt_so_version = '.'.join([lt_current, lt_revision, lt_age])
 
 conf = configuration_data()
@@ -74,6 +73,14 @@ if get_option('buildtype').startswith('debug')
 endif
 
 subdir('gtksheet')
+
+pkg = import('pkgconfig')
+pkg.generate(
+    libraries: [ libgtksheet, deps ],
+    name: 'GtkSheet',
+    filebase: 'gtksheet-' + GTK_SHEET_VERSION_BASE,
+    description: 'A spreadsheet like matrix widget for Gtk+'
+    )
 
 if get_option('enable-glade')
     subdir('glade')

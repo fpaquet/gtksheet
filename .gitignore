@@ -37,4 +37,7 @@ glade/gtksheet-catalog.xml
 
 _build
 .build
+.Linux.3.x86_64
+.MinGW.32x
+.MinGW.64x
 

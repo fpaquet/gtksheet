@@ -12,6 +12,8 @@ TBD - known bugs
 * added meson.build for native compilation
 * added meson cross-files for MinGW 32/64Bit on CentOS7
 * update INSTALL file for meson build
+* updated gtksheet-4 version to 4.3.1, Libtool Revision 4.1.3
+* published gtksheet-4 version 4.3.1
 
 2019-03-17 Fredy Paquet <mailbox AT opag.ch>
 * map/unmap warnings fixed:

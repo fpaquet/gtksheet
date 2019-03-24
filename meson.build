@@ -1,7 +1,7 @@
 # GtkSheet versioning: before making releases, be sure to read
 # https://github.com/fpaquet/gtksheet/wiki/GtkSheet-Version-Numbering
 
-project('GtkSheet', 'c', version : '4.3.0')
+project('GtkSheet', 'c', version: '4.3.0')
 
 as_version = meson.project_version()
 ver_arr = as_version.split('.')
@@ -25,27 +25,27 @@ conf = configuration_data()
 
 # Surround the version in quotes to make it a C string
 conf.set_quoted('VERSION', as_version)
-configure_file(output : 'config.h', configuration : conf)
+configure_file(output: 'config.h', configuration: conf)
 
-dep_gtk = dependency('gtk+-3.0', version : '>= 3.10.0')
-dep_glib = dependency('glib-2.0', version : '>= 2.52.3')
-dep_gobject = dependency('gobject-2.0', version : '>= 2.52.3')
+dep_gtk = dependency('gtk+-3.0', version: '>= 3.10.0')
+dep_glib = dependency('glib-2.0', version: '>= 2.52.3')
+dep_gobject = dependency('gobject-2.0', version: '>= 2.52.3')
 
 deps = [dep_gtk, dep_glib, dep_gobject]
 
 if get_option('enable-glade')
-    dep_glade = dependency('gladeui-2.0', version : '>= 3.10')
+    dep_glade = dependency('gladeui-2.0', version: '>= 3.10')
     i18n = import('i18n')
 
     add_project_arguments(
-      '-DGETTEXT_PACKAGE="GtkSheet"', language: 'c')
+        '-DGETTEXT_PACKAGE="GtkSheet"', language: 'c')
 
     deps += dep_glade
 endif
 
 if get_option('enable-introspection')
     dep_gobjintro = dependency(
-        'gobject-introspection-1.0', version : '>= 1.46')
+        'gobject-introspection-1.0', version: '>= 1.46')
     deps += dep_gobjintro
 endif
 
@@ -69,7 +69,7 @@ if get_option('enable-gtk-doc')
 endif
 
 if get_option('buildtype').startswith('debug')
-    add_project_arguments('-DDEBUG', language : ['c'])
+    add_project_arguments('-DDEBUG', language: ['c'])
 endif
 
 subdir('gtksheet')

@@ -1,0 +1,17 @@
+
+[binaries]
+c = '/usr/bin/x86_64-w64-mingw32-gcc'
+cpp = '/usr/bin/x86_64-w64-mingw32-cpp'
+ar = '/usr/bin/x86_64-w64-mingw32-ar'
+ld = '/usr/bin/x86_64-w64-mingw32-ld'
+strip = '/usr/bin/x86_64-w64-mingw32-strip'
+pkgconfig = '/usr/bin/x86_64-w64-mingw32-pkg-config'
+windres = '/usr/bin/x86_64-w64-mingw32-windres'
+exe_wrapper = '/usr/local/bin/wine64'
+
+[host_machine]
+system = 'windows'
+cpu_family = 'x86_64'
+cpu = 'x86_64'
+endian = 'little'
+

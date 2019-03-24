@@ -11,6 +11,7 @@ TBD - known bugs
 2019-03-24 Fredy Paquet <mailbox AT opag.ch>
 * added meson.build for native compilation
 * added meson cross-files for MinGW 32/64Bit on CentOS7
+* update INSTALL file for meson build
 
 2019-03-17 Fredy Paquet <mailbox AT opag.ch>
 * map/unmap warnings fixed:

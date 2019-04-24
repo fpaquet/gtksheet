@@ -8855,6 +8855,7 @@ gtk_sheet_cell_init(GtkSheetCell *cell)
 
     cell->attributes = NULL;
     cell->text = cell->link = NULL;
+    cell->is_markup = FALSE;
 
     cell->tooltip_markup = cell->tooltip_text = NULL;
 }

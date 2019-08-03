@@ -336,19 +336,25 @@ typedef enum _GtkSheetArea
 /* unrealized maximum width */
 #define COLUMN_UNREALIZED_MAX_WIDTH 512
 
-/* maximized: free space left for others */
-#define COLUMN_REMNANT_PIXELS  32
+/* maximized: free space left for other columns */
+#define COLUMN_REMNANT_PIXELS  48
+
+/* maximized: divisor for window width */
+#define COLUMN_WIN_WIDTH_DIVISOR  3
 
 /* unrealized maximum height */
 #define ROW_UNREALIZED_MAX_HEIGHT 128
 
-/* maximized: free space left for others */
+/* maximized: free space left for other rows */
 #define ROW_REMNANT_PIXELS  32
+
+/* maximized: divisor for window height */
+#define ROW_WIN_HEIGHT_DIVISOR  3
 
 #define COLUMN_MAX_WIDTH(sheet) \
     (sheet->sheet_window_width < COLUMN_REMNANT_PIXELS ? \
     COLUMN_UNREALIZED_MAX_WIDTH : \
-    sheet->sheet_window_width - COLUMN_REMNANT_PIXELS )
+    sheet->sheet_window_width / COLUMN_WIN_WIDTH_DIVISOR )
 
 #if 0
 #   define ROW_MAX_HEIGHT(sheet) \
@@ -359,7 +365,7 @@ typedef enum _GtkSheetArea
 #   define ROW_MAX_HEIGHT(sheet) \
     (sheet->sheet_window_height < ROW_REMNANT_PIXELS ? \
     ROW_UNREALIZED_MAX_HEIGHT : \
-    sheet->sheet_window_height * 1/3 )
+    sheet->sheet_window_height / ROW_WIN_HEIGHT_DIVISOR )
 #endif
 
 #define CELL_EXTENT_WIDTH(text_width, attr_border_width)  \
@@ -4321,66 +4327,6 @@ gtk_sheet_set_selection_mode(GtkSheet *sheet, GtkSelectionMode mode)
 }
 
 /**
- * gtk_sheet_set_autoresize:
- * @sheet: a #GtkSheet
- * @autoresize: TRUE or FALSE
- *
- * Controls wether cells will be autoresized upon deactivation, 
- * as you type text or set a cell_text value. If you want the 
- * cells to be autoresized when you pack widgets look at 
- * gtk_sheet_attach_*(). This function sets both: 
- * autoresize_columns and autoresize_cells. 
- */
-void
-gtk_sheet_set_autoresize(GtkSheet *sheet, gboolean autoresize)
-{
-    g_return_if_fail(sheet != NULL);
-    g_return_if_fail(GTK_IS_SHEET(sheet));
-
-    sheet->autoresize_columns = autoresize;
-    sheet->autoresize_rows = autoresize;
-}
-
-/**
- * gtk_sheet_set_autoresize_columns:
- * @sheet: a #GtkSheet
- * @autoresize: TRUE or FALSE
- *
- * Controls wether columns will be autoresized upon 
- * deactivation, as you type text or set a cell_text value. If 
- * you want the cells to be autoresized when you pack widgets 
- * look at gtk_sheet_attach_*(). 
- */
-void
-gtk_sheet_set_autoresize_columns(GtkSheet *sheet, gboolean autoresize)
-{
-    g_return_if_fail(sheet != NULL);
-    g_return_if_fail(GTK_IS_SHEET(sheet));
-
-    sheet->autoresize_columns = autoresize;
-}
-
-/**
- * gtk_sheet_set_autoresize_rows:
- * @sheet: a #GtkSheet
- * @autoresize: TRUE or FALSE
- *
- * Controls wether rows will be autoresized upon deactivation,
- * as you type text or set a cell_text value. If you want the 
- * cells to be autoresized when you pack widgets look at 
- * gtk_sheet_attach_*(). 
- */
-void
-gtk_sheet_set_autoresize_rows(GtkSheet *sheet, gboolean autoresize)
-{
-    g_return_if_fail(sheet != NULL);
-    g_return_if_fail(GTK_IS_SHEET(sheet));
-
-    sheet->autoresize_rows = autoresize;
-}
-
-
-/**
  * gtk_sheet_autoresize:
  * @sheet: a #GtkSheet
  *
@@ -4436,21 +4382,21 @@ gtk_sheet_autoresize_rows(GtkSheet *sheet)
  * _gtk_sheet_recalc_extent_width:
  * @sheet:  the #GtkSheet 
  * @col:    column to be recalculated
- *  
- * recalc maximum column extent width
+ * 
+ * recalc maximum cell text width without column title button
  */
 static void _gtk_sheet_recalc_extent_width(GtkSheet *sheet, gint col)
 {
     gint new_width = 0;
     gint row;
 
-#if GTK_SHEET_DEBUG_SIZE > 0
+#if GTK_SHEET_DEBUG_SIZE > -1
     g_debug("_gtk_sheet_recalc_extent_width[%d]: called", col);
 #endif
 
     if (col < 0 || col > sheet->maxalloccol || col > sheet->maxcol)
 	return;
-
+    
     for (row = 0; row <= sheet->maxallocrow; row++)
     {
 	GtkSheetRow *rowptr = ROWPTR(sheet, row);
@@ -4533,11 +4479,13 @@ static void _gtk_sheet_recalc_extent_height(GtkSheet *sheet, gint row)
  * @cell:   the #GtkSheetCell
  * @row:    the row
  * @col:    the column
+ * @text:   formatted cell text
  * 
  * update cell extent and propagate to max row/column extent
  */
 static void _gtk_sheet_update_extent(GtkSheet *sheet,
-    GtkSheetCell *cell, gint row, gint col)
+    GtkSheetCell *cell, gint row, gint col,
+    gchar *text)
 {
     guint text_width = 0, text_height = 0;
     guint new_extent_width = 0, new_extent_height = 0;
@@ -4558,7 +4506,7 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
 
     old_extent = cell->extent;  /* to check wether it was increased */
 
-    if (!cell->text || !cell->text[0])
+    if (!text || !text[0])
     {
 	cell->extent.width = 0;
 	cell->extent.height = 0;
@@ -4587,7 +4535,7 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
 
     _get_string_extent(sheet, colptr,
 	attributes.font_desc, 
-        cell->text, cell->is_markup,
+        text, cell->is_markup,
         &text_width, &text_height);
 
     /* add borders */
@@ -4634,6 +4582,135 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
 #endif
 }
 
+/* return font */
+static PangoFontDescription *
+_style_context_get_font(GtkStyleContext *style_context)
+{
+    PangoFontDescription *font_desc;
+
+    gtk_style_context_save(style_context);
+    gtk_style_context_set_state(style_context, GTK_STATE_FLAG_NORMAL);
+    GtkStateFlags flags = gtk_style_context_get_state(style_context);
+
+    gtk_style_context_get(
+        style_context, 
+        flags,
+        "font", &font_desc, NULL);
+
+    gtk_style_context_restore(style_context);
+    return(font_desc);
+}
+
+/* return sum of margin,border,padding width */
+static gint
+_style_context_get_gap_width(GtkStyleContext *style_context)
+{
+    GtkBorder border;
+    gint width = 0;
+
+    gtk_style_context_save(style_context);
+    gtk_style_context_set_state(style_context, GTK_STATE_FLAG_NORMAL);
+    GtkStateFlags flags = gtk_style_context_get_state(style_context);
+
+    gtk_style_context_get_border(style_context, flags, &border);
+    width += border.left + border.right;
+
+    gtk_style_context_get_padding(style_context, flags, &border);
+    width += border.left + border.right;
+
+    gtk_style_context_get_margin(style_context, flags, &border);
+    width += border.left + border.right;
+
+    gtk_style_context_restore(style_context);
+    return(width);
+}
+
+static guint
+_get_button_width(GtkSheet *sheet, GtkWidget *widget)
+{
+    /* Note: calling gtk_widget_get_preferred_size()
+       will not work because columns outside of visible
+       area are switched to visible FALSE
+       */
+    /* Note: calling gtk_widget_get_preferred_size()
+       will not work because columns outside of visible
+       area are switched to visible FALSE
+       */
+
+    gint width = 0; /* return value */
+
+    if (!GTK_IS_BUTTON(widget)) return(width);
+
+    GtkButton *button = GTK_BUTTON(widget);
+    GtkWidget *child = gtk_bin_get_child(GTK_BIN(widget));
+
+    GtkStyleContext *style_context
+        = gtk_widget_get_style_context(widget);
+
+    /* Note: button image has precedence over label */
+
+    if (child && GTK_IS_IMAGE(child))
+    {
+        GdkPixbuf *p = gtk_image_get_pixbuf(GTK_IMAGE(child));
+        if (p)
+        {
+            gint pixbuf_width = gdk_pixbuf_get_width(p);
+
+#if GTK_SHEET_DEBUG_SIZE > 0
+            g_debug("%s[%d] FIXME image pixbuf_width %d", 
+                __FUNCTION__, __LINE__, pixbuf_width);
+#endif
+            width += pixbuf_width;
+        }
+    }
+    else /* check button label width */
+    {
+        const gchar *label = gtk_button_get_label(button);
+
+        if (label)
+        {
+            PangoFontDescription *font_desc
+                = _style_context_get_font(style_context);
+
+            guint label_width, label_height;
+            _get_string_extent(sheet, NULL, font_desc,
+                label, FALSE, &label_width, &label_height);
+
+            width += label_width;
+        }
+    }
+
+    /* button widget gap */
+    {
+        gint widget_gap
+            = _style_context_get_gap_width(style_context);
+
+#if GTK_SHEET_DEBUG_SIZE > 0
+        g_debug("%s[%d] FIXME widget_gap %d", 
+            __FUNCTION__, __LINE__, widget_gap);
+#endif
+        width += widget_gap;
+    }
+
+    /* button child gap */
+    if (child)
+    {
+        GtkStyleContext *style_context
+            = gtk_widget_get_style_context(child);
+
+        guint child_gap
+            = _style_context_get_gap_width(style_context);
+
+#if GTK_SHEET_DEBUG_SIZE > 0
+        g_debug("%s[%d] FIXME child_gap %d", 
+            __FUNCTION__, __LINE__, child_gap);
+#endif
+        width += child_gap;
+    }
+
+    return(width);
+}
+
 static void
 _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 {
@@ -4652,6 +4729,22 @@ _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 	return;
 
     new_width = COLUMN_EXTENT_TO_WIDTH(colptr->max_extent_width);
+
+#if GTK_SHEET_DEBUG_SIZE > 0
+    g_debug(
+        "%s[%d]: FIXME col %d %s max_extent_width %d new_width %d",
+        __FUNCTION__, __LINE__, col,
+        gtk_widget_get_name(GTK_WIDGET(colptr)), 
+        colptr->max_extent_width,
+        new_width);
+#endif
+    if (colptr->col_button)
+    {
+        guint w = _get_button_width(sheet, colptr->col_button);
+
+        if (w > new_width)
+            new_width = w;
+    }
 
 #if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("%s(%d): called col %d w %d new w %d",
@@ -4757,6 +4850,72 @@ static void gtk_sheet_autoresize_all(GtkSheet *sheet)
 	    }
 	}
     }
+}
+
+
+/**
+ * gtk_sheet_set_autoresize:
+ * @sheet: a #GtkSheet
+ * @autoresize: TRUE or FALSE
+ *
+ * Controls wether cells will be autoresized upon deactivation, 
+ * as you type text or set a cell_text value. If you want the 
+ * cells to be autoresized when you pack widgets look at 
+ * gtk_sheet_attach_*(). This function sets both: 
+ * autoresize_columns and autoresize_cells. 
+ */
+void
+gtk_sheet_set_autoresize(GtkSheet *sheet, gboolean autoresize)
+{
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    sheet->autoresize_columns = autoresize;
+    sheet->autoresize_rows = autoresize;
+
+    gtk_sheet_autoresize_all(sheet);
+}
+
+/**
+ * gtk_sheet_set_autoresize_columns:
+ * @sheet: a #GtkSheet
+ * @autoresize: TRUE or FALSE
+ *
+ * Controls wether columns will be autoresized upon 
+ * deactivation, as you type text or set a cell_text value. If 
+ * you want the cells to be autoresized when you pack widgets 
+ * look at gtk_sheet_attach_*(). 
+ */
+void
+gtk_sheet_set_autoresize_columns(GtkSheet *sheet, gboolean autoresize)
+{
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    sheet->autoresize_columns = autoresize;
+
+    gtk_sheet_autoresize_all(sheet);
+}
+
+/**
+ * gtk_sheet_set_autoresize_rows:
+ * @sheet: a #GtkSheet
+ * @autoresize: TRUE or FALSE
+ *
+ * Controls wether rows will be autoresized upon deactivation,
+ * as you type text or set a cell_text value. If you want the 
+ * cells to be autoresized when you pack widgets look at 
+ * gtk_sheet_attach_*(). 
+ */
+void
+gtk_sheet_set_autoresize_rows(GtkSheet *sheet, gboolean autoresize)
+{
+    g_return_if_fail(sheet != NULL);
+    g_return_if_fail(GTK_IS_SHEET(sheet));
+
+    sheet->autoresize_rows = autoresize;
+
+    gtk_sheet_autoresize_all(sheet);
 }
 
 /**
@@ -9185,9 +9344,11 @@ _gtk_sheet_set_cell_internal(GtkSheet *sheet,
 	cell->text = NULL;
     }
 
+    gchar *dataformat = NULL;
+
     if (text)
     {
-	gchar *dataformat = gtk_sheet_column_get_format(sheet, col);
+	dataformat = gtk_sheet_column_get_format(sheet, col);
 
 	if (dataformat)
 	    text = gtk_data_format_remove(text, dataformat);
@@ -9209,7 +9370,14 @@ _gtk_sheet_set_cell_internal(GtkSheet *sheet,
     g_debug("st2: %0.6f", g_timer_elapsed(tm, NULL));
 #endif
 
-    _gtk_sheet_update_extent(sheet, cell, row, col);
+    {
+        gchar *label = cell->text;
+
+        if (dataformat)
+            label = gtk_data_format(label, dataformat);
+
+        _gtk_sheet_update_extent(sheet, cell, row, col, label);
+    }
 
 #if GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
     g_debug("st3: %0.6f", g_timer_elapsed(tm, NULL));
@@ -9240,49 +9408,14 @@ _gtk_sheet_set_cell_internal(GtkSheet *sheet,
 	    {
 		if (gtk_sheet_autoresize_columns(sheet))
 		{
-		    GtkSheetColumn *colptr = COLPTR(sheet, col);
-
-		    gint new_width = COLUMN_EXTENT_TO_WIDTH(
-                        colptr->max_extent_width);
-
-		    if (new_width != colptr->width)
-		    {
-#if GTK_SHEET_DEBUG_SIZE > 0
-			g_debug("%s(%d): set col %d width %d",
-                            __FUNCTION__, __LINE__, 
-                            col, new_width);
-#endif
-			gtk_sheet_set_column_width(sheet,
-                            col, new_width);
-
-			GTK_SHEET_SET_FLAGS(sheet,
-                            GTK_SHEET_IN_REDRAW_PENDING);
-
-			need_draw = FALSE;
-		    }
+                    _gtk_sheet_autoresize_column_internal(sheet, col);
+                    need_draw = FALSE;
 		}
 
 		if (gtk_sheet_autoresize_rows(sheet))
 		{
-		    GtkSheetRow *rowptr = ROWPTR(sheet, row);
-		    gint new_height = ROW_EXTENT_TO_HEIGHT(
-                        rowptr->max_extent_height);
-
-		    if (new_height != rowptr->height)
-		    {
-#if GTK_SHEET_DEBUG_SIZE > 0
-			g_debug("%s(%d) set row %d height %d", 
-                            __FUNCTION__, __LINE__,
-                            row, new_height);
-#endif
-			gtk_sheet_set_row_height(sheet,
-                            row, new_height);
-
-			GTK_SHEET_SET_FLAGS(sheet,
-                            GTK_SHEET_IN_REDRAW_PENDING);
-
-			need_draw = FALSE;
-		    }
+                    _gtk_sheet_autoresize_row_internal(sheet, row);
+                    need_draw = FALSE;
 		}
 	    }
 	}

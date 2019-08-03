@@ -4390,7 +4390,7 @@ static void _gtk_sheet_recalc_extent_width(GtkSheet *sheet, gint col)
     gint new_width = 0;
     gint row;
 
-#if GTK_SHEET_DEBUG_SIZE > -1
+#if GTK_SHEET_DEBUG_SIZE > 0
     g_debug("_gtk_sheet_recalc_extent_width[%d]: called", col);
 #endif
 

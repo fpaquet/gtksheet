@@ -8,6 +8,10 @@ TBD - known bugs
 (opg:19745): Gtk-WARNING **: GtkSheet 0x2816110 (line) is mapped but visible child GtkDataEntry 0x214c560 (GtkDataEntry) is not mapped
 ** (testgtksheet:19815): Gtk-CRITICAL **: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkSpinButton
 
+2019-09-15 Fredy Paquet <mailbox AT opag.ch>
+* fixed memory hole in cell destruction (font_desc)
+* 35% speed improvement in gtk_sheet_range_set_css_class()
+
 2019-08-03 Fredy Paquet <mailbox AT opag.ch>
 * updated gtksheet-4 version to 4.3.2, Libtool Revision 4.2.3
 * published gtksheet-4 version 4.3.2

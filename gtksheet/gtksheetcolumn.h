@@ -129,7 +129,7 @@ gint gtk_sheet_column_get_index(GtkSheetColumn *colobj);
 
 /* set column width */
 void gtk_sheet_set_column_width(GtkSheet *sheet, gint column, guint width);
-const gint gtk_sheet_get_column_width(GtkSheet *sheet, gint column);
+gint gtk_sheet_get_column_width(GtkSheet *sheet, gint column);
 
 void gtk_sheet_column_set_justification(GtkSheet *sheet, gint col, GtkJustification just);
 GtkJustification gtk_sheet_column_get_justification(GtkSheet *sheet, gint col);

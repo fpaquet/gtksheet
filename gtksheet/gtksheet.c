@@ -4719,22 +4719,22 @@ _get_button_width(GtkSheet *sheet, GtkWidget *widget)
     return(width);
 }
 
-static void
+static gboolean
 _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 {
     gint new_width;
     GtkSheetColumn *colptr;
 
-    g_return_if_fail(sheet != NULL);
-    g_return_if_fail(GTK_IS_SHEET(sheet));
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
 
     if (col < 0 || col > sheet->maxalloccol || col > sheet->maxcol)
-	return;
+	return(FALSE);
 
     colptr = COLPTR(sheet, col);
 
     if (!GTK_SHEET_COLUMN_IS_VISIBLE(colptr))
-	return;
+	return(FALSE);
 
     new_width = COLUMN_EXTENT_TO_WIDTH(colptr->max_extent_width);
 
@@ -4767,25 +4767,29 @@ _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 #endif
 	gtk_sheet_set_column_width(sheet, col, new_width);
 	GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
+
+        return(TRUE);
     }
+
+    return(FALSE);
 }
 
-static void
+static gboolean
 _gtk_sheet_autoresize_row_internal(GtkSheet *sheet, gint row)
 {
     gint new_height;
     GtkSheetRow *rowptr;
 
-    g_return_if_fail(sheet != NULL);
-    g_return_if_fail(GTK_IS_SHEET(sheet));
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
 
     if (row < 0 || row > sheet->maxallocrow || row > sheet->maxrow)
-	return;
+	return(FALSE);
 
     rowptr = ROWPTR(sheet, row);
 
     if (!GTK_SHEET_ROW_IS_VISIBLE(rowptr))
-	return;
+	return(FALSE);
 
     new_height = ROW_EXTENT_TO_HEIGHT(rowptr->max_extent_height);
 
@@ -4805,7 +4809,11 @@ _gtk_sheet_autoresize_row_internal(GtkSheet *sheet, gint row)
 #endif
 	gtk_sheet_set_row_height(sheet, row, new_height);
 	GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
+
+        return(TRUE);
     }
+
+    return(FALSE);
 }
 
 static void gtk_sheet_autoresize_all(GtkSheet *sheet)
@@ -7580,8 +7588,6 @@ gtk_sheet_map_handler(GtkWidget *widget)
 {
     GtkSheet *sheet;
     GtkWidget *WdChild;
-    GtkSheetChild *child;
-    GList *children;
 
     g_return_if_fail(widget != NULL);
     g_return_if_fail(GTK_IS_SHEET(widget));
@@ -8417,9 +8423,10 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     cairo_save(sheet->bsurf_cr);  // label clip
 
 #if GTK_SHEET_DEBUG_DRAW_LABEL>0
-    g_debug("_cell_draw_label(%d,%d): clip (%d, %d, %d, %d)",
+    g_debug("_cell_draw_label(%d,%d): clip (%d, %d, %d, %d) %s",
 	    row, col,
-	    clip_area.x, clip_area.y, clip_area.width, clip_area.height);
+	    clip_area.x, clip_area.y, clip_area.width, clip_area.height,
+        label);
 #endif
 
     gdk_cairo_rectangle(sheet->bsurf_cr, &clip_area);
@@ -8483,6 +8490,9 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     }
 
     gtk_style_context_restore(sheet_context);
+
+    // 19.01.20/fp - invalidate seams not to be necessary here
+    //gdk_window_invalidate_rect(sheet->sheet_window, &clip_area, FALSE);
 }
 
 /**
@@ -9394,11 +9404,11 @@ _gtk_sheet_set_cell_internal(GtkSheet *sheet,
 #if GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
     g_debug("st3: %0.6f", g_timer_elapsed(tm, NULL));
 #endif
-
+    
     if (attributes.is_visible)
     {
 	gboolean need_draw = TRUE;
-
+        
         /* PR#104553
            if sheet entry editor is active on the cell
            being modified, we need to update it's contents
@@ -9418,20 +9428,20 @@ _gtk_sheet_set_cell_internal(GtkSheet *sheet,
 	{
 	    if (cell->text && cell->text[0])
 	    {
-		if (gtk_sheet_autoresize_columns(sheet))
-		{
-                    _gtk_sheet_autoresize_column_internal(sheet, col);
-                    need_draw = FALSE;
-		}
+		if (gtk_sheet_autoresize_columns(sheet)
+                    && _gtk_sheet_autoresize_column_internal(sheet, col))
+                {
+                        need_draw = FALSE;
+                }
 
-		if (gtk_sheet_autoresize_rows(sheet))
-		{
-                    _gtk_sheet_autoresize_row_internal(sheet, row);
-                    need_draw = FALSE;
-		}
+		if (gtk_sheet_autoresize_rows(sheet)
+                    && _gtk_sheet_autoresize_row_internal(sheet, row))
+                {
+                        need_draw = FALSE;
+                }
 	    }
 	}
-
+        
 	if (need_draw)
 	{
 	    GtkSheetRange range;
@@ -9440,7 +9450,7 @@ _gtk_sheet_set_cell_internal(GtkSheet *sheet,
 	    range.rowi = row;
 	    range.col0 = sheet->view.col0;
 	    range.coli = sheet->view.coli;
-
+            
 	    if (!GTK_SHEET_IS_FROZEN(sheet))
 		_gtk_sheet_range_draw(sheet, &range, TRUE);
 	}
@@ -11871,7 +11881,9 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    guint req;
 	    if (event->type == GDK_2BUTTON_PRESS)
 	    {
-		_gtk_sheet_autoresize_column_internal(sheet, sheet->drag_cell.col);
+		_gtk_sheet_autoresize_column_internal(
+                    sheet, sheet->drag_cell.col);
+
 		GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_XDRAG);
 		return (TRUE);
 	    }
@@ -14967,7 +14979,6 @@ _gtk_sheet_draw_button(
     guint width = 0, height = 0;
     gint x = 0, y = 0;
     gint index = 0;
-    guint text_width = 0, text_height = 0;
     GtkSheetButton *button = NULL;
     GtkSheetChild *child = NULL;
     GdkRectangle allocation;
@@ -15113,10 +15124,6 @@ _gtk_sheet_draw_button(
 	PangoLayout *layout = NULL;
 	gint real_x = x, real_y;
 
-	text_height =
-	    _gtk_sheet_row_default_height(
-                GTK_WIDGET(sheet)) - 2 * CELLOFFSET;
-
 	cairo_save(my_cr);  // button clip
 
 	cairo_rectangle(my_cr, 
@@ -15144,7 +15151,7 @@ _gtk_sheet_draw_button(
 	pango_layout_set_font_description(layout, font_desc);
 
 	pango_layout_get_pixel_extents(layout, NULL, &extent);
-	text_width = extent.width;
+        guint text_width = extent.width;
 
 	switch(button->justification)
 	{
@@ -16151,7 +16158,6 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
 {
     GList *children;
     GtkSheetChild *child;
-    gboolean veto;
 
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
@@ -16208,8 +16214,6 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
     _gtk_sheet_scrollbar_adjust(sheet);
     _gtk_sheet_redraw_internal(sheet, TRUE, FALSE);
 
-    /* 22.06.13/fp - want same behaviour as gtk_sheet_delete_rows()
-       gtk_sheet_click_cell(sheet, act_row, act_col, &veto); */
     gtk_sheet_activate_cell(
         sheet, sheet->active_cell.row, sheet->active_cell.col);
 }

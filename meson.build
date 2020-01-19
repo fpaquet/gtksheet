@@ -1,7 +1,7 @@
 # GtkSheet versioning: before making releases, be sure to read
 # https://github.com/fpaquet/gtksheet/wiki/GtkSheet-Version-Numbering
 
-project('GtkSheet', 'c', version: '4.3.2')
+project('GtkSheet', 'c', version: '4.3.3')
 
 as_version = meson.project_version()
 ver_arr = as_version.split('.')
@@ -17,7 +17,7 @@ GTK_SHEET_VERSION_BASE = '.'.join([ver_arr[0], '0'])
 # libtool versioning
 
 lt_current = '1'
-lt_revision = '2'
+lt_revision = '3'
 lt_age = '3'
 lt_so_version = '.'.join([lt_current, lt_revision, lt_age])
 

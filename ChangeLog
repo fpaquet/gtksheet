@@ -11,6 +11,9 @@ TBD - known bugs
 2020-01-19 Fredy Paquet <mailbox AT opag.ch>
 * fixed display updates when autoresize-rows is set PR#230517
 * clean up compiler warnings: unused variables
+* fixed conflicting gtk_sheet_get_column_width() declarations
+* updated gtksheet-4 version to 4.3.3, Libtool Revision 4.3.3
+* published gtksheet-4 version 4.3.3
 
 2019-09-15 Fredy Paquet <mailbox AT opag.ch>
 * fixed memory hole in cell destruction (font_desc)

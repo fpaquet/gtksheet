@@ -1528,7 +1528,7 @@ GtkSheet *sheet, gint column, guint width
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_get_column_width</NAME>
-<RETURNS>const gint  </RETURNS>
+<RETURNS>gint  </RETURNS>
 GtkSheet *sheet, gint column
 </FUNCTION>
 <FUNCTION>
@@ -1748,7 +1748,7 @@ GtkSheet *sheet, gint column, const gchar *title
 </MACRO>
 <MACRO>
 <NAME>GTKSHEET_MICRO_VERSION</NAME>
-#define GTKSHEET_MICRO_VERSION			(2)
+#define GTKSHEET_MICRO_VERSION			(3)
 </MACRO>
 <MACRO>
 <NAME>GTKSHEET_CHECK_VERSION</NAME>

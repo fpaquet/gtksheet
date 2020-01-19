@@ -1527,7 +1527,7 @@ gtk_sheet_set_column_width(GtkSheet *sheet, gint col, guint width)
  *
  * Returns: column width
  */
-const gint
+gint
 gtk_sheet_get_column_width(GtkSheet *sheet, gint col)
 {
     g_return_val_if_fail(sheet != NULL, 0);

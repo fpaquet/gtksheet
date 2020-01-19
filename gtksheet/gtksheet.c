@@ -692,7 +692,9 @@ _gtk_sheet_row_default_height(GtkWidget *widget)
 	font_desc, pango_context_get_language(context));
     guint val = pango_font_metrics_get_descent(metrics) +
 	pango_font_metrics_get_ascent(metrics);
+
     pango_font_metrics_unref(metrics);
+    pango_font_description_free(font_desc);
 
     return (PANGO_PIXELS(val) + 2 * CELLOFFSET);
 }
@@ -714,7 +716,9 @@ _default_font_ascent(GtkWidget *widget)
     PangoFontMetrics *metrics = pango_context_get_metrics(context,
 	font_desc, pango_context_get_language(context));
     guint val = pango_font_metrics_get_ascent(metrics);
+
     pango_font_metrics_unref(metrics);
+    pango_font_description_free(font_desc);
 
     return (PANGO_PIXELS(val));
 }
@@ -906,7 +910,9 @@ _default_font_descent(GtkWidget *widget)
     PangoFontMetrics *metrics = pango_context_get_metrics(context,
 	font_desc, pango_context_get_language(context));
     guint val =  pango_font_metrics_get_descent(metrics);
+
     pango_font_metrics_unref(metrics);
+    pango_font_description_free(font_desc);
 
     return (PANGO_PIXELS(val));
 }
@@ -4582,7 +4588,7 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
 #endif
 }
 
-/* return font */
+/* return font, font_desc must be freed after use */
 static PangoFontDescription *
 _style_context_get_font(GtkStyleContext *style_context)
 {
@@ -4595,7 +4601,7 @@ _style_context_get_font(GtkStyleContext *style_context)
     gtk_style_context_get(
         style_context, 
         flags,
-        "font", &font_desc, NULL);
+        GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
     gtk_style_context_restore(style_context);
     return(font_desc);
@@ -4677,6 +4683,8 @@ _get_button_width(GtkSheet *sheet, GtkWidget *widget)
                 label, FALSE, &label_width, &label_height);
 
             width += label_width;
+
+            pango_font_description_free(font_desc);
         }
     }
 
@@ -4711,22 +4719,22 @@ _get_button_width(GtkSheet *sheet, GtkWidget *widget)
     return(width);
 }
 
-static void
+static gboolean
 _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 {
     gint new_width;
     GtkSheetColumn *colptr;
 
-    g_return_if_fail(sheet != NULL);
-    g_return_if_fail(GTK_IS_SHEET(sheet));
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
 
     if (col < 0 || col > sheet->maxalloccol || col > sheet->maxcol)
-	return;
+	return(FALSE);
 
     colptr = COLPTR(sheet, col);
 
     if (!GTK_SHEET_COLUMN_IS_VISIBLE(colptr))
-	return;
+	return(FALSE);
 
     new_width = COLUMN_EXTENT_TO_WIDTH(colptr->max_extent_width);
 
@@ -4759,25 +4767,29 @@ _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 #endif
 	gtk_sheet_set_column_width(sheet, col, new_width);
 	GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
+
+        return(TRUE);
     }
+
+    return(FALSE);
 }
 
-static void
+static gboolean
 _gtk_sheet_autoresize_row_internal(GtkSheet *sheet, gint row)
 {
     gint new_height;
     GtkSheetRow *rowptr;
 
-    g_return_if_fail(sheet != NULL);
-    g_return_if_fail(GTK_IS_SHEET(sheet));
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
 
     if (row < 0 || row > sheet->maxallocrow || row > sheet->maxrow)
-	return;
+	return(FALSE);
 
     rowptr = ROWPTR(sheet, row);
 
     if (!GTK_SHEET_ROW_IS_VISIBLE(rowptr))
-	return;
+	return(FALSE);
 
     new_height = ROW_EXTENT_TO_HEIGHT(rowptr->max_extent_height);
 
@@ -4797,7 +4809,11 @@ _gtk_sheet_autoresize_row_internal(GtkSheet *sheet, gint row)
 #endif
 	gtk_sheet_set_row_height(sheet, row, new_height);
 	GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
+
+        return(TRUE);
     }
+
+    return(FALSE);
 }
 
 static void gtk_sheet_autoresize_all(GtkSheet *sheet)
@@ -7572,8 +7588,6 @@ gtk_sheet_map_handler(GtkWidget *widget)
 {
     GtkSheet *sheet;
     GtkWidget *WdChild;
-    GtkSheetChild *child;
-    GList *children;
 
     g_return_if_fail(widget != NULL);
     g_return_if_fail(GTK_IS_SHEET(widget));
@@ -8138,6 +8152,8 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
         pango_layout_set_text(layout, label, -1);
 
     PangoFontDescription *font_desc = NULL;
+    gboolean font_desc_needs_free = FALSE;
+
     if (attributes.deprecated_font_desc_used)
     {
 #if GTK_SHEET_DEBUG_ENABLE_DEPRECATION_WARNINGS>0
@@ -8155,6 +8171,7 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
         gtk_style_context_get(sheet_context, GTK_STATE_FLAG_NORMAL,
 	    GTK_STYLE_PROPERTY_FONT, &font_desc, 
 	    NULL);
+        font_desc_needs_free = TRUE;
     }
 
     pango_layout_set_font_description(layout, font_desc);
@@ -8198,6 +8215,7 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     spacing = pango_layout_get_spacing(layout) / PANGO_SCALE;
 
     pango_font_metrics_unref(metrics);
+    if (font_desc_needs_free) pango_font_description_free(font_desc);
 
     /* Align primarily for locale's ascent/descent */
 
@@ -8405,9 +8423,10 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     cairo_save(sheet->bsurf_cr);  // label clip
 
 #if GTK_SHEET_DEBUG_DRAW_LABEL>0
-    g_debug("_cell_draw_label(%d,%d): clip (%d, %d, %d, %d)",
+    g_debug("_cell_draw_label(%d,%d): clip (%d, %d, %d, %d) %s",
 	    row, col,
-	    clip_area.x, clip_area.y, clip_area.width, clip_area.height);
+	    clip_area.x, clip_area.y, clip_area.width, clip_area.height,
+        label);
 #endif
 
     gdk_cairo_rectangle(sheet->bsurf_cr, &clip_area);
@@ -8471,6 +8490,9 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     }
 
     gtk_style_context_restore(sheet_context);
+
+    // 19.01.20/fp - invalidate seams not to be necessary here
+    //gdk_window_invalidate_rect(sheet->sheet_window, &clip_area, FALSE);
 }
 
 /**
@@ -9382,11 +9404,11 @@ _gtk_sheet_set_cell_internal(GtkSheet *sheet,
 #if GTK_SHEET_DEBUG_SET_CELL_TIMER > 0
     g_debug("st3: %0.6f", g_timer_elapsed(tm, NULL));
 #endif
-
+    
     if (attributes.is_visible)
     {
 	gboolean need_draw = TRUE;
-
+        
         /* PR#104553
            if sheet entry editor is active on the cell
            being modified, we need to update it's contents
@@ -9406,20 +9428,20 @@ _gtk_sheet_set_cell_internal(GtkSheet *sheet,
 	{
 	    if (cell->text && cell->text[0])
 	    {
-		if (gtk_sheet_autoresize_columns(sheet))
-		{
-                    _gtk_sheet_autoresize_column_internal(sheet, col);
-                    need_draw = FALSE;
-		}
+		if (gtk_sheet_autoresize_columns(sheet)
+                    && _gtk_sheet_autoresize_column_internal(sheet, col))
+                {
+                        need_draw = FALSE;
+                }
 
-		if (gtk_sheet_autoresize_rows(sheet))
-		{
-                    _gtk_sheet_autoresize_row_internal(sheet, row);
-                    need_draw = FALSE;
-		}
+		if (gtk_sheet_autoresize_rows(sheet)
+                    && _gtk_sheet_autoresize_row_internal(sheet, row))
+                {
+                        need_draw = FALSE;
+                }
 	    }
 	}
-
+        
 	if (need_draw)
 	{
 	    GtkSheetRange range;
@@ -9428,7 +9450,7 @@ _gtk_sheet_set_cell_internal(GtkSheet *sheet,
 	    range.rowi = row;
 	    range.col0 = sheet->view.col0;
 	    range.coli = sheet->view.coli;
-
+            
 	    if (!GTK_SHEET_IS_FROZEN(sheet))
 		_gtk_sheet_range_draw(sheet, &range, TRUE);
 	}
@@ -11859,7 +11881,9 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    guint req;
 	    if (event->type == GDK_2BUTTON_PRESS)
 	    {
-		_gtk_sheet_autoresize_column_internal(sheet, sheet->drag_cell.col);
+		_gtk_sheet_autoresize_column_internal(
+                    sheet, sheet->drag_cell.col);
+
 		GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_XDRAG);
 		return (TRUE);
 	    }
@@ -14955,7 +14979,6 @@ _gtk_sheet_draw_button(
     guint width = 0, height = 0;
     gint x = 0, y = 0;
     gint index = 0;
-    guint text_width = 0, text_height = 0;
     GtkSheetButton *button = NULL;
     GtkSheetChild *child = NULL;
     GdkRectangle allocation;
@@ -15101,10 +15124,6 @@ _gtk_sheet_draw_button(
 	PangoLayout *layout = NULL;
 	gint real_x = x, real_y;
 
-	text_height =
-	    _gtk_sheet_row_default_height(
-                GTK_WIDGET(sheet)) - 2 * CELLOFFSET;
-
 	cairo_save(my_cr);  // button clip
 
 	cairo_rectangle(my_cr, 
@@ -15132,7 +15151,7 @@ _gtk_sheet_draw_button(
 	pango_layout_set_font_description(layout, font_desc);
 
 	pango_layout_get_pixel_extents(layout, NULL, &extent);
-	text_width = extent.width;
+        guint text_width = extent.width;
 
 	switch(button->justification)
 	{
@@ -15174,6 +15193,8 @@ _gtk_sheet_draw_button(
         _gtk_sheet_invalidate_region(sheet, x, y, width, height);
         cairo_destroy(my_cr);  /* FIXME*/
     }
+
+    pango_font_description_free(font_desc);
 
     gtk_style_context_restore(sheet_context);
 
@@ -16137,7 +16158,6 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
 {
     GList *children;
     GtkSheetChild *child;
-    gboolean veto;
 
     g_return_if_fail(sheet != NULL);
     g_return_if_fail(GTK_IS_SHEET(sheet));
@@ -16194,8 +16214,6 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
     _gtk_sheet_scrollbar_adjust(sheet);
     _gtk_sheet_redraw_internal(sheet, TRUE, FALSE);
 
-    /* 22.06.13/fp - want same behaviour as gtk_sheet_delete_rows()
-       gtk_sheet_click_cell(sheet, act_row, act_col, &veto); */
     gtk_sheet_activate_cell(
         sheet, sheet->active_cell.row, sheet->active_cell.col);
 }
@@ -16327,6 +16345,107 @@ gtk_sheet_range_set_foreground(GtkSheet *sheet,
 	_gtk_sheet_range_draw(sheet, &range, TRUE);
 }
 
+/* Note: 15.09.19/fp
+   callgrind shows that pango_context_get_metrics()
+   consumes 95% of the time spent in this function.
+ 
+   Looking at testgtksheet Folder 1,
+   row height fails to adjust when turned off.
+   */
+#define GTK_SHEET_RECALC_ROW_HEIGHT_ON_CSS_CHANGE 2
+
+#if GTK_SHEET_RECALC_ROW_HEIGHT_ON_CSS_CHANGE==2
+static gboolean _font_changed(
+    GtkSheet *sheet, gchar *old_css_class, gchar *new_css_class)
+{
+    GtkStyleContext *sheet_context = gtk_widget_get_style_context(
+	GTK_WIDGET(sheet));
+
+    /* get old_font_desc */
+    gtk_style_context_save(sheet_context);
+
+    gtk_style_context_add_class(
+        sheet_context, GTK_STYLE_CLASS_CELL);
+
+    if (old_css_class)
+	gtk_style_context_add_class(sheet_context, old_css_class);
+
+    PangoFontDescription *old_font_desc = NULL;
+    gtk_style_context_get(sheet_context, GTK_STATE_FLAG_NORMAL,
+	GTK_STYLE_PROPERTY_FONT, &old_font_desc, 
+	NULL);
+
+    gtk_style_context_restore(sheet_context);
+
+    /* get new_font_desc */
+    gtk_style_context_save(sheet_context);
+
+    gtk_style_context_add_class(
+        sheet_context, GTK_STYLE_CLASS_CELL);
+
+    if (new_css_class)
+	gtk_style_context_add_class(sheet_context, new_css_class);
+
+    PangoFontDescription *new_font_desc = NULL;
+    gtk_style_context_get(sheet_context, GTK_STATE_FLAG_NORMAL,
+	GTK_STYLE_PROPERTY_FONT, &new_font_desc, 
+	NULL);
+
+    gtk_style_context_restore(sheet_context);
+
+    /* compare */
+    gboolean is_equal = pango_font_description_equal(
+        old_font_desc, new_font_desc);
+
+    /* free */
+    pango_font_description_free(old_font_desc);
+    pango_font_description_free(new_font_desc);
+
+    return(!is_equal);
+}
+#endif
+
+#if GTK_SHEET_RECALC_ROW_HEIGHT_ON_CSS_CHANGE>0
+static gint _get_font_height(GtkSheet *sheet, gchar *css_class)
+{
+    GtkStyleContext *sheet_context = gtk_widget_get_style_context(
+	GTK_WIDGET(sheet));
+
+    gtk_style_context_save(sheet_context);
+
+    gtk_style_context_add_class(
+	sheet_context, GTK_STYLE_CLASS_CELL);
+
+    if (css_class)
+	gtk_style_context_add_class(sheet_context, css_class);
+
+    PangoFontDescription *font_desc = NULL;
+    gtk_style_context_get(sheet_context, GTK_STATE_FLAG_NORMAL,
+	GTK_STYLE_PROPERTY_FONT, &font_desc, 
+	NULL);
+    
+    PangoContext *pango_context = gtk_widget_get_pango_context(
+	GTK_WIDGET(sheet));
+
+    PangoFontMetrics *metrics = pango_context_get_metrics(
+	pango_context,
+	font_desc,
+	pango_context_get_language(pango_context));
+
+    gint font_height = pango_font_metrics_get_descent(metrics) +
+	pango_font_metrics_get_ascent(metrics);
+
+    font_height = PANGO_PIXELS(font_height) + 2 * CELLOFFSET;
+
+    pango_font_metrics_unref(metrics);
+    pango_font_description_free(font_desc);
+
+    gtk_style_context_restore(sheet_context);
+
+    return(font_height);
+}
+#endif
+
 /**
  * gtk_sheet_range_set_css_class:
  * @sheet: a #GtkSheet.
@@ -16358,36 +16477,14 @@ gtk_sheet_range_set_css_class(GtkSheet *sheet,
         range.row0, range.rowi, range.col0, range.coli);
 #endif
 
-    GtkStyleContext *sheet_context = gtk_widget_get_style_context(
-	GTK_WIDGET(sheet));
+#if GTK_SHEET_RECALC_ROW_HEIGHT_ON_CSS_CHANGE==1
+    gint font_height = _get_font_height(sheet, css_class);
+#endif
 
-    gtk_style_context_save(sheet_context);
-
-    gtk_style_context_add_class(
-	sheet_context, GTK_STYLE_CLASS_CELL);
-
-    if (css_class)
-	gtk_style_context_add_class(sheet_context, css_class);
-
-    PangoFontDescription *font_desc = NULL;
-    gtk_style_context_get(sheet_context, GTK_STATE_FLAG_NORMAL,
-	GTK_STYLE_PROPERTY_FONT, &font_desc, 
-	NULL);
-    
-    PangoContext *pango_context = gtk_widget_get_pango_context(
-	GTK_WIDGET(sheet));
-
-    PangoFontMetrics *metrics = pango_context_get_metrics(
-	pango_context,
-	font_desc,
-	pango_context_get_language(pango_context));
-
-    gint font_height = pango_font_metrics_get_descent(metrics) +
-	pango_font_metrics_get_ascent(metrics);
-
-    font_height = PANGO_PIXELS(font_height) + 2 * CELLOFFSET;
-
-    gtk_style_context_restore(sheet_context);
+#if GTK_SHEET_RECALC_ROW_HEIGHT_ON_CSS_CHANGE==2
+    gboolean font_changed = FALSE;
+    gint font_height = 0;
+#endif
 
     for (row = range.row0; row <= range.rowi; row++) 
     {
@@ -16395,6 +16492,16 @@ gtk_sheet_range_set_css_class(GtkSheet *sheet,
         {
             GtkSheetCellAttr attributes;
             gtk_sheet_get_attributes(sheet, row, col, &attributes);
+
+#if GTK_SHEET_RECALC_ROW_HEIGHT_ON_CSS_CHANGE==2
+            if (!font_changed
+                && _font_changed(
+                    sheet, attributes.css_class, css_class))
+            {
+                font_changed = TRUE;
+                font_height = _get_font_height(sheet, css_class);
+            }
+#endif
         
             if (attributes.css_class)
             {
@@ -16407,10 +16514,23 @@ gtk_sheet_range_set_css_class(GtkSheet *sheet,
             gtk_sheet_set_cell_attributes(sheet, row, col, attributes);
         }
 
+#if GTK_SHEET_RECALC_ROW_HEIGHT_ON_CSS_CHANGE==1
 	if (font_height > sheet->row[row].height)
 	{
 	    sheet->row[row].height = font_height;
 	}
+#endif
+
+#if GTK_SHEET_RECALC_ROW_HEIGHT_ON_CSS_CHANGE==2
+        if (font_changed)
+        {
+
+            if (font_height > sheet->row[row].height)
+            {
+                sheet->row[row].height = font_height;
+            }
+        }
+#endif
     }
     _gtk_sheet_recalc_top_ypixels(sheet);
 
@@ -16797,9 +16917,9 @@ init_attributes(GtkSheet *sheet, gint col, GtkSheetCellAttr *attributes)
 
     gtk_style_context_get(sheet_context, 
         flags, GTK_STYLE_PROPERTY_FONT, &attributes->font_desc, NULL);
+    attributes->do_font_desc_free = TRUE;
 
     attributes->deprecated_font_desc_used = FALSE;
-    attributes->do_font_desc_free = FALSE;
     attributes->css_class = NULL;
 }
 
@@ -17673,6 +17793,8 @@ label_size_request(GtkSheet *sheet, gchar *label, GtkRequisition *req)
 	}
 	words++;
     }
+
+    pango_font_description_free(font_desc);
 
     if (n > 0)
 	req->height -= 2;

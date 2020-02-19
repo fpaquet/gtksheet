@@ -1332,7 +1332,7 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
     if (sheet->row_titles_visible)
     {
         /* negative widths can result in pixman_region32_init_rect warnings */
-        if (width > sheet->row_title_area.width) 
+        if (width >= sheet->row_title_area.width) 
             width -= sheet->row_title_area.width;
         x = sheet->row_title_area.width;
     }

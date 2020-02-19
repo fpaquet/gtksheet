@@ -14017,7 +14017,7 @@ _gtk_sheet_row_buttons_size_allocate(GtkSheet *sheet)
     if (sheet->column_titles_visible)
     {
         /* negative height can result in pixman invalid rectangle warnings */ 
-        if (height > sheet->column_title_area.height)
+        if (height >= sheet->column_title_area.height)
 	    height -= sheet->column_title_area.height;
 	y = sheet->column_title_area.height;
     }

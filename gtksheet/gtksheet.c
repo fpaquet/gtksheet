@@ -11015,7 +11015,9 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
 
     _gtk_sheet_entry_preselect(sheet);
 
-    gtk_widget_grab_focus(entry_widget);
+    if (gtk_widget_get_mapped(GTK_WIDGET(sheet))) { // 23.02.20/fp 233370
+	gtk_widget_grab_focus(entry_widget);
+    }
 
     g_free(text);
     g_free(old_text);

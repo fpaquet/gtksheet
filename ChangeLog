@@ -10,6 +10,8 @@ TBD - known bugs
 
 2020-02-23 Fredy Paquet <mailbox AT opag.ch>
 * fixed SEGV in do_focus_change(), _gtk_widget_get_toplevel() PR#233370
+* updated gtksheet-4 version to 4.3.4, Libtool Revision 4.4.3
+* published gtksheet-4 version 4.3.4
 
 2020-01-19 Fredy Paquet <mailbox AT opag.ch>
 * fixed display updates when autoresize-rows is set PR#230517

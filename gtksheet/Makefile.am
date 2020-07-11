@@ -190,7 +190,7 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 introspection_sources = $(gtksheet_c_sources) $(gtksheet_public_h_sources)
 
-GtkSheet-4.0.gir: $(gtksheettargetlib)
+GtkSheet-$(GTK_SHEET_VERSION).gir: $(gtksheettargetlib)
 GtkSheet_@GTK_SHEET_MAJOR_VERSION@_@GTK_SHEET_MINOR_VERSION@_@GTK_SHEET_MICRO_VERSION@_gir_NAMESPACE = GtkSheet
 GtkSheet_@GTK_SHEET_MAJOR_VERSION@_@GTK_SHEET_MINOR_VERSION@_@GTK_SHEET_MICRO_VERSION@_gir_VERSION = $(GTK_SHEET_VERSION)
 GtkSheet_@GTK_SHEET_MAJOR_VERSION@_@GTK_SHEET_MINOR_VERSION@_@GTK_SHEET_MICRO_VERSION@_gir_INCLUDES = GLib-2.0 GObject-2.0 Gtk-3.0

@@ -11,6 +11,7 @@ TBD - known bugs
 2020-07-11 Fredy Paquet <mailbox AT opag.ch>
 * fixed gir/typelib naming, https://github.com/fpaquet/gtksheet/issues/23
 * doc fix https://github.com/fpaquet/gtksheet/issues/24
+* Merge pull request #21 from wmclaugh/issue15_workaround
 
 2020-02-23 Fredy Paquet <mailbox AT opag.ch>
 * fixed SEGV in do_focus_change(), _gtk_widget_get_toplevel() PR#233370

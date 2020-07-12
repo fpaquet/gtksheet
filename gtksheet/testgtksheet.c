@@ -623,7 +623,13 @@ void
         gchar title[32];
         gchar name[32];
 
-        sprintf(title, "%c", 'A'+i);
+	/* set letters in header label */
+        //sprintf(title, "%c", 'A'+i);
+
+	/* set long column title strings
+	   https://github.com/fpaquet/gtksheet/issues/20
+	   */
+	sprintf(title, "MyColumn_%c%d", 'A'+i,i);
 
         gtk_sheet_column_button_add_label(sheet, i, title);
         gtk_sheet_set_column_title(sheet, i, title);

@@ -3487,7 +3487,7 @@ static void gtk_sheet_style_updated(GtkWidget *widget)
 {
     //g_debug("gtk_sheet_style_updated");
 
-    _gtk_sheet_range_draw(GTK_SHEET(widget), NULL, TRUE);
+    _gtk_sheet_range_draw(GTK_SHEET(widget), NULL, FALSE);
     GTK_WIDGET_CLASS (sheet_parent_class)->style_updated(widget);
 }
 
@@ -10736,14 +10736,15 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
     return (TRUE);
 }
 
-static void _gtk_sheet_entry_preselect(GtkSheet *sheet)
+static void _gtk_sheet_entry_preselect(GtkSheet *sheet, GtkWidget *sheet_entry)
 {
     gboolean select_on_focus;
     gboolean editable = TRUE;  /* incomplete - refer to gtkitementry::gtk_entry_grab_focus() */
     gboolean in_click = FALSE;  /* incomplete - refer to gtkitementry::gtk_entry_grab_focus() */
 
 #if GTK_SHEET_DEBUG_MOVE > 0
-    g_debug("_gtk_sheet_entry_preselect: called");
+    g_debug("_gtk_sheet_entry_preselect: called has_focus %d",
+	    gtk_widget_has_focus(sheet_entry));
 #endif
 
     g_object_get(G_OBJECT(gtk_settings_get_default()),
@@ -10751,7 +10752,8 @@ static void _gtk_sheet_entry_preselect(GtkSheet *sheet)
 	&select_on_focus,
 	NULL);
 
-    if (select_on_focus && editable && !in_click)
+    if (select_on_focus && editable && !in_click
+	&& gtk_widget_has_focus(sheet_entry))
     {
 	gtk_sheet_entry_select_region(sheet, 0, -1);
     }
@@ -11013,7 +11015,7 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
     gtk_widget_map(sheet->sheet_entry);
     gtk_sheet_draw_active_cell(sheet, NULL);
 
-    _gtk_sheet_entry_preselect(sheet);
+    _gtk_sheet_entry_preselect(sheet, sheet->sheet_entry);
 
     if (gtk_widget_get_mapped(GTK_WIDGET(sheet))) { // 23.02.20/fp 233370
 	gtk_widget_grab_focus(entry_widget);
@@ -14792,7 +14794,8 @@ void gtk_sheet_set_entry_editable(GtkSheet *sheet, const gboolean editable)
  * This function is necessary, because not all possible entry 
  * widgets implement the GtkEditable interface yet. 
  */
-void gtk_sheet_entry_select_region(GtkSheet *sheet, gint start_pos, gint end_pos)
+void gtk_sheet_entry_select_region(
+    GtkSheet *sheet, gint start_pos, gint end_pos)
 {
     GtkWidget *entry = NULL;
 
@@ -14802,12 +14805,21 @@ void gtk_sheet_entry_select_region(GtkSheet *sheet, gint start_pos, gint end_pos
     if (!sheet->sheet_entry)   /* PR#102114 */
 	return;
 
+    //g_debug("gtk_sheet_entry_select_region(): called");
+
     entry = gtk_sheet_get_entry(sheet);
     g_return_if_fail(entry != NULL);
 
     if (GTK_IS_EDITABLE(entry))
     {
-	gtk_editable_select_region(GTK_EDITABLE(entry), start_pos, end_pos);
+	gboolean res = gtk_editable_get_selection_bounds(
+	    GTK_EDITABLE(entry), NULL, NULL);
+	//g_debug("gtk_editable_get_selection_bounds() = %d", res);
+
+	if (!res) {
+	    gtk_editable_select_region(
+		GTK_EDITABLE(entry), start_pos, end_pos);
+	}
     }
     else if ( GTK_IS_DATA_TEXT_VIEW(entry)
 	     || GTK_IS_TEXT_VIEW(entry) )

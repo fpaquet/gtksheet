@@ -12,6 +12,11 @@ TBD - known bugs
 * fixed gir/typelib naming, https://github.com/fpaquet/gtksheet/issues/23
 * doc fix https://github.com/fpaquet/gtksheet/issues/24
 * Merge pull request #21 from wmclaugh/issue15_workaround
+* bug fix: prevent style updates to grab cursor into active cell
+* bug fix: prevent style updates to preselect cell editor contents
+* bug fix: fix cursor repositioning after calling GtkMessageDialogue
+* experimental: enabled ellipsis on column title label
+  see https://github.com/fpaquet/gtksheet/issues/20 for details
 
 2020-02-23 Fredy Paquet <mailbox AT opag.ch>
 * fixed SEGV in do_focus_change(), _gtk_widget_get_toplevel() PR#233370

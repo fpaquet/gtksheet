@@ -8,6 +8,10 @@ TBD - known bugs
 (opg:19745): Gtk-WARNING **: GtkSheet 0x2816110 (line) is mapped but visible child GtkDataEntry 0x214c560 (GtkDataEntry) is not mapped
 ** (testgtksheet:19815): Gtk-CRITICAL **: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkSpinButton
 
+2020-07-18 Fredy Paquet <mailbox AT opag.ch>
+* bug fix: eleminate elipsise warnings for column header labels
+  see https://github.com/fpaquet/gtksheet/issues/20 for details
+
 2020-07-11 Fredy Paquet <mailbox AT opag.ch>
 * fixed gir/typelib naming, https://github.com/fpaquet/gtksheet/issues/23
 * doc fix https://github.com/fpaquet/gtksheet/issues/24

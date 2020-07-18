@@ -202,7 +202,11 @@ _gtk_sheet_column_button_add_label_internal(
        https://github.com/fpaquet/gtksheet/issues/20
        */
     GtkWidget *label_widget = gtk_bin_get_child(GTK_BIN(colobj->col_button));
-    gtk_label_set_ellipsize(GTK_LABEL(label_widget), PANGO_ELLIPSIZE_END);
+
+    if (label_widget && GTK_IS_LABEL(label_widget))
+    {
+	gtk_label_set_ellipsize(GTK_LABEL(label_widget), PANGO_ELLIPSIZE_END);
+    }
 #endif
 }
 

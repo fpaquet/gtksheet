@@ -183,20 +183,20 @@ testgtksheet_LDADD = $(LDADDS)
 if ENABLE_INTROSPECTION
 -include $(INTROSPECTION_MAKEFILE)
 
-INTROSPECTION_GIRS = GtkSheet-4.0.gir
+INTROSPECTION_GIRS = GtkSheet-$(GTK_SHEET_VERSION).gir
 
 INTROSPECTION_SCANNER_ARGS = --accept-unprefixed --identifier-prefix="Gtk" --symbol-prefix="gtk" --warn-all --add-include-path=$(srcdir)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 
 introspection_sources = $(gtksheet_c_sources) $(gtksheet_public_h_sources)
 
-GtkSheet-4.0.gir: $(gtksheettargetlib)
-GtkSheet_4_0_gir_NAMESPACE = GtkSheet
-GtkSheet_4_0_gir_VERSION = $(GTK_SHEET_VERSION)
-GtkSheet_4_0_gir_INCLUDES = GLib-2.0 GObject-2.0 Gtk-3.0
-GtkSheet_4_0_gir_CFLAGS = $(AM_CPPFLAGS)
-GtkSheet_4_0_gir_LIBS = $(gtksheettargetlib)
-GtkSheet_4_0_gir_FILES = $(introspection_sources)
+GtkSheet-$(GTK_SHEET_VERSION).gir: $(gtksheettargetlib)
+GtkSheet_@GTK_SHEET_MAJOR_VERSION@_@GTK_SHEET_MINOR_VERSION@_@GTK_SHEET_MICRO_VERSION@_gir_NAMESPACE = GtkSheet
+GtkSheet_@GTK_SHEET_MAJOR_VERSION@_@GTK_SHEET_MINOR_VERSION@_@GTK_SHEET_MICRO_VERSION@_gir_VERSION = $(GTK_SHEET_VERSION)
+GtkSheet_@GTK_SHEET_MAJOR_VERSION@_@GTK_SHEET_MINOR_VERSION@_@GTK_SHEET_MICRO_VERSION@_gir_INCLUDES = GLib-2.0 GObject-2.0 Gtk-3.0
+GtkSheet_@GTK_SHEET_MAJOR_VERSION@_@GTK_SHEET_MINOR_VERSION@_@GTK_SHEET_MICRO_VERSION@_gir_CFLAGS = $(AM_CPPFLAGS)
+GtkSheet_@GTK_SHEET_MAJOR_VERSION@_@GTK_SHEET_MINOR_VERSION@_@GTK_SHEET_MICRO_VERSION@_gir_LIBS = $(gtksheettargetlib)
+GtkSheet_@GTK_SHEET_MAJOR_VERSION@_@GTK_SHEET_MINOR_VERSION@_@GTK_SHEET_MICRO_VERSION@_gir_FILES = $(introspection_sources)
 
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)

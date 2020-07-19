@@ -257,13 +257,6 @@
 			</Folder>
 		</Folder>
 		<Folder
-			Name="Resource Files"
-			Filters="*.ico;*.cur;*.dlg"
-			GUID="{E4BA2DE6-AEC9-4A83-A5D7-768CC20B101B}">
-			<F N="../gtksheet/GtkSheet-4.0.gir"/>
-			<F N="../gtksheet/GtkSheet-4.0.typelib"/>
-		</Folder>
-		<Folder
 			Name="Other Files"
 			Filters=""
 			GUID="{B7295174-C33A-4520-B708-D753B3BF9B73}">

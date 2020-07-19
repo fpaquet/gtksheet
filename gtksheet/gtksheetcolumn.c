@@ -196,6 +196,18 @@ _gtk_sheet_column_button_add_label_internal(
     g_assert(GTK_IS_TOGGLE_BUTTON(colobj->col_button));
 
     gtk_button_set_label(GTK_BUTTON(colobj->col_button), label);
+
+#if 1
+    /* experimental - enable ellipsize on label
+       https://github.com/fpaquet/gtksheet/issues/20
+       */
+    GtkWidget *label_widget = gtk_bin_get_child(GTK_BIN(colobj->col_button));
+
+    if (label_widget && GTK_IS_LABEL(label_widget))
+    {
+	gtk_label_set_ellipsize(GTK_LABEL(label_widget), PANGO_ELLIPSIZE_END);
+    }
+#endif
 }
 
 /**
@@ -1331,7 +1343,9 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
 
     if (sheet->row_titles_visible)
     {
-        width -= sheet->row_title_area.width;
+        /* negative widths can result in pixman_region32_init_rect warnings */
+        if (width >= sheet->row_title_area.width) 
+            width -= sheet->row_title_area.width;
         x = sheet->row_title_area.width;
     }
 

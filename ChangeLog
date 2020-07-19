@@ -8,6 +8,11 @@ TBD - known bugs
 (opg:19745): Gtk-WARNING **: GtkSheet 0x2816110 (line) is mapped but visible child GtkDataEntry 0x214c560 (GtkDataEntry) is not mapped
 ** (testgtksheet:19815): Gtk-CRITICAL **: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkSpinButton
 
+2020-07-19 Fredy Paquet <mailbox AT opag.ch>
+* updated gtksheet-4 version to 4.3.5, Libtool Revision 4.5.3
+* fixed meson libtool revision to 4.5.3 (now same as configure.ac)
+* published gtksheet-4 version 4.3.5
+
 2020-07-18 Fredy Paquet <mailbox AT opag.ch>
 * bug fix: eleminate elipsise warnings for column header labels
   see https://github.com/fpaquet/gtksheet/issues/20 for details

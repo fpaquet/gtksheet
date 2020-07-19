@@ -32,7 +32,7 @@
 
 #define DEFAULT_PRECISION 3
 #define DEFAULT_SPACE 8
-#define NUM_SHEETS 3 
+#define NUM_SHEETS 3
 
 GtkWidget *window;
 GtkWidget *main_vbox;
@@ -69,54 +69,83 @@ void
 static gint
     popup_activated(GtkWidget *widget, gpointer data)
 {
-    GtkSheet *sheet;
-    gint cur_page;
-    gchar *item;
+    gint cur_page = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
+    GtkSheet *sheet = GTK_SHEET(sheets[cur_page]);
 
-    cur_page = gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
-    sheet=GTK_SHEET(sheets[cur_page]);
+    gchar *item = (gchar *)data;
 
-    item = (gchar *)data;
-
-    if (strcmp(item,"Add Column")==0)
+    if (strcmp(item,"Add Column") == 0)
+    {
         gtk_sheet_add_column(sheet,1);
+    }
 
-    if (strcmp(item,"Add Row")==0)
+    if (strcmp(item,"Add Row") == 0)
+    {
         gtk_sheet_add_row(sheet,1);
-
-    if (strcmp(item,"Insert Row")==0)
-    {
-        if (sheet->state==GTK_SHEET_ROW_SELECTED)
-            gtk_sheet_insert_rows(sheet,sheet->range.row0,                       
-                                  sheet->range.rowi-sheet->range.row0+1);
     }
 
-    if (strcmp(item,"Insert Column")==0)
+    if (strcmp(item,"Insert Row") == 0)
     {
-        if (sheet->state==GTK_SHEET_COLUMN_SELECTED)
-            gtk_sheet_insert_columns(sheet,sheet->range.col0,                       
-                                     sheet->range.coli-sheet->range.col0+1);
+        if (sheet->state != GTK_SHEET_ROW_SELECTED) return(TRUE);
 
+        gtk_sheet_insert_rows(
+            sheet,
+            sheet->range.row0,
+            sheet->range.rowi-sheet->range.row0+1);
     }
 
-    if (strcmp(item,"Delete Row")==0)
+    if (strcmp(item,"Delete Row") == 0)
     {
-        if (sheet->state==GTK_SHEET_ROW_SELECTED)
-            gtk_sheet_delete_rows(sheet,sheet->range.row0,
-                                  sheet->range.rowi-sheet->range.row0+1);
+        if (sheet->state != GTK_SHEET_ROW_SELECTED) return(TRUE);
+
+        gtk_sheet_delete_rows(
+            sheet,
+            sheet->range.row0,
+            sheet->range.rowi-sheet->range.row0+1);
     }
 
-    if (strcmp(item,"Delete Column")==0)
+    if (strcmp(item,"Hide Row") == 0)
     {
-        if (sheet->state==GTK_SHEET_COLUMN_SELECTED)
-            gtk_sheet_delete_columns(sheet,sheet->range.col0,
-                                     sheet->range.coli-sheet->range.col0+1);
+        if (sheet->state != GTK_SHEET_ROW_SELECTED) return(TRUE);
+
+        gtk_sheet_row_set_visibility(
+            sheet, sheet->range.row0, FALSE);
     }
 
-    if (strcmp(item,"Clear Cells")==0)
+    if (strcmp(item,"Insert Column") == 0)
     {
-        if (sheet->state!=GTK_SHEET_NORMAL)
-            gtk_sheet_range_clear(sheet, &sheet->range);
+        if (sheet->state != GTK_SHEET_COLUMN_SELECTED) return(TRUE);
+            gtk_sheet_insert_columns(
+                sheet,
+                sheet->range.col0,
+                sheet->range.coli-sheet->range.col0+1);
+    }
+
+    if (strcmp(item,"Delete Column") == 0)
+    {
+        if (sheet->state != GTK_SHEET_COLUMN_SELECTED) return(TRUE);
+
+        gtk_sheet_delete_columns(
+            sheet,
+            sheet->range.col0,
+            sheet->range.coli-sheet->range.col0+1);
+    }
+
+    if (strcmp(item,"Hide Column") == 0)
+    {
+        if (sheet->state != GTK_SHEET_COLUMN_SELECTED) return(TRUE);
+
+        gtk_sheet_column_set_visibility (
+            sheet,
+            sheet->range.col0,
+            FALSE);
+    }
+
+    if (strcmp(item,"Clear Cells") == 0)
+    {
+        if (sheet->state == GTK_SHEET_NORMAL) return(TRUE);
+
+        gtk_sheet_range_clear(sheet, &sheet->range);
     }
 
     gtk_widget_destroy(popup);
@@ -126,66 +155,56 @@ static gint
 static GtkWidget *
     build_menu(GtkWidget *sheet)
 {
-    static char *items[]={
+    static char *items[] = {
         "Add Column",
         "Add Row",
         "Insert Row",
-        "Insert Column",
         "Delete Row",
+        "Hide Row",
+        "Insert Column",
         "Delete Column",
-        "Clear Cells"
+        "Hide Column",
+        "Clear Cells",
     };
-    GtkWidget *menu;
-    GtkWidget *item;
-    int i;
+    static char *tip = "Select a row/column to activate menu items";
 
-    menu=gtk_menu_new();
+    GtkWidget *menu = gtk_menu_new();
+    int i;
 
     for (i=0; i < (sizeof(items)/sizeof(items[0])) ; i++)
     {
-        item=gtk_menu_item_new_with_label(items[i]);
+        GtkWidget *item = gtk_menu_item_new_with_label(items[i]);
+        gtk_widget_set_tooltip_text(item, tip);
 
-        g_signal_connect(G_OBJECT(item),"activate",
-                         (void *) popup_activated,
-                         items[i]);
+        g_signal_connect(
+            G_OBJECT(item),"activate",
+            (void *) popup_activated,
+            items[i]);
 
-        gtk_widget_set_sensitive(GTK_WIDGET(item), TRUE);
-        gtk_widget_set_can_focus(GTK_WIDGET(item), TRUE);
+        gboolean sensitive = TRUE;
 
-        switch (i)
+        if (strcmp(items[i], "Insert Row") == 0
+            || strcmp(items[i], "Delete Row") == 0)
         {
-            case 2:
-                if (GTK_SHEET(sheet)->state!=GTK_SHEET_ROW_SELECTED)
-                {
-                    gtk_widget_set_sensitive(GTK_WIDGET(item), FALSE);
-                    gtk_widget_set_can_focus(GTK_WIDGET(item), FALSE);
-                }
-                break;
+            sensitive = (GTK_SHEET(sheet)->state == GTK_SHEET_ROW_SELECTED);
+        }
 
-            case 3:
-                if (GTK_SHEET(sheet)->state!=GTK_SHEET_COLUMN_SELECTED)
-                {
-                    gtk_widget_set_sensitive(GTK_WIDGET(item), FALSE);
-                    gtk_widget_set_can_focus(GTK_WIDGET(item), FALSE);
-                }
-                break;
+        else if (strcmp(items[i], "Insert Column") == 0
+                 || strcmp(items[i], "Delete Column") == 0
+                 || strcmp(items[i], "Hide Column") == 0
+                 )
+        {
+            sensitive = (GTK_SHEET(sheet)->state == GTK_SHEET_COLUMN_SELECTED);
+        }
 
-            case 4:
-                if (GTK_SHEET(sheet)->state!=GTK_SHEET_ROW_SELECTED)
-                {
-                    gtk_widget_set_sensitive(GTK_WIDGET(item), FALSE);
-                    gtk_widget_set_can_focus(GTK_WIDGET(item), FALSE);
-                }
-                break;
+        if (strcmp(items[i], "Clear Cells") == 0)
+        {
+            sensitive = (GTK_SHEET(sheet)->state != GTK_SHEET_NORMAL);
+        }
 
-            case 5:
-                if (GTK_SHEET(sheet)->state!=GTK_SHEET_COLUMN_SELECTED)
-                {
-                    gtk_widget_set_sensitive(GTK_WIDGET(item), FALSE);
-                    gtk_widget_set_can_focus(GTK_WIDGET(item), FALSE);
-                }
-                break;
-        } 
+
+        gtk_widget_set_sensitive(item, sensitive);
+        gtk_widget_set_can_focus(item, sensitive);
 
         gtk_widget_show(item);
         gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
@@ -246,7 +265,7 @@ void
                        GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
     context = gtk_widget_get_pango_context(GTK_WIDGET(sheet));
-    metrics = pango_context_get_metrics(context, font_desc, 
+    metrics = pango_context_get_metrics(context, font_desc,
 	pango_context_get_language(context));
     char_width = pango_font_metrics_get_approximate_char_width(metrics);
     pango_font_metrics_unref(metrics);
@@ -344,33 +363,33 @@ void
 
     gtk_sheet_get_attributes(sheet, sheet->active_cell.row,
                              sheet->active_cell.col,
-                             &attr); 
+                             &attr);
 
-    justification = attr.justification; 
+    justification = attr.justification;
 
     text = gtk_sheet_get_entry_text(sheet);
 
     format_text(sheet, text, &justification, label);
 
-    gtk_sheet_set_cell(sheet, 
+    gtk_sheet_set_cell(sheet,
         sheet->active_cell.row, sheet->active_cell.col,
-        justification, label); 
+        justification, label);
 
     g_free(text);
 }
 
-gint 
+gint
     clipboard_handler(GtkWidget *widget, GdkEventKey *key)
 {
     GtkSheet *sheet;
 
     sheet = GTK_SHEET(widget);
 
-    if (key->state & GDK_CONTROL_MASK 
-		|| key->keyval == GDK_KEY_Control_L 
+    if (key->state & GDK_CONTROL_MASK
+		|| key->keyval == GDK_KEY_Control_L
 		|| key->keyval == GDK_KEY_Control_R)
     {
-        if ((key->keyval=='c' || key->keyval == 'C') 
+        if ((key->keyval=='c' || key->keyval == 'C')
 			&& sheet->state != GTK_SHEET_NORMAL)
         {
             if (gtk_sheet_in_clip(sheet)) gtk_sheet_unclip_range(sheet);
@@ -385,10 +404,10 @@ gint
     return (FALSE);
 }
 
-void 
+void
     sheet_entry_changed_handler(GtkWidget *widget, gpointer data)
 {
-    char *text; 
+    char *text;
     GtkSheet *sheet;
     gint cur_page;
 
@@ -404,9 +423,9 @@ void
     }
 }
 
-void 
-    resize_handler(GtkWidget *widget, GtkSheetRange *old_range, 
-                   GtkSheetRange *new_range, 
+void
+    resize_handler(GtkWidget *widget, GtkSheetRange *old_range,
+                   GtkSheetRange *new_range,
                    gpointer data)
 {
     printf("OLD SELECTION: %d %d %d %d\n",old_range->row0, old_range->col0,
@@ -415,9 +434,9 @@ void
            new_range->rowi, new_range->coli);
 }
 
-void 
-    move_handler(GtkWidget *widget, GtkSheetRange *old_range, 
-                 GtkSheetRange *new_range, 
+void
+    move_handler(GtkWidget *widget, GtkSheetRange *old_range,
+                 GtkSheetRange *new_range,
                  gpointer data)
 {
     printf("OLD SELECTION: %d %d %d %d\n",old_range->row0, old_range->col0,
@@ -427,7 +446,7 @@ void
 }
 
 gboolean
-change_entry(GtkWidget *widget, 
+change_entry(GtkWidget *widget,
     gint old_row, gint old_col, gint *new_row, gint *new_col,
     gpointer data)
 {
@@ -437,7 +456,7 @@ change_entry(GtkWidget *widget,
     printf("change_entry: %d %d -> %d %d\n",
         old_row, old_col, *new_row, *new_col);
 
-    if (*new_col == 1 
+    if (*new_col == 1
         && (old_col != 1 || sheet->state != GTK_SHEET_NORMAL))
     {
         printf("change_entry: GtkEntry\n");
@@ -445,7 +464,7 @@ change_entry(GtkWidget *widget,
         changed = TRUE;
     }
 
-    if (*new_col == 2 
+    if (*new_col == 2
         && (old_col != 2 || sheet->state != GTK_SHEET_NORMAL))
     {
         GtkSpinButton *spin_button;
@@ -520,13 +539,13 @@ change_entry(GtkWidget *widget,
 }
 
 
-void alarm_change(GtkWidget *widget, gint row, gint col, 
+void alarm_change(GtkWidget *widget, gint row, gint col,
                   gpointer data)
 {
     printf("CHANGE CELL: %d %d\n",row,col);
 }
 
-gboolean alarm_activate(GtkWidget *widget, gint row, gint col, 
+gboolean alarm_activate(GtkWidget *widget, gint row, gint col,
                         gpointer data)
 {
     GtkSheetRange range;
@@ -541,7 +560,7 @@ gboolean alarm_activate(GtkWidget *widget, gint row, gint col,
     return (TRUE);
 }
 
-gboolean alarm_deactivate(GtkWidget *widget, gint row, gint col, 
+gboolean alarm_deactivate(GtkWidget *widget, gint row, gint col,
                           gpointer data)
 {
     GtkSheetRange range;
@@ -566,7 +585,7 @@ gboolean alarm_deactivate(GtkWidget *widget, gint row, gint col,
     return (TRUE);
 }
 
-gboolean alarm_traverse(GtkWidget *widget, 
+gboolean alarm_traverse(GtkWidget *widget,
                         gint row, gint col, gint *new_row, gint *new_col,
                         gpointer data)
 {
@@ -605,7 +624,7 @@ void
     gtk_sheet_set_background(sheet, &color);
 #else
     /* selector in CSS:
-     
+
        sheet .example1class {
          background-color: lightyellow;
          color: black;
@@ -634,7 +653,7 @@ void
         gtk_sheet_column_button_add_label(sheet, i, title);
         gtk_sheet_set_column_title(sheet, i, title);
 
-        sprintf(name, "%s_col_%s", 
+        sprintf(name, "%s_col_%s",
             gtk_widget_get_name(GTK_WIDGET(sheet)), title);
 
         GtkSheetColumn *colptr = gtk_sheet_column_get(sheet, i);
@@ -652,7 +671,7 @@ void
         "This is\na multiline\nlabel");
     gtk_sheet_column_button_add_label(sheet, 8,
         "This is long label");
-*/ 
+*/
     gtk_sheet_row_button_justify(sheet, 0, GTK_JUSTIFY_RIGHT);
 
     range.row0=1;
@@ -673,7 +692,7 @@ void
     gtk_sheet_range_set_foreground(sheet, &range, &color);
 #else
     /* selector in CSS:
-     
+
        sheet .example1red {
          color: red;
        }
@@ -695,7 +714,7 @@ void
     gtk_sheet_range_set_foreground(sheet, &range, &color);
 #else
     /* selector in CSS:
-     
+
        sheet .example1blue {
          color: blue;
        }
@@ -718,7 +737,7 @@ void
     gtk_sheet_range_set_foreground(sheet, &range, &color);
 #else
     /* selector in CSS:
-     
+
        sheet .example1grey {
          background-color: darkgrey;
          color: green;
@@ -754,37 +773,37 @@ void
 
     g_signal_connect(G_OBJECT(sheet),
                      "key_press_event",
-                     (void *) clipboard_handler, 
+                     (void *) clipboard_handler,
                      NULL);
 
     g_signal_connect(G_OBJECT(sheet),
                      "resize_range",
-                     (void *) resize_handler, 
+                     (void *) resize_handler,
                      NULL);
 
     g_signal_connect(G_OBJECT(sheet),
                      "move_range",
-                     (void *) move_handler, 
+                     (void *) move_handler,
                      NULL);
 
     g_signal_connect(G_OBJECT(sheet),
                      "changed",
-                     (void *) alarm_change, 
+                     (void *) alarm_change,
                      NULL);
 
     g_signal_connect(G_OBJECT(sheet),
                      "activate",
-                     (void *) alarm_activate, 
+                     (void *) alarm_activate,
                      NULL);
 
     g_signal_connect(G_OBJECT(sheet),
                      "deactivate",
-                     (void *) alarm_deactivate, 
+                     (void *) alarm_deactivate,
                      NULL);
 
     g_signal_connect(G_OBJECT(sheet),
                      "traverse",
-                     (void *) alarm_traverse, 
+                     (void *) alarm_traverse,
                      NULL);
 
     calendar=gtk_calendar_new();
@@ -807,12 +826,12 @@ void
         gtk_sheet_get_cell_area(
             GTK_SHEET(sheets[0]), 4+i, 0, &area);
 
-/*      gtk_sheet_put(GTK_SHEET(sheets[0]), bullet[i], 
+/*      gtk_sheet_put(GTK_SHEET(sheets[0]), bullet[i],
                     area.x+area.width/2-8, area.y+area.height/2-8);
 */
         gtk_sheet_attach(
-            GTK_SHEET(sheets[0]), bullet[i], 
-            4+i, 0, 
+            GTK_SHEET(sheets[0]), bullet[i],
+            4+i, 0,
             GTK_EXPAND, GTK_EXPAND, 0, 0);
     }
 
@@ -824,12 +843,12 @@ void
     gtk_widget_set_tooltip_text(bullet[5], bullet_name);
 
     gtk_sheet_get_cell_area(GTK_SHEET(sheets[0]), 10, 0, &area);
-/* gtk_sheet_put(GTK_SHEET(sheets[0]), bullet[i], 
+/* gtk_sheet_put(GTK_SHEET(sheets[0]), bullet[i],
                area.x+area.width/2-8, area.y+area.height/2-8);
 */
     gtk_sheet_attach(
-        GTK_SHEET(sheets[0]), bullet[5], 
-        10, 0, 
+        GTK_SHEET(sheets[0]), bullet[5],
+        10, 0,
         GTK_EXPAND, GTK_EXPAND, 0, 0);
 
     GdkPixbuf *smile_pixbuf = gdk_pixbuf_new_from_xpm_data((const char **) smile_xpm);
@@ -848,10 +867,10 @@ void
 #endif
 
     gtk_sheet_column_set_tooltip_markup(
-        GTK_SHEET(sheets[0]), 
+        GTK_SHEET(sheets[0]),
         5, "This column has a <b>Smilie</b> in the title button.");
     gtk_sheet_cell_set_tooltip_text(
-        GTK_SHEET(sheets[0]), 
+        GTK_SHEET(sheets[0]),
         1, 5, "This single cell has its own tooltip text");
 
     show_button=gtk_button_new_with_label("Show me a calendar");
@@ -865,14 +884,14 @@ void
 */
     gtk_sheet_attach(
         GTK_SHEET(sheets[0]), show_button,
-        12, 2, 
+        12, 2,
         GTK_FILL, GTK_FILL, 5, 5);
 
     g_signal_connect(G_OBJECT(show_button), "clicked",
-                     (void *) show_child, 
+                     (void *) show_child,
                      NULL);
 /*  g_signal_connect(G_OBJECT(sheet), "button_press_event",
-                    (void *) do_popup, 
+                    (void *) do_popup,
                     NULL);
 */
 
@@ -934,7 +953,7 @@ void
     gtk_sheet_range_set_foreground(sheet, &range, &color);
 #else
     /* selector in CSS:
-     
+
        sheet#example2 .blue {
          background-color: lightgray;
          color: blue;
@@ -966,7 +985,7 @@ void
     /*
     gtk_sheet_row_set_sensitivity(sheet, 0, FALSE);
     gtk_sheet_row_set_sensitivity(sheet, 1, FALSE);
-    gtk_sheet_row_set_sensitivity(sheet, 2, FALSE); 
+    gtk_sheet_row_set_sensitivity(sheet, 2, FALSE);
     */
 
     gtk_sheet_set_cell(sheet,
@@ -987,51 +1006,51 @@ void
 
     g_signal_connect(G_OBJECT(sheet),
                      "button_press_event",
-                     (void *) do_popup, 
+                     (void *) do_popup,
                      NULL);
 
     g_signal_connect(G_OBJECT(sheet),
                      "set_cell",
                      (void *) parse_numbers,
-                     NULL);                   
+                     NULL);
 
     g_signal_connect(G_OBJECT(sheet),
                      "activate",
-                     (void *) alarm_activate, 
+                     (void *) alarm_activate,
                      NULL);
 
     g_signal_connect(G_OBJECT(sheet),
                      "deactivate",
-                     (void *) alarm_deactivate, 
+                     (void *) alarm_deactivate,
                      NULL);
 
     g_signal_connect(G_OBJECT(sheet),
                      "traverse",
-                     (void *) alarm_traverse, 
+                     (void *) alarm_traverse,
                      NULL);
 
     gtk_sheet_set_row_height(GTK_SHEET(sheets[1]), 12, 60);
 
     b = gtk_button_new_with_label("GTK_FILL");
     gtk_sheet_attach(
-        GTK_SHEET(sheets[1]), b, 
-        12, 2, 
+        GTK_SHEET(sheets[1]), b,
+        12, 2,
         GTK_FILL, GTK_FILL, 5, 5);
     gtk_widget_show(b);
     gtk_widget_set_name(b, "fill_button");
 
     b = gtk_button_new_with_label("GTK_EXPAND");
     gtk_sheet_attach(
-        GTK_SHEET(sheets[1]), b, 
-        12, 3, 
+        GTK_SHEET(sheets[1]), b,
+        12, 3,
         GTK_EXPAND, GTK_EXPAND, 5, 5);
     gtk_widget_show(b);
     gtk_widget_set_name(b, "expand_button");
 
     b = gtk_button_new_with_label("Shrink");
     gtk_sheet_attach(
-        GTK_SHEET(sheets[1]), b, 
-        12, 4, 
+        GTK_SHEET(sheets[1]), b,
+        12, 4,
         GTK_SHRINK, GTK_SHRINK, 5, 5);
     gtk_widget_show(b);
     gtk_widget_set_name(b, "shrink_button");
@@ -1041,45 +1060,45 @@ void
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
     gtk_sheet_range_set_border(
-        sheet, &range, 
+        sheet, &range,
         GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER
-        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER,
         1, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     range.row0 = range.col0 = range.rowi = range.coli = 5;
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
     gtk_sheet_range_set_border(
-        sheet, &range, 
+        sheet, &range,
         GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER
-        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER,
         2, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     range.row0 = range.col0 = range.rowi = range.coli = 6;
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
     gtk_sheet_range_set_border(
-        sheet, &range, 
+        sheet, &range,
         GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER
-        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER,
         3, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     range.row0 = range.col0 = range.rowi = range.coli = 7;
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
     gtk_sheet_range_set_border(
-        sheet, &range, 
+        sheet, &range,
         GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER
-        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER,
         4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     range.row0 = range.col0 = range.rowi = range.coli = 8;
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
     gtk_sheet_range_set_border(
-        sheet, &range, 
+        sheet, &range,
         GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER
-        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER, 
+        | GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER,
         5, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 }
 
@@ -1128,7 +1147,7 @@ void
     gtk_sheet_range_set_background(sheet, &range, &color);
 #else
     /* selector in CSS:
-     
+
        sheet#example3 .orange {
          background-color: orange;
          color: brown;
@@ -1137,7 +1156,7 @@ void
     gtk_sheet_range_set_css_class(sheet, &range, "orange");
 
     /* selector in CSS:
-     
+
        sheet#example3 .lblue {
          background-color: lightblue;
          color: brown;
@@ -1147,7 +1166,7 @@ void
     gtk_sheet_range_set_css_class(sheet, &range, "lblue");
 
     /* selector in CSS:
-     
+
        sheet#example3 .lgreen {
          background-color: lightgreen;
          color: brown;
@@ -1157,11 +1176,11 @@ void
     gtk_sheet_range_set_css_class(sheet, &range, "lgreen");
 #endif
 
-    range.row0=0; 
+    range.row0=0;
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
-    gtk_sheet_range_set_border(sheet, &range, 
-        GTK_SHEET_RIGHT_BORDER, 
+    gtk_sheet_range_set_border(sheet, &range,
+        GTK_SHEET_RIGHT_BORDER,
         4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     range.coli=0;
@@ -1173,7 +1192,7 @@ void
     gtk_sheet_range_set_background(sheet, &range, &color);
 #else
     /* selector in CSS:
-     
+
        sheet#example3 .red {
          background-color: red;
          color: white;
@@ -1181,8 +1200,8 @@ void
      */
     gtk_sheet_range_set_css_class(sheet, &range, "red");
 #endif
-    gtk_sheet_range_set_border(sheet, &range, 
-        GTK_SHEET_RIGHT_BORDER|GTK_SHEET_BOTTOM_BORDER, 
+    gtk_sheet_range_set_border(sheet, &range,
+        GTK_SHEET_RIGHT_BORDER|GTK_SHEET_BOTTOM_BORDER,
         4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     range.rowi=0;
@@ -1190,8 +1209,8 @@ void
     range.coli=6;
     gdk_rgba_parse(&color, "dark blue");
     gtk_sheet_range_set_border_color(sheet, &range, &color);
-    gtk_sheet_range_set_border(sheet, &range, 
-        GTK_SHEET_BOTTOM_BORDER, 
+    gtk_sheet_range_set_border(sheet, &range,
+        GTK_SHEET_BOTTOM_BORDER,
         4, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     gtk_sheet_set_autoresize(sheet, TRUE);
@@ -1251,7 +1270,7 @@ build_example4(GtkWidget *widget)
  sheet=GTK_SHEET(widget);
  g_signal_connect(G_OBJECT(sheet),
                     "button_press_event",
-                    (void *) do_popup, 
+                    (void *) do_popup,
                     NULL);
 }
 */
@@ -1267,7 +1286,7 @@ void
         gtk_entry_set_text(GTK_ENTRY(entry), text);
         g_free(text);
     }
-} 
+}
 
 void
     entry_changed_handler(GtkWidget *widget, gpointer data)
@@ -1287,7 +1306,7 @@ void
     }
 }
 
-void 
+void
     activate_sheet_entry(GtkWidget *widget, gpointer data)
 {
     GtkSheet *sheet;
@@ -1301,7 +1320,7 @@ void
         sheet, row, col, gtk_sheet_get_entry_text(sheet));
 }
 
-void 
+void
     justify_left(GtkWidget *widget)
 {
     GtkSheet *current;
@@ -1321,8 +1340,8 @@ void
                                       GTK_JUSTIFY_LEFT);
 }
 
-void 
-    justify_center(GtkWidget *widget) 
+void
+    justify_center(GtkWidget *widget)
 {
     GtkSheet *current;
     gint cur_page;
@@ -1338,8 +1357,8 @@ void
                                       GTK_JUSTIFY_CENTER);
 }
 
-void 
-    justify_right(GtkWidget *widget) 
+void
+    justify_right(GtkWidget *widget)
 {
     GtkSheet *current;
     gint cur_page;
@@ -1356,7 +1375,7 @@ void
 }
 
 gint
-    activate_sheet_cell(GtkWidget *widget, gint row, gint column, gpointer data) 
+    activate_sheet_cell(GtkWidget *widget, gint row, gint column, gpointer data)
 {
     GtkSheet *sheet;
     GtkWidget *sheet_entry;
@@ -1409,7 +1428,7 @@ gint
     return (TRUE);
 }
 
-void 
+void
     change_border (GtkWidget *widget, gint border)
 {
     GtkSheet *current;
@@ -1424,8 +1443,8 @@ void
 
     range=current->range;
 
-    gtk_sheet_range_set_border(current, &range, 
-	0, 
+    gtk_sheet_range_set_border(current, &range,
+	0,
 	0, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
 
     switch (border)
@@ -1435,75 +1454,75 @@ void
         case 1:
             border_mask = GTK_SHEET_TOP_BORDER;
             range.rowi = range.row0;
-            gtk_sheet_range_set_border(current, &range, 
+            gtk_sheet_range_set_border(current, &range,
 		border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
             break;
         case 2:
             border_mask = GTK_SHEET_BOTTOM_BORDER;
             range.row0 = range.rowi;
-            gtk_sheet_range_set_border(current, &range, 
+            gtk_sheet_range_set_border(current, &range,
 		border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
             break;
         case 3:
             border_mask = GTK_SHEET_RIGHT_BORDER;
             range.col0 = range.coli;
-            gtk_sheet_range_set_border(current, &range, 
+            gtk_sheet_range_set_border(current, &range,
 		border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
             break;
         case 4:
             border_mask = GTK_SHEET_LEFT_BORDER;
             range.coli = range.col0;
-            gtk_sheet_range_set_border(current, &range, 
+            gtk_sheet_range_set_border(current, &range,
 		border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
             break;
         case 5:
             if (range.col0 == range.coli)
             {
                 border_mask = GTK_SHEET_LEFT_BORDER | GTK_SHEET_RIGHT_BORDER;
-                gtk_sheet_range_set_border(current, &range, 
+                gtk_sheet_range_set_border(current, &range,
 		    border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
                 break;
             }
             border_mask = GTK_SHEET_LEFT_BORDER;
             auxcol=range.coli;
             range.coli = range.col0;
-            gtk_sheet_range_set_border(current, &range, 
+            gtk_sheet_range_set_border(current, &range,
 		border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
             border_mask = GTK_SHEET_RIGHT_BORDER;
-            range.col0 = range.coli=auxcol; 
-            gtk_sheet_range_set_border(current, &range, 
+            range.col0 = range.coli=auxcol;
+            gtk_sheet_range_set_border(current, &range,
 		border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
             break;
         case 6:
             if (range.row0 == range.rowi)
             {
                 border_mask = GTK_SHEET_TOP_BORDER | GTK_SHEET_BOTTOM_BORDER;
-                gtk_sheet_range_set_border(current, &range, 
+                gtk_sheet_range_set_border(current, &range,
 		    border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
                 break;
             }
             border_mask = GTK_SHEET_TOP_BORDER;
             auxrow=range.rowi;
             range.rowi = range.row0;
-            gtk_sheet_range_set_border(current, &range, 
+            gtk_sheet_range_set_border(current, &range,
 		border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
             border_mask = GTK_SHEET_BOTTOM_BORDER;
-            range.row0=range.rowi=auxrow; 
-            gtk_sheet_range_set_border(current, &range, 
+            range.row0=range.rowi=auxrow;
+            gtk_sheet_range_set_border(current, &range,
 		border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
             break;
         case 7:
             border_mask = GTK_SHEET_RIGHT_BORDER | GTK_SHEET_LEFT_BORDER;
-            gtk_sheet_range_set_border(current, &range, 
+            gtk_sheet_range_set_border(current, &range,
 		border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
             break;
         case 8:
             border_mask = GTK_SHEET_BOTTOM_BORDER | GTK_SHEET_TOP_BORDER;
-            gtk_sheet_range_set_border(current, &range, 
+            gtk_sheet_range_set_border(current, &range,
 		border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
             break;
         case 9:
-            gtk_sheet_range_set_border(current, &range, 
+            gtk_sheet_range_set_border(current, &range,
 		15, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
             for (i=range.row0; i<=range.rowi; i++)
                 for (j=range.col0; j<=range.coli; j++)
@@ -1518,8 +1537,8 @@ void
                     if (j == range.coli) border_mask ^= GTK_SHEET_RIGHT_BORDER;
                     if (j == range.col0) border_mask ^= GTK_SHEET_LEFT_BORDER;
                     if (border_mask != 15)
-                        gtk_sheet_range_set_border(current, &auxrange, 
-			    border_mask, border_width, 
+                        gtk_sheet_range_set_border(current, &auxrange,
+			    border_mask, border_width,
 			    CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
                 }
 
@@ -1538,15 +1557,15 @@ void
                     if (j == range.coli) border_mask |= GTK_SHEET_RIGHT_BORDER;
                     if (j == range.col0) border_mask |= GTK_SHEET_LEFT_BORDER;
                     if (border_mask != 0)
-                        gtk_sheet_range_set_border(current, &auxrange, 
-			    border_mask, border_width, 
+                        gtk_sheet_range_set_border(current, &auxrange,
+			    border_mask, border_width,
 			    CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
                 }
 
             break;
         case 11:
             border_mask = 15;
-            gtk_sheet_range_set_border(current, &range, 
+            gtk_sheet_range_set_border(current, &range,
 		border_mask, border_width, CAIRO_LINE_CAP_BUTT, CAIRO_LINE_JOIN_MITER);
             break;
 
@@ -1556,7 +1575,7 @@ void
 }
 
 
-void 
+void
     change_fg(GtkWidget *widget, gint i, GdkRGBA *color)
 {
     GtkSheet *current;
@@ -1573,10 +1592,10 @@ void
     cairo_fill(cr);
     cairo_destroy(cr);
 
-    gtk_widget_queue_draw(fg_pixmap); 
+    gtk_widget_queue_draw(fg_pixmap);
 }
 
-void 
+void
     change_bg(GtkWidget *widget, gint i, GdkRGBA *color)
 {
     GtkSheet *current;
@@ -1591,12 +1610,12 @@ void
     gdk_cairo_set_source_rgba (cr, color);
     cairo_rectangle(cr, 4,20,18,4);
     cairo_fill(cr);
-    gtk_widget_draw(bg_pixmap, cr); 
+    gtk_widget_draw(bg_pixmap, cr);
     cairo_destroy(cr);
 }
 
-void 
-    do_hide_row_titles(GtkWidget *widget) 
+void
+    do_hide_row_titles(GtkWidget *widget)
 {
     GtkSheet *current;
     gint cur_page;
@@ -1607,10 +1626,10 @@ void
     gtk_sheet_hide_row_titles(current);
 }
 
-void 
-    do_hide_column_titles(GtkWidget *widget) 
+void
+    do_hide_column_titles(GtkWidget *widget)
 {
-    GtkSheet *current; 
+    GtkSheet *current;
     gint cur_page;
 
     cur_page=gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
@@ -1620,10 +1639,10 @@ void
 
 }
 
-void 
-    do_show_row_titles(GtkWidget *widget) 
+void
+    do_show_row_titles(GtkWidget *widget)
 {
-    GtkSheet *current; 
+    GtkSheet *current;
     gint cur_page;
 
     cur_page=gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
@@ -1632,10 +1651,10 @@ void
     gtk_sheet_show_row_titles(current);
 }
 
-void 
-    do_show_column_titles(GtkWidget *widget) 
+void
+    do_show_column_titles(GtkWidget *widget)
 {
-    GtkSheet *current; 
+    GtkSheet *current;
     gint cur_page;
 
     cur_page=gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
@@ -1648,7 +1667,7 @@ void
 void
     new_font(GtkFontButton *font_button, gpointer data)
 {
-    GtkSheet *current; 
+    GtkSheet *current;
     gint cur_page;
 
     cur_page=gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook));
@@ -1664,24 +1683,24 @@ void
         current, &current->range, font_desc);
 }
 
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[])
 {
-    GtkWidget *label; 
-    GtkRequisition minimum_size, natural_size; 
+    GtkWidget *label;
+    GtkRequisition minimum_size, natural_size;
     GtkWidget *hide_row_titles;
-    GtkWidget *hide_column_titles; 
-    GtkWidget *show_row_titles; 
+    GtkWidget *hide_column_titles;
+    GtkWidget *show_row_titles;
     GtkWidget *show_column_titles;
     GtkWidget *font_button;
     gint i;
 
     char *title[]= {"Example 1",
-        "Example 2", 
-        "Example 3", 
+        "Example 2",
+        "Example 3",
         "Example 4"};
     char *folder[]= {"Folder 1",
-        "Folder 2", 
-        "Folder 3", 
+        "Folder 2",
+        "Folder 3",
         "Folder 4"};
 
     gtk_init(&argc, &argv);
@@ -1692,7 +1711,7 @@ int main(int argc, char *argv[])
         GError *error = NULL;
         GtkCssProvider *provider = gtk_css_provider_new();
 
-        gtk_css_provider_load_from_path(provider, 
+        gtk_css_provider_load_from_path(provider,
             "testgtksheet.css", &error);
 
         if (error)
@@ -1704,7 +1723,7 @@ int main(int argc, char *argv[])
         GdkScreen *screen = gdk_display_get_default_screen(display);
 
         gtk_style_context_add_provider_for_screen(
-            GDK_SCREEN(screen), 
+            GDK_SCREEN(screen),
             GTK_STYLE_PROVIDER(provider),
             GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     }
@@ -1718,18 +1737,18 @@ int main(int argc, char *argv[])
         GTK_WIDGET(window), "destroy", G_CALLBACK(quit), NULL);
 
     main_vbox= gtk_box_new(GTK_ORIENTATION_VERTICAL, 1);
-    gtk_container_set_border_width(GTK_CONTAINER(main_vbox),0); 
+    gtk_container_set_border_width(GTK_CONTAINER(main_vbox),0);
     gtk_container_add(GTK_CONTAINER(window), main_vbox);
     gtk_widget_show(main_vbox);
 
-    show_hide_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1); 
-    hide_row_titles = gtk_button_new_with_label("Hide Row Titles"); 
-    hide_column_titles = gtk_button_new_with_label("Hide Column Titles"); 
-    show_row_titles = gtk_button_new_with_label("Show Row Titles"); 
+    show_hide_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);
+    hide_row_titles = gtk_button_new_with_label("Hide Row Titles");
+    hide_column_titles = gtk_button_new_with_label("Hide Column Titles");
+    show_row_titles = gtk_button_new_with_label("Show Row Titles");
     show_column_titles = gtk_button_new_with_label("Show Column Titles");
 
     gtk_box_pack_start(
-        GTK_BOX(show_hide_box), hide_row_titles, TRUE, TRUE, 0); 
+        GTK_BOX(show_hide_box), hide_row_titles, TRUE, TRUE, 0);
     gtk_box_pack_start(
         GTK_BOX(show_hide_box), hide_column_titles, TRUE, TRUE, 0);
     gtk_box_pack_start(
@@ -1737,9 +1756,9 @@ int main(int argc, char *argv[])
     gtk_box_pack_start(
         GTK_BOX(show_hide_box), show_column_titles, TRUE, TRUE, 0);
 
-    gtk_widget_show(hide_row_titles); 
+    gtk_widget_show(hide_row_titles);
     gtk_widget_show(hide_column_titles);
-    gtk_widget_show(show_row_titles); 
+    gtk_widget_show(show_row_titles);
     gtk_widget_show(show_column_titles);
 
     g_signal_connect(G_OBJECT(hide_row_titles), "clicked",
@@ -1822,7 +1841,7 @@ int main(int argc, char *argv[])
         GTK_BOX(main_vbox), status_box, FALSE, TRUE, 0);
     gtk_widget_show(status_box);
 
-    location=gtk_label_new(""); 
+    location=gtk_label_new("");
     gtk_widget_get_preferred_size (
         GTK_WIDGET(location), &minimum_size, &natural_size);
 
@@ -1831,9 +1850,9 @@ int main(int argc, char *argv[])
         GTK_BOX(status_box), location, FALSE, TRUE, 0);
     gtk_widget_show(location);
 
-    entry=gtk_entry_new(); 
+    entry=gtk_entry_new();
     gtk_box_pack_start(
-        GTK_BOX(status_box), entry, TRUE, TRUE, 0); 
+        GTK_BOX(status_box), entry, TRUE, TRUE, 0);
     gtk_widget_show(entry);
 
     notebook=gtk_notebook_new();
@@ -1880,7 +1899,7 @@ int main(int argc, char *argv[])
         "activate", (void *)activate_sheet_entry,
         NULL);
 
-    build_example1(sheets[0]); 
+    build_example1(sheets[0]);
     build_example2(sheets[1]);
     build_example3(sheets[2]);
 

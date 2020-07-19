@@ -11,6 +11,8 @@ TBD - known bugs
 2020-07-18 Fredy Paquet <mailbox AT opag.ch>
 * bug fix: eleminate elipsise warnings for column header labels
   see https://github.com/fpaquet/gtksheet/issues/20 for details
+* improvement: testgtksheet
+  added "Hide Column", "Hide Row" to popup menu of folder 2
 
 2020-07-11 Fredy Paquet <mailbox AT opag.ch>
 * fixed gir/typelib naming, https://github.com/fpaquet/gtksheet/issues/23

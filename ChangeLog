@@ -13,6 +13,7 @@ TBD - known bugs
   in configure.ac and meson.build
 * fixed segv caused by remove_thousands_seps() 308433
 * backport support for foreign number representations from GtkSheet v3
+* published gtksheet-4 version 4.3.6
 
 2020-07-19 Fredy Paquet <mailbox AT opag.ch>
 * updated gtksheet-4 version to 4.3.5, Libtool Revision 4.5.3

@@ -1,4 +1,4 @@
-prefix=/opt/casy/gtk/.Linux.3.x86_64
+prefix=/opt/casy/gtk/.Linux.4.x86_64
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
@@ -7,7 +7,7 @@ target=x11
 Name: GtkSheet
 Description: Sheet widget for for GTK+
 Requires: glib-2.0 gtk+-2.0
-Version: 3.5.0
+Version: 3.5.1
 Libs: -L${libdir} -lgtksheet-${target}-3.0
 Cflags: -I${includedir}/gtksheet-3.0
 

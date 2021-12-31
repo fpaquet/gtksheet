@@ -1,4 +1,8 @@
 2018-12-22 Fredy Paquet <mailbox AT opag.ch>
+* updated gtksheet-3 version to 3.5.1, Libtool Revision 10.1.0
+* fixed segv caused by remove_thousands_seps() 308433
+
+2018-12-22 Fredy Paquet <mailbox AT opag.ch>
 * fixed paths in SlickEdit project file
 
 2018-12-10 Fredy Paquet <mailbox AT opag.ch>

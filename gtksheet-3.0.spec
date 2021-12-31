@@ -2,7 +2,7 @@
 %define name  gtkextra3
 %define major 3
 %define minor 5
-%define micro 0
+%define micro 1
 %define ver   %major.%minor.%micro
 %define rel      1
 

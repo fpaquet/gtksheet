@@ -186,6 +186,7 @@ static gchar *remove_thousands_seps(const gchar *src)
     gint thousands_len = strlen(thousands_c);
 
     if (!src) return((gchar *) src);
+    if (l >= MAX_NUM_STRLEN) return((gchar *) src);
 
     if ((l > 1) && (src[l-1] == '-'))    /* handle trailing minus sign */
     {

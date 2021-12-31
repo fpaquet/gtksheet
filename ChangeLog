@@ -8,6 +8,12 @@ TBD - known bugs
 (opg:19745): Gtk-WARNING **: GtkSheet 0x2816110 (line) is mapped but visible child GtkDataEntry 0x214c560 (GtkDataEntry) is not mapped
 ** (testgtksheet:19815): Gtk-CRITICAL **: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkSpinButton
 
+2021-12-31 Fredy Paquet <mailbox AT opag.ch>
+* updated gtksheet-4 version to 4.3.6, Libtool Revision 4.6.3
+  in configure.ac and meson.build
+* fixed segv caused by remove_thousands_seps() 308433
+* backport support for foreign number representations from GtkSheet v3
+
 2020-07-19 Fredy Paquet <mailbox AT opag.ch>
 * updated gtksheet-4 version to 4.3.5, Libtool Revision 4.5.3
 * fixed meson libtool revision to 4.5.3 (now same as configure.ac)

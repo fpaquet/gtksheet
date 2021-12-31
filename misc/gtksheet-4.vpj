@@ -282,6 +282,7 @@
 			<F
 				N="../Makefile.in"
 				Type="Makefile"/>
+			<F N="../meson.build"/>
 			<F N="../NEWS"/>
 			<F N="../README"/>
 			<F N="../TODO"/>

@@ -17,6 +17,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* References
+   https://en.wikipedia.org/wiki/Decimal_mark
+   https://en.wikipedia.org/wiki/Indian_numbering_system
+   */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -37,61 +42,136 @@
  * SECTION: gtkdataformat
  * @short_description: a data formatting library
  *
- * the widget property 'dataformat' may contain formatting 
- * instructions for the field contents. Any unrecognized 
- * formatting instruction is silently skipped. 
+ * the widget property 'dataformat' may contain formatting
+ * instructions for the field contents. Any unrecognized
+ * formatting instruction is silently skipped.
  *
- * The formatting process should always be reversible. Thus 
+ * The formatting process should always be reversible. Thus
  * formatting can be applied when input focus leaves a field and
  * removed again when the focus enters a field, without the need
- * of an additional content buffer. 
+ * of an additional content buffer.
  *
- * the library can be easily extended by adding more 
+ * the library can be easily extended by adding more
  * instructions to the list above.
- * 
+ *
  */
 
 #define DEFAULT_DECIMAL_POINT   "."  /* default radix char */
 #define DEFAULT_THOUSANDS_SEP   "'"  /* default thousands grouping char */
+#define DEFAULT_GROUPING        "\3"    /* default grouping */
+
 #define MAX_NUM_STRLEN  64
 #define NULL_TEXT_REP   ""
 #define INVALID_DATA   "?"
 
 #define SIGNIFICANT_DIGITS  16
 
+/* Cached locale data */
+static gchar *radix_str = NULL;
+static gchar *thousands_c = NULL;
+static guchar *grouping = NULL;
+
+static void _cache_localedata_utf8(gboolean recheck)
+{
+    if (radix_str && ! recheck) return;
+
+    struct lconv *lc = localeconv();
+    GError *err = NULL;
+
+    gchar *r = (lc && lc->decimal_point) ?
+	lc->decimal_point : DEFAULT_DECIMAL_POINT;
+
+    if (radix_str) { g_free(radix_str); radix_str = NULL; }
+    radix_str = g_locale_to_utf8(r, strlen(r), NULL, NULL, &err);
+
+    if (!radix_str && err) {
+        g_warning("_get_localedata_utf8: failed to convert decimal_point <%s> to UTF8", r);
+        radix_str = g_strdup(r);
+    }
+
+    gchar *tc = (lc && lc->thousands_sep) ?
+	lc->thousands_sep : DEFAULT_THOUSANDS_SEP;
+
+    if (thousands_c) { g_free(thousands_c); thousands_c = NULL; }
+    thousands_c = g_locale_to_utf8(tc, strlen(r), NULL, NULL, &err);
+
+    if (!thousands_c && err) {
+        g_warning("_get_localedata_utf8: failed to convert thousands_setp <%s> to UTF8", tc);
+        thousands_c = g_strdup(tc);
+    }
+
+    guchar *gp = (guchar *) (
+      (lc && lc->grouping && lc->grouping[0]) ? 
+        lc->grouping : DEFAULT_GROUPING);
+
+    if (grouping) { g_free(grouping); grouping = NULL; }
+    grouping = (guchar *) g_strdup((gchar *) gp);
+
+#if GTK_DATA_FORMAT_DEBUG>0
+    g_debug("_cache_localedata_utf8: <%s> <%s>", radix_str, thousands_c);
+#endif
+}
+
 static gchar *insert_thousands_seps(const gchar *cp)
 {
     static gchar buf[MAX_NUM_STRLEN];
-    gchar *radix_cp, c;
-    gint pos;
-    struct lconv *lc = localeconv();
-    gchar *radix_c = (lc && lc->decimal_point) ? 
-	lc->decimal_point : DEFAULT_DECIMAL_POINT;
-    gchar *thousands_c = (lc && lc->thousands_sep) ? 
-	lc->thousands_sep : DEFAULT_THOUSANDS_SEP;
+    gchar *radix_cp, c, *dst;
+    const gchar *src;
+    gint pos;  /* position of radix_str */
+    gint tpos;  /* position of next thousands_sep */
+
+    _cache_localedata_utf8(FALSE);
+
     gint thousands_len = strlen(thousands_c);
+    guchar *grp_ptr = grouping;
+    gint grp_size = *grp_ptr++;
+    gint len = strlen(cp);
 
-    radix_cp = strstr(cp, radix_c);
+    if (len == 0) return("");
+
+    radix_cp = strstr(cp, radix_str);
     if (radix_cp)
-        pos = radix_cp - cp;
+        pos = (radix_cp - cp) - len;
     else
-        pos = strlen(cp);
-    
-    for(radix_cp=buf;;)  /* copy inserting thousands_c on the fly */
-    {
-        if (!*cp) break;
+        pos = 0;
 
-        c = *radix_cp++ = *cp++;
-        --pos;
-        if ((pos > 0) && !(pos % 3)
-        && (c != '-') && (c != '+'))
+    tpos = grp_size;
+    if (*grp_ptr) grp_size = *grp_ptr++;
+
+#if GTK_DATA_FORMAT_DEBUG>0
+    g_debug("its: start grp_size %d pos %d cp <%s>", 
+            grp_size, pos, cp);
+#endif
+
+    /* reverse copy, inserting thousands_c on the fly */
+    src = &cp[len];  /* also copy terminator '\0' */
+    dst = &buf[MAX_NUM_STRLEN-1];  /* end of buffer */
+
+    for (;(src >= cp) && (dst > buf);pos++) {
+        c = *dst-- = *src--;
+
+#if GTK_DATA_FORMAT_DEBUG>0
+        g_debug("its: loop grp_size %d pos %d c %c", grp_size, pos, c);
+        g_debug("its: dst = <%s>", dst+1);
+#endif
+        if ((pos > 0)   /* left of radix_str */
+            && (pos == tpos)   /* position at grouping */
+            && (src >= cp)  /* not at beginning of number */
+            && (*src != '-') && (*src != '+')  /* skip sign */
+            )
         {
-            strcpy(radix_cp, thousands_c);
-            radix_cp += thousands_len;
+            /* note: use unterminated copy */
+            strncpy(dst - thousands_len + 1, thousands_c, thousands_len);
+            dst -= thousands_len;
+
+            tpos += grp_size;
+            if (*grp_ptr) grp_size = *grp_ptr++;
         }
     }
-    *radix_cp++ = '\0';
-    return(buf);
+#if GTK_DATA_FORMAT_DEBUG>0
+    g_debug("its: result = <%s>", dst+1);
+#endif
+    return(dst+1);
 }
 
 static gchar *remove_thousands_seps(const gchar *src)
@@ -100,13 +180,14 @@ static gchar *remove_thousands_seps(const gchar *src)
     gchar *dst = buf;
     gboolean found=FALSE;
     gint i=0, l = strlen(src);
-    struct lconv *lc = localeconv();
-    gchar *thousands_c = (lc && lc->thousands_sep) ? 
-	lc->thousands_sep : DEFAULT_THOUSANDS_SEP;
+
+    _cache_localedata_utf8(FALSE);
+
     gint thousands_len = strlen(thousands_c);
 
     if (!src) return((gchar *) src);
-    
+    if (l >= MAX_NUM_STRLEN) return((gchar *) src);
+
     if ((l > 1) && (src[l-1] == '-'))    /* handle trailing minus sign */
     {
         if (src[0] == '-')
@@ -124,21 +205,22 @@ static gchar *remove_thousands_seps(const gchar *src)
 
     while (i<l)
     {
-        if ((src[i] == thousands_c[0]) && (strncmp(&src[i], thousands_c, thousands_len) == 0))
+        if ((src[i] == thousands_c[0])
+            && (strncmp(&src[i], thousands_c, thousands_len) == 0))
         {
             i += thousands_len;
             found=TRUE;
         }
         else
-            *dst++ = src[i++];  /* beware: minor risc to hit a UTF-8 radix_c */
+            *dst++ = src[i++];  /* beware: minor risc to hit a UTF-8 radix_str */
     }
     *dst = '\0';
-    
+
     if (found) return(buf);
     return((gchar *) src);
 }
 
-static gchar *format_double(gdouble d, 
+static gchar *format_double(gdouble d,
     gint comma_digits, gboolean do_numseps)
 {
     static gchar str_buf[MAX_NUM_STRLEN], *cp;
@@ -147,10 +229,10 @@ static gchar *format_double(gdouble d,
         sprintf(str_buf, "%.*f", comma_digits, d);
     else
         sprintf(str_buf, "%.*g", SIGNIFICANT_DIGITS, d);
-    
-    cp = str_buf; 
 
-    if (do_numseps) cp = insert_thousands_seps(str_buf);  
+    cp = str_buf;
+
+    if (do_numseps) cp = insert_thousands_seps(str_buf);
 
     return(cp);
 }
@@ -168,32 +250,32 @@ static gchar *format_int(gint i, gint num_bytes)
  * @str:        the string to be formatted
  * @dataformat: formatting instructions
  *
- * format @str according to @dataformat. 
+ * format @str according to @dataformat.
  *
- * formatting instructions: 
+ * formatting instructions:
  *
  * '' (the empty string) does no formatting at all.
  *
- * 'int8' is formatted as a singed 8-bit integer value with 
- * optional '-' sign. 
+ * 'int8' is formatted as a singed 8-bit integer value with
+ * optional '-' sign.
  *
  * 'int16' is formatted as a signed 16-bit integer with optional
- * '-' sign. 
+ * '-' sign.
  *
  * 'int32' is formatted as a signed 32-bit integer with optional
  * '-' sign.
  *
- * 'money' is formatted as a double float value with 2 decimal 
- * digits and 1000s-separators 
+ * 'money' is formatted as a double float value with 2 decimal
+ * digits and 1000s-separators
  *
  * 'float,N' is formatted as a double float value with N decimal
- * digits and 1000s-separators 
+ * digits and 1000s-separators
  *
  * 'bit' is formatted as a boolean value [0,1].
  *
  *
- * Returns: a pointer to an internal static buffer, with the 
- * formatted data 
+ * Returns: a pointer to an internal static buffer, with the
+ * formatted data
  */
 gchar *gtk_data_format(const gchar *str, const gchar *dataformat)
 {
@@ -232,7 +314,7 @@ gchar *gtk_data_format(const gchar *str, const gchar *dataformat)
 
                 str = remove_thousands_seps(str);
 
-                if (sscanf(str, "%lg", &d) == 1) 
+                if (sscanf(str, "%lg", &d) == 1)
                     return(format_double(d, 2, TRUE));
 
                 return(INVALID_DATA);
@@ -250,7 +332,7 @@ gchar *gtk_data_format(const gchar *str, const gchar *dataformat)
 
                     str = remove_thousands_seps(str);
 
-                    if (sscanf(str, "%lg", &d) == 1) 
+                    if (sscanf(str, "%lg", &d) == 1)
                         return(format_double(d, precision, TRUE));
 
                     return(INVALID_DATA);
@@ -279,11 +361,11 @@ gchar *gtk_data_format(const gchar *str, const gchar *dataformat)
  * @str:        the string to be unformatted
  * @dataformat: formatting instructions
  *
- * reverse the effect of #gtk_data_format, i.e. remove all 
+ * reverse the effect of #gtk_data_format, i.e. remove all
  * formatting characters, apply trailing dash
  *
- * Returns: a pointer to an internal static buffer, with the 
- * unformatted data 
+ * Returns: a pointer to an internal static buffer, with the
+ * unformatted data
  */
 gchar *gtk_data_format_remove(const gchar *str, const gchar *dataformat)
 {

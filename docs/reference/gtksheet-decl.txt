@@ -572,8 +572,10 @@ struct _GtkSheet
     GtkSheetCell ***data;
 
     /* max number of allocated cells in **data */
-    gint maxallocrow;
-    gint maxalloccol;
+    gint maxallocrow; /* allocated sheet->data rows */
+    gint maxalloccol; /* allocated sheet->data columns */
+    // experimental
+    gint maxalloc_row_array;  /* allocated sheet->row length */
 
     /* active cell */
     GtkSheetCell active_cell;
@@ -1748,7 +1750,7 @@ GtkSheet *sheet, gint column, const gchar *title
 </MACRO>
 <MACRO>
 <NAME>GTKSHEET_MICRO_VERSION</NAME>
-#define GTKSHEET_MICRO_VERSION			(6)
+#define GTKSHEET_MICRO_VERSION			(7)
 </MACRO>
 <MACRO>
 <NAME>GTKSHEET_CHECK_VERSION</NAME>

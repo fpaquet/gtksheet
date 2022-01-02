@@ -410,8 +410,10 @@ struct _GtkSheet
     GtkSheetCell ***data;
 
     /* max number of allocated cells in **data */
-    gint maxallocrow;
-    gint maxalloccol;
+    gint maxallocrow; /* allocated sheet->data rows */
+    gint maxalloccol; /* allocated sheet->data columns */
+    // experimental
+    gint maxalloc_row_array;  /* allocated sheet->row length */
 
     /* active cell */
     GtkSheetCell active_cell;

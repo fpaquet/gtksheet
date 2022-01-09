@@ -14,7 +14,8 @@ TBD - known bugs
 * diverse speed improvements, specially with visible row titles
 * reworked row allocation strategy
   added sheet->maxalloc_row_array to keep track of row struct allocation
-
+* fixed mouse grab in popup windows created in traverse handler 303340
+* fixed selection mode after popup windows created by traverse handler 303340
 
 2021-12-31 Fredy Paquet <mailbox AT opag.ch>
 * updated gtksheet-4 version to 4.3.6, Libtool Revision 4.6.3

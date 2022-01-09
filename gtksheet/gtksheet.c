@@ -109,6 +109,7 @@
 #   define GTK_SHEET_DEBUG_BUILDER   0
 #   define GTK_SHEET_DEBUG_CELL_ACTIVATION  0
 #   define GTK_SHEET_DEBUG_CHILDREN  0
+#   define GTK_SHEET_DEBUG_CAIRO  0
 #   define GTK_SHEET_DEBUG_CLICK  0
 #   define GTK_SHEET_DEBUG_COLORS  0
 #   define GTK_SHEET_DEBUG_DRAW  0
@@ -11201,7 +11202,9 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 
                 // blit
 		cairo_rectangle(swin_cr, x, y, width, height);
+#if GTK_SHEET_DEBUG_CAIRO > 0
                 g_debug("cairo_fill: blit enabled (3)");
+#endif
 		cairo_fill(swin_cr);
 
                 _gtk_sheet_invalidate_region(
@@ -11241,8 +11244,10 @@ gtk_sheet_new_selection(GtkSheet *sheet, GtkSheetRange *range)
 
                 // xor
 		cairo_rectangle(xor_cr, x, y, width, height);
+#if GTK_SHEET_DEBUG_CAIRO > 0
                 g_debug("cairo_fill: xor disabled (4) %d %d %d %d",
                     x, y, width, height);
+#endif
                 cairo_fill(xor_cr); 
 
 #if 0
@@ -12045,10 +12050,26 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 #if GTK_SHEET_DEBUG_MOUSE > 0
 	    g_debug("gtk_sheet_button_press_handler: on click cell");
 #endif
+	    /* 303340 09.01.21/fp - added gdk_device_ungrab()
+	       gtk_sheet_click_cell emits a traverse signal which
+	       allows handlers to show popup windows. The grab prevents
+	       popup windows from working properly because mouse device
+	       is grabbed.
+	    */
+	    gdk_device_ungrab(event->device, event->time);
 
 	    gtk_sheet_click_cell(sheet, row, column, &veto);
+
 	    if (veto)
             {
+		/* 303340~0049875
+		   Selection mode is started on button press here.
+		   While executing traverse handler, mouse button might
+		   have been already released in another window. So we
+		   need to reset selection in gtk_sheet_motion_handler()
+		   when no button is active.
+		   */
+
                 GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
             }
 	}
@@ -12536,8 +12557,19 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     y = event->y;
 
 #if GTK_SHEET_DEBUG_MOTION > 0
-    g_debug("gtk_sheet_motion_handler: (%d,%d) inSel %s", x, y,
-	GTK_SHEET_IN_SELECTION(sheet) ? "Yes" : "No" );
+    g_debug("%s(%d): (%d,%d) inSel %s inResize %s inDrag %s state mod %u but %u", 
+	__FUNCTION__, __LINE__,
+	x, y,
+	GTK_SHEET_IN_SELECTION(sheet) ? "Yes" : "No",
+	GTK_SHEET_IN_RESIZE(sheet) ? "Yes" : "No",
+	GTK_SHEET_IN_DRAG(sheet) ? "Yes" : "No",
+	event->state & GDK_MODIFIER_MASK,
+	event->state & (GDK_BUTTON1_MASK
+			|GDK_BUTTON2_MASK
+			|GDK_BUTTON3_MASK
+			|GDK_BUTTON4_MASK
+			|GDK_BUTTON5_MASK)
+	);
 #endif
 
     if (event->window == sheet->column_title_window 
@@ -12669,7 +12701,21 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
         main_window, event->device, &x, &y, &mods);
 
     if (!(mods & GDK_BUTTON1_MASK))
+    {
+	/* 303340~0049875
+	   When selection mode was activated in button_press_handler on
+	   main window, find 'veto' is true after call to gtk_sheet_click_cell().
+	   While executing traverse handler, mouse button might have been
+	   already released in another window. So we need to reset selection
+	   mode here.
+	   */
+	if (GTK_SHEET_IN_SELECTION(sheet))
+	{
+	    GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
+	}
+
 	return (FALSE);
+    }
 
     if (GTK_SHEET_IN_XDRAG(sheet))
     {

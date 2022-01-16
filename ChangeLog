@@ -18,6 +18,7 @@ TBD - known bugs
 * fixed selection mode after popup windows created by traverse handler 303340
 * fixed SEGV after delete/append rows 308726
 * fixed SEGV caused by lingering timer event of _gtk_sheet_scroll_to_pointer()
+* published gtksheet-4 version 4.3.7
 
 2021-12-31 Fredy Paquet <mailbox AT opag.ch>
 * updated gtksheet-4 version to 4.3.6, Libtool Revision 4.6.3

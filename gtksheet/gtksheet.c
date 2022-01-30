@@ -565,6 +565,7 @@ _gtksheet_signal_emit(GObject *object, guint signal_id, ...)
 
 #define CELL_SPACING 1
 #define DRAG_WIDTH 6
+#define CLICK_CELL_MOTION_TOLERANCE 2
 #define TIMEOUT_SCROLL 20
 #define TIMEOUT_FLASH 200
 #define TIME_INTERVAL 8
@@ -11969,7 +11970,8 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	g_debug("gtk_sheet_button_press_handler: on sheet");
 #endif
 
-	gdk_window_get_device_position(main_window, event->device, &x, &y, NULL);
+	gdk_window_get_device_position(
+	    main_window, event->device, &x, &y, NULL);
 
 	gtk_sheet_get_pixel_info(sheet, NULL, x, y, &row, &column);
 	if (row < 0 && column < 0) return(FALSE);  /* chain up to global button press handler*/
@@ -12064,6 +12066,21 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	else
 	{
 #if GTK_SHEET_DEBUG_MOUSE > 0
+	    g_debug(
+		"%s(%d): SET_SELECTION_PIN r/c %d/%d", 
+		__FUNCTION__, __LINE__, 
+		row, column);
+#endif
+
+	    if (!_gtk_sheet_deactivate_cell(sheet)) return (FALSE);
+
+	    SET_SELECTION_PIN(row, column);
+
+	    sheet->x_drag = x;
+	    sheet->y_drag = y;
+
+#if 0
+#if GTK_SHEET_DEBUG_MOUSE > 0
 	    g_debug("%s(%d): on click cell", __FUNCTION__, __LINE__);
 #endif
 	    /* 303340 09.01.21/fp - added gdk_device_ungrab()
@@ -12120,6 +12137,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 		    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 		}
             }
+#endif
 	}
 	return(TRUE);
     }
@@ -12501,7 +12519,7 @@ gtk_sheet_button_release_handler(
 	return (TRUE);
     }
 
-    if (GTK_SHEET_IN_YDRAG(sheet))
+    else if (GTK_SHEET_IN_YDRAG(sheet))
     {
 	GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_YDRAG);
 	GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
@@ -12521,7 +12539,7 @@ gtk_sheet_button_release_handler(
 	return (TRUE);
     }
 
-    if (GTK_SHEET_IN_DRAG(sheet))  /* selection being moved */
+    else if (GTK_SHEET_IN_DRAG(sheet))  /* selection being moved */
     {
 	GtkSheetRange old_range;
 	GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_DRAG);
@@ -12553,7 +12571,7 @@ gtk_sheet_button_release_handler(
 	gtk_sheet_select_range(sheet, &sheet->range);
     }
 
-    if (GTK_SHEET_IN_RESIZE(sheet)) /* selection being resized*/
+    else if (GTK_SHEET_IN_RESIZE(sheet)) /* selection being resized*/
     {
 	GtkSheetRange old_range;
 	GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_RESIZE);
@@ -12580,7 +12598,36 @@ gtk_sheet_button_release_handler(
 	gtk_sheet_select_range(sheet, &sheet->range);
     }
 
-    if (sheet->state == GTK_SHEET_NORMAL
+    else if (!GTK_SHEET_IN_SELECTION(sheet)  /* not selecting */
+	&& !GTK_SHEET_IN_DRAG(sheet) /* not moving selection */
+	&& !GTK_SHEET_IN_RESIZE(sheet) /* not resizing selection */ )
+    {
+	gdk_window_get_device_position(
+	    main_window, event->device, &x, &y, NULL);
+
+	gint row, column;
+	gtk_sheet_get_pixel_info(sheet, NULL, x, y, &row, &column);
+
+	g_debug(
+	    "%s(%d): click cell r/c %d %d ar/ac %d %d", 
+	    __FUNCTION__, __LINE__, 
+	    row, column,
+	    sheet->active_cell.row, sheet->active_cell.col);
+
+	gdk_device_ungrab(event->device, event->time);
+
+	gboolean veto;
+	gtk_sheet_click_cell(
+	    sheet, row, column, &veto);
+
+	if (veto)
+	{
+	    gtk_sheet_activate_cell(
+		sheet, sheet->active_cell.row, sheet->active_cell.col);
+	}
+    }
+
+    if (sheet->state == GTK_SHEET_NORMAL  /* nothing selected */
         && GTK_SHEET_IN_SELECTION(sheet))
     {
 	GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
@@ -12776,8 +12823,23 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     gdk_window_get_device_position (
         main_window, event->device, &x, &y, &mods);
 
-    if (!(mods & GDK_BUTTON1_MASK))
+#if GTK_SHEET_DEBUG_MOUSE > 0
+    g_debug("%s(%d): check mouse button1", __FUNCTION__, __LINE__);
+#endif
+
+    if (mods & GDK_BUTTON1_MASK)
     {
+#if GTK_SHEET_DEBUG_MOUSE > 0
+	g_debug(
+	    "%s(%d): check mouse button1 inSel %s inResize %s inDrag %s", 
+	    __FUNCTION__, __LINE__,
+	    GTK_SHEET_IN_SELECTION(sheet) ? "Yes" : "No",
+	    GTK_SHEET_IN_RESIZE(sheet) ? "Yes" : "No",
+	    GTK_SHEET_IN_DRAG(sheet) ? "Yes" : "No"
+	    );
+#endif
+
+#if 0
 	/* 303340~0049875
 	   When selection mode was activated in button_press_handler on
 	   main window, find 'veto' is true after call to gtk_sheet_click_cell().
@@ -12791,6 +12853,36 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	}
 
 	return (FALSE);
+#else
+	gint dx = x - sheet->x_drag;
+	gint dy = y - sheet->y_drag;
+
+#if GTK_SHEET_DEBUG_MOUSE > 0
+	g_debug(
+	    "%s(%d): check dx/dy %d/%d inSel %s inResize %s inDrag %s",
+	    __FUNCTION__, __LINE__,
+	    dx, dy,
+	    GTK_SHEET_IN_SELECTION(sheet) ? "Yes" : "No",
+	    GTK_SHEET_IN_RESIZE(sheet) ? "Yes" : "No",
+	    GTK_SHEET_IN_DRAG(sheet) ? "Yes" : "No"
+	    );
+#endif
+
+	if (!GTK_SHEET_IN_SELECTION(sheet)  /* not selecting */
+	    && !GTK_SHEET_IN_DRAG(sheet) /* not moving selection */
+	    && !GTK_SHEET_IN_RESIZE(sheet) /* not resizing selection */ 
+	    && (abs(dx) > CLICK_CELL_MOTION_TOLERANCE
+		|| abs(dy) > CLICK_CELL_MOTION_TOLERANCE))
+	{
+#if GTK_SHEET_DEBUG_MOUSE > 0
+	    g_debug(
+		"%s(%d): check SET_FLAGS(IN_SELECTION)",
+		__FUNCTION__, __LINE__);
+
+	    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
+#endif
+	}
+#endif
     }
 
     if (GTK_SHEET_IN_XDRAG(sheet))

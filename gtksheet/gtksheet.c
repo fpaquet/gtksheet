@@ -12608,11 +12608,13 @@ gtk_sheet_button_release_handler(
 	gint row, column;
 	gtk_sheet_get_pixel_info(sheet, NULL, x, y, &row, &column);
 
+#if GTK_SHEET_DEBUG_MOUSE > 0
 	g_debug(
 	    "%s(%d): click cell r/c %d %d ar/ac %d %d", 
 	    __FUNCTION__, __LINE__, 
 	    row, column,
 	    sheet->active_cell.row, sheet->active_cell.col);
+#endif
 
 	gdk_device_ungrab(event->device, event->time);
 
@@ -12879,8 +12881,8 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 		"%s(%d): check SET_FLAGS(IN_SELECTION)",
 		__FUNCTION__, __LINE__);
 
-	    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 #endif
+	    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 	}
 #endif
     }

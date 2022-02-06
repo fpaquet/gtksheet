@@ -581,7 +581,7 @@ struct _GtkSheet
     GtkSheetCell active_cell;
     GtkWidget *sheet_entry;
 
-    GType entry_type;  /* wanted entry type */
+    GType entry_type;  /* wanted entry type, default for all columns */
     GType installed_entry_type;  /* installed entry type */
 
     GtkSheetCell selection_pin;          /* pin for extend_selection */

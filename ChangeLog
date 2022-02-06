@@ -12,6 +12,10 @@ TBD - known bugs
 * updated gtksheet-4 version to 4.3.8, Libtool Revision 4.8.3
   in configure.ac and meson.build
 * fixed selection mode again, should be clean now
+* fixed handling of default entry type
+* increased CLICK_CELL_MOTION_TOLERANCE to 5
+* fixed documentation of gtk_sheet_change_entry
+* fixed double click in sheet entry 309343
 
 2022-01-02 Fredy Paquet <mailbox AT opag.ch>
 * updated gtksheet-4 version to 4.3.7, Libtool Revision 4.7.3

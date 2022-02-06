@@ -352,6 +352,9 @@ typedef enum _GtkSheetArea
 /* maximized: divisor for window height */
 #define ROW_WIN_HEIGHT_DIVISOR  3
 
+/* default entry type for GTK_SHEET_ENTRY_TYPE_DEFAULT, a GType */
+#define DEFAULT_ENTRY_TYPE GTK_TYPE_DATA_ENTRY
+
 #define COLUMN_MAX_WIDTH(sheet) \
     (sheet->sheet_window_width < COLUMN_REMNANT_PIXELS ? \
     COLUMN_UNREALIZED_MAX_WIDTH : \
@@ -565,7 +568,7 @@ _gtksheet_signal_emit(GObject *object, guint signal_id, ...)
 
 #define CELL_SPACING 1
 #define DRAG_WIDTH 6
-#define CLICK_CELL_MOTION_TOLERANCE 2
+#define CLICK_CELL_MOTION_TOLERANCE 5  /* pixel */
 #define TIMEOUT_SCROLL 20
 #define TIMEOUT_FLASH 200
 #define TIME_INTERVAL 8
@@ -2411,7 +2414,8 @@ gtk_sheet_get_property(GObject    *object,
 	    break;
 
 	case PROP_GTK_SHEET_ENTRY_TYPE:
-	    g_value_set_enum(value, _gtk_sheet_entry_type_from_gtype(sheet->entry_type));
+	    g_value_set_enum(
+                value, _gtk_sheet_entry_type_from_gtype(sheet->entry_type));
 	    break;
 
 	case PROP_GTK_SHEET_VJUST:
@@ -4065,10 +4069,10 @@ gtk_sheet_construct_with_custom_entry(GtkSheet *sheet,
  * @sheet: a #GtkSheet
  * @entry_type: a #GType
  *
- * Changes the current entry of the cell in #GtkSheet. The old 
- * sheet entry widget gets dropped and a new entry widget is 
- * created. Beware: You will have to reconnect all your signal 
- * handlers after changing an entry.
+ * Changes the default entry type of the #GtkSheet. The old
+ * sheet entry widget is dropped and a new entry widget created.
+ * Beware: You will will have to reconnect all your signal
+ * handlers after changing default entry type.
  */
 void
 gtk_sheet_change_entry(GtkSheet *sheet, const GType entry_type)
@@ -4085,7 +4089,8 @@ gtk_sheet_change_entry(GtkSheet *sheet, const GType entry_type)
 
     create_sheet_entry(sheet, entry_type ? entry_type : G_TYPE_NONE);
 
-    sheet->entry_type = entry_type;  /* save wanted type, no matter wether it failed */
+    /* save new default type, no matter wether it failed */
+    sheet->entry_type = entry_type;
 
     if (state == GTK_SHEET_NORMAL)
     {
@@ -10760,6 +10765,10 @@ gtk_sheet_activate_cell(GtkSheet *sheet, gint row, gint col)
     return (TRUE);
 }
 
+#if 0
+/* 06.02.22/fp _gtk_sheet_entry_preselect is obsoleted
+    by GtkSetting "gtk-entry-select-on-focus" */
+ 
 static void _gtk_sheet_entry_preselect(GtkSheet *sheet, GtkWidget *sheet_entry)
 {
     gboolean select_on_focus;
@@ -10767,8 +10776,13 @@ static void _gtk_sheet_entry_preselect(GtkSheet *sheet, GtkWidget *sheet_entry)
     gboolean in_click = FALSE;  /* incomplete - refer to gtkitementry::gtk_entry_grab_focus() */
 
 #if GTK_SHEET_DEBUG_MOVE > 0
-    g_debug("_gtk_sheet_entry_preselect: called has_focus %d",
-	    gtk_widget_has_focus(sheet_entry));
+    g_debug(
+        "%s(%d): called has_focus %d is_focus %d has_grab %d",
+        __FUNCTION__, __LINE__,
+        gtk_widget_has_focus(sheet_entry),
+        gtk_widget_is_focus(sheet_entry),
+        gtk_widget_has_grab(sheet_entry)
+        );
 #endif
 
     g_object_get(G_OBJECT(gtk_settings_get_default()),
@@ -10782,6 +10796,7 @@ static void _gtk_sheet_entry_preselect(GtkSheet *sheet, GtkWidget *sheet_entry)
 	gtk_sheet_entry_select_region(sheet, 0, -1);
     }
 }
+#endif
 
 /**
  * _gtk_sheet_entry_setup: 
@@ -11043,10 +11058,27 @@ gtk_sheet_show_active_cell(GtkSheet *sheet)
     gtk_widget_map(sheet->sheet_entry);
     gtk_sheet_draw_active_cell(sheet, NULL);
 
-    _gtk_sheet_entry_preselect(sheet, sheet->sheet_entry);
+#if 0
+    /* 06.02.22/fp _gtk_sheet_entry_preselect is obsoleted
+        by GtkSetting "gtk-entry-select-on-focus" */
 
-    if (gtk_widget_get_mapped(GTK_WIDGET(sheet))) { // 23.02.20/fp 233370
-	gtk_widget_grab_focus(entry_widget);
+    _gtk_sheet_entry_preselect(sheet, sheet->sheet_entry);
+#endif
+
+    if (gtk_widget_get_mapped(GTK_WIDGET(sheet))) 
+    { // 23.02.20/fp 233370 06.02.22/fp 309343
+#if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
+        g_debug("%s(%d): mapped  has_focus %d is_focus %d has_grab %d",
+            __FUNCTION__, __LINE__,
+            gtk_widget_has_focus(entry_widget),
+            gtk_widget_is_focus(entry_widget),
+            gtk_widget_has_grab(entry_widget)
+            );
+#endif
+        if (!gtk_widget_is_focus(entry_widget)) // maybe gtk_widget_has_focus?
+        {
+            gtk_widget_grab_focus(entry_widget);
+        }
     }
 
     g_free(text);
@@ -12265,10 +12297,15 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	}
     }
 
-    /* if we do not grab focus here, some entry widgets (i.e. GtkSpinButton)
-       will not format contents correctly on field exit */
-
+#if 0
+    /* this causes major trouble with GtkSetting "gtk-entry-select-on-focus"
+       it always preselects GtkEntry contents when clicking a cell
+       it prevents ordinary mouse selection in sheet entry
+       06.02.22/fp 309343 */
+    g_debug("%s(%d): calling gtk_widget_grab_focus(sheet)", 
+    __FUNCTION__, __LINE__);
     gtk_widget_grab_focus(GTK_WIDGET(sheet));
+#endif
 
     _gtksheet_signal_emit(G_OBJECT(sheet), sheet_signals[TRAVERSE],
 	sheet->active_cell.row, sheet->active_cell.col,
@@ -12395,6 +12432,20 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	    GType wanted_type =
 		(colp->entry_type != G_TYPE_NONE) ? colp->entry_type : sheet->entry_type;
 
+            if (wanted_type == G_TYPE_NONE) // 06.02.22/fp 309343
+                wanted_type = DEFAULT_ENTRY_TYPE; /* fallback to default entry type */
+
+#if GTK_SHEET_DEBUG_CLICK > 0
+            g_debug(
+                "%s(%d): installed_entry_type %d %s wanted_type %d %s colp->entry_type %d %s sheet->entry_type %d %s", 
+                __FUNCTION__, __LINE__,
+                installed_entry_type, g_type_name(installed_entry_type),
+                wanted_type, g_type_name(wanted_type),
+                colp->entry_type, g_type_name(colp->entry_type),
+                sheet->entry_type, g_type_name(sheet->entry_type)
+                );
+#endif
+
 	    if (installed_entry_type != wanted_type)
 	    {
 		if (sheet->state == GTK_SHEET_NORMAL)
@@ -12449,10 +12500,17 @@ gtk_sheet_click_cell(GtkSheet *sheet, gint row, gint col, gboolean *veto)
 	sheet->state = GTK_SHEET_NORMAL;
 
         GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
+#if 0
+        /* turned off 06.02.22/fp 309343 */
+        g_debug(
+            "%s(%d): calling gtk_sheet_activate_cell r %d c %d ar %d ac %d",
+            __FUNCTION__, __LINE__,
+            sheet->selection_pin.row, sheet->selection_pin.col,
+            sheet->active_cell.row, sheet->active_cell.col);
 
         gtk_sheet_activate_cell(
             sheet, sheet->active_cell.row, sheet->active_cell.col);
-        
+#endif        
 	return;
     }
 
@@ -12632,6 +12690,15 @@ gtk_sheet_button_release_handler(
     if (sheet->state == GTK_SHEET_NORMAL  /* nothing selected */
         && GTK_SHEET_IN_SELECTION(sheet))
     {
+#if GTK_SHEET_DEBUG_MOUSE > 0
+	    g_debug(
+		"%s(%d): UNSET_FLAGS(IN_SELECTION) PIN r %d c %d ar %d ac %d",
+		__FUNCTION__, __LINE__,
+                sheet->selection_pin.row, sheet->selection_pin.col,
+                sheet->active_cell.row, sheet->active_cell.col
+                );
+#endif
+
 	GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 	gdk_device_ungrab (event->device, event->time);
 
@@ -12878,9 +12945,8 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
 	{
 #if GTK_SHEET_DEBUG_MOUSE > 0
 	    g_debug(
-		"%s(%d): check SET_FLAGS(IN_SELECTION)",
+		"%s(%d): SET_FLAGS(IN_SELECTION)",
 		__FUNCTION__, __LINE__);
-
 #endif
 	    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
 	}
@@ -14743,7 +14809,8 @@ create_sheet_entry(
     GtkWidget *entry, *new_entry;
 
 #if GTK_SHEET_DEBUG_ENTRY > 0
-    g_debug("create_sheet_entry: called");
+    g_debug("%s(%d): entry_type %d %s",
+        __FUNCTION__, __LINE__, new_entry_type, g_type_name(new_entry_type));
 #endif
 
     //GtkStyle *style = gtk_style_copy(gtk_widget_get_style(GTK_WIDGET(sheet)));
@@ -14755,15 +14822,15 @@ create_sheet_entry(
 	gtk_widget_unparent(sheet->sheet_entry);
 
 #if GTK_SHEET_DEBUG_ENTRY > 0
-	g_debug("create_sheet_entry: destroying old entry %p", 
-            sheet->sheet_entry);
+        g_debug("%s(%d): destroying old entry %p", 
+            __FUNCTION__, __LINE__, sheet->sheet_entry);
 #endif
 	gtk_widget_destroy(sheet->sheet_entry);
 	sheet->sheet_entry = NULL;
     }
 
     if (new_entry_type == G_TYPE_NONE) 
-        new_entry_type = GTK_TYPE_DATA_ENTRY;
+        new_entry_type = DEFAULT_ENTRY_TYPE; /* fallback to default entry type */
 
 #if GTK_SHEET_DEBUG_ENTRY > 0
 	g_debug("create_sheet_entry: new_entry type %s", 
@@ -14792,6 +14859,12 @@ create_sheet_entry(
 
     sheet->installed_entry_type = new_entry_type;
     sheet->sheet_entry = new_entry;
+
+#if 0
+    /* the next statement kills default sheet entry, deactivated 06.02.22/fp 309343 */
+    sheet->entry_type = new_entry_type;
+#endif
+
     entry = gtk_sheet_get_entry(sheet);
 
     if (!entry)  /* this was an unsupported entry type */
@@ -14801,7 +14874,7 @@ create_sheet_entry(
 
 	new_entry = GTK_WIDGET(gtk_data_entry_new());
 	sheet->sheet_entry = new_entry;
-	sheet->installed_entry_type = GTK_TYPE_DATA_ENTRY;
+	sheet->installed_entry_type = DEFAULT_ENTRY_TYPE; /* fallback to default entry type */
     }
     g_object_ref_sink(sheet->sheet_entry);
 
@@ -14832,7 +14905,11 @@ create_sheet_entry(
 	(void *)gtk_sheet_entry_key_press_handler,
 	G_OBJECT(sheet));
 
+#if 0
+    /* deactivated 06.02.22/fp 309343 */
+    g_debug("%s(%d): calling gtk_sheet_show_active_cell", __FUNCTION__, __LINE__);
     gtk_sheet_show_active_cell(sheet);
+#endif
 }
 
 

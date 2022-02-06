@@ -408,7 +408,8 @@ gtk_sheet_column_set_property(GObject *object,
 
         case PROP_SHEET_COLUMN_ENTRY_TYPE:
             {
-                GType entry_type = _gtk_sheet_entry_type_to_gtype(g_value_get_enum(value));
+                GType entry_type = _gtk_sheet_entry_type_to_gtype(
+                    g_value_get_enum(value));
 
                 if ((col < 0) 
                     || !G_IS_OBJECT(sheet) 

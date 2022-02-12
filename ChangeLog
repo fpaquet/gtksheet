@@ -9,10 +9,11 @@ TBD - known bugs
 ** (testgtksheet:19815): Gtk-CRITICAL **: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkSpinButton
 
 2022-02-12 Fredy Paquet <mailbox AT opag.ch>
-* fixed calculation of row title width 309445~56074
+* fixed calculation of row title width #309445~56074
 * fixed vertical justification, vertical position quantization dropped, issue#32
 * fixed Gtk-WARNING
   GtkSheet is mapped but visible child GtkDataEntry is not mapped
+* fixed cell not properly resized when autoresize-rows is active #306148~35296
 
 2022-01-30 Fredy Paquet <mailbox AT opag.ch>
 * updated gtksheet-4 version to 4.3.8, Libtool Revision 4.8.3

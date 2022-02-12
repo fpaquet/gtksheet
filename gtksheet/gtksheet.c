@@ -4523,7 +4523,8 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
     g_return_if_fail(cell != NULL);
 
 #if GTK_SHEET_DEBUG_SIZE > 0
-    g_debug("_gtk_sheet_update_extent[%d,%d]: called cell (xw %d,xh %d) colxw %d rowxh %d",
+    g_debug("%s(%d): call r %d c %d cell->ext.w %d cell->ext.h %d col->maxextw %d row->maxexth %d",
+        __FUNCTION__, __LINE__,
 	row, col,
 	cell->extent.width, cell->extent.height,
 	colptr->max_extent_width, rowptr->max_extent_height);
@@ -4575,9 +4576,9 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
     if (!GTK_SHEET_ROW_IS_VISIBLE(rowptr))
 	return;
 
-    if (new_extent_width > old_extent.width)  /* wider */
+    if (new_extent_width >= old_extent.width)  /* wider */
     {
-	if (new_extent_width > colptr->max_extent_width)
+	if (new_extent_width >= colptr->max_extent_width)
 	{
 	    colptr->max_extent_width = new_extent_width;
 	}
@@ -4587,9 +4588,9 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
 	_gtk_sheet_recalc_extent_width(sheet, col);
     }
 
-    if (new_extent_height > old_extent.height)  /* higher */
+    if (new_extent_height >= old_extent.height)  /* higher */
     {
-	if (new_extent_height > rowptr->max_extent_height)
+	if (new_extent_height >= rowptr->max_extent_height)
 	{
 	    rowptr->max_extent_height = new_extent_height;
 	}
@@ -4600,10 +4601,11 @@ static void _gtk_sheet_update_extent(GtkSheet *sheet,
     }
 
 #if GTK_SHEET_DEBUG_SIZE > 0
-    g_debug("_gtk_sheet_update_extent[%d,%d]: done cell (xw %d,xh %d) colxw %d rowxh %d",
-	row, col,
-	cell->extent.width, cell->extent.height,
-	colptr->max_extent_width, rowptr->max_extent_height);
+    g_debug("%s(%d): done r %d c %d cell->ext.w %d cell->ext.h %d col->maxextw %d row->maxexth %d",
+        __FUNCTION__, __LINE__,
+        row, col,
+        cell->extent.width, cell->extent.height,
+        colptr->max_extent_width, rowptr->max_extent_height);
 #endif
 }
 

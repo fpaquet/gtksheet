@@ -8,6 +8,9 @@ TBD - known bugs
 (opg:19745): Gtk-WARNING **: GtkSheet 0x2816110 (line) is mapped but visible child GtkDataEntry 0x214c560 (GtkDataEntry) is not mapped
 ** (testgtksheet:19815): Gtk-CRITICAL **: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkSpinButton
 
+2022-02-12 Fredy Paquet <mailbox AT opag.ch>
+* fixed calculation of row title width 309445~56074
+
 2022-01-30 Fredy Paquet <mailbox AT opag.ch>
 * updated gtksheet-4 version to 4.3.8, Libtool Revision 4.8.3
   in configure.ac and meson.build

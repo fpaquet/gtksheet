@@ -813,6 +813,11 @@ static void _get_string_extent(
     PangoRectangle extent;
     PangoLayout *layout;
 
+    if (!text) {
+        *width = *height = 0;
+        return;
+    }
+
     layout = gtk_widget_create_pango_layout(
         GTK_WIDGET(sheet), NULL);
 
@@ -18353,52 +18358,29 @@ gtk_sheet_button_attach(GtkSheet *sheet,
 static void
 label_size_request(GtkSheet *sheet, gchar *label, GtkRequisition *req)
 {
-    gchar *words;
-    gchar word[1000];
-    gint n = 0;
-    gint row_height = _gtk_sheet_row_default_height(GTK_WIDGET(sheet)) - 2 * CELLOFFSET + 2;
-    GtkStyleContext *style_context = gtk_widget_get_style_context(GTK_WIDGET(sheet));
-    PangoFontDescription *font_desc = NULL;
+    if (!label)
+    {
+        req->height = req->width = 0;
+        return;
+    }
+
+    GtkStyleContext *style_context = gtk_widget_get_style_context(
+        GTK_WIDGET(sheet));
 
     GtkStateFlags flags = gtk_widget_get_state_flags(
         GTK_WIDGET(sheet));
 
+    PangoFontDescription *font_desc = NULL;
+
     gtk_style_context_get(style_context, 
         flags, GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
 
-    req->height = 0;
-    req->width = 0;
-    words = label;
-
-    while (words && *words != '\0')
-    {
-	if (*words == '\n' || *(words + 1) == '\0')
-	{
-	    guint text_width, text_height;
-
-	    req->height += row_height;
-
-	    word[n] = '\0';
-
-	    _get_string_extent(sheet, NULL, 
-                font_desc, 
-                word, FALSE,
-                &text_width, &text_height);
-
-	    req->width = MAX(req->width, text_width);
-	    n = 0;
-	}
-	else
-	{
-	    word[n++] = *words;
-	}
-	words++;
-    }
+    _get_string_extent(sheet, NULL, 
+        font_desc, 
+        label, FALSE,
+        (guint *) &req->width, (guint *) &req->height);
 
     pango_font_description_free(font_desc);
-
-    if (n > 0)
-	req->height -= 2;
 }
 
 /**
@@ -18420,24 +18402,28 @@ _gtk_sheet_button_size_request(GtkSheet *sheet,
     if (gtk_sheet_autoresize(sheet) && button->label && button->label[0])
     {
 	label_size_request(sheet, button->label, &label_requisition);
-	label_requisition.width += 2 * CELLOFFSET;
+	label_requisition.width += 2 * CELLOFFSET + 2;
 	label_requisition.height += 2 * CELLOFFSET;
     }
     else
     {
-	label_requisition.height = _gtk_sheet_row_default_height(GTK_WIDGET(sheet));
+	label_requisition.height = _gtk_sheet_row_default_height(
+            GTK_WIDGET(sheet));
+
 	label_requisition.width = GTK_SHEET_COLUMN_MIN_WIDTH;
     }
 
     if (button->child)
     {
-	GtkStyleContext *style_context = gtk_widget_get_style_context(GTK_WIDGET(sheet));
+	GtkStyleContext *style_context = gtk_widget_get_style_context(
+            GTK_WIDGET(sheet));
 
 	gtk_widget_get_preferred_size(button->child->widget, 
 	    &minimum_size, &natural_size);
 
 	GtkBorder border;  // what border exactly?
-	gtk_style_context_get_border (style_context, GTK_STATE_FLAG_NORMAL, &border);
+	gtk_style_context_get_border(
+            style_context, GTK_STATE_FLAG_NORMAL, &border);
 
 	minimum_size.width += 2 * button->child->xpadding;
 	minimum_size.height += 2 * button->child->ypadding;

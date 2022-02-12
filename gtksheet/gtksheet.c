@@ -8191,9 +8191,6 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     else
         pango_layout_set_text(layout, label, -1);
 
-    g_debug("area x/y %d %d w/h %d %d Label\n%s", 
-        area.x, area.y, area.width, area.height, label);
-
     PangoFontDescription *font_desc = NULL;
     gboolean font_desc_needs_free = FALSE;
 
@@ -10624,6 +10621,7 @@ _gtk_sheet_hide_active_cell(GtkSheet *sheet)
 #if GTK_SHEET_DEBUG_CELL_ACTIVATION > 0
     g_debug("_gtk_sheet_hide_active_cell: gtk_widget_unmap");
 #endif
+    gtk_widget_hide(sheet->sheet_entry);
     gtk_widget_unmap(sheet->sheet_entry);
 
     // use swin_cr to blit sheet->bsurf into sheet_window
@@ -15909,7 +15907,8 @@ _vadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
 	}
 	g_free(text);
 
-	gtk_widget_unmap(sheet->sheet_entry);
+	gtk_widget_hide(sheet->sheet_entry);
+        gtk_widget_unmap(sheet->sheet_entry);
     }
 
     _gtk_sheet_position_children(sheet);
@@ -16059,6 +16058,7 @@ _hadjustment_value_changed_handler(GtkAdjustment *adjustment, gpointer data)
 	}
 	g_free(text);
 
+	gtk_widget_hide(sheet->sheet_entry);
 	gtk_widget_unmap(sheet->sheet_entry);
     }
 

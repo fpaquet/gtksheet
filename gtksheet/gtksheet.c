@@ -8186,6 +8186,9 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
     else
         pango_layout_set_text(layout, label, -1);
 
+    g_debug("area x/y %d %d w/h %d %d Label\n%s", 
+        area.x, area.y, area.width, area.height, label);
+
     PangoFontDescription *font_desc = NULL;
     gboolean font_desc_needs_free = FALSE;
 
@@ -8262,52 +8265,20 @@ _cell_draw_label(GtkSheet *sheet, gint row, gint col, cairo_t *swin_cr)
 	if (vjust == GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT)
 	    vjust = sheet->vjust;
 
-	/* Vertical justification is quantisized,
-	   so that all text lines using the same font appear
-	   vertically aligned, even if adjacent columns have
-	   different vjust settings.
-	   */
-
 	switch(vjust)
 	{
 	    case GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT:
-	    case GTK_SHEET_VERTICAL_JUSTIFICATION_TOP:
+            case GTK_SHEET_VERTICAL_JUSTIFICATION_TOP:
 		y_pos = CELLOFFSET;
 		break;
 
-	    case GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE:
-                {
-		    /* the following works only
-                       if the whole text is set with same metrics
-                       */
-		    register gint line_height =
-                        ascent + descent + spacing;
-		    register gint area_lines =
-                        area.height / line_height;
-		    register gint text_lines =
-                        rect.height / line_height;
+            case GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE:
+                y_pos = (area.height/2) - (rect.height/2);
+                break;
 
-		    y_pos = CELLOFFSET
-                        - ((text_lines - area_lines) / 2) * line_height;
-		}
-		break;
-
-	    case GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM:
-		{
-		    /* the following works only
-                       if the whole text is set with same metrics
-                       */
-		    register gint line_height =
-                        ascent + descent + spacing;
-		    register gint area_lines =
-                        area.height / line_height;
-		    register gint area_height_quant =
-                        area_lines * line_height;
-
-		    y_pos = CELLOFFSET
-                        + area_height_quant - rect.height;
-		}
-		break;
+            case GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM:
+                y_pos = area.height - rect.height - CELLOFFSET;
+                break;
 	}
 
 	y = area.y + y_pos;
@@ -14666,6 +14637,31 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 
 	shentry_allocation.height -= MIN(
             shentry_allocation.height, CELLOFFSET_WF*2) - DEBUG_VSHIFT;
+    }
+
+    /* vertical justification*/
+    if (0 <= act_col && act_col <= sheet->maxcol)
+    {
+        GtkSheetVerticalJustification vjust = COLPTR(sheet, act_col)->vjust;
+
+        if (vjust == GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT)
+            vjust = sheet->vjust;
+
+        switch(vjust)
+        {
+            case GTK_SHEET_VERTICAL_JUSTIFICATION_DEFAULT:
+            case GTK_SHEET_VERTICAL_JUSTIFICATION_TOP:
+                gtk_widget_set_valign(sheet->sheet_entry, GTK_ALIGN_START);
+                break;
+
+            case GTK_SHEET_VERTICAL_JUSTIFICATION_MIDDLE:
+                gtk_widget_set_valign(sheet->sheet_entry, GTK_ALIGN_CENTER);
+                break;
+
+            case GTK_SHEET_VERTICAL_JUSTIFICATION_BOTTOM:
+                gtk_widget_set_valign(sheet->sheet_entry, GTK_ALIGN_END);
+                break;
+        }
     }
 
 #if 0

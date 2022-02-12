@@ -5395,6 +5395,11 @@ gtk_sheet_thaw(GtkSheet *sheet)
  * @width: row titles width.
  *
  * Resize row titles area.
+ * 
+ * Row titles with will be increased automatically, when one of
+ * the properties #GtkSheet:autoresize-cols or
+ * #GtkSheet:autoresize-rows is true. It will not be reduced
+ * automatically, you can use this function to reset it.
  */
 void
 gtk_sheet_set_row_titles_width(GtkSheet *sheet, guint width)

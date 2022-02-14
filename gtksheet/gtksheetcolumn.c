@@ -56,6 +56,8 @@
 #   define GTK_SHEET_COL_DEBUG_DRAW  0
 #   define GTK_SHEET_COL_DEBUG_PROPERTIES  0
 #   define GTK_SHEET_COL_DEBUG_SIZE  0
+#   define GTK_SHEET_COL_DEBUG_REALIZE  0  /* (un)realize, destroy, finalize */
+#   define GTK_SHEET_COL_DEBUG_BUTTON  0   /* column button and label */
 
 #   define GTK_SHEET_ENABLE_DEBUG_MACROS
 #   undef GTK_SHEET_ENABLE_DEBUG_MACROS
@@ -164,7 +166,7 @@ _gtk_sheet_column_button_add_label_internal(
 {
     g_assert(GTK_IS_SHEET_COLUMN(colobj));
 
-#if 0
+#if GTK_SHEET_COL_DEBUG_BUTTON > 0
     g_debug("%s(%d): called %s %p colobj %p col_button %s %p label %s", 
         __FUNCTION__, __LINE__, 
         sheet ? G_OBJECT_TYPE_NAME(sheet) : "(null)", sheet,
@@ -179,6 +181,14 @@ _gtk_sheet_column_button_add_label_internal(
         /* add GtkToggleButton */
         colobj->col_button = gtk_toggle_button_new_with_label (label);
         g_object_ref_sink(colobj->col_button);
+
+#if GTK_SHEET_COL_DEBUG_BUTTON > 0
+        g_debug("%s(%d): %p %s created %p %s label %s", 
+            __FUNCTION__, __LINE__, 
+            colobj, gtk_widget_get_name(colobj),
+            colobj->col_button, gtk_widget_get_name(colobj->col_button),
+            label ? label : "");
+#endif
 
         GtkStyleContext *context = gtk_widget_get_style_context(
             GTK_WIDGET(colobj->col_button));
@@ -197,8 +207,7 @@ _gtk_sheet_column_button_add_label_internal(
 
     gtk_button_set_label(GTK_BUTTON(colobj->col_button), label);
 
-#if 1
-    /* experimental - enable ellipsize on label
+    /* enable ellipsize on label
        https://github.com/fpaquet/gtksheet/issues/20
        */
     GtkWidget *label_widget = gtk_bin_get_child(GTK_BIN(colobj->col_button));
@@ -207,7 +216,6 @@ _gtk_sheet_column_button_add_label_internal(
     {
 	gtk_label_set_ellipsize(GTK_LABEL(label_widget), PANGO_ELLIPSIZE_END);
     }
-#endif
 }
 
 /**
@@ -856,7 +864,8 @@ gtk_sheet_column_init(GtkSheetColumn *column)
     gtk_widget_set_has_window(GTK_WIDGET(column), FALSE);
 
     /* not yet attached - column index does not exist
-       so we create an empty column title button */
+       so we create an empty column title button, needed for Glade
+       */
     _gtk_sheet_column_button_add_label_internal(NULL, column, NULL);
 }
 
@@ -870,6 +879,9 @@ gtk_sheet_column_init(GtkSheetColumn *column)
 static void
 gtk_sheet_column_finalize_handler(GObject *gobject)
 {
+#if GTK_SHEET_COL_DEBUG_REALIZE > 0
+    g_debug("%s(%d): called %p", __FUNCTION__, __LINE__, gobject);
+#endif
     GtkSheetColumn *column = GTK_SHEET_COLUMN(gobject);
 
     if (column->title)
@@ -880,6 +892,11 @@ gtk_sheet_column_finalize_handler(GObject *gobject)
 
     if (column->col_button)
     {
+#if GTK_SHEET_COL_DEBUG_BUTTON > 0
+        g_debug("%s(%d): destroy %p %s", 
+            __FUNCTION__, __LINE__, 
+            column->col_button, gtk_widget_get_name(column->col_button));
+#endif
         gtk_widget_destroy(column->col_button);
         column->col_button = NULL;
     }
@@ -896,7 +913,14 @@ gtk_sheet_column_finalize_handler(GObject *gobject)
         column->description = NULL;
     }
 
+#if GTK_SHEET_COL_DEBUG_REALIZE > 0
+    g_debug("%s(%d): chaining up %p", __FUNCTION__, __LINE__, gobject);
+#endif
     G_OBJECT_CLASS(sheet_column_parent_class)->finalize(gobject);
+
+#if GTK_SHEET_COL_DEBUG_REALIZE > 0
+    g_debug("%s(%d): done %p", __FUNCTION__, __LINE__, gobject);
+#endif
 }
 
 /**
@@ -1028,13 +1052,26 @@ _gtk_sheet_column_unrealize(GtkWidget *widget)
 
     GtkSheetColumn *colobj = GTK_SHEET_COLUMN(widget);
 
-#if 0
+#if GTK_SHEET_COL_DEBUG_REALIZE > 0
     g_debug(
-        "%s(%d) called %s %p", 
+        "%s(%d): called %s %p", 
         __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME(colobj), colobj);
 #endif
 
     if (!gtk_widget_get_realized(GTK_WIDGET(colobj))) return;
+
+    if (colobj->col_button)
+    {
+#if GTK_SHEET_COL_DEBUG_REALIZE > 0
+        g_debug(
+            "%s(%d): unrealize col_button %p %s", 
+            __FUNCTION__, __LINE__, 
+            colobj->col_button, gtk_widget_get_name(colobj->col_button));
+#endif
+        gtk_widget_hide(colobj->col_button);
+        gtk_widget_unmap(colobj->col_button);
+        gtk_widget_unrealize(colobj->col_button);
+    }
 
     /* this function fixes a crash in Gtk 3.22.16
        which shows up in gdb with G_SLICE=always-malloc.
@@ -1046,10 +1083,16 @@ _gtk_sheet_column_unrealize(GtkWidget *widget)
        #2 in gtk_widget_real_unrealize (widget=0x1a8efc0) at gtkwidget.c:12409
        #6 in gtk_widget_unrealize (widget=0x1a8efc0) at gtkwidget.c:5520
        #9 in gtk_sheet_unrealize_handler (widget=0x1a62940) at gtksheet.c:6954
-
        */
 
     gtk_widget_set_realized(GTK_WIDGET(colobj), FALSE);
+
+#if GTK_SHEET_COL_DEBUG_REALIZE > 0
+    g_debug(
+        "%s(%d): done %p %s parent %p", 
+        __FUNCTION__, __LINE__, 
+        colobj, gtk_widget_get_name(colobj), gtk_widget_get_parent(colobj));
+#endif
 }
 
 static void
@@ -1570,12 +1613,19 @@ gtk_sheet_column_button_add_label(
     if (col < 0 || col > sheet->maxcol) return;
     GtkSheetColumn *colobj = COLPTR(sheet, col);
 
+#if GTK_SHEET_COL_DEBUG_BUTTON > 0
+    g_debug("%s(%d): called %p %s label %s", 
+        __FUNCTION__, __LINE__,
+        colobj, gtk_widget_get_name(colobj), label);
+#endif
+
     _gtk_sheet_column_button_add_label_internal(sheet, colobj, label);
 
     if (!gtk_sheet_is_frozen(sheet))
     {
         _gtk_sheet_draw_button(sheet, -1, col, NULL);
     }
+
     g_signal_emit_by_name(G_OBJECT(sheet), "changed", -1, col);
 }
 
@@ -2477,8 +2527,7 @@ gtk_sheet_set_column_title(GtkSheet *sheet,
 
     GtkSheetColumn *colobj = COLPTR(sheet, col);
 
-    _gtk_sheet_column_button_add_label_internal(
-        sheet, colobj, title);
+    _gtk_sheet_column_button_add_label_internal(sheet, colobj, title);
 }
 
 /**

@@ -1697,9 +1697,15 @@ gtk_sheet_buildable_add_child_internal(GtkSheet *sheet,
     GtkSheetColumn *child,
     const char *name)
 {
-
     g_return_if_fail(GTK_IS_SHEET(sheet));
     g_return_if_fail(GTK_IS_SHEET_COLUMN(child));
+
+    /* this works via adding a new column
+       and then replace it with the provided column widget
+       finally destroying the new column
+     
+       this could possibly be done more efficiently
+       */
 
     gtk_sheet_add_column(sheet, 1);
     int col = gtk_sheet_get_columns_count(sheet) - 1;
@@ -1707,6 +1713,8 @@ gtk_sheet_buildable_add_child_internal(GtkSheet *sheet,
     if (sheet->column[col])
     {
 	COLPTR(sheet, col)->sheet = NULL;
+
+        gtk_widget_destroy(sheet->column[col]);
 
 	g_object_unref(sheet->column[col]);
 	sheet->column[col] = NULL;
@@ -1764,7 +1772,9 @@ gtk_sheet_buildable_add_child(
     const gchar *name = gtk_widget_get_name(GTK_WIDGET(child));
 
 #if GTK_SHEET_DEBUG_BUILDER > 0
-    g_debug("gtk_sheet_buildable_add_child %p: %s type %s", child,
+    g_debug("%s(%d): child %p: name %s type %s", 
+        __FUNCTION__, __LINE__,
+        child,
 	name ? name : "NULL",
 	type ? type : "NULL");
 #endif
@@ -1777,7 +1787,8 @@ gtk_sheet_buildable_add_child(
 	gchar *strval;
 
 	g_object_get(G_OBJECT(newcol), "label", &strval, NULL);
-        g_debug("gtk_sheet_buildable_add_child: label=%s",
+        g_debug("%s(%d): label=%s",
+            __FUNCTION__, __LINE__,
             strval ? strval : "NULL");
 
 	g_free(strval);
@@ -7095,13 +7106,19 @@ gtk_sheet_finalize_handler(GObject *object)
 
     sheet = GTK_SHEET(object);
 
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): called %p %s",
+        __FUNCTION__, __LINE__, sheet, gtk_widget_get_name(sheet));
+#endif
     if (sheet->css_class)
     {
         g_free(sheet->css_class);
         sheet->css_class = NULL;
     }
 
+#if 0
     /* get rid of all the cells */
+    /* code moved to gtk_sheet_destroy_handler 13.02.21/fp */
     gtk_sheet_range_clear(sheet, NULL);
     gtk_sheet_range_delete(sheet, NULL);
     gtk_sheet_delete_rows(sheet, 0, sheet->maxrow + 1);
@@ -7109,6 +7126,7 @@ gtk_sheet_finalize_handler(GObject *object)
 
     DeleteRow(sheet, 0, sheet->maxrow + 1);
     DeleteColumn(sheet, 0, sheet->maxcol + 1);
+#endif
 
     g_free(sheet->row);
     sheet->row = NULL;
@@ -7128,8 +7146,16 @@ gtk_sheet_finalize_handler(GObject *object)
 	sheet->title = NULL;
     }
 
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): chaining up %p %s",
+        __FUNCTION__, __LINE__, sheet, gtk_widget_get_name(sheet));
+#endif
     if (G_OBJECT_CLASS(sheet_parent_class)->finalize)
 	(*G_OBJECT_CLASS(sheet_parent_class)->finalize)(object);
+
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): done %p %s", __FUNCTION__, __LINE__, sheet);
+#endif
 }
 
 /*
@@ -7150,9 +7176,26 @@ gtk_sheet_destroy_handler(GtkWidget *widget)
 
     sheet = GTK_SHEET(widget);
 
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): called %p %s",
+        __FUNCTION__, __LINE__, sheet, gtk_widget_get_name(sheet));
+#endif
+
+    if (GTK_SHEET_FLAGS(sheet) & GTK_SHEET_IS_DESTROYED)
+    {
+#if GTK_SHEET_DEBUG_REALIZE > 0
+        g_debug("%s(%d): already destroyed %p", __FUNCTION__, __LINE__, sheet);
+#endif
+        return;
+    }
+
     /* destroy the entry */
     if (sheet->sheet_entry && GTK_IS_WIDGET(sheet->sheet_entry))
     {
+#if GTK_SHEET_DEBUG_REALIZE > 0
+	g_debug("%s(%d): destroying sheet->sheet_entry %p",
+            __FUNCTION__, __LINE__, sheet->sheet_entry);
+#endif
 	gtk_widget_destroy(sheet->sheet_entry);
 	sheet->sheet_entry = NULL;
     }
@@ -7161,8 +7204,8 @@ gtk_sheet_destroy_handler(GtkWidget *widget)
     if (sheet->button && GTK_IS_WIDGET(sheet->button))
     {
 #if GTK_SHEET_DEBUG_REALIZE > 0
-	g_debug("gtk_sheet_destroy: destroying old entry %p",
-            sheet->button);
+	g_debug("%s(%d): destroying sheet->button %p",
+            __FUNCTION__, __LINE__, sheet->button);
 #endif
 	gtk_widget_destroy(sheet->button);
 	sheet->button = NULL;
@@ -7190,6 +7233,7 @@ gtk_sheet_destroy_handler(GtkWidget *widget)
 	g_object_unref(G_OBJECT(sheet->hadjustment));
 	sheet->hadjustment = NULL;
     }
+
     if (sheet->vadjustment)
     {
 	g_signal_handlers_disconnect_matched(
@@ -7200,21 +7244,68 @@ gtk_sheet_destroy_handler(GtkWidget *widget)
 	sheet->vadjustment = NULL;
     }
 
+#if 1
+    /* get rid of all the cells */
+    /* code moved here from gtk_sheet_finalize_handler 13.02.21/fp */
+    gtk_sheet_range_clear(sheet, NULL);
+    gtk_sheet_range_delete(sheet, NULL);
+    gtk_sheet_delete_rows(sheet, 0, sheet->maxrow + 1);
+    gtk_sheet_delete_columns(sheet, 0, sheet->maxcol + 1);
+
+    DeleteRow(sheet, 0, sheet->maxrow + 1);
+    DeleteColumn(sheet, 0, sheet->maxcol + 1);
+#endif
+
     children = sheet->children;
     while (children)
     {
 	GtkSheetChild *child = (GtkSheetChild *)children->data;
+
+#if GTK_SHEET_DEBUG_REALIZE > 0
+        g_debug("%s(%d): destroying child %p widget %p %s",
+            __FUNCTION__, __LINE__, 
+            child, 
+            child->widget, g_type_name(G_TYPE_FROM_INSTANCE(child->widget)));
+#endif
+
+#if GTK_SHEET_DEBUG_REALIZE > 0
+        g_debug("%s(%d): calling gtk_sheet_remove_handler %p %s",
+            __FUNCTION__, __LINE__, child, gtk_widget_get_name(child));
+#endif
 	if (child && child->widget)
-	    gtk_sheet_remove_handler(
-                GTK_CONTAINER(sheet), child->widget);
-	children = sheet->children;
+        {
+            /* gtk_container_remove invokes gtk_sheet_remove_handler()
+               which invalidates child */
+            gtk_container_remove(GTK_CONTAINER(sheet), child->widget);
+            children = sheet->children;
+        }
+        else
+            children = children->next;
     }
     sheet->children = NULL;
 
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): hide, unmap, unrealize %p",
+        __FUNCTION__, __LINE__, sheet);
+#endif
+    gtk_widget_hide(GTK_WIDGET(sheet));
+    gtk_widget_unmap(GTK_WIDGET(sheet));
+    gtk_widget_unrealize(GTK_WIDGET(sheet));
+
     GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IS_DESTROYED);
+
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): chaining up %p %s",
+        __FUNCTION__, __LINE__, sheet, gtk_widget_get_name(sheet));
+#endif
 
     if (GTK_WIDGET_CLASS(sheet_parent_class)->destroy)
 	(*GTK_WIDGET_CLASS(sheet_parent_class)->destroy)(widget);
+
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): done %p %s",
+        __FUNCTION__, __LINE__, sheet, gtk_widget_get_name(sheet));
+#endif
 }
 
 /*
@@ -7592,6 +7683,27 @@ gtk_sheet_unrealize_handler(GtkWidget *widget)
 
     sheet = GTK_SHEET(widget);
 
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug(
+        "%s(%d): called %p %s parent %p mapped %d", 
+        __FUNCTION__, __LINE__, 
+        sheet, gtk_widget_get_name(sheet), gtk_widget_get_parent(sheet),
+        gtk_widget_get_mapped(sheet)
+        );
+#endif
+
+    if (!gtk_widget_get_realized(GTK_WIDGET(sheet))) return;
+
+    if (sheet->button)
+    {
+#if GTK_SHEET_DEBUG_REALIZE > 0
+        g_debug("%s(%d): unrealize sheet->button %p", 
+            __FUNCTION__, __LINE__, sheet->button);
+#endif
+
+        gtk_widget_unrealize(sheet->button);
+    }
+
     g_object_unref(G_OBJECT(sheet->cursor_drag));
     sheet->cursor_drag = NULL;
 
@@ -7604,6 +7716,30 @@ gtk_sheet_unrealize_handler(GtkWidget *widget)
     gdk_window_destroy(sheet->row_title_window);
     sheet->row_title_window = NULL;
 
+#if 0
+    /* destroying sheet window  produces 3 warnings
+       ? Gtk - gtk_widget_unregister_window: assertion 'GDK_IS_WINDOW (window)' failed
+       ? Gdk - _gdk_window_destroy_hierarchy: assertion 'GDK_IS_WINDOW (window)' failed
+       ? GLib-GObject - g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+       */
+    gdk_window_destroy(gtk_widget_get_window(sheet));
+    gtk_widget_set_window(sheet, NULL);
+#endif
+
+#if 0
+    /* gtk_clipboard_clear doesn't seem to have any effect 13.02.22/fp
+       maybe because sheet itself never holding selection, but cell editor does
+       */
+    g_debug("%s(%d): clear clipboard %p", 
+        __FUNCTION__, __LINE__, G_OBJECT(sheet));
+
+    GtkClipboard *clipboard = gtk_widget_get_clipboard(
+        GTK_WIDGET(sheet), GDK_SELECTION_PRIMARY);
+
+    if (gtk_clipboard_get_owner(clipboard) == G_OBJECT(sheet))
+      gtk_clipboard_clear (clipboard);
+#endif
+
     if (sheet->bsurf)
     {
 	cairo_destroy(sheet->bsurf_cr);
@@ -7614,8 +7750,57 @@ gtk_sheet_unrealize_handler(GtkWidget *widget)
 	sheet->bsurf = NULL;
     }
 
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): hide+unmap %p", 
+        __FUNCTION__, __LINE__, G_OBJECT(sheet));
+#endif
+    gtk_widget_hide(sheet);
+    gtk_widget_unmap(sheet);
+
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    GtkWidget *parent = gtk_widget_get_parent(sheet);
+    if (parent)
+    {
+        g_debug("%s(%d): %p %s parent %p %s",
+            __FUNCTION__, __LINE__, 
+            sheet, gtk_widget_get_name(sheet),
+            gtk_widget_get_parent(sheet), 
+            gtk_widget_get_name(gtk_widget_get_parent(sheet))
+            );
+
+        //gtk_widget_set_realized(GTK_WIDGET(sheet), FALSE);
+        //the following cause SEGV in gtk_widget_get_frame_clock
+        //gtk_widget_unparent(sheet);
+        //gtk_container_remove(parent, sheet);
+    }
+#endif
+    
+#if 1
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): g_object_unref %p", 
+        __FUNCTION__, __LINE__, G_OBJECT(sheet));
+#endif
+    g_object_unref(G_OBJECT(sheet));
+#endif
+
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): gtk_widget_set_realized %p FALSE", 
+        __FUNCTION__, __LINE__, G_OBJECT(sheet));
+#endif
+    gtk_widget_set_realized(GTK_WIDGET(sheet), FALSE);
+
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): chaining up %p %s", 
+        __FUNCTION__, __LINE__, sheet, gtk_widget_get_name(sheet));
+#endif
+
     if (GTK_WIDGET_CLASS(sheet_parent_class)->unrealize)
 	(*GTK_WIDGET_CLASS(sheet_parent_class)->unrealize)(widget);
+
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): done %p %s", 
+        __FUNCTION__, __LINE__, sheet, gtk_widget_get_name(sheet));
+#endif
 }
 
 /*
@@ -7728,7 +7913,10 @@ gtk_sheet_unmap_handler(GtkWidget *widget)
     GtkSheet *sheet = GTK_SHEET(widget);
 
 #if GTK_SHEET_DEBUG_DRAW > 0
-    g_debug("%s(%d): called", __FUNCTION__, __LINE__);
+    g_debug(
+        "%s(%d): %p %s parent %p", 
+        __FUNCTION__, __LINE__, 
+        sheet, gtk_widget_get_name(sheet), gtk_widget_get_parent(sheet));
 #endif
 
     if (gtk_widget_get_mapped(widget))
@@ -16462,11 +16650,13 @@ gtk_sheet_delete_rows(GtkSheet *sheet, guint row, guint nrows)
     {
 	child = (GtkSheetChild *)children->data;
 
-	if (child->attached_to_cell &&
-	    child->row >= row && child->row < row + nrows &&
-	    gtk_widget_get_realized(child->widget))
+	if (child->attached_to_cell
+            && child->row >= row && child->row < row + nrows)
 	{
-	    gtk_container_remove(GTK_CONTAINER(sheet), child->widget);
+            /* gtk_container_remove invokes gtk_sheet_remove_handler()
+               which invalidates child */
+            gtk_container_remove(GTK_CONTAINER(sheet), child->widget);
+
 	    children = sheet->children;
 	}
 	else
@@ -16532,11 +16722,13 @@ gtk_sheet_delete_columns(GtkSheet *sheet, guint col, guint ncols)
     {
 	child = (GtkSheetChild *)children->data;
 
-	if (child->attached_to_cell &&
-	    child->col >= col && child->col < col + ncols &&
-	    gtk_widget_get_realized(child->widget))
+	if (child->attached_to_cell
+            && child->col >= col && child->col < col + ncols)
 	{
+            /* gtk_container_remove invokes gtk_sheet_remove_handler()
+               which invalidates child */
 	    gtk_container_remove(GTK_CONTAINER(sheet), child->widget);
+
 	    children = sheet->children;
 	}
 	else
@@ -17375,9 +17567,12 @@ AddColumns(GtkSheet *sheet, gint position, gint ncols)
                     GTK_WIDGET(newobj), sheet->column_title_window);
             }
 
-            DEBUG_WIDGET_SET_PARENT(newobj, sheet);
-            gtk_widget_set_parent(
-                GTK_WIDGET(newobj), GTK_WIDGET(sheet));
+            if (!gtk_widget_get_parent(GTK_WIDGET(newobj)))
+            {
+                DEBUG_WIDGET_SET_PARENT(newobj, sheet);
+                gtk_widget_set_parent(
+                    GTK_WIDGET(newobj), GTK_WIDGET(sheet));
+            }
 
             g_object_ref_sink(newobj);
         }
@@ -17480,6 +17675,14 @@ DeleteColumn(GtkSheet *sheet, gint position, gint ncols)
     for (c = position; c < position + ncols; c++)  /* dispose columns */
     {
 	sheet->column[c]->sheet = NULL;
+
+#if GTK_SHEET_DEBUG_REALIZE > 0
+        g_debug("%s(%d): unmap, unparent %p %s",
+            __FUNCTION__, __LINE__, 
+            sheet->column[c], gtk_widget_get_name(sheet->column[c]));
+#endif
+        gtk_widget_unmap(GTK_WIDGET(sheet->column[c]));
+        gtk_widget_unparent(GTK_WIDGET(sheet->column[c]));
 
 	g_object_unref(sheet->column[c]);
 	sheet->column[c] = NULL;
@@ -18025,7 +18228,8 @@ gtk_sheet_put(GtkSheet *sheet, GtkWidget *child, gint x, gint y)
     g_return_val_if_fail(gtk_widget_get_parent(child) == NULL, NULL);
 
 #if GTK_SHEET_DEBUG_CHILDREN > 0
-    g_debug("gtk_sheet_put: %p %s child %p", 
+    g_debug("%s(%d): %p %s child %p", 
+        __FUNCTION__, __LINE__, 
 	sheet, gtk_widget_get_name(sheet), child);
 #endif
 
@@ -18178,8 +18382,10 @@ gtk_sheet_attach(GtkSheet *sheet,
     }
 
 #if GTK_SHEET_DEBUG_CHILDREN > 0
-    g_debug("gtk_sheet_attach: %p %s widget %p", 
-	sheet, gtk_widget_get_name(sheet), widget);
+    g_debug("%s(%d): %p %s widget %p r %d c %d", 
+	__FUNCTION__, __LINE__, 
+        sheet, gtk_widget_get_name(sheet), widget,
+        row, col);
 #endif
 
     child = g_new0(GtkSheetChild, 1);
@@ -18277,9 +18483,11 @@ gtk_sheet_button_attach(GtkSheet *sheet,
 	{
 	    DEBUG_WIDGET_CONTAINER_REMOVE(
 		colobj->col_button, child);
+
+            /* gtk_container_remove invokes gtk_sheet_remove_handler()
+               which invalidates child */
 	    gtk_container_remove(
 		GTK_CONTAINER(colobj->col_button), child);
-	    //gtk_widget_destroy(child);
 	}
 
 	if (widget) {
@@ -18287,10 +18495,6 @@ gtk_sheet_button_attach(GtkSheet *sheet,
             gtk_container_add(
                 GTK_CONTAINER(colobj->col_button), widget);
 	}
-
-	// is this needed?
-	//if (gtk_widget_get_realized (GTK_WIDGET(sheet)))
-	//  gtk_widget_queue_resize (GTK_WIDGET(sheet));
 
         return;    
     }
@@ -18934,6 +19138,14 @@ gtk_sheet_remove_handler(
 
     GtkSheet *sheet = GTK_SHEET(container);
 
+#if GTK_SHEET_DEBUG_REALIZE > 0
+    g_debug("%s(%d): %p %s child %p %s",
+        __FUNCTION__, __LINE__, 
+        container, gtk_widget_get_name(container),
+        widget, gtk_widget_get_name(widget)
+        );
+#endif
+
     GList *children = sheet->children;
 
     GtkSheetChild *child = NULL;
@@ -18958,15 +19170,16 @@ gtk_sheet_remove_handler(
 #endif
 
 	gtk_widget_unparent(widget);
+
 	if (G_IS_OBJECT(child->widget))
 	    g_object_unref(child->widget); 
-	child->widget = NULL;
+
+        child->widget = NULL;
 
 	sheet->children = g_list_remove_link(sheet->children, children);
 	g_list_free_1(children);
 	g_free(child);
     }
-
 }
 
 static void

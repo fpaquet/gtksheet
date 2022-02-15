@@ -13,6 +13,7 @@ TBD - known bugs
   caused by double column creation when using GtkBuilder
 * fixed multiple bugs with destroy/unrealize/finalize of sheet and contents
 * fixed several Gtk and Gdk warnings
+* fixed selection mode when showing a sheet while mouse button1 is down 309445
 
 2022-02-12 Fredy Paquet <mailbox AT opag.ch>
 * fixed calculation of row title width #309445~56074

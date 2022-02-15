@@ -4755,6 +4755,16 @@ _get_button_width(GtkSheet *sheet, GtkWidget *widget)
     return(width);
 }
 
+/**
+ * _gtk_sheet_autoresize_column_internal
+ * 
+ * recompute column width, update when necessary
+ * 
+ * @param sheet  the #GtkSheet
+ * @param col    column index
+ * 
+ * @return TRUE when changed
+ */
 static gboolean
 _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 {
@@ -4801,52 +4811,67 @@ _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 	g_debug("%s(%d): col %d set width %d",
             __FUNCTION__, __LINE__, col, new_width);
 #endif
-	gtk_sheet_set_column_width(sheet, col, new_width);
-	GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
-
-        return(TRUE);
+        if (gtk_sheet_set_column_width(sheet, col, new_width))
+        {
+            GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
+            return(TRUE);
+        }
     }
 
     return(FALSE);
 }
 
+/**
+ * _gtk_sheet_autoresize_row_internal
+ * 
+ * recompute row height, update when necessary
+ * 
+ * @param sheet  the #GtkSheet
+ * @param row    row index
+ * 
+ * @return TRUE when changed
+ */
 static gboolean
 _gtk_sheet_autoresize_row_internal(GtkSheet *sheet, gint row)
 {
-    gint new_height;
-    GtkSheetRow *rowptr;
-
     g_return_val_if_fail(sheet != NULL, FALSE);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
 
     if (row < 0 || row > sheet->maxallocrow || row > sheet->maxrow)
 	return(FALSE);
 
-    rowptr = ROWPTR(sheet, row);
+    GtkSheetRow *rowptr = ROWPTR(sheet, row);
 
     if (!GTK_SHEET_ROW_IS_VISIBLE(rowptr))
 	return(FALSE);
 
-    new_height = ROW_EXTENT_TO_HEIGHT(rowptr->max_extent_height);
+    gint new_height = ROW_EXTENT_TO_HEIGHT(rowptr->max_extent_height);
 
 #if 0 && GTK_SHEET_DEBUG_SIZE > 0
-    g_debug("_gtk_sheet_autoresize_row_internal[%d]: win_h %d ext_h %d row_max_h %d",
+    g_debug("%s(%d): %p %s row %d: win_h %d ext_h %d row_max_h %d",
+        __FUNCTION__, __LINE__,
+        sheet, gtk_widget_get_name(sheet),
 	row, sheet->sheet_window_height, rowptr->max_extent_height,
 	ROW_MAX_HEIGHT(sheet));
-    g_debug("_gtk_sheet_autoresize_row_internal[%d]: called row h %d new h %d",
+
+    g_debug("%s(%d): row %d: called row h %d new h %d",
+        __FUNCTION__, __LINE__,
 	row, rowptr->height, new_height);
 #endif
 
     if (new_height != rowptr->height)
     {
 #if GTK_SHEET_DEBUG_SIZE > 0
-	g_debug("_gtk_sheet_autoresize_row_internal[%d]: set height %d",
+	g_debug("%s(%d): %p %s: row %d: set height %d",
+            __FUNCTION__, __LINE__,
+            sheet, gtk_widget_get_name(sheet),
 	    row, new_height);
 #endif
-	gtk_sheet_set_row_height(sheet, row, new_height);
-	GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
-
-        return(TRUE);
+        if (gtk_sheet_set_row_height(sheet, row, new_height))
+        {
+            GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_REDRAW_PENDING);
+            return(TRUE);
+        }
     }
 
     return(FALSE);
@@ -16490,22 +16515,23 @@ new_row_height(GtkSheet *sheet, gint row, gint *y)
  * @row: row number.
  * @height: row height(in pixels).
  *
- * Set row height.
+ * Set row height. Check minimum height.
+ * 
+ * Return TRUE when changed
  */
-void
+gboolean
 gtk_sheet_set_row_height(GtkSheet *sheet, gint row, guint height)
 {
     guint min_height;
 
-    g_return_if_fail(sheet != NULL);
-    g_return_if_fail(GTK_IS_SHEET(sheet));
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
 
-    if (row < 0 || row > sheet->maxrow)
-	return;
+    if (row < 0 || row > sheet->maxrow) return FALSE;
 
     gtk_sheet_row_size_request(sheet, row, &min_height);
-    if (height < min_height)
-	return;
+
+    if (height < min_height) return FALSE;
 
     sheet->row[row].height = height;
 
@@ -16521,6 +16547,8 @@ gtk_sheet_set_row_height(GtkSheet *sheet, gint row, guint height)
     }
 
     g_signal_emit(G_OBJECT(sheet), sheet_signals[NEW_ROW_HEIGHT], 0, row, height);
+
+    return TRUE;
 }
 
 /**

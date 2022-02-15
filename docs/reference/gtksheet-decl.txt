@@ -1268,7 +1268,7 @@ GtkSheet *sheet, gint row, gint column, GdkRectangle *area
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_set_row_height</NAME>
-<RETURNS>void  </RETURNS>
+<RETURNS>gboolean  </RETURNS>
 GtkSheet *sheet, gint row, guint height
 </FUNCTION>
 <FUNCTION>
@@ -1525,7 +1525,7 @@ GtkSheetColumn *colobj
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_sheet_set_column_width</NAME>
-<RETURNS>void  </RETURNS>
+<RETURNS>gboolean  </RETURNS>
 GtkSheet *sheet, gint column, guint width
 </FUNCTION>
 <FUNCTION>

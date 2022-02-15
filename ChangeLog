@@ -8,12 +8,15 @@ TBD - known bugs
 (opg:19745): Gtk-WARNING **: GtkSheet 0x2816110 (line) is mapped but visible child GtkDataEntry 0x214c560 (GtkDataEntry) is not mapped
 ** (testgtksheet:19815): Gtk-CRITICAL **: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkSpinButton
 
+2022-02-15 Fredy Paquet <mailbox AT opag.ch>
+* fixed selection mode when showing a sheet while mouse button1 is down 309445
+* fixed screen refresh when new text extent is smaller than attached children 237372
+
 2022-02-14 Fredy Paquet <mailbox AT opag.ch>
 * fixed crash when changing global application font 309445
   caused by double column creation when using GtkBuilder
 * fixed multiple bugs with destroy/unrealize/finalize of sheet and contents
 * fixed several Gtk and Gdk warnings
-* fixed selection mode when showing a sheet while mouse button1 is down 309445
 
 2022-02-12 Fredy Paquet <mailbox AT opag.ch>
 * fixed calculation of row title width #309445~56074

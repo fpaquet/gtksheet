@@ -768,7 +768,7 @@ gboolean gtk_sheet_get_cell_area(GtkSheet *sheet,
                                  gint row, gint column, GdkRectangle *area);
 
 /* set row height */
-void gtk_sheet_set_row_height(GtkSheet *sheet, gint row, guint height);
+gboolean gtk_sheet_set_row_height(GtkSheet *sheet, gint row, guint height);
 
 /* append ncols columns to the end of the sheet */
 void gtk_sheet_add_column(GtkSheet *sheet, guint ncols);

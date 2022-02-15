@@ -1536,26 +1536,27 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
  * @column: column number.
  * @width: the width of the column.
  *
- * Set column width.
+ * Set column width. Check minimum width.
+ * 
+ * Return TRUE when changed
  */
-void
+gboolean
 gtk_sheet_set_column_width(GtkSheet *sheet, gint col, guint width)
 {
-    guint min_width;
+    g_return_val_if_fail(sheet != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
 
-    g_return_if_fail(sheet != NULL);
-    g_return_if_fail(GTK_IS_SHEET(sheet));
-
-    if (col < 0 || col > sheet->maxcol) return;
+    if (col < 0 || col > sheet->maxcol) return FALSE;
 
 #if GTK_SHEET_COL_DEBUG_SIZE > 0
     g_debug("%s(%d): col %d width %d", 
         __FUNCTION__, __LINE__, col, width);
 #endif
 
+    guint min_width;
     _gtk_sheet_column_size_request(sheet, col, &min_width);
 
-    if (width < min_width) return;
+    if (width < min_width) return FALSE;
 
     COLPTR(sheet, col)->width = width;
 
@@ -1573,6 +1574,8 @@ gtk_sheet_set_column_width(GtkSheet *sheet, gint col, guint width)
 
     g_signal_emit_by_name(
         G_OBJECT(sheet), "new-column-width", col, width);
+
+    return TRUE;
 }
 
 

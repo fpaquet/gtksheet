@@ -10,6 +10,8 @@ TBD - known bugs
 
 2022-02-17 Fredy Paquet <mailbox AT opag.ch>
 * debug output reworked, cleanup compiler warnings
+* fixed wrong row height calculation causing unwanted autoscroll
+  in conjunction with attached sheet childs bigger than row height
 
 2022-02-15 Fredy Paquet <mailbox AT opag.ch>
 * fixed selection mode when showing a sheet while mouse button1 is down 309445

@@ -107,9 +107,9 @@
 #   define GTK_SHEET_DEBUG_ADJUSTMENT  0
 #   define GTK_SHEET_DEBUG_ALLOCATION  0    /* 0,1,2 */
 #   define GTK_SHEET_DEBUG_BUILDER   0
+#   define GTK_SHEET_DEBUG_CAIRO  0
 #   define GTK_SHEET_DEBUG_CELL_ACTIVATION  0
 #   define GTK_SHEET_DEBUG_CHILDREN  0
-#   define GTK_SHEET_DEBUG_CAIRO  0
 #   define GTK_SHEET_DEBUG_CLICK  0
 #   define GTK_SHEET_DEBUG_COLORS  0
 #   define GTK_SHEET_DEBUG_DRAW  0
@@ -124,19 +124,19 @@
 #   define GTK_SHEET_DEBUG_FONT_METRICS  0
 #   define GTK_SHEET_DEBUG_FREEZE   0
 #   define GTK_SHEET_DEBUG_KEYPRESS   0
+#   define GTK_SHEET_DEBUG_MARKUP  0
+#   define GTK_SHEET_DEBUG_MOTION  0
 #   define GTK_SHEET_DEBUG_MOUSE  0    /* 0,1 */
 #   define GTK_SHEET_DEBUG_MOVE  0
-#   define GTK_SHEET_DEBUG_MOTION  0
 #   define GTK_SHEET_DEBUG_PIXEL_INFO  0
 #   define GTK_SHEET_DEBUG_PROPERTIES  0
 #   define GTK_SHEET_DEBUG_REALIZE  0
-#   define GTK_SHEET_DEBUG_SELECTION  0
-#   define GTK_SHEET_DEBUG_SIGNALS   0
-#   define GTK_SHEET_DEBUG_SIZE  0
 #   define GTK_SHEET_DEBUG_SCROLL  0
-#   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0
+#   define GTK_SHEET_DEBUG_SELECTION  0
 #   define GTK_SHEET_DEBUG_SET_CELL_TEXT  0
-#   define GTK_SHEET_DEBUG_MARKUP  0
+#   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0
+#   define GTK_SHEET_DEBUG_SIGNALS   0
+#   define GTK_SHEET_DEBUG_SIZE  0  /* 0,1,2 */
 
 #   define GTK_SHEET_ENABLE_DEBUG_MACROS
 #   undef GTK_SHEET_ENABLE_DEBUG_MACROS
@@ -4842,6 +4842,65 @@ _gtk_sheet_autoresize_column_internal(GtkSheet *sheet, gint col)
 }
 
 /**
+ * _attached_children_height_max
+ * 
+ * determinate maximum height of all children widgets,
+ * attached to a certain row 
+ *  
+ * Note: doesn't yet honor  
+ *  
+ * @param sheet  the #GtkSheet
+ * @param row    the row
+ * 
+ * @return maximum height or 0
+ */
+static gint _attached_children_height_max(GtkSheet *sheet, gint row)
+{
+    GList *children = sheet->children;
+    gint max_h = 0;
+
+    g_assert(0 <= row && row <= sheet->maxallocrow);
+
+#if GTK_SHEET_DEBUG_SIZE > 0
+    g_debug("%s(%d): called row %d", __FUNCTION__, __LINE__, row);
+#endif
+
+    while (children)
+    {
+        GtkSheetChild *child = (GtkSheetChild *)children->data;
+        GtkWidget *child_widget = child->widget;
+
+        if (child->attached_to_cell && !child->floating
+            && child->row == row
+            //&& gtk_widget_get_realized(child_widget)
+            //&& gtk_widget_get_mapped(child_widget)
+            )
+        {
+            gint h = gtk_widget_get_allocated_height(child_widget);
+
+            if (h > max_h) max_h = h;
+        }
+
+        children = children->next;
+    }
+
+    if (sheet->row[row].button.child
+        && sheet->row[row].button.child->widget)
+    {
+        GtkWidget *child_widget = sheet->row[row].button.child->widget;
+        gint h = gtk_widget_get_allocated_height(child_widget);
+
+        if (h > max_h) max_h = h;
+    }
+
+#if GTK_SHEET_DEBUG_SIZE > 0
+    g_debug("%s(%d): return row %d maxh %d", __FUNCTION__, __LINE__, row, max_h);
+#endif
+
+    return max_h;
+}
+
+/**
  * _gtk_sheet_autoresize_row_internal
  * 
  * recompute row height, update when necessary
@@ -4867,7 +4926,10 @@ _gtk_sheet_autoresize_row_internal(GtkSheet *sheet, gint row)
 
     gint new_height = ROW_EXTENT_TO_HEIGHT(rowptr->max_extent_height);
 
-#if 0 && GTK_SHEET_DEBUG_SIZE > 0
+    gint max_h = _attached_children_height_max(sheet, row);
+    if (max_h > new_height) new_height = max_h;
+
+#if GTK_SHEET_DEBUG_SIZE > 1
     g_debug("%s(%d): %p %s row %d: win_h %d ext_h %d row_max_h %d",
         __FUNCTION__, __LINE__,
         sheet, gtk_widget_get_name(sheet),
@@ -5672,7 +5734,9 @@ gtk_sheet_row_button_add_label(
 #endif
 
     if (req.height > sheet->row[row].height)
-	gtk_sheet_set_row_height(sheet, row, req.height);
+    {
+        gtk_sheet_set_row_height(sheet, row, req.height);
+    }
 
     if (req.width > sheet->row_title_area.width)
     {
@@ -16597,6 +16661,9 @@ gtk_sheet_set_row_height(GtkSheet *sheet, gint row, guint height)
 {
     guint min_height;
 
+#if GTK_SHEET_DEBUG_SIZE > 0
+    g_debug("%s(%d): row %d heigth %d", __FUNCTION__, __LINE__, row, height);
+#endif
     g_return_val_if_fail(sheet != NULL, FALSE);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), FALSE);
 
@@ -16606,6 +16673,10 @@ gtk_sheet_set_row_height(GtkSheet *sheet, gint row, guint height)
 
     if (height < min_height) return FALSE;
 
+#if GTK_SHEET_DEBUG_SIZE > 0
+    g_debug("%s(%d): row %d old h %d new h %d", 
+        __FUNCTION__, __LINE__, row, sheet->row[row].height, height);
+#endif
     sheet->row[row].height = height;
 
     _gtk_sheet_recalc_top_ypixels(sheet);
@@ -18965,7 +19036,7 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
 		if (!child->xshrink)
 		{
 #if GTK_SHEET_DEBUG_SIZE > 0
-		    g_debug("%s(%d) col %d: set width %d",
+		    g_debug("%s(%d): col %d: set width %d",
                         __FUNCTION__, __LINE__,
 			child->col, child_min_size.width + 2 * child->xpadding);
 #endif

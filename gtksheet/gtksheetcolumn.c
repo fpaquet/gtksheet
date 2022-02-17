@@ -114,7 +114,7 @@ _column_button_press_handler(
     GdkEvent  *event,
     gpointer   user_data)
 {
-#if 0
+#if GTK_SHEET_COL_DEBUG_BUTTON > 0
     g_debug("%s(%d): %s %p", 
         __FUNCTION__, __LINE__,
         G_OBJECT_TYPE_NAME(widget), widget);
@@ -185,7 +185,7 @@ _gtk_sheet_column_button_add_label_internal(
 #if GTK_SHEET_COL_DEBUG_BUTTON > 0
         g_debug("%s(%d): %p %s created %p %s label %s", 
             __FUNCTION__, __LINE__, 
-            colobj, gtk_widget_get_name(colobj),
+            colobj, gtk_widget_get_name(GTK_WIDGET(colobj)),
             colobj->col_button, gtk_widget_get_name(colobj->col_button),
             label ? label : "");
 #endif
@@ -252,7 +252,8 @@ gtk_sheet_column_set_property(GObject *object,
     gint col = gtk_sheet_column_get_index(colobj);
 
 #if GTK_SHEET_COL_DEBUG_PROPERTIES > 0
-    g_debug("gtk_sheet_column_set_property: %s called (%d)", pspec->name, property_id);
+    g_debug("%s(%d): %s called (property_id %d)", 
+        __FUNCTION__, __LINE__, pspec->name, property_id);
 #endif
 
     /* note: glade/gtkbuilder will set column properties before the column gets
@@ -274,7 +275,8 @@ gtk_sheet_column_set_property(GObject *object,
                 if (newcol == col) return;
 
 #if GTK_SHEET_COL_DEBUG_PROPERTIES > 0
-                g_debug("gtk_sheet_column_set_property: swapping column %d/%d", col, newcol);
+                g_debug("%s(%d): swapping column %d/%d", 
+                    __FUNCTION__, __LINE__, col, newcol);
 #endif
 
                 /* method: swap */
@@ -314,7 +316,8 @@ gtk_sheet_column_set_property(GObject *object,
                 else
                 {
 #if GTK_SHEET_COL_DEBUG_SIZE > 0
-                    g_debug("gtk_sheet_column_set_property[%d]: set width %d", col, width);
+                    g_debug("%s(%d): col %d set width %d", 
+                        __FUNCTION__, __LINE__, col, width);
 #endif
                     gtk_sheet_set_column_width(sheet, col, width);
                 }
@@ -450,8 +453,8 @@ gtk_sheet_column_set_property(GObject *object,
                 gint visible = g_value_get_boolean(value);
 
 #if GTK_SHEET_COL_DEBUG_PROPERTIES > 0
-                g_debug("gtk_sheet_column_set_property: col %d visible %d sheet %p", 
-                    col, visible, sheet);
+                g_debug("%s(%d): col %d visible %d sheet %p", 
+                    __FUNCTION__, __LINE__, col, visible, sheet);
 #endif
 
                 if ((col < 0) 
@@ -1002,7 +1005,7 @@ _gtk_sheet_column_realize(GtkSheetColumn *colobj, GtkSheet *sheet)
     g_return_if_fail(GTK_IS_SHEET_COLUMN(colobj));
     g_return_if_fail(GTK_IS_SHEET(sheet));
 
-#if 0
+#if GTK_SHEET_COL_DEBUG_REALIZE > 0
     g_debug("%s(%d) called %s %p", 
         __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME(colobj), colobj);
 #endif
@@ -1053,8 +1056,7 @@ _gtk_sheet_column_unrealize(GtkWidget *widget)
     GtkSheetColumn *colobj = GTK_SHEET_COLUMN(widget);
 
 #if GTK_SHEET_COL_DEBUG_REALIZE > 0
-    g_debug(
-        "%s(%d): called %s %p", 
+    g_debug("%s(%d): called %s %p", 
         __FUNCTION__, __LINE__, G_OBJECT_TYPE_NAME(colobj), colobj);
 #endif
 
@@ -1063,8 +1065,7 @@ _gtk_sheet_column_unrealize(GtkWidget *widget)
     if (colobj->col_button)
     {
 #if GTK_SHEET_COL_DEBUG_REALIZE > 0
-        g_debug(
-            "%s(%d): unrealize col_button %p %s", 
+        g_debug("%s(%d): unrealize col_button %p %s", 
             __FUNCTION__, __LINE__, 
             colobj->col_button, gtk_widget_get_name(colobj->col_button));
 #endif
@@ -1088,10 +1089,10 @@ _gtk_sheet_column_unrealize(GtkWidget *widget)
     gtk_widget_set_realized(GTK_WIDGET(colobj), FALSE);
 
 #if GTK_SHEET_COL_DEBUG_REALIZE > 0
-    g_debug(
-        "%s(%d): done %p %s parent %p", 
+    g_debug("%s(%d): done %p %s parent %p", 
         __FUNCTION__, __LINE__, 
-        colobj, gtk_widget_get_name(colobj), gtk_widget_get_parent(colobj));
+        colobj, gtk_widget_get_name(GTK_WIDGET(colobj)), 
+        gtk_widget_get_parent(GTK_WIDGET(colobj)));
 #endif
 }
 
@@ -1118,29 +1119,9 @@ gtk_sheet_column_set_buildable_property(GtkBuildable  *buildable,
                                         const GValue  *value)
 {
 #if GTK_SHEET_COL_DEBUG_PROPERTIES > 0
-    g_debug("gtk_sheet_column_set_buildable_property: %s", name);
+    g_debug("%s(%d): %s", __FUNCTION__, __LINE__, name);
 #endif
 
-#if 0
-    if (strcmp(name, "visible") == 0)
-    {
-        gboolean v = g_value_get_boolean(value);
-#   if GTK_SHEET_COL_DEBUG_PROPERTIES > 0
-        g_debug("gtk_sheet_column_set_buildable_property: %s = %s", name,
-                v ? "true" : "false");
-#   endif
-        GTK_SHEET_COLUMN_SET_VISIBLE(buildable, v);
-    }
-    else if (strcmp(name, "width-request") == 0)
-    {
-#   if GTK_SHEET_COL_DEBUG_PROPERTIES > 0
-        g_debug("gtk_sheet_column_set_buildable_property: width-request = %d",
-                GTK_SHEET_COLUMN(buildable)->width);
-#   endif
-        GTK_SHEET_COLUMN(buildable)->width = g_value_get_int(value);
-    }
-    else
-#endif
     g_object_set_property(G_OBJECT(buildable), name, value);
 }
 
@@ -1149,7 +1130,7 @@ static void
 gtk_sheet_column_buildable_init(GtkBuildableIface *iface)
 {
 #if GTK_SHEET_COL_DEBUG_BUILDER > 0
-    g_debug("gtk_sheet_column_buildable_init");
+    g_debug("%s(%d)", __FUNCTION__, __LINE__);
 #endif
     iface->set_buildable_property = gtk_sheet_column_set_buildable_property;
 }
@@ -1357,8 +1338,8 @@ _gtk_sheet_column_size_request(GtkSheet *sheet,
     COLPTR(sheet, col)->requisition = *requisition;
 
 #if GTK_SHEET_COL_DEBUG_SIZE > 0
-    g_debug("_gtk_sheet_column_size_request: col %d = %d",
-        col, *requisition);
+    g_debug("%s(%d): col %d = %d",
+        __FUNCTION__, __LINE__, col, *requisition);
 #endif
 }
 
@@ -1619,7 +1600,7 @@ gtk_sheet_column_button_add_label(
 #if GTK_SHEET_COL_DEBUG_BUTTON > 0
     g_debug("%s(%d): called %p %s label %s", 
         __FUNCTION__, __LINE__,
-        colobj, gtk_widget_get_name(colobj), label);
+        colobj, gtk_widget_get_name(GTK_WIDGET(colobj)), label);
 #endif
 
     _gtk_sheet_column_button_add_label_internal(sheet, colobj, label);
@@ -2107,7 +2088,7 @@ gtk_sheet_column_set_sensitivity(
     if (col < 0 || col > sheet->maxcol) return;
 
 #if GTK_SHEET_COL_DEBUG_PROPERTIES > 0
-    g_debug("gtk_sheet_column_set_sensitivity: col %d", col);
+    g_debug("%s(%d): col %d", __FUNCTION__, __LINE__, col);
 #endif
 
     GTK_SHEET_COLUMN_SET_SENSITIVE(COLPTR(sheet, col), sensitive);
@@ -2279,20 +2260,22 @@ gtk_sheet_column_set_visibility(GtkSheet *sheet, gint col, gboolean visible)
     }
 
 #if GTK_SHEET_COL_DEBUG_PROPERTIES > 0
-    g_debug("gtk_sheet_column_set_visibility: col %d = %s, m %d r %d v %d parent %p", col,
-            visible ? "true" : "false",
-            gtk_widget_get_mapped(GTK_WIDGET(colobj)),
-            gtk_widget_get_realized(GTK_WIDGET(colobj)),
-            gtk_widget_get_visible(GTK_WIDGET(colobj)),
-            gtk_widget_get_parent(GTK_WIDGET(colobj))
-            );
+    g_debug("%s(%d): col %d visibility %s, mapped %d realized %d visible %d parent %p", 
+        __FUNCTION__, __LINE__, 
+        col,
+        visible ? "true" : "false",
+        gtk_widget_get_mapped(GTK_WIDGET(colobj)),
+        gtk_widget_get_realized(GTK_WIDGET(colobj)),
+        gtk_widget_get_visible(GTK_WIDGET(colobj)),
+        gtk_widget_get_parent(GTK_WIDGET(colobj))
+        );
 #endif
 
     GTK_SHEET_COLUMN_SET_VISIBLE(colobj, visible);
 
-    if (!visible && gtk_widget_get_mapped(colobj))
+    if (!visible && gtk_widget_get_mapped(GTK_WIDGET(colobj)))
     {
-        gtk_widget_unmap(colobj);
+        gtk_widget_unmap(GTK_WIDGET(colobj));
     }
 
     _gtk_sheet_range_fixup(sheet, &sheet->range);
@@ -2367,7 +2350,7 @@ gtk_sheet_column_label_set_visibility(
     if (col < 0 || col > sheet->maxcol) return;
 
 #if GTK_SHEET_COL_DEBUG_PROPERTIES > 0
-    g_debug("gtk_sheet_column_label_set_visibility: col %d", col);
+    g_debug("%s(%d): col %d", __FUNCTION__, __LINE__, col);
 #endif
 
     g_assert(0 <= col && col <= sheet->maxcol);

@@ -1322,7 +1322,8 @@ _gtk_sheet_column_size_request(GtkSheet *sheet,
             && child->col == col
             && child->row != -1
             && !child->floating
-            && !child->xshrink)
+            && !child->xshrink
+            && child->widget)
         {
             GtkRequisition child_min_size, child_nat_size;
 

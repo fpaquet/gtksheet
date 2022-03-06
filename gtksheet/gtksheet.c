@@ -1701,6 +1701,11 @@ static void gtk_sheet_position_child(
 static void gtk_sheet_row_size_request(
     GtkSheet *sheet, gint row, guint *requisition);
 
+#if 0
+static gboolean _gtk_sheet_point_in_child(
+    GtkSheetChild *child, gint x, gint y);
+#endif
+
 /* GtkBuildableIface */
 
 
@@ -12456,11 +12461,32 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    sheet->x_drag = x;
 	    sheet->y_drag = y;
 
+            GtkSheetChild *child = gtk_sheet_get_child_at(sheet, row, column);
+
 #if GTK_SHEET_DEBUG_MOUSE > 0
-	    g_debug("%s(%d): SET_FLAGS(SELECTION_START_POSSIBLE)",
-                __FUNCTION__, __LINE__);
+	    g_debug("%s(%d): gtk_sheet_get_child_at row %d col %d = %p",
+                __FUNCTION__, __LINE__,
+                row, column, child);
 #endif
-	    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_SELECTION_START_POSSIBLE);
+#if 0
+            /* this test has not the desired effect
+               when child doesn't cover whole cell area
+               or is attached floating 
+               */
+            if (!_gtk_sheet_point_in_child(child, x, y))
+            {
+                child = NULL; /* clicked in child area */
+            }
+#endif
+
+            if (!child) /* let the child process button events */
+            {
+#if GTK_SHEET_DEBUG_MOUSE > 0
+                g_debug("%s(%d): SET_FLAGS(SELECTION_START_POSSIBLE)",
+                    __FUNCTION__, __LINE__);
+#endif
+                GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_SELECTION_START_POSSIBLE);
+            }
             
 #if 0
 #if GTK_SHEET_DEBUG_MOUSE > 0
@@ -13047,17 +13073,39 @@ gtk_sheet_button_release_handler(
             );
 #endif
 
-	gdk_device_ungrab(event->device, event->time);
+        GtkSheetChild *child = gtk_sheet_get_child_at(sheet, row, column);
 
-	gboolean veto;
-	gtk_sheet_click_cell(
-	    sheet, row, column, &veto);
+#if GTK_SHEET_DEBUG_MOUSE > 0
+        g_debug("%s(%d): gtk_sheet_get_child_at row %d col %d = %p",
+            __FUNCTION__, __LINE__,
+            row, column, child);
+#endif
 
-	if (veto)
-	{
-	    gtk_sheet_activate_cell(
-		sheet, sheet->active_cell.row, sheet->active_cell.col);
-	}
+#if 0
+        /* this test has not the desired effect
+           when child doesn't cover whole cell area
+           or is attached floating 
+           */
+        if (!_gtk_sheet_point_in_child(child, x, y))
+        {
+            child = NULL; /* clicked in child area */
+        }
+#endif
+
+        if (!child) /* let the child process button events */
+        {
+            gdk_device_ungrab(event->device, event->time);
+
+            gboolean veto;
+            gtk_sheet_click_cell(
+                sheet, row, column, &veto);
+
+            if (veto)
+            {
+                gtk_sheet_activate_cell(
+                    sheet, sheet->active_cell.row, sheet->active_cell.col);
+            }
+        }
     }
 
     if (sheet->state == GTK_SHEET_NORMAL  /* nothing selected */
@@ -19540,6 +19588,40 @@ gtk_sheet_get_child_at(GtkSheet *sheet, gint row, gint col)
     }
     return (NULL);
 }
+
+#if 0
+/**
+ * _gtk_sheet_point_in_child - check if point is in child area
+ * 
+ * @param child  the GtkSheetChild
+ * @param x      pixel coordinate
+ * @param y      pixel coordinate
+ */
+static gboolean
+_gtk_sheet_point_in_child(GtkSheetChild *child, gint x, gint y)
+{
+    g_return_val_if_fail(child != NULL, FALSE);
+
+    GtkAllocation allocation;
+    gtk_widget_get_allocation(child->widget, &allocation);
+
+    g_debug("%s(%d): x/y %d/%d child allocation x/y %d/%d w/h %d/%d = %d",
+        __FUNCTION__, __LINE__,
+        x, y, 
+        allocation.x, allocation.y, 
+        allocation.width, allocation.height,
+        (allocation.x <= x 
+        && x <= allocation.x + allocation.width - 1
+        && allocation.y <= y
+        && y <= allocation.y + allocation.height - 1 )
+        );
+
+    return (allocation.x <= x 
+        && x <= allocation.x + allocation.width - 1
+        && allocation.y <= y
+        && y <= allocation.y + allocation.height - 1 );
+}
+#endif
 
 /**
  * _gtk_sheet_child_hide:

@@ -13,6 +13,7 @@ TBD - known bugs
 * fixed SEGV caused by adding many children (>10000) 309725
 * speed improvements when adding many children
 * fixed sheet reference count 309878~59253
+* fixed click on attached child activates cell below child 309878~59257
 
 2022-02-19 Fredy Paquet <mailbox AT opag.ch>
 * published gtksheet-4 version 4.3.8

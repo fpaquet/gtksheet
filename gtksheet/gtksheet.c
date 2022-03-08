@@ -18118,7 +18118,7 @@ AddRows(GtkSheet *sheet, gint position, gint nrows)
 	    sheet, gtk_widget_get_name(GTK_WIDGET(sheet)),
 	    (sheet->maxalloc_row_array) * sizeof(GtkSheetRow));
 #endif
-	    
+        
 	/* realloc produces new uninitialized structs at end */
 	sheet->row = (GtkSheetRow *)g_realloc(sheet->row,
 	    (sheet->maxalloc_row_array) * sizeof(GtkSheetRow));
@@ -18155,6 +18155,12 @@ AddRows(GtkSheet *sheet, gint position, gint nrows)
 	{
 	    gint newidx = position + r;  /* [pos..pos+nrows-1] */
 
+#if GTK_SHEET_DEBUG_ALLOCATION > 0
+            g_debug("%s(%d): %p %s _gtk_sheet_row_init %d",
+                __FUNCTION__, __LINE__,
+                sheet, gtk_widget_get_name(GTK_WIDGET(sheet)),
+                newidx);
+#endif
 	    _gtk_sheet_row_init(&sheet->row[newidx]);
 
 	    sheet->row[newidx].requisition = sheet->row[newidx].height =
@@ -18230,8 +18236,8 @@ DeleteRow(GtkSheet *sheet, gint position, gint nrows)
        rrrrr00   maxrow=4 maxallocrow=6 (0 means data pointer is NULL)
 	 dddd    DeleteRow(position=2, nrows=4)
 		 min(nrows, maxrow-position+1) -> nrows=3
-       rr000000  result (leave row array intact)
-       rr000     result (reallocated row array, not implemented)
+       rr00000   result (leave row array intact)
+       rr0       result (reallocated row array, not implemented)
        
        ex2 - example 2
        ---------------
@@ -18239,8 +18245,17 @@ DeleteRow(GtkSheet *sheet, gint position, gint nrows)
        rrrrR00   maxrow=4 maxallocrow=6 (0 means data pointer is NULL)
 	 dd      DeleteRow(position=2, nrows=2)
 		 min(nrows, maxrow-position+1) -> nrows=2
-       rrR00000  result (leave row array intact)
-       rrR000    result (reallocated row array, not implemented)
+       rrR0000   result (leave row array intact)
+       rrR00     result (reallocated row array, not implemented)
+
+       ex3 - example 3
+       ---------------
+       01234567  row number
+       rrrrr00   maxrow=4 maxallocrow=6 (0 means data pointer is NULL)
+	   d     DeleteRow(position=4, nrows=1)
+		 min(nrows, maxrow-position+1) -> nrows=1
+       rrrr000   result (leave row array intact)
+       rrrr00    result (reallocated row array, not implemented)
     */
 
     nrows = MIN(nrows, sheet->maxrow - position + 1);
@@ -18256,15 +18271,30 @@ DeleteRow(GtkSheet *sheet, gint position, gint nrows)
 	sheet->maxrow, sheet->maxallocrow, sheet->maxalloccol);
 #endif
 
-    for (r = position; r < position + nrows; r++)  /* dispose row data */
+    for (r = position; r < position + nrows; r++)  /* dispose row and data */
     {
-	/* ex1: [2..4] ex2: [2..3] - correct */
-	gtk_sheet_row_finalize(&sheet->row[r]);
+	/* ex1: [2..4] ex2: [2..3] ex3: [4..4] - correct */
+
+	gtk_sheet_row_finalize(&sheet->row[r]);  /* dispose row */
+
+        if (sheet->data[r])  /* dispose row data pointer array */
+        {
+#if GTK_SHEET_DEBUG_ALLOCATION > 0
+            g_debug("%s(%d): %p %s clear row data %d",
+                __FUNCTION__, __LINE__,
+                sheet, gtk_widget_get_name(GTK_WIDGET(sheet)),
+                r);
+#endif
+            for (c = 0; c <= sheet->maxalloccol; c++)  /* dispose cell data */
+            {
+                gtk_sheet_real_cell_clear(sheet, r, c, TRUE);
+            }
+        }
     }
 
     for (r = position; r <= sheet->maxrow - nrows; r++)  /* shift rows into position*/
     {
-	/* ex1: [2..1] ex2: [2..2] - correct */
+	/* ex1: [2..1] ex2: [2..2] ex3: [4..3] - correct */
 	sheet->row[r] = sheet->row[r + nrows]; /* copy struct */
 	//sheet->row[r + nrows] = NULL; 
 	_gtk_sheet_row_init(&sheet->row[r]);  /* clear source struct */
@@ -18272,26 +18302,53 @@ DeleteRow(GtkSheet *sheet, gint position, gint nrows)
 
     /* to be done: shrink data pointer pool via realloc */
 
-    if (position <= sheet->maxallocrow)
+    if (position <= sheet->maxallocrow)  /* shift row data */
     {
-	for (r = position; r <= sheet->maxrow - nrows; r++)  /* shift row data */
-	{
-	    /* ex1: [2..1] ex2: [2..2] */
-	    if (r > sheet->maxallocrow) break;
+        /* ex1: true, ex2: true, ex3: true */
 
-	    for (c = 0; c <= sheet->maxalloccol; c++)  /* dispose cell data */
-	    {
-		gtk_sheet_real_cell_clear(sheet, r, c, TRUE);
-	    }
+#if GTK_SHEET_DEBUG_ALLOCATION > 0
+        g_debug("%s(%d): %p %s shift row data pos %d mxr-n %d",
+            __FUNCTION__, __LINE__,
+            sheet, gtk_widget_get_name(GTK_WIDGET(sheet)),
+            position, sheet->maxrow - nrows);
+#endif
+	for (r = position; r <= sheet->maxrow - nrows; r++)
+	{
+            /* ex1: [2..1] ex2: [2..2] ex3: [4..3] - correct */
+
+#if GTK_SHEET_DEBUG_ALLOCATION > 0
+            g_debug("%s(%d): %p %s for row %d mxar %d",
+                __FUNCTION__, __LINE__,
+                sheet, gtk_widget_get_name(GTK_WIDGET(sheet)),
+                r, sheet->maxallocrow);
+#endif
+	    if (r > sheet->maxallocrow) break;
 
 	    if (sheet->data[r])  /* dispose row data pointer array */
 	    {
+#if GTK_SHEET_DEBUG_ALLOCATION > 0
+                g_debug("%s(%d): %p %s clear row data %d",
+                    __FUNCTION__, __LINE__,
+                    sheet, gtk_widget_get_name(GTK_WIDGET(sheet)),
+                    r);
+#endif
+                for (c = 0; c <= sheet->maxalloccol; c++)  /* dispose cell data */
+                {
+                    gtk_sheet_real_cell_clear(sheet, r, c, TRUE);
+                }
+
 		g_free(sheet->data[r]);
 		sheet->data[r] = NULL;
 	    }
 
 	    if (r + nrows <= sheet->maxallocrow)  /* shift tail down */
 	    {
+#if GTK_SHEET_DEBUG_ALLOCATION > 0
+                g_debug("%s(%d): %p %s shift row %d -> %d",
+                    __FUNCTION__, __LINE__,
+                    sheet, gtk_widget_get_name(GTK_WIDGET(sheet)),
+                    r + nrows, r);
+#endif
 		sheet->data[r] = sheet->data[r + nrows]; /* copy pointer */
 		sheet->data[r + nrows] = NULL;  /* clear source pointer */
 

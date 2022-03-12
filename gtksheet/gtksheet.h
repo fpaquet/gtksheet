@@ -83,7 +83,7 @@ typedef enum
     GTK_SHEET_RANGE_SELECTED
 } GtkSheetState;
 
-enum
+typedef enum
 {
     GTK_SHEET_LEFT_BORDER     = 1 << 0,
     GTK_SHEET_RIGHT_BORDER    = 1 << 1,

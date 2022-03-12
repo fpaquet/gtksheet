@@ -10,6 +10,7 @@ TBD - known bugs
 
 2022-03-12 Fredy Paquet <mailbox AT opag.ch>
 * published gtksheet-4 version 4.3.9
+* updated gtksheet-4 version to 4.3.10, Libtool Revision 4.10.3
 
 2022-03-07 Fredy Paquet <mailbox AT opag.ch>
 * fixed disposal of last row in DeleteRow 309924

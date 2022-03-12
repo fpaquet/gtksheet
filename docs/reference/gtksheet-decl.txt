@@ -289,6 +289,16 @@ typedef enum
 } GtkSheetState;
 </ENUM>
 <ENUM>
+<NAME>GtkSheetBorderBits</NAME>
+typedef enum
+{
+    GTK_SHEET_LEFT_BORDER     = 1 << 0,
+    GTK_SHEET_RIGHT_BORDER    = 1 << 1,
+    GTK_SHEET_TOP_BORDER      = 1 << 2,
+    GTK_SHEET_BOTTOM_BORDER   = 1 << 3
+} GtkSheetBorderBits;
+</ENUM>
+<ENUM>
 <NAME>GtkSheetEntryType</NAME>
 typedef enum
 {

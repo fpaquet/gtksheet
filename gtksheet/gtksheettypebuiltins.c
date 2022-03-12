@@ -42,6 +42,22 @@ gtk_sheet_state_get_type (void)
   return etype;
 }
 GType
+gtk_sheet_border_bits_get_type (void)
+{
+  static GType etype = 0;
+  if (etype == 0) {
+    static const GFlagsValue values[] = {
+      { GTK_SHEET_LEFT_BORDER, "GTK_SHEET_LEFT_BORDER", "left-border" },
+      { GTK_SHEET_RIGHT_BORDER, "GTK_SHEET_RIGHT_BORDER", "right-border" },
+      { GTK_SHEET_TOP_BORDER, "GTK_SHEET_TOP_BORDER", "top-border" },
+      { GTK_SHEET_BOTTOM_BORDER, "GTK_SHEET_BOTTOM_BORDER", "bottom-border" },
+      { 0, NULL, NULL }
+    };
+    etype = g_flags_register_static ("GtkSheetBorderBits", values);
+  }
+  return etype;
+}
+GType
 gtk_sheet_entry_type_get_type (void)
 {
   static GType etype = 0;

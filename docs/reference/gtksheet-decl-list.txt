@@ -66,6 +66,7 @@ GtkItemEntryClass
 <TITLE>GtkSheet</TITLE>
 GtkSheetAttrType
 GtkSheetState
+GtkSheetBorderBits
 GtkSheetEntryType
 GtkSheetVerticalJustification
 GTK_SHEET_ROW_FROZEN

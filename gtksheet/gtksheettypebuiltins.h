@@ -12,6 +12,8 @@ GType gtk_sheet_attr_type_get_type (void);
 #define GTK_TYPE_SHEET_ATTR_TYPE (gtk_sheet_attr_type_get_type())
 GType gtk_sheet_state_get_type (void);
 #define GTK_TYPE_SHEET_STATE (gtk_sheet_state_get_type())
+GType gtk_sheet_border_bits_get_type (void);
+#define GTK_TYPE_SHEET_BORDER_BITS (gtk_sheet_border_bits_get_type())
 GType gtk_sheet_entry_type_get_type (void);
 #define GTK_TYPE_SHEET_ENTRY_TYPE (gtk_sheet_entry_type_get_type())
 GType gtk_sheet_vertical_justification_get_type (void);

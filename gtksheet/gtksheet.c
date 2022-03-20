@@ -2203,8 +2203,10 @@ gtk_sheet_set_property(GObject *object,
 		    break;
 
 #if GTK_SHEET_DEBUG_PROPERTIES > 0
-		g_debug("%s(%d): newval = %d sheet->maxrow %d", 
-                    __FUNCTION__, __LINE__, newval, sheet->maxrow);
+		g_debug("%s(%d): newval = %d mxr %d mxar %d mxc %d mxac %d", 
+                    __FUNCTION__, __LINE__, newval, 
+                    sheet->maxrow, sheet->maxallocrow, 
+                    sheet->maxcol, sheet->maxalloccol);
 #endif
 		if (newval < (sheet->maxrow + 1))
 		{
@@ -4013,10 +4015,22 @@ gtk_sheet_new(guint rows, guint columns, const gchar *title)
 void
 gtk_sheet_construct(GtkSheet *sheet, guint rows, guint columns, const gchar *title)
 {
+#if GTK_SHEET_DEBUG_ALLOCATION > 0
+    g_debug("%s(%d): (1) %p %s rows %d columns %d mxr %d mxar %d maxara %d mxac %d",
+	__FUNCTION__, __LINE__,
+	sheet, gtk_widget_get_name(GTK_WIDGET(sheet)),
+	rows, columns,
+	sheet->maxrow, sheet->maxallocrow, sheet->maxalloc_row_array, 
+        sheet->maxalloccol);
+#endif
+
+#if 0
+    /* disabled 20.03.22/fp -- why should we allocate bogus data?  */
     sheet->data = (GtkSheetCell ***)g_malloc(sizeof(GtkSheetCell **));
 
     sheet->data[0] = (GtkSheetCell **)g_malloc(sizeof(GtkSheetCell *)+sizeof(gdouble));
     sheet->data[0][0] = NULL;
+#endif
 
     /* set number of rows and columns */
     GrowSheet(sheet, MINROWS, MINCOLS);
@@ -18264,15 +18278,19 @@ DeleteRow(GtkSheet *sheet, gint position, gint nrows)
 	return;
 
 #if GTK_SHEET_DEBUG_ALLOCATION > 0
-    g_debug("%s(%d): (1) %p %s pos %d nrows %d mxr %d mxar %d mxac %d",
+    g_debug("%s(%d): (1) %p %s pos %d nrows %d mxr %d mxar %d maxara %d mxac %d",
 	__FUNCTION__, __LINE__,
 	sheet, gtk_widget_get_name(GTK_WIDGET(sheet)),
 	position, nrows,
-	sheet->maxrow, sheet->maxallocrow, sheet->maxalloccol);
+	sheet->maxrow, sheet->maxallocrow, sheet->maxalloc_row_array, 
+        sheet->maxalloccol);
 #endif
 
     for (r = position; r < position + nrows; r++)  /* dispose row and data */
     {
+        if (r > sheet->maxrow) break;
+        if (r > sheet->maxallocrow) break;
+
 	/* ex1: [2..4] ex2: [2..3] ex3: [4..4] - correct */
 
 	gtk_sheet_row_finalize(&sheet->row[r]);  /* dispose row */

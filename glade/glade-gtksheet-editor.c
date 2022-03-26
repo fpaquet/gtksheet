@@ -42,11 +42,11 @@
 #endif
 
 static void glade_sheet_editor_finalize(GObject *object);
-static void glade_sheet_editor_editable_init(GladeEditableIface *iface);
+static void glade_sheet_editor_editable_init(GladeEditableInterface *iface);
 static void glade_sheet_editor_realize(GtkWidget *widget);
 static void glade_sheet_editor_grab_focus(GtkWidget *widget);
 
-static GladeEditableIface *parent_editable_iface;
+static GladeEditableInterface *parent_editable_iface;
 
 G_DEFINE_TYPE_WITH_CODE (
     GladeSheetEditor, glade_sheet_editor, GTK_TYPE_BOX,
@@ -146,7 +146,7 @@ static void
 }
 
 static void
-    glade_sheet_editor_editable_init (GladeEditableIface *iface)
+    glade_sheet_editor_editable_init (GladeEditableInterface *iface)
 {
     parent_editable_iface = g_type_default_interface_peek (GLADE_TYPE_EDITABLE);
 

@@ -10,6 +10,8 @@ TBD - known bugs
 
 2022-03-26 Fredy Paquet <mailbox AT opag.ch>
 * fixed SEGV caused by improper container child handling #310344
+* fixed SEGV caused by improper container child handling #310344
+* fix build with gcc 11 #35 - thanks to Greyson Christoforo
 
 2022-03-20 Fredy Paquet <mailbox AT opag.ch>
 * fixed invalid memory access after gtk_sheet_construct #310164

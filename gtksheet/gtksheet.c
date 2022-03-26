@@ -18002,9 +18002,12 @@ DeleteColumn(GtkSheet *sheet, gint position, gint ncols)
             sheet->column[c], gtk_widget_get_name(GTK_WIDGET(sheet->column[c])));
 #endif
         gtk_widget_unmap(GTK_WIDGET(sheet->column[c]));
-        gtk_widget_unparent(GTK_WIDGET(sheet->column[c]));
+        gtk_container_remove(GTK_WIDGET(sheet), GTK_WIDGET(sheet->column[c]));
 
-	g_object_unref(sheet->column[c]);
+        /* replaced by gtk_container_remove() 26.03.22/fp #310344 causes SEGV
+        gtk_widget_unparent(GTK_WIDGET(sheet->column[c]));
+        g_object_unref(sheet->column[c]); 
+        */ 
 	sheet->column[c] = NULL;
     }
 

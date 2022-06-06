@@ -19153,7 +19153,10 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
 	}
 
         /* within visible area */
-        _gtk_sheet_child_show(child); 
+        if (GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, child->row)))
+            _gtk_sheet_child_show(child);
+        else
+            _gtk_sheet_child_hide(child);
     }
 
     GtkRequisition child_min_size, child_nat_size;
@@ -19645,12 +19648,10 @@ gtk_sheet_realize_child(GtkSheet *sheet, GtkSheetChild *child)
 const GtkSheetChild *
 gtk_sheet_get_child_at(GtkSheet *sheet, gint row, gint col)
 {
-    GList *children;
-
     g_return_val_if_fail(sheet != NULL, NULL);
     g_return_val_if_fail(GTK_IS_SHEET(sheet), NULL);
 
-    children = sheet->children;
+    GList *children = sheet->children;
 
     while (children)
     {

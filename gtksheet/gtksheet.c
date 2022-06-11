@@ -18008,6 +18008,14 @@ DeleteColumn(GtkSheet *sheet, gint position, gint ncols)
         gtk_widget_unparent(GTK_WIDGET(sheet->column[c]));
         g_object_unref(sheet->column[c]); 
         */ 
+
+        /* 11.06.22fp #311921
+           added here because we still have spurious crashes caused
+           by dangling GtkToggleButton labels.
+           The statement accelerates widget destruction.
+           */
+        gtk_widget_destroy(GTK_WIDGET(sheet->column[c]));
+
 	sheet->column[c] = NULL;
     }
 

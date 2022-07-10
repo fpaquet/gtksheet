@@ -8,6 +8,11 @@ TBD - known bugs
 (opg:19745): Gtk-WARNING **: GtkSheet 0x2816110 (line) is mapped but visible child GtkDataEntry 0x214c560 (GtkDataEntry) is not mapped
 ** (testgtksheet:19815): Gtk-CRITICAL **: gtk_box_gadget_distribute: assertion 'size >= 0' failed in GtkSpinButton
 
+2022-07-10 Fredy Paquet <mailbox AT opag.ch>
+* fixed moving focus into sheet by keyboard 312071
+* fixed range selection handling after selecting a row or column by mouse
+* fixed unwanted cell movement, when selecting sheet entry contents over border
+
 2022-06-11 Fredy Paquet <mailbox AT opag.ch>
 * fixed SEGV caused by delayed column destruction #311921 #311924
 * updated gtksheet-4 version to 4.3.11, Libtool Revision 4.11.3

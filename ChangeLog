@@ -12,6 +12,8 @@ TBD - known bugs
 * fixed moving focus into sheet by keyboard 312071
 * fixed range selection handling after selecting a row or column by mouse
 * fixed unwanted cell movement, when selecting sheet entry contents over border
+* updated gtksheet-4 version to 4.3.12, Libtool Revision 4.12.3
+* published gtksheet-4 version 4.3.12
 
 2022-06-11 Fredy Paquet <mailbox AT opag.ch>
 * fixed SEGV caused by delayed column destruction #311921 #311924

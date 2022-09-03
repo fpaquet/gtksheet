@@ -30,7 +30,7 @@ extern "C" {
 
 #define GTKSHEET_MAJOR_VERSION			(4)
 #define GTKSHEET_MINOR_VERSION			(3)
-#define GTKSHEET_MICRO_VERSION			(11)
+#define GTKSHEET_MICRO_VERSION			(13)
 
 #define GTKSHEET_CHECK_VERSION(major,minor,micro)    \
    (GTKSHEET_MAJOR_VERSION > (major) || \

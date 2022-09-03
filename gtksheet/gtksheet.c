@@ -1094,18 +1094,24 @@ static inline gint _gtk_sheet_first_visible_colidx(GtkSheet *sheet, gint startid
  */
 static gint _gtk_sheet_first_focus_colidx(GtkSheet *sheet, gint col)
 {
-    while (col < sheet->maxcol \
-      && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-              || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) ) \
-            col++; \
-    if (col > sheet->maxcol) col = sheet->maxcol; \
-    while (col > 0 \
-      && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-              || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) ) \
-            col--; \
-    if (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col)) \
-            || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))) ) \
-            col = -1;
+    while (col < sheet->maxcol
+      && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))
+              || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col)))) )
+            col++;
+
+    if (col > sheet->maxcol) col = sheet->maxcol;
+
+    while (col > 0
+           && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))
+              || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))))
+           )
+        col--;
+
+    if (col >= 0
+        && (!GTK_SHEET_COLUMN_IS_VISIBLE(COLPTR(sheet, col))
+            || !gtk_widget_get_can_focus(GTK_WIDGET(COLPTR(sheet, col))))
+        )
+        col = -1;
 
     return(col);
 }

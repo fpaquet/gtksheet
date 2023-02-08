@@ -4,7 +4,6 @@
 AC_INIT([GtkSheet], [4.3.12])
 
 AC_LANG([C])
-AC_CONFIG_MACRO_DIR([m4])
 
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS:+set}

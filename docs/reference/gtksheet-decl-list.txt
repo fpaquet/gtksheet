@@ -52,6 +52,7 @@ gtk_data_text_view_get_type
 
 <SECTION>
 <FILE>gtkitementry</FILE>
+<TITLE>GtkItemEntry</TITLE>
 <SUBSECTION Standard>
 GTK_IS_ITEM_ENTRY
 GTK_ITEM_ENTRY

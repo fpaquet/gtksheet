@@ -2985,11 +2985,12 @@ static gboolean gtk_sheet_focus_in_event(GtkSheet *sheet,
 
     if (MOUSE_BUTTON1_DOWN(sheet))
     {
+#if GTK_SHEET_DEBUG_MOUSE > 0
         g_debug(
             "%s(%d): sheet %p %s bail out (has_focus)", 
             __FUNCTION__, __LINE__,
             sheet, gtk_widget_get_name(sheet)); 
-
+#endif
         return(FALSE);
     }
 
@@ -12454,7 +12455,10 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 
     /* the sheet itself does not handle other than single click events */
     if (event->type != GDK_BUTTON_PRESS)
+    {
+        GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
 	return (FALSE);
+    }
 
     /* selections on the sheet */
     if (event->window == sheet->sheet_window)
@@ -12467,7 +12471,11 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	    main_window, event->device, &x, &y, NULL);
 
 	gtk_sheet_get_pixel_info(sheet, NULL, x, y, &row, &column);
-	if (row < 0 && column < 0) return(FALSE);  /* chain up to global button press handler*/
+	if (row < 0 && column < 0)
+        {
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+            return(FALSE);  /* chain up to global button press handler*/
+        }
 
 #if GTK_SHEET_DEBUG_MOUSE > 0
 	g_debug("%s(%d): pointer grab (%d,%d) r %d c %d", 
@@ -12500,7 +12508,11 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 		gint old_row = sheet->active_cell.row;  /* PR#203012 */
 		gint old_col = sheet->active_cell.col;  /* PR#203012 */
 
-		if (!_gtk_sheet_deactivate_cell(sheet)) return (FALSE);
+		if (!_gtk_sheet_deactivate_cell(sheet)) 
+                {
+                    GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+                    return (FALSE);
+                }
 
                 SET_SELECTION_PIN(old_row, old_col);
 
@@ -12532,7 +12544,11 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 		gint old_row = sheet->active_cell.row;  /* PR#203012 */
 		gint old_col = sheet->active_cell.col;  /* PR#203012 */
 
-		if (!_gtk_sheet_deactivate_cell(sheet)) return (FALSE);
+		if (!_gtk_sheet_deactivate_cell(sheet))
+                {
+                    GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+                    return (FALSE);
+                }
 
                 SET_SELECTION_PIN(old_row, old_col);
 
@@ -12564,7 +12580,11 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 		row, column);
 #endif
 
-	    if (!_gtk_sheet_deactivate_cell(sheet)) return (FALSE);
+	    if (!_gtk_sheet_deactivate_cell(sheet))
+            {
+                GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+                return (FALSE);
+            }
 
 	    SET_SELECTION_PIN(row, column);
 
@@ -12668,7 +12688,10 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 
 	column = _gtk_sheet_column_from_xpixel(sheet, x);
 	if (column < 0 || column > sheet->maxcol)
+        {
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
 	    return (FALSE);
+        }
 
 	if (GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, column)))
 	{
@@ -12689,7 +12712,10 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 
 	row = _gtk_sheet_row_from_ypixel(sheet, y);
 	if (row < 0 || row > sheet->maxrow)
+        {
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
 	    return (FALSE);
+        }
 
 	if (GTK_SHEET_ROW_IS_SENSITIVE(ROWPTR(sheet, row)))
 	{
@@ -12704,6 +12730,7 @@ gtk_sheet_button_press_handler(GtkWidget *widget, GdkEventButton *event)
 	}
     }
 
+    GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
     return (TRUE);
 }
 
@@ -14117,13 +14144,14 @@ gtk_sheet_extend_selection(GtkSheet *sheet, gint row, gint column)
         || range.coli != sheet->range.coli
         )
     {
+#if GTK_SHEET_DEBUG_MOUSE > 0
         g_debug("%s(%d): r/c %d/%d PIN %d/%d range {%d, %d, %d, %d}", 
             __FUNCTION__, __LINE__,
             row, column,
             sheet->selection_pin.row, sheet->selection_pin.col,
             range.row0, range.col0, range.rowi, range.coli
             );
-
+#endif
 	gtk_sheet_real_select_range(sheet, &range);
     }
 }

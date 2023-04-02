@@ -10,6 +10,7 @@ TBD - known bugs
 
 2023-04-02 Fredy Paquet <mailbox AT opag.ch>
 * fixed unwanted cell movement, when selecting sheet entry contents over border #316538
+* fixed row height collabse after gtk_sheet_delete_rows() #315370
 
 2022-09-03 Fredy Paquet <mailbox AT opag.ch>
 * updated gtksheet-4 version to 4.3.13, Libtool Revision 4.13.3

@@ -18473,7 +18473,7 @@ DeleteRow(GtkSheet *sheet, gint position, gint nrows)
 	/* ex1: [2..1] ex2: [2..2] ex3: [4..3] - correct */
 	sheet->row[r] = sheet->row[r + nrows]; /* copy struct */
 	//sheet->row[r + nrows] = NULL; 
-	_gtk_sheet_row_init(&sheet->row[r]);  /* clear source struct */
+	_gtk_sheet_row_init(&sheet->row[r + nrows]);  /* clear source struct */
     }
 
     /* to be done: shrink data pointer pool via realloc */

@@ -58,7 +58,6 @@ AM_INIT_AUTOMAKE([-Wall -Werror -Wno-portability foreign])
 
 # Specify a configuration file
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_MACRO_DIR([m4])
 AC_DEFINE([ENABLE_NLS],1, [NLS enabled])
 AC_DEFINE([HAVE_GETTEXT],1, [have gettext])
 

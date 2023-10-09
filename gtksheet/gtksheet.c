@@ -19309,7 +19309,12 @@ gtk_sheet_position_child(GtkSheet *sheet, GtkSheetChild *child)
 
         /* within visible area */
         if (GTK_SHEET_ROW_IS_VISIBLE(ROWPTR(sheet, child->row)))
-            _gtk_sheet_child_show(child);
+        {
+            if (!gtk_sheet_column_visible(sheet, child->col)) /* 320079 */
+                _gtk_sheet_child_hide(child);
+            else
+                _gtk_sheet_child_show(child);
+        }
         else
             _gtk_sheet_child_hide(child);
     }

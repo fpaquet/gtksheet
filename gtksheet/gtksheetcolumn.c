@@ -2283,6 +2283,7 @@ gtk_sheet_column_set_visibility(GtkSheet *sheet, gint col, gboolean visible)
     _gtk_sheet_recalc_left_xpixels(sheet);
 
     _gtk_sheet_scrollbar_adjust(sheet);
+    _gtk_sheet_position_children(sheet);  /* 320079 */
     _gtk_sheet_redraw_internal(sheet, TRUE, FALSE);
 }
 

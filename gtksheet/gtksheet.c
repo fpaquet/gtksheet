@@ -585,6 +585,10 @@ _gtksheet_signal_emit(GObject *object, guint signal_id, ...)
 #define GTK_SHEET_DEFAULT_GRID_COLOR  "gray"
 #define GTK_SHEET_DEFAULT_TM_COLOR  "red"   /* tooltip marker */
 
+/* area outside visible cell range */
+#define GTK_SHEET_HADJUSTMENT_EXTENT  60
+#define GTK_SHEET_VADJUSTMENT_EXTENT  40
+
 /* enable focus hunt when no active cell is set when sheet is shown */
 #define GTK_SHEET_ENABLE_FOCUS_ON_SHOW  0
 
@@ -602,7 +606,6 @@ _gtksheet_signal_emit(GObject *object, guint signal_id, ...)
 #define TIME_INTERVAL 8
 #define MINROWS 0
 #define MINCOLS 0
-#define MAXLENGTH 30
 
 #define CELLOFFSET 4  /* inner border from grid to text */
 
@@ -16252,7 +16255,7 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
     {
 	GtkAdjustment *va = sheet->vadjustment;
 
-	gint upper = _gtk_sheet_height(sheet) + 80;
+	gint upper = _gtk_sheet_height(sheet) + GTK_SHEET_VADJUSTMENT_EXTENT;
 	gint page_size = sheet->sheet_window_height;
 
 	gtk_adjustment_configure(va,
@@ -16303,8 +16306,7 @@ _gtk_sheet_scrollbar_adjust(GtkSheet *sheet)
     {
 	GtkAdjustment *ha = sheet->hadjustment;
 
-	/* gint upper = _gtk_sheet_width(sheet) * 3 / 2; */
-	gint upper = _gtk_sheet_width(sheet) + 80;
+	gint upper = _gtk_sheet_width(sheet) + GTK_SHEET_HADJUSTMENT_EXTENT;
 	gint page_size = sheet->sheet_window_width;
 
 	gtk_adjustment_configure(ha,

@@ -1419,7 +1419,7 @@ _gtk_sheet_column_buttons_size_allocate(GtkSheet *sheet)
             GdkRectangle allocation;
             allocation.x =  _gtk_sheet_column_left_xpixel(sheet, col) + COL_BUTTON_GRID_SHIFT + COL_BUTTON_GAP;
             allocation.y = 0;
-            allocation.width = colobj->width + 1 - COL_BUTTON_GAP*2;
+            allocation.width = colobj->width + 2 - COL_BUTTON_GAP*2;
             allocation.height = sheet->column_title_area.height;
 
             if (!gtk_widget_get_realized(GTK_WIDGET(colobj)))

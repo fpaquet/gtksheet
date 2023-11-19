@@ -12,6 +12,7 @@ TBD - known bugs
 * fixed children visibility (attached_to_cell), on column hide/show 320079
 * fixed width of column title button removes drawing artefacts in title area 0318674
 * reduced outside cell area extent from 80/80 to 60/40 pixels
+* improvement: GtkDataEntry strip trailing NL's on insert 321183,321447
 
 2023-04-02 Fredy Paquet <mailbox AT opag.ch>
 * fixed unwanted cell movement, when selecting sheet entry contents over border #316538

@@ -77,7 +77,7 @@
 #define GTK_DATA_ENTRY_DEBUG  0  /* define to activate debug output */
 #endif
 
-#if GTK_DATA_ENTRY_DEBUG
+#if GTK_DATA_ENTRY_DEBUG > 0
 #define GTK_DATA_ENTRY_DEBUG_SIGNAL  0  /* debug signal handlers */
 #endif
 
@@ -604,9 +604,47 @@ static void _gtk_data_entry_insert_text_handler(GtkEditable *editable,
     gpointer position, gpointer user_data)   
 {
     GtkDataEntry *data_entry = GTK_DATA_ENTRY(editable);
-    gint max_len = data_entry->max_length_bytes;
+    gint max_len_bytes = data_entry->max_length_bytes;
 
-    if (!max_len) return;
+#if GTK_DATA_ENTRY_DEBUG_SIGNAL > 0
+    g_debug("%s(%d): max_len_bytes %d, new_text_length %d\nnew_text <%s>", 
+        __FUNCTION__, __LINE__,
+	max_len_bytes, new_text_length, new_text ? new_text : "NULL");
+#endif
+
+    if (g_str_has_suffix(new_text, "\n"))
+    {
+#if GTK_DATA_ENTRY_DEBUG_SIGNAL > 0
+        g_debug("%s(%d): trailing NL detected", __FUNCTION__, __LINE__);
+#endif
+        gchar *stripped_text = g_strdup(new_text);
+        gint stripped_text_len = new_text_length;
+
+        while (stripped_text_len > 0 && g_str_has_suffix(stripped_text, "\n"))
+        {
+            stripped_text[--stripped_text_len] = '\0';
+        }
+
+#if GTK_DATA_ENTRY_DEBUG_SIGNAL > 0
+        g_debug("%s(%d): stripped_text <%s>", 
+            __FUNCTION__, __LINE__, stripped_text);
+#endif
+
+        g_signal_handlers_block_by_func(
+            editable, _gtk_data_entry_insert_text_handler, user_data);
+
+        gtk_editable_insert_text(
+            editable, stripped_text, stripped_text_len, position);
+
+        g_signal_handlers_unblock_by_func(
+            editable, _gtk_data_entry_insert_text_handler, user_data);
+
+        g_signal_stop_emission_by_name(editable, "insert_text");
+        g_free(stripped_text);
+        return;
+    }
+
+    if (!max_len_bytes) return;
 
     const gchar *old_text = gtk_data_entry_get_text(data_entry);
     gint old_length = strlen(old_text);
@@ -614,11 +652,12 @@ static void _gtk_data_entry_insert_text_handler(GtkEditable *editable,
     if (new_text_length < 0) new_text_length = strlen(new_text);
 
 #if GTK_DATA_ENTRY_DEBUG_SIGNAL > 0
-    g_debug("_gtk_data_entry_insert_text_handler(bytes): cl %d max %d new %d", 
-	old_length, max_len, new_text_length);
+    g_debug("%s(%d): old_length %d max_len_bytes %d new_text_length %d", 
+        __FUNCTION__, __LINE__,
+	old_length, max_len_bytes, new_text_length);
 #endif
 	
-    if (old_length + new_text_length > max_len)
+    if (old_length + new_text_length > max_len_bytes)
     {
 	gdk_beep();
 	g_signal_stop_emission_by_name(editable, "insert-text");

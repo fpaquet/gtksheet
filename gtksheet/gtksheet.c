@@ -19594,17 +19594,21 @@ _gtk_sheet_position_children(GtkSheet *sheet)
     GtkSheetChild *child;
 
 #if GTK_SHEET_DEBUG_CHILDREN > 0
-    g_debug("%s(%d): sheet %s %p visible %d realized %d mapped %d", 
+    g_debug("%s(%d): sheet %s %p visible %d realized %d mapped %d frozen %d", 
         __FUNCTION__, __LINE__,
         G_OBJECT_TYPE_NAME(sheet), sheet, 
         gtk_widget_get_visible(GTK_WIDGET(sheet)),
         gtk_widget_get_realized(GTK_WIDGET(sheet)),
-        gtk_widget_get_mapped(GTK_WIDGET(sheet))
+        gtk_widget_get_mapped(GTK_WIDGET(sheet)),
+        GTK_SHEET_IS_FROZEN(sheet)
         );
 #endif
 
     if (!gtk_widget_get_realized(GTK_WIDGET(sheet)))
 	return;
+
+    if (GTK_SHEET_IS_FROZEN(sheet))
+        return;
 
     while (children)
     {

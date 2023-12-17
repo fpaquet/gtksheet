@@ -10,6 +10,7 @@ TBD - known bugs
 
 2023-12-17 Fredy Paquet <mailbox AT opag.ch>
 * published gtksheet-4 version 4.3.13
+* updated gtksheet-4 version to 4.3.14, Libtool Revision 4.14.3
 
 2023-12-09 Fredy Paquet <mailbox AT opag.ch>
 * fixed crash, caused by _gtk_sheet_position_children() in frozen sheet 321874

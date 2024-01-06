@@ -78,6 +78,7 @@ pkg = import('pkgconfig')
 pkg.generate(
     libraries: [ libgtksheet, deps ],
     name: 'GtkSheet',
+    subdirs: 'gtksheet-4.0',
     filebase: 'gtksheet-' + GTK_SHEET_VERSION_BASE,
     description: 'A spreadsheet like matrix widget for Gtk+'
     )

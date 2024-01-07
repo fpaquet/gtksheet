@@ -1397,6 +1397,16 @@ POSSIBLE_XDRAG(GtkSheet *sheet, gint x, gint *drag_column)
 
     xdrag = _gtk_sheet_column_right_xpixel(sheet, column);
 
+    /* make drag grip larger in rightmost column 322223 */
+    if (column == _gtk_sheet_last_visible_colidx(sheet, sheet->maxcol))
+    {
+        if (xdrag - DRAG_WIDTH <= x && x <= xdrag + DRAG_WIDTH / 2)
+        {
+            *drag_column = column;
+            return (TRUE);
+        }
+    }
+
     if (xdrag - DRAG_WIDTH / 2 <= x && x <= xdrag + DRAG_WIDTH / 2)
     {
 	*drag_column = column;
@@ -7594,6 +7604,15 @@ gtk_sheet_style_set_handler(GtkWidget *widget, GtkStyle  *previous_style)
     }
 }
 
+#if 0
+static void _toggle_ref(gpointer data, GObject *object, gboolean is_last_ref)
+{
+    g_debug("%s(%d): _toggle_ref %p last %d", 
+        __FUNCTION__, __LINE__,
+        object, is_last_ref);
+}
+#endif
+
 /*
  * gtk_sheet_realize_handler:
  * 
@@ -7682,6 +7701,12 @@ gtk_sheet_realize_handler(GtkWidget *widget)
     sheet->column_title_window = gdk_window_new(
 	gtk_widget_get_window(widget),
 	&attributes, attributes_mask);
+
+#if 0
+    g_object_add_toggle_ref(sheet->column_title_window, _toggle_ref, NULL);
+#endif
+    g_object_ref(sheet->column_title_window); /* 322223 */
+
     gdk_window_set_user_data(sheet->column_title_window, sheet);
 
     //GtkStyleContext *style_context = gtk_widget_get_style_context(widget);
@@ -7983,6 +8008,7 @@ gtk_sheet_unrealize_handler(GtkWidget *widget)
     sheet->sheet_window = NULL;
 
     gdk_window_destroy(sheet->column_title_window);
+    g_object_unref(sheet->column_title_window); /* 322223 */
     sheet->column_title_window = NULL;
 
     gdk_window_destroy(sheet->row_title_window);
@@ -13350,6 +13376,7 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
             && POSSIBLE_XDRAG(sheet, x, &column))
 	{
 	    new_cursor = GDK_SB_H_DOUBLE_ARROW;
+
 	    if (new_cursor != gdk_cursor_get_cursor_type(
                 sheet->cursor_drag))
 	    {

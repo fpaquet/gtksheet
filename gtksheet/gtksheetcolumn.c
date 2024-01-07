@@ -143,6 +143,7 @@ _column_button_press_handler(
             button_event->x, button_event->y,
             &button_event->x, &button_event->y);
 
+        g_object_ref(sheet->column_title_window);  /* 322223 */
         button_event->window = sheet->column_title_window;
 
         gboolean retval;

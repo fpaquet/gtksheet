@@ -10,6 +10,7 @@ TBD - known bugs
 
 2024-01-14 Fredy Paquet <mailbox AT opag.ch>
 * fixed realize of rightmost column 322223
+* fixed bouncing text in GtkDataTextView/GtkTextView sheet editor 322496
 
 2024-01-07 Fredy Paquet <mailbox AT opag.ch>
 * fixed crash losing last reference to undestroyed window

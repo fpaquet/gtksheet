@@ -15287,7 +15287,7 @@ _gtk_sheet_entry_size_allocate(GtkSheet *sheet)
 
 	shentry_allocation.x += CELLOFFSET_NF;
 	shentry_allocation.y += CELLOFFSET_NF;
-        shentry_allocation.height -= CELLOFFSET*2 + 1 - DEBUG_VSHIFT;
+        shentry_allocation.height -= CELLOFFSET*2 - DEBUG_VSHIFT;
 
 	if (gtk_sheet_clip_text(sheet))
 	    shentry_allocation.width = column_width - 1*2;

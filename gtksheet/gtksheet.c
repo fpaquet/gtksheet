@@ -7807,7 +7807,7 @@ gtk_sheet_realize_handler(GtkWidget *widget)
     }
 
     gint col;
-    for (col=0; col<sheet->maxcol; col++)
+    for (col=0; col<=sheet->maxcol; col++) /* range fixed 13.01.23/fp 0322223 */
     {
         g_assert(0 <= col && col <= sheet->maxcol);
         GtkSheetColumn *colobj = COLPTR(sheet, col);

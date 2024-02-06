@@ -7418,11 +7418,14 @@ gtk_sheet_finalize_handler(GObject *object)
     if (G_OBJECT_CLASS(sheet_parent_class)->finalize)
 	(*G_OBJECT_CLASS(sheet_parent_class)->finalize)(object);
 
+    if (G_OBJECT(sheet)->ref_count > 0) /* 0316647 */
+    {
 #if GTK_SHEET_DEBUG_REALIZE > 0
-    g_debug("%s(%d): g_object_unref %p", 
-        __FUNCTION__, __LINE__, G_OBJECT(sheet));
+        g_debug("%s(%d): g_object_unref %p ref_count %d", 
+            __FUNCTION__, __LINE__, G_OBJECT(sheet), G_OBJECT(sheet)->ref_count);
 #endif
-    g_object_unref(G_OBJECT(sheet));  /* 309878~59253 */
+        g_object_unref(G_OBJECT(sheet));  /* 309878~59253 */
+    }
 
 #if GTK_SHEET_DEBUG_REALIZE > 0
     g_debug("%s(%d): done %p", __FUNCTION__, __LINE__, sheet);
@@ -7515,7 +7518,6 @@ gtk_sheet_destroy_handler(GtkWidget *widget)
 	sheet->vadjustment = NULL;
     }
 
-#if 1
     /* get rid of all the cells */
     /* code moved here from gtk_sheet_finalize_handler 13.02.21/fp */
     gtk_sheet_range_clear(sheet, NULL);
@@ -7523,9 +7525,11 @@ gtk_sheet_destroy_handler(GtkWidget *widget)
     gtk_sheet_delete_rows(sheet, 0, sheet->maxrow + 1);
     gtk_sheet_delete_columns(sheet, 0, sheet->maxcol + 1);
 
+    /* already invoked by gtk_sheet_delete_rows() and gtk_sheet_delete_columns()
+       disabled 06.02.24/fp
     DeleteRow(sheet, 0, sheet->maxrow + 1);
     DeleteColumn(sheet, 0, sheet->maxcol + 1);
-#endif
+     */
 
     children = sheet->children;
     while (children)

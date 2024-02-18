@@ -1029,6 +1029,8 @@ _gtk_sheet_column_realize(GtkSheetColumn *colobj, GtkSheet *sheet)
         
         gtk_widget_set_realized(GTK_WIDGET(colobj), TRUE);
 
+        _gtk_sheet_column_check_windows(colobj, sheet);
+
         if (colobj->col_button)
         {
             DEBUG_WIDGET_SET_PARENT_WIN(

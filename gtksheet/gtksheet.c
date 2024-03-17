@@ -137,6 +137,7 @@
 #   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0
 #   define GTK_SHEET_DEBUG_SIGNALS   0
 #   define GTK_SHEET_DEBUG_SIZE  0  /* 0,1,2 */
+#   define GTK_SHEET_DEBUG_TOUCH  1
 
 #   define GTK_SHEET_ENABLE_DEBUG_MACROS
 #   undef GTK_SHEET_ENABLE_DEBUG_MACROS
@@ -1594,6 +1595,8 @@ static void gtk_sheet_set_scroll_adjustments(GtkSheet *sheet,
     GtkAdjustment *hadjustment,
     GtkAdjustment *vadjustment);
 
+static gboolean gtk_sheet_touch_event_handler(GtkWidget *widget,
+    GdkEventTouch *event);
 static gboolean gtk_sheet_button_press_handler(GtkWidget *widget,
     GdkEventButton *event);
 static gboolean gtk_sheet_button_release_handler(GtkWidget *widget,
@@ -3730,6 +3733,7 @@ gtk_sheet_class_init(GtkSheetClass *klass)
     widget_class->destroy = gtk_sheet_destroy_handler;
     widget_class->style_updated = gtk_sheet_style_updated;
     widget_class->screen_changed = gtk_sheet_screen_changed;
+    widget_class->touch_event = gtk_sheet_touch_event_handler;
 
     klass->select_row = NULL;
     klass->select_column = NULL;
@@ -7676,7 +7680,8 @@ gtk_sheet_realize_handler(GtkWidget *widget)
 			      GDK_SCROLL_MASK |
 			      GDK_KEY_PRESS_MASK |
 			      GDK_POINTER_MOTION_MASK |
-			      GDK_POINTER_MOTION_HINT_MASK);
+			      GDK_POINTER_MOTION_HINT_MASK |
+                              GDK_TOUCH_MASK);
 
     attributes_mask = GDK_WA_X | GDK_WA_Y |
 	    GDK_WA_VISUAL | GDK_WA_CURSOR;
@@ -13848,6 +13853,491 @@ gtk_sheet_motion_handler(GtkWidget *widget, GdkEventMotion *event)
     }
 
     return (TRUE);
+}
+
+/*
+ * gtk_sheet_touch_event_handler:
+ * 
+ * this is the #GtkSheet widget class "touch-event" handler
+ * 
+ * @param widget the #GtkSheet
+ * @param event  the GdkEventTouch which triggered this signal
+ * 
+ * @return TRUE to stop other handlers from being invoked for the event. FALSE to propagate the event further.
+ * @param widget
+ * @param event
+ * 
+ * @return 
+ */
+static gboolean
+gtk_sheet_touch_event_handler(GtkWidget *widget, GdkEventTouch *event)
+{
+    GtkSheet *sheet;
+    GdkModifierType mods;
+    gint x, y, row, column;
+    gboolean veto;
+
+    g_return_val_if_fail(widget != NULL, FALSE);
+    g_return_val_if_fail(GTK_IS_SHEET(widget), FALSE);
+    g_return_val_if_fail(event != NULL, FALSE);
+
+#if GTK_SHEET_DEBUG_TOUCH > 0
+    g_debug("%s(%d): %s", 
+        __FUNCTION__, __LINE__,
+        event->type == GDK_TOUCH_BEGIN ? "TOUCH_BEGIN" :
+        event->type == GDK_TOUCH_UPDATE ? "TOUCH_UPDATE" :
+        event->type == GDK_TOUCH_END ? "TOUCH_END" :
+        event->type == GDK_TOUCH_CANCEL ? "TOUCH_CANCEL" :
+        "unknown event type");
+#endif
+    
+    sheet = GTK_SHEET(widget);
+    GdkWindow *main_window = gtk_widget_get_window(widget);  // for coordinates
+
+    if (event->type == GDK_TOUCH_BEGIN)
+    {
+        GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+
+        /* press on resize windows */
+        if (event->window == sheet->column_title_window 
+            && gtk_sheet_columns_resizable(sheet))
+        {
+            sheet->x_drag = event->x;
+
+            if (POSSIBLE_XDRAG(sheet, sheet->x_drag, &sheet->drag_cell.col))
+            {
+                guint req;
+                _gtk_sheet_column_size_request(sheet, sheet->drag_cell.col, &req);
+                GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_XDRAG);
+                draw_xor_vline(sheet, TRUE);
+                return (TRUE);
+            }
+        }
+
+        if (event->window == sheet->row_title_window 
+            && gtk_sheet_rows_resizable(sheet))
+        {
+            sheet->y_drag = event->y;
+
+            if (POSSIBLE_YDRAG(sheet, sheet->y_drag, &sheet->drag_cell.row))
+            {
+                guint req;
+                gtk_sheet_row_size_request(sheet, sheet->drag_cell.row, &req);
+                GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_YDRAG);
+                draw_xor_hline(sheet, TRUE);
+                return (TRUE);
+            }
+        }
+
+        /* selections on the sheet */
+        if (event->window == sheet->sheet_window)
+        {
+            x = event->x;
+            y = event->y;
+
+#if GTK_SHEET_DEBUG_TOUCH > 0
+            g_debug("%s(%d): on sheet ev(%f, %f) evr(%f, %f) dev(%d, %d)", 
+                __FUNCTION__, __LINE__,
+                event->x, event->y, event->x_root, event->y_root, x, y);
+#endif
+
+            gtk_sheet_get_pixel_info(sheet, NULL, x, y, &row, &column);
+            if (row < 0 && column < 0)
+            {
+                GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+                return(FALSE);  /* chain up to global button press handler*/
+            }
+
+#if GTK_SHEET_DEBUG_TOUCH > 0
+            g_debug("%s(%d): pointer grab (%d,%d) r %d c %d", 
+                __FUNCTION__, __LINE__,
+                x, y, row, column);
+#endif
+            gtk_grab_add(GTK_WIDGET(sheet));
+
+            sheet->timer = g_timeout_add_full(0, TIMEOUT_SCROLL, 
+                _gtk_sheet_scroll_to_pointer, sheet, NULL);
+
+#if GTK_SHEET_DEBUG_TOUCH > 0
+            g_debug("%s(%d): grab focus", __FUNCTION__, __LINE__);
+#endif
+            gtk_widget_grab_focus(GTK_WIDGET(sheet));
+
+            if (sheet->selection_mode != GTK_SELECTION_SINGLE 
+                && gdk_cursor_get_cursor_type(sheet->cursor_drag) == GDK_SIZING 
+                && !GTK_SHEET_IN_SELECTION(sheet) 
+                && !GTK_SHEET_IN_RESIZE(sheet))
+            {
+                if (sheet->state == GTK_SHEET_NORMAL)
+                {
+                    gint old_row = sheet->active_cell.row;  /* PR#203012 */
+                    gint old_col = sheet->active_cell.col;  /* PR#203012 */
+
+                    if (!_gtk_sheet_deactivate_cell(sheet)) 
+                    {
+                        GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+                        return (FALSE);
+                    }
+
+                    SET_SELECTION_PIN(old_row, old_col);
+
+                    sheet->drag_range = sheet->range;
+
+                    sheet->state = GTK_SHEET_RANGE_SELECTED;
+                    gtk_sheet_select_range(sheet, &sheet->drag_range);
+                }
+
+                sheet->x_drag = x;
+                sheet->y_drag = y;
+
+                if (row > sheet->range.rowi) row--;
+                if (column > sheet->range.coli) column--;
+
+                sheet->drag_cell.row = row;
+                sheet->drag_cell.col = column;
+                sheet->drag_range = sheet->range;
+
+                gtk_sheet_draw_border(sheet, sheet->drag_range, NULL);
+                GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_RESIZE);
+            }
+            else if (gdk_cursor_get_cursor_type(sheet->cursor_drag) == GDK_TOP_LEFT_ARROW 
+                     && !GTK_SHEET_IN_SELECTION(sheet) 
+                     && !GTK_SHEET_IN_DRAG(sheet))
+            {
+                if (sheet->state == GTK_SHEET_NORMAL)
+                {
+                    gint old_row = sheet->active_cell.row;  /* PR#203012 */
+                    gint old_col = sheet->active_cell.col;  /* PR#203012 */
+
+                    if (!_gtk_sheet_deactivate_cell(sheet))
+                    {
+                        GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+                        return (FALSE);
+                    }
+
+                    SET_SELECTION_PIN(old_row, old_col);
+
+                    sheet->drag_range = sheet->range;
+
+                    sheet->state = GTK_SHEET_RANGE_SELECTED;
+                    gtk_sheet_select_range(sheet, &sheet->drag_range);
+                }
+                sheet->x_drag = x;
+                sheet->y_drag = y;
+
+                if (row < sheet->range.row0) row++;
+                if (row > sheet->range.rowi) row--;
+                if (column < sheet->range.col0) column++;
+                if (column > sheet->range.coli) column--;
+
+                sheet->drag_cell.row = row;
+                sheet->drag_cell.col = column;
+                sheet->drag_range = sheet->range;
+
+                gtk_sheet_draw_border(sheet, sheet->drag_range, NULL);
+                GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_DRAG);
+            }
+            else
+            {
+#if GTK_SHEET_DEBUG_TOUCH > 0
+                g_debug("%s(%d): SET_SELECTION_PIN r/c %d/%d", 
+                    __FUNCTION__, __LINE__, 
+                    row, column);
+#endif
+
+                if (!_gtk_sheet_deactivate_cell(sheet))
+                {
+                    GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+                    return (FALSE);
+                }
+
+                SET_SELECTION_PIN(row, column);
+
+                sheet->x_drag = x;
+                sheet->y_drag = y;
+
+                GtkSheetChild *child = gtk_sheet_get_child_at(sheet, row, column);
+
+#if GTK_SHEET_DEBUG_TOUCH > 0
+                g_debug("%s(%d): gtk_sheet_get_child_at row %d col %d = %p",
+                    __FUNCTION__, __LINE__,
+                    row, column, child);
+#endif
+
+                if (!child) /* let the child process button events */
+                {
+#if GTK_SHEET_DEBUG_TOUCH > 0
+                    g_debug("%s(%d): SET_FLAGS(SELECTION_START_POSSIBLE)",
+                        __FUNCTION__, __LINE__);
+#endif
+                    GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_SELECTION_START_POSSIBLE);
+                }
+
+            }
+            return(TRUE);
+        }
+
+        if (event->window == sheet->column_title_window)
+        {
+            x = event->x;
+            y = event->y;
+
+            column = _gtk_sheet_column_from_xpixel(sheet, x);
+            if (column < 0 || column > sheet->maxcol)
+            {
+                GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+                return (FALSE);
+            }
+
+            if (GTK_SHEET_COLUMN_IS_SENSITIVE(COLPTR(sheet, column)))
+            {
+                GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
+
+                gtk_sheet_click_cell(sheet, -1, column, &veto);
+
+                gtk_grab_add(GTK_WIDGET(sheet));
+                sheet->timer = g_timeout_add_full(0, TIMEOUT_SCROLL,
+                    _gtk_sheet_scroll_to_pointer, sheet, NULL);
+                gtk_widget_grab_focus(GTK_WIDGET(sheet));
+            }
+        }
+
+        if (event->window == sheet->row_title_window)
+        {
+            x = event->x;
+            y = event->y;
+
+            row = _gtk_sheet_row_from_ypixel(sheet, y);
+            if (row < 0 || row > sheet->maxrow)
+            {
+                GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+                return (FALSE);
+            }
+
+            if (GTK_SHEET_ROW_IS_SENSITIVE(ROWPTR(sheet, row)))
+            {
+                GTK_SHEET_SET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
+
+                gtk_sheet_click_cell(sheet, row, -1, &veto);
+
+                gtk_grab_add(GTK_WIDGET(sheet));
+                sheet->timer = g_timeout_add_full(0, TIMEOUT_SCROLL,
+                    _gtk_sheet_scroll_to_pointer, sheet, NULL);
+                gtk_widget_grab_focus(GTK_WIDGET(sheet));
+            }
+        }
+
+        return (TRUE);
+    }
+    else if (event->type == GDK_TOUCH_UPDATE)
+    {
+    }
+    else if (event->type == GDK_TOUCH_END || event->type == GDK_TOUCH_CANCEL)
+    {
+        GdkWindow *main_window = gtk_widget_get_window(widget);  // for coordinates
+
+#if GTK_SHEET_DEBUG_TOUCH > 0
+        g_debug("%s(%d): col %d inSel %s inResize %s inDrag %s selStPo %s mseB1 %s",
+            __FUNCTION__, __LINE__,
+            sheet->drag_cell.col, 
+            GTK_SHEET_IN_SELECTION(sheet) ? "Yes" : "No",
+            GTK_SHEET_IN_RESIZE(sheet) ? "Yes" : "No",
+            GTK_SHEET_IN_DRAG(sheet) ? "Yes" : "No",
+            SELECTION_START_POSSIBLE(sheet) ? "Yes" : "No",
+            MOUSE_BUTTON1_DOWN(sheet) ? "Yes" : "No"
+            );
+#endif
+
+        /* release on resize windows */
+        if (GTK_SHEET_IN_XDRAG(sheet))
+        {
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_XDRAG);
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
+            x = event->x;
+            draw_xor_vline(sheet, FALSE);
+
+#if GTK_SHEET_DEBUG_SIZE > 0
+            g_debug("%s(%d): col %d set width %d",
+                __FUNCTION__, __LINE__,
+                sheet->drag_cell.col, 
+                new_column_width(sheet, sheet->drag_cell.col, &x));
+#endif
+            gtk_sheet_set_column_width(sheet, sheet->drag_cell.col, 
+                new_column_width(sheet, sheet->drag_cell.col, &x));
+
+            sheet->old_hadjustment = -1.;
+
+            if (sheet->hadjustment)
+            {
+                g_signal_emit_by_name(G_OBJECT(sheet->hadjustment),  "value_changed");
+            }
+
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+            return (TRUE);
+        }
+
+        else if (GTK_SHEET_IN_YDRAG(sheet))
+        {
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_YDRAG);
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
+            y = event->y;
+            draw_xor_hline(sheet, TRUE);
+
+            gtk_sheet_set_row_height(sheet, sheet->drag_cell.row,
+                new_row_height(sheet, sheet->drag_cell.row, &y));
+
+            sheet->old_vadjustment = -1.;
+            if (sheet->vadjustment)
+            {
+                g_signal_emit_by_name(G_OBJECT(sheet->vadjustment), "value_changed");
+            }
+
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+            return (TRUE);
+        }
+
+        else if (GTK_SHEET_IN_DRAG(sheet))  /* selection being moved */
+        {
+            GtkSheetRange old_range;
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_DRAG);
+
+            gtk_sheet_real_unselect_range(sheet, NULL);
+
+            /* move active cell - with drag area */
+
+            /* move selection pin - with drag area */
+            SET_SELECTION_PIN(
+                sheet->selection_pin.row +
+                (sheet->drag_range.row0 - sheet->range.row0),
+                sheet->selection_pin.col +
+                (sheet->drag_range.col0 - sheet->range.col0));
+            /* move selection cursor - with drag area */
+            SET_SELECTION_CURSOR(
+                sheet->selection_cursor.row +
+                (sheet->drag_range.row0 - sheet->range.row0),
+                sheet->selection_cursor.col +
+                (sheet->drag_range.col0 - sheet->range.col0));
+
+            old_range = sheet->range;
+            sheet->range = sheet->drag_range;
+            sheet->drag_range = old_range;
+
+            g_signal_emit(G_OBJECT(sheet), sheet_signals[MOVE_RANGE], 0,
+                &sheet->drag_range, &sheet->range);
+            gtk_sheet_select_range(sheet, &sheet->range);
+        }
+
+        else if (GTK_SHEET_IN_RESIZE(sheet)) /* selection being resized*/
+        {
+            GtkSheetRange old_range;
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_RESIZE);
+
+            gtk_sheet_real_unselect_range(sheet, NULL);
+
+            /* set active_cell - to drag end point  */
+
+            /* set selection cursor - to drag end point  */
+            SET_SELECTION_CURSOR(
+                sheet->drag_cell.row, sheet->drag_cell.col);
+
+            old_range = sheet->range;
+            sheet->range = sheet->drag_range;
+            sheet->drag_range = old_range;
+
+            if (sheet->state == GTK_SHEET_NORMAL)
+            {
+                sheet->state = GTK_SHEET_RANGE_SELECTED;
+            }
+            g_signal_emit(G_OBJECT(sheet), sheet_signals[RESIZE_RANGE], 0,
+                &sheet->drag_range, &sheet->range);
+            gtk_sheet_select_range(sheet, &sheet->range);
+        }
+
+        else if (!GTK_SHEET_IN_SELECTION(sheet)  /* not selecting */
+            && !GTK_SHEET_IN_DRAG(sheet) /* not moving selection */
+            && !GTK_SHEET_IN_RESIZE(sheet) /* not resizing selection */ )
+        {
+            x = event->x;
+            y = event->y;
+
+            gint row, column;
+            gtk_sheet_get_pixel_info(sheet, NULL, x, y, &row, &column);
+
+#if GTK_SHEET_DEBUG_TOUCH > 0
+            g_debug("%s(%d): click cell r/c %d %d ar/ac %d %d inSel %s inResize %s inDrag %s selStPo %s mseB1 %s", 
+                __FUNCTION__, __LINE__, 
+                row, column,
+                sheet->active_cell.row, sheet->active_cell.col,
+                GTK_SHEET_IN_SELECTION(sheet) ? "Yes" : "No",
+                GTK_SHEET_IN_RESIZE(sheet) ? "Yes" : "No",
+                GTK_SHEET_IN_DRAG(sheet) ? "Yes" : "No",
+                SELECTION_START_POSSIBLE(sheet) ? "Yes" : "No",
+                MOUSE_BUTTON1_DOWN(sheet) ? "Yes" : "No"
+                );
+#endif
+
+            GtkSheetChild *child = gtk_sheet_get_child_at(sheet, row, column);
+
+#if GTK_SHEET_DEBUG_TOUCH > 0
+            g_debug("%s(%d): gtk_sheet_get_child_at row %d col %d = %p",
+                __FUNCTION__, __LINE__,
+                row, column, child);
+#endif
+
+            if (!child /* let the child process button events */
+                && MOUSE_BUTTON1_DOWN(sheet))
+            {
+                gboolean veto;
+                gtk_sheet_click_cell(
+                    sheet, row, column, &veto);
+
+                if (veto)
+                {
+                    gtk_sheet_activate_cell(
+                        sheet, sheet->active_cell.row, sheet->active_cell.col);
+                }
+            }
+        }
+
+        if (sheet->state == GTK_SHEET_NORMAL  /* nothing selected */
+            && GTK_SHEET_IN_SELECTION(sheet))
+        {
+#if GTK_SHEET_DEBUG_TOUCH > 0
+                g_debug("%s(%d): UNSET_FLAGS(IN_SELECTION) PIN r %d c %d ar %d ac %d",
+                    __FUNCTION__, __LINE__,
+                    sheet->selection_pin.row, sheet->selection_pin.col,
+                    sheet->active_cell.row, sheet->active_cell.col
+                    );
+#endif
+
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
+
+            gtk_sheet_activate_cell(
+                sheet, sheet->active_cell.row, sheet->active_cell.col);
+        }
+
+        if (SELECTION_START_POSSIBLE(sheet))
+        {
+#if GTK_SHEET_DEBUG_TOUCH > 0
+            g_debug("%s(%d): UNSET_FLAGS(SELECTION_START_POSSIBLE)",
+                __FUNCTION__, __LINE__);
+#endif
+            GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_SELECTION_START_POSSIBLE);
+        }
+
+        if (sheet->timer)
+        {
+            g_source_remove(sheet->timer);
+            sheet->timer = 0;
+        }
+        gtk_grab_remove(GTK_WIDGET(sheet));
+
+        GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_IN_SELECTION);
+        GTK_SHEET_UNSET_FLAGS(sheet, GTK_SHEET_MOUSE_BUTTON1_DOWN);
+        return (TRUE);
+    }
+
+    return(FALSE);  /* chain up to global touch handler*/
 }
 
 /* _HUNT_() statement macros find visible row/col into hunting direction */

@@ -45,13 +45,13 @@
 #include "gtksheet-marshal.h"
 #include "gtksheettypebuiltins.h"
 
-#undef GTK_SHEET_COL_DEBUG
+#define GTK_SHEET_COL_DEBUG 0
 
 #ifdef DEBUG
-#define GTK_SHEET_COL_DEBUG 1  /* define to activate debug output */
+#define GTK_SHEET_COL_DEBUG 0  /* 1 = activate debug output */
 #endif
 
-#ifdef GTK_SHEET_COL_DEBUG
+#if GTK_SHEET_COL_DEBUG > 0
 #   define GTK_SHEET_COL_DEBUG_BUILDER   0
 #   define GTK_SHEET_COL_DEBUG_DRAW  0
 #   define GTK_SHEET_COL_DEBUG_PROPERTIES  0

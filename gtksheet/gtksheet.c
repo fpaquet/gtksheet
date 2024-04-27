@@ -94,14 +94,13 @@
 #include "gtksheet-marshal.h"
 #include "gtksheettypebuiltins.h"
 
-#undef GTK_SHEET_DEBUG
+#define GTK_SHEET_DEBUG 0
 
 #ifdef DEBUG
-#   undef GTK_SHEET_DEBUG
-#define GTK_SHEET_DEBUG  1  /* define to activate debug output */
+#   define GTK_SHEET_DEBUG  0  /* 1 = activate debug output */
 #endif
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG > 0
 #   define GTK_SHEET_DEBUG_ENABLE_DEPRECATION_WARNINGS  1
 
 #   define GTK_SHEET_DEBUG_ADJUSTMENT  0
@@ -137,7 +136,7 @@
 #   define GTK_SHEET_DEBUG_SET_CELL_TIMER  0
 #   define GTK_SHEET_DEBUG_SIGNALS   0
 #   define GTK_SHEET_DEBUG_SIZE  0  /* 0,1,2 */
-#   define GTK_SHEET_DEBUG_TOUCH  1
+#   define GTK_SHEET_DEBUG_TOUCH  0
 
 #   define GTK_SHEET_ENABLE_DEBUG_MACROS
 #   undef GTK_SHEET_ENABLE_DEBUG_MACROS
@@ -630,7 +629,7 @@ static gdouble selection_bb_offset = 1;  /* border/background*/
 static GdkRGBA color_black;
 static GdkRGBA color_white;
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG > 0
 #   define GTK_SHEET_DEBUG_COLOR  "green"
 
 static GdkRGBA debug_color;
@@ -646,7 +645,7 @@ static void _debug_cairo_clip_extent(gchar *where, cairo_t *cr)
 }
 #endif
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG > 0
 static void _debug_color_rect(
     gchar *where, cairo_t *cr, double x, double y, double w, double h)
 {
@@ -3843,7 +3842,7 @@ gtk_sheet_init(GtkSheet *sheet)
 
     sheet->freeze_count = 0;
 
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG > 0
     gdk_rgba_parse(&debug_color, GTK_SHEET_DEBUG_COLOR);
     g_debug("%s(%d): debug_color initialized to r %g g %g b %g a %g", 
         __FUNCTION__, __LINE__, 
@@ -10689,7 +10688,7 @@ gtk_sheet_set_active_cell(GtkSheet *sheet, gint row, gint col)
 #if 0
 	if ((sheet->active_cell.row != old_row) || (sheet->active_cell.col != old_col))
 	{
-#ifdef GTK_SHEET_DEBUG
+#if GTK_SHEET_DEBUG > 0
 	    g_debug("%s(%d): : deactivation moved active cell to row %d col %d",
                 __FUNCTION__, __LINE__, 
                 sheet->active_cell.row, sheet->active_cell.col);

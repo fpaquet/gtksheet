@@ -19377,7 +19377,7 @@ InsertRow(GtkSheet *sheet, gint position, gint nrows)
 
     if (position <= sheet->maxallocrow)  /* adjust allocated cells */
     {
-	GrowSheet(sheet, nrows, 0);  /* append rows at end */
+        GrowSheet(sheet, nrows, 0);  /* append rows at end */
 
 	/* swap new rows into position */
 	for (r = sheet->maxallocrow; r >= position + nrows; r--)
@@ -19390,11 +19390,14 @@ InsertRow(GtkSheet *sheet, gint position, gint nrows)
 	    /* new cells have no data yet to update */
 
 	    GtkSheetCell **pp = sheet->data[r];  /* update row in existing cells */
-	    for (c = 0; c <= sheet->maxalloccol; c++, pp++)
-	    {
-		if (*pp)
-		    (*pp)->row = r;
-	    }
+            if (pp)
+            {
+                for (c = 0; c <= sheet->maxalloccol; c++, pp++)
+                {
+                    if (*pp)
+                        (*pp)->row = r;
+                }
+            }
 	}
     }
 }

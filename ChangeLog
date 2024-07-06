@@ -11,6 +11,7 @@ TBD - known bugs
 2024-07-06 Fredy Paquet <mailbox AT opag.ch>
 * fixed crash in InsertRows when adding/deleting last row multiple times 325807
 * published gtksheet-4 version 4.3.14
+* updated gtksheet-4 version to 4.3.15, Libtool Revision 4.15.3
 
 2024-04-27 Fredy Paquet <mailbox AT opag.ch>
 * GTK_SHEET_DEBUG, GTK_SHEET_COL_DEBUG definition reworked, default OFF
